@@ -2,6 +2,8 @@
 
 > **3–4 sessions.** Builds `packages/harness/` (`@domains/harness`) — the interview-day CLI.
 
+> **Sequencing (revised 2026-05-02, see [PREAMBLE.md](./PREAMBLE.md) → Approach commitments):** Phase 5 (harness build-out) runs **horizontally AFTER all domains have P1+P3 + Phase 4 (failure-modes) landed**. The harness is the consumer of every prior phase, so it should be built against a populated corpus, not bootstrapped in parallel.
+
 ## How to start this session
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this file or say: *"Run domains/_shared/sessions/phase-5-harness.md, session 5.<n>."*

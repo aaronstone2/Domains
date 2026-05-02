@@ -9,12 +9,13 @@ pnpm workspace. Two top-level dirs:
 
 Run from repo root:
 
-- `pnpm domain add <name>` — create `domains/<name>/`
+- `pnpm domain add <name>` — create `domains/<name>/` (just the folder shell + .gitkeep)
+- `pnpm leaf add <domain>/<leaf>` — scaffold `domains/<d>/<l>/` with `README.md`, `PLAN.md` (from `_shared/PLAN.template.md`), `PROGRESS.md`, `extract/`, `queries/`. **Idempotent** — only creates what's missing, never overwrites populated PLANs/PROGRESS files. Run this at the start of a Phase 3 session for the leaf you're working on.
 - `pnpm package add <name> [--preset=<node|node-cjs|ts|vite|react>]` — scaffold a new `@domains/<name>` package; prompts for tsconfig preset if `--preset` omitted
 - `pnpm test` — run vitest across all packages
 - `pnpm typecheck` — `tsc --noEmit` across all packages
 
-Both `domain add` and `package add` prompt via `@clack/prompts` if `<name>` is omitted. After `pnpm package add`, run `pnpm install` to register the new workspace package.
+`domain add`, `leaf add`, and `package add` all prompt via `@clack/prompts` if their argument is omitted. After `pnpm package add`, run `pnpm install` to register the new workspace package.
 
 ## tsconfig: always extend cue
 
@@ -38,6 +39,7 @@ Cue's base enables `isolatedDeclarations`, so all exported values need explicit 
 - **TypeScript everywhere.** Source under `src/`, no separate build step in dev — root scripts use `tsx` to execute TS directly.
 - **Package scope.** All packages are `@domains/<name>`, private, ESM (`"type": "module"`).
 - **Naming.** `^[a-z0-9][a-z0-9-]*$` for both domains and packages.
+- **Scratch files during research.** Never write loose research scratch (curl-dumped HTML, intermediate notes) to the project root — it gets accidentally committed via `git add .`. Drop scratch under `domains/<active-domain>/raw/` (gitignored). The pipeline's own raw cache lives at `_db/raw/<domain>/<subdomain>/<id>.html` (also gitignored). The repo-root `.gitignore` explicitly ignores `/*.md` with an allowlist for `CLAUDE.md`, `README.md`, `Start.md` to backstop this.
 
 ## Knowledge corpus
 
@@ -56,6 +58,7 @@ packages/cli/src/
   commands/
     index.ts            # group registry
     domain/{index,add}.ts
+    leaf/{index,add}.ts
     package/{index,add}.ts
 ```
 

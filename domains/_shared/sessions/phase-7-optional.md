@@ -2,6 +2,8 @@
 
 > Skip these unless Phases 1–6 are solid. The interview is won by fluency on the corpus, not by extra features.
 
+> **Sequencing (revised 2026-05-02, see [PREAMBLE.md](./PREAMBLE.md) → Approach commitments):** Phase 7 (optional polish) runs **last, horizontally**. Anything not blocking the interview can also be deferred via `/schedule` for follow-up after the deadline.
+
 ## How to start this session
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this file or say: *"Run domains/_shared/sessions/phase-7-optional.md."*

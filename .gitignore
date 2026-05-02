@@ -9,6 +9,15 @@ _db/
 # (extract/ stays committed: the corpus is reproducible from JSON without re-fetching.)
 domains/**/raw/
 
+# Project-root MD files. Only intentional ones are allowlisted below; everything else
+# (e.g. scratch dumps from Explore agents during research) is ignored so they don't
+# accidentally get committed via `git add .`. If a future doc legitimately belongs at
+# repo root, add an explicit allowlist line here.
+/*.md
+!/CLAUDE.md
+!/README.md
+!/Start.md
+
 # Tokens / API keys captured during DevBox inspection — extra-paranoid, in addition to .env / *.key
 *.token
 *sensitive*

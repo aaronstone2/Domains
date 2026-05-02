@@ -2,6 +2,8 @@
 
 > **Run this once per leaf folder.** ~17 leaves × 3–5 sessions = bulk of the project. Ask which leaf to start with: e.g. `docker/engine`, `linux/primitives`, `devin/devbox`, etc.
 
+> **Sequencing (revised 2026-05-02, see [PREAMBLE.md](./PREAMBLE.md) → Approach commitments):** Phase 3 pairs with Phase 1 as one **P1+P3 vertical per domain** — the parent domain should already have P1 complete in `<domain>.documents` before running this. **Domain order under the new doctrine: methodology → docker → linux → devin → k8s** (the priority order list below is preserved for intra-domain leaf prioritization but its top entry of `devin/devbox` is overridden by the vertical-slice doctrine; methodology comes first). **Phase 2 (devbox live-capture) now runs HORIZONTALLY AFTER all domains have P1+P3 landed** — so `devin/devbox` P3 runs without live capture in the first pass and is enriched later when P2 fires. Source gaps surfaced during P3 patch back into `domains/_shared/sources.yaml` mid-session (P1 is dynamic, not a one-time pass).
+
 ## How to start this session
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this file or say: *"Run domains/_shared/sessions/phase-3-deep-extraction.md for `<domain>/<leaf>`."*
@@ -75,7 +77,7 @@ Confirm with me:
 
 ### Phase 4 — Final Plan
 
-Write `domains/<domain>/<leaf>/PLAN.md` if not already present (from `_shared/PLAN.template.md`); fill in the leaf-specific Phase A–E goals. Update `PROGRESS.md` with the session's intent.
+Scaffold the leaf folder if it doesn't yet exist: `pnpm leaf add <domain>/<leaf>` (idempotent — creates `README.md`, `PLAN.md` from template, `PROGRESS.md`, `extract/`, `queries/` only if missing; never overwrites). Then fill in the leaf-specific Phase A–E goals in `PLAN.md` and update `PROGRESS.md` with the session's intent.
 
 ### Phase 5 — `ExitPlanMode`
 

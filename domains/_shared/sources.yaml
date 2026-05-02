@@ -571,7 +571,19 @@ sources:
 
   # ============================================================
   # METHODOLOGY — debugging frameworks
+  # license nuance:
+  #   - sre.google/sre-book/* is CC BY-NC-ND 4.0 (no derivatives, no commercial use).
+  #     Marked redistribute-ok because our private interview-prep corpus stores + cites only;
+  #     do NOT republish modified extracts publicly.
+  #   - jvns.ca/* posts are CC BY-NC-SA 4.0 (no commercial; share-alike). Same posture.
+  #   - brendangregg.com is public domain (Brendan's own statement). Fully redistribute-ok.
+  #   - iovisor/bcc, bpftrace/bpftrace, brendangregg/perf-tools are Apache 2.0 / public domain.
+  #   - wizardzines.com landing pages: license unverified (no CC statement on page or /about).
+  #     Treated as `unknown` — body is still ingested for our private corpus;
+  #     republishing posture stays conservative until a license is confirmed.
   # ============================================================
+
+  # ---------- use-red-method ----------
   - id: brendangregg-use-method-linux
     url: https://www.brendangregg.com/USEmethod/use-linux.html
     title: USE Method — Linux Performance Checklist (Brendan Gregg)
@@ -588,27 +600,356 @@ sources:
     tier: T2
     license_note: redistribute-ok
     parser: trafilatura
+  - id: brendangregg-methodology
+    url: https://www.brendangregg.com/methodology.html
+    title: Performance Analysis Methodology — master taxonomy (USE, RED, off-CPU, TSA, 20+)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Updated Jan 2025; index over every framework name we'll narrate from.
+  - id: brendangregg-offcpu
+    url: https://www.brendangregg.com/offcpuanalysis.html
+    title: Off-CPU Analysis (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: brendangregg-flamegraphs
+    url: https://www.brendangregg.com/flamegraphs.html
+    title: Flame Graphs (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: brendangregg-usemethod
+    url: https://www.brendangregg.com/usemethod.html
+    title: USE Method — generic methodology page (distinct from use-linux.html checklist)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Pairs with brendangregg-use-method-linux (which is the Linux-specific checklist).
+  - id: brendangregg-perf
+    url: https://www.brendangregg.com/perf.html
+    title: Linux perf Examples — one-liners (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: brendangregg-ebpf
+    url: https://www.brendangregg.com/ebpf.html
+    title: Linux eBPF Tracing Tools — landscape (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: bcc-readme
+    url: https://raw.githubusercontent.com/iovisor/bcc/master/README.md
+    title: bcc — BPF Compiler Collection README (tool index)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: github-md
+  - id: bpftrace-oneliners
+    url: https://raw.githubusercontent.com/bpftrace/bpftrace/master/docs/tutorial_one_liners.md
+    title: bpftrace One-Liners Tutorial
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: github-md
+  - id: perf-tools-readme
+    url: https://raw.githubusercontent.com/brendangregg/perf-tools/master/README.md
+    title: perf-tools — Brendan Gregg's perf wrapper scripts README
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: github-md
+  - id: brendangregg-linux-crisis-tools
+    url: https://www.brendangregg.com/blog/2024-03-24/linux-crisis-tools.html
+    title: Linux Crisis Tools (Brendan Gregg, 2024)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: The "what to install before the fire" list. High signal for screen-share interview.
+  - id: brendangregg-cpu-utilization-wrong
+    url: https://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html
+    title: CPU Utilization is Wrong (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: brendangregg-linux-load-averages
+    url: https://www.brendangregg.com/blog/2017-08-08/linux-load-averages.html
+    title: Linux Load Averages — Solving the Mystery (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: brendangregg-return-of-frame-pointers
+    url: https://www.brendangregg.com/blog/2024-03-17/the-return-of-the-frame-pointers.html
+    title: The Return of the Frame Pointers (Brendan Gregg, 2024)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: bpftrace-language
+    url: https://raw.githubusercontent.com/bpftrace/bpftrace/master/docs/language.md
+    title: bpftrace Language Reference
+    domain: methodology
+    subdomain: use-red-method
+    tier: T3
+    license_note: redistribute-ok
+    parser: github-md
+    notes: Replaced reference_guide.md (now a 141-byte index) with language.md (the actual reference content).
+  - id: bpftrace-stdlib
+    url: https://raw.githubusercontent.com/bpftrace/bpftrace/master/docs/stdlib.md
+    title: bpftrace Standard Library (built-in functions, probes, variables)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T3
+    license_note: redistribute-ok
+    parser: github-md
+  - id: brendangregg-choosing-linux-tracer
+    url: https://www.brendangregg.com/blog/2015-07-08/choosing-a-linux-tracer.html
+    title: Choosing a Linux Tracer (Brendan Gregg, 2015 — still canonical)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T3
+    license_note: redistribute-ok
+    parser: trafilatura
+
+  # ---------- sre-debugging ----------
+  - id: sre-google-books
+    url: https://sre.google/books/
+    title: Google SRE Books (free, CC-licensed) — index page
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: sre-monitoring-signals
+    url: https://sre.google/sre-book/monitoring-distributed-systems/
+    title: Google SRE Book — Ch 6 Monitoring Distributed Systems (Four Golden Signals)
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Non-negotiable. CC BY-NC-ND 4.0 — store + cite OK for our private corpus; no commercial republication.
+  - id: sre-effective-troubleshooting
+    url: https://sre.google/sre-book/effective-troubleshooting/
+    title: Google SRE Book — Ch 12 Effective Troubleshooting
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Non-negotiable. The methodology chapter we'll narrate from.
+  - id: sre-being-oncall
+    url: https://sre.google/sre-book/being-on-call/
+    title: Google SRE Book — Ch 11 Being On-Call
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: sre-emergency-response
+    url: https://sre.google/sre-book/emergency-response/
+    title: Google SRE Book — Ch 13 Emergency Response
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: sre-managing-incidents
+    url: https://sre.google/sre-book/managing-incidents/
+    title: Google SRE Book — Ch 14 Managing Incidents
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: sre-postmortem-culture
+    url: https://sre.google/sre-book/postmortem-culture/
+    title: Google SRE Book — Ch 15 Postmortem Culture
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: sre-slos
+    url: https://sre.google/sre-book/service-level-objectives/
+    title: Google SRE Book — Ch 4 Service Level Objectives
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: sre-example-postmortem
+    url: https://sre.google/sre-book/example-postmortem/
+    title: Google SRE Book — Example Postmortem (concrete template)
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: jpetazzo-container-training-readme
+    url: https://raw.githubusercontent.com/jpetazzo/container.training/main/README.md
+    title: jpetazzo container.training — README (workshop deep-dive index)
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T2
+    license_note: redistribute-ok
+    parser: github-md
+    notes: Apache 2.0. Source-of-truth for Pétazzoni's container teaching deck.
+  - id: pagerduty-incident-response
+    url: https://response.pagerduty.com/
+    title: PagerDuty Incident Response runbook
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: CC BY 4.0. Pragmatic IR checklists; complements Google SRE Ch 13/14.
+  - id: otel-concepts
+    url: https://opentelemetry.io/docs/concepts/
+    title: OpenTelemetry — Concepts (signals, traces, spans, metrics, logs)
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+
+  # ---------- visual-zines ----------
   - id: jvns-debugging-zine
     url: https://jvns.ca/debugging-zine.pdf
-    title: Pocket Guide to Debugging (Julia Evans, free zine)
+    title: Pocket Guide to Debugging (Julia Evans, free zine — PDF)
     domain: methodology
     subdomain: visual-zines
     tier: T2
     license_note: reference-only
-    parser: trafilatura
+    parser: pdf
+    notes: Comic-style PDF; pymupdf will return sparse text without OCR. Phase 2 candidate for tesseract.
   - id: jvns-tracing-systems
     url: https://jvns.ca/blog/2017/07/05/linux-tracing-systems/
     title: Linux Tracing Systems & How They Fit Together (Julia Evans)
     domain: methodology
     subdomain: visual-zines
     tier: T2
-    license_note: reference-only
-    parser: trafilatura
-  - id: sre-google-books
-    url: https://sre.google/books/
-    title: Google SRE Books (free, CC-licensed)
-    domain: methodology
-    subdomain: sre-debugging
-    tier: T2
     license_note: redistribute-ok
     parser: trafilatura
+    notes: jvns.ca posts are CC BY-NC-SA 4.0 per site footer (no commercial; share-alike).
+  - id: jvns-examples-tcpdump-dig-manpages
+    url: https://jvns.ca/blog/2026/03/10/examples-for-the-tcpdump-and-dig-man-pages/
+    title: Examples for the tcpdump and dig man pages (Julia Evans, Mar 2026)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T3
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: jvns-notes-man-pages
+    url: https://jvns.ca/blog/2026/02/18/man-pages/
+    title: Some notes on man pages (Julia Evans, Feb 2026)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T3
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: wizardzines-strace-zine
+    url: https://wizardzines.com/zines/strace/
+    title: Wizard Zines — Spying on Your Programs with strace (free zine landing)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: unknown
+    parser: trafilatura
+    notes: License unverified (no CC statement on page or /about). Body still ingested.
+  - id: wizardzines-perf-zine
+    url: https://wizardzines.com/zines/perf/
+    title: Wizard Zines — Profiling & Tracing with perf (free zine landing)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: unknown
+    parser: trafilatura
+  - id: wizardzines-tcpdump-zine
+    url: https://wizardzines.com/zines/tcpdump/
+    title: Wizard Zines — Let's Learn tcpdump! (free zine landing)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: unknown
+    parser: trafilatura
+  - id: wizardzines-debugging-tools-zine
+    url: https://wizardzines.com/zines/debugging/
+    title: Wizard Zines — Linux Debugging Tools You'll Love (free zine landing)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: unknown
+    parser: trafilatura
+  - id: wizardzines-networking-zine
+    url: https://wizardzines.com/zines/networking/
+    title: Wizard Zines — Networking ACK (free zine landing)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: unknown
+    parser: trafilatura
+  - id: wizardzines-wizard-zine
+    url: https://wizardzines.com/zines/wizard/
+    title: Wizard Zines — So You Want to Be a Wizard (methodology zine landing)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: unknown
+    parser: trafilatura
+    notes: Methodology zine — "ask dumb questions, run experiments, read the source".
+  - id: wizardzines-containers-landing
+    url: https://wizardzines.com/zines/containers/
+    title: Wizard Zines — How Containers Work (paid zine landing only)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+  - id: wizardzines-debugging-guide-landing
+    url: https://wizardzines.com/zines/debugging-guide/
+    title: Wizard Zines — Pocket Guide to Debugging (paid zine landing only)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+  - id: wizardzines-dns-landing
+    url: https://wizardzines.com/zines/dns/
+    title: Wizard Zines — How DNS Works (paid zine landing only)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+  - id: wizardzines-comics-index
+    url: https://wizardzines.com/comics/
+    title: Wizard Zines — Comics Index (canonical map of free single-page comics)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: unknown
+    parser: trafilatura
+    notes: Single-fetch index; harvest individual comic URLs from extracted markdown in a Phase 1.5 follow-up.

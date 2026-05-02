@@ -1,15 +1,10 @@
+import pymupdf
 import trafilatura
 
 from ingest.models import Document, Source
 
 
-def extract(source: Source, body: bytes) -> Document:
-    """Extract clean markdown from a fetched HTML body. V1 = trafilatura for everything.
-
-    Per-parser variants (manpage, github-md, mintlify) come in later sessions; for now we use
-    trafilatura's `output_format='markdown'` everywhere because it produces usable output across
-    most doc sites including man7.org and Mintlify.
-    """
+def _extract_html(body: bytes) -> str:
     text = trafilatura.extract(
         body.decode("utf-8", errors="replace"),
         output_format="markdown",
@@ -18,8 +13,32 @@ def extract(source: Source, body: bytes) -> Document:
         include_images=False,
         favor_recall=True,
     )
-    return Document(
-        source_id=source.id,
-        section_path=source.url,
-        content_md=text or "",
-    )
+    return text or ""
+
+
+def _extract_pdf(body: bytes) -> str:
+    doc = pymupdf.open(stream=body, filetype="pdf")
+    try:
+        return "\n\n".join(page.get_text("text") for page in doc).strip()
+    finally:
+        doc.close()
+
+
+def _extract_passthrough(body: bytes) -> str:
+    return body.decode("utf-8", errors="replace").strip()
+
+
+def extract(source: Source, body: bytes) -> Document:
+    """Extract clean text from a fetched body, dispatching on source.parser.
+
+    parser=pdf       → pymupdf text extraction (sparse on image-heavy PDFs without OCR)
+    parser=github-md → passthrough (raw markdown URLs already return our target format)
+    parser=anything-else → trafilatura HTML→markdown
+    """
+    if source.parser == "pdf":
+        text = _extract_pdf(body)
+    elif source.parser == "github-md":
+        text = _extract_passthrough(body)
+    else:
+        text = _extract_html(body)
+    return Document(source_id=source.id, section_path=source.url, content_md=text)

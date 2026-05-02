@@ -2,6 +2,8 @@
 
 > **3–5 sessions.** Owning the corpus is worthless without fluency. The interview is judged on efficiency, clarity of thought, communication, curiosity, and trade-off thinking — every one of those is fluency, not knowledge.
 
+> **Sequencing (revised 2026-05-02, see [PREAMBLE.md](./PREAMBLE.md) → Approach commitments):** Phase 6 (drills/practice) runs **horizontally AFTER the harness from Phase 5 is functional**. Pre-interview rehearsal pass against the populated corpus.
+
 ## How to start this session
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this file or say: *"Run domains/_shared/sessions/phase-6-drills.md, drill <n>."*

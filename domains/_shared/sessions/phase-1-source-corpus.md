@@ -2,6 +2,8 @@
 
 > **Run this once per domain. The first time you run it, ask which domain to start with: `devin` / `docker` / `linux` / `k8s` / `methodology`.**
 
+> **Sequencing (revised 2026-05-02, see [PREAMBLE.md](./PREAMBLE.md) → Approach commitments):** Phase 1 pairs with Phase 3 as one **P1+P3 vertical per domain**. After P1 lands the corpus, the same vertical continues into [`phase-3-deep-extraction.md`](./phase-3-deep-extraction.md) for the SAME domain — don't move to another domain's P1 until P1+P3 for the current domain is complete. Domain order: methodology → docker → linux → devin → k8s.
+
 ## How to start this session
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this entire file as your first message, OR say: *"Run domains/_shared/sessions/phase-1-source-corpus.md."*
@@ -28,6 +30,8 @@ You start in plan mode. Run the standard five-phase workflow:
 ### Phase 1 — Initial Understanding (Explore agents IN PARALLEL)
 
 Launch up to 3 Explore agents to map the territory of the chosen domain BEYOND what's already in `sources.yaml`. Goal: end with a deduplicated, tier-ranked, license-noted source list ready to extend `sources.yaml`. Don't deep-read; map.
+
+> **Scratch-file convention (do this in every Explore prompt):** if an agent saves any local research scratch (curl-dumped HTML, fetched PDFs, intermediate notes), it MUST land under `domains/<chosen-domain>/raw/` — that path is gitignored (`domains/**/raw/` in `.gitignore`) and is the conventional cache location per PREAMBLE. **Never write scratch to the project root** (this happened in the methodology Phase 1 pilot — 7 stray `.md` files ended up at the repo root and had to be `git rm`'d). The pipeline's own raw cache lives at `_db/raw/<domain>/<subdomain>/<id>.html` (also gitignored) and is separate from agent-research scratch.
 
 Sample agent prompts (adapt to chosen domain):
 
@@ -66,13 +70,33 @@ cd domains\_shared\ingest
 # Verify the ingest tool is healthy
 uv run python -m ingest list --domain <chosen-domain>
 
-# Fetch + extract + load all sources for this domain
+# Fetch + extract + STAGE to JSONL (no DB write — safe alongside motherduck MCP).
+# Writes to _db/staging/<chosen-domain>.{sources,documents}.jsonl.
 uv run python -m ingest fetch --domain <chosen-domain>
 
 # Some sources will fail (paywalled, rate-limited, JS-rendered, redirected).
-# Re-run with --source-id <failing-id> after debugging each one.
+# Re-run with --source-id <failing-id> after debugging each one (appends to staging).
+```
 
-# Build FTS index for this domain
+Then load + FTS via the motherduck MCP (preferred — no lock dance) or the CLI `load` command:
+
+```sql
+-- via motherduck MCP execute_query (works while MCP holds the DB write lock):
+INSERT OR REPLACE INTO <d>.sources BY NAME
+  SELECT * FROM read_json('C:/Users/adsto/git/domains/_db/staging/<d>.sources.jsonl', format='newline_delimited');
+INSERT OR REPLACE INTO <d>.documents BY NAME
+  SELECT * FROM read_json('C:/Users/adsto/git/domains/_db/staging/<d>.documents.jsonl', format='newline_delimited');
+
+INSTALL fts; LOAD fts;
+PRAGMA create_fts_index('<d>.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+```
+
+The FTS lookup function name is `fts_<schema>_<table>.match_bm25(...)` — e.g. `fts_methodology_documents.match_bm25(source_id, '<query>')`. (NOT `fts_main_<schema>_documents`; the `main_` prefix only applies when the source table sits in the `main` schema.)
+
+Alternative CLI path (only if motherduck MCP is closed):
+
+```powershell
+uv run python -m ingest load --domain <chosen-domain>
 duckdb ..\..\..\_db\knowledge.duckdb -c "INSTALL fts; LOAD fts; PRAGMA create_fts_index('<chosen-domain>.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);"
 ```
 

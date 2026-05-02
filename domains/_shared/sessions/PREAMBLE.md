@@ -30,13 +30,14 @@ The end-state deliverable is a **debugging harness** at `packages/harness/` that
 
 ## Approach commitments (these are NOT up for debate per session)
 
-- **Multi-session, multi-phase research.** ~30 sessions over ~3–4 weeks.
-- **Each domain gets its own folder** under `domains/`: `devin/{product, devbox, integrations, api, mcp, knowledge-playbooks, enterprise}`, `docker/{engine, compose, build-buildkit, runtime, networking, security}`, `linux/{primitives, networking, debugging, systemd, filesystem}`, `k8s/{core, debugging, networking, runtime}`, `methodology/{use-red-method, sre-debugging, visual-zines}`.
+- **Vertical (P1+P3) → Horizontal (P2/P4/P5/P6+) sequencing** (revised 2026-05-02 after the methodology Phase 1 pilot). Per domain, do **Phase 1 (sources) + Phase 3 (concepts/commands/config_keys)** together as one vertical pass — that's the per-domain unit of work, because P3 reveals source gaps that get patched back into `sources.yaml` mid-session (so P1 is dynamic, not a one-time pass). Domain order: methodology → docker → linux → devin → k8s. Once all domains have P1+P3 landed, run **Phase 2** (devbox live-capture, devin-specific, timing-gated), **Phase 4** (failure-modes — needs cross-domain concept rows from all P3s so `affected_concepts` references resolve), **Phase 5** (relationships), and **Phase 6+** (harness, polish) **horizontally across the corpus**. Use `/schedule` for follow-up research that polishes the corpus but doesn't block the interview. The original master plan at `~/.claude/plans/i-am-applying-for-indexed-hellman.md` was authored as a horizontal-layered "all P1, then all P3" sequence; that sequencing is superseded, but the per-phase content in `domains/_shared/sessions/phase-{1..7}.md` remains correct *for one domain at a time*. ~20–25 sessions over ~3–4 weeks.
+- **Each domain gets its own folder** under `domains/`: `devin/{product, devbox, integrations, api, mcp, knowledge-playbooks, enterprise}`, `docker/{engine, compose, build-buildkit, runtime, networking, security}`, `linux/{primitives, networking, debugging, systemd, filesystem}`, `k8s/{core, debugging, networking, runtime}`, `methodology/{use-red-method, sre-debugging, visual-zines}`. Folder created via `pnpm domain add <name>` (not raw mkdir).
 - **Each domain has its own multi-phased PLAN.md** (copied from `domains/_shared/PLAN.template.md`) and `PROGRESS.md`.
 - **Catalog all trustworthy sources.** Tier them T0/T1/T2/T3. Track license. Don't republish proprietary docs.
-- **Knowledge composes across domains.** SQL `meta.all_*` views; the `memory` MCP for the conceptual graph; cross-domain `relationships` rows.
+- **Knowledge composes across domains.** SQL `meta.all_*` views; the `memory` MCP for the conceptual graph; cross-domain `relationships` rows. Cross-domain links happen *as you discover them* during extraction, not in a deferred final pass.
 - **Programmatically queryable end-state.** Future research sessions pull from the existing corpus rather than re-discovering — every session leaves the corpus richer.
-- **K8s is in scope as a peer domain to Docker.** Lower priority than Docker/Linux/Devin but not skipped.
+- **The harness is the consumer of every phase.** Every vertical ends with `pnpm harness <query>` returning a useful answer, not "table N has rows".
+- **Deadline triage.** In the interview-prep deadline scenario, prefer one fully-deep domain + a half-deep second domain over five shallow domains. Prioritize Docker / Linux / Devin (interview-likely) over K8s.
 
 ## The plan-mode meta-research pattern (CRITICAL — do not skip)
 

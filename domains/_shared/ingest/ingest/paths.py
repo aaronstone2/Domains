@@ -19,6 +19,7 @@ SHARED_QUERIES: Path = SHARED_DIR / "queries"
 DB_DIR: Path = REPO_ROOT / "_db"
 DB_PATH: Path = DB_DIR / "knowledge.duckdb"
 RAW_DIR: Path = DB_DIR / "raw"
+STAGING_DIR: Path = DB_DIR / "staging"
 
 # Schemas applied to the DuckDB file (excluding `meta`, which is views-only and
 # created by queries/cross_domain.sql).

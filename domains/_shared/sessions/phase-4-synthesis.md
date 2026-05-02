@@ -2,6 +2,8 @@
 
 > **2 sessions.** Run after Phase 3 has covered at least leaves 1–8 in priority order (devbox, docker/engine, linux/primitives + networking + debugging, docker/networking + compose + runtime).
 
+> **Sequencing (revised 2026-05-02, see [PREAMBLE.md](./PREAMBLE.md) → Approach commitments):** Phase 4 (failure-modes + synthesis) now runs **horizontally across all domains AFTER every domain has P1+P3 landed**, not per-domain in the same vertical as P1+P3. Reason: failure-modes cite cross-domain `affected_concepts` (e.g. a docker failure-mode references `linux.oom-killer` and `methodology.use-method`), so all P3 concept rows must exist first to avoid back-tracking. Phase 5 (relationships/harness) runs immediately after.
+
 ## How to start this session
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this file or say: *"Run domains/_shared/sessions/phase-4-synthesis.md."*

@@ -2,6 +2,8 @@
 
 > **The highest-leverage session in the entire project.** External docs describe what Devin *should* be; this session captures what Devin *is* on a real DevBox. Tag everything `tier=T0`.
 
+> **Sequencing (revised 2026-05-02, see [PREAMBLE.md](./PREAMBLE.md) → Approach commitments):** Phase 2 now runs **horizontally AFTER all 5 domains have completed their P1+P3 vertical slice**, NOT before Phase 3. It's devin-specific and timing-gated (only when DevBox access is available). When this fires, it enriches `devin/devbox` Phase 3 entries that were originally extracted from docs alone.
+
 ## How to start this session
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this file or say: *"Run domains/_shared/sessions/phase-2-devbox-capture.md."*
