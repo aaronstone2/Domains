@@ -1,0 +1,614 @@
+# Global trustworthy-sources registry for the corpus.
+# Filtered per-leaf by (domain, subdomain). Add new entries here OR in a leaf-local sources.yaml.
+#
+# Tiers
+#   T0 — primary live capture (e.g. DevBox process tree, daemon.json copy)
+#   T1 — official vendor docs / kernel docs / man pages / specs
+#   T2 — respected secondary (books, talks by recognized practitioners)
+#   T3 — high-quality blogs / canonical StackOverflow answers
+#
+# license_note
+#   redistribute-ok — CC, Apache, BSD, GPL, public domain; safe to ingest content into the corpus
+#   reference-only  — proprietary docs (Docker, Devin docs); store URL/title/snippets only, cite, do not republish
+#   unknown         — assume reference-only until verified
+#
+# parser
+#   trafilatura  — generic HTML→MD via trafilatura (default)
+#   manpage      — man7.org / freedesktop man pages (preserve SYNOPSIS/DESCRIPTION/DIAGNOSTICS sections)
+#   github-md    — raw markdown file from a GitHub repo
+#   mintlify     — Devin's Mintlify-rendered docs (uses /llms.txt for index)
+
+sources:
+  # ============================================================
+  # DEVIN — product
+  # ============================================================
+  - id: devin-docs-llms-index
+    url: https://docs.devin.ai/llms.txt
+    title: Devin docs llms.txt index
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: devin-docs-sitemap
+    url: https://docs.devin.ai/sitemap.xml
+    title: Devin docs sitemap.xml
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: devin-docs-getstarted-intro
+    url: https://docs.devin.ai/get-started/devin-intro
+    title: Getting Started — Devin Intro
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-essential-when-to-use
+    url: https://docs.devin.ai/essential-guidelines/when-to-use-devin
+    title: Essential Guidelines — When to Use Devin
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-essential-instructing
+    url: https://docs.devin.ai/essential-guidelines/instructing-devin-effectively
+    title: Essential Guidelines — Instructing Devin Effectively
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-product-knowledge
+    url: https://docs.devin.ai/product-guides/knowledge
+    title: Product Guides — Knowledge
+    domain: devin
+    subdomain: knowledge-playbooks
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-product-playbooks
+    url: https://docs.devin.ai/product-guides/creating-playbooks
+    title: Product Guides — Creating Playbooks
+    domain: devin
+    subdomain: knowledge-playbooks
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-product-skills
+    url: https://docs.devin.ai/product-guides/skills
+    title: Product Guides — Skills
+    domain: devin
+    subdomain: knowledge-playbooks
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-product-session-insights
+    url: https://docs.devin.ai/product-guides/session-insights
+    title: Product Guides — Session Insights (ACU usage, timeline)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ============================================================
+  # DEVIN — devbox / environment / runtime
+  # ============================================================
+  - id: devin-docs-onboard-environment
+    url: https://docs.devin.ai/onboard-devin/environment
+    title: Onboarding — Environment
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-onboard-environment-yaml
+    url: https://docs.devin.ai/onboard-devin/environment-yaml
+    title: Onboarding — Environment YAML (declarative blueprint)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-onboard-repo-setup
+    url: https://docs.devin.ai/onboard-devin/repo-setup
+    title: Onboarding — Repo Setup
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-admin-common-issues
+    url: https://docs.devin.ai/admin/common-issues
+    title: Admin — Common Issues (troubleshooting)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+    notes: gold layer for failure-modes
+  - id: devin-docs-admin-billing
+    url: https://docs.devin.ai/admin/billing
+    title: Admin — Billing (ACU semantics, suspension reasons)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ============================================================
+  # DEVIN — integrations
+  # ============================================================
+  - id: devin-docs-integrations-overview
+    url: https://docs.devin.ai/integrations/overview
+    title: Integrations — Overview
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-gh
+    url: https://docs.devin.ai/integrations/gh
+    title: Integrations — GitHub
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-slack
+    url: https://docs.devin.ai/integrations/slack
+    title: Integrations — Slack
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-linear
+    url: https://docs.devin.ai/integrations/linear
+    title: Integrations — Linear
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-jira
+    url: https://docs.devin.ai/integrations/jira
+    title: Integrations — Jira
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ============================================================
+  # DEVIN — MCP
+  # ============================================================
+  - id: devin-docs-mcp-marketplace
+    url: https://docs.devin.ai/work-with-devin/mcp
+    title: Work with Devin — MCP Marketplace
+    domain: devin
+    subdomain: mcp
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-deepwiki-mcp
+    url: https://docs.devin.ai/work-with-devin/deepwiki-mcp
+    title: Work with Devin — DeepWiki MCP
+    domain: devin
+    subdomain: mcp
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-devin-mcp
+    url: https://docs.devin.ai/work-with-devin/devin-mcp
+    title: Work with Devin — Devin as MCP Server
+    domain: devin
+    subdomain: mcp
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ============================================================
+  # DEVIN — API
+  # ============================================================
+  - id: devin-docs-api-overview
+    url: https://docs.devin.ai/api-reference/overview
+    title: API Reference — Overview
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ============================================================
+  # DEVIN — enterprise
+  # ============================================================
+  - id: devin-docs-enterprise-overview
+    url: https://docs.devin.ai/enterprise/overview
+    title: Enterprise — Overview
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-enterprise-deployment
+    url: https://docs.devin.ai/enterprise/deployment/overview
+    title: Enterprise — Deployment Overview
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-enterprise-security
+    url: https://docs.devin.ai/enterprise/security/enterprise-security
+    title: Enterprise — Security (SSO, IP allowlist, audit logs)
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ============================================================
+  # DEVIN — Cognition blog / status
+  # ============================================================
+  - id: cognition-blog-devin-2
+    url: https://cognition.ai/blog/devin-2
+    title: Cognition Blog — Devin 2
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: cognition-blog-jan-25-product-update
+    url: https://cognition.ai/blog/jan-25-product-update
+    title: Cognition Blog — Jan 2025 Product Update (DevBox storage perf, browser auth)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: devin-status-page
+    url: https://www.devinstatus.com/
+    title: Devin Status Page
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # ============================================================
+  # DOCKER — engine, daemon, CLI
+  # ============================================================
+  - id: docker-docs-root
+    url: https://docs.docker.com/
+    title: Docker Docs (root)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-engine-daemon
+    url: https://docs.docker.com/engine/daemon/
+    title: Docker Engine — Daemon Configuration
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-engine-daemon-troubleshoot
+    url: https://docs.docker.com/engine/daemon/troubleshoot/
+    title: Docker Engine — Daemon Troubleshooting
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: gold layer for daemon failure-modes
+  - id: docker-docs-cli-dockerd
+    url: https://docs.docker.com/reference/cli/dockerd/
+    title: dockerd CLI Reference
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-engine-security
+    url: https://docs.docker.com/engine/security/
+    title: Docker Engine — Security
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-bridge
+    url: https://docs.docker.com/engine/network/drivers/bridge/
+    title: Docker Engine — Bridge Network Driver
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-compose-spec-gh
+    url: https://github.com/compose-spec/compose-spec/blob/main/spec.md
+    title: Compose Specification (markdown)
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-docs-build-buildkit
+    url: https://docs.docker.com/build/buildkit/
+    title: Docker Build — BuildKit
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: oci-runtime-spec-gh
+    url: https://github.com/opencontainers/runtime-spec/blob/main/spec.md
+    title: OCI Runtime Specification
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: containerd-docs-root
+    url: https://containerd.io/docs/
+    title: containerd Documentation
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+
+  # ============================================================
+  # LINUX — primitives (namespaces, cgroups, capabilities, seccomp)
+  # ============================================================
+  - id: kernel-docs-cgroup-v2
+    url: https://docs.kernel.org/admin-guide/cgroup-v2.html
+    title: Linux Kernel — Control Group v2 Admin Guide
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-cgroup-v1
+    url: https://docs.kernel.org/admin-guide/cgroup-v1/cgroups.html
+    title: Linux Kernel — Control Group v1 Admin Guide
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-proc-fs
+    url: https://docs.kernel.org/filesystems/proc.html
+    title: Linux Kernel — /proc Filesystem
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: man7-capabilities-7
+    url: https://man7.org/linux/man-pages/man7/capabilities.7.html
+    title: capabilities(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-namespaces-7
+    url: https://man7.org/linux/man-pages/man7/namespaces.7.html
+    title: namespaces(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-cgroup-namespaces-7
+    url: https://man7.org/linux/man-pages/man7/cgroup_namespaces.7.html
+    title: cgroup_namespaces(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-seccomp-2
+    url: https://man7.org/linux/man-pages/man2/seccomp.2.html
+    title: seccomp(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+
+  # ============================================================
+  # LINUX — networking
+  # ============================================================
+  - id: man7-iptables-8
+    url: https://man7.org/linux/man-pages/man8/iptables.8.html
+    title: iptables(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ip-8
+    url: https://man7.org/linux/man-pages/man8/ip.8.html
+    title: ip(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ss-8
+    url: https://man7.org/linux/man-pages/man8/ss.8.html
+    title: ss(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: tcpdump-manpage
+    url: https://www.tcpdump.org/manpages/tcpdump.1.html
+    title: tcpdump(1)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+
+  # ============================================================
+  # LINUX — debugging
+  # ============================================================
+  - id: man7-strace-1
+    url: https://man7.org/linux/man-pages/man1/strace.1.html
+    title: strace(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-nsenter-1
+    url: https://man7.org/linux/man-pages/man1/nsenter.1.html
+    title: nsenter(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-1
+    url: https://man7.org/linux/man-pages/man1/perf.1.html
+    title: perf(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: bpftrace-docs
+    url: https://bpftrace.org/
+    title: bpftrace
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+
+  # ============================================================
+  # LINUX — systemd
+  # ============================================================
+  - id: systemd-journalctl-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/journalctl.html
+    title: journalctl(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-journal-fields-7
+    url: https://man7.org/linux/man-pages/man7/systemd.journal-fields.7.html
+    title: systemd.journal-fields(7)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+
+  # ============================================================
+  # K8S
+  # ============================================================
+  - id: k8s-debug-running-pod
+    url: https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/
+    title: Kubernetes — Debug Running Pods
+    domain: k8s
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: k8s-ephemeral-containers
+    url: https://kubernetes.io/docs/concepts/workloads/pods/ephemeral-containers/
+    title: Kubernetes — Ephemeral Containers
+    domain: k8s
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: k8s-kubectl-debug
+    url: https://kubernetes.io/docs/reference/kubectl/generated/kubectl_debug/
+    title: Kubernetes — kubectl debug Reference
+    domain: k8s
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: k8s-crictl
+    url: https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/
+    title: Kubernetes — Debugging with crictl
+    domain: k8s
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: k8s-cri
+    url: https://kubernetes.io/docs/concepts/containers/cri/
+    title: Kubernetes — Container Runtime Interface
+    domain: k8s
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: k8s-linux-kernel-security
+    url: https://kubernetes.io/docs/concepts/security/linux-kernel-security-constraints/
+    title: Kubernetes — Linux Kernel Security Constraints
+    domain: k8s
+    subdomain: core
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+
+  # ============================================================
+  # METHODOLOGY — debugging frameworks
+  # ============================================================
+  - id: brendangregg-use-method-linux
+    url: https://www.brendangregg.com/USEmethod/use-linux.html
+    title: USE Method — Linux Performance Checklist (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: brendangregg-linux-perf
+    url: https://www.brendangregg.com/linuxperf.html
+    title: Linux Performance Tools (Brendan Gregg)
+    domain: methodology
+    subdomain: use-red-method
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: jvns-debugging-zine
+    url: https://jvns.ca/debugging-zine.pdf
+    title: Pocket Guide to Debugging (Julia Evans, free zine)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+  - id: jvns-tracing-systems
+    url: https://jvns.ca/blog/2017/07/05/linux-tracing-systems/
+    title: Linux Tracing Systems & How They Fit Together (Julia Evans)
+    domain: methodology
+    subdomain: visual-zines
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+  - id: sre-google-books
+    url: https://sre.google/books/
+    title: Google SRE Books (free, CC-licensed)
+    domain: methodology
+    subdomain: sre-debugging
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura

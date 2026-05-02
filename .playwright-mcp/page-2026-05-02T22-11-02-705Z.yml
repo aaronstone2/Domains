@@ -1,0 +1,3152 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link [ref=e6] [cursor=pointer]:
+      - /url: appearance.html
+      - img [ref=e7]
+    - heading "Brendan Gregg's Homepage" [level=1] [ref=e8]
+    - list [ref=e9]:
+      - paragraph [ref=e10]:
+        - text: G'Day. I use this site to share and bookmark various things, mostly my work with computers. While I currently work on datacenter performance for ChatGPT at OpenAI (previously Netflix), this site reflects my own opinions and work from over the years. I have a personal
+        - link "blog" [ref=e11] [cursor=pointer]:
+          - /url: blog/index.html
+        - text: ", and I'm also on"
+        - link "Mastodon" [ref=e12] [cursor=pointer]:
+          - /url: https://aus.social/@brendangregg
+        - text: and
+        - link "Twitter" [ref=e13] [cursor=pointer]:
+          - /url: http://twitter.com/brendangregg
+        - text: . Here is my
+        - link "bio" [ref=e14] [cursor=pointer]:
+          - /url: bio.html
+        - text: and
+        - link "anti-bio" [ref=e15] [cursor=pointer]:
+          - /url: antibio.html
+        - text: .
+      - paragraph [ref=e16]:
+        - text: "This page lists everything:"
+        - link "Documentation" [ref=e17] [cursor=pointer]:
+          - /url: "#Documentation"
+        - text: ","
+        - link "Videos" [ref=e18] [cursor=pointer]:
+          - /url: "#Videos"
+        - text: ","
+        - link "Software" [ref=e19] [cursor=pointer]:
+          - /url: "#Software"
+        - text: ","
+        - link "Misc" [ref=e20] [cursor=pointer]:
+          - /url: "#Misc"
+        - text: . For a short selection of most popular content, see my
+        - link "Overview" [ref=e21] [cursor=pointer]:
+          - /url: overview.html
+        - text: page.
+    - separator [ref=e22]
+    - heading "Documentation" [level=2] [ref=e23]
+    - paragraph [ref=e24]: "Documents I've written, in reverse chronological order:"
+    - list [ref=e25]:
+      - listitem [ref=e26]:
+        - text: A page to summarize my
+        - link "Linux Performance" [ref=e27] [cursor=pointer]:
+          - /url: linuxperf.html
+        - text: related material.
+      - listitem [ref=e28]:
+        - text: "For customers in meetings with large HW vendors: what I wished I knew as a customer that I only realized as the vendor, in"
+        - link "Intel is listening, don't waste your shot" [ref=e29] [cursor=pointer]:
+          - /url: /blog/2025-11-22/intel-is-listening.html
+        - text: (2025).
+      - listitem [ref=e30]:
+        - text: A post to introduce the concept of
+        - link "Third Stage Engineering" [ref=e31] [cursor=pointer]:
+          - /url: /blog/2025-11-17/third-stage-engineering.html
+        - text: for product vendors, which I had been describing to Intel's executive leadership (2025).
+      - listitem [ref=e32]:
+        - text: A post on
+        - link "When to Hire a Computer Performance Engineering Team (2025) part 1 of 2" [ref=e33] [cursor=pointer]:
+          - /url: /blog/2025-08-04/when-to-hire-a-computer-performance-engineering-team-2025-part1.html
+        - text: aimed at large tech companies (non-vendors) who hire these teams to reduce costs and latency (2025).
+      - listitem [ref=e34]:
+        - text: A post to announce AI flame graphs are now open source, featuring a
+        - link "Doom GPU Flame Graphs" [ref=e35] [cursor=pointer]:
+          - /url: /blog/2025-05-01/doom-gpu-flame-graphs.html
+        - text: as well as the first GPU Flame Scopes. (2025)
+      - listitem [ref=e36]:
+        - text: Slides for my 6Degrees keynote on
+        - link "Reducing AI Costs Through an Open AI Ecosystem" [ref=e37] [cursor=pointer]:
+          - /url: Slides/6Degrees_AIOpenEcosystem.pdf
+        - text: which borrowed from the public version of my
+        - link "AI Profiler Summary" [ref=e38] [cursor=pointer]:
+          - /url: Slides/AI_Profiler_Summary_public.pdf
+        - text: slides (2024).
+      - listitem [ref=e39]:
+        - link "AI Flame Graphs" [ref=e40] [cursor=pointer]:
+          - /url: /blog/2024-10-29/ai-flame-graphs.html
+        - text: for understanding the performance of GPUs and AI accelerators, by showing a profile of the accelerator hardware along with CPU code paths that sent the hardware programs. Only available as a preview to some Intel customers to start with. (2024)
+      - listitem [ref=e41]:
+        - link "Linux Crisis Tools" [ref=e42] [cursor=pointer]:
+          - /url: /blog/2024-03-24/linux-crisis-tools.html
+        - text: that should be installed by default for performance analysis and debugging. (2024)
+      - listitem [ref=e43]:
+        - text: The post
+        - link "No More Blue Fridays" [ref=e44] [cursor=pointer]:
+          - /url: /blog/2024-07-22/no-more-blue-fridays.html
+        - text: discussed the recent global Windows outage and how the security monitoring company behind it was already in the process of adopting eBPF, which can't crash systems like kernel drivers can. (2024)
+      - listitem [ref=e45]:
+        - text: The post
+        - link "The Return of the Frame Pointers" [ref=e46] [cursor=pointer]:
+          - /url: /blog/2024-03-17/the-return-of-the-frame-pointers.html
+        - text: to explain how we're finally fixing stack walking and thus profiling in major Linux distros (Fedora, Ubuntu) after 20 years, with a summary of current and future stack walkers. (2024)
+      - listitem [ref=e47]:
+        - text: The documentary
+        - 'link "eBPF: Unlocking the Kernel" [ref=e48] [cursor=pointer]':
+          - /url: /blog/2024-03-10/ebpf-documentary.html
+        - text: has been released, with interviews from the key players from the origin of the technology in 2014 (
+        - link "blog" [ref=e49] [cursor=pointer]:
+          - /url: /blog/2024-03-10/ebpf-documentary.html
+        - text: ","
+        - link "youtube" [ref=e50] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=Wb_vD3XZYOA
+        - text: ). (2024)
+      - listitem [ref=e51]:
+        - text: An early look at a new performance analysis methodology, "Fast by Friday," presented as an
+        - link "eBPF Summit" [ref=e52] [cursor=pointer]:
+          - /url: Slides/eBPFSummit2023_FastByFriday
+        - text: keynote and then updated for
+        - link "Kernel Recipes" [ref=e53] [cursor=pointer]:
+          - /url: Slides/KernelRecipes2023_FastByFriday
+        - text: (KR
+        - link "slides" [ref=e54] [cursor=pointer]:
+          - /url: Slides/KernelRecipes2023_FastByFriday
+        - text: ","
+        - link "PDF" [ref=e55] [cursor=pointer]:
+          - /url: Slides/KernelRecipes2023_FastByFriday.pdf
+        - text: ","
+        - link "youtube" [ref=e56] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=XudHNF4k_x0
+        - text: ). (2023)
+      - listitem [ref=e57]:
+        - text: A post on
+        - link "eBPF Observability Tools Are Not Security Tools" [ref=e58] [cursor=pointer]:
+          - /url: /blog/2023-04-28/ebpf-security-issues.html
+        - text: to help the new wave of eBPF-based security products not shoot themselves in the foot. (2023)
+      - listitem [ref=e59]:
+        - text: Slides for my YOW! talk on
+        - 'link "Visualizing Performance: The Developers'' Guide to Flame Graphs" [ref=e60] [cursor=pointer]':
+          - /url: Slides/YOW2022_flame_graphs
+        - text: ", summarizing their state in 2022: Over 80 implementations, over 400 related projects, etc. The slides include many implementation screenshots as a visual tour. ("
+        - link "slides" [ref=e61] [cursor=pointer]:
+          - /url: Slides/YOW2022_flame_graphs
+        - text: ","
+        - link "PDF" [ref=e62] [cursor=pointer]:
+          - /url: Slides/YOW2022_flame_graphs.pdf
+        - text: ","
+        - link "youtube" [ref=e63] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=VMpTU15rIZY
+        - text: ). (2022)
+      - listitem [ref=e64]:
+        - text: My SREcon APAC 2022 keynote on
+        - 'link "Computing Performance: What''s on the Horizon" [ref=e65] [cursor=pointer]':
+          - /url: /blog/2023-03-01/computer-performance-future-2022.html
+        - text: ", covering processors, memory, disks, networking, hypervisors, and more. To keynote the first USENIX conference in my home country Australia was an honour, and a highlight of my career. ("
+        - link "slides" [ref=e66] [cursor=pointer]:
+          - /url: /Slides/SREcon2022_ComputingPerformance/
+        - text: ","
+        - link "PDF" [ref=e67] [cursor=pointer]:
+          - /url: /Slides/SREcon2022_ComputingPerformance.pdf
+        - text: ","
+        - link "youtube" [ref=e68] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=zGSQdN2X_k0
+        - text: ) (2022).
+      - listitem [ref=e69]:
+        - text: Slides for my YOW! talk on
+        - 'link "Computing Performance 2021: What''s on the Horizon" [ref=e70] [cursor=pointer]':
+          - /url: Slides/YOW2021_ComputingPerformance
+        - text: (
+        - link "slides" [ref=e71] [cursor=pointer]:
+          - /url: Slides/YOW2021_ComputingPerformance
+        - text: ","
+        - link "PDF" [ref=e72] [cursor=pointer]:
+          - /url: Slides/YOW2021_ComputingPerformance.pdf
+        - text: ).
+      - listitem [ref=e73]:
+        - text: I made an appearance at IntelON to talk about
+        - link "Processor Benchmarking" [ref=e74] [cursor=pointer]:
+          - /url: Slides/IntelON2021_ProcessorBenchmarking
+        - text: for the Netflix cloud (
+        - link "slides" [ref=e75] [cursor=pointer]:
+          - /url: Slides/IntelON2021_ProcessorBenchmarking
+        - text: ","
+        - link "PDF" [ref=e76] [cursor=pointer]:
+          - /url: Slides/IntelON2021_ProcessorBenchmarking.pdf
+        - text: ","
+        - link "youtube" [ref=e77] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=-Y4pDLhqKI4
+        - text: ). (2021)
+      - listitem [ref=e78]:
+        - text: The story of
+        - link "ZFS Is Mysteriously Eating My CPU" [ref=e79] [cursor=pointer]:
+          - /url: /blog/2021-09-06/zfs-is-mysteriously-eating-my-cpu.html
+        - text: including a hard-to-believe flame graph.
+      - listitem [ref=e80]:
+        - text: Rough notes for
+        - link "Analyzing a High Rate of Paging" [ref=e81] [cursor=pointer]:
+          - /url: /blog/2021-08-30/high-rate-of-paging.html
+        - text: ", using a mix of traditional, Ftrace, and BPF performance tools."
+      - listitem [ref=e82]:
+        - text: Rough notes for
+        - link "Slack's Secret STDERR Messages" [ref=e83] [cursor=pointer]:
+          - /url: /blog/2021-08-27/slack-crashes-secret-stderr.html
+        - text: ", where I used eBPF and other tools to debug Slack's mysterious crashes (2021)."
+      - listitem [ref=e84]:
+        - text: Slides for my eBPF Summit keynote
+        - 'link "Performance Wins with eBPF: Getting Started" [ref=e85] [cursor=pointer]':
+          - /url: Slides/eBPFSummit2021_eBPF_performance_getting_started
+        - text: (
+        - link "slides" [ref=e86] [cursor=pointer]:
+          - /url: Slides/eBPFSummit2021_eBPF_performance_getting_started
+        - text: ","
+        - link "PDF" [ref=e87] [cursor=pointer]:
+          - /url: Slides/eBPFSummit2021_eBPF_performance_getting_started.pdf
+        - text: ","
+        - link "youtube" [ref=e88] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bGAVrtb_tFs
+        - text: ) (2021).
+      - listitem [ref=e89]:
+        - text: Slides for my Facebook Systems@Scale talk
+        - 'link "Performance Wins with BPF: Getting Started" [ref=e90] [cursor=pointer]':
+          - /url: Slides/Scale2021_BPF_performance_getting_started_2021
+        - text: (
+        - link "slides" [ref=e91] [cursor=pointer]:
+          - /url: Slides/Scale2021_BPF_performance_getting_started_2021
+        - text: ","
+        - link "PDF" [ref=e92] [cursor=pointer]:
+          - /url: Slides/Scale2021_BPF_performance_getting_started_2021.pdf
+        - text: ","
+        - link "video" [ref=e93] [cursor=pointer]:
+          - /url: https://www.facebook.com/atscaleevents/videos/536868690830345
+        - text: ) (2021).
+      - listitem [ref=e94]:
+        - text: My plenary talk on
+        - 'link "Computing Performance: On the Horizon" [ref=e95] [cursor=pointer]':
+          - /url: /blog/2021-07-05/computing-performance-on-the-horizon.html
+        - text: for the USENIX LISA 2021 conference, covering the present and future of processors, memory, disks, networking, hypervisors, and more. (
+        - link "blog" [ref=e96] [cursor=pointer]:
+          - /url: /blog/2021-07-05/computing-performance-on-the-horizon.html
+        - text: ","
+        - link "slides" [ref=e97] [cursor=pointer]:
+          - /url: Slides/LISA2021_ComputingPerformance
+        - text: ","
+        - link "PDF" [ref=e98] [cursor=pointer]:
+          - /url: Slides/LISA2021_ComputingPerformance.pdf
+        - text: ","
+        - link "youtube" [ref=e99] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=5nN1wjA_S30
+        - text: ) (2021).
+      - listitem [ref=e100]:
+        - text: A post on
+        - link "How To Add eBPF Observability To Your Product" [ref=e101] [cursor=pointer]:
+          - /url: /blog/2021-07-03/how-to-add-bpf-observability.html
+        - text: aimed at those adding it to commercial or internal observability platforms (2021).
+      - listitem [ref=e102]:
+        - text: A 122-slide talk on
+        - link "BPF Internals (eBPF)" [ref=e103] [cursor=pointer]:
+          - /url: /blog/2021-06-15/bpf-internals.html
+        - text: for the USENIX LISA 2021 conference, where I show all the steps from the high-level bpftrace language to machine code (
+        - link "blog" [ref=e104] [cursor=pointer]:
+          - /url: /blog/2021-06-15/bpf-internals.html
+        - text: ","
+        - link "slides" [ref=e105] [cursor=pointer]:
+          - /url: Slides/LISA2021_BPF_Internals
+        - text: ","
+        - link "PDF" [ref=e106] [cursor=pointer]:
+          - /url: Slides/LISA2021_BPF_Internals.pdf
+        - text: ","
+        - link "youtube" [ref=e107] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_5Z2AU7QTH4
+        - text: ) (2021).
+      - listitem [ref=e108]:
+        - text: "The story of the most surprising software demo I've been given:"
+        - link "An Unbelievable Demo" [ref=e109] [cursor=pointer]:
+          - /url: /blog/2021-06-04/an-unbelievable-demo.html
+        - text: .
+      - listitem [ref=e110]:
+        - text: As it has become an FAQ, a post on
+        - link "What is Observability" [ref=e111] [cursor=pointer]:
+          - /url: /blog/2021-05-23/what-is-observability.html
+        - text: ", a term myself and other performance engineers have used since before it was popular (2021)."
+      - listitem [ref=e112]:
+        - text: A post on
+        - 'link "BPF binaries: BTF, CO-RE, and the future of eBPF perf tools" [ref=e113] [cursor=pointer]':
+          - /url: /blog/2020-11-04/bpf-co-re-btf-libbpf.html
+        - text: (2020).
+      - listitem [ref=e114]:
+        - text: Slides for my eBPF summit keynote
+        - 'link "Performance Wins with BPF: Getting Started" [ref=e115] [cursor=pointer]':
+          - /url: Slides/eBPF2020_performance_getting_started
+        - text: ", where I showed how to get started the easy way, as I kept seeing people start the hard way waste their own time ("
+        - link "slides" [ref=e116] [cursor=pointer]:
+          - /url: Slides/eBPF2020_performance_getting_started
+        - text: ","
+        - link "PDF" [ref=e117] [cursor=pointer]:
+          - /url: Slides/eBPF2020_performance_getting_started.pdf
+        - text: ","
+        - link "youtube" [ref=e118] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=wyfhjr_ufag
+        - text: ) (2020).
+      - listitem [ref=e119]:
+        - text: Slides for my YOW2020 talk
+        - link "Linux Systems Performance" [ref=e120] [cursor=pointer]:
+          - /url: Slides/YOW2020_Linux_Systems_Performance
+        - text: ", delivered online ("
+        - link "slides" [ref=e121] [cursor=pointer]:
+          - /url: Slides/YOW2020_Linux_Systems_Performance
+        - text: ","
+        - link "PDF" [ref=e122] [cursor=pointer]:
+          - /url: Slides/YOW2020_Linux_Systems_Performance.pdf
+        - text: ","
+        - link "youtube" [ref=e123] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_Lf-h5TDTN0
+        - text: ) (2020).
+      - listitem [ref=e124]:
+        - text: "My latest book website:"
+        - 'link "Systems Performance: Enterprise and the Cloud, Second Edition" [ref=e125] [cursor=pointer]':
+          - /url: systems-performance-2nd-edition-book.html
+        - text: and
+        - link "blog post" [ref=e126] [cursor=pointer]:
+          - /url: /blog/2020-07-15/systems-performance-2nd-edition.html
+        - text: about it. The publisher is Addison-Wesley, and the draft book is over 800 pages. This updates the Linux and cloud content, and adds chapters on perf, Ftrace, and BPF (2020).
+      - listitem [ref=e127]:
+        - text: In my post
+        - link "BPF Theremin, Tetris, and Typewriters" [ref=e128] [cursor=pointer]:
+          - /url: /blog/2019-12-22/bpf-theremin.html
+        - text: I share the source for the BPF theremin I've demoed during conference keynotes, which turns WiFi signal strength into sound. (2019)
+      - listitem [ref=e129]:
+        - text: "My book website:"
+        - 'link "BPF Performance Tools: Linux System and Application Observability" [ref=e130] [cursor=pointer]':
+          - /url: bpf-performance-tools-book.html
+        - text: and
+        - link "blog post" [ref=e131] [cursor=pointer]:
+          - /url: /blog/2019-07-15/bpf-performance-tools-book.html
+        - text: about it. The publisher is Addison-Wesley, and the book is 880 pages, including over 100 new BPF tools to analyze all the things (2019).
+      - listitem [ref=e132]:
+        - text: Slides for my AWS re:Invent 2019 talk
+        - link "BPF Performance Analysis at Netflix" [ref=e133] [cursor=pointer]:
+          - /url: Slides/reInvent2019_BPF_Performance_Analysis
+        - text: (
+        - link "slides" [ref=e134] [cursor=pointer]:
+          - /url: Slides/reInvent2019_BPF_Performance_Analysis
+        - text: ","
+        - link "youtube" [ref=e135] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=16slh29iN1g
+        - text: ).
+      - listitem [ref=e136]:
+        - text: Slides for my Ubuntu Masters 2019 keynote
+        - 'link "Extended BPF: A New Type of Software" [ref=e137] [cursor=pointer]':
+          - /url: Slides/UM2019_BPF_a_new_type_of_software
+        - text: ", where I first discussed how BPF is a new type of software and a fundamental change to the 50-year old kernel model, and how we observe this new software that's already in production at major companies ("
+        - link "slides" [ref=e138] [cursor=pointer]:
+          - /url: Slides/UM2019_BPF_a_new_type_of_software
+        - text: ","
+        - link "PDF" [ref=e139] [cursor=pointer]:
+          - /url: Slides/UM2019_BPF_a_new_type_of_software.pdf
+        - text: ","
+        - link "youtube" [ref=e140] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=7pmXdG8-7WU&feature=youtu.be
+        - text: ).
+      - listitem [ref=e141]:
+        - text: "An article for opensource.com:"
+        - link "An introduction to bpftrace for Linux" [ref=e142] [cursor=pointer]:
+          - /url: https:/opensource.com/article/19/8/introduction-bpftrace
+        - text: ", summarizing the syntax and including a one-liners tutorial ("
+        - link "PDF" [ref=e143] [cursor=pointer]:
+          - /url: Articles/opensource_An_introduction_to_bpftrace.pdf
+        - text: ) (2019).
+      - listitem [ref=e144]:
+        - text: Slides for my USENIX LISA 2019 talk on
+        - link "Linux Systems Performance" [ref=e145] [cursor=pointer]:
+          - /url: Slides/LISA2019_Linux_Systems_Performance
+        - text: ", covering observability, methodologies, benchmarking, profiling, tracing, and tuning. It's intended for everyone as a tour of fundamentals, and some companies have indicated they will use it for new hire training. ("
+        - link "slides" [ref=e146] [cursor=pointer]:
+          - /url: Slides/LISA2019_Linux_Systems_Performance
+        - text: ","
+        - link "PDF" [ref=e147] [cursor=pointer]:
+          - /url: Slides/LISA2019_Linux_Systems_Performance.pdf
+        - text: ","
+        - link "youtube" [ref=e148] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=fhBHvsi0Ql0
+        - text: ).
+      - listitem [ref=e149]:
+        - text: Slides for my LSFMM 2019 keynote on
+        - link "BPF Observability" [ref=e150] [cursor=pointer]:
+          - /url: Slides/LSFMM2019_BPF_Observability
+        - text: ", which was also summarized by"
+        - link "lwn.net" [ref=e151] [cursor=pointer]:
+          - /url: https://lwn.net/Articles/787131/
+        - text: (
+        - link "slides" [ref=e152] [cursor=pointer]:
+          - /url: Slides/LSFMM2019_BPF_Observability
+        - text: ","
+        - link "PDF" [ref=e153] [cursor=pointer]:
+          - /url: Slides/LSFMM2019_BPF_Observability.pdf
+        - text: ).
+      - listitem [ref=e154]:
+        - text: Slides for my SCaLE17x talk
+        - link "eBPF Perf Tools" [ref=e155] [cursor=pointer]:
+          - /url: Slides/SCALE2019_eBPF_Perf_Tools
+        - text: ", although I spent half the talk demonstrating how to instrument Minecraft using eBPF live, which is not captured by the slides ("
+        - link "slides" [ref=e156] [cursor=pointer]:
+          - /url: Slides/SCALE2019_eBPF_Perf_Tools
+        - text: ","
+        - link "PDF" [ref=e157] [cursor=pointer]:
+          - /url: Slides/SCALE2019_eBPF_Perf_Tools.pdf
+        - text: ","
+        - link "youtube" [ref=e158] [cursor=pointer]:
+          - /url: https://youtu.be/P2hbiWTB2w4?t=158
+        - text: ) (2019).
+      - listitem [ref=e159]:
+        - text: Slides for my YOW2018 keynote
+        - link "Cloud Performance Root Cause Analysis at Netflix" [ref=e160] [cursor=pointer]:
+          - /url: Slides/YOW2018_CloudPerfRCANetflix
+        - text: which I delivered in Sydney, Brisbane, and Melbourne (
+        - link "slides" [ref=e161] [cursor=pointer]:
+          - /url: Slides/YOW2018_CloudPerfRCANetflix
+        - text: ","
+        - link "PDF" [ref=e162] [cursor=pointer]:
+          - /url: Slides/YOW2018_CloudPerfRCANetflix.pdf
+        - text: ","
+        - link "youtube" [ref=e163] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=LLZmTuTSEB8
+        - text: ).
+      - listitem [ref=e164]:
+        - text: Slides for my YOW2018 CTO summit keynote
+        - link "Working at Netflix" [ref=e165] [cursor=pointer]:
+          - /url: Slides/YOWCTO2018_Working_at_Netflix
+        - text: (
+        - link "slides" [ref=e166] [cursor=pointer]:
+          - /url: Slides/YOWCTO2018_Working_at_Netflix
+        - text: ","
+        - link "PDF" [ref=e167] [cursor=pointer]:
+          - /url: Slides/YOWCTO2018_Working_at_Netflix.pdf
+        - text: ","
+        - link "youtube" [ref=e168] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=EjFxLvv9_ao
+        - text: ).
+      - listitem [ref=e169]:
+        - text: Slides for my All Things Open (ATO) talk
+        - link "Linux Performance 2018" [ref=e170] [cursor=pointer]:
+          - /url: Slides/ATO2018_Linux_Performance_2018
+        - text: (it was not videoed) (
+        - link "slides" [ref=e171] [cursor=pointer]:
+          - /url: Slides/ATO2018_Linux_Performance_2018
+        - text: ","
+        - link "PDF" [ref=e172] [cursor=pointer]:
+          - /url: Slides/ATO2018_Linux_Performance_2018.pdf
+        - text: ) (2018).
+      - listitem [ref=e173]:
+        - text: I posted
+        - link "FlameScope Pattern Recognition" [ref=e174] [cursor=pointer]:
+          - /url: /blog/2018-11-08/flamescope-pattern-recognition.html
+        - text: ", showing how to interpret the subsecond-offset heatmap view of profile data, and also spoke about this with Martin Spier at the LinkedIn performance engineering meetup ("
+        - link "slides" [ref=e175] [cursor=pointer]:
+          - /url: Slides/LinkedIn2018_FlameScope
+        - text: ","
+        - link "PDF" [ref=e176] [cursor=pointer]:
+          - /url: Slides/LinkedIn2018_FlameScope.pdf
+        - text: ","
+        - link "youtube" [ref=e177] [cursor=pointer]:
+          - /url: https://youtu.be/ogEhUnQdQiU?t=1361
+        - text: ) (2018).
+      - listitem [ref=e178]:
+        - text: "Linux gets a high-level eBPF front-end:"
+        - link "bpftrace (DTrace 2.0) for Linux 2018" [ref=e179] [cursor=pointer]:
+          - /url: /blog/2018-10-08/dtrace-for-linux-2018.html
+        - text: . The
+        - link "repository" [ref=e180] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bpftrace
+        - text: has tools and docs I developed, including a
+        - link "bpftrace one-liners tutorial" [ref=e181] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bpftrace/blob/master/docs/tutorial_one_liners.md
+        - text: ", a"
+        - link "bpftrace reference guide" [ref=e182] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md
+        - text: ", and an"
+        - link "internals development guide" [ref=e183] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bpftrace/blob/master/docs/internals_development.md
+        - text: (2018).
+      - listitem [ref=e184]:
+        - text: To help everyone make fewer mistakes when benchmarking, I published
+        - 'link "Evaluating the Evaluation: A Benchmarking Checklist" [ref=e185] [cursor=pointer]':
+          - /url: /blog/2018-06-30/benchmarking-checklist.html
+        - text: (2018).
+      - listitem [ref=e186]:
+        - text: At NetConf 2018 I gave a talk/discussion on
+        - link "BPF Observability" [ref=e187] [cursor=pointer]:
+          - /url: Slides/NetConf_BPF_observability
+        - text: ", attended by top contributors of the Linux TCP/IP stack ("
+        - link "slides" [ref=e188] [cursor=pointer]:
+          - /url: Slides/NetConf_BPF_observability
+        - text: ","
+        - link "PDF" [ref=e189] [cursor=pointer]:
+          - /url: Slides/NetConf_BPF_observability.pdf
+        - text: ).
+      - listitem [ref=e190]:
+        - text: Slides from my PerconaLive 2018 keynote on summarizing
+        - link "Linux Performance 2018" [ref=e191] [cursor=pointer]:
+          - /url: Slides/Percona2018_Linux_Performance
+        - text: (
+        - link "slides" [ref=e192] [cursor=pointer]:
+          - /url: Slides/Percona2018_Linux_Performance
+        - text: ","
+        - link "PDF" [ref=e193] [cursor=pointer]:
+          - /url: Slides/Percona2018_Linux_Performance.pdf
+        - text: ","
+        - link "youtube" [ref=e194] [cursor=pointer]:
+          - /url: https://youtu.be/sV3XfrfjrPo?t=30m51s
+        - text: ).
+      - listitem [ref=e195]:
+        - text: For the Netflix TechBlog I posted
+        - link "Netflix FlameScope" [ref=e196] [cursor=pointer]:
+          - /url: https://medium.com/netflix-techblog/netflix-flamescope-a57ca19d47bb
+        - text: (
+        - link "PDF" [ref=e197] [cursor=pointer]:
+          - /url: /Articles/Netflix_FlameScope_20180404.pdf
+        - text: ), showing the new open source performance analysis tool for visualizing and exploring profiles with flame graphs, that Martin Spier and I have been working on (2018).
+      - listitem [ref=e198]:
+        - text: A post on
+        - link "KPTI/KAISER Meltdown Initial Performance Regressions" [ref=e199] [cursor=pointer]:
+          - /url: /blog/2018-02-09/kpti-kaiser-meltdown-performance.html
+        - text: ", showing the estimated performance losses on Linux for simulated workloads (2018)."
+      - listitem [ref=e200]:
+        - text: A page on
+        - link "Working Set Size Estimation" [ref=e201] [cursor=pointer]:
+          - /url: /wss.html
+        - text: ", covering what I know and have developed on the topic. It includes new tools that use Linux referenced and idle page flags for page-based WSS estimation (2018-)."
+      - listitem [ref=e202]:
+        - text: A post on
+        - link "AWS EC2 Virtualization 2017" [ref=e203] [cursor=pointer]:
+          - /url: /blog/2017-11-29/aws-ec2-virtualization-2017.html
+        - text: ", explaining how virtualization performance has been improving over the years, and details of the new AWS Nitro hypervisor (2017)."
+      - listitem [ref=e204]:
+        - text: Slides for my AWS re:Invent 2017 talk on
+        - link "How Netflix Tunes EC2 Instances for Performance" [ref=e205] [cursor=pointer]:
+          - /url: Slides/AWSreInvent2017_performance_tuning_EC2
+        - text: ", describing instance selection, EC2 features, kernel tuning, and observability ("
+        - link "slides" [ref=e206] [cursor=pointer]:
+          - /url: Slides/AWSreInvent2017_performance_tuning_EC2
+        - text: ","
+        - link "youtube" [ref=e207] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=89fYOo1V2pA
+        - text: ","
+        - link "PDF" [ref=e208] [cursor=pointer]:
+          - /url: Slides/AWSreInvent2017_performance_tuning_EC2.pdf
+        - text: ).
+      - listitem [ref=e209]:
+        - text: A post on
+        - link "7 tools for analyzing performance in Linux with bcc/BPF" [ref=e210] [cursor=pointer]:
+          - /url: https://opensource.com/article/17/11/bccbpf-performance
+        - text: for opensource.com, which is also my first post on eBPF for the Fedora/Red Hat family of operating systems (
+        - link "PDF" [ref=e211] [cursor=pointer]:
+          - /url: Articles/opensource_7_useful_bcc_BPF_perf_tools.pdf
+        - text: ) (2017).
+      - listitem [ref=e212]:
+        - text: A post on
+        - link "Brilliant Jerks in Engineering" [ref=e213] [cursor=pointer]:
+          - /url: /blog/2017-11-13/brilliant-jerks.html
+        - text: which describes two fictional jerks, one selfless and one selfish, to explore their behaviors, the damage caused, and the use of a "no brilliant jerks" policy (2017).
+      - listitem [ref=e214]:
+        - text: Slides for my USENIX LISA 2017 talk
+        - link "Linux Container Performance Analysis" [ref=e215] [cursor=pointer]:
+          - /url: Slides/LISA2017_Container_Performance_Analysis
+        - text: (
+        - link "slides" [ref=e216] [cursor=pointer]:
+          - /url: Slides/LISA2017_Container_Performance_Analysis
+        - text: ","
+        - link "youtube" [ref=e217] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=NYLXZ58EboM
+        - text: ","
+        - link "PDF" [ref=e218] [cursor=pointer]:
+          - /url: Slides/LISA2017_Container_Performance_Analysis.pdf
+        - text: ).
+      - listitem [ref=e219]:
+        - text: Slides for my Kernel Recipes 2017 talk on
+        - link "Using Linux perf at Netflix" [ref=e220] [cursor=pointer]:
+          - /url: Slides/KernelRecipes_Perf_Events
+        - text: ", focusing on fixing CPU profiling ("
+        - link "slides" [ref=e221] [cursor=pointer]:
+          - /url: Slides/KernelRecipes_Perf_Events
+        - text: ","
+        - link "youtube" [ref=e222] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=UVM3WX8Lq2k
+        - text: ","
+        - link "PDF" [ref=e223] [cursor=pointer]:
+          - /url: Slides/KernelRecipes_Perf_Events.pdf
+        - text: ).
+      - listitem [ref=e224]:
+        - text: For EuroBSDcon 2017, I gave the closing keynote on
+        - link "System Performance Analysis Methodologies (BSD)" [ref=e225] [cursor=pointer]:
+          - /url: Slides/EuroBSDcon2017_SystemMethodology
+        - text: ", and I used FreeBSD for many examples. In this talk I introduced a FreeBSD static perf tools diagram, the BSD perf analysis in 60 seconds checklist, and the tstate.d tool for thread state analysis ("
+        - link "slides" [ref=e226] [cursor=pointer]:
+          - /url: Slides/EuroBSDcon2017_SystemMethodology
+        - text: ","
+        - link "youtube" [ref=e227] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=ay41Uq1DrvM
+        - text: ","
+        - link "PDF" [ref=e228] [cursor=pointer]:
+          - /url: Slides/EuroBSDcon2017_SystemMethodology.pdf
+        - text: ).
+      - listitem [ref=e229]:
+        - text: Slides for my OSSNA 2017 talk
+        - link "Performance Analysis Superpowers with Linux BPF" [ref=e230] [cursor=pointer]:
+          - /url: Slides/OSS2017_BPF_superpowers
+        - text: . This talk was not videoed. (
+        - link "slides" [ref=e231] [cursor=pointer]:
+          - /url: Slides/OSS2017_BPF_superpowers
+        - text: ","
+        - link "PDF" [ref=e232] [cursor=pointer]:
+          - /url: Slides/OSS2017_BPF_superpowers.pdf
+        - text: ).
+      - listitem [ref=e233]:
+        - text: A post on
+        - link "Solaris to Linux Migration 2017" [ref=e234] [cursor=pointer]:
+          - /url: /blog/2017-09-05/solaris-to-linux-2017.html
+        - text: . Solaris was an OS that was once in widespread use, but development now seems to have ceased. I've been asked about Solaris to Linux migrations, but I've never seen a resource that covers them both in depth (maybe because no one else has the expertise or inclination to write it), so this is my summary.
+      - listitem [ref=e235]:
+        - text: A post on
+        - 'link "Linux Load Averages: Solving the Mystery" [ref=e236] [cursor=pointer]':
+          - /url: /blog/2017-08-08/linux-load-averages.html
+        - text: ", where I dug up the patch that added the uninterruptible sleep state to Linux load averages, and measured code paths in that state as an off-CPU flame graph (2017)."
+      - listitem [ref=e237]:
+        - text: My slides for
+        - link "PMCs on the Cloud" [ref=e238] [cursor=pointer]:
+          - /url: Slides/SBSRE_perf_meetup_aug2017/#61
+        - text: at the SBSRE meetup, with the Netflix perf team (
+        - link "slides" [ref=e239] [cursor=pointer]:
+          - /url: Slides/SBSRE_perf_meetup_aug2017/#61
+        - text: ","
+        - link "youtube" [ref=e240] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=i5Ml9uY2rBw
+        - text: ","
+        - link "meetup" [ref=e241] [cursor=pointer]:
+          - /url: https://youtu.be/86Wj_-pWcwE?t=53m3s
+        - text: ","
+        - link "PDF" [ref=e242] [cursor=pointer]:
+          - /url: Slides/SBSRE_perf_meetup_aug2017.pdf
+        - text: ) (2017).
+      - listitem [ref=e243]:
+        - text: Slides for my 2017 USENIX ATC
+        - link "Performance Analysis Superpowers with Linux eBPF" [ref=e244] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_BPF_superpowers
+        - text: ", updating my earlier talk ("
+        - link "slides" [ref=e245] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_BPF_superpowers
+        - text: ","
+        - link "youtube" [ref=e246] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=oc9000dM9-k
+        - text: ","
+        - link "PDF" [ref=e247] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_BPF_superpowers.pdf
+        - text: ).
+      - listitem [ref=e248]:
+        - text: Slides for my 2017 USENIX ATC talk
+        - link "Visualizing Performance with Flame Graphs" [ref=e249] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_flamegraphs
+        - text: ", with updates and challenges ("
+        - link "slides" [ref=e250] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_flamegraphs
+        - text: ","
+        - link "youtube" [ref=e251] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=D53T1Ejig1Q
+        - text: ","
+        - link "PDF" [ref=e252] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_flamegraphs.pdf
+        - text: ).
+      - listitem [ref=e253]:
+        - text: Slides for my Velocity talk
+        - link "Performance Analysis Superpowers with Linux eBPF" [ref=e254] [cursor=pointer]:
+          - /url: Slides/Velocity2017_BPF_superpowers
+        - text: (
+        - link "slides" [ref=e255] [cursor=pointer]:
+          - /url: Slides/Velocity2017_BPF_superpowers
+        - text: ","
+        - link "youtube" [ref=e256] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bj3qdEDbCD4
+        - text: ","
+        - link "PDF" [ref=e257] [cursor=pointer]:
+          - /url: Slides/Velocity2017_BPF_superpowers.pdf
+        - text: ) (2017).
+      - listitem [ref=e258]:
+        - text: A post on
+        - link "Working at Netflix 2017" [ref=e259] [cursor=pointer]:
+          - /url: /blog/2017-05-16/working-at-netflix-2017.html
+        - text: ", following on from my earlier posts. I expanded on mundane topics like how many meetings I have each week, as I was getting asked this recently. (2017)."
+      - listitem [ref=e260]:
+        - link "CPU Utilization is Wrong" [ref=e261] [cursor=pointer]:
+          - /url: /blog/2017-05-09/cpu-utilization-is-wrong.html
+        - text: ": a post explaining the growing problem of memory stall cycles dominating %CPU (2017)."
+      - listitem [ref=e262]:
+        - text: In my post
+        - 'link "The PMCs of EC2: Measuring IPC" [ref=e263] [cursor=pointer]':
+          - /url: /blog/2017-05-04/the-pmcs-of-ec2.html
+        - text: ", I demonstrate measuring Performance Monitoring Counters (PMCs) for the first time in the AWS EC2 cloud, something I'd been working on with Amazon and others for a while. PMCs are crucial for understanding CPU behavior, including memory I/O, stall cycles, and cache misses. (2017)."
+      - listitem [ref=e264]:
+        - text: A post about my DockerCon 2017 talk on
+        - link "Container Performance Analysis" [ref=e265] [cursor=pointer]:
+          - /url: /blog/2017-05-15/container-performance-analysis-dockercon-2017.html
+        - text: ", where I showed how to find bottlenecks in the host vs the container, how to profiler container apps, and dig deeper into the kernel ("
+        - link "blog" [ref=e266] [cursor=pointer]:
+          - /url: /blog/2017-05-15/container-performance-analysis-dockercon-2017.html
+        - text: ","
+        - link "slides" [ref=e267] [cursor=pointer]:
+          - /url: Slides/DockerCon2017_performance_analysis
+        - text: ","
+        - link "PDF" [ref=e268] [cursor=pointer]:
+          - /url: Slides/DockerCon2017_performance_analysis.pdf
+        - text: ","
+        - link "youtube" [ref=e269] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bK9A5ODIgac
+        - text: ). (2017).
+      - listitem [ref=e270]:
+        - text: Slides for my SCaLE15x talk on
+        - 'link "Linux 4.x Tracing: Performance Analysis with bcc/BPF" [ref=e271] [cursor=pointer]':
+          - /url: Slides/SCALE2017_perf_analysis_eBPF
+        - text: ", where I also included a ply demo for the first time ("
+        - link "slides" [ref=e272] [cursor=pointer]:
+          - /url: Slides/SCALE2017_perf_analysis_eBPF
+        - text: ","
+        - link "youtube" [ref=e273] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=w8nFRoFJ6EQ
+        - text: ","
+        - link "PDF" [ref=e274] [cursor=pointer]:
+          - /url: Slides/SCALE2017_perf_analysis_eBPF.pdf
+        - text: ) (2017).
+      - listitem [ref=e275]:
+        - text: At the IO Visor (iovisor) Summit 2017 I led a discussion on
+        - link "BPF Tools" [ref=e276] [cursor=pointer]:
+          - /url: Slides/IOVisor2017_bpftools
+        - text: for performance and observability, covering strategy, current tools, and future challenges (
+        - link "slides" [ref=e277] [cursor=pointer]:
+          - /url: Slides/IOVisor2017_bpftools
+        - text: ","
+        - link "PDF" [ref=e278] [cursor=pointer]:
+          - /url: Slides/IOVisor2017_bpftools.pdf
+        - text: ).
+      - listitem [ref=e279]:
+        - text: Slides for BSidesSF 2017 with Alex Maestretti on
+        - link "Linux Monitoring at Scale with eBPF" [ref=e280] [cursor=pointer]:
+          - /url: Slides/BSidesSF2017_BPF_security_monitoring
+        - text: (
+        - link "slides" [ref=e281] [cursor=pointer]:
+          - /url: Slides/BSidesSF2017_BPF_security_monitoring
+        - text: ","
+        - link "youtube" [ref=e282] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=44nV6Mj11uw
+        - text: ","
+        - link "PDF" [ref=e283] [cursor=pointer]:
+          - /url: Slides/BSidesSF2017_BPF_security_monitoring.pdf
+        - text: ).
+      - listitem [ref=e284]:
+        - text: I posted
+        - link "Where has my disk space gone? Flame graphs for file systems" [ref=e285] [cursor=pointer]:
+          - /url: /blog/2017-02-05/file-system-flame-graph.html
+        - text: and
+        - link "Flame Graphs vs Tree Maps vs Sunburst" [ref=e286] [cursor=pointer]:
+          - /url: /blog/2017-02-06/flamegraphs-vs-treemaps-vs-sunburst.html
+        - text: (2017).
+      - listitem [ref=e287]:
+        - text: Slides for my Linux.conf.au 2017 talk on
+        - 'link "BPF: Tracing and More" [ref=e288] [cursor=pointer]':
+          - /url: Slides/LCA2017_BPF_tracing_and_more
+        - text: ", summarizing other uses for enhanced BPF. ("
+        - link "slides" [ref=e289] [cursor=pointer]:
+          - /url: Slides/LCA2017_BPF_tracing_and_more
+        - text: ","
+        - link "youtube" [ref=e290] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=JRFNIKUROPE
+        - text: ","
+        - link "PDF" [ref=e291] [cursor=pointer]:
+          - /url: Slides/LCA2017_BPF_tracing_and_more.pdf
+        - text: ).
+      - listitem [ref=e292]:
+        - text: A post on
+        - link "Golang bcc/eBPF Function Tracing" [ref=e293] [cursor=pointer]:
+          - /url: /blog/2017-01-31/golang-bcc-bpf-function-tracing.html
+        - text: ", where I figured out how to trace functions and arguments for different Go compilers (2017)."
+      - listitem [ref=e294]:
+        - text: A page to summarize
+        - link "eBPF Tools" [ref=e295] [cursor=pointer]:
+          - /url: ebpf.html
+        - text: using Linux eBPF and the bcc front end for advanced observability and tracing tools (2016+).
+      - listitem [ref=e296]:
+        - text: Slides for my USENIX LISA 2016 talk
+        - 'link "Linux 4.x Tracing Tools: Using BPF Superpowers" [ref=e297] [cursor=pointer]':
+          - /url: Slides/LISA2016_BPF_tools_16_9
+        - text: ", which focused on bcc tools I've developed. This included my demo"
+        - link "Give me 15 minutes and I'll change your view of Linux tracing" [ref=e298] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=GsMs3n8CB6g
+        - text: . (
+        - link "slides" [ref=e299] [cursor=pointer]:
+          - /url: Slides/LISA2016_BPF_tools_16_9
+        - text: ","
+        - link "PDF" [ref=e300] [cursor=pointer]:
+          - /url: Slides/LISA2016_BPF_tools_16_9.pdf
+        - text: ","
+        - link "youtube demo" [ref=e301] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=GsMs3n8CB6g
+        - text: ","
+        - link "youtube talk" [ref=e302] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=UmOU3I36T2U&t=1151s
+        - text: ).
+      - listitem [ref=e303]:
+        - link "DTrace for Linux 2016" [ref=e304] [cursor=pointer]:
+          - /url: /blog/2016-10-27/dtrace-for-linux-2016.html
+        - text: ", announcing that the Linux kernel now has similar raw capabilities as DTrace in Linux 4.9 via enhanced BPF. I've been heavily involved in this project, especially as the number one user, and it was great to reach this milestone."
+      - listitem [ref=e305]:
+        - text: Slides for a talk at the first sysdig conference on
+        - link "Designing Tracing Tools" [ref=e306] [cursor=pointer]:
+          - /url: Slides/SysdigSummit2016_DesigningTracingTools
+        - text: (
+        - link "slides" [ref=e307] [cursor=pointer]:
+          - /url: Slides/SysdigSummit2016_DesigningTracingTools
+        - text: ","
+        - link "youtube" [ref=e308] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=uibLwoVKjec
+        - text: ","
+        - link "PDF" [ref=e309] [cursor=pointer]:
+          - /url: Slides/SysdigSummit2016_DesigningTracingTools.pdf
+        - text: ) (2016).
+      - listitem [ref=e310]:
+        - text: I wrote the original bcc/BPF
+        - link "end user tutorial" [ref=e311] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bcc/blob/master/docs/tutorial.md
+        - text: ","
+        - link "Python developer tutorial" [ref=e312] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md
+        - text: ", and"
+        - link "reference guide" [ref=e313] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md
+        - text: (2016).
+      - listitem [ref=e314]:
+        - text: "Several posts introducing new Linux bcc/BPF tracing tools:"
+        - link "bcc/BPF Tracing Security Capabilities" [ref=e315] [cursor=pointer]:
+          - /url: /blog/2016-10-01/linux-bcc-security-capabilities.html
+        - text: ","
+        - link "bcc/BPF MySQL Slow Query Tracing" [ref=e316] [cursor=pointer]:
+          - /url: /blog/2016-10-04/linux-bcc-mysqld-qslower.html
+        - text: ","
+        - link "bcc/BPF ext4 Latency Tracing" [ref=e317] [cursor=pointer]:
+          - /url: /blog/2016-10-06/linux-bcc-ext4dist-ext4slower.html
+        - text: ","
+        - link "Linux bcc/BPF Run Queue (Scheduler) Latency" [ref=e318] [cursor=pointer]:
+          - /url: /blog/2016-10-08/linux-bcc-runqlat.html
+        - text: ","
+        - link "Linux bcc/BPF Node.js USDT Tracing" [ref=e319] [cursor=pointer]:
+          - /url: /blog/2016-10-12/linux-bcc-nodejs-usdt.html
+        - text: ","
+        - link "Linux bcc tcptop" [ref=e320] [cursor=pointer]:
+          - /url: /blog/2016-10-15/linux-bcc-tcptop.html
+        - text: ","
+        - link "Linux 4.9's Efficient BPF-based Profiler" [ref=e321] [cursor=pointer]:
+          - /url: /blog/2016-10-21/linux-efficient-profiler.html
+        - text: ","
+        - 'link "Linux bcc/BPF tcplife: TCP Lifespans" [ref=e322] [cursor=pointer]':
+          - /url: /blog/2016-11-30/linux-bcc-tcplife.html
+        - text: (2016).
+      - listitem [ref=e323]:
+        - text: My JavaOne 2016 slides for
+        - link "Java Performance Analysis on Linux with Flame Graphs" [ref=e324] [cursor=pointer]:
+          - /url: Slides/JavaOne2016_JavaFlameGraphs
+        - text: "(slides only:"
+        - link "slides" [ref=e325] [cursor=pointer]:
+          - /url: Slides/JavaOne2016_JavaFlameGraphs
+        - text: ","
+        - link "PDF" [ref=e326] [cursor=pointer]:
+          - /url: Slides/JavaOne2016_JavaFlameGraphs.pdf
+        - text: ), and a follow-up post on
+        - link "Java Warmup Analysis with Flame Graphs" [ref=e327] [cursor=pointer]:
+          - /url: /blog/2016-09-28/java-warmup.html
+        - text: .
+      - listitem [ref=e328]:
+        - text: A post on
+        - 'link "gdb Debugging Full Example (Tutorial): ncurses" [ref=e329] [cursor=pointer]':
+          - /url: /blog/2016-08-09/gdb-example-ncurses.html
+        - text: where I shared a full debugging session, including all output and dead ends. It includes a little ftrace and BPF (2016).
+      - listitem [ref=e330]:
+        - text: My keynote slides for ACM Applicative 2016 on
+        - 'link "System Methodology: Holistic Performance Analysis on Modern Systems" [ref=e331] [cursor=pointer]':
+          - /url: Slides/ACMApplicative2016_SystemMethodology
+        - text: ", where I used several different operating systems as examples ("
+        - link "slides" [ref=e332] [cursor=pointer]:
+          - /url: Slides/ACMApplicative2016_SystemMethodology
+        - text: ","
+        - link "PDF" [ref=e333] [cursor=pointer]:
+          - /url: Slides/ACMApplicative2016_SystemMethodology.pdf
+        - text: ","
+        - link "youtube" [ref=e334] [cursor=pointer]:
+          - /url: https://youtu.be/eO94l0aGLCA?t=3m37s
+        - text: ).
+      - listitem [ref=e335]:
+        - text: A post demonstrating new capabilities by
+        - link "llnode for Node.js Memory Leak Analysis" [ref=e336] [cursor=pointer]:
+          - /url: /blog/2016-07-13/llnode-nodejs-memory-leak-analysis.html
+        - text: (2016).
+      - listitem [ref=e337]:
+        - text: A post on Linux
+        - link "Hist Triggers in Linux 4.7" [ref=e338] [cursor=pointer]:
+          - /url: /blog/2016-06-08/linux-hist-triggers.html
+        - text: demonstrating this new tracing feature (2016).
+      - listitem [ref=e339]:
+        - text: For PerconaLive 2016, slides for my
+        - link "Linux Systems Performance 2016" [ref=e340] [cursor=pointer]:
+          - /url: Slides/Percona2016_LinuxSystemsPerf
+        - text: overview talk (
+        - link "slides" [ref=e341] [cursor=pointer]:
+          - /url: Slides/Percona2016_LinuxSystemsPerf
+        - text: ","
+        - link "PDF" [ref=e342] [cursor=pointer]:
+          - /url: Slides/Percona2016_LinuxSystemsPerf.pdf
+        - text: ","
+        - link "video" [ref=e343] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=CbmEDXq7es0
+        - text: ).
+      - listitem [ref=e344]:
+        - link "The Flame Graph" [ref=e345] [cursor=pointer]:
+          - /url: http://cacm.acm.org/magazines/2016/6/202665-the-flame-graph/abstract
+        - text: article for
+        - link "ACMQ" [ref=e346] [cursor=pointer]:
+          - /url: http://queue.acm.org/detail.cfm?id=2927301
+        - text: /
+        - link "CACM" [ref=e347] [cursor=pointer]:
+          - /url: http://cacm.acm.org/magazines/2016/6/202665-the-flame-graph/abstract
+        - text: that defines flame graphs, describes their origin, explains how to interpret them, and discusses possible future developments (2016).
+      - listitem [ref=e348]:
+        - text: For SREcon 2016 Santa Clara, slides for my
+        - link "Performance Checklists for SREs" [ref=e349] [cursor=pointer]:
+          - /url: Slides/SREcon_2016_perf_checklists
+        - text: talk, which was also my first talk about my recent SRE (Site Reliability Engineering) work at Netflix (
+        - link "blog" [ref=e350] [cursor=pointer]:
+          - /url: /blog/2016-05-04/srecon2016-perf-checklists-for-sres.html
+        - text: ","
+        - link "slides" [ref=e351] [cursor=pointer]:
+          - /url: Slides/SREcon_2016_perf_checklists
+        - text: ","
+        - link "PDF" [ref=e352] [cursor=pointer]:
+          - /url: Slides/SREcon_2016_perf_checklists.pdf
+        - text: ","
+        - link "youtube" [ref=e353] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=zxCWXNigDpA
+        - text: ","
+        - link "usenix" [ref=e354] [cursor=pointer]:
+          - /url: https://www.usenix.org/conference/srecon16/program/presentation/gregg
+        - text: ).
+      - listitem [ref=e355]:
+        - text: A post on
+        - link "Working at Netflix 2016" [ref=e356] [cursor=pointer]:
+          - /url: /blog/2016-03-30/working-at-netflix-2016.html
+        - text: ", as a follow-on from my"
+        - link "2015" [ref=e357] [cursor=pointer]:
+          - /url: /blog/2015-01-20/working-at-netflix.html
+        - text: "post. This is still worth talking about: freedom and responsibility, outstanding and professional coworkers, etc. It differs from many other Silicon Valley companies."
+      - listitem [ref=e358]:
+        - text: For Facebook's Performance @Scale conference, slides for my
+        - link "Linux BPF Superpowers" [ref=e359] [cursor=pointer]:
+          - /url: Slides/PerformanceAtScale2016_LinuxBPFSuperpowers
+        - text: talk, which introduced the tracing capabilities of this new feature in the Linux 4.x series (
+        - link "slides" [ref=e360] [cursor=pointer]:
+          - /url: Slides/PerformanceAtScale2016_LinuxBPFSuperpowers
+        - text: ","
+        - link "PDF" [ref=e361] [cursor=pointer]:
+          - /url: Slides/PerformanceAtScale2016_LinuxBPFSuperpowers.pdf
+        - text: ","
+        - link "video" [ref=e362] [cursor=pointer]:
+          - /url: https://www.facebook.com/atscaleevents/videos/1693888610884236/
+        - text: ) (2016).
+      - listitem [ref=e363]:
+        - text: "More Linux BPF/bcc posts showing how to analyze off-CPU time and drill deeper:"
+        - link "Linux eBPF Off-CPU Flame Graph" [ref=e364] [cursor=pointer]:
+          - /url: /blog/2016-01-20/ebpf-offcpu-flame-graph.html
+        - text: ","
+        - link "Linux Wakeup and Off-Wake Profiling" [ref=e365] [cursor=pointer]:
+          - /url: /blog/2016-02-01/linux-wakeup-offwake-profiling.html
+        - text: ","
+        - link "Who is waking the waker? (Linux chain graph prototype)" [ref=e366] [cursor=pointer]:
+          - /url: /blog/2016-02-05/ebpf-chaingraph-prototype.html
+        - text: (2016).
+      - listitem [ref=e367]:
+        - text: A post on
+        - 'link "Unikernel Profiling: Flame Graphs from dom0" [ref=e368] [cursor=pointer]':
+          - /url: /blog/2016-01-27/unikernel-profiling-from-dom0.html
+        - text: ", where I showed that observability was indeed possible with some engineering work, as some were believing otherwise (2016)."
+      - listitem [ref=e369]:
+        - text: Slides for my
+        - link "Broken Linux Performance Tools" [ref=e370] [cursor=pointer]:
+          - /url: Slides/SCALE2016_Broken_Linux_Performance_Tools
+        - text: SCaLE14x talk, similar to my earlier QCon talk but for Linux only, and including a bit more advice (
+        - link "slides" [ref=e371] [cursor=pointer]:
+          - /url: Slides/SCALE2016_Broken_Linux_Performance_Tools
+        - text: ","
+        - link "PDF" [ref=e372] [cursor=pointer]:
+          - /url: Slides/SCALE2016_Broken_Linux_Performance_Tools.pdf
+        - text: ","
+        - link "video" [ref=e373] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=OPio8V-z03c
+        - text: ) (2016).
+      - listitem [ref=e374]:
+        - link "Linux Performance Analysis in 60,000 Milliseconds" [ref=e375] [cursor=pointer]:
+          - /url: http://techblog.netflix.com/2015/11/linux-performance-analysis-in-60s.html
+        - text: shows the first ten commands one can use (
+        - link "video" [ref=e376] [cursor=pointer]:
+          - /url: /blog/2015-12-03/linux-perf-60s-video.html
+        - text: ","
+        - link "PDF" [ref=e377] [cursor=pointer]:
+          - /url: /Articles/Netflix_Linux_Perf_Analysis_60s.pdf
+        - text: ). Written by myself and the performance engineering team at Netflix (2015).
+      - listitem [ref=e378]:
+        - text: Slides for my QConSF 2015 talk
+        - link "Broken Performance Tools" [ref=e379] [cursor=pointer]:
+          - /url: Slides/QCon2015_Broken_Performance_Tools
+        - text: highlighting common pitfalls with system metrics, tools, and methodologies for generic Linux/Unix systems (
+        - link "slides" [ref=e380] [cursor=pointer]:
+          - /url: Slides/QCon2015_Broken_Performance_Tools
+        - text: ","
+        - link "PDF" [ref=e381] [cursor=pointer]:
+          - /url: Slides/QCon2015_Broken_Performance_Tools.pdf
+        - text: ","
+        - link "video" [ref=e382] [cursor=pointer]:
+          - /url: https://www.infoq.com/presentations/broken-performance-tools
+        - text: ) (2015).
+      - listitem [ref=e383]:
+        - text: At JavaOne 2015, I gave a talk on
+        - link "Java Mixed-Mode Flame Graphs" [ref=e384] [cursor=pointer]:
+          - /url: /blog/2015-11-06/java-mixed-mode-flame-graphs.html
+        - text: ", utilizing the new -XX:+PreserveFramePointer feature in JDK8u60 ("
+        - link "blog" [ref=e385] [cursor=pointer]:
+          - /url: /blog/2015-12-03/linux-perf-60s-video.html
+        - text: ","
+        - link "slides" [ref=e386] [cursor=pointer]:
+          - /url: Slides/JavaOne2015_MixedModeFlameGraphs
+        - text: ","
+        - link "youtube" [ref=e387] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=BHA65BqlqSk
+        - text: ","
+        - link "PDF" [ref=e388] [cursor=pointer]:
+          - /url: Slides/JavaOne2015_MixedModeFlameGraphs.pdf
+        - text: ) (2015).
+      - listitem [ref=e389]:
+        - text: Using
+        - link "eBPF via bcc" [ref=e390] [cursor=pointer]:
+          - /url: /blog/2015-09-22/bcc-linux-4.3-tracing.html
+        - text: ","
+        - link "tcpconnect and tcpaccept (bcc)" [ref=e391] [cursor=pointer]:
+          - /url: /blog/2015-10-31/tcpconnect-tcpaccept-bcc.html
+        - text: ", and"
+        - link "eBPF Stack Trace Hack (bcc)" [ref=e392] [cursor=pointer]:
+          - /url: /blog/2016-01-18/ebpf-stack-trace-hack.html
+        - text: ", which show some new Linux tracing performance tools I've developed that use eBPF via the bcc frontend (2015-6)."
+      - listitem [ref=e393]:
+        - text: For the Netflix Tech Blog I posted
+        - link "Java in Flames" [ref=e394] [cursor=pointer]:
+          - /url: http://techblog.netflix.com/2015/07/java-in-flames.html
+        - text: (
+        - link "PDF" [ref=e395] [cursor=pointer]:
+          - /url: /Articles/Netflix_Java_in_Flames.pdf
+        - text: ) with Martin Spier, which shows mixed-mode flame graphs using the new -XX:+PreserveFramePointer JDK option. Great to see all CPU consumers in one visualization (2015).
+      - listitem [ref=e396]:
+        - text: "A summary, and recommendations, for navigating the different Linux tracers:"
+        - link "Choosing a Linux Tracer (2015)" [ref=e397] [cursor=pointer]:
+          - /url: /blog/2015-07-08/choosing-a-linux-tracer.html
+        - text: .
+      - listitem [ref=e398]:
+        - text: "Some posts on uprobes:"
+        - 'link "Linux uprobe: User-Level Dynamic Tracing" [ref=e399] [cursor=pointer]':
+          - /url: /blog/2015-06-28/linux-ftrace-uprobe.html
+        - text: ", which demonstrates uprobes via my uprobe tool, and"
+        - link "Hacking Linux USDT with Ftrace" [ref=e400] [cursor=pointer]:
+          - /url: /blog/2015-07-03/hacking-linux-usdt-ftrace.html
+        - text: (2015).
+      - listitem [ref=e401]:
+        - text: My
+        - link "Netflix Instance Performance Analysis Requirements" [ref=e402] [cursor=pointer]:
+          - /url: /blog/2015-06-23/netflix-instance-analysis-requirements.html
+        - text: talk for Monitorama 2015, where I showed desirable and undesirable features of these products. This is intended for the numerous vendors who keep trying to sell me these products, and, for customers who can use this talk as a source of feature requests. (
+        - link "slides" [ref=e403] [cursor=pointer]:
+          - /url: Slides/Monitorama2015_NetflixInstanceAnalysis
+        - text: ","
+        - link "PDF" [ref=e404] [cursor=pointer]:
+          - /url: Slides/Monitorama2015_NetflixInstanceAnalysis.pdf
+        - text: ","
+        - link "vimeo" [ref=e405] [cursor=pointer]:
+          - /url: https://vimeo.com/131484323
+        - text: )
+      - listitem [ref=e406]:
+        - text: My first post on
+        - link "Linux eBPF" [ref=e407] [cursor=pointer]:
+          - /url: /blog/2015-05-15/ebpf-one-small-step.html
+        - text: ", which is bringing in-kernel maps to Linux tracing (2015)."
+      - listitem [ref=e408]:
+        - text: My slides for
+        - link "Linux Performance Tools" [ref=e409] [cursor=pointer]:
+          - /url: Slides/Velocity2015_LinuxPerfTools
+        - text: tutorial at Velocity 2015, which was an expanded version of my earlier talk on the same topic. This is the most detailed version I've done (
+        - link "slides" [ref=e410] [cursor=pointer]:
+          - /url: Slides/Velocity2015_LinuxPerfTools
+        - text: ","
+        - link "PDF" [ref=e411] [cursor=pointer]:
+          - /url: Slides/Velocity2015_LinuxPerfTools.pdf
+        - text: ","
+        - link "youtube" [ref=e412] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=FJW8nGV4jxY&list=PLhhdIMVi0o5RNrf8E2dUijvGpqKLB9TCR
+        - text: ).
+      - listitem [ref=e413]:
+        - text: Slides from an internal Netflix presentation that was published on
+        - link "RxNetty vs Tomcat Performance Results" [ref=e414] [cursor=pointer]:
+          - /url: Slides/RxNetty_vs_Tomcat_April2015
+        - text: ", where I had used many tools, including tracing and PMCs, to explain the performance difference between these frameworks ("
+        - link "slides" [ref=e415] [cursor=pointer]:
+          - /url: Slides/RxNetty_vs_Tomcat_April2015
+        - text: ","
+        - link "PDF" [ref=e416] [cursor=pointer]:
+          - /url: Slides/RxNetty_vs_Tomcat_April2015
+        - text: ) (2015).
+      - listitem [ref=e417]:
+        - text: My
+        - link "Linux Profiling at Netflix" [ref=e418] [cursor=pointer]:
+          - /url: /blog/2015-02-27/linux-profiling-at-netflix.html
+        - text: talk for SCALE 13x (2015), where I covered getting CPU profiling to work, including for Java and Node.js, and a tour of other perf_events features (
+        - link "slides" [ref=e419] [cursor=pointer]:
+          - /url: Slides/SCALE2015_Linux_perf_profiling
+        - text: ","
+        - link "PDF" [ref=e420] [cursor=pointer]:
+          - /url: Slides/SCALE2015_Linux_perf_profiling.pdf
+        - text: ","
+        - link "youtube" [ref=e421] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_Ik8oiQvWgo
+        - text: ).
+      - listitem [ref=e422]:
+        - text: A post about
+        - link "Working at Netflix" [ref=e423] [cursor=pointer]:
+          - /url: /blog/2015-01-20/working-at-netflix.html
+        - text: ", describing the culture. This is worth writing about, as Netflix is pioneering with company culture as well as technology, and showing that culture can be engineered to be positive (2015)."
+      - listitem [ref=e424]:
+        - text: For LISA2014, my
+        - 'link "Linux Performance Analysis: New Tools and Old Secrets" [ref=e425] [cursor=pointer]':
+          - /url: /blog/2015-03-17/usenix-lisa-2014-linux-ftrace-perf-tools.html
+        - text: talk, where I covered ftrace and perf_events tools I've recently developed (
+        - link "slides" [ref=e426] [cursor=pointer]:
+          - /url: Slides/LISA2014_LinuxPerfAnalysisNewTools
+        - text: ","
+        - link "PDF" [ref=e427] [cursor=pointer]:
+          - /url: Slides/LISA2014_LinuxPerfAnalysisNewTools.pdf
+        - text: ","
+        - link "youtube" [ref=e428] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=R4IKeMQhM0Y
+        - text: ","
+        - link "USENIX" [ref=e429] [cursor=pointer]:
+          - /url: https://www.usenix.org/conference/lisa14/conference-program/presentation/gregg
+        - text: ).
+      - listitem [ref=e430]:
+        - text: My talk on
+        - link "Performance Tuning Linux Instances on EC2" [ref=e431] [cursor=pointer]:
+          - /url: /blog/2015-03-03/performance-tuning-linux-instances-on-ec2.html
+        - text: from AWS re:Invent 2014, where I covered how Netflix selects, tunes, and then observes the performance of Linux cloud instances (
+        - link "slides" [ref=e432] [cursor=pointer]:
+          - /url: Slides/AWSreInvent2014_perf_tuning_EC2_nobkg
+        - text: ","
+        - link "youtube" [ref=e433] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=7Cyd22kOqWc
+        - text: ).
+      - listitem [ref=e434]:
+        - text: A post introducing
+        - link "Differential Flame Graphs" [ref=e435] [cursor=pointer]:
+          - /url: /blog/2014-11-09/differential-flame-graphs.html
+        - text: ", which can be used for performance regression analysis. I also wrote about"
+        - link "CPI flame graphs" [ref=e436] [cursor=pointer]:
+          - /url: /blog/2014-10-31/cpi-flame-graphs.html
+        - text: ", which uses the differential flame graph code, and pmcstat on FreeBSD (2014)."
+      - listitem [ref=e437]:
+        - text: My
+        - link "Flame Graphs on FreeBSD" [ref=e438] [cursor=pointer]:
+          - /url: /blog/2015-03-10/freebsd-flame-graphs.html
+        - text: talk, for the FreeBSD Dev and Vendor Summit 2014. I summarized the different types, with the FreeBSD commands to create them (
+        - link "slides" [ref=e439] [cursor=pointer]:
+          - /url: Slides/FreeBSD2014_FlameGraphs
+        - text: ","
+        - link "PDF" [ref=e440] [cursor=pointer]:
+          - /url: Slides/FreeBSD2014_FlameGraphs.pdf
+        - text: ","
+        - link "youtube" [ref=e441] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=fMV1upo88Zw
+        - text: ).
+      - listitem [ref=e442]:
+        - text: For my first BSD conference, MeetBSDCA 2014, my
+        - link "Performance Analysis for BSD" [ref=e443] [cursor=pointer]:
+          - /url: /blog/2015-03-06/performance-analysis-bsd.html
+        - text: "talk, where I discussed 5 facets: observability, methodologies, benchmarking, profiling, and tuning ("
+        - link "slides" [ref=e444] [cursor=pointer]:
+          - /url: Slides/MeetBSD2014_Performance
+        - text: ","
+        - link "PDF" [ref=e445] [cursor=pointer]:
+          - /url: Slides/MeetBSD2014_Performance.pdf
+        - text: ","
+        - link "youtube" [ref=e446] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=uvKMptfXtdo
+        - text: ).
+      - listitem [ref=e447]:
+        - text: Contributed documentation on the
+        - link "DTrace on FreeBSD" [ref=e448] [cursor=pointer]:
+          - /url: https://wiki.freebsd.org/DTrace
+        - text: "wiki page: the initial"
+        - link "one-liners" [ref=e449] [cursor=pointer]:
+          - /url: https://wiki.freebsd.org/DTrace/One-Liners
+        - text: list (
+        - link "PDF" [ref=e450] [cursor=pointer]:
+          - /url: Articles/FreeBSDwiki_DTrace_One-Liners_2014.pdf
+        - text: ) and a 12 part
+        - link "tutorial" [ref=e451] [cursor=pointer]:
+          - /url: https://wiki.freebsd.org/DTrace/Tutorial
+        - text: (
+        - link "PDF" [ref=e452] [cursor=pointer]:
+          - /url: Articles/FreeBSDwiki_DTrace_Tutorial_2014.pdf
+        - text: ).
+      - listitem [ref=e453]:
+        - text: My
+        - link "Linux Performance Tools" [ref=e454] [cursor=pointer]:
+          - /url: /blog/2014-11-22/linux-perf-tools-2014.html
+        - text: talk for LinuxCon Europe 2014, where I summarized observability, benchmarking, tuning, static perf tuning tools, and tracing. This was an updated version of my earlier LinuxCon talk on the same topic (
+        - link "slides" [ref=e455] [cursor=pointer]:
+          - /url: Slides/LinuxConEU2014_LinuxPerfTools
+        - text: ","
+        - link "PDF" [ref=e456] [cursor=pointer]:
+          - /url: Slides/LinuxConEU2014_LinuxPerfTools.pdf
+        - text: ","
+        - link "youtube" [ref=e457] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=SN7Z0eCn0VY
+        - text: ).
+      - listitem [ref=e458]:
+        - text: For the 2014 Tracing Summit, my
+        - link "From DTrace to Linux" [ref=e459] [cursor=pointer]:
+          - /url: /blog/2015-02-28/from-dtrace-to-linux.html
+        - text: talk, summarizing what Linux can learn from DTrace (
+        - link "slides" [ref=e460] [cursor=pointer]:
+          - /url: Slides/TracingSummit2014_FromDTraceToLinux
+        - text: ","
+        - link "PDF" [ref=e461] [cursor=pointer]:
+          - /url: Slides/TracingSummit2014_FromDTraceToLinux.pdf
+        - text: ","
+        - link "youtube" [ref=e462] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=TMXZcgnhXvg&list=UU3S1jlPpZUyx8ND3KKPhPvw
+        - text: ).
+      - listitem [ref=e463]:
+        - text: My Surge 2014 talk
+        - link "From Clouds to Roots" [ref=e464] [cursor=pointer]:
+          - /url: /blog/2014-09-27/from-clouds-to-roots.html
+        - text: ", on how Netflix does root cause performance analysis on a Linux cloud. It's my most comprehensive performance analysis talk to date. Instead of just focusing on low-level tools, I provided context and then showed the full path from clouds to roots. ("
+        - link "slides" [ref=e465] [cursor=pointer]:
+          - /url: Slides/Surge2014_CloudsToRoots
+        - text: ","
+        - link "PDF" [ref=e466] [cursor=pointer]:
+          - /url: Slides/Surge2014_CloudsToRoots.pdf
+        - text: ","
+        - link "youtube" [ref=e467] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=H-E0MQTID0g
+        - text: ).
+      - listitem [ref=e468]:
+        - text: My post
+        - link "The MSRs of EC2" [ref=e469] [cursor=pointer]:
+          - /url: /blog/2014-09-15/the-msrs-of-ec2.html
+        - text: was the first to show that CPU Model Specific Registers were available in the cloud and could be used to measure interesting details such as the real CPU clock rate and temperature of instances (Xen guests). Weeks after my post (and possibly inspired by it) a security researcher found an MSR vulnerability in EC2 that required a
+        - link "cloud-wide reboot" [ref=e470] [cursor=pointer]:
+          - /url: https://www.theregister.com/2014/09/25/amazon_readies_global_glory_reboot/
+        - text: (2014).
+      - listitem [ref=e471]:
+        - text: Slides from my LinuxCon North America 2014 talk
+        - link "Linux Performance Tools" [ref=e472] [cursor=pointer]:
+          - /url: Slides/LinuxConNA2014_LinuxPerfTools
+        - text: ", which summarizes performance observability, benchmarking, and tuning tools, and illustrates their role on Linux system functional diagrams ("
+        - link "slides" [ref=e473] [cursor=pointer]:
+          - /url: Slides/LinuxConNA2014_LinuxPerfTools
+        - text: ","
+        - link "PDF" [ref=e474] [cursor=pointer]:
+          - /url: Slides/LinuxConNA2014_LinuxPerfTools.pdf
+        - text: ).
+      - listitem [ref=e475]:
+        - text: Posts summarizing Linux
+        - link "Java CPU Flame Graphs" [ref=e476] [cursor=pointer]:
+          - /url: /blog/2014-06-12/java-flame-graphs.html
+        - text: and
+        - link "Node.js CPU Flame Graphs" [ref=e477] [cursor=pointer]:
+          - /url: /blog/2014-09-17/node-flame-graphs-on-linux.html
+        - text: (2014).
+      - listitem [ref=e478]:
+        - text: My
+        - link "lwn.net" [ref=e479] [cursor=pointer]:
+          - /url: http://lwn.net
+        - text: article
+        - 'link "Ftrace: The Hidden Light Switch" [ref=e480] [cursor=pointer]':
+          - /url: http://lwn.net/Articles/608497/
+        - text: (2014).
+      - listitem [ref=e481]:
+        - text: "Posts describing perf-tools based on Linux perf_events and ftrace (both core Linux kernel tracers):"
+        - link "perf Hacktogram" [ref=e482] [cursor=pointer]:
+          - /url: /blog/2014-07-10/perf-hacktogram.html
+        - text: ","
+        - link "iosnoop" [ref=e483] [cursor=pointer]:
+          - /url: /blog/2014-07-16/iosnoop-for-linux.html
+        - text: ","
+        - link "iosnoop Latency Heat Maps" [ref=e484] [cursor=pointer]:
+          - /url: /blog/2014-07-23/linux-iosnoop-latency-heat-maps.html
+        - text: ","
+        - link "opensnoop" [ref=e485] [cursor=pointer]:
+          - /url: /blog/2014-07-25/opensnoop-for-linux.html
+        - text: ","
+        - link "execsnoop" [ref=e486] [cursor=pointer]:
+          - /url: /blog/2014-07-28/execsnoop-for-linux.html
+        - text: ","
+        - link "tcpretrans" [ref=e487] [cursor=pointer]:
+          - /url: /blog/2014-09-06/linux-ftrace-tcp-retransmit-tracing.html
+        - text: (2014).
+      - listitem [ref=e488]:
+        - text: "Posts about Linux perf_events:"
+        - link "perf CPU Sampling" [ref=e489] [cursor=pointer]:
+          - /url: /blog/2014-06-22/perf-cpu-sample.html
+        - text: ","
+        - link "perf Static Tracepoints" [ref=e490] [cursor=pointer]:
+          - /url: /blog/2014-06-29/perf-static-tracepoints.html
+        - text: ","
+        - link "perf Heat Maps" [ref=e491] [cursor=pointer]:
+          - /url: /blog/2014-07-01/perf-heat-maps.html
+        - text: ","
+        - link "perf Counting" [ref=e492] [cursor=pointer]:
+          - /url: /blog/2014-07-03/perf-counting.html
+        - text: ","
+        - link "perf Kernel Line Tracing" [ref=e493] [cursor=pointer]:
+          - /url: /blog/2014-09-11/perf-kernel-line-tracing.html
+        - text: (2014).
+      - listitem [ref=e494]:
+        - text: A page for
+        - link "perf Examples" [ref=e495] [cursor=pointer]:
+          - /url: perf.html
+        - text: with perf_events, the standard Linux profiler. Page includes one-liners and flame graphs.
+      - listitem [ref=e496]:
+        - text: I wrote a warning post titled
+        - link "strace Wow Much Syscall" [ref=e497] [cursor=pointer]:
+          - /url: /blog/2014-05-11/strace-wow-much-syscall.html
+        - text: ", which discusses strace(1) for production use, includes an interesting example, and many bad strace-related jokes (2014)."
+      - listitem [ref=e498]:
+        - text: "Two posts to explain Xen modes on AWS EC2:"
+        - link "What Color is Your Xen" [ref=e499] [cursor=pointer]:
+          - /url: /blog/2014-05-07/what-color-is-your-xen.html
+        - text: and
+        - link "Xen Feature Detection" [ref=e500] [cursor=pointer]:
+          - /url: /blog/2014-05-09/xen-feature-detection.html
+        - text: (2014).
+      - listitem [ref=e501]:
+        - link "The Benchmark Paradox" [ref=e502] [cursor=pointer]:
+          - /url: /blog/2014-05-03/the-benchmark-paradox.html
+        - text: ": a short post explaining a seeming paradox in benchmark evaluations (2014)."
+      - listitem [ref=e503]:
+        - text: My
+        - link "Analyzing OS X Systems Performance with the USE Method" [ref=e504] [cursor=pointer]:
+          - /url: Slides/MacIT2014_Analyzing_OSX_Perf_USE_Method
+        - text: talk at MacIT 2014 (
+        - link "slides" [ref=e505] [cursor=pointer]:
+          - /url: Slides/MacIT2014_Analyzing_OSX_Perf_USE_Method
+        - text: ","
+        - link "PDF" [ref=e506] [cursor=pointer]:
+          - /url: Slides/MacIT2014_Analyzing_OSX_Perf_USE_Method.pdf
+        - text: ).
+      - listitem [ref=e507]:
+        - text: At SCaLE12x (2014) I gave the keynote on
+        - link "What Linux can learn from Solaris perf. and vice-versa" [ref=e508] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_vs_Solaris_Performance2014
+        - text: (
+        - link "slides" [ref=e509] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_vs_Solaris_Performance2014
+        - text: ","
+        - link "PDF" [ref=e510] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_vs_Solaris_Performance2014.pdf
+        - text: ","
+        - link "youtube" [ref=e511] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=6TYC5h4yz1o
+        - text: ).
+      - listitem [ref=e512]:
+        - link "The Case of the Clumsy Kernel" [ref=e513] [cursor=pointer]:
+          - /url: https://www.usenix.org/system/files/login/articles/07_gregg.pdf
+        - text: "(PDF): a kernel performance analysis article for USENIX ;login (2013)."
+      - listitem [ref=e514]:
+        - text: My USENIX/LISA 2013 slides
+        - link "Blazing Performance with Flame Graphs" [ref=e515] [cursor=pointer]:
+          - /url: Slides/LISA13_Flame_Graphs
+        - text: ", was two talks in one: part 1 covered the commonly used CPU flame graphs, and part 2 covered various advanced flame graphs ("
+        - link "slides" [ref=e516] [cursor=pointer]:
+          - /url: Slides/LISA13_Flame_Graphs
+        - text: ","
+        - link "PDF" [ref=e517] [cursor=pointer]:
+          - /url: Slides/LISA13_Flame_Graphs.pdf
+        - text: ","
+        - link "youtube" [ref=e518] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=nZfNehCzGdw
+        - text: ).
+      - listitem [ref=e519]:
+        - text: A page of
+        - link "ktap Examples" [ref=e520] [cursor=pointer]:
+          - /url: ktap.html
+        - text: for the lua-based Linux dynamic tracing tool, including one liners and tools (no longer maintained) (2013).
+      - listitem [ref=e521]:
+        - text: The
+        - link "TSA Method" [ref=e522] [cursor=pointer]:
+          - /url: tsamethod.html
+        - text: ", a performance analysis methodology for identifying issues causing poor application performance. This is a thread-oriented methodology, and is complementary to the resource-oriented USE Method. It has solved countless issues."
+      - listitem [ref=e523]:
+        - text: A page of my
+        - link "Performance Analysis Methodology" [ref=e524] [cursor=pointer]:
+          - /url: methodology.html
+        - text: summaries, and links.
+      - listitem [ref=e525]:
+        - 'link "Systems Performance: Enterprise and the Cloud" [ref=e526] [cursor=pointer]':
+          - /url: sysperfbook.html
+        - text: ", Prentice Hall, 2013 (ISBN 0133390098). This book covers new developments in systems performance: in particular, dynamic tracing and cloud computing. It also introduces many new methodologies to help a wide audience get started. It leads with Linux examples from Ubuntu, Fedora, and CentOS, and also covers illumos distributions. Covering two different kernels provides additional perspective that enhances the reader's understanding of each. The book is 635 pages plus appendices."
+      - listitem [ref=e527]:
+        - text: My slides for a brief talk on
+        - link "The New Systems Performance" [ref=e528] [cursor=pointer]:
+          - /url: Slides/TheNewSystemsPerformance
+        - text: ", where I summarized how the topic has changed from the 1990's to today (July 2013,"
+        - link "slides" [ref=e529] [cursor=pointer]:
+          - /url: Slides/TheNewSystemsPerformance
+        - text: ","
+        - link "PDF" [ref=e530] [cursor=pointer]:
+          - /url: Slides/TheNewSystemsPerformance.pdf
+        - text: ","
+        - link "youtube" [ref=e531] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=P3SGzykDE4Q
+        - text: ).
+      - listitem [ref=e532]:
+        - link "Active Benchmarking" [ref=e533] [cursor=pointer]:
+          - /url: activebenchmarking.html
+        - text: ": a methodology for successful benchmarking, and an example of its use for"
+        - link "Bonnie++" [ref=e534] [cursor=pointer]:
+          - /url: ActiveBenchmarking/bonnie++.html
+        - text: .
+      - listitem [ref=e535]:
+        - text: My OSCON 2013 slides for
+        - link "Open Source Systems Performance" [ref=e536] [cursor=pointer]:
+          - /url: Slides/OSCON2013_sysperf
+        - text: ", where I provided a unique perspective I'm best positioned to give about both open- and close-sourcing software, and what this means for systems performance analysis ("
+        - link "slides" [ref=e537] [cursor=pointer]:
+          - /url: Slides/OSCON2013_sysperf
+        - text: ","
+        - link "PDF" [ref=e538] [cursor=pointer]:
+          - /url: Slides/OSCON2013_sysperf.pdf
+        - text: ","
+        - link "youtube" [ref=e539] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=VsQWSJgb1AE
+        - text: ).
+      - listitem [ref=e540]:
+        - text: Visualizing distributions using
+        - link "Frequency Trails" [ref=e541] [cursor=pointer]:
+          - /url: frequencytrails.html
+        - text: ", explained in the"
+        - link "Introduction" [ref=e542] [cursor=pointer]:
+          - /url: FrequencyTrails/intro.html
+        - text: ", then using them for"
+        - link "Detecting Outliers" [ref=e543] [cursor=pointer]:
+          - /url: FrequencyTrails/outliers.html
+        - text: ", measuring"
+        - link "Modes and Modality" [ref=e544] [cursor=pointer]:
+          - /url: FrequencyTrails/modes.html
+        - text: ", and"
+        - link "What the Mean Really Means" [ref=e545] [cursor=pointer]:
+          - /url: FrequencyTrails/mean.html
+        - text: .
+      - listitem [ref=e546]:
+        - text: My slides for
+        - 'link "Stop the Guessing: Performance Methodologies for Production Systems" [ref=e547] [cursor=pointer]':
+          - /url: Slides/VelocityStopTheGuessing2013
+        - text: talk at Velocity 2013 (
+        - link "slides" [ref=e548] [cursor=pointer]:
+          - /url: Slides/VelocityStopTheGuessing2013
+        - text: ","
+        - link "PDF" [ref=e549] [cursor=pointer]:
+          - /url: Slides/VelocityStopTheGuessing2013.pdf
+        - text: ","
+        - link "youtube" [ref=e550] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=_EOvKUAwf8E
+        - text: ).
+      - listitem [ref=e551]:
+        - text: The very popular slide deck for my
+        - link "Linux Performance Analysis and Tools" [ref=e552] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_Performance2013
+        - text: talk at SCaLE11x (2013), which includes lesser known tools such as perf's dynamic tracing and static trace points. I've been told people want slide 16 on a coffee cup! (
+        - link "slides" [ref=e553] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_Performance2013
+        - text: ","
+        - link "PDF" [ref=e554] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_Performance2013.pdf
+        - text: ","
+        - link "youtube" [ref=e555] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=0yyorhl6IjM
+        - text: ).
+      - listitem [ref=e556]:
+        - text: A summary of
+        - 'link "Virtualization Performance: Zones, KVM, Xen" [ref=e557] [cursor=pointer]':
+          - /url: /blog/2013-01-11/virtualization-performance-zones-kvm-xen.html
+        - text: ", focusing on I/O path overheads (2013)."
+      - listitem [ref=e558]:
+        - text: The
+        - link "Thinking Methodically about Performance" [ref=e559] [cursor=pointer]:
+          - /url: http://queue.acm.org/detail.cfm?id=2413037
+        - text: article for ACMQ (2012), and
+        - link "CACM" [ref=e560] [cursor=pointer]:
+          - /url: http://cacm.acm.org/magazines/2013/2/160167-thinking-methodically-about-performance/
+        - text: ", based on my earlier USE Method articles."
+      - listitem [ref=e561]:
+        - text: USENIX/LISA 2012 slides on
+        - link "Performance Analysis Methodology" [ref=e562] [cursor=pointer]:
+          - /url: /blog/2012-12-13/usenix-lisa-2012-performance-analysis-methodology.html
+        - text: ", summarizing ten methods and anti-methods ("
+        - link "slides" [ref=e563] [cursor=pointer]:
+          - /url: Slides/LISA2012_methodologies
+        - text: ","
+        - link "PDF" [ref=e564] [cursor=pointer]:
+          - /url: Slides/LISA2012_methodologies.pdf
+        - text: ","
+        - link "youtube" [ref=e565] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=abLan0aXJkw
+        - text: ).
+      - listitem [ref=e566]:
+        - text: My FISL'13 slides on
+        - link "The USE Method" [ref=e567] [cursor=pointer]:
+          - /url: Slides/FISL13_USE_Method
+        - text: for systems performance analysis, including some other methods for comparison (
+        - link "slides" [ref=e568] [cursor=pointer]:
+          - /url: Slides/FISL13_USE_Method
+        - text: ","
+        - link "youtube" [ref=e569] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=K9w2cipqfvc
+        - text: ","
+        - link "blog" [ref=e570] [cursor=pointer]:
+          - /url: /blog/2012-09-21/fisl13-the-use-method.html
+        - text: ) (2012).
+      - listitem [ref=e571]:
+        - text: For illumosday and zfsday, my slides for
+        - link "DTracing the Cloud" [ref=e572] [cursor=pointer]:
+          - /url: Slides/dtracecloud2012
+        - text: (
+        - link "slides" [ref=e573] [cursor=pointer]:
+          - /url: Slides/dtracecloud2012
+        - text: ","
+        - link "PDF" [ref=e574] [cursor=pointer]:
+          - /url: Slides/dtracecloud2012.pdf
+        - text: ","
+        - link "youtube" [ref=e575] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=uZTMuXXFG38
+        - text: ) and
+        - link "ZFS Performance Analysis and Tools" [ref=e576] [cursor=pointer]:
+          - /url: Slides/zfsperftools2012
+        - text: (
+        - link "slides" [ref=e577] [cursor=pointer]:
+          - /url: Slides/zfsperftools2012
+        - text: ","
+        - link "PDF" [ref=e578] [cursor=pointer]:
+          - /url: Slides/zfsperftools2012.pdf
+        - text: ","
+        - link "youtube" [ref=e579] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=xkDqe6rIMa0
+        - text: ).
+      - listitem [ref=e580]:
+        - text: My SCaLE10x talk slides
+        - 'link "Performance Analysis: new tools and concepts from the cloud" [ref=e581] [cursor=pointer]':
+          - /url: Slides/SCALE2012_new_tools_concepts_cloud
+        - text: ", with examples ("
+        - link "slides" [ref=e582] [cursor=pointer]:
+          - /url: Slides/SCALE2012_new_tools_concepts_cloud
+        - text: ","
+        - link "youtube" [ref=e583] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?list=PLB0197EF82791B1F3&v=RoTSNVuBpqg
+        - text: ","
+        - link "PDF" [ref=e584] [cursor=pointer]:
+          - /url: Slides/SCALE2012_new_tools_concepts_cloud.pdf
+        - text: ) (2012).
+      - listitem [ref=e585]:
+        - text: "The introduction of a new visualization type:"
+        - link "Subsecond Offset Heat Maps" [ref=e586] [cursor=pointer]:
+          - /url: HeatMaps/subsecondoffset.html
+        - text: ", which allow behavior within a second to be seen."
+      - listitem [ref=e587]:
+        - text: The
+        - link "USE Method" [ref=e588] [cursor=pointer]:
+          - /url: usemethod.html
+        - text: ", which I developed for identifying common system bottlenecks and errors, and have used successfully for many years in enterprise and cloud performance environments. Based on the USE method: the"
+        - link "Linux Performance Checklist" [ref=e589] [cursor=pointer]:
+          - /url: USEmethod/use-linux.html
+        - text: ", the"
+        - link "Solaris Performance Checklist" [ref=e590] [cursor=pointer]:
+          - /url: USEmethod/use-solaris.html
+        - text: ", the"
+        - link "SmartOS Performance Checklist" [ref=e591] [cursor=pointer]:
+          - /url: USEmethod/use-smartos.html
+        - text: ", the"
+        - link "Mac OS X Performance Checklist" [ref=e592] [cursor=pointer]:
+          - /url: USEmethod/use-macosx.html
+        - text: ", the"
+        - link "FreeBSD Performance Checklist" [ref=e593] [cursor=pointer]:
+          - /url: USEmethod/use-freebsd.html
+        - text: ", and the"
+        - link "Unix 7th Edition Performance Checklist" [ref=e594] [cursor=pointer]:
+          - /url: USEmethod/use-unix7th.html
+        - text: . There is also the USE Method
+        - link "Rosetta Stone of Performance Checklists" [ref=e595] [cursor=pointer]:
+          - /url: USEmethod/use-rosetta.html
+        - text: .
+      - listitem [ref=e596]:
+        - text: The
+        - link "Flame Graph" [ref=e597] [cursor=pointer]:
+          - /url: flamegraphs.html
+        - text: visualization and separate pages on using them for
+        - link "CPU Flame Graphs" [ref=e598] [cursor=pointer]:
+          - /url: FlameGraphs/cpuflamegraphs.html
+        - text: including how to fix stack traces and symbols for Java and Node.js; different techniques for
+        - link "Memory Flame Graphs" [ref=e599] [cursor=pointer]:
+          - /url: FlameGraphs/memoryflamegraphs.html
+        - text: including allocator tracing and page fault flame graphs; and different techniques for
+        - link "Off-CPU Flame Graphs" [ref=e600] [cursor=pointer]:
+          - /url: FlameGraphs/offcpuflamegraphs.html
+        - text: ", including block I/O flame graphs, wakeup flame graphs, off-wake flame graphs, and chain graphs."
+      - listitem [ref=e601]:
+        - link "Colony Graphs" [ref=e602] [cursor=pointer]:
+          - /url: colonygraphs.html
+        - text: ", a visualization of computer life forms, and their use for"
+        - link "Visualizing the Cloud" [ref=e603] [cursor=pointer]:
+          - /url: ColonyGraphs/cloud.html
+        - text: ","
+        - link "Process Snapshots" [ref=e604] [cursor=pointer]:
+          - /url: ColonyGraphs/snapshots.html
+        - text: and
+        - link "Process Execution" [ref=e605] [cursor=pointer]:
+          - /url: ColonyGraphs/execution.html
+        - text: .
+      - listitem [ref=e606]:
+        - text: Demonstrations of different visualizations for
+        - link "Device Utilization" [ref=e607] [cursor=pointer]:
+          - /url: HeatMaps/utilization.html
+        - text: ", which was described as blog post of the year (2011)."
+      - listitem [ref=e608]:
+        - text: "Narrow topics in operating system performance:"
+        - link "Activity of the ZFS ARC" [ref=e609] [cursor=pointer]:
+          - /url: /blog/2012-01-09/activity-of-the-zfs-arc.html
+        - text: .
+      - listitem [ref=e610]:
+        - text: A long post about
+        - link "Using SystemTap" [ref=e611] [cursor=pointer]:
+          - /url: /blog/2011-10-15/using-systemtap.html
+        - text: on the Ubuntu and CentOS Linux distributions, written in late 2011.
+      - listitem [ref=e612]:
+        - text: An introduction the technique of
+        - link "Off-CPU Performance Analysis" [ref=e613] [cursor=pointer]:
+          - /url: offcpuanalysis.html
+        - text: ", which can identify the cause of high latency due to blocking events."
+      - listitem [ref=e614]:
+        - link "Top 10 DTrace Scripts" [ref=e615] [cursor=pointer]:
+          - /url: /blog/2011-10-10/top-10-dtrace-scripts-for-mac-os-x.html
+        - text: for Mac OS X performance analysis and troubleshooting, written to reach the broader Mac OS X community. This includes step by step instructions on how to find and run the Terminal application and sudo.
+      - listitem [ref=e616]:
+        - text: A series of blog posts on File System latency, using MySQL as an example application (
+        - link "1" [ref=e617] [cursor=pointer]:
+          - /url: /blog/2011-05-11/file-system-latency-part-1.html
+        - text: ","
+        - link "2" [ref=e618] [cursor=pointer]:
+          - /url: /blog/2011-05-13/file-system-latency-part-2.html
+        - text: ","
+        - link "3" [ref=e619] [cursor=pointer]:
+          - /url: /blog/2011-05-18/file-system-latency-part-3.html
+        - text: ","
+        - link "4" [ref=e620] [cursor=pointer]:
+          - /url: /blog/2011-05-24/file-system-latency-part-4.html
+        - text: ","
+        - link "5" [ref=e621] [cursor=pointer]:
+          - /url: /blog/2011-06-03/file-system-latency-part-5.html
+        - text: ) (2011).
+      - listitem [ref=e622]:
+        - link "MySQL Query Latency" [ref=e623] [cursor=pointer]:
+          - /url: /blog/2011-03-14/mysql-query-latency-dtrace.html
+        - text: using DTrace (2011).
+      - listitem [ref=e624]:
+        - text: A series of blog posts on the
+        - link "DTrace pid provider" [ref=e625] [cursor=pointer]:
+          - /url: /blog/2011-02-19/dtrace-pid-provider-links.html
+        - text: ", going beyond what was covered in the DTrace book (2011)."
+      - listitem [ref=e626]:
+        - text: The
+        - link "DTrace book" [ref=e627] [cursor=pointer]:
+          - /url: http://www.dtracebook.com
+        - text: with Jim Mauro (Prentice Hall, 2011; ISBN 0132091518). A sample chapter on
+        - link "File Systems" [ref=e628] [cursor=pointer]:
+          - /url: /blog/2011-02-23/dtrace-book-sample-chapter-file-systems.html
+        - text: is online. This 1152 page book took over a year to write, including the research, development and testing of dozens of new DTrace scripts and one-liners, and soliciting input from many experts. Solaris was used as the primary OS for examples, with additional examples from Mac OS X and FreeBSD. The most difficult challenge for using a dynamic tracing tool (DTrace, SystemTap, etc.) is knowing what to do with it. This book provides over one hundred use cases (scripts), which will be invaluable even after the example code becomes out of date.
+      - listitem [ref=e629]:
+        - text: A page on
+        - link "Heat Maps" [ref=e630] [cursor=pointer]:
+          - /url: heatmaps.html
+        - text: ", and a demonstration of"
+        - link "Latency Heat Maps" [ref=e631] [cursor=pointer]:
+          - /url: HeatMaps/latency.html
+        - text: which includes example software to generate them.
+      - listitem [ref=e632]:
+        - text: Slides for my Percona Live New York 2011 talk on
+        - link "Breaking Down MySQL/Percona Query Latency With DTrace" [ref=e633] [cursor=pointer]:
+          - /url: Slides/Percona_DTrace.pdf
+        - text: (PDF).
+      - listitem [ref=e634]:
+        - text: The
+        - link "Visualizations for Performance Analysis" [ref=e635] [cursor=pointer]:
+          - /url: Slides/LISA2010_visualizations
+        - text: "slide deck, USENIX/LISA 2010. This describes two different approaches (methodologies) for systems performance: workload analysis and latency analysis, the metrics used, and then introduces a variety of heat map visualizations. This talk ends by describing the challenges of cloud computing, and how heat maps are well suited for the scale of data ("
+        - link "slides" [ref=e636] [cursor=pointer]:
+          - /url: Slides/LISA2010_visualizations
+        - text: ","
+        - link "PDF" [ref=e637] [cursor=pointer]:
+          - /url: Slides/LISA2010_visualizations.pdf
+        - text: ","
+        - link "youtube" [ref=e638] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=ml-t-9g6Mjc
+        - text: ).
+      - listitem [ref=e639]:
+        - text: Slides by Jim Mauro and myself for our
+        - link "How to Build Better Applications With Oracle Solaris DTrace" [ref=e640] [cursor=pointer]:
+          - /url: Slides/OOW2010_DTrace.pdf
+        - text: (PDF) talk at Oracle OpenWorld 2010.
+      - listitem [ref=e641]:
+        - text: An article for ACMQ, also published by
+        - link "CACM" [ref=e642] [cursor=pointer]:
+          - /url: http://cacm.acm.org/magazines/2010/7/95062-visualizing-system-latency/fulltext
+        - text: ", on"
+        - link "Visualizing System latency" [ref=e643] [cursor=pointer]:
+          - /url: http://queue.acm.org/detail.cfm?id=1809426
+        - text: using latency heat maps (2010). This includes interesting latency heat maps I had found using Sun Storage Analytics, including the
+        - link "Rainbow Pterodactyl" [ref=e644] [cursor=pointer]:
+          - /url: /blog/2009-03-12/latency-art-rainbow-pterodactyl.html
+        - text: and the
+        - link "Icy Lake" [ref=e645] [cursor=pointer]:
+          - /url: /blog/2009-06-12/latency-art-x-marks-the-spot.html
+        - text: . This was pioneering work, and it took several years for latency heat maps to appear in other performance analysis products.
+      - listitem [ref=e646]:
+        - text: My
+        - link "DTrace Cheatsheet" [ref=e647] [cursor=pointer]:
+          - /url: DTrace/DTrace-cheatsheet.pdf
+        - text: ", summarizing probes, variables, and actions. Inspired by the mdb cheatsheet by Jonathan Adams. (2009)."
+      - listitem [ref=e648]:
+        - text: The post
+        - link "7410 hardware update, and analyzing the HyperTransport" [ref=e649] [cursor=pointer]:
+          - /url: /blog/2009-09-22/analyzing-the-hypertransport.html
+        - text: ", where I used PICs (aka PMCs) to analyze the CPU interconnect and other busses, and find a significant performance win (2009)."
+      - listitem [ref=e650]:
+        - text: "A post about the ZFS separate intent log:"
+        - link "SLOG Screenshots" [ref=e651] [cursor=pointer]:
+          - /url: /blog/2009-06-26/slog-screenshots.html
+        - text: ", including a discussion on the technology and latency heat maps from Analytics showing the improvements (2009)."
+      - listitem [ref=e652]:
+        - text: A series of posts on performance testing a line of storage appliances (
+        - link "1" [ref=e653] [cursor=pointer]:
+          - /url: /blog/2009-03-23/performance-testing-the-7000-series1.html
+        - text: ","
+        - link "2" [ref=e654] [cursor=pointer]:
+          - /url: /blog/2009-04-02/performance-testing-the-7000-series2.html
+        - text: ","
+        - link "3" [ref=e655] [cursor=pointer]:
+          - /url: /blog/2009-03-23/performance-testing-the-7000-series1.html
+        - text: ). I wrote these in 2009, when I was often saving benchmarking mishaps. They were very successful (and thanks to those who read them) as the calls for help were greatly reduced.
+      - listitem [ref=e656]:
+        - text: For the Front Range OpenSolaris User Group (FROSUG), in Denver, Colorado, my slides for my
+        - link "Little Shop of Performance Horrors" [ref=e657] [cursor=pointer]:
+          - /url: Slides/FROSUG2009_Performance_Horrors
+        - text: talk, where I discussed things going wrong instead of right. It was a lot of fun, and people showed up despite a massive snow storm (
+        - link "slides" [ref=e658] [cursor=pointer]:
+          - /url: Slides/FROSUG2009_Performance_Horrors
+        - text: ","
+        - link "PDF" [ref=e659] [cursor=pointer]:
+          - /url: Slides/FROSUG2009_Performance_Horrors.pdf
+        - text: ","
+        - link "youtube" [ref=e660] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=cklPFJysUYM
+        - text: ) (2009).
+      - listitem [ref=e661]:
+        - text: "Posts showing new (and interesting) performance visualizations using Sun Storage Analytics, especially latency heat maps:"
+        - 'link "Latency Art: Rainbow Pterodactyl" [ref=e662] [cursor=pointer]':
+          - /url: /blog/2009-03-12/latency-art-rainbow-pterodactyl.html
+        - text: ","
+        - link "Heat Map Analytics" [ref=e663] [cursor=pointer]:
+          - /url: /blog/2009-03-17/heat-map-analytics.html
+        - text: ","
+        - 'link "Latency Art: X marks the spot" [ref=e664] [cursor=pointer]':
+          - /url: /blog/2009-06-12/latency-art-x-marks-the-spot.html
+        - text: (2009).
+      - listitem [ref=e665]:
+        - text: Visualizing
+        - link "DRAM Latency" [ref=e666] [cursor=pointer]:
+          - /url: /blog/2009-02-06/dram-latency.html
+        - text: using latency heat maps from Sun Storage Analytics (2009).
+      - listitem [ref=e667]:
+        - text: "Demonstrating the Kstat/DTrace-based Analytics tool from the Sun Storage 7000 product:"
+        - link "JBOD Analytics Example" [ref=e668] [cursor=pointer]:
+          - /url: /2008-12-31/jbod-analytics-example.html
+        - text: ","
+        - link "Networking Analytics Example" [ref=e669] [cursor=pointer]:
+          - /url: /blog/2009-02-23/networking-analytics-example.html
+        - text: ","
+        - link "NFS Analytics example" [ref=e670] [cursor=pointer]:
+          - /url: /blog/2009-11-17/nfs-analytics-example.html
+        - text: (2008-9).
+      - listitem [ref=e671]:
+        - text: "Posts demonstrating the performance limits of the Sun Storage 7000 series of ZFS-based storage appliance I was working on, as well as our Analytics observability tool:"
+        - link "A quarter million NFS IOPS" [ref=e672] [cursor=pointer]:
+          - /url: /blog/2008-12-02/a-quarter-million-nfs-iops.html
+        - text: ","
+        - link "Up to 2 Gbytes/sec NFS" [ref=e673] [cursor=pointer]:
+          - /url: /blog/2008-12-15/up-to-2gbs-nfs.html
+        - text: ","
+        - link "1 Gbyte/sec NFS, streaming from disk" [ref=e674] [cursor=pointer]:
+          - /url: /blog/2009-01-09/1gbs-nfs-from-disk.html
+        - text: ","
+        - link "My Sun Storage 7410 perf limits" [ref=e675] [cursor=pointer]:
+          - /url: /blog/2009-01-09/my-sun-storage-7410-perf-limits.html
+        - text: ","
+        - link "CIFS at 1 Gbyte/sec" [ref=e676] [cursor=pointer]:
+          - /url: /blog/2009-03-03/cifs-at-1gbs.html
+        - text: ","
+        - link "My Sun Storage 7310 perf limits" [ref=e677] [cursor=pointer]:
+          - /url: /blog/2009-05-27/my-sun-storage-7310-perf-limits.html
+        - text: ","
+        - 'link "Hybrid Storage Pool: Top Speeds" [ref=e678] [cursor=pointer]':
+          - /url: /blog/2009-10-08/hybrid-storage-pool-top-speeds.html
+        - text: (2008-9).
+      - listitem [ref=e679]:
+        - text: The
+        - link "storage appliance dashboard" [ref=e680] [cursor=pointer]:
+          - /url: /blog/2008-11-10/status-dashboard.html
+        - text: where I used weather icons to highlight performance issues and convey ambiguity for certain metrics (2008).
+      - listitem [ref=e681]:
+        - text: Slides for
+        - link "Fishworks Analytics" [ref=e682] [cursor=pointer]:
+          - /url: Slides/CEC2008_analytics.pdf
+        - text: (PDF) for CEC2008 with Bryan Cantrill, where we launched a storage appliance performance analysis tool that was many years ahead of the industry. A real-time dynamic tracing GUI, latency heat maps, etc.
+      - listitem [ref=e683]:
+        - text: Slides for
+        - link "Fishworks Overview" [ref=e684] [cursor=pointer]:
+          - /url: Slides/CEC2008_fishworks_overview.pdf
+        - text: (PDF) at CEC2008 with Cindi McGuire, where we introduced the first ZFS-based storage appliance, the Sun Storage 7000 series. Fishworks was the team that developed it. We worked at a private site, setup to mimic a San Francisco startup.
+      - listitem [ref=e685]:
+        - text: The original
+        - link "ZFS L2ARC" [ref=e686] [cursor=pointer]:
+          - /url: /blog/2008-07-22/zfs-l2arc.html
+        - text: post (2008) and later
+        - link "L2ARC Screenshots" [ref=e687] [cursor=pointer]:
+          - /url: /blog/2009-01-30/l2arc-screenshots.html
+        - text: (2009). Since code changes were public each night, my
+        - link "block comment" [ref=e688] [cursor=pointer]:
+          - /url: Solaris/l2arc_comment.txt
+        - text: in usr/src/uts/common/fs/zfs/arc.c (added in Nov 2007) disguised the then-secret intent of this technology by listing "short-stroked disks" as the first intended device, instead of SSDs.
+      - listitem [ref=e689]:
+        - text: I wrote the original
+        - link "Sun ZFS Storage 7000 admin guide" [ref=e690] [cursor=pointer]:
+          - /url: https://docs.oracle.com/cd/E22471_01/pdf/820-4167.pdf
+        - text: "and online help, and while doing so created the most advanced content system within Sun Microsystems: A content wiki that could auto-generate Sun-styled PDFs and other formats, allowing versions to be built in seconds instead of the usual 2-week process. This 2010 version has many updates from other staff (I've yet to find my original 2008 PDF) (2008)."
+      - listitem [ref=e691]:
+        - text: A post on the
+        - link "DTraceToolkit in MacOS X" [ref=e692] [cursor=pointer]:
+          - /url: /blog/2008-02-18/dtracetoolkit-in-macosx.html
+        - text: ", which included (and updated) 44 of my DTraceToolkit tools in /usr/bin by default (2008)."
+      - listitem [ref=e693]:
+        - text: A post announcing the
+        - link "DTraceToolkit ver 0.99" [ref=e694] [cursor=pointer]:
+          - /url: /blog/2007-10-05/dtracetoolkit-099.html
+        - text: ", a major release were I added many language provider tools (2007)."
+      - listitem [ref=e695]:
+        - text: My
+        - 'link "Solaris Performance: Introduction" [ref=e696] [cursor=pointer]':
+          - /url: Slides/Sun2007_Solaris_Performance_Intro
+        - text: "slides from May 2007, covering Solaris performance features and observability. This includes two of my methodologies for performance analysis: the \"By-Layer Strategy\" and the \"3-Metric Strategy\" (back when I spelled utilization with an \"s\"). The latter strategy is what I later called the"
+        - link "USE Method" [ref=e697] [cursor=pointer]:
+          - /url: usemethod.html
+        - text: (
+        - link "slides" [ref=e698] [cursor=pointer]:
+          - /url: Slides/Sun2007_Solaris_Performance_Intro
+        - text: ","
+        - link "PDF" [ref=e699] [cursor=pointer]:
+          - /url: Slides/Sun2007_Solaris_Performance_Intro.pdf
+        - text: ).
+      - listitem [ref=e700]:
+        - text: Slides for a Sun Microsystems talk on
+        - 'link "Virtualization: Zones" [ref=e701] [cursor=pointer]':
+          - /url: Slides/Sun2007_Zones_Intro
+        - text: (OS containers) (
+        - link "slides" [ref=e702] [cursor=pointer]:
+          - /url: Slides/Sun2007_Zones_Intro
+        - text: ","
+        - link "PDF" [ref=e703] [cursor=pointer]:
+          - /url: Slides/Sun2007_Zones_Intro.pdf
+        - text: ) (2007).
+      - listitem [ref=e704]:
+        - text: "Slide decks (PDFs) from DTrace talks in 2007:"
+        - link "DTrace Intro" [ref=e705] [cursor=pointer]:
+          - /url: Slides/dtrace_topics_intro.pdf
+        - text: ","
+        - link "DTraceToolkit" [ref=e706] [cursor=pointer]:
+          - /url: Slides/dtrace_topics_dtracetoolkit.pdf
+        - text: ", and"
+        - link "DTrace Java" [ref=e707] [cursor=pointer]:
+          - /url: Slides/dtrace_topics_java.pdf
+        - text: .
+      - listitem [ref=e708]:
+        - text: Posts demonstrating the
+        - link "DTrace Bourne shell (sh) provider" [ref=e709] [cursor=pointer]:
+          - /url: /blog/2007-08-10/dtrace-bourne-shell-sh-provider1.html
+        - text: and
+        - link "iSCSI DTrace Provider" [ref=e710] [cursor=pointer]:
+          - /url: /blog/2007-07-31/iscsi-dtrace-provider.html
+        - text: (2007).
+      - listitem [ref=e711]:
+        - text: A post on
+        - link "DTracing Off-CPU Time" [ref=e712] [cursor=pointer]:
+          - /url: /blog/2007-07-29/dtracing-off-cpu-time.html
+        - text: ", where I used DTrace and my DTraceToolkit to analyze gnome-terminal startup latency (2007)."
+      - listitem [ref=e713]:
+        - text: Slides for the OSCON 2007 talk
+        - 'link "Observability Matters: How DTrace Helped Twitter" [ref=e714] [cursor=pointer]':
+          - /url: Slides/OSCON2007_Observability_DTrace_Twitter
+        - text: by Adam Leventhal and myself. At the time, Twitter was a one-year old startup running on Solaris with crippling performance issues, and Sun's top engineering team (including Adam and myself) visited the SF headquarters to help. This findings by the team (
+        - link "slides" [ref=e715] [cursor=pointer]:
+          - /url: Slides/OSCON2007_Observability_DTrace_Twitter
+        - text: ","
+        - link "PDF" [ref=e716] [cursor=pointer]:
+          - /url: Slides/OSCON2007_Observability_DTrace_Twitter.pdf
+        - text: ) (2007).
+      - listitem [ref=e717]:
+        - text: A post on
+        - link "AMD64 PICs, CPI" [ref=e718] [cursor=pointer]:
+          - /url: /blog/2007-02-27/amd64-pics.html
+        - text: ", where I used Solaris cpustat and PICs (aka PMCs) to measure cycles per instruction, and summarized tuning strategies for low or high CPI (2007)."
+      - listitem [ref=e719]:
+        - text: A post on
+        - link "Colortrace" [ref=e720] [cursor=pointer]:
+          - /url: /blog/2007-01-29/colortrace.html
+        - text: ", where I developed a DTrace tool for flow tracing across different OS stack layers and colorizing the output (2007)."
+      - listitem [ref=e721]:
+        - text: A post on
+        - link "DTracing vim Latency" [ref=e722] [cursor=pointer]:
+          - /url: /blog/2006-11-04/dtracing-vim-latency.html
+        - text: ", where I showed how I improved vim startup time by 340x using DTrace and my DTraceToolkit (2006)."
+      - listitem [ref=e723]:
+        - text: The design document for the
+        - link "DTrace Network Providers" [ref=e724] [cursor=pointer]:
+          - /url: DTrace/DTrace_Network_Providers.html
+        - text: I developed, and a
+        - link "CEC2006 demos" [ref=e725] [cursor=pointer]:
+          - /url: DTrace/CEC2006_demo.html
+        - text: page showing the first live demonstrations of my DTrace TCP provider, at the CEC conference (2006).
+      - listitem [ref=e726]:
+        - text: My post
+        - link "DTrace meets JavaScript" [ref=e727] [cursor=pointer]:
+          - /url: /blog/2006-09-18/dtrace-meets-javascript.html
+        - text: ", where I announced the first DTrace provider for JavaScript I had been developing, which was for the Mozilla Spider Monkey engine, and then"
+        - link "JavaScript Provider ver 2.0" [ref=e728] [cursor=pointer]:
+          - /url: /blog/2007-07-30/javascript-provider-ver-2-0.html
+        - text: (2006-7).
+      - listitem [ref=e729]:
+        - text: "The companion book to Solaris Internals 2nd Edition:"
+        - link "Solaris Performance and Tools" [ref=e730] [cursor=pointer]:
+          - /url: http://www.amazon.com/gp/product/0131568191/ref=as_li_ss_tl?ie=UTF8&tag=deirdrestraug-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=0131568191
+        - text: ", with Richard McDougall and Jim Mauro (Prentice Hall, 2006; ISBN 0131568191). These chapters began during development of Solaris Internals 2nd Edition, and were later split into a separate companion volume. It worked well: a reference book on internals, and a companion book for practitioners on performance. 444 pages."
+      - listitem [ref=e731]:
+        - text: The post
+        - link "How much CPU does a down interface chew?" [ref=e732] [cursor=pointer]:
+          - /url: /blog/2006-08-11/how-much-cpu-does-a-down-interface-chew.html
+        - text: ", solving a mysterious performance issue on Solaris (2006)."
+      - listitem [ref=e733]:
+        - text: A 233-slide deck for a
+        - link "DTrace workshop" [ref=e734] [cursor=pointer]:
+          - /url: Slides/CS2006_dtrace_workshop_slides
+        - text: that I developed and delivered in London, that summarized Solaris performance and DTrace analysis. As part of this workshop I created performance labs for the students to solve (not included in the slides) (
+        - link "slides" [ref=e735] [cursor=pointer]:
+          - /url: Slides/CS2006_dtrace_workshop_slides
+        - text: ","
+        - link "PDF" [ref=e736] [cursor=pointer]:
+          - /url: Slides/CS2006_dtrace_workshop_slides.pdf
+        - text: ) (2006).
+      - listitem [ref=e737]:
+        - text: My
+        - link "Solaris 10 Zones" [ref=e738] [cursor=pointer]:
+          - /url: zones.html
+        - text: page from 2005, where I developed models for configuring Zones with Resource Controls. This was pioneering work for the performance isolation of containers (nowadays the realm of Linux cgroups). I was not a Sun employee at the time. Sun later based their official docs on my work, without attribution (they were not allowed to include my home page URL in the official Sun references).
+      - listitem [ref=e739]:
+        - link "DTrace vs truss" [ref=e740] [cursor=pointer]:
+          - /url: DTrace/dtracevstruss.html
+        - text: ", a page to explain the virtues of DTrace over truss, the Solaris syscall tracer (2005)."
+      - listitem [ref=e741]:
+        - text: Analysis of
+        - link "prstat vs top using DTrace" [ref=e742] [cursor=pointer]:
+          - /url: DTrace/prstatvstop.html
+        - text: ", and showing why these perform differently (2005)."
+      - listitem [ref=e743]:
+        - text: "Another DTrace case study:"
+        - link "DTracing SMC" [ref=e744] [cursor=pointer]:
+          - /url: DTrace/smc.html
+        - text: ", the Solaris Management Console, which took 30 minutes to startup (yes, minutes). I found various issues using DTrace, including 12 Million mostly 1 byte sequential read()s. (2005)."
+      - listitem [ref=e745]:
+        - text: "A DTrace case study:"
+        - link "DTracing Lost CPU" [ref=e746] [cursor=pointer]:
+          - /url: DTrace/lostcpu.html
+        - text: ", demonstrating DTrace and my new DTrace tools. I published this and others before Solaris 10 was released, at a time when there were no other websites on using DTrace, and so these became important first use cases from a customer (2005)."
+      - listitem [ref=e747]:
+        - link "DTrace" [ref=e748] [cursor=pointer]:
+          - /url: dtrace.html
+        - text: where I shared the first publicly available DTrace tools and later my
+        - link "DTraceToolkit" [ref=e749] [cursor=pointer]:
+          - /url: dtracetoolkit.html
+        - text: . I created this page in 2004 and it was also the first public website on DTrace.
+      - listitem [ref=e750]:
+        - text: I had two prior professional blogs (see my
+        - link "blog archive" [ref=e751] [cursor=pointer]:
+          - /url: /blog/archive.html
+        - text: "for archived posts):"
+        - link "blogs.oracle.com/brendan" [ref=e752] [cursor=pointer]:
+          - /url: http://blogs.oracle.com/brendan
+        - text: (formally
+        - link "blogs.sun.com/brendan" [ref=e753] [cursor=pointer]:
+          - /url: http://web.archive.org/web/*/blogs.sun.com/brendan
+        - text: ), where I discussed performance, DTrace, and the ZFS storage appliance (2006-2010); and
+        - link "dtrace.org/blogs/brendan" [ref=e754] [cursor=pointer]:
+          - /url: http://dtrace.org/blogs/brendan
+        - text: ", where I continued posting about cloud performance and DTrace (2010-2014). Posts from my prior personal blog at"
+        - link "bdgregg.blogspot.com" [ref=e755] [cursor=pointer]:
+          - /url: http://bdgregg.blogspot.com
+        - text: is also in the archive.
+      - listitem [ref=e756]:
+        - text: My old and unmaintained Unix and Sun Solaris material is labeled as being in my
+        - link "Crypt" [ref=e757] [cursor=pointer]:
+          - /url: crypt.html
+        - text: ", and kept online for historical interest only. The Crypt containers a few extra things not listed above. (circa 2003-2005.)"
+    - separator [ref=e758]
+    - heading "Videos" [level=2] [ref=e759]
+    - list [ref=e760]:
+      - listitem [ref=e761]:
+        - text: The documentary
+        - 'link "eBPF: Unlocking the Kernel" [ref=e762] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=Wb_vD3XZYOA
+        - text: with interviews with myself and others on the origin of eBPF in 2014. To see all the familar faces and hear their familiar voices discussing the points we were making back then brings me right back, and it lets you experience it as well (
+        - link "youtube" [ref=e763] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=Wb_vD3XZYOA
+        - text: ","
+        - link "blog" [ref=e764] [cursor=pointer]:
+          - /url: /blog/2024-03-10/ebpf-documentary.html
+        - text: ). (30 mins) (2024)
+      - listitem [ref=e765]:
+        - text: I made an unplanned appearance at GopherConAU to give a lightning talk on
+        - link "Golang Flame Graphs" [ref=e766] [cursor=pointer]:
+          - /url: https://youtu.be/YY90HRtuyM4?si=TOyTNqsQr3kzoIwP&t=300
+        - text: . (5 mins) (2023)
+      - listitem [ref=e767]:
+        - text: Early talks about a new performance analysis methodology, "Fast by Friday," at
+        - link "Kernel Recipes" [ref=e768] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=XudHNF4k_x0
+        - text: and the
+        - link "eBPF Summit" [ref=e769] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=s1mobd8t_u0
+        - text: (KR
+        - link "youtube" [ref=e770] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=XudHNF4k_x0
+        - text: ","
+        - link "slides" [ref=e771] [cursor=pointer]:
+          - /url: Slides/KernelRecipes2023_FastByFriday
+        - text: ). (43 mins) (2023)
+      - listitem [ref=e772]:
+        - text: I made an appearance during Greg Lavender's Intel InnovatiON 2022 keynote where I demoed
+        - link "Efficient CPU flame graphs and Off-CPU flame graphs" [ref=e773] [cursor=pointer]:
+          - /url: https://youtu.be/PIJL2BGjL-4?si=4YcgtkncF1qktB37&t=3536
+        - text: . (7 mins) (2022)
+      - listitem [ref=e774]:
+        - text: Video for my YOW! talk on
+        - 'link "Visualizing Performance: The Developers'' Guide to Flame Graphs" [ref=e775] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=VMpTU15rIZY
+        - text: ", summarizing their state in 2022: Over 80 implementations, over 400 related projects, etc. ("
+        - link "youtube" [ref=e776] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=VMpTU15rIZY
+        - text: ","
+        - link "slides" [ref=e777] [cursor=pointer]:
+          - /url: Slides/YOW2022_flame_graphs
+        - text: ) (49 mins) (2022)
+      - listitem [ref=e778]:
+        - text: At LSFMMBPF I led two group discussions in a meeting of eBPF lead developers. These low-level discussions among developers aren't normally videoed, so this is a rare view into the room where it happens.
+        - link "BPF observability tools update" [ref=e779] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=R3g9BdbfwnE
+        - text: (38 mins) and
+        - link "Developing BPF guidelines" [ref=e780] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=Y-ROv4LsO0Q
+        - text: (25 mins). (2022).
+      - listitem [ref=e781]:
+        - text: My SREcon APAC 2022 keynote on
+        - 'link "Computing Performance: What''s on the Horizon" [ref=e782] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=zGSQdN2X_k0
+        - text: ", covering processors, memory, disks, networking, hypervisors, and more ("
+        - link "youtube" [ref=e783] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=zGSQdN2X_k0
+        - text: ","
+        - link "slides" [ref=e784] [cursor=pointer]:
+          - /url: /Slides/SREcon2022_ComputingPerformance/
+        - text: ) (2022).
+      - listitem [ref=e785]:
+        - text: My video appearance (with pandemic hair) at Intel InnovatiON 2021 about
+        - link "Processor Benchmarking for the Netflix cloud" [ref=e786] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=-Y4pDLhqKI4
+        - text: (
+        - link "video" [ref=e787] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=-Y4pDLhqKI4
+        - text: ","
+        - link "slides" [ref=e788] [cursor=pointer]:
+          - /url: Slides/IntelON2021_ProcessorBenchmarking
+        - text: ). (2021).
+      - listitem [ref=e789]:
+        - text: Video for my eBPF Summit keynote
+        - 'link "Performance Wins with eBPF: Getting Started" [ref=e790] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=bGAVrtb_tFs
+        - text: (
+        - link "youtube" [ref=e791] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bGAVrtb_tFs
+        - text: ","
+        - link "slides" [ref=e792] [cursor=pointer]:
+          - /url: Slides/eBPFSummit2021_eBPF_performance_getting_started
+        - text: ) (17 mins) (2021).
+      - listitem [ref=e793]:
+        - text: Video for my Facebook Systems@Scale talk
+        - 'link "Performance Wins with BPF: Getting Started" [ref=e794] [cursor=pointer]':
+          - /url: https://www.facebook.com/atscaleevents/videos/536868690830345
+        - text: (
+        - link "video" [ref=e795] [cursor=pointer]:
+          - /url: https://www.facebook.com/atscaleevents/videos/536868690830345
+        - text: ","
+        - link "slides" [ref=e796] [cursor=pointer]:
+          - /url: Slides/Scale2021_BPF_performance_getting_started_2021
+        - text: ) (21 mins) (2021).
+      - listitem [ref=e797]:
+        - text: My USENIX LISA2021 online plenary video on
+        - 'link "Computing Performance: On the Horizon" [ref=e798] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=5nN1wjA_S30
+        - text: ", covering the present and future of performance. ("
+        - link "youtube" [ref=e799] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=5nN1wjA_S30
+        - text: ","
+        - link "blog" [ref=e800] [cursor=pointer]:
+          - /url: /blog/2021-07-05/computing-performance-on-the-horizon.html
+        - text: ) (41 mins) (2021).
+      - listitem [ref=e801]:
+        - text: My USENIX LISA2021 online talk video on
+        - link "BPF Internals (eBPF)" [ref=e802] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_5Z2AU7QTH4
+        - text: showing high-level to machine code (
+        - link "youtube" [ref=e803] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_5Z2AU7QTH4
+        - text: ","
+        - link "blog" [ref=e804] [cursor=pointer]:
+          - /url: /blog/2021-06-15/bpf-internals.html
+        - text: ) (39 mins) (2021).
+      - listitem [ref=e805]:
+        - text: My eBPF summit online keynote video on
+        - 'link "Performance Wins with BPF: Getting Started" [ref=e806] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=wyfhjr_ufag
+        - text: . This was seven months into a California lockdown and, like many, I needed a haircut (
+        - link "youtube" [ref=e807] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=wyfhjr_ufag
+        - text: ","
+        - link "slides" [ref=e808] [cursor=pointer]:
+          - /url: Slides/eBPFSummit2021_eBPF_performance_getting_started
+        - text: ) (19 mins).
+      - listitem [ref=e809]:
+        - text: My YOW2020 online talk video for
+        - link "Linux Systems Performance" [ref=e810] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_Lf-h5TDTN0
+        - text: ", my first online conference talk ("
+        - link "youtube" [ref=e811] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_Lf-h5TDTN0
+        - text: ","
+        - link "slides" [ref=e812] [cursor=pointer]:
+          - /url: Slides/YOW2020_Linux_Systems_Performance
+        - text: ) (46 mins) (2020).
+      - listitem [ref=e813]:
+        - text: My AWS re:Invent 2019 talk video
+        - link "BPF Performance Analysis at Netflix" [ref=e814] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=16slh29iN1g
+        - text: includes my BPF theremin demo (
+        - link "youtube" [ref=e815] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=16slh29iN1g
+        - text: ","
+        - link "slides" [ref=e816] [cursor=pointer]:
+          - /url: Slides/reInvent2019_BPF_Performance_Analysis
+        - text: ) (57 mins).
+      - listitem [ref=e817]:
+        - text: My Ubuntu Masters 2019 keynote
+        - 'link "Extended BPF: A New Type of Software" [ref=e818] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=7pmXdG8-7WU&feature=youtu.be
+        - text: ", where I first discussed how BPF is a new type of software and a fundamental change to the 50-year old kernel model, and how we observe this new software that's already in production at major companies ("
+        - link "youtube" [ref=e819] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=7pmXdG8-7WU&feature=youtu.be
+        - text: ","
+        - link "slides" [ref=e820] [cursor=pointer]:
+          - /url: Slides/UM2019_BPF_a_new_type_of_software
+        - text: ) (31 mins).
+      - listitem [ref=e821]:
+        - text: My USENIX LISA 2019 talk on
+        - link "Linux Systems Performance" [ref=e822] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=fhBHvsi0Ql0
+        - text: ", covering observability, methodologies, benchmarking, profiling, tracing, and tuning. Some companies have indicated they will use this video it for new hire training. ("
+        - link "youtube" [ref=e823] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=fhBHvsi0Ql0
+        - text: ","
+        - link "slides" [ref=e824] [cursor=pointer]:
+          - /url: Slides/LISA2019_Linux_Systems_Performance
+        - text: ) (40 mins).
+      - listitem [ref=e825]:
+        - text: My SCaLE17x talk
+        - link "eBPF Perf Tools" [ref=e826] [cursor=pointer]:
+          - /url: https://youtu.be/P2hbiWTB2w4?t=158
+        - text: where I instrumented Minecraft using eBPF live (
+        - link "youtube" [ref=e827] [cursor=pointer]:
+          - /url: https://youtu.be/P2hbiWTB2w4?t=158
+        - text: ","
+        - link "slides" [ref=e828] [cursor=pointer]:
+          - /url: Slides/SCALE2019_eBPF_Perf_Tools
+        - text: ) (60 mins) (2019).
+      - listitem [ref=e829]:
+        - text: My YOW2018 keynote
+        - link "Cloud Performance Root Cause Analysis at Netflix" [ref=e830] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=LLZmTuTSEB8
+        - text: which I delivered in Sydney, Brisbane, and Melbourne (
+        - link "youtube" [ref=e831] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=tAY8PnfrS_k
+        - text: ","
+        - link "slides" [ref=e832] [cursor=pointer]:
+          - /url: Slides/YOW2018_CloudPerfRCANetflix
+        - text: ) (59 mins).
+      - listitem [ref=e833]:
+        - text: My YOW2018 CTO summit keynote
+        - link "Working at Netflix" [ref=e834] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=EjFxLvv9_ao
+        - text: ", which was my first non-strictly-technical talk ("
+        - link "youtube" [ref=e835] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=EjFxLvv9_ao
+        - text: ","
+        - link "slides" [ref=e836] [cursor=pointer]:
+          - /url: Slides/YOWCTO2018_Working_at_Netflix
+        - text: ) (28 mins).
+      - listitem [ref=e837]:
+        - text: A LinkedIn Performance meetup talk on
+        - link "FlameScope" [ref=e838] [cursor=pointer]:
+          - /url: https://youtu.be/ogEhUnQdQiU?t=1361
+        - text: with my colleague Martin Spier (
+        - link "youtube" [ref=e839] [cursor=pointer]:
+          - /url: https://youtu.be/ogEhUnQdQiU?t=1361
+        - text: ","
+        - link "slides" [ref=e840] [cursor=pointer]:
+          - /url: Slides/LinkedIn2018_FlameScope
+        - text: ) (24 mins) (2018).
+      - listitem [ref=e841]:
+        - text: My PerconaLive 2018 keynote on summarizing
+        - link "Linux Performance 2018" [ref=e842] [cursor=pointer]:
+          - /url: https://youtu.be/sV3XfrfjrPo?t=30m51s
+        - text: (
+        - link "slides" [ref=e843] [cursor=pointer]:
+          - /url: Slides/Percona2018_Linux_Performance
+        - text: ","
+        - link "PDF" [ref=e844] [cursor=pointer]:
+          - /url: Slides/Percona2018_Linux_Performance.pdf
+        - text: ","
+        - link "youtube" [ref=e845] [cursor=pointer]:
+          - /url: https://youtu.be/sV3XfrfjrPo?t=30m51s
+        - text: ) (20 mins).
+      - listitem [ref=e846]:
+        - text: "I made two short videos for the launch of Netflix FlameScope:"
+        - link "FlameScope Intro" [ref=e847] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=cFuI8SAAvJg
+        - text: (1 min) and
+        - link "FlameScope Examples" [ref=e848] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=gRawd7CO-Q8
+        - text: (11 mins) (2018).
+      - listitem [ref=e849]:
+        - text: I gave an lightning talk at SCALE16x on
+        - link "CPU utilization is WRONG" [ref=e850] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=QkcBASKLyeU
+        - text: ", which was Ignite-style: auto advancing slides ("
+        - link "youtube" [ref=e851] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=QkcBASKLyeU
+        - text: ) (5 mins) (2018).
+      - listitem [ref=e852]:
+        - text: My AWS re:Invent 2017 talk on
+        - link "How Netflix Tunes EC2 Instances for Performance" [ref=e853] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=89fYOo1V2pA
+        - text: ", describing instance selection, EC2 features, kernel tuning, and observability ("
+        - link "youtube" [ref=e854] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=89fYOo1V2pA
+        - text: ","
+        - link "slides" [ref=e855] [cursor=pointer]:
+          - /url: Slides/AWSreInvent2017_performance_tuning_EC2
+        - text: ) (56 mins).
+      - listitem [ref=e856]:
+        - text: My USENIX LISA 2017 talk
+        - link "Linux Container Performance Analysis" [ref=e857] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=NYLXZ58EboM
+        - text: (
+        - link "youtube" [ref=e858] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=NYLXZ58EboM
+        - text: ","
+        - link "slides" [ref=e859] [cursor=pointer]:
+          - /url: Slides/LISA2017_Container_Performance_Analysis
+        - text: ) (42 mins).
+      - listitem [ref=e860]:
+        - text: My Kernel Recipes 2017 talk on
+        - link "Using Linux perf at Netflix" [ref=e861] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=UVM3WX8Lq2k
+        - text: ", focusing on fixing CPU profiling ("
+        - link "youtube" [ref=e862] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=UVM3WX8Lq2k
+        - text: ","
+        - link "slides" [ref=e863] [cursor=pointer]:
+          - /url: Slides/KernelRecipes_Perf_Events
+        - text: ) (51 mins).
+      - listitem [ref=e864]:
+        - text: My Kernel Recipes 2017 talk on
+        - link "Performance Analysis with BPF" [ref=e865] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=nhxq6jLGc_w
+        - text: ", including a 14 minute demo ("
+        - link "youtube" [ref=e866] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=nhxq6jLGc_w
+        - text: ","
+        - link "slides" [ref=e867] [cursor=pointer]:
+          - /url: Slides/KernelRecipes_BPF_Perf_Analysis
+        - text: ) (42 mins).
+      - listitem [ref=e868]:
+        - text: For EuroBSDcon 2017, I gave the closing keynote on
+        - link "System Performance Analysis Methodologies (BSD)" [ref=e869] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=ay41Uq1DrvM
+        - text: using FreeBSD for many examples, and introduced some new content (
+        - link "youtube" [ref=e870] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=ay41Uq1DrvM
+        - text: ","
+        - link "slides" [ref=e871] [cursor=pointer]:
+          - /url: Slides/EuroBSDcon2017_SystemMethodology
+        - text: ) (60 mins).
+      - listitem [ref=e872]:
+        - text: My talk on
+        - link "PMCs on the Cloud" [ref=e873] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=i5Ml9uY2rBw
+        - text: at the SBSRE meetup, with my Netflix cloud performance team colleagues (
+        - link "youtube" [ref=e874] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=i5Ml9uY2rBw
+        - text: ","
+        - link "meetup" [ref=e875] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=86Wj_-pWcwE
+        - text: ). (16 mins of 85) (2017).
+      - listitem [ref=e876]:
+        - text: My USENIX ATC 2017 talk
+        - link "Performance Analysis Superpowers with Linux eBPF" [ref=e877] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=oc9000dM9-k
+        - text: ", updating my earlier talk ("
+        - link "youtube" [ref=e878] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=oc9000dM9-k
+        - link "slides" [ref=e879] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_BPF_superpowers
+        - text: ) (39 mins).
+      - listitem [ref=e880]:
+        - text: My USENIX ATC 2017 talk
+        - link "Visualizing Performance with Flame Graphs" [ref=e881] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=D53T1Ejig1Q
+        - text: ", with updates and challenges ("
+        - link "youtube" [ref=e882] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=D53T1Ejig1Q
+        - text: ","
+        - link "slides" [ref=e883] [cursor=pointer]:
+          - /url: Slides/USENIX_ATC2017_flamegraphs
+        - text: ) (61 mdns).
+      - listitem [ref=e884]:
+        - text: My Velocity 2017 talk
+        - link "Performance Analysis Superpowers with Linux eBPF" [ref=e885] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bj3qdEDbCD4
+        - text: (
+        - link "youtube" [ref=e886] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bj3qdEDbCD4
+        - text: ","
+        - link "slides" [ref=e887] [cursor=pointer]:
+          - /url: Slides/Velocity2017_BPF_superpowers
+        - text: ) (43 mins).
+      - listitem [ref=e888]:
+        - text: My DockerCon 2017 talk on
+        - link "Container Performance Analysis" [ref=e889] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bK9A5ODIgac
+        - text: ", where I showed how to find bottlenecks in the host vs the container, how to profiler container apps, and dig deeper into the kernel ("
+        - link "youtube" [ref=e890] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bK9A5ODIgac
+        - text: ","
+        - link "slides" [ref=e891] [cursor=pointer]:
+          - /url: Slides/DockerCon2017_performance_analysis
+        - text: ). (42 mins).
+      - listitem [ref=e892]:
+        - text: My SCaLE15x talk on
+        - 'link "Linux 4.x Tracing: Performance Analysis with bcc/BPF" [ref=e893] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=w8nFRoFJ6EQ
+        - text: ", including a ply demo ("
+        - link "youtube" [ref=e894] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=w8nFRoFJ6EQ
+        - text: ","
+        - link "slides" [ref=e895] [cursor=pointer]:
+          - /url: Slides/SCALE2017_perf_analysis_eBPF
+        - text: ) (64 mins) (2017).
+      - listitem [ref=e896]:
+        - text: My BSidesSF 2017 talk with Alex Maestretti on
+        - link "Linux Monitoring at Scale with eBPF" [ref=e897] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=44nV6Mj11uw
+        - text: ", including our diagram of events to monitor for intrusion detection ("
+        - link "youtube" [ref=e898] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=44nV6Mj11uw
+        - text: ","
+        - link "slides" [ref=e899] [cursor=pointer]:
+          - /url: Slides/BSidesSF2017_BPF_security_monitoring
+        - text: ) (28 mins).
+      - listitem [ref=e900]:
+        - text: My Linux.conf.au 2017 talk on
+        - 'link "BPF: Tracing and More" [ref=e901] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=JRFNIKUROPE
+        - text: ", where I summarized other uses for enhanced BPF. ("
+        - link "youtube" [ref=e902] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=JRFNIKUROPE
+        - text: ","
+        - link "slides" [ref=e903] [cursor=pointer]:
+          - /url: Slides/LCA2017_BPF_tracing_and_more
+        - text: ) (46 mins).
+      - listitem [ref=e904]:
+        - text: My USENIX/LISA 2016 full talk
+        - 'link "Linux 4.x Tracing: Using BPF Superpowers" [ref=e905] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=UmOU3I36T2U
+        - text: (
+        - link "youtube" [ref=e906] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=UmOU3I36T2U
+        - text: ","
+        - link "slides" [ref=e907] [cursor=pointer]:
+          - /url: Slides/LISA2016_BPF_tools_16_9
+        - text: ) (44 mins).
+      - listitem [ref=e908]:
+        - text: At LISA 2016, my
+        - link "Give me 15 minutes and I'll change your view of Linux tracing" [ref=e909] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=GsMs3n8CB6g
+        - text: demo, showing ftrace, perf, bcc/BPF (
+        - link "youtube" [ref=e910] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=GsMs3n8CB6g
+        - text: ) (18 mins).
+      - listitem [ref=e911]:
+        - text: My talk at the first sysdig conference on
+        - link "Designing Tracing Tools" [ref=e912] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=uibLwoVKjec
+        - text: (
+        - link "youtube" [ref=e913] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=uibLwoVKjec
+        - text: ","
+        - link "slides" [ref=e914] [cursor=pointer]:
+          - /url: Slides/SysdigSummit2016_DesigningTracingTools
+        - text: ) (2016) (46 mins).
+      - listitem [ref=e915]:
+        - text: My keynote talk for ACM Applicative 2016 on
+        - 'link "System Methodology: Holistic Performance Analysis on Modern Systems" [ref=e916] [cursor=pointer]':
+          - /url: https://youtu.be/eO94l0aGLCA?t=3m37s
+        - text: ", where I used several different operating systems as examples ("
+        - link "youtube" [ref=e917] [cursor=pointer]:
+          - /url: https://youtu.be/eO94l0aGLCA?t=3m37s
+        - text: ","
+        - link "slides" [ref=e918] [cursor=pointer]:
+          - /url: Slides/ACMApplicative2016_SystemMethodology
+        - text: ) (57 mins).
+      - listitem [ref=e919]:
+        - text: For PerconaLive 2016, my
+        - link "Linux Systems Performance 2016" [ref=e920] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=CbmEDXq7es0
+        - text: summary of this topic in 50 minutes (
+        - link "youtube" [ref=e921] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=CbmEDXq7es0
+        - text: ","
+        - link "slides" [ref=e922] [cursor=pointer]:
+          - /url: Slides/Percona2016_LinuxSystemsPerf
+        - text: ) (50 mins).
+      - listitem [ref=e923]:
+        - text: I gave the closing address at SREcon16 Santa Clara on
+        - link "Performance Checklists for SREs" [ref=e924] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=zxCWXNigDpA
+        - text: ", which was also my first talk about my SRE (Site Reliability Engineering) work at Netflix ("
+        - link "blog" [ref=e925] [cursor=pointer]:
+          - /url: /blog/2016-05-04/srecon2016-perf-checklists-for-sres.html
+        - text: ","
+        - link "youtube" [ref=e926] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=zxCWXNigDpA
+        - text: ","
+        - link "usenix" [ref=e927] [cursor=pointer]:
+          - /url: https://www.usenix.org/conference/srecon16/program/presentation/gregg
+        - text: ","
+        - link "slides" [ref=e928] [cursor=pointer]:
+          - /url: Slides/SREcon_2016_perf_checklists
+        - text: ) (61 mins).
+      - listitem [ref=e929]:
+        - text: For Facebook's Performance @Scale conference, my
+        - link "Linux BPF Superpowers" [ref=e930] [cursor=pointer]:
+          - /url: https://www.facebook.com/atscaleevents/videos/1693888610884236/
+        - text: talk video where I introduced the tracing capabilities of this new feature in the Linux 4.x series (
+        - link "facebook" [ref=e931] [cursor=pointer]:
+          - /url: https://www.facebook.com/atscaleevents/videos/1693888610884236/
+        - text: ","
+        - link "slides" [ref=e932] [cursor=pointer]:
+          - /url: Slides/PerformanceAtScale2016_LinuxBPFSuperpowers
+        - text: ) (2016) (34 mins).
+      - listitem [ref=e933]:
+        - link "Broken Linux Performance Tools" [ref=e934] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=OPio8V-z03c
+        - text: for SCaLE14x, focusing on Linux problems with a bit more advice (
+        - link "youtube" [ref=e935] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=OPio8V-z03c
+        - text: ","
+        - link "slides" [ref=e936] [cursor=pointer]:
+          - /url: Slides/SCALE2016_Broken_Linux_Performance_Tools
+        - text: ) (2016) (1 hr).
+      - listitem [ref=e937]:
+        - text: For QConSF 2015 my
+        - link "Broken Performance Tools" [ref=e938] [cursor=pointer]:
+          - /url: https://www.infoq.com/presentations/broken-performance-tools
+        - text: talk highlighting common pitfalls with system metrics, tools, and methodologies for generic Linux/Unix systems; good quality video is synced with the slides on the infoq site (
+        - link "infoq" [ref=e939] [cursor=pointer]:
+          - /url: https://www.infoq.com/presentations/broken-performance-tools
+        - text: ","
+        - link "slides" [ref=e940] [cursor=pointer]:
+          - /url: Slides/QCon2015_Broken_Performance_Tools
+        - text: ) (2015) (50 mins).
+      - listitem [ref=e941]:
+        - text: My JavaOne 2015 talk on
+        - link "Java Mixed-Mode Flame Graphs" [ref=e942] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=BHA65BqlqSk
+        - text: introducing -XX:+PreserveFramePointer; as it wasn't officially recorded this is a capture from my laptop (
+        - link "youtube" [ref=e943] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=BHA65BqlqSk
+        - text: ","
+        - link "slides" [ref=e944] [cursor=pointer]:
+          - /url: Slides/JavaOne2015_MixedModeFlameGraphs
+        - text: ) (2015).
+      - listitem [ref=e945]:
+        - text: My Monitorama 2015 talk
+        - link "Netflix Instance Performance Analysis Requirements" [ref=e946] [cursor=pointer]:
+          - /url: https://vimeo.com/131484323
+        - text: ", where I showed the different features that are desirable and undesirable for an instance analysis product, aimed at both vendors and customers ("
+        - link "blog" [ref=e947] [cursor=pointer]:
+          - /url: /blog/2015-06-23/netflix-instance-analysis-requirements.html
+        - text: ","
+        - link "vimeo" [ref=e948] [cursor=pointer]:
+          - /url: https://vimeo.com/131484323
+        - text: ","
+        - link "slides" [ref=e949] [cursor=pointer]:
+          - /url: Slides/Monitorama2015_NetflixInstanceAnalysis
+        - text: ) (34 mins).
+      - listitem [ref=e950]:
+        - text: My Velocity 2015 tutorial
+        - link "Linux Performance Tools" [ref=e951] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=FJW8nGV4jxY&list=PLhhdIMVi0o5RNrf8E2dUijvGpqKLB9TCR
+        - text: ", which summarizes performance observability, benchmarking, tuning, static performance tuning, and tracing tools. This is an expanded and more complete version of an earlier talk of mine, and I was able to include some live demos of tools and methodology. It should be useful for everyone working on Linux systems. ("
+        - link "youtube" [ref=e952] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=FJW8nGV4jxY&list=PLhhdIMVi0o5RNrf8E2dUijvGpqKLB9TCR
+        - text: ","
+        - link "slides" [ref=e953] [cursor=pointer]:
+          - /url: Slides/Velocity2015_LinuxPerfTools
+        - text: ) (100 mins).
+      - listitem [ref=e954]:
+        - text: At SCALE13x (2015), my
+        - link "Linux Profiling at Netflix" [ref=e955] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_Ik8oiQvWgo
+        - text: talk on perf_events CPU profiling and features (
+        - link "blog" [ref=e956] [cursor=pointer]:
+          - /url: /blog/2015-02-27/linux-profiling-at-netflix.html
+        - text: ","
+        - link "youtube" [ref=e957] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=_Ik8oiQvWgo
+        - text: ","
+        - link "slides" [ref=e958] [cursor=pointer]:
+          - /url: Slides/SCALE2015_Linux_perf_profiling
+        - text: ) (59 mins).
+      - listitem [ref=e959]:
+        - text: "For USENIX LISA14, I gave a talk about my Linux perf-tools collection, which is based on ftrace and perf_events:"
+        - 'link "Linux Performance Analysis: New Tools and Old Secrets" [ref=e960] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=R4IKeMQhM0Y
+        - text: (
+        - link "youtube" [ref=e961] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=R4IKeMQhM0Y
+        - text: ","
+        - link "slides" [ref=e962] [cursor=pointer]:
+          - /url: Slides/LISA2014_LinuxPerfAnalysisNewTools
+        - text: ","
+        - link "USENIX" [ref=e963] [cursor=pointer]:
+          - /url: https://www.usenix.org/conference/lisa14/conference-program/presentation/gregg
+        - text: ) (43 mins).
+      - listitem [ref=e964]:
+        - text: My AWS re:Invent 2014 talk
+        - link "Performance Tuning EC2 Instances" [ref=e965] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=7Cyd22kOqWc
+        - text: ": selection, Linux tuning, observability ("
+        - link "youtube" [ref=e966] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=7Cyd22kOqWc
+        - text: ","
+        - link "slides" [ref=e967] [cursor=pointer]:
+          - /url: Slides/AWSreInvent2014_perf_tuning_EC2_nobkg
+        - text: ) (45 mins).
+      - listitem [ref=e968]:
+        - text: I was interviewed by BSD Now about BSD and benchmarking in
+        - 'link "Episode 065: 8,000,000 Mogofoo-ops" [ref=e969] [cursor=pointer]':
+          - /url: http://www.bsdnow.tv/episodes/2014_11_26-8000000_mogofoo-ops
+        - text: (
+        - link "youtube" [ref=e970] [cursor=pointer]:
+          - /url: http://youtu.be/69RMuhFl1n8?t=21m23s
+        - text: ) (2014) (28 mins).
+      - listitem [ref=e971]:
+        - text: My FreeBSD dev summit 2014 talk on
+        - link "Flame Graphs on FreeBSD" [ref=e972] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=fMV1upo88Zw
+        - text: . Since this talk wasn't videoed, I captured it using screenflow from my laptop. It's better than nothing, and shows my live demos well. (
+        - link "post" [ref=e973] [cursor=pointer]:
+          - /url: https://www.brendangregg.com/blog/2015-03-10/freebsd-flame-graphs.html
+        - text: ","
+        - link "youtube" [ref=e974] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=fMV1upo88Zw
+        - text: ) (53 mins).
+      - listitem [ref=e975]:
+        - text: My MeetBSDCA 2014 talk
+        - link "Performance Analysis" [ref=e976] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=uvKMptfXtdo
+        - text: ", summarizing 5 facets of perf analysis on BSD ("
+        - link "youtube" [ref=e977] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=uvKMptfXtdo
+        - text: ","
+        - link "slides" [ref=e978] [cursor=pointer]:
+          - /url: Slides/MeetBSD2014_Performance
+        - text: ) (53 mins).
+      - listitem [ref=e979]:
+        - text: My popular talk on
+        - link "Linux Performance Tools" [ref=e980] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=SN7Z0eCn0VY
+        - text: ", which quickly summarizes performance observability, benchmarking, tuning, static tuning, and tracing tools. This was for LinuxCon Europe 2014 ("
+        - link "youtube" [ref=e981] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=SN7Z0eCn0VY
+        - text: ","
+        - link "slides" [ref=e982] [cursor=pointer]:
+          - /url: Slides/LinuxConEU2014_LinuxPerfTools
+        - text: ) (49 mins).
+      - listitem [ref=e983]:
+        - text: For the Tracing Summit 2014, my talk
+        - link "From DTrace to Linux" [ref=e984] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=TMXZcgnhXvg&list=UU3S1jlPpZUyx8ND3KKPhPvw
+        - text: summarized lessons Linux tracing can learn (
+        - link "youtube" [ref=e985] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=TMXZcgnhXvg&list=UU3S1jlPpZUyx8ND3KKPhPvw
+        - text: ","
+        - link "slides" [ref=e986] [cursor=pointer]:
+          - /url: Slides/TracingSummit2014_FromDTraceToLinux
+        - text: ) (61 mins).
+      - listitem [ref=e987]:
+        - text: My Surge 2014 talk
+        - link "From Clouds to Roots" [ref=e988] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=H-E0MQTID0g
+        - text: ", showing how Netflix does perf analysis and the tools involved ("
+        - link "youtube" [ref=e989] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=H-E0MQTID0g
+        - text: ","
+        - link "slides" [ref=e990] [cursor=pointer]:
+          - /url: Slides/Surge2014_CloudsToRoots
+        - text: ) (56 mins).
+      - listitem [ref=e991]:
+        - text: My SCaLE12x (2014) keynote on
+        - link "What Linux can learn from Solaris performance and vice-versa" [ref=e992] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=6TYC5h4yz1o
+        - text: (
+        - link "youtube" [ref=e993] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=6TYC5h4yz1o
+        - text: ","
+        - link "slides" [ref=e994] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_vs_Solaris_Performance2014
+        - text: ) (60 mins).
+      - listitem [ref=e995]:
+        - text: Deirdré Straughan has a youtube playlist named
+        - link "Brendan Gregg's Best" [ref=e996] [cursor=pointer]:
+          - /url: http://www.youtube.com/playlist?list=PL3oXECC9Rpm2Q9VI97dwNviU5cOSCAIOz
+        - text: ", which has many of my talks (many of which she filmed)."
+      - listitem [ref=e997]:
+        - text: "My plenary session at USENIX/LISA 2013:"
+        - link "Blazing Performance with Flame Graphs" [ref=e998] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=nZfNehCzGdw
+        - text: (
+        - link "youtube" [ref=e999] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=nZfNehCzGdw
+        - text: ","
+        - link "slides" [ref=e1000] [cursor=pointer]:
+          - /url: Slides/LISA13_Flame_Graphs
+        - text: ","
+        - link "usenix" [ref=e1001] [cursor=pointer]:
+          - /url: https://www.usenix.org/conference/lisa13/technical-sessions/plenary/gregg
+        - text: ) (90 mins).
+      - listitem [ref=e1002]:
+        - text: A talk for BayLISA October 2013 to describe and launch the
+        - link "Systems Performance book" [ref=e1003] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=eRstxL7gurU
+        - text: (60 mins).
+      - listitem [ref=e1004]:
+        - text: A lightning talk for Surge 2013 on
+        - link "Benchmarking Gone Wrong" [ref=e1005] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=vm1GJMp0QN4#t=17m48s
+        - text: ", which includes the craziest line graph I've ever seen (~5 mins)."
+      - listitem [ref=e1006]:
+        - link "The New Systems Performance" [ref=e1007] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=P3SGzykDE4Q
+        - text: ", a meetup talk I gave in 2013 about modern systems performance (23 mins)."
+      - listitem [ref=e1008]:
+        - text: My OSCON 2013 talk on
+        - link "Open Source Systems Performance" [ref=e1009] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=VsQWSJgb1AE
+        - text: ", a tale of three parts ("
+        - link "youtube" [ref=e1010] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=VsQWSJgb1AE
+        - text: ","
+        - link "slides" [ref=e1011] [cursor=pointer]:
+          - /url: Slides/OSCON2013_sysperf
+        - text: ) (32 mins).
+      - listitem [ref=e1012]:
+        - text: My
+        - 'link "Stop the Guessing: Performance Methodologies for Production Systems" [ref=e1013] [cursor=pointer]':
+          - /url: http://www.youtube.com/watch?v=_EOvKUAwf8E
+        - text: talk at Velocity 2013 (
+        - link "youtube" [ref=e1014] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=_EOvKUAwf8E
+        - text: ","
+        - link "slides" [ref=e1015] [cursor=pointer]:
+          - /url: Slides/VelocityStopTheGuessing2013
+        - text: ) (46 mins).
+      - listitem [ref=e1016]:
+        - text: At SCaLE11x (2013) I gave a talk on
+        - link "Linux Performance Analysis and Tools" [ref=e1017] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=0yyorhl6IjM
+        - text: ", summarizing basic to advanced analysis tools, and including some methodologies ("
+        - link "youtube" [ref=e1018] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=0yyorhl6IjM
+        - text: ","
+        - link "slides" [ref=e1019] [cursor=pointer]:
+          - /url: Slides/SCaLE_Linux_Performance2013
+        - text: ","
+        - link "blog" [ref=e1020] [cursor=pointer]:
+          - /url: http://joyent.com/blog/linux-performance-analysis-and-tools-brendan-gregg-s-talk-at-scale-11x
+        - text: ) (60 mins).
+      - listitem [ref=e1021]:
+        - text: My LISA 2012 talk on
+        - link "Performance Analysis Methodology" [ref=e1022] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=abLan0aXJkw
+        - text: named and summarized 10 methods (
+        - link "youtube" [ref=e1023] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=abLan0aXJkw
+        - text: ","
+        - link "usenix" [ref=e1024] [cursor=pointer]:
+          - /url: https://www.usenix.org/conference/lisa12/performance-analysis-methodology
+        - text: ","
+        - link "slides" [ref=e1025] [cursor=pointer]:
+          - /url: Slides/LISA2012_methodologies
+        - text: ","
+        - link "blog" [ref=e1026] [cursor=pointer]:
+          - /url: /blog/2012-12-13/usenix-lisa-2012-performance-analysis-methodology.html
+        - text: ) (86 mins).
+      - listitem [ref=e1027]:
+        - 'link "ZFS: Performance Analysis and Tools" [ref=e1028] [cursor=pointer]':
+          - /url: http://www.youtube.com/watch?v=xkDqe6rIMa0
+        - text: at zfsday was probably my best talk of 2012 (
+        - link "youtube" [ref=e1029] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=xkDqe6rIMa0
+        - text: ","
+        - link "slides" [ref=e1030] [cursor=pointer]:
+          - /url: Slides/zfsperftools2012
+        - text: ","
+        - link "blog" [ref=e1031] [cursor=pointer]:
+          - /url: /blog/2012-12-29/zfsday-zfs-performance-analysis-and-tools.html
+        - text: ) (43 mins).
+      - listitem [ref=e1032]:
+        - text: At illumosday I gave a talk on
+        - link "DTracing the Cloud" [ref=e1033] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=uZTMuXXFG38
+        - text: ", showing what can be done ("
+        - link "youtube" [ref=e1034] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=uZTMuXXFG38
+        - text: ","
+        - link "slides" [ref=e1035] [cursor=pointer]:
+          - /url: Slides/dtracecloud2012
+        - text: ) (44 mins).
+      - listitem [ref=e1036]:
+        - text: "I gave a talk at OakTable World 2012, a database conference, which is online (low quality):"
+        - link "USE Method for Performance Tuning" [ref=e1037] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=W6rtXaf2gBU
+        - text: (
+        - link "youtube" [ref=e1038] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=W6rtXaf2gBU
+        - text: ) (49 mins).
+      - listitem [ref=e1039]:
+        - text: At FISL'13 (2012) I gave a talk on
+        - link "The USE Method" [ref=e1040] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=K9w2cipqfvc
+        - text: for systems performance analysis, including some other methods for comparison (
+        - link "youtube" [ref=e1041] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=K9w2cipqfvc
+        - text: ","
+        - link "slides" [ref=e1042] [cursor=pointer]:
+          - /url: Slides/FISL13_USE_Method
+        - text: ","
+        - link "blog" [ref=e1043] [cursor=pointer]:
+          - /url: /blog/2012-09-21/fisl13-the-use-method.html
+        - text: ) (56 mins).
+      - listitem [ref=e1044]:
+        - text: At dtrace.conf(12) I gave an unconference-style talk on various
+        - link "Visualizations" [ref=e1045] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=XD5hdaWnQM4
+        - text: (
+        - link "youtube" [ref=e1046] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=XD5hdaWnQM4
+        - text: ","
+        - link "blog" [ref=e1047] [cursor=pointer]:
+          - /url: /blog/2012-05-08/dtrace-conf-2012-videos.html
+        - text: ) (35 mins).
+      - listitem [ref=e1048]:
+        - text: An online talk on
+        - link "Benchmarking the Cloud" [ref=e1049] [cursor=pointer]:
+          - /url: https://vimeo.com/86147013
+        - text: with demos on Solaris/illumos (
+        - link "vimeo" [ref=e1050] [cursor=pointer]:
+          - /url: https://vimeo.com/86147013
+        - text: ) (58 mins).
+      - listitem [ref=e1051]:
+        - text: My SCaLE10x talk (2012) on
+        - 'link "Performance Analysis: new tools and concepts from the cloud" [ref=e1052] [cursor=pointer]':
+          - /url: http://www.youtube.com/watch?list=PLB0197EF82791B1F3&v=RoTSNVuBpqg
+        - text: ", with examples ("
+        - link "youtube" [ref=e1053] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?list=PLB0197EF82791B1F3&v=RoTSNVuBpqg
+        - text: ","
+        - link "slides" [ref=e1054] [cursor=pointer]:
+          - /url: Slides/SCALE2012_new_tools_concepts_cloud
+        - text: ","
+        - link "PDF" [ref=e1055] [cursor=pointer]:
+          - /url: Slides/SCALE2012_new_tools_concepts_cloud.pdf
+        - text: ) (1 hr).
+      - listitem [ref=e1056]:
+        - text: "Short talks on performance tools for Solaris-based operating systems:"
+        - link "vmstat" [ref=e1057] [cursor=pointer]:
+          - /url: http://dtrace.org/blogs/brendan/2011/04/27/vmstat-videos/
+        - text: ","
+        - link "mpstat" [ref=e1058] [cursor=pointer]:
+          - /url: http://dtrace.org/blogs/brendan/2011/06/18/mpstat-videos/
+        - text: ", and"
+        - link "load averages" [ref=e1059] [cursor=pointer]:
+          - /url: http://dtrace.org/blogs/brendan/2011/06/24/load-average-video/
+        - text: ", filmed during 2011."
+      - listitem [ref=e1060]:
+        - text: A talk for BayLISA in 2011 on
+        - link "Dynamic Tracing and DTrace" [ref=e1061] [cursor=pointer]:
+          - /url: https://vimeo.com/24027602
+        - text: (
+        - link "vimeo" [ref=e1062] [cursor=pointer]:
+          - /url: https://vimeo.com/24027602
+        - text: ) (1.5 hrs).
+      - listitem [ref=e1063]:
+        - text: "My extended Percona Live New York 2011 talk:"
+        - link "Breaking Down MySQL/Percona Query Latency With DTrace" [ref=e1064] [cursor=pointer]:
+          - /url: http://www.youtube.com/playlist?list=PLA7B42EF1BD788379
+        - text: (
+        - link "youtube" [ref=e1065] [cursor=pointer]:
+          - /url: http://www.youtube.com/playlist?list=PLA7B42EF1BD788379
+        - text: ","
+        - link "blog" [ref=e1066] [cursor=pointer]:
+          - /url: /blog/2011-07-06/breaking-down-mysqlpercona-dtrace.html
+        - text: ) (90 mins).
+      - listitem [ref=e1067]:
+        - text: My LISA 2010 talk on
+        - link "Visualizations for Performance" [ref=e1068] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=ml-t-9g6Mjc
+        - text: ", which explains the need for heat maps ("
+        - link "youtube" [ref=e1069] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=ml-t-9g6Mjc
+        - text: ","
+        - link "usenix" [ref=e1070] [cursor=pointer]:
+          - /url: http://www.usenix.org/events/lisa10/tech/#gregg
+        - text: ","
+        - link "slides" [ref=e1071] [cursor=pointer]:
+          - /url: Slides/LISA2010_visualizations
+        - text: ","
+        - link "blog" [ref=e1072] [cursor=pointer]:
+          - /url: /blog/2012-12-10/usenix-lisa-2010-visualizations-for-performance.html
+        - text: ) (80 mins).
+      - listitem [ref=e1073]:
+        - text: "At Oracle Open World 2010, I gave a talk on How to Build Better Applications with DTrace, which is on youtube:"
+        - link "part 1" [ref=e1074] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=rqmGVNNd0oM
+        - text: ","
+        - link "part 2" [ref=e1075] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=mwL_WXeH2IU
+        - text: . (64 mins).
+      - listitem [ref=e1076]:
+        - text: "I've given many technical talks of things going right. This was about things going wrong:"
+        - link "Little Shop of Performance Horrors" [ref=e1077] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=cklPFJysUYM
+        - text: at FROSUG in Colorado, 2009 (
+        - link "youtube" [ref=e1078] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=cklPFJysUYM
+        - text: ","
+        - link "blog" [ref=e1079] [cursor=pointer]:
+          - /url: http://www.beginningwithi.com/2009/11/11/brendan-gregg-at-frosug-oct-2009/
+        - text: ) (2.5 hours).
+      - listitem [ref=e1080]:
+        - link "Shouting in the Datacenter" [ref=e1081] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=tDacjrSCeq4
+        - text: (
+        - link "youtube" [ref=e1082] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=tDacjrSCeq4
+        - text: ","
+        - link "blog" [ref=e1083] [cursor=pointer]:
+          - /url: /blog/2008-12-31/unusual-disk-latency.html
+        - text: ) was a video that Bryan Cantrill and I made on the spur of the moment on New Year's Eve 2008, which went viral with 1M+ views (2 mins). It has spawned an industry of sound proofing data centers. There is also a
+        - link "making of" [ref=e1084] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=lMPozJFC8g0
+        - text: (
+        - link "youtube" [ref=e1085] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=lMPozJFC8g0
+        - text: ) video (5 mins).
+      - listitem [ref=e1086]: They aren't online that I know of, but there may be two older videos of me giving meetup talks, my first ever talk in Sydney 2006 and my second in Santa Clara 2007. (I probably wasn't a very good meetup speaker to begin with, so maybe it's good they aren't online!)
+    - separator [ref=e1087]
+    - heading "Software" [level=2] [ref=e1088]
+    - list [ref=e1089]:
+      - paragraph [ref=e1090]: The following are my spare time software projects, and are open source with no warranty – use at your own risk. Some are computer security tools, which may be illegal to own or run in your country if they are misidentified as cracking tools.
+      - paragraph [ref=e1091]:
+        - text: I've also developed software as a professional kernel engineer, which isn't listed below (e.g., the
+        - link "ZFS L2ARC" [ref=e1092] [cursor=pointer]:
+          - /url: /blog/2008-07-22/zfs-l2arc.html
+        - text: ).
+    - text: Linux - tracing
+    - list [ref=e1093]:
+      - listitem [ref=e1094]:
+        - link "eBPF Tools" [ref=e1095] [cursor=pointer]:
+          - /url: ebpf.html
+        - text: using Linux eBPF and the bcc front end for advanced observability and tracing tools.
+      - listitem [ref=e1096]:
+        - link "bcc tools" [ref=e1097] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bcc#tools
+        - text: (github), BPF compiler collection, for which I'm a major contributor, especially for performance tools.
+      - listitem [ref=e1098]:
+        - link "bpftrace tools" [ref=e1099] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bpftrace#tools
+        - text: (github) a high-level BPF tracing language, for which I'm a major contributor.
+      - listitem [ref=e1100]:
+        - link "perf Examples" [ref=e1101] [cursor=pointer]:
+          - /url: perf.html
+        - text: for perf_events, the standard Linux profiler. Page including one-liners and flame graphs.
+      - listitem [ref=e1102]:
+        - link "perf-tools" [ref=e1103] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/perf-tools
+        - text: (github) is a collection of ftrace- and perf_events-based performance analysis tools for Linux.
+      - listitem [ref=e1104]:
+        - link "ktap Examples" [ref=e1105] [cursor=pointer]:
+          - /url: ktap.html
+        - text: for the lua-based Linux dynamic tracing tool, including one liners and tools (no longer maintained).
+      - listitem [ref=e1106]:
+        - link "msr-cloud-tools" [ref=e1107] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/msr-cloud-tools
+        - text: model specific register observability tools intended for cloud instances.
+    - text: FreeBSD/OS X/Solaris - DTrace
+    - list [ref=e1108]:
+      - listitem [ref=e1109]:
+        - link "DTrace Tools" [ref=e1110] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/DTrace-tools
+        - text: for FreeBSD.
+      - listitem [ref=e1111]:
+        - link "DTrace book scripts" [ref=e1112] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/DTrace-book-scripts
+        - text: from the
+        - link "DTrace book" [ref=e1113] [cursor=pointer]:
+          - /url: http://www.dtracebook.com
+        - text: ", which demonstrates many new uses of dynamic tracing."
+      - listitem [ref=e1114]:
+        - link "DTraceToolkit" [ref=e1115] [cursor=pointer]:
+          - /url: dtracetoolkit.html
+        - text: a collection of over 200 scripts, with man pages and example files (no longer maintained).
+      - listitem [ref=e1116]:
+        - link "DTrace Tools" [ref=e1117] [cursor=pointer]:
+          - /url: dtrace.html
+        - text: original versions of iosnoop, opensnoop, bitesize.d, execsnoop, shellsnoop, tcpsnoop, iotop, ...
+      - paragraph
+    - text: Unix/Linux - C
+    - list [ref=e1118]:
+      - listitem [ref=e1119]:
+        - link "Dump2PNG" [ref=e1120] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/Dump2PNG
+        - text: visualizes file data as a PNG (uses libpng). An experimental tool intended for core dump analysis.
+        - link "screenshot" [ref=e1121] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/Dump2PNG/wiki
+        - text: .
+      - listitem [ref=e1122]:
+        - link "nicstat" [ref=e1123] [cursor=pointer]:
+          - /url: K9Toolkit/nicstat.c
+        - text: network interface stats for Solaris (uses Kstat).
+        - link "example" [ref=e1124] [cursor=pointer]:
+          - /url: K9Toolkit/nicstat_example.txt
+        - text: . There is also a
+        - link "Perl" [ref=e1125] [cursor=pointer]:
+          - /url: k9toolkit.html
+        - text: version, and Tim Cook added
+        - link "Linux" [ref=e1126] [cursor=pointer]:
+          - /url: https://blogs.oracle.com/timc/entry/nicstat_the_solaris_and_linux
+        - text: support.
+    - text: Unix/Linux/Windows - Perl
+    - list [ref=e1127]:
+      - listitem [ref=e1128]:
+        - link "FlameGraph" [ref=e1129] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/FlameGraph
+        - text: ": a visualization for sampled stack traces, used for performance analysis. See the"
+        - link "Flame Graphs" [ref=e1130] [cursor=pointer]:
+          - /url: flamegraphs.html
+        - text: page for an explanation.
+      - listitem [ref=e1131]:
+        - link "HeatMap" [ref=e1132] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/HeatMap
+        - text: ": an program for generating interactive SVG heat maps from trace data. See the"
+        - link "page" [ref=e1133] [cursor=pointer]:
+          - /url: HeatMaps/latency.html
+        - text: about it.
+      - listitem [ref=e1134]:
+        - link "Chaosreader" [ref=e1135] [cursor=pointer]:
+          - /url: chaosreader.html
+        - text: ": A forensics and network troubleshooting tools that extracts and reassembles application data from sniffed TCP/UDP sessions in tcpdump or snoop logs. Supports HTTP transfers, FTP transfers, SMTP emails, telnet sessions, etc. This"
+        - link "example output" [ref=e1136] [cursor=pointer]:
+          - /url: Chaosreader/Chaos01/index.html
+        - text: "was created by Chaosreader to link to the extracted HTTP sections, telnet sessions, and FTP files found in a snoop log. This can also create telnet replay programs that play back sessions in realtime:"
+        - link "example" [ref=e1137] [cursor=pointer]:
+          - /url: Chaosreader/Chaos01/session_0004.telnet.replay
+        - text: . Created in 2003.
+        - link "download code" [ref=e1138] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/Chaosreader
+        - text: (github).
+      - listitem [ref=e1139]:
+        - text: "Perl modules:"
+        - link "Net::SnoopLog" [ref=e1140] [cursor=pointer]:
+          - /url: http://search.cpan.org/~bdgregg/Net-SnoopLog-0.12/SnoopLog.pm
+        - text: for snoop packet logs (RFC1761),
+        - link "Net::TcpDumpLog" [ref=e1141] [cursor=pointer]:
+          - /url: http://search.cpan.org/~bdgregg/Net-TcpDumpLog-0.11/TcpDumpLog.pm
+        - text: for tcpdump/libpcap logs,
+        - link "Algorithm::Hamming::Perl" [ref=e1142] [cursor=pointer]:
+          - /url: http://search.cpan.org/~bdgregg/Algorithm-Hamming-Perl-0.05/Perl.pm
+        - text: .
+      - listitem [ref=e1143]:
+        - link "FreqCount" [ref=e1144] [cursor=pointer]:
+          - /url: Perl/freqcount
+        - text: is a simple frequency counter. Useful for processing logs (most common IP addr, port, etc..).
+        - link "example" [ref=e1145] [cursor=pointer]:
+          - /url: Perl/freqcount_example.txt
+        - text: .
+      - listitem [ref=e1146]:
+        - link "PortPing" [ref=e1147] [cursor=pointer]:
+          - /url: Perl/portping
+        - text: is a version of ping that connects using ssh (or other ports), not ICMP. Good for checking firewalls.
+        - link "example" [ref=e1148] [cursor=pointer]:
+          - /url: Perl/portping_example.txt
+        - text: .
+      - listitem [ref=e1149]:
+        - link "MTUfinder" [ref=e1150] [cursor=pointer]:
+          - /url: Perl/mtufinder
+        - text: tests different sized HTTP requests to a web server, highlighting MTU size problems.
+        - link "example" [ref=e1151] [cursor=pointer]:
+          - /url: Perl/mtufinder_example.txt
+        - text: .
+      - listitem [ref=e1152]:
+        - link "Specials" [ref=e1153] [cursor=pointer]:
+          - /url: specials.html
+        - text: is a collection of "special" programs for system administrators. Mostly Perl.
+    - text: Unix/Linux - Bourne/Korn Shell
+    - list [ref=e1154]:
+      - paragraph
+      - listitem [ref=e1155]:
+        - link "DtkshDemos" [ref=e1156] [cursor=pointer]:
+          - /url: dtkshdemos.html
+        - text: a collection of X11 dtksh scripts. They include xvmstat - a GUI version of vmstat, and xplot - a generic data plotter. Written for any OS with dtksh.
+      - listitem [ref=e1157]:
+        - link "total" [ref=e1158] [cursor=pointer]:
+          - /url: Shell/total
+        - text: is a simple awk script to sum a field (
+        - link "example" [ref=e1159] [cursor=pointer]:
+          - /url: Shell/total_example.txt
+        - text: );
+        - link "field" [ref=e1160] [cursor=pointer]:
+          - /url: Shell/field
+        - text: prints a field (
+        - link "example" [ref=e1161] [cursor=pointer]:
+          - /url: Shell/field_example.txt
+        - text: ). These exist for convenience at the shell.
+    - text: Windows - Delphi
+    - list [ref=e1162]:
+      - listitem [ref=e1163]:
+        - link "Quick Text Toaster v1.0" [ref=e1164] [cursor=pointer]:
+          - /url: Software/Qtoast01.zip
+        - text: An editor I wrote many years ago to grab text from corrupted files. Works with executables, documents, etc.
+    - text: MSDOS - QBASIC
+    - list [ref=e1165]:
+      - listitem [ref=e1166]:
+        - link "QBASIC CRO v1.2" [ref=e1167] [cursor=pointer]:
+          - /url: Software/CROW12.BAS
+        - text: I still find this old program amusing. It is a digital (on/off) CRO that samples the parallel port at 1KHz.
+        - link "screenshot" [ref=e1168] [cursor=pointer]:
+          - /url: Software/crowsample01.txt
+        - text: .
+    - text: Other
+    - list [ref=e1169]:
+      - listitem [ref=e1170]:
+        - link "Guessing Game" [ref=e1171] [cursor=pointer]:
+          - /url: guessinggame.html
+        - text: is written in awk C C++ csh Fortran java ksh Pascal Perl QBASIC sh and more as a language comparison.
+      - listitem [ref=e1172]:
+        - text: The
+        - link "Crypt" [ref=e1173] [cursor=pointer]:
+          - /url: crypt.html
+        - text: has some of my older Solaris and Unix software, including the
+        - link "K9Toolkit" [ref=e1174] [cursor=pointer]:
+          - /url: k9toolkit.html
+        - text: collection of kstat-based performance tools,
+        - link "Psio" [ref=e1175] [cursor=pointer]:
+          - /url: psio.html
+        - text: for disk I/O by-process, and
+        - link "CacheKit" [ref=e1176] [cursor=pointer]:
+          - /url: cachekit.html
+        - text: for hardware and software cache analysis.
+      - paragraph
+    - separator [ref=e1177]
+    - heading "Misc" [level=2] [ref=e1178]
+    - list [ref=e1179]:
+      - listitem [ref=e1180]:
+        - link "Recommended Reading" [ref=e1181] [cursor=pointer]:
+          - /url: books.html
+        - text: ": A list of my favourite technology books."
+      - listitem [ref=e1182]:
+        - link "Other Sites" [ref=e1183] [cursor=pointer]:
+          - /url: sites.html
+        - text: ": Other interesting places on the web."
+      - listitem [ref=e1184]:
+        - link "Photos" [ref=e1185] [cursor=pointer]:
+          - /url: photos.html
+        - text: ": Some photos I've taken."
+      - listitem [ref=e1186]:
+        - link "Games" [ref=e1187] [cursor=pointer]:
+          - /url: games.html
+        - text: ": My favourite computer games."
+      - listitem [ref=e1188]:
+        - link "Overview" [ref=e1189] [cursor=pointer]:
+          - /url: overview.html
+        - text: ": A summary of my popular content."
+  - generic [ref=e1190]:
+    - separator [ref=e1191]
+    - text: "Last updated: 07-Feb-2026"
+    - text: "Created: 2001"
+    - text: "About this site, and contact email address:"
+    - link "here" [ref=e1192] [cursor=pointer]:
+      - /url: email.html
+    - text: Copyright 2025 Brendan Gregg, all rights reserved

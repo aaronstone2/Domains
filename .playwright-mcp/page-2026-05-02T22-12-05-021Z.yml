@@ -1,0 +1,1166 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "Flame Graphs" [level=1] [ref=e4]
+    - generic [ref=e5]:
+      - link [ref=e6] [cursor=pointer]:
+        - /url: FlameGraphs/cpu-mysql-updated.svg
+        - img [ref=e7]
+      - generic [ref=e9]: CPU Flame Graph
+    - paragraph [ref=e10]:
+      - text: "This is the official website for flame graphs: a visualization of hierarchical data that I created to visualize stack traces of profiled software so that the most frequent code-paths can be identified quickly and accurately. They can be generated using my open source programs on"
+      - link "github.com/brendangregg/FlameGraph" [ref=e11] [cursor=pointer]:
+        - /url: https://github.com/brendangregg/FlameGraph
+      - text: which create interactive SVGs. There are now over 100 other implementations, many open source (see the
+      - link "Updates" [ref=e12] [cursor=pointer]:
+        - /url: "#Updates"
+      - text: "section) and they are also now available in most commercial profilers. My colleague on the Netflix performance engineering team, Martin Spier, created a more interactive d3 version, also widely used:"
+      - link "d3-flame-graph" [ref=e13] [cursor=pointer]:
+        - /url: https://github.com/spiermar/d3-flame-graph
+      - text: .
+    - paragraph [ref=e14]: "These pages (or posts) introduce different types of flame graphs:"
+    - list [ref=e15]:
+      - listitem [ref=e16]:
+        - link "CPU" [ref=e17] [cursor=pointer]:
+          - /url: FlameGraphs/cpuflamegraphs.html
+      - listitem [ref=e18]:
+        - link "AI/GPU" [ref=e19] [cursor=pointer]:
+          - /url: /blog/2024-10-29/ai-flame-graphs.html
+      - listitem [ref=e20]:
+        - link "Memory" [ref=e21] [cursor=pointer]:
+          - /url: FlameGraphs/memoryflamegraphs.html
+      - listitem [ref=e22]:
+        - link "Off-CPU" [ref=e23] [cursor=pointer]:
+          - /url: FlameGraphs/offcpuflamegraphs.html
+      - listitem [ref=e24]:
+        - link "Hot/Cold" [ref=e25] [cursor=pointer]:
+          - /url: FlameGraphs/hotcoldflamegraphs.html
+      - listitem [ref=e26]:
+        - link "Differential" [ref=e27] [cursor=pointer]:
+          - /url: /blog/2014-11-09/differential-flame-graphs.html
+    - paragraph [ref=e28]: The example on the right is a portion of a CPU flame graph, showing MySQL codepaths that are consuming CPU cycles, and by how much.
+    - paragraph [ref=e29]:
+      - text: Flame graphs can also be used for any hierarchical data. E.g., file system contents (see
+      - link "instructions" [ref=e30] [cursor=pointer]:
+        - /url: /blog/2017-02-05/file-system-flame-graph.html
+      - text: ;
+      - link "comparisons with treemaps and sunbursts" [ref=e31] [cursor=pointer]:
+        - /url: /blog/2017-02-06/flamegraphs-vs-treemaps-vs-sunburst.html
+      - text: ). To generate them for custom time ranges for the study of variation, perturbations, and periodic activity, see
+      - link "FlameScope" [ref=e32] [cursor=pointer]:
+        - /url: flamescope.html
+      - text: .
+    - paragraph [ref=e33]:
+      - text: "On this page:"
+      - link "Summary" [ref=e34] [cursor=pointer]:
+        - /url: "#Summary"
+      - text: ","
+      - link "OSes" [ref=e35] [cursor=pointer]:
+        - /url: "#OperatingSystems"
+      - text: ","
+      - link "Presentation" [ref=e36] [cursor=pointer]:
+        - /url: "#Presentation"
+      - text: ","
+      - link "Variations" [ref=e37] [cursor=pointer]:
+        - /url: "#Variations"
+      - text: ","
+      - link "Origin" [ref=e38] [cursor=pointer]:
+        - /url: "#Origin"
+      - text: ","
+      - link "Updates" [ref=e39] [cursor=pointer]:
+        - /url: "#Updates"
+      - text: .
+    - heading "Summary" [level=2] [ref=e40]
+    - paragraph [ref=e41]: The x-axis shows the stack profile population, sorted alphabetically (it is not the passage of time), and the y-axis shows stack depth, counting from zero at the bottom. Each rectangle represents a stack frame. The wider a frame is is, the more often it was present in the stacks. The top edge shows what is on-CPU, and beneath it is its ancestry. Original flame graphs use random colors to help visually differentiate adjacent frames. Variations include inverting the y-axis (an "icicle graph"), changing the hue to indicate code type, and using a color spectrum to convey an additional dimension.
+    - paragraph [ref=e42]: "Flame graphs are both a static and dynamic visualization. As a static visualization, a flame graph can be saved as an image, included in print (books), and will still convey the \"big picture\" as only the most frequent frames have enough width for labels. A dynamic visualization allows interactive features to aid navigation and comprehension, including:"
+    - list [ref=e43]:
+      - listitem [ref=e44]: Mouse hover shows additional frame details in a status bar.
+      - listitem [ref=e45]: Mouse click zooms the visualization horizontally, revealing function names previously elided.
+      - listitem [ref=e46]: Search matches and highlights a given term and shows the "cumulative percentage" of stacks including the search term.
+    - paragraph [ref=e47]:
+      - text: This visualization is fully explained in my ACMQ article
+      - link "The Flame Graph" [ref=e48] [cursor=pointer]:
+        - /url: http://queue.acm.org/detail.cfm?id=2927301
+      - text: ", also published in"
+      - link "Communications of the ACM, Vol. 59 No. 6" [ref=e49] [cursor=pointer]:
+        - /url: http://cacm.acm.org/magazines/2016/6/202665-the-flame-graph/abstract
+      - text: .
+    - paragraph [ref=e50]:
+      - text: Also see my
+      - link "CPU Flame Graphs" [ref=e51] [cursor=pointer]:
+        - /url: FlameGraphs/cpuflamegraphs.html
+      - text: page, and the
+      - link "presentation" [ref=e52] [cursor=pointer]:
+        - /url: "#Presentation"
+      - text: below.
+    - heading "Presentation" [level=2] [ref=e53]
+    - paragraph [ref=e54]:
+      - text: I gave an updated talk explaining flame graphs at USENIX ATC 2017 titled
+      - link "Visualizing Performance with Flame Graphs" [ref=e55] [cursor=pointer]:
+        - /url: https://www.usenix.org/conference/atc17/program/presentation/gregg-flame
+      - text: ", which is on"
+      - link "youtube" [ref=e56] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=D53T1Ejig1Q
+      - text: and
+      - link "slideshare" [ref=e57] [cursor=pointer]:
+        - /url: https://www.slideshare.net/brendangregg/usenix-atc-2017-visualizing-performance-with-flame-graphs
+      - text: (
+      - link "PDF" [ref=e58] [cursor=pointer]:
+        - /url: Slides/USENIX_ATC2017_flamegraphs.pdf
+      - text: )
+    - paragraph [ref=e59]:
+      - iframe [ref=e60]:
+        - generic [active] [ref=f25e1]:
+          - generic [ref=f25e4]:
+            - region "Slides" [ref=f25e5]:
+              - img "Slide 1" [ref=f25e7]
+              - img "Slide 2" [ref=f25e9]
+              - img "Slide 3" [ref=f25e11]
+              - img "Slide 4" [ref=f25e13]
+              - img "Slide 5" [ref=f25e15]
+              - img "Slide 6" [ref=f25e17]
+              - img "Slide 7" [ref=f25e19]
+              - img "Slide 8" [ref=f25e21]
+              - img "Slide 9" [ref=f25e23]
+              - img "Slide 10" [ref=f25e25]
+              - img "Slide 11" [ref=f25e27]
+              - img "Slide 12" [ref=f25e29]
+              - img "Slide 13" [ref=f25e31]
+              - img "Slide 14" [ref=f25e33]
+              - img "Slide 15" [ref=f25e35]
+              - img "Slide 16" [ref=f25e37]
+              - img "Slide 17" [ref=f25e39]
+              - img "Slide 18" [ref=f25e41]
+              - img "Slide 19" [ref=f25e43]
+              - img "Slide 20" [ref=f25e45]
+              - img "Slide 21" [ref=f25e47]
+              - img "Slide 22" [ref=f25e49]
+              - img "Slide 23" [ref=f25e51]
+              - img "Slide 24" [ref=f25e53]
+              - img "Slide 25" [ref=f25e55]
+              - img "Slide 26" [ref=f25e57]
+              - img "Slide 27" [ref=f25e59]
+              - img "Slide 28" [ref=f25e61]
+              - img "Slide 29" [ref=f25e63]
+              - img "Slide 30" [ref=f25e65]
+              - img "Slide 31" [ref=f25e67]
+              - img "Slide 32" [ref=f25e69]
+              - img "Slide 33" [ref=f25e71]
+              - img "Slide 34" [ref=f25e73]
+              - img "Slide 35" [ref=f25e75]
+              - img "Slide 36" [ref=f25e77]
+              - img "Slide 37" [ref=f25e79]
+              - img "Slide 38" [ref=f25e81]
+              - img "Slide 39" [ref=f25e83]
+              - img "Slide 40" [ref=f25e85]
+              - img "Slide 41" [ref=f25e87]
+              - img "Slide 42" [ref=f25e89]
+              - img "Slide 43" [ref=f25e91]
+              - img "Slide 44" [ref=f25e93]
+              - img "Slide 45" [ref=f25e95]
+              - img "Slide 46" [ref=f25e97]
+              - img "Slide 47" [ref=f25e99]
+              - img "Slide 48" [ref=f25e101]
+              - img "Slide 49" [ref=f25e103]
+              - img "Slide 50" [ref=f25e105]
+              - img "Slide 51" [ref=f25e107]
+              - img "Slide 52" [ref=f25e109]
+              - img "Slide 53" [ref=f25e111]
+              - img "Slide 54" [ref=f25e113]
+              - img "Slide 55" [ref=f25e115]
+              - img "Slide 56" [ref=f25e117]
+              - img "Slide 57" [ref=f25e119]
+              - img "Slide 58" [ref=f25e121]
+              - img "Slide 59" [ref=f25e123]
+              - img "Slide 60" [ref=f25e125]
+              - img "Slide 61" [ref=f25e127]
+              - img "Slide 62" [ref=f25e129]
+              - img "Slide 63" [ref=f25e131]
+              - img "Slide 64" [ref=f25e133]
+              - img "Slide 65" [ref=f25e135]
+              - img "Slide 66" [ref=f25e137]
+            - generic [ref=f25e138]:
+              - link "View on Slideshare" [ref=f25e140] [cursor=pointer]:
+                - /url: https://www.slideshare.net/slideshow/usenix-atc-2017-visualizing-performance-with-flame-graphs/77852774
+              - navigation [ref=f25e141]:
+                - button "Previous Slide" [disabled]:
+                  - img "chevron-left icon"
+                - generic [ref=f25e142]:
+                  - generic [ref=f25e143]: "1"
+                  - generic [ref=f25e144]: / 66
+                - button "Next Slide" [ref=f25e145] [cursor=pointer]:
+                  - img "chevron-right icon" [ref=f25e146]
+              - button "Share" [ref=f25e147] [cursor=pointer]:
+                - img "share-dot icon" [ref=f25e148]
+              - button "View Fullscreen" [ref=f25e149] [cursor=pointer]:
+                - img "maximize icon" [ref=f25e150]
+          - alert [ref=f25e151]
+      - link [ref=e61] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=D53T1Ejig1Q
+        - img [ref=e62]
+    - paragraph [ref=e63]:
+      - text: My first talk on flame graphs was at
+      - link "USENIX LISA 2013" [ref=e64] [cursor=pointer]:
+        - /url: https://www.usenix.org/conference/lisa13/technical-sessions/plenary/gregg
+      - text: ", which ended up as a plenary talk ("
+      - link "youtube" [ref=e65] [cursor=pointer]:
+        - /url: http://www.youtube.com/watch?v=nZfNehCzGdw
+      - text: ","
+      - link "slideshare" [ref=e66] [cursor=pointer]:
+        - /url: http://www.slideshare.net/brendangregg/blazing-performance-with-flame-graphs
+      - text: ","
+      - link "PDF" [ref=e67] [cursor=pointer]:
+        - /url: Slides/LISA13_Flame_Graphs.pdf
+      - text: "):"
+    - heading "Operating Systems" [level=2] [ref=e68]
+    - paragraph [ref=e69]: "Some operating system profilers now have built-in support for flame graphs:"
+    - list [ref=e70]:
+      - listitem [ref=e71]: "Linux: perf (perf script report flamegraph)"
+      - listitem [ref=e72]: "Windows: WPA, PerfView"
+    - paragraph [ref=e73]: "Flame graphs can also be generated from any profile data that contains stack traces, including from the following profiling tools:"
+    - list [ref=e74]:
+      - listitem [ref=e75]: "Linux: perf, eBPF, SystemTap, and ktap"
+      - listitem [ref=e76]: "FreeBSD: DTrace"
+      - listitem [ref=e77]: "Mac OS X: Instruments"
+      - listitem [ref=e78]: "Windows: Xperf.exe"
+    - paragraph [ref=e79]: Once you have a profiler that can generate meaningful stacks, converting them into a flame graph is usually the easy step.
+    - paragraph [ref=e80]: There are also numerous profiling products and companies that now support flame graphs. See the Updates section below.
+    - heading "Variations" [level=2] [ref=e81]
+    - paragraph [ref=e82]: Icicle charts are flame graphs upside down. Some people prefer it that way. My flamegraph.pl creates them using --inverted. I prefer the standard "flame" layout, where the y-axis is counting stack depth upwards from zero at the bottom. I'm also used to scanning them top-down to look for plateaus. But for very deep stacks the flame graph layout (with a GUI that starts at the top) often means the initial view may be mostly empty (a few thin interrupt stacks) forcing the developer to scroll down to find the bulk of the profile. For developers who prefer reading root-to-leaf anyway, an icicle layout instead means that the starting point is always on screen without needing to scroll. For that reason, many flame graph implementations use the icicle layout by default instead. Others use the flame graph layout but begin showing the bottom so that the root frames are on screen. I don't have a strong opinion about this, do whichever you prefer! Preferably include a toggle so that the end user can pick their preferred layout.
+    - paragraph [ref=e83]:
+      - text: Flame charts were first added by Google Chrome's WebKit Web Inspector (
+      - link "bug" [ref=e84] [cursor=pointer]:
+        - /url: https://bugs.webkit.org/show_bug.cgi?id=111162
+      - text: ). While inspired by flame graphs, flame charts put the passage of time on the x-axis instead of the alphabet. This means that time-based patterns can studied. Flame graphs reorder the x-axis samples alphabetically, which maximizes frame merging, and better shows the big picture of the profile. Multi-threaded applications can't be shown sensibly by a single flame chart, whereas they can with a flame graphs (a problem flame charts didn't need to deal with, since it was initially used for single-threaded JavaScript analysis). Both visualizations are useful, and tools should make both available if possible (e.g., TraceCompass does). Some analysis tools have implemented flame charts and mistakingly called them flame graphs.
+    - paragraph [ref=e85]:
+      - text: Sunburst layout using radial coordinates for the x-axis, a flame graph can be turned into a hierarchical pie chart. The Google Web Inspector team
+      - link "prototyped" [ref=e86] [cursor=pointer]:
+        - /url: https://bugs.chromium.org/p/chromium/issues/detail?id=452624
+      - text: them. I also discussed them vs flame graphs in my
+      - link "comparison" [ref=e87] [cursor=pointer]:
+        - /url: /blog/2017-02-06/flamegraphs-vs-treemaps-vs-sunburst.html
+      - text: post.
+    - heading "Origin" [level=2] [ref=e88]
+    - paragraph [ref=e89]: "I invented flame graphs when working on a MySQL performance issue and needed to understand CPU usage quickly and in depth. The regular profilers/tracers had produced walls of text, so I was exploring visualizations. I first traced CPU function calls and visualized it using Neelakanth Nadgir's time-ordered visualization for callstacks, which itself was inspired by Roch Bourbonnais's CallStackAnalyzer and Jan Boerhout's vftrace. These look similar to flame graphs, but have the passage of time on the x-axis. But there were two problems: the overhead of function tracing was too high, perturbing the target, and the final visualization was too dense to read when spanning multiple seconds. I switched to timed sampling (profiling) to solve the overhead problem, but since the function flow is no longer known (sampling has gaps) I ditched time on the x-axis and reordered samples to maximize frame merging. It worked, the final visualization was much more readable. Neelakanth and Roch's visualizations used completely random colors to differentiate frames. I thought it looked nicer to narrow the color palette, and picked just warm colors initially as it explained why the CPUs were \"hot\" (busy). Since it resembled flames, it quickly became known as flame graphs."
+    - paragraph [ref=e90]: I described more detail of the original performance problem that led to flame graphs in my ACMQ/CACM article (link above). The flame graph visualization is really an adjacency diagram with an inverted icicle layout, which I used to visualize profiled stack traces.
+    - heading "Updates" [level=2] [ref=e91]
+    - paragraph [ref=e92]: "Flame graphs were released in Dec 2011. Not long afterwards (updated in 2012):"
+    - list [ref=e93]:
+      - listitem [ref=e94]:
+        - text: Alan Coopersmith generated flame graphs of the
+        - link "X server" [ref=e95] [cursor=pointer]:
+          - /url: http://blogs.oracle.com/alanc/entry/flame_on_graphing_hot_paths
+        - text: .
+      - listitem [ref=e96]:
+        - text: Dave Pacheco created them with
+        - link "node.js" [ref=e97] [cursor=pointer]:
+          - /url: http://dtrace.org/blogs/dap/2012/01/05/where-does-your-node-program-spend-its-time/
+        - text: functions.
+      - listitem [ref=e98]:
+        - text: Max Bruning has also shown how he used it to solve an
+        - link "IP scaling issue" [ref=e99] [cursor=pointer]:
+          - /url: http://smartos.org/2012/02/28/using-flamegraph-to-solve-ip-scaling-issue-dce/
+        - text: .
+      - listitem [ref=e100]:
+        - text: Dave Pacheco has also created
+        - link "stackvis" [ref=e101] [cursor=pointer]:
+          - /url: https://www.npmjs.com/package/stackvis
+        - text: ", a Node.js implementation, available on npm."
+      - listitem [ref=e102]:
+        - text: Zoltan Farkas was inspired by flame graphs to create
+        - link "Spf4j (Simple performance framework for java)" [ref=e103] [cursor=pointer]:
+          - /url: http://zolyfarkas.github.io/spf4j/#
+        - text: ", which includes them in a GUI."
+    - paragraph [ref=e104]: "More Flame Graph news (updated Apr 2013):"
+    - list [ref=e105]:
+      - listitem [ref=e106]:
+        - text: I wrote some documentation for
+        - link "Linux Kernel Flame Graphs" [ref=e107] [cursor=pointer]:
+          - /url: FlameGraphs/cpuflamegraphs.html#perf
+        - text: ", generated using either perf and SystemTap for the profile data."
+      - listitem [ref=e108]:
+        - text: Mark Probst developed
+        - link "Flame Graphs for Instruments" [ref=e109] [cursor=pointer]:
+          - /url: http://schani.wordpress.com/2012/11/16/flame-graphs-for-instruments/
+        - text: on Mac OS X.
+      - listitem [ref=e110]:
+        - text: Sam Saffron has developed
+        - link "Flame graphs in Ruby MiniProfiler" [ref=e111] [cursor=pointer]:
+          - /url: http://samsaffron.com/archive/2013/03/19/flame-graphs-in-ruby-miniprofiler
+        - text: ", and shows examples of amazingly deep stacks."
+      - listitem [ref=e112]:
+        - text: Bruce Dawson has an excellent post on
+        - link "Summarizing Xperf CPU Usage with Flame Graphs" [ref=e113] [cursor=pointer]:
+          - /url: http://randomascii.wordpress.com/2013/03/26/summarizing-xperf-cpu-usage-with-flame-graphs/
+        - text: on Microsoft Windows. It includes examples for Visual Studio and Outlook, and a stack folding script to process the Xperf output.
+      - listitem [ref=e114]:
+        - text: Google Chrome's performance analysis tool, WebKit Web Inspector, introduced "
+        - link "Flame Charts" [ref=e115] [cursor=pointer]:
+          - /url: https://bugs.webkit.org/show_bug.cgi?id=111162
+        - text: "\", inspired by flame graphs. These are a similar visualization, but the x-axis is time, instead of the alphabet. Check out the"
+        - link "screenshot" [ref=e116] [cursor=pointer]:
+          - /url: https://bug-113052-attachments.webkit.org/attachment.cgi?id=194532
+        - text: ", which includes a mouse-over popup that links to the source code. (Update: there is a bug to add flame graphs to Chrome, in addition to flame charts:"
+        - link "Chromium 452624" [ref=e117] [cursor=pointer]:
+          - /url: https://code.google.com/p/chromium/issues/detail?id=452624
+        - text: .)
+      - listitem [ref=e118]:
+        - text: Tim Bunce has been improving and adding features to Flame Graphs, and has included them in Perl's best profiler, Devel:::NYTProf, for profiling Perl. See his post on
+        - link "NYTProf v5 – Flaming Precision" [ref=e119] [cursor=pointer]:
+          - /url: http://blog.timbunce.org/2013/04/08/nytprof-v5-flaming-precision/
+        - text: .
+    - paragraph [ref=e120]: "More Flame Graph news (updated Aug 2013):"
+    - list [ref=e121]:
+      - listitem [ref=e122]:
+        - text: I wrote a document summarizing four techniques for generating
+        - link "Memory Leak (and Growth) Flame Graphs" [ref=e123] [cursor=pointer]:
+          - /url: FlameGraphs/memoryflamegraphs.html
+        - text: ", which visualize stacks with byte counts, instead of the traditional CPU sample Flame Graphs. I also colored them green to indicate that they are a different type."
+      - listitem [ref=e124]:
+        - text: John Graham-Cumming showed how CloudFlare was using SystemTap-generated flame graphs for optimizing their
+        - link "Lua WAF" [ref=e125] [cursor=pointer]:
+          - /url: http://blog.cloudflare.com/cloudflares-new-waf-compiling-to-lua
+        - text: .
+      - listitem [ref=e126]:
+        - text: Yichun Zhang showed how
+        - link "Off-CPU Time Flame Graphs" [ref=e127] [cursor=pointer]:
+          - /url: http://t.co/tusuJkqKXF
+        - text: (PDF) can solve issues of blocking time. See
+        - link "Off-CPU Analysis" [ref=e128] [cursor=pointer]:
+          - /url: offcpuanalysis.html
+        - text: for why this is important.
+      - listitem [ref=e129]:
+        - text: Igor Soarez wrote
+        - link "How To Make Flame Graphs" [ref=e130] [cursor=pointer]:
+          - /url: http://blog.crowdprocess.com/post/58797416513/how-to-make-flame-graphs
+        - text: for node.js analysis, showing all steps involved.
+      - listitem [ref=e131]:
+        - link "Paul Irish" [ref=e132] [cursor=pointer]:
+          - /url: https://plus.google.com/+PaulIrish/posts/3nqbozQF3VN
+        - text: and
+        - link "Umar Hansa" [ref=e133] [cursor=pointer]:
+          - /url: https://plus.google.com/111696301786817020074/posts/7PjohGxGECZ
+        - text: posted an awesome demo of using FlameCharts to investigate time in V8, which includes zooming in and clicking on functions to go to code, and Addy Osmani posted a longer
+        - link "video tutorial" [ref=e134] [cursor=pointer]:
+          - /url: http://addyosmani.com/blog/devtools-flame-charts/
+        - text: ". While these aren't Flame Graphs, they show developments in a related visualization: a time-series version that retains sequence and ordering."
+    - paragraph [ref=e135]: "More Flame Graph news (updated Jun 2014):"
+    - list [ref=e136]:
+      - listitem [ref=e137]:
+        - text: I gave a talk at USENIX/LISA13 titled
+        - link "Blazing Performance with Flame Graphs" [ref=e138] [cursor=pointer]:
+          - /url: https://www.usenix.org/conference/lisa13/technical-sessions/plenary/gregg
+        - text: ", which covered them in enormous detail. See the"
+        - link "slides" [ref=e139] [cursor=pointer]:
+          - /url: http://www.slideshare.net/brendangregg/blazing-performance-with-flame-graphs
+        - text: and
+        - link "video" [ref=e140] [cursor=pointer]:
+          - /url: http://www.youtube.com/watch?v=nZfNehCzGdw
+        - text: . At the last minute this talk became a Plenary when another speaker became ill and had to cancel.
+      - listitem [ref=e141]:
+        - text: Joab Jackson wrote an article about flame graphs for
+        - link "PCWorld" [ref=e142] [cursor=pointer]:
+          - /url: http://www.pcworld.com/article/2062160/usenix-flame-graph-shows-system-performance-in-a-new-light.html
+        - text: ","
+        - link "InfoWorld" [ref=e143] [cursor=pointer]:
+          - /url: http://www.infoworld.com/d/business-intelligence/flame-graph-shows-system-performance-in-new-light-230520?page=0,1
+        - text: ", and"
+        - link "CIO" [ref=e144] [cursor=pointer]:
+          - /url: http://www.cio.com/article/742883/USENIX_Flame_Graph_Shows_System_Performance_in_a_New_Light?page=2&taxonomyId=600010
+        - text: .
+      - listitem [ref=e145]:
+        - text: I wrote documents on
+        - link "Off-CPU Flame Graphs" [ref=e146] [cursor=pointer]:
+          - /url: FlameGraphs/offcpuflamegraphs.html
+        - text: ", and"
+        - link "Hot/Cold Flame Graphs" [ref=e147] [cursor=pointer]:
+          - /url: FlameGraphs/hotcoldflamegraphs.html
+        - text: ", based on what I had documented earlier for my USENIX talk."
+      - listitem [ref=e148]:
+        - text: I wrote a post showing how the Google lightweight-java-profiler can be used to create
+        - link "Java Flame Graphs" [ref=e149] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2014-06-12/java-flame-graphs.html
+        - text: . This is only Java code time, and not other CPU consumers. See my later work with Java (-XX:+PreserveFramePointer) for a different and more complete profile.
+      - listitem [ref=e150]:
+        - link "Vladimir Kirillov" [ref=e151] [cursor=pointer]:
+          - /url: https://twitter.com/darkproger
+        - text: has developed
+        - link "eflame" [ref=e152] [cursor=pointer]:
+          - /url: https://github.com/proger/eflame
+        - text: (github), a Flame Graph profiler for Erlang. Blocking calls are in blue, see the screenshot.
+      - listitem [ref=e153]:
+        - link "Trevor Norris" [ref=e154] [cursor=pointer]:
+          - /url: https://twitter.com/trevnorris
+        - text: posted instructions for creating
+        - link "Linux Node.js" [ref=e155] [cursor=pointer]:
+          - /url: https://gist.github.com/trevnorris/9616784
+        - text: CPU flame graphs, by using
+        - link "perf_events" [ref=e156] [cursor=pointer]:
+          - /url: perf.html
+        - text: and --perf-basic-prof. See the
+        - link "example" [ref=e157] [cursor=pointer]:
+          - /url: https://twitter.com/trevnorris/status/445720118207606784
+        - text: .
+      - listitem [ref=e158]:
+        - link "Luca Canali" [ref=e159] [cursor=pointer]:
+          - /url: https://twitter.com/LucaCanaliDB
+        - text: provides many examples of
+        - link "Flame Graphs for Oracle" [ref=e160] [cursor=pointer]:
+          - /url: http://externaltable.blogspot.com/2014/05/flame-graphs-for-oracle.html
+        - text: databases, and explains what they mean.
+      - listitem [ref=e161]:
+        - text: Julien Charbon posted some CPU flame graphs on FreeBSD, to analyze
+        - link "TCP stack lock contention with short-lived connections" [ref=e162] [cursor=pointer]:
+          - /url: https://lists.freebsd.org/pipermail/freebsd-net/2014-May/038810.html
+        - text: .
+      - listitem [ref=e163]:
+        - text: Gabriel posted
+        - link "Profiling and optimising with Flamegraph" [ref=e164] [cursor=pointer]:
+          - /url: http://www.gabriel.urdhr.fr/2014/05/23/flamegraph/
+        - text: ", explaining all the steps with some really good examples."
+    - paragraph [ref=e165]: "More Flame Graph news (updated Dec 2014):"
+    - list [ref=e166]:
+      - listitem [ref=e167]:
+        - text: Facebook's Strobelight uses an inverted flame graph for perf analysis. See the slide in Yannick Brosseau's
+        - link "Using tracing at Facebook scale" [ref=e168] [cursor=pointer]:
+          - /url: http://tracingsummit.org/w/images/6/6f/TracingSummit2014-Tracing-at-Facebook-Scale.pdf
+        - text: (PDF) talk.
+      - listitem [ref=e169]:
+        - text: The post on
+        - 'link "Profiling a Meteor app: Telescope" [ref=e170] [cursor=pointer]':
+          - /url: https://meteorhacks.com/profiling-a-meteor-app-telescope.html
+        - text: includes flame graphs.
+      - listitem [ref=e171]:
+        - text: Adrien Mahieux added the
+        - link "Click to Zoom" [ref=e172] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/FlameGraph/pull/35
+        - text: feature to the original
+        - link "FlameGraph" [ref=e173] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/FlameGraph
+        - text: software. This is really awesome!
+      - listitem [ref=e174]:
+        - text: I wrote a post on
+        - link "Differential Flame Graphs" [ref=e175] [cursor=pointer]:
+          - /url: /blog/2014-11-09/differential-flame-graphs.html
+        - text: ", showing new features I added to flame graphs for performance regression testing."
+      - listitem [ref=e176]:
+        - text: "I came up with an unusual but useful use for differential flame graphs:"
+        - link "CPI Flame Graphs" [ref=e177] [cursor=pointer]:
+          - /url: /blog/2014-10-31/cpi-flame-graphs.html
+        - text: ", to highlight memory stall cycles."
+      - listitem [ref=e178]:
+        - text: I gave a talk at the 2014 FreeBSD Developer and Vendor Summit on
+        - link "Flame Graphs on FreeBSD" [ref=e179] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2015-03-10/freebsd-flame-graphs.html
+        - text: .
+      - listitem [ref=e180]:
+        - text: I wrote a post on
+        - link "Node.js Flame Graphs on Linux" [ref=e181] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2014-09-17/node-flame-graphs-on-linux.html
+        - text: using Linux perf_events and v8's --perf-basic-prof option.
+      - listitem [ref=e182]:
+        - text: Yunong Xiao showed how flame graphs helped solve an important production performance issue for Netflix in the post
+        - link "Node.js in Flames" [ref=e183] [cursor=pointer]:
+          - /url: http://techblog.netflix.com/2014/11/nodejs-in-flames.html
+        - text: .
+      - listitem [ref=e184]:
+        - text: Oozou developed and published
+        - link "RubyProf::FlameGraphPrinter" [ref=e185] [cursor=pointer]:
+          - /url: https://github.com/oozou/ruby-prof-flamegraph
+        - text: for ruby-prof, to generate folded stacks for flame graph generation.
+      - listitem [ref=e186]:
+        - text: Thorsten Lorenz developed a
+        - link "web flamegraph interface" [ref=e187] [cursor=pointer]:
+          - /url: https://github.com/thlorenz/flamegraph
+        - text: that can load new profiles, and perform a regexp search. See his
+        - link "example" [ref=e188] [cursor=pointer]:
+          - /url: http://thlorenz.com/flamegraph/web/
+        - text: .
+    - paragraph [ref=e189]: "More Flame Graph news (updated Jun 2015):"
+    - list [ref=e190]:
+      - listitem [ref=e191]:
+        - text: "Shawn Sterling posted about his excellent talk at Linuxfest Northwest 2014:"
+        - link "Getting Started With Flamegraph" [ref=e192] [cursor=pointer]:
+          - /url: http://systemtemplar.org/blog/2015/04/07/getting-started-with-flamegraph/
+        - text: ", which includes both the slides and video (turn the volume up)."
+      - listitem [ref=e193]:
+        - text: Scott Lystig Fritchie gave a great talk on
+        - link "profiling Erlang code" [ref=e194] [cursor=pointer]:
+          - /url: http://www.snookles.com/erlang/ef2015/
+        - text: including flame graphs at Erlang Factory San Francisco 2015.
+      - listitem [ref=e195]:
+        - text: I submitted tickets for a flame graph / flame chart toggle for
+        - link "Google Chrome (Issue 452624)" [ref=e196] [cursor=pointer]:
+          - /url: https://code.google.com/p/chromium/issues/detail?id=452624
+        - text: and
+        - link "Firefox (bug 1123495)" [ref=e197] [cursor=pointer]:
+          - /url: https://bugzilla.mozilla.org/show_bug.cgi?id=1123495
+        - text: . I'd love to see both implemented. The chromium ticket prompted interesting discussion and prototypes.
+      - listitem [ref=e198]:
+        - text: In my SCALE13x talk (2015), I previewed
+        - link "mixed-mode Java flame graphs" [ref=e199] [cursor=pointer]:
+          - /url: http://www.slideshare.net/brendangregg/scale2015-linux-perfprofiling/57
+        - text: using Linux perf_events ("perf"). This uses a JVM frame pointer patch that has become the -XX:+PreserveFramePointer option in both JDK9 (
+        - link "JDK-8068945" [ref=e200] [cursor=pointer]:
+          - /url: https://bugs.openjdk.java.net/browse/JDK-8068945
+        - text: ) and JDK8u60 (
+        - link "JDK-8072465" [ref=e201] [cursor=pointer]:
+          - /url: https://bugs.openjdk.java.net/browse/JDK-8072465
+        - text: ). For the first time, we can see all CPU consumers in one visualization! See slides 40 to 57 for more details, and my post about it (when I write it!).
+      - listitem [ref=e202]:
+        - text: Francesco Mazzoli post about
+        - link "Flame graphs for GHC time profiles with ghc-prof-flamegraph" [ref=e203] [cursor=pointer]:
+          - /url: https://www.fpcomplete.com/blog/2015/04/ghc-prof-flamegraph
+        - text: ", including a tutorial for making flame graphs from the existing GHC (Haskell) profiler output."
+      - listitem [ref=e204]:
+        - text: Robin Moffatt posted about
+        - link "Analysing ODI performance with Flame Graphs" [ref=e205] [cursor=pointer]:
+          - /url: http://www.rittmanmead.com/2015/04/analysing-odi-performance-with-flame-graphs/
+        - text: ", for understanding load plans in the Oracle Data Integrator."
+      - listitem [ref=e206]:
+        - text: Flame graphs were
+        - link "demoed" [ref=e207] [cursor=pointer]:
+          - /url: https://twitter.com/bleen18/status/589886547262058499
+        - text: at d3NYC (Drupal) 2015, but I haven't found slides online yet.
+      - listitem [ref=e208]:
+        - text: Cor-Paul Bezemer has been investigating flame graph differentials with his
+        - link "Flamegraphdiff" [ref=e209] [cursor=pointer]:
+          - /url: http://corpaul.github.io/flamegraphdiff/
+        - text: software, which shows the difference from A to B using three flame graphs simultaneously. This was also the subject of a SANER2015
+        - link "paper" [ref=e210] [cursor=pointer]:
+          - /url: http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=7081872&url=http%3A%2F%2Fieeexplore.ieee.org%2Fiel7%2F7066219%2F7081802%2F07081872.pdf%3Farnumber%3D7081872
+        - text: ($), and
+        - link "talk" [ref=e211] [cursor=pointer]:
+          - /url: http://www.slideshare.net/corpaulbezemer/saner-2015-era-track
+        - text: .
+      - listitem [ref=e212]:
+        - text: M. Isuru Tharanga Chrishantha Perera wrote a translator for
+        - link "Java Flight Recorder" [ref=e213] [cursor=pointer]:
+          - /url: https://github.com/chrishantha/jfr-flame-graph
+        - text: profiles, for making flame graphs.
+      - listitem [ref=e214]:
+        - text: Jan Stępień developed
+        - link "Pluggable Flame Graphs for Clojure" [ref=e215] [cursor=pointer]:
+          - /url: https://github.com/jstepien/flames/
+        - text: (
+        - link "example" [ref=e216] [cursor=pointer]:
+          - /url: https://stepien.cc/~jan/flames-01.svg
+        - text: ).
+      - listitem [ref=e217]:
+        - text: Evan Hempel has created a
+        - link "python-flamegraph" [ref=e218] [cursor=pointer]:
+          - /url: https://github.com/evanhempel/python-flamegraph
+        - text: profiler for Python, which generates the folded stack output suitable for making into flame graphs. See the README on github for instructions.
+      - listitem [ref=e219]:
+        - text: Franck Pachot posted another example of using CPU flame graphs for identification of an
+        - link "Oracle database bug" [ref=e220] [cursor=pointer]:
+          - /url: http://www.dbi-services.com/index.php/blog/entry/flame-graph-for-quick-identification-of-oracle-bug
+        - text: .
+      - listitem [ref=e221]:
+        - text: Strongloop have included a nice looking
+        - link "Node.js flame graphs module" [ref=e222] [cursor=pointer]:
+          - /url: https://strongloop.com/strongblog/transaction-tracing-node-js-root-cause
+        - text: for their Arc Profiler.
+      - listitem [ref=e223]:
+        - link "@yoheia" [ref=e224] [cursor=pointer]:
+          - /url: https://twitter.com/yoheia
+        - text: posted a detailed flame graph post showing
+        - link "Linux kernel profiling (in Japanese)" [ref=e225] [cursor=pointer]:
+          - /url: http://d.hatena.ne.jp/yohei-a/20150706/1436208007
+        - text: .
+      - listitem [ref=e226]:
+        - text: Zoltan Majo fixed
+        - link "JDK-8068945" [ref=e227] [cursor=pointer]:
+          - /url: https://bugs.openjdk.java.net/browse/JDK-8068945
+        - text: for Java 9 and
+        - link "JDK-8072465" [ref=e228] [cursor=pointer]:
+          - /url: https://bugs.openjdk.java.net/browse/JDK-8072465
+        - text: for Java 8 update 60 build 19 (or later, download as early access
+        - link "here" [ref=e229] [cursor=pointer]:
+          - /url: https://jdk8.java.net/download.html
+        - text: "). This adds -XX:+PreserveFramePointer, which allows Linux perf_events to sample full stacks for making flame graphs. This began with a prototype patch I developed and submitted: ("
+        - link "A hotspot patch for stack profiling" [ref=e230] [cursor=pointer]:
+          - /url: http://mail.openjdk.java.net/pipermail/hotspot-compiler-dev/2014-December/016477.html
+        - text: ). Great to see this functionality make it into the JVM!
+      - listitem [ref=e231]:
+        - text: Min Zhou has developed
+        - link "PerfJ" [ref=e232] [cursor=pointer]:
+          - /url: https://github.com/coderplay/perfj
+        - text: ", for automating the collection of Java flame graphs, using the frame pointer patch (see previous item)."
+    - paragraph [ref=e233]: "More Flame Graph news (updated Dec 2015):"
+    - list [ref=e234]:
+      - listitem [ref=e235]:
+        - text: Myself and Martin Spier posted about
+        - link "Java in Flames" [ref=e236] [cursor=pointer]:
+          - /url: http://techblog.netflix.com/2015/07/java-in-flames.html
+        - text: (
+        - link "PDF" [ref=e237] [cursor=pointer]:
+          - /url: /Articles/Netflix_Java_in_Flames.pdf
+        - text: ) for the Netflix Tech Blog, showing Java mixed-mode flame graphs using the new -XX:+PreserveFramePointer JVM option.
+      - listitem [ref=e238]:
+        - text: Jonathan Perkin used memory flame graphs for
+        - link "Reducing RAM usage in pkgin" [ref=e239] [cursor=pointer]:
+          - /url: http://www.perkin.org.uk/posts/reducing-ram-usage-in-pkgin.html
+        - text: .
+      - listitem [ref=e240]:
+        - text: Isuru Perera postabout about
+        - link "Java CPU Flame Graphs" [ref=e241] [cursor=pointer]:
+          - /url: http://isuru-perera.blogspot.com/2015/07/java-cpu-flame-graphs.html
+        - text: with an example making use of Min's PerfJ.
+      - listitem [ref=e242]:
+        - text: Ben Sandler from Uber has posted
+        - link "go-torch" [ref=e243] [cursor=pointer]:
+          - /url: https://github.com/uber/go-torch
+        - text: ", a flame graph profiler for go-lang programs."
+      - listitem [ref=e244]:
+        - text: Andi Kleen demonstrated
+        - link "Generating flame graphs with Processor Trace" [ref=e245] [cursor=pointer]:
+          - /url: http://halobates.de/blog/p/329
+        - text: ", a feature from modern Intel CPUs for very high frequency sampling."
+      - listitem [ref=e246]:
+        - text: I wrote about the new
+        - link "flame graph search" [ref=e247] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2015-08-11/flame-graph-search.html
+        - text: feature. The matched percentage is very handy, so I don't have to mouse over many tiny frames and add them up manually.
+      - listitem [ref=e248]:
+        - text: Eben Freeman posted about
+        - link "Profiling Python in Production" [ref=e249] [cursor=pointer]:
+          - /url: https://nylas.com/blog/performance/
+        - text: ", which includes a python profiler and basic d3 flame graphs."
+      - listitem [ref=e250]:
+        - text: Will Sewell mentioned flame graphs in his
+        - link "Top tips and tools for optimising Haskell" [ref=e251] [cursor=pointer]:
+          - /url: https://blog.pusher.com/top-tips-and-tools-for-optimising-haskell/
+        - text: post, and linked to the work for
+        - link "GHC flame graphs" [ref=e252] [cursor=pointer]:
+          - /url: https://www.fpcomplete.com/blog/2015/04/ghc-prof-flamegraph#flame-graphs-for-ghc-time-profiles
+        - text: by Francesco Mazzoli.
+      - listitem [ref=e253]:
+        - text: Bo Lopker created
+        - link "djdt-flamegraph" [ref=e254] [cursor=pointer]:
+          - /url: https://github.com/23andMe/djdt-flamegraph
+        - text: (github) for getting a flame graph of current requests in the Django Python web framework.
+      - listitem [ref=e255]:
+        - text: NodeSource have flamegraphs in their
+        - link "NSolid" [ref=e256] [cursor=pointer]:
+          - /url: https://nodesource.com/products/nsolid
+        - text: Node.js analysis product. The graphics look very nice, and they also have treemaps and sunbursts (both of which I think are usually less effective than flame graphs, but I don't mind having the option).
+      - listitem [ref=e257]:
+        - text: Alex Ciminian has been developing a
+        - link "d3-flame-graphs" [ref=e258] [cursor=pointer]:
+          - /url: https://github.com/cimi/d3-flame-graphs
+        - text: library (github) for d3, implemented in CoffeeScript. Check out the demo, it looks really nice so far.
+      - listitem [ref=e259]:
+        - text: Martin Spier (a colleague at Netflix) has been developing
+        - link "d3-flame-graph" [ref=e260] [cursor=pointer]:
+          - /url: https://github.com/spiermar/d3-flame-graph
+        - text: ", as a d3 library implemented in JavaScript. This will be integrated into our open source"
+        - link "Vector" [ref=e261] [cursor=pointer]:
+          - /url: http://techblog.netflix.com/2015/04/introducing-vector-netflixs-on-host.html
+        - text: instance analysis tool. It has zoom transitions!
+      - listitem [ref=e262]:
+        - text: I gave a
+        - link "Java Mixed-Mode Flame Graphs" [ref=e263] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2015-11-06/java-mixed-mode-flame-graphs.html
+        - text: talk at JavaOne 2015, including all the latest updates.
+      - listitem [ref=e264]:
+        - text: David Calavera wrote about
+        - link "Docker flame graphs for Go" [ref=e265] [cursor=pointer]:
+          - /url: https://medium.com/@calavera/docker-flame-graphs-f9523e98d57d#.m2xz1vl18
+        - text: .
+      - listitem [ref=e266]:
+        - text: Carol Nichols wrote detailed instructions for
+        - 'link "Rust Profiling with Instruments and FlameGraph on OSX: CPU/Time" [ref=e267] [cursor=pointer]':
+          - /url: http://carol-nichols.com/2015/12/09/rust-profiling-on-osx-cpu-time/
+        - text: .
+    - paragraph [ref=e268]: "More Flame Graph news (updated Jun 2016):"
+    - list [ref=e269]:
+      - listitem [ref=e270]:
+        - text: Apekshit Sharma wrote a post about
+        - link "Saving CPU! Using Native Hadoop Libraries for CRC computation in HBase" [ref=e271] [cursor=pointer]:
+          - /url: https://blogs.apache.org/hbase/entry/saving_cpu_using_native_hadoop
+        - text: .
+      - listitem [ref=e272]:
+        - text: Mike Huang wrote a Netflx tech blog post to show how he helped with
+        - link "Saving 13 Million Computational Minutes per Day with Flame Graphs" [ref=e273] [cursor=pointer]:
+          - /url: http://techblog.netflix.com/2016/04/saving-13-million-computational-minutes.html
+        - text: .
+      - listitem [ref=e274]:
+        - text: Srdjan Marinovic and Ryan Day created
+        - link "goprofui" [ref=e275] [cursor=pointer]:
+          - /url: https://github.com/wirelessregistry/goprofui
+        - text: includes a cpu.go profiler for golang and flame graphs.
+      - listitem [ref=e276]:
+        - text: I wrote an article for ACMQ,
+        - link "The Flame Graph" [ref=e277] [cursor=pointer]:
+          - /url: http://queue.acm.org/detail.cfm?id=2927301
+        - text: ", which defines flame graphs, describes their origin, explains how to interpret them, and discusses possible future developments."
+      - listitem [ref=e278]:
+        - text: David Mark Clements has developed
+        - link "0x" [ref=e279] [cursor=pointer]:
+          - /url: https://github.com/davidmarkclements/0x
+        - text: ", a new interactive flame graph profiler for Node.js processes on both Linux and OS X. See the"
+        - link "demo" [ref=e280] [cursor=pointer]:
+          - /url: http://davidmarkclements.github.io/0x-demo/
+        - text: .
+      - listitem [ref=e281]:
+        - link "Qt Creator 4.0.0" [ref=e282] [cursor=pointer]:
+          - /url: https://blog.qt.io/blog/2016/05/11/qt-creator-4-0-0-released/?utm_content=32276554&utm_medium=social&utm_source=twitter
+        - text: now includes
+        - link "flame graphs" [ref=e283] [cursor=pointer]:
+          - /url: https://doc.qt.io/qtcreator/creator-qml-performance-monitor.html#visualizing-statistics-as-flame-graphs
+        - text: "along with timeline and statistical views. That's how it should be done: different views of the same data you can switch between."
+      - listitem [ref=e284]:
+        - text: Antonio Pérez developed
+        - link "4gl-flamegraph" [ref=e285] [cursor=pointer]:
+          - /url: https://github.com/skarcha/4gl-flamegraph
+        - text: for processing the profiler output of Genero by 4Js (Four Js).
+      - listitem [ref=e286]:
+        - text: Ty Overby published a
+        - link "flamegraph profiling tool for rust" [ref=e287] [cursor=pointer]:
+          - /url: https://github.com/TyOverby/flame
+        - text: .
+      - listitem [ref=e288]:
+        - text: The
+        - link "vprof Python package" [ref=e289] [cursor=pointer]:
+          - /url: https://github.com/nvdv/vprof
+        - text: provides interactive visualizations for profiling, including flame graphs.
+      - listitem [ref=e290]:
+        - text: Alastair Butler and Kei Yoshimoto published the paper
+        - link "Large scale semantic representation with flame graphs" [ref=e291] [cursor=pointer]:
+          - /url: http://www.anlp.jp/proceedings/annual_meeting/2015/pdf_dir/C1-5.pdf
+        - text: (PDF), where they used them to visualize semantically annotated corpora, which has been parsed into a hierarchy.
+      - listitem [ref=e292]:
+        - text: Jonathan Newbrough developed the
+        - link "Gumshoe Load Investigator" [ref=e293] [cursor=pointer]:
+          - /url: https://github.com/dcm-oss/gumshoe
+        - text: for Java analysis, initially for internal use in the Dell Cloud Manager, which makes good use of flame graphs.
+      - listitem [ref=e294]:
+        - text: Mahesh Dathrika published
+        - link "Igniting Node.js Flame" [ref=e295] [cursor=pointer]:
+          - /url: http://www.ebaytechblog.com/2016/06/15/igniting-node-js-flames/
+        - text: ", showing how they use the v8-profiler at eBPF to create Node.js flame graphs."
+      - listitem [ref=e296]:
+        - text: Maciek Lesiczka is building an ASP.NET profiler that includes flame graphs, and introduced it in
+        - link "netric.io - lightweight ASP.NET profiler" [ref=e297] [cursor=pointer]:
+          - /url: http://macieklesiczka.github.io/2016/06/29/netric_io/
+        - text: .
+      - listitem [ref=e298]:
+        - text: Nitsan Wakart covered Java flame graphs and various Java profiling challenges in his Devoxx UK talk
+        - 'link "Extreme Profiling: Digging Into Hotspots by Nitsan Wakart" [ref=e299] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=7PkkxDaFDj8
+        - text: (youtube).
+      - listitem [ref=e300]:
+        - text: Maciek Lesiczka has been developing
+        - link "netric.io - lightweight ASP.NET profiler" [ref=e301] [cursor=pointer]:
+          - /url: http://macieklesiczka.github.io/2016/06/29/netric_io/
+        - text: ", an ASP.NET profiler that includes flame graphs."
+      - listitem [ref=e302]:
+        - text: My article
+        - link "The Flame Graph" [ref=e303] [cursor=pointer]:
+          - /url: http://cacm.acm.org/magazines/2016/6/202665-the-flame-graph/abstract
+        - text: was published in CACM.
+    - paragraph [ref=e304]: "More Flame Graph news (updated Dec 2016):"
+    - list [ref=e305]:
+      - listitem [ref=e306]:
+        - text: Rhys Hiltner from Twitch blogged about
+        - link "Go's march to low-latency GC" [ref=e307] [cursor=pointer]:
+          - /url: https://blog.twitch.tv/gos-march-to-low-latency-gc-a6fa96f06eb7#.yit1viugb
+        - text: ", which included flame graph analysis of GC time."
+      - listitem [ref=e308]:
+        - text: Dmytro Semenov on the ebay tech blog posted
+        - link "Mastering the Fire" [ref=e309] [cursor=pointer]:
+          - /url: http://www.ebaytechblog.com/2016/07/14/mastering-the-fire/
+        - text: ", about how they can create flame graphs on production servers at any time with one click of a button."
+      - listitem [ref=e310]:
+        - text: Olivier Cano posted about
+        - link "Measuring Snap performance" [ref=e311] [cursor=pointer]:
+          - /url: https://medium.com/intel-sdi/measuring-snap-performance-7cde2b315a62#.m8t6nxb8i
+        - text: which includes flame graphs for golang.
+      - listitem [ref=e312]:
+        - text: Kay Ousterhout wrote about
+        - link "Generating Flame Graphs for Apache Spark" [ref=e313] [cursor=pointer]:
+          - /url: https://gist.github.com/kayousterhout/7008a8ebf2babeedc7ce6f8723fd1bf4
+        - text: using Java Flight Recorder.
+      - listitem [ref=e314]:
+        - text: Adam Perry published
+        - 'link "Rust Performance: A story featuring perf and flamegraph on Linux" [ref=e315] [cursor=pointer]':
+          - /url: http://blog.adamperry.me/rust/2016/07/24/profiling-rust-perf-flamegraph/
+        - text: ", which also has great examples of using perf."
+      - listitem [ref=e316]:
+        - text: Bruce Dawson published a post on
+        - link "ETW Flame Graphs Made Easy" [ref=e317] [cursor=pointer]:
+          - /url: https://randomascii.wordpress.com/2016/09/05/etw-flame-graphs-made-easy/
+        - text: and the new support in Windows Performance Analyzer (
+        - link "WPA" [ref=e318] [cursor=pointer]:
+          - /url: https://msdn.microsoft.com/en-us/windows/hardware/commercialize/test/wpt/graphs#flame_graphs
+        - text: ).
+      - listitem [ref=e319]:
+        - text: Aviem Zur from PayPal engineering wrote about
+        - link "Spark in Flames - Profiling Spark Applications Using Flame Graphs" [ref=e320] [cursor=pointer]:
+          - /url: https://www.paypal-engineering.com/2016/09/08/spark-in-flames-profiling-spark-applications-using-flame-graphs/
+        - text: .
+      - listitem [ref=e321]:
+        - text: Cédric Champeau (I think) has added automatic Flame graph generation for
+        - link "Gradle's perf tests" [ref=e322] [cursor=pointer]:
+          - /url: https://twitter.com/gradle/status/773836017677795328
+        - text: . Makes a lot of sense, as does auto generation for software versions and builds (given a load generator).
+      - listitem [ref=e323]:
+        - text: Bill Smith from indeed engineering posted
+        - link "A Funny Thing Happened on the Way to Java 8" [ref=e324] [cursor=pointer]:
+          - /url: http://engineering.indeedblog.com/blog/2016/09/job-search-web-app-java-8-migration/
+        - text: ", where code cache issues are investigated with flame graphs (I've also found a code cache issue this way!)."
+      - listitem [ref=e325]:
+        - text: Bert Hubert included flame graphs in his detailed analysis
+        - 'link "Optimizing optimizing: some insights that led to a 400% speedup of PowerDNS" [ref=e326] [cursor=pointer]':
+          - /url: https://hackernoon.com/optimizing-optimizing-some-insights-that-led-to-a-400-speedup-of-powerdns-5e1a44b58f1c#.wnny5y5fc
+        - text: .
+      - listitem [ref=e327]:
+        - text: Luca Canali has posted more flame graphs, this time
+        - link "Apache Spark 2.0 Performance Improvements Investigated With Flame Graphs" [ref=e328] [cursor=pointer]:
+          - /url: http://db-blog.web.cern.ch/blog/luca-canali/2016-09-spark-20-performance-improvements-investigated-flame-graphs
+        - text: ", and even includes some perf stat analysis."
+      - listitem [ref=e329]:
+        - text: Mahmoud Hatem posted about
+        - 'link "perf_events : Off/On/Mixed CPU flamegraph extended with oracle wait events" [ref=e330] [cursor=pointer]':
+          - /url: https://mahmoudhatem.wordpress.com/2016/09/23/perf_events-offonmixed-cpu-flamegraph-extended-with-oracle-wait-events/
+        - text: ", showing both on- and off-CPU flame graphs for an Oracle workload."
+      - listitem [ref=e331]:
+        - text: Evan Klitzke posted
+        - 'link "pyflame: Uber enginering''s ptracing profiler for python" [ref=e332] [cursor=pointer]':
+          - /url: https://eng.uber.com/pyflame/
+        - text: ", as well as the source on"
+        - link "github" [ref=e333] [cursor=pointer]:
+          - /url: https://github.com/uber/pyflame
+        - text: . Python is tricky to profile as it's interpreted only, so basic frame pointer-based stack walking only identifies interpreter frames.
+      - listitem [ref=e334]:
+        - text: I posted about
+        - link "Linux 4.9's Efficient BPF-based Profiler" [ref=e335] [cursor=pointer]:
+          - /url: /blog/2016-10-21/linux-efficient-profiler.html
+        - text: ", an important feature that will make flame graph profiling much more efficient."
+      - listitem [ref=e336]:
+        - text: Jerome Terry posted instructions for
+        - link "Generating Java Mixed Mode Flame Graphs" [ref=e337] [cursor=pointer]:
+          - /url: http://blog.jerometerry.com/2016/12/generating-java-mixed-mode-flame-graphs.html
+        - text: summarizing all the latest steps.
+      - listitem [ref=e338]:
+        - text: Joel Fernandes posted
+        - 'link "ARMv8: Flamegraph and NMI Support" [ref=e339] [cursor=pointer]':
+          - /url: http://www.linuxinternals.org/blog/2016/12/31/nmi-perf-armv8/
+        - text: .
+    - paragraph [ref=e340]: "More Flame Graph news (updated Jun 2017):"
+    - list [ref=e341]:
+      - listitem [ref=e342]:
+        - text: "Linkedin have done some great work with flame graphs:"
+        - 'link "ODP: An Infrastructure for On-Demand Service Profiling" [ref=e343] [cursor=pointer]':
+          - /url: https://engineering.linkedin.com/blog/2017/01/odp--an-infrastructure-for-on-demand-service-profiling
+        - text: ", including searching and comparison (differential) capabilities."
+      - listitem [ref=e344]:
+        - text: Alice Goldfuss posted about
+        - link "Making FlameGraphs with Containerized Java" [ref=e345] [cursor=pointer]:
+          - /url: http://blog.alicegoldfuss.com/making-flamegraphs-with-containerized-java/
+        - text: ", figuring out how to get perf to work in a container environment."
+      - listitem [ref=e346]:
+        - text: Nitsan Wakart wrote a great post on
+        - 'link "Java Flame Graphs Introduction: Fire For Everyone!" [ref=e347] [cursor=pointer]':
+          - /url: http://psy-lob-saw.blogspot.co.za/2017/02/flamegraphs-intro-fire-for-everyone.html
+        - text: ", that explains different Java profilers in depth."
+      - listitem [ref=e348]:
+        - text: Benoit Bernard posted
+        - link "Using Uber's Pyflame and Logs to Tackle Scaling Issues" [ref=e349] [cursor=pointer]:
+          - /url: https://benbernardblog.com/using-ubers-pyflame-and-logs-to-tackle-scaling-issues/
+        - text: showing all steps.
+      - listitem [ref=e350]:
+        - text: I posted
+        - link "Where has my disk space gone? Flame graphs for file systems" [ref=e351] [cursor=pointer]:
+          - /url: /blog/2017-02-05/file-system-flame-graph.html
+        - text: ", with a follow up"
+        - link "Flame Graphs vs Tree Maps vs Sunburst" [ref=e352] [cursor=pointer]:
+          - /url: /blog/2017-02-06/flamegraphs-vs-treemaps-vs-sunburst.html
+        - text: .
+      - listitem [ref=e353]:
+        - text: Sasha Goldshtein posted
+        - link "Profiling a .NET Core Application on Linux" [ref=e354] [cursor=pointer]:
+          - /url: http://blogs.microsoft.co.il/sasha/2017/02/27/profiling-a-net-core-application-on-linux/
+        - text: where he solves problems and discusses next challenges with profiling Windows .NET on Linux.
+      - listitem [ref=e355]:
+        - text: Steve Robinson posted
+        - link "Making sense out of flamegraphs (Ruby on Rails)" [ref=e356] [cursor=pointer]:
+          - /url: https://hackernoon.com/making-sense-out-of-flamegraphs-f25e1a0eb760#.6v25aac4s
+        - text: with an introduction to stack sampling profilers.
+      - listitem [ref=e357]:
+        - text: Ross Schlaikjer posted
+        - link "Profiling Android apps with Flamegraphs" [ref=e358] [cursor=pointer]:
+          - /url: https://blog.rhye.org/post/android-profiling-flamegraphs/
+        - text: ", and has an online"
+        - link "Android Trace file to flamegraph converter" [ref=e359] [cursor=pointer]:
+          - /url: https://aflame.rhye.org/
+        - text: .
+      - listitem [ref=e360]:
+        - text: Claes Redestad posted
+        - link "Bytestacks" [ref=e361] [cursor=pointer]:
+          - /url: http://cr.openjdk.java.net/~redestad/bytestacks/bytecode-startup-analysis.html
+        - text: visualizing the output of -XX:+TraceBytecodes
+      - listitem [ref=e362]:
+        - text: Lari Hotari has created
+        - link "jfr-report-tool" [ref=e363] [cursor=pointer]:
+          - /url: https://github.com/lhotari/jfr-report-tool
+        - text: to turn a Java Flight Recorder (JFR) dump into either CPU flame graphs or allocation flame graphs.
+      - listitem [ref=e364]:
+        - text: Nan Xiao posted
+        - link "Use perf and FlameGraph to profile program on Linux" [ref=e365] [cursor=pointer]:
+          - /url: http://nanxiao.me/en/use-perf-and-flamegraph-to-profile-program-on-linux/
+        - text: ", including a sample C++ program to analyze."
+      - listitem [ref=e366]:
+        - text: Michael Malis at Heap posted
+        - link "How Basic Performance Analysis Saved Us Millions" [ref=e367] [cursor=pointer]:
+          - /url: http://heap.engineering/basic-performance-analysis-saved-us-millions/
+        - text: ", with flame graph analysis of Postgres."
+      - listitem [ref=e368]:
+        - text: I posted
+        - link "Java Package Flame Graph" [ref=e369] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2017-06-30/package-flame-graph.html
+        - text: ", showing this new way to inspect Java CPU usage."
+    - paragraph [ref=e370]: "More Flame Graph news (updated Dec 2017):"
+    - list [ref=e371]:
+      - listitem [ref=e372]:
+        - text: "My USENIX ATC 2017 talk was posted:"
+        - link "Visualizing Performance with Flame Graphs (youtube)" [ref=e373] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=D53T1Ejig1Q
+        - text: (
+        - link "sildes" [ref=e374] [cursor=pointer]:
+          - /url: https://www.slideshare.net/brendangregg/usenix-atc-2017-visualizing-performance-with-flame-graphs
+        - text: "): this is my updated flame graphs talk."
+      - listitem [ref=e375]:
+        - text: I posted
+        - 'link "Coloring Flame Graphs: Code Hues" [ref=e376] [cursor=pointer]':
+          - /url: http://www.brendangregg.com/blog/2017-07-30/coloring-flamegraphs-code-type.html
+        - text: ", explaining how I've been improving them"
+      - listitem [ref=e377]:
+        - text: Oracle added flame graphs to
+        - link "Oracle Developer Studio Performance Analyzer" [ref=e378] [cursor=pointer]:
+          - /url: http://www.oracle.com/technetwork/server-storage/solarisstudio/documentation/o11-151-perf-analyzer-brief-1405338.pdf
+        - text: (PDF).
+      - listitem [ref=e379]:
+        - text: Mark Price wrote about
+        - link "Using Flame Graphs to Analyze & Determine Cassandra Performance Under Stress" [ref=e380] [cursor=pointer]:
+          - /url: https://medium.com/linode-cube/using-flame-graphs-to-analyze-determine-cassandra-performance-under-stress-part-2-of-3-b2f9eebd9c5
+        - text: (Part 2 of 3), which includes Java thread pool names from jstack to group towers.
+      - listitem [ref=e381]:
+        - text: LinkedIn has enhanced flame graphs to do
+        - link "Common Issue Detection for CPU Profiling" [ref=e382] [cursor=pointer]:
+          - /url: https://engineering.linkedin.com/blog/2017/09/common-issue-detection-for-cpu-profiling?utm_content=buffer21674&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
+        - text: ", and applied it to several common JVM issue. This is a good idea."
+      - listitem [ref=e383]:
+        - text: Alexey Ivanov wrote
+        - link "Optimizing web servers for high throughput and low latency" [ref=e384] [cursor=pointer]:
+          - /url: https://blogs.dropbox.com/tech/2017/09/optimizing-web-servers-for-high-throughput-and-low-latency/
+        - text: ", which is a grand tour of many Linux performance tools including flame graphs and bcc/BPF. Check it out."
+      - listitem [ref=e385]:
+        - text: Nitsan Wakart gave an excellent talk
+        - link "Exploring Java Perf Flamegraphs" [ref=e386] [cursor=pointer]:
+          - /url: https://2017.javazone.no/program/56179b136b91458a843383e13fd2efa1
+        - text: at JavaZone 2017.
+      - listitem [ref=e387]:
+        - text: Mark Price added
+        - link "Java Heap Allocation Flamegraphs" [ref=e388] [cursor=pointer]:
+          - /url: https://epickrram.blogspot.co.uk/2017/09/heap-allocation-flamegraphs.html
+        - text: to grav toolkit, by using the USDT object-alloc probe.
+      - listitem [ref=e389]:
+        - text: "I included flame graphs in my Kernel Recipes 2017 talk:"
+        - link "Using Linux perf at Netflix (youtube)" [ref=e390] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=UVM3WX8Lq2k
+        - text: (
+        - link "slides" [ref=e391] [cursor=pointer]:
+          - /url: https://www.slideshare.net/brendangregg/kernel-recipes-2017-using-linux-perf-at-netflix
+        - text: ).
+      - listitem [ref=e392]:
+        - text: Miel Donkers posted
+        - link "The JVM on Fire – Using Flame Graphs to Analyse Performance" [ref=e393] [cursor=pointer]:
+          - /url: https://blog.codecentric.de/en/2017/09/jvm-fire-using-flame-graphs-analyse-performance/
+        - text: ", and compared a flame graph to JProfiler tree view."
+      - listitem [ref=e394]:
+        - text: Nudge APM appear to have included flame graphs in their
+        - link "profiling" [ref=e395] [cursor=pointer]:
+          - /url: https://www.nudge-apm.com/features/#profiling
+        - text: section of their analyzer (for Java, PHP, .NET).
+      - listitem [ref=e396]:
+        - text: Adam Sitnik developed flame graphs for
+        - link "Windows PerfView" [ref=e397] [cursor=pointer]:
+          - /url: https://github.com/Microsoft/perfview/pull/440
+        - text: ", which has been"
+        - link "merged" [ref=e398] [cursor=pointer]:
+          - /url: https://twitter.com/SitnikAdam/status/950729146627391489
+        - text: (yay).
+      - listitem [ref=e399]:
+        - text: Martin Spier added flame graphs to
+        - link "pprof's web UI" [ref=e400] [cursor=pointer]:
+          - /url: https://github.com/google/pprof/issues/166
+        - text: .
+      - listitem [ref=e401]:
+        - text: Konrad Malawski posted
+        - link "Automatic FlameGraph generation from JMH Benchmarks using (SBT) JMH Extras (plain Java too)" [ref=e402] [cursor=pointer]:
+          - /url: http://kto.so/2017/12/10/automatic-flamegraph-generation-from-jmh-benchmarks-using-sbt-jmh-extras-plain-java-too/
+        - text: .
+      - listitem [ref=e403]:
+        - text: Alexander Yakushev posted
+        - 'link "Profiling tool: async-profiler" [ref=e404] [cursor=pointer]':
+          - /url: http://clojure-goes-fast.com/blog/profiling-tool-async-profiler/
+        - text: ", showing how it can be used to generate flame graphs for Clojure apps on the JVM."
+      - listitem [ref=e405]:
+        - text: Ruth Grace Wong gave the talk
+        - 'link "FlameGraph That: Self-Service Profiling with SaltStack and Rundeck" [ref=e406] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=smW9VXOdAIg
+        - text: at Salt Conf 17 (thanks!).
+      - listitem [ref=e407]:
+        - text: Milian Wolff's
+        - link "Hotspot - the Linux perf GUI for performance analysis" [ref=e408] [cursor=pointer]:
+          - /url: https://github.com/KDAB/hotspot
+        - text: tool has flame graphs (I'm not sure exactly when it merged.)
+    - paragraph [ref=e409]: "More Flame Graph news (updated Dec 2018):"
+    - list [ref=e410]:
+      - listitem [ref=e411]:
+        - text: Jon Hadad wrote about
+        - link "Analyzing Cassandra Performance with Flame Graphs" [ref=e412] [cursor=pointer]:
+          - /url: http://thelastpickle.com/blog/2018/01/16/cassandra-flame-graphs.html
+        - text: .
+      - listitem [ref=e413]:
+        - text: Amir Langer gave a talk (in Hebrew) about
+        - link "Flame Graphs and the JVM at eBay" [ref=e414] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=Hw3G272Ztb0
+        - text: (youtube).
+      - listitem [ref=e415]:
+        - text: Datadog say they added flame graphs for
+        - link "Java performance" [ref=e416] [cursor=pointer]:
+          - /url: https://www.datadoghq.com/dg/apm/java-performance
+        - text: but they look like flame charts. I'm not sure yet.
+      - listitem [ref=e417]:
+        - text: Brendan Ryan wrote about
+        - link "Profiling Go Applications with Flamegraphs" [ref=e418] [cursor=pointer]:
+          - /url: http://brendanjryan.com/golang/profiling/2018/02/28/profiling-go-applications.html
+        - text: using Uber's go-torch library.
+      - listitem [ref=e419]:
+        - text: Kiran posted
+        - link "How to use linux perf tools and save dollars - Part 2" [ref=e420] [cursor=pointer]:
+          - /url: http://techunravel.blogspot.com/2018/03/how-to-use-flame-graph.html
+        - text: ", including flame graphs of perf samples."
+      - listitem [ref=e421]:
+        - text: Vladimir Agafonkin developed
+        - link "Flamebearer" [ref=e422] [cursor=pointer]:
+          - /url: https://twitter.com/mourner/status/980828722692489218
+        - text: ", for lightweight responsive graphs for Node.js and v8."
+      - listitem [ref=e423]:
+        - text: Trace Compass added
+        - link "flame graphs as well as flame charts" [ref=e424] [cursor=pointer]:
+          - /url: https://twitter.com/DavisTurlis/status/978449942200102912
+        - text: ", the first tool to support both (yay)."
+      - listitem [ref=e425]:
+        - text: Myself and my Netflix colleague Martin Spier published
+        - link "FlameScope" [ref=e426] [cursor=pointer]:
+          - /url: https://medium.com/netflix-techblog/netflix-flamescope-a57ca19d47bb
+        - text: ", a new performance analysis tool that allows profiles to be visualized as subsecond-offset heat maps, and then time ranges to be selected and then visualized as a flame graph. It's also on github"
+        - link "Netflix/flamescope" [ref=e427] [cursor=pointer]:
+          - /url: https://github.com/Netflix/flamescope
+        - text: .
+      - listitem [ref=e428]:
+        - text: Sadiq Jaffer, Richard Warburton wrote about
+        - link "Always-on production Flame Graphs for Java" [ref=e429] [cursor=pointer]:
+          - /url: https://www.opsian.com/blog/always-on-production-flame-graphs/
+        - text: .
+      - listitem [ref=e430]:
+        - text: Alexandru Olaru posted
+        - link "Squeeze node.js performance with flame graphs" [ref=e431] [cursor=pointer]:
+          - /url: https://www.alxolr.com/articles/squeeze-node-js-performance-with-flame-graphs
+        - text: .
+      - listitem [ref=e432]:
+        - text: Ivan Babrou posted a case study of
+        - link "https://blog.cloudflare.com/tracing-system-cpu-on-debian-stretch/" [ref=e433] [cursor=pointer]:
+          - /url: Tracing System CPU on Debian Stretch
+        - text: ", including flame graphs (and bcc/eBPF tools)."
+      - listitem [ref=e434]:
+        - text: Marcus Hirt developed
+        - link "jmc-flame-view" [ref=e435] [cursor=pointer]:
+          - /url: https://github.com/thegreystone/jmc-flame-view
+        - text: and posted
+        - link "instructions" [ref=e436] [cursor=pointer]:
+          - /url: http://hirt.se/blog/?p=989
+        - text: "for getting it going: this adds flame graphs to Java Mission Control."
+      - listitem [ref=e437]:
+        - text: Jamie Wong has developed
+        - link "SpeedScope - Interactive Flamegraph Explorer" [ref=e438] [cursor=pointer]:
+          - /url: http://jamie-wong.com/post/speedscope/
+        - text: ", which supports \"time order\" (flame charts), \"left heavy\", which are flame graphs with an additional sort so the largest frames move left, and \"sandwich\" (\"middle-out\" merge). Great to see all three types in one GUI."
+      - listitem [ref=e439]:
+        - text: Sebastián Reca (Muun) showed at at Kaizen how flame graphs helped with
+        - link "Scaling Bitcoin" [ref=e440] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=nwSuctrzV7Y&t=2913s
+        - text: (youtube video).
+    - paragraph [ref=e441]: "More Flame Graph news (updated Oct 2019):"
+    - list [ref=e442]:
+      - listitem [ref=e443]:
+        - text: Nina Li posted
+        - link "Visualizing OLAP Requests on SAP HANA System with Concurrency Flame Graph using SAP HANA Dump Analyzer" [ref=e444] [cursor=pointer]:
+          - /url: https://blogs.sap.com/2019/04/22/visualizing-olap-requests-on-sap-hana-system-with-concurrency-flame-graph-using-sap-hana-dump-analyzer/
+        - text: .
+      - listitem [ref=e445]:
+        - text: The
+        - link "AMD uProf" [ref=e446] [cursor=pointer]:
+          - /url: https://developer.amd.com/amd-uprof/?sf215410082=1
+        - text: performance analysis tool now includes
+        - link "flame graphs" [ref=e447] [cursor=pointer]:
+          - /url: https://developer.amd.com/wordpress/media/2019/07/image-03.png
+        - text: .
+      - listitem [ref=e448]:
+        - text: The
+        - link "YourKit" [ref=e449] [cursor=pointer]:
+          - /url: https://www.yourkit.com/eap/
+        - text: Java profiler has added
+        - link "flame graphs" [ref=e450] [cursor=pointer]:
+          - /url: https://www.yourkit.com/docs/java/help/cpu_flame_graph.jsp
+        - text: for its 2019.8 release (currently EAP).
+      - listitem [ref=e451]:
+        - text: The
+        - link "IntelliJ IDE" [ref=e452] [cursor=pointer]:
+          - /url: https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap-4-profiling-tools-structural-search-preview-and-more/
+        - text: now has
+        - link "flame graphs" [ref=e453] [cursor=pointer]:
+          - /url: https://d3nmt5vlzunoa1.cloudfront.net/idea/files/2019/06/Profiler2.png
+        - text: to visualize stacks from Java Flight Recorder or Async profiler.
+      - listitem [ref=e454]:
+        - text: Michael Hunger wrote a post
+        - 'link "Firing on All Engines: Flame graphs for Java Programs" [ref=e455] [cursor=pointer]':
+          - /url: https://medium.com/97-things/firing-on-all-engines-f33e340c3374
+        - text: for the 97 Things from O'Reilly Media blog.
+      - listitem [ref=e456]:
+        - text: Agustin Gallego wrote the post
+        - link "Profiling Software Using perf and Flame Graphs" [ref=e457] [cursor=pointer]:
+          - /url: https://www.percona.com/blog/2019/11/20/profiling-software-using-perf-and-flame-graphs
+        - text: showing MySQL server as a target (the same use case that led me to first create flame graphs.)
+    - paragraph [ref=e458]: "More Flame Graph news (updated Oct 2020):"
+    - list [ref=e459]:
+      - listitem [ref=e460]:
+        - text: Amazon launched the
+        - link "AWS CodeGuru" [ref=e461] [cursor=pointer]:
+          - /url: https://aws.amazon.com/codeguru/features/
+        - text: profiler that includes flame graphs. Also see the flame graph examples in
+        - link "Optimizing application performance with Amazon CodeGuru Profiler" [ref=e462] [cursor=pointer]:
+          - /url: https://aws.amazon.com/blogs/machine-learning/optimizing-application-performance-with-amazon-codeguru-profiler/
+        - text: .
+      - listitem [ref=e463]:
+        - text: Google added flame graphs to
+        - link "Google Cloud Profiler" [ref=e464] [cursor=pointer]:
+          - /url: ="https://cloud.google.com/profiler/docs/focusing-profiles"
+        - text: . By default these use a largest-frame-left sort (I'd rather alphabetic so that towers don't switch positions when comparing two profiles from the same system). There are flame graph examples in
+        - link "How Mercari reduced request latency by 15% with Cloud Profiler" [ref=e465] [cursor=pointer]:
+          - /url: https://cloud.google.com/blog/products/management-tools/mercari-uses-cloud-profiler-to-reduce-service-latency
+        - text: .
+    - paragraph [ref=e466]: "More Flame Graph news (updated Nov 2021):"
+    - list [ref=e467]:
+      - listitem [ref=e468]:
+        - text: Intel added
+        - link "Flame Graphs to Intel vTune" [ref=e469] [cursor=pointer]:
+          - /url: https://www.intel.com/content/www/us/en/develop/documentation/vtune-cookbook/top/configuration-recipes/analyzing-hot-code-paths-using-flame-graphs.html
+        - text: .
+      - listitem [ref=e470]: There was more news, I'm getting behind adding links here. Will catch up.
+    - paragraph [ref=e471]: Thanks to everyone who has written about flame graphs, developed them further, and shared their results! I'll update this page from time to time with more news.
+  - separator [ref=e472]
+  - text: "Last updated: 23-Jan-2025"

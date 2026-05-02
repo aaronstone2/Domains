@@ -39,6 +39,12 @@ Cue's base enables `isolatedDeclarations`, so all exported values need explicit 
 - **Package scope.** All packages are `@domains/<name>`, private, ESM (`"type": "module"`).
 - **Naming.** `^[a-z0-9][a-z0-9-]*$` for both domains and packages.
 
+## Knowledge corpus
+
+A multi-domain debugging KB lives in this repo: DuckDB at `_db/knowledge.duckdb`, ingest pipeline at `domains/_shared/ingest/` (Python via `uv`), per-phase session prompts at `domains/_shared/sessions/`, queryable via `pnpm harness <sub> [args]`. **Always start a corpus session by reading `domains/_shared/sessions/PREAMBLE.md`** — it captures the interview goal (AI Support Engineer at Cognition), conventions, the MCP stack (motherduck/filesystem/memory/context7/playwright), and the plan-mode meta-research pattern every session follows. Per-phase docs (`phase-1-source-corpus.md`, etc.) are designed to be piped in as the first message of a new session.
+
+Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`.
+
 ## CLI internals
 
 The CLI lives in `packages/cli/` (`@domains/cli`). Architecture:

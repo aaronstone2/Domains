@@ -5,6 +5,14 @@
 # Local data
 _db/
 
+# Per-domain raw fetched HTML/MD caches — rebuildable from sources.yaml + ingest pipeline.
+# (extract/ stays committed: the corpus is reproducible from JSON without re-fetching.)
+domains/**/raw/
+
+# Tokens / API keys captured during DevBox inspection — extra-paranoid, in addition to .env / *.key
+*.token
+*sensitive*
+
 # OS
 .DS_Store
 Thumbs.db

@@ -1,0 +1,1262 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "Linux Extended BPF (eBPF) Tracing Tools" [level=1] [ref=e4]
+    - generic [ref=e5]:
+      - link "BCC Performance Tools" [ref=e6] [cursor=pointer]:
+        - /url: BPF/bcc_tracing_tools_early2019.png
+        - img "BCC Performance Tools" [ref=e7]
+      - generic [ref=e9]: BCC performance tools
+      - link "bpftrace Performance Tools" [ref=e10] [cursor=pointer]:
+        - /url: BPF/bpftrace_tools_early2019.png
+        - img "bpftrace Performance Tools" [ref=e11]
+      - generic [ref=e13]: bpftrace performance tools
+      - generic [ref=e14]:
+        - link [ref=e15] [cursor=pointer]:
+          - /url: bpf-performance-tools-book.html
+          - img [ref=e16]
+        - generic [ref=e17]: My BPF Perf Tools book
+    - paragraph [ref=e18]: This page shows examples of performance analysis tools using enhancements to BPF (Berkeley Packet Filter) which were added to the Linux 4.x series kernels, allowing BPF to do much more than just filtering packets. These enhancements allow custom analysis programs to be executed on Linux dynamic tracing, static tracing, and profiling events.
+    - paragraph [ref=e19]:
+      - text: The main and recommended front-ends for BPF tracing are
+      - link "BCC" [ref=e20] [cursor=pointer]:
+        - /url: "#bcc"
+      - text: and
+      - link "bpftrace" [ref=e21] [cursor=pointer]:
+        - /url: "#bpftrace"
+      - text: ": BCC for complex tools and daemons, and bpftrace for one-liners and short scripts. If you are looking for tools to run, try BCC then bpftrace. If you want to program your own, start with bpftrace, and only use BCC if needed. I've ported many of my older tracing tools to both BCC and bpftrace, and their repositories provide over 100 tools between them. I also developed over 100 more for my book:"
+      - 'link "BPF Performance Tools: Linux System and Application Observability" [ref=e22] [cursor=pointer]':
+        - /url: bpf-performance-tools-book.html
+      - text: .
+    - paragraph [ref=e23]: "eBPF tracing is suited for answering questions like:"
+    - list [ref=e24]:
+      - listitem [ref=e25]: Are any ext4 operations taking longer than 50 ms?
+      - listitem [ref=e26]: What is run queue latency, as a histogram?
+      - listitem [ref=e27]: Which packets and apps are experiencing TCP retransmits? Trace efficiently (without tracing send/receive).
+      - listitem [ref=e28]: What is the stack trace when threads block (off-CPU), and how long do they block for?
+    - paragraph [ref=e29]: "eBPF can also be used for security modules and software defined networks. I'm not covering those here (yet, anyway). Also note: eBPF is often called just \"BPF\", especially on lkml."
+    - paragraph [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - text: If you are new to eBPF tracing, start at the
+          - link "Front Ends" [ref=e33] [cursor=pointer]:
+            - /url: "#frontends"
+          - text: to understand the options
+        - text: . For end users, you can also see my post
+        - 'link "Learn eBPF Tracing: Tutorial and Examples" [ref=e34] [cursor=pointer]':
+          - /url: https://www.brendangregg.com/blog/2019-01-01/learn-ebpf-tracing.html
+        - text: ; for product developers, see
+        - link "How To Add eBPF Observability To Your Product" [ref=e35] [cursor=pointer]:
+          - /url: https://www.brendangregg.com/blog/2021-07-03/how-to-add-bpf-observability.html
+        - text: .
+    - paragraph [ref=e36]: "Table of contents:"
+    - list [ref=e37]:
+      - paragraph [ref=e38]:
+        - table [ref=e39]:
+          - rowgroup [ref=e40]:
+            - row "1. Screenshot 2. One Liners 3. Presentation 4. eBPF 4.1. Prerequisites 4.2. Front Ends 5. BCC 5.1. Installation 5.2. Perf Checklist 5.3. Tools 5.4. Programming 6. bpftrace 6.1. Installation 6.2. One-Liners 6.3. Programming 7. perf 8. References 9. Other 10. Acknowledgements 11. Updates" [ref=e41]:
+              - cell "1. Screenshot 2. One Liners 3. Presentation 4. eBPF 4.1. Prerequisites 4.2. Front Ends" [ref=e42]:
+                - link "1. Screenshot" [ref=e43] [cursor=pointer]:
+                  - /url: "#screenshot"
+                - link "2. One Liners" [ref=e44] [cursor=pointer]:
+                  - /url: "#oneliners"
+                - link "3. Presentation" [ref=e45] [cursor=pointer]:
+                  - /url: "#presentation"
+                - link "4. eBPF" [ref=e46] [cursor=pointer]:
+                  - /url: "#eBPF"
+                - link "4.1. Prerequisites" [ref=e47] [cursor=pointer]:
+                  - /url: "#prerequisites"
+                - link "4.2. Front Ends" [ref=e48] [cursor=pointer]:
+                  - /url: "#frontends"
+              - cell "5. BCC 5.1. Installation 5.2. Perf Checklist 5.3. Tools 5.4. Programming" [ref=e49]:
+                - link "5. BCC" [ref=e50] [cursor=pointer]:
+                  - /url: "#bcc"
+                - link "5.1. Installation" [ref=e51] [cursor=pointer]:
+                  - /url: "#bccinstallation"
+                - link "5.2. Perf Checklist" [ref=e52] [cursor=pointer]:
+                  - /url: "#bccgeneralchecklist"
+                - link "5.3. Tools" [ref=e53] [cursor=pointer]:
+                  - /url: "#bcctools"
+                - link "5.4. Programming" [ref=e54] [cursor=pointer]:
+                  - /url: "#bccprogramming"
+              - cell "6. bpftrace 6.1. Installation 6.2. One-Liners 6.3. Programming" [ref=e55]:
+                - link "6. bpftrace" [ref=e56] [cursor=pointer]:
+                  - /url: "#bpftrace"
+                - link "6.1. Installation" [ref=e57] [cursor=pointer]:
+                  - /url: "#bpftraceinstallation"
+                - link "6.2. One-Liners" [ref=e58] [cursor=pointer]:
+                  - /url: "#bpftraceoneliners"
+                - link "6.3. Programming" [ref=e59] [cursor=pointer]:
+                  - /url: "#bpftraceprogramming"
+              - cell "7. perf 8. References 9. Other 10. Acknowledgements 11. Updates" [ref=e60]:
+                - link "7. perf" [ref=e61] [cursor=pointer]:
+                  - /url: "#perf"
+                - link "8. References" [ref=e62] [cursor=pointer]:
+                  - /url: "#references"
+                - link "9. Other" [ref=e63] [cursor=pointer]:
+                  - /url: "#other"
+                - link "10. Acknowledgements" [ref=e64] [cursor=pointer]:
+                  - /url: "#acknowledgements"
+                - link "11. Updates" [ref=e65] [cursor=pointer]:
+                  - /url: "#updates"
+    - paragraph [ref=e66]: On this page I'll describe eBPF, the front-ends, and demonstrate some of the tracing tools I've developed.
+    - heading "1. Screenshot" [level=1] [ref=e67]
+    - paragraph [ref=e68]: "Starting with a screenshot, here's an example of tracing and showing block (disk) I/O as a latency heat map:"
+    - paragraph
+    - link [ref=e70] [cursor=pointer]:
+      - /url: eBPF/tracex3_heatmap_01.png
+      - img [ref=e71]
+    - paragraph
+    - paragraph [ref=e72]:
+      - text: I added some annotations to that screenshot. If you are new to this visualization, see my page on
+      - link "latency heat maps" [ref=e73] [cursor=pointer]:
+        - /url: /HeatMaps/latency.html
+      - text: .
+    - paragraph [ref=e74]: This uses kernel dynamic tracing (kprobes) to instrument functions for the issue and completion of block device I/O. Custom eBPF programs execute when these kprobes are hit, which record timestamps on the issue of I/O, fetch them on completion, calculate the delta time, and then store this in a log 2 histogram. The user space program reads this histogram array periodically, once per second, and draws the heat map. The summarization is all done in kernel context, for efficiency.
+    - heading "2. One Liners" [level=1] [ref=e75]
+    - paragraph [ref=e76]:
+      - text: Useful one-liners using the
+      - link "bcc" [ref=e77] [cursor=pointer]:
+        - /url: "#bcc"
+      - text: "(eBPF) tools:"
+    - heading "Single Purpose Tools" [level=3] [ref=e78]
+    - generic [ref=e79]: "# Trace new processes: execsnoop # Trace file opens with process and filename: opensnoop # Summarize block I/O (disk) latency as a power-of-2 distribution by disk: biolatency -D # Summarize block I/O size as a power-of-2 distribution by program name: bitesize # Trace common ext4 file system operations slower than 1 millisecond: ext4slower 1 # Trace TCP active connections (connect()) with IP address and ports: tcpconnect # Trace TCP passive connections (accept()) with IP address and ports: tcpaccept # Trace TCP connections to local port 80, with session duration: tcplife -L 80 # Trace TCP retransmissions with IP addresses and TCP state: tcpretrans # Sample stack traces at 49 Hertz for 10 seconds, emit folded format (for flame graphs): profile -fd -F 49 10 # Trace details and latency of resolver DNS lookups: gethostlatency # Trace commands issued in all running bash shells: bashreadline"
+    - 'heading "Multi Tools: Kernel Dynamic Tracing" [level=3] [ref=e80]'
+    - generic [ref=e81]: "# Count \"tcp_send*\" kernel function, print output every second: funccount -i 1 'tcp_send*' # Count \"vfs_*\" calls for PID 185: funccount -p 185 'vfs_*' # Trace file names opened, using dynamic tracing of the kernel do_sys_open() function: trace 'p::do_sys_open \"%s\", arg2' # Same as before (\"p:: is assumed if not specified): trace 'do_sys_open \"%s\", arg2' # Trace the return of the kernel do_sys_open() funciton, and print the retval: trace 'r::do_sys_open \"ret: %d\", retval' # Trace do_nanosleep() kernel function and the second argument (mode), with kernel stack traces: trace -K 'do_nanosleep \"mode: %d\", arg2' # Trace do_nanosleep() mode by providing the prototype (no debuginfo required): trace 'do_nanosleep(struct hrtimer_sleeper *t, enum hrtimer_mode mode) \"mode: %d\", mode' # Trace do_nanosleep() with the task address (may be NULL), noting the dereference: trace 'do_nanosleep(struct hrtimer_sleeper *t, enum hrtimer_mode mode) \"task: %x\", t->task' # Frequency count tcp_sendmsg() size: argdist -C 'p::tcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size):u32:size' # Summarize tcp_sendmsg() size as a power-of-2 histogram: argdist -H 'p::tcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size):u32:size' # Frequency count stack traces that lead to the submit_bio() function (disk I/O issue): stackcount submit_bio # Summarize the latency (time taken) by the vfs_read() function for PID 181: funclatency -p 181 -u vfs_read"
+    - 'heading "Multi Tools: User Level Dynamic Tracing" [level=3] [ref=e82]'
+    - generic [ref=e83]: "# Trace the libc library function nanosleep() and print the requested sleep details: trace 'p:c:nanosleep(struct timespec *req) \"%d sec %d nsec\", req->tv_sec, req->tv_nsec' # Count the libc write() call for PID 181 by file descriptor: argdist -p 181 -C 'p:c:write(int fd):int:fd' # Summarize the latency (time taken) by libc getaddrinfo(), as a power-of-2 histogram in microseconds: funclatency.py -u 'c:getaddrinfo'"
+    - 'heading "Multi Tools: Kernel Static Tracing" [level=3] [ref=e84]'
+    - generic [ref=e85]: "# Count stack traces that led to issuing block I/O, tracing its kernel tracepoint: stackcount t:block:block_rq_insert"
+    - paragraph [ref=e86]: Under construction...
+    - 'heading "Multi Tools: User Statically Defined Tracing (USDT)" [level=3] [ref=e87]'
+    - generic [ref=e88]: "# Trace the pthread_create USDT probe, and print arg1 as hex: trace 'u:pthread:pthread_create \"%x\", arg1'"
+    - paragraph [ref=e89]: Under construction...
+    - paragraph [ref=e90]: These one-liners demonstrate various capabilities of bcc/eBPF. You can also print these out as a cheatsheet.
+    - heading "3. Presentation" [level=1] [ref=e91]
+    - paragraph [ref=e92]:
+      - text: My recent talk on eBPF tracing tools at O'Reilly Velocity 2017 (
+      - link "slideshare" [ref=e93] [cursor=pointer]:
+        - /url: https://www.slideshare.net/brendangregg/velocity-2017-performance-analysis-superpowers-with-linux-ebpf
+      - text: ","
+      - link "youtube" [ref=e94] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=bj3qdEDbCD4
+      - text: ","
+      - link "PDF" [ref=e95] [cursor=pointer]:
+        - /url: /Slides/Velocity2017_BPF_superpowers.pdf
+      - text: ).
+    - paragraph
+    - list [ref=e96]:
+      - iframe [ref=e98]:
+        - generic [active] [ref=f43e1]:
+          - generic [ref=f43e4]:
+            - region "Slides" [ref=f43e5]:
+              - img "Slide 1" [ref=f43e7]
+              - img "Slide 2" [ref=f43e9]
+              - img "Slide 3" [ref=f43e11]
+              - img "Slide 4" [ref=f43e13]
+              - img "Slide 5" [ref=f43e15]
+              - img "Slide 6" [ref=f43e17]
+              - img "Slide 7" [ref=f43e19]
+              - img "Slide 8" [ref=f43e21]
+              - img "Slide 9" [ref=f43e23]
+              - img "Slide 10" [ref=f43e25]
+              - img "Slide 11" [ref=f43e27]
+              - img "Slide 12" [ref=f43e29]
+              - img "Slide 13" [ref=f43e31]
+              - img "Slide 14" [ref=f43e33]
+              - img "Slide 15" [ref=f43e35]
+              - img "Slide 16" [ref=f43e37]
+              - img "Slide 17" [ref=f43e39]
+              - img "Slide 18" [ref=f43e41]
+              - img "Slide 19" [ref=f43e43]
+              - img "Slide 20" [ref=f43e45]
+              - img "Slide 21" [ref=f43e47]
+              - img "Slide 22" [ref=f43e49]
+              - img "Slide 23" [ref=f43e51]
+              - img "Slide 24" [ref=f43e53]
+              - img "Slide 25" [ref=f43e55]
+              - img "Slide 26" [ref=f43e57]
+              - img "Slide 27" [ref=f43e59]
+              - img "Slide 28" [ref=f43e61]
+              - img "Slide 29" [ref=f43e63]
+              - img "Slide 30" [ref=f43e65]
+              - img "Slide 31" [ref=f43e67]
+              - img "Slide 32" [ref=f43e69]
+              - img "Slide 33" [ref=f43e71]
+              - img "Slide 34" [ref=f43e73]
+              - img "Slide 35" [ref=f43e75]
+              - img "Slide 36" [ref=f43e77]
+              - img "Slide 37" [ref=f43e79]
+              - img "Slide 38" [ref=f43e81]
+              - img "Slide 39" [ref=f43e83]
+              - img "Slide 40" [ref=f43e85]
+              - img "Slide 41" [ref=f43e87]
+              - img "Slide 42" [ref=f43e89]
+              - img "Slide 43" [ref=f43e91]
+              - img "Slide 44" [ref=f43e93]
+              - img "Slide 45" [ref=f43e95]
+              - img "Slide 46" [ref=f43e97]
+              - img "Slide 47" [ref=f43e99]
+              - img "Slide 48" [ref=f43e101]
+              - img "Slide 49" [ref=f43e103]
+              - img "Slide 50" [ref=f43e105]
+              - img "Slide 51" [ref=f43e107]
+              - img "Slide 52" [ref=f43e109]
+              - img "Slide 53" [ref=f43e111]
+              - img "Slide 54" [ref=f43e113]
+            - generic [ref=f43e114]:
+              - link "View on Slideshare" [ref=f43e116] [cursor=pointer]:
+                - /url: https://www.slideshare.net/slideshow/velocity-2017-performance-analysis-superpowers-with-linux-ebpf/77191021
+              - navigation [ref=f43e117]:
+                - button "Previous Slide" [disabled]:
+                  - img "chevron-left icon"
+                - generic [ref=f43e118]:
+                  - generic [ref=f43e119]: "1"
+                  - generic [ref=f43e120]: / 54
+                - button "Next Slide" [ref=f43e121] [cursor=pointer]:
+                  - img "chevron-right icon" [ref=f43e122]
+              - button "Share" [ref=f43e123] [cursor=pointer]:
+                - img "share-dot icon" [ref=f43e124]
+              - button "View Fullscreen" [ref=f43e125] [cursor=pointer]:
+                - img "maximize icon" [ref=f43e126]
+          - alert [ref=f43e127]
+      - img [ref=e100]
+    - paragraph
+    - paragraph [ref=e101]: "Other presentations:"
+    - list [ref=e102]:
+      - listitem [ref=e103]:
+        - text: "BPF: Tracing and More, by Brendan Gregg at linux.conf.au 2017 ("
+        - link "slideshare" [ref=e104] [cursor=pointer]:
+          - /url: http://www.slideshare.net/brendangregg/bpf-tracing-and-more
+        - text: ","
+        - link "youtube" [ref=e105] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=JRFNIKUROPE
+        - text: ","
+        - link "PDF" [ref=e106] [cursor=pointer]:
+          - /url: /Slides/LCA2017_BPF_tracing_and_more.pdf
+        - text: ).
+      - listitem [ref=e107]:
+        - text: "Linux 4.x Tracing Tools: Using BPF Superpowers, by Brendan Gregg at USENIX LISA 2016 ("
+        - link "slideshare" [ref=e108] [cursor=pointer]:
+          - /url: http://www.slideshare.net/brendangregg/linux-4x-tracing-tools-using-bpf-superpowers
+        - text: ","
+        - link "youtube" [ref=e109] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=UmOU3I36T2U
+        - text: ","
+        - link "PDF" [ref=e110] [cursor=pointer]:
+          - /url: Slides/LISA2016_BPF_tools_16_9.pdf
+        - text: ).
+      - listitem [ref=e111]:
+        - text: My
+        - link "Give me 15 minutes and I'll change your view of Linux tracing" [ref=e112] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=GsMs3n8CB6g
+        - text: demo from LISA 2016.
+      - listitem [ref=e113]:
+        - link "Staring into the eBPF Abyss" [ref=e114] [cursor=pointer]:
+          - /url: http://www.slideshare.net/goldshtn/staring-into-the-ebpf-abyss
+        - text: (slides) by Sasha Goldshtein for SREcon Europe 2016.
+      - listitem [ref=e115]:
+        - link "Meet-cute between eBPF and Kernel Tracing" [ref=e116] [cursor=pointer]:
+          - /url: http://www.slideshare.net/vh21/meet-cutebetweenebpfandtracing
+        - text: (slides) by Viller Hsiao, 2016.
+      - listitem [ref=e117]:
+        - link "eBPF Trace from Kernel to Userspace" [ref=e118] [cursor=pointer]:
+          - /url: http://www.slideshare.net/suselab/ebpf-trace-from-kernel-to-userspace
+        - text: (slides) by Gary Lin for Technology Sharing Day, 2016
+      - listitem [ref=e119]:
+        - 'link "Linux 4.x Performance: Using BPF Superpowers" [ref=e120] [cursor=pointer]':
+          - /url: /blog/2016-03-05/linux-bpf-superpowers.html
+        - text: (slides & video) by Brendan Gregg at Facebook's Performance@Scale conference, 2016.
+      - listitem [ref=e121]:
+        - link "BPF - in-kernel virtual machine" [ref=e122] [cursor=pointer]:
+          - /url: https://events.linuxfoundation.org/sites/events/files/slides/bpf_collabsummit_2015feb20.pdf
+        - text: (slides PDF) by Alexei Starovoitov, Linux Collaboration Summit, 2015.
+    - heading "4. eBPF" [level=1] [ref=e123]
+    - generic [ref=e124]:
+      - link [ref=e125] [cursor=pointer]:
+        - /url: eBPF/pony_ebpf01.png
+        - img [ref=e126]
+      - generic [ref=e128]: eBPF unofficial logo
+    - paragraph [ref=e129]: "BPF originated as a technology for optimizing packet filters. If you run tcpdump with an expression (matching on a host or port), it gets compiled into optimal BPF bytecode which is executed by an in-kernel sandboxed virtual machine. Extended BPF (aka eBPF, which I keep calling \"enhanced BPF\" by accident, but it can also be called just BPF) extended what this BPF virtual machine could do: allowing it to run on events other than packets, and do actions other than filtering."
+    - paragraph [ref=e130]: "eBPF can be used to for software defined networks, DDoS mitigation (early packet drop), improving network performance (eXpress Data Path), intrusion detection, and more. On this page I'm focusing on its use for observability tools, where it is used as shown in the following workflow:"
+    - paragraph
+    - link [ref=e132] [cursor=pointer]:
+      - /url: eBPF/linux_ebpf_internals.png
+      - img [ref=e133]
+    - paragraph
+    - paragraph [ref=e134]: "Our observability tool has BPF code to perform certain actions: measure latency, summarize as a histogram, grab stack traces, etc. That BPF code is compiled to BPF byte code and then sent to the kernel, where a verifier may reject it if it is deemed unsafe (which includes not allowing loops or backwards branches). If the BPF bytecode is accepted, it can then be attached to different event sources:"
+    - list [ref=e135]:
+      - listitem [ref=e136]: "kprobes: kernel dynamic tracing."
+      - listitem [ref=e137]: "uprobes: user level dynamic tracing."
+      - listitem [ref=e138]: "tracepoints: kernel static tracing."
+      - listitem [ref=e139]: "perf_events: timed sampling and PMCs."
+    - paragraph [ref=e140]: "The BPF program has two ways to pass measured data back to user space: either per-event details, or via a BPF map. BPF maps can implement arrays, associative arrays, and histograms, and are suited for passing summary statistics."
+    - heading "4.1. Prerequisites" [level=2] [ref=e141]
+    - paragraph [ref=e142]: "A Linux kernel compiled with CONFIG_BPF_SYSCALL (eg, Ubuntu does this), and at least the 4.4 kernel (eg, Ubuntu Xenial) so that histogram, statistic, and per-event tracing is supported. The following diagram shows other features with the Linux version eBPF supported arrived in green:"
+    - paragraph
+    - link [ref=e144] [cursor=pointer]:
+      - /url: eBPF/linux_ebpf_support.png
+      - img [ref=e145]
+    - paragraph
+    - heading "4.2. Front Ends" [level=2] [ref=e146]
+    - paragraph [ref=e147]: There are multiple different front-ends for eBPF. Here's a summary, and I'll cover bcc, bpftrace, and perf in the following sections. I'd recommend trying out bcc and bpftrace (highlighted).
+    - paragraph [ref=e148]:
+      - table [ref=e149]:
+        - rowgroup [ref=e150]:
+          - row "Front end Difficulty Pros Cons References" [ref=e151]:
+            - columnheader "Front end" [ref=e152]
+            - columnheader "Difficulty" [ref=e153]
+            - columnheader "Pros" [ref=e154]
+            - columnheader "Cons" [ref=e155]
+            - columnheader "References" [ref=e156]
+          - 'row "BPF bytecode Brutal Precise control Insanely difficult Kernel source: struct bpf_insn prog in samples/bpf/sock_example.c" [ref=e157]':
+            - cell "BPF bytecode" [ref=e158]
+            - cell "Brutal" [ref=e159]
+            - cell "Precise control" [ref=e160]
+            - cell "Insanely difficult" [ref=e161]
+            - 'cell "Kernel source: struct bpf_insn prog in samples/bpf/sock_example.c" [ref=e162]':
+              - text: "Kernel source: struct bpf_insn prog in"
+              - link "samples/bpf/sock_example.c" [ref=e163] [cursor=pointer]:
+                - /url: https://github.com/torvalds/linux/blob/master/samples/bpf/sock_example.c#L47
+          - row
+          - 'row "C Hard Build stand-alone binaries Difficult Kernel source: samples/bpf/tracex1_kern.c and samples/bpf/tracex1_user.c" [ref=e164]':
+            - cell "C" [ref=e165]
+            - cell "Hard" [ref=e166]
+            - cell "Build stand-alone binaries" [ref=e167]
+            - cell "Difficult" [ref=e168]
+            - 'cell "Kernel source: samples/bpf/tracex1_kern.c and samples/bpf/tracex1_user.c" [ref=e169]':
+              - text: "Kernel source:"
+              - link "samples/bpf/tracex1_kern.c" [ref=e170] [cursor=pointer]:
+                - /url: https://github.com/torvalds/linux/blob/master/samples/bpf/tracex1_kern.c
+              - text: and
+              - link "samples/bpf/tracex1_user.c" [ref=e171] [cursor=pointer]:
+                - /url: https://github.com/torvalds/linux/blob/master/samples/bpf/tracex1_user.c
+          - row
+          - 'row "perf Hard Use perf''s capabilities: custom events, stack walking Difficult, not yet well documented Section below: 7. perf." [ref=e172]':
+            - cell "perf" [ref=e173]
+            - cell "Hard" [ref=e174]
+            - 'cell "Use perf''s capabilities: custom events, stack walking" [ref=e175]'
+            - cell "Difficult, not yet well documented" [ref=e176]
+            - 'cell "Section below: 7. perf." [ref=e177]':
+              - text: "Section below:"
+              - link "7. perf" [ref=e178] [cursor=pointer]:
+                - /url: "#perf"
+              - text: .
+          - 'row "bcc Moderate Custom output, CO-RE binaries, large community, production use (e.g., Facebook, Netflix) Verbose Section below: 5. bcc." [ref=e179]':
+            - cell "bcc" [ref=e180]
+            - cell "Moderate" [ref=e181]
+            - cell "Custom output, CO-RE binaries, large community, production use (e.g., Facebook, Netflix)" [ref=e182]
+            - cell "Verbose" [ref=e183]
+            - 'cell "Section below: 5. bcc." [ref=e184]':
+              - text: "Section below:"
+              - link "5. bcc" [ref=e185] [cursor=pointer]:
+                - /url: "#bcc"
+              - text: .
+          - 'row "bpftrace Easy Powerful one-liners, many capabilities, growing community, production use (e.g., Netflix, Facebook) Some limits on code and output Section below: 6. bpftrace." [ref=e186]':
+            - cell "bpftrace" [ref=e187]
+            - cell "Easy" [ref=e188]
+            - cell "Powerful one-liners, many capabilities, growing community, production use (e.g., Netflix, Facebook)" [ref=e189]
+            - cell "Some limits on code and output" [ref=e190]
+            - 'cell "Section below: 6. bpftrace." [ref=e191]':
+              - text: "Section below:"
+              - link "6. bpftrace" [ref=e192] [cursor=pointer]:
+                - /url: "#bpftrace"
+              - text: .
+          - 'row "ply Easy Powerful one-liners, small binary, for embedded Limited control of code and output github: github.com/iovisor/ply." [ref=e193]':
+            - cell "ply" [ref=e194]
+            - cell "Easy" [ref=e195]
+            - cell "Powerful one-liners, small binary, for embedded" [ref=e196]
+            - cell "Limited control of code and output" [ref=e197]
+            - 'cell "github: github.com/iovisor/ply." [ref=e198]':
+              - text: "github:"
+              - link "github.com/iovisor/ply" [ref=e199] [cursor=pointer]:
+                - /url: https://github.com/iovisor/ply
+              - text: .
+    - paragraph [ref=e200]: "I've previously summarized these on three dimensions: ease of use, scope & capability, and stage of development. Here are the BPF front-ends vs the standard built-in Linux tracers (ftrace and perf):"
+    - link [ref=e202] [cursor=pointer]:
+      - /url: eBPF/ebpf_tracing_landscape_jan2019.png
+      - img [ref=e203]
+    - paragraph [ref=e204]:
+      - text: I've shown perf+BPF separately to classic
+      - link "perf" [ref=e205] [cursor=pointer]:
+        - /url: perf.html
+      - text: and ftrace.
+    - heading "5. BCC" [level=1] [ref=e206]
+    - paragraph [ref=e207]:
+      - text: BPF Compiler Collection is on
+      - link "github.com/iovisor/bcc" [ref=e208] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc
+      - text: ", and provides a large collection of tracing examples tools, as well as C, Python, and lua interfaces for developing them. The diagram on the top right of this page illustrates these bcc tools."
+    - paragraph [ref=e209]: Prerequisites are the same as eBPF above, and Python. If you are on an older kernel (between 4.1 and 4.8) and the bcc tool you want to run doesn't work, take a look in bcc's tools/old directory, which might have a legacy version that employs workarounds.
+    - paragraph [ref=e210]: Example tracing code can be found in the bcc /examples/tracing directory, and in the tools, under the /tools directory. Each tool also has an example .txt file in /tools, and a man page in /man/man8.
+    - paragraph [ref=e211]:
+      - text: I contributed many tools to bcc, including their man pages and examples files, as well as some bcc capabilities and fixes. I also created the
+      - link "tool" [ref=e212] [cursor=pointer]:
+        - /url: Perf/bcc_tracing_tools.pg
+      - text: and
+      - link "events" [ref=e213] [cursor=pointer]:
+        - /url: Perf/linux_ebpf_support.png
+      - text: diagrams, the
+      - link "Tutorial" [ref=e214] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc/blob/master/docs/tutorial.md
+      - text: ", the"
+      - link "Developer's Tutorial" [ref=e215] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md
+      - text: ", the"
+      - link "Reference Guide" [ref=e216] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md
+      - text: ", and published many"
+      - link "posts" [ref=e217] [cursor=pointer]:
+        - /url: http://www.brendangregg.com/blog/
+      - text: on bcc/eBPF. I'll summarize some content here, but I've written and published a lot more detail in those resources for those wishing to dig deeper.
+    - paragraph [ref=e218]:
+      - text: "Update 04-Nov-2020: The Python interface is now considered deprecated in favor of the new C libbpf interface. For more information see my"
+      - link "future of BPF perf tools" [ref=e219] [cursor=pointer]:
+        - /url: http://www.brendangregg.com/blog/2020-11-04/bpf-co-re-btf-libbpf.html
+      - text: post.
+    - 'heading "5.1. bcc: Installation" [level=2] [ref=e220]'
+    - paragraph [ref=e221]:
+      - text: See the
+      - link "bcc install instructions" [ref=e222] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc/blob/master/INSTALL.md
+      - text: "for getting started on different Linux distros. Here are recent Ubuntu instructions, as an example:"
+    - generic [ref=e223]: "# echo \"deb [trusted=yes] https://repo.iovisor.org/apt/xenial xenial-nightly main\" | \\ sudo tee /etc/apt/sources.list.d/iovisor.list # sudo apt-get update # sudo apt-get install bpfcc-tools # or the old package name: bcc-tools"
+    - paragraph [ref=e224]: bcc tools will be installed under /usr/share/bcc/tools.
+    - 'heading "5.2. bcc: General Performance Checklist" [level=2] [ref=e225]'
+    - paragraph [ref=e226]:
+      - text: This checklist can be useful if you don't know where to start. It tours various bcc tools to analyze different targets, which may unearth activity you were previously unaware of. I first included this in the
+      - link "bcc tutorial" [ref=e227] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc/blob/master/docs/tutorial.md
+      - text: ", after a Linux basics checklist of standard tools. It's assumed you've already run such basics (dmesg, vmstat, iostat, top, etc) and now want to dig deeper."
+    - heading "1. execsnoop" [level=3] [ref=e228]
+    - paragraph [ref=e229]: "Trace new processes via exec() syscalls, and print the parent process name and other details:"
+    - generic [ref=e230]: "# execsnoop PCOMM PID RET ARGS bash 15887 0 /usr/bin/man ls preconv 15894 0 /usr/bin/preconv -e UTF-8 man 15896 0 /usr/bin/tbl man 15897 0 /usr/bin/nroff -mandoc -rLL=169n -rLT=169n -Tutf8 man 15898 0 /usr/bin/pager -s nroff 15900 0 /usr/bin/locale charmap nroff 15901 0 /usr/bin/groff -mtty-char -Tutf8 -mandoc -rLL=169n -rLT=169n groff 15902 0 /usr/bin/troff -mtty-char -mandoc -rLL=169n -rLT=169n -Tutf8 groff 15903 0 /usr/bin/grotty [...]"
+    - heading "2. opensnoop" [level=3] [ref=e231]
+    - paragraph [ref=e232]: "Trace open() syscalls and print process name and path name details:"
+    - generic [ref=e233]: "# opensnoop PID COMM FD ERR PATH 27159 catalina.sh 3 0 /apps/tomcat8/bin/setclasspath.sh 4057 redis-server 5 0 /proc/4057/stat 2360 redis-server 5 0 /proc/2360/stat 30668 sshd 4 0 /proc/sys/kernel/ngroups_max 30668 sshd 4 0 /etc/group 30668 sshd 4 0 /root/.ssh/authorized_keys 30668 sshd 4 0 /root/.ssh/authorized_keys 30668 sshd -1 2 /var/run/nologin 30668 sshd -1 2 /etc/nologin 30668 sshd 4 0 /etc/login.defs 30668 sshd 4 0 /etc/passwd 30668 sshd 4 0 /etc/shadow 30668 sshd 4 0 /etc/localtime 4510 snmp-pass 4 0 /proc/cpuinfo [...]"
+    - heading "3. ext4slower" [level=3] [ref=e234]
+    - paragraph [ref=e235]: "Trace slow ext4 operations that are slower than a provided threshold (bcc has versions of this for btrfs, XFS, and ZFS as well):"
+    - generic [ref=e236]: "# ext4slower 1 Tracing ext4 operations slower than 1 ms TIME COMM PID T BYTES OFF_KB LAT(ms) FILENAME 06:49:17 bash 3616 R 128 0 7.75 cksum 06:49:17 cksum 3616 R 39552 0 1.34 [ 06:49:17 cksum 3616 R 96 0 5.36 2to3-2.7 06:49:17 cksum 3616 R 96 0 14.94 2to3-3.4 06:49:17 cksum 3616 R 10320 0 6.82 411toppm 06:49:17 cksum 3616 R 65536 0 4.01 a2p 06:49:17 cksum 3616 R 55400 0 8.77 ab 06:49:17 cksum 3616 R 36792 0 16.34 aclocal-1.14 06:49:17 cksum 3616 R 15008 0 19.31 acpi_listen 06:49:17 cksum 3616 R 6123 0 17.23 add-apt-repository 06:49:17 cksum 3616 R 6280 0 18.40 addpart 06:49:17 cksum 3616 R 27696 0 2.16 addr2line 06:49:17 cksum 3616 R 58080 0 10.11 ag"
+    - heading "4. biolatency" [level=3] [ref=e237]
+    - paragraph [ref=e238]: "Summarize block device I/O latency as a histogram every second:"
+    - generic [ref=e239]: "# biolatency -mT 1 Tracing block device I/O... Hit Ctrl-C to end. 21:33:40 msecs : count distribution 0 -> 1 : 69 |****************************************| 2 -> 3 : 16 |********* | 4 -> 7 : 6 |*** | 8 -> 15 : 21 |************ | 16 -> 31 : 16 |********* | 32 -> 63 : 5 |** | 64 -> 127 : 1 | | 21:33:41 msecs : count distribution 0 -> 1 : 60 |************************ | 2 -> 3 : 100 |****************************************| 4 -> 7 : 41 |**************** | 8 -> 15 : 11 |**** | 16 -> 31 : 9 |*** | 32 -> 63 : 6 |** | 64 -> 127 : 4 |* | 21:33:42 msecs : count distribution 0 -> 1 : 110 |****************************************| 2 -> 3 : 78 |**************************** | 4 -> 7 : 64 |*********************** | 8 -> 15 : 8 |** | 16 -> 31 : 12 |**** | 32 -> 63 : 15 |***** | 64 -> 127 : 8 |** | [...]"
+    - heading "5. biosnoop" [level=3] [ref=e240]
+    - paragraph [ref=e241]: "Trace block device I/O with process, disk, and latency details:"
+    - generic [ref=e242]: "# biosnoop TIME(s) COMM PID DISK T SECTOR BYTES LAT(ms) 0.000004001 supervise 1950 xvda1 W 13092560 4096 0.74 0.000178002 supervise 1950 xvda1 W 13092432 4096 0.61 0.001469001 supervise 1956 xvda1 W 13092440 4096 1.24 0.001588002 supervise 1956 xvda1 W 13115128 4096 1.09 1.022346001 supervise 1950 xvda1 W 13115272 4096 0.98 1.022568002 supervise 1950 xvda1 W 13188496 4096 0.93 1.023534000 supervise 1956 xvda1 W 13188520 4096 0.79 1.023585003 supervise 1956 xvda1 W 13189512 4096 0.60 2.003920000 xfsaild/md0 456 xvdc W 62901512 8192 0.23 2.003931001 xfsaild/md0 456 xvdb W 62901513 512 0.25 2.004034001 xfsaild/md0 456 xvdb W 62901520 8192 0.35 2.004042000 xfsaild/md0 456 xvdb W 63542016 4096 0.36 2.004204001 kworker/0:3 26040 xvdb W 41950344 65536 0.34 2.044352002 supervise 1950 xvda1 W 13192672 4096 0.65 [...]"
+    - heading "6. cachestat" [level=3] [ref=e243]
+    - paragraph [ref=e244]: "Show the page cache hit/miss ratio and size, and summarize every second:"
+    - generic [ref=e245]: "# cachestat HITS MISSES DIRTIES READ_HIT% WRITE_HIT% BUFFERS_MB CACHED_MB 170610 41607 33 80.4% 19.6% 11 288 157693 6149 33 96.2% 3.7% 11 311 174483 20166 26 89.6% 10.4% 12 389 434778 35 40 100.0% 0.0% 12 389 435723 28 36 100.0% 0.0% 12 389 846183 83800 332534 55.2% 4.5% 13 553 96387 21 24 100.0% 0.0% 13 553 120258 29 44 99.9% 0.0% 13 553 255861 24 33 100.0% 0.0% 13 553 191388 22 32 100.0% 0.0% 13 553 [...]"
+    - heading "7. tcpconnect" [level=3] [ref=e246]
+    - paragraph [ref=e247]: "Trace TCP active connections (connect()):"
+    - generic [ref=e248]: "# tcpconnect PID COMM IP SADDR DADDR DPORT 25333 recordProgra 4 127.0.0.1 127.0.0.1 28527 25338 curl 4 100.66.3.172 52.22.109.254 80 25340 curl 4 100.66.3.172 31.13.73.36 80 25342 curl 4 100.66.3.172 104.20.25.153 80 25344 curl 4 100.66.3.172 50.56.53.173 80 25365 recordProgra 4 127.0.0.1 127.0.0.1 28527 26119 ssh 6 ::1 ::1 22 25388 recordProgra 4 127.0.0.1 127.0.0.1 28527 25220 ssh 6 fe80::8a3:9dff:fed5:6b19 fe80::8a3:9dff:fed5:6b19 22 [...]"
+    - heading "8. tcpaccept" [level=3] [ref=e249]
+    - paragraph [ref=e250]: "Trace TCP passive connections (accept()):"
+    - generic [ref=e251]: "# tcpaccept PID COMM IP RADDR LADDR LPORT 2287 sshd 4 11.16.213.254 100.66.3.172 22 4057 redis-server 4 127.0.0.1 127.0.0.1 28527 4057 redis-server 4 127.0.0.1 127.0.0.1 28527 4057 redis-server 4 127.0.0.1 127.0.0.1 28527 4057 redis-server 4 127.0.0.1 127.0.0.1 28527 2287 sshd 6 ::1 ::1 22 4057 redis-server 4 127.0.0.1 127.0.0.1 28527 4057 redis-server 4 127.0.0.1 127.0.0.1 28527 2287 sshd 6 fe80::8a3:9dff:fed5:6b19 fe80::8a3:9dff:fed5:6b19 22 4057 redis-server 4 127.0.0.1 127.0.0.1 28527 [...]"
+    - heading "9. tcpretrans" [level=3] [ref=e252]
+    - paragraph [ref=e253]: "Trace TCP retransmits and TLPs:"
+    - generic [ref=e254]: "# tcpretrans TIME PID IP LADDR:LPORT T> RADDR:RPORT STATE 01:55:05 0 4 10.153.223.157:22 R> 69.53.245.40:34619 ESTABLISHED 01:55:05 0 4 10.153.223.157:22 R> 69.53.245.40:34619 ESTABLISHED 01:55:17 0 4 10.153.223.157:22 R> 69.53.245.40:22957 ESTABLISHED [...]"
+    - heading "10. gethostlatency" [level=3] [ref=e255]
+    - paragraph [ref=e256]: "Show latency for getaddrinfo/gethostbyname[2] library calls, system wide:"
+    - generic [ref=e257]: "# gethostlatency TIME PID COMM LATms HOST 06:10:24 28011 wget 90.00 www.iovisor.org 06:10:28 28127 wget 0.00 www.iovisor.org 06:10:41 28404 wget 9.00 www.netflix.com 06:10:48 28544 curl 35.00 www.netflix.com.au 06:11:10 29054 curl 31.00 www.plumgrid.com 06:11:16 29195 curl 3.00 www.facebook.com 06:11:24 25313 wget 3.00 www.usenix.org 06:11:25 29404 curl 72.00 foo 06:11:28 29475 curl 1.00 foo [...]"
+    - heading "11. runqlat" [level=3] [ref=e258]
+    - paragraph [ref=e259]: "Show run queue (scheduler) latency as a histogram, every 5 seconds:"
+    - generic [ref=e260]: "# runqlat -m 5 Tracing run queue latency... Hit Ctrl-C to end. msecs : count distribution 0 -> 1 : 2085 |****************************************| 2 -> 3 : 8 | | 4 -> 7 : 20 | | 8 -> 15 : 191 |*** | 16 -> 31 : 420 |******** | msecs : count distribution 0 -> 1 : 1798 |****************************************| 2 -> 3 : 11 | | 4 -> 7 : 45 |* | 8 -> 15 : 441 |********* | 16 -> 31 : 1030 |********************** | msecs : count distribution 0 -> 1 : 1588 |****************************************| 2 -> 3 : 7 | | 4 -> 7 : 49 |* | 8 -> 15 : 556 |************** | 16 -> 31 : 1206 |****************************** | [...]"
+    - heading "12. profile" [level=3] [ref=e261]
+    - paragraph [ref=e262]: "Sample stack traces at 49 Hertz, then print unique stacks with the number of occurrences seen:"
+    - generic [ref=e263]: "# profile Sampling at 49 Hertz of all threads by user + kernel stack... Hit Ctrl-C to end. ^C [...] ffffffff811a2eb0 find_get_entry ffffffff811a338d pagecache_get_page ffffffff811a51fa generic_file_read_iter ffffffff81231f30 __vfs_read ffffffff81233063 vfs_read ffffffff81234565 SyS_read ffffffff818739bb entry_SYSCALL_64_fastpath 00007f4757ff9680 read - dd (14283) 29 ffffffff8141c067 copy_page_to_iter ffffffff811a54e8 generic_file_read_iter ffffffff81231f30 __vfs_read ffffffff81233063 vfs_read ffffffff81234565 SyS_read ffffffff818739bb entry_SYSCALL_64_fastpath 00007f407617d680 read - dd (14288) 32 ffffffff813af58c common_file_perm ffffffff813af6f8 apparmor_file_permission ffffffff8136f89b security_file_permission ffffffff81232f6e rw_verify_area ffffffff8123303e vfs_read ffffffff81234565 SyS_read ffffffff818739bb entry_SYSCALL_64_fastpath 00007f407617d680 read - dd (14288) 39 [...]"
+    - 'heading "5.3. bcc: Tools" [level=2] [ref=e264]'
+    - paragraph
+    - link [ref=e266] [cursor=pointer]:
+      - /url: Perf/bcc_tracing_tools.png
+      - img [ref=e267]
+    - paragraph
+    - paragraph [ref=e268]:
+      - text: The
+      - link "bcc tools" [ref=e269] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc#tools
+      - text: section on github lists these with short descriptions. These tools are mostly for performance observability and debugging.
+    - paragraph [ref=e270]: "There are two types of tools:"
+    - list [ref=e271]:
+      - listitem [ref=e272]: "Single purpose: These tools do one thing and do it well (Unix philosophy). They include execsnoop, opensnoop, ext4slower, biolatency, tcpconnect, oomkill, runqlat, etc. They should be easy to learn and use. Most of the previous examples in the General Performance Checklist were single purpose."
+      - listitem [ref=e273]: "Multi-tools: These are powerful tools that can do many things, provided you know which arguments and options to use. They featured in the one-liners section earlier on this page, and include trace, argdist, funccount, funclatency, and stackcount."
+    - paragraph [ref=e274]: "Each tool has three related parts. Using biolatency as an example:"
+    - heading "1/3. The source" [level=3] [ref=e275]
+    - generic [ref=e276]:
+      - text: "$ more libbpf-tools/biolatency.c // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause) // Copyright (c) 2020 Wenbo Zhang // // Based on biolatency(8) from BCC by Brendan Gregg. // 15-Jun-2020 Wenbo Zhang Created this. #include"
+      - generic [ref=e277]:
+        - text: "#include"
+        - generic [ref=e278]:
+          - text: "#include"
+          - generic [ref=e279]:
+            - text: "#include"
+            - generic [ref=e280]:
+              - text: "#include"
+              - generic [ref=e281]:
+                - text: "#include"
+                - generic [ref=e282]:
+                  - text: "#include"
+                  - generic [ref=e283]: "#include #include \"blk_types.h\" #include \"biolatency.h\" #include \"biolatency.skel.h\" #include \"trace_helpers.h\" #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x))) static struct env { char *disk; time_t interval; int times; [...]"
+    - paragraph [ref=e284]: This is the user-space component; in libbpf-tools there is also a biolatency.h header file and a biolatency.bpf.c for kernel BPF code.
+    - paragraph [ref=e285]: "Note that bcc also includes the older deprecated versions in Python; E.g.:"
+    - generic [ref=e286]: "$ more tools/biolatency.py #!/usr/bin/python # @lint-avoid-python-3-compatibility-imports # # biolatency Summarize block device I/O latency as a histogram. # For Linux, uses BCC, eBPF. # # USAGE: biolatency [-h] [-T] [-Q] [-m] [-D] [interval] [count] # # Copyright (c) 2015 Brendan Gregg. # Licensed under the Apache License, Version 2.0 (the \"License\") # # 20-Sep-2015 Brendan Gregg Created this. [...]"
+    - paragraph [ref=e287]: "Tools should begin with a block comment to describe basics: what the tool does, its synopsis, major change history."
+    - heading "2/3. An examples file" [level=3] [ref=e288]
+    - generic [ref=e289]: "$ more tools/biolatency_example.txt Demonstrations of biolatency, the Linux eBPF/bcc version. biolatency traces block device I/O (disk I/O), and records the distribution of I/O latency (time), printing this as a histogram when Ctrl-C is hit. For example: # ./biolatency Tracing block device I/O... Hit Ctrl-C to end. ^C usecs : count distribution 0 -> 1 : 0 | | 2 -> 3 : 0 | | 4 -> 7 : 0 | | 8 -> 15 : 0 | | 16 -> 31 : 0 | | 32 -> 63 : 0 | | 64 -> 127 : 1 | | 128 -> 255 : 12 |******** | 256 -> 511 : 15 |********** | 512 -> 1023 : 43 |******************************* | 1024 -> 2047 : 52 |**************************************| 2048 -> 4095 : 47 |********************************** | 4096 -> 8191 : 52 |**************************************| 8192 -> 16383 : 36 |************************** | 16384 -> 32767 : 15 |********** | 32768 -> 65535 : 2 |* | 65536 -> 131071 : 2 |* | The latency of the disk I/O is measured from the issue to the device to its completion. A -Q option can be used to include time queued in the kernel. This example output shows a large mode of latency from about 128 microseconds to about 32767 microseconds (33 milliseconds). The bulk of the I/O was between 1 and 8 ms, which is the expected block device latency for rotational storage devices. The highest latency seen while tracing was between 65 and 131 milliseconds: the last row printed, for which there were 2 I/O. [...]"
+    - paragraph [ref=e290]: There are detailed examples files in the /tools directory, which include tool output and discussion of what it means.
+    - heading "3/3. A man page" [level=3] [ref=e291]
+    - generic [ref=e292]: $ nroff -man man/man8/biolatency.8 | more biolatency(8) biolatency(8) NAME biolatency - Summarize block device I/O latency as a histogram. SYNOPSIS biolatency [-h] [-T] [-Q] [-m] [-D] [interval [count]] DESCRIPTION biolatency traces block device I/O (disk I/O), and records the distri- bution of I/O latency (time). This is printed as a histogram either on Ctrl-C, or after a given interval in seconds. The latency of the disk I/O is measured from the issue to the device to its completion. A -Q option can be used to include time queued in the kernel. This tool uses in-kernel eBPF maps for storing timestamps and the his- togram, for efficiency. This works by tracing various kernel blk_*() functions using dynamic tracing, and will need updating to match any changes to these func- tions. Since this uses BPF, only the root user can use this tool. REQUIREMENTS CONFIG_BPF and bcc. OPTIONS -h Print usage message. -T Include timestamps on output. [...]
+    - paragraph [ref=e293]: The man pages are the reference for what the tool does, what options it has, what the output means including column definitions, and any caveats including overhead.
+    - 'heading "5.4. bcc: Programming" [level=2] [ref=e294]'
+    - 'heading "5.4.1. bcc: Programming: libbpf C" [level=2] [ref=e295]'
+    - paragraph [ref=e296]: Under construction.
+    - 'heading "5.4.2. bcc: Programming: Python" [level=2] [ref=e297]'
+    - paragraph [ref=e298]:
+      - text: While this is generally deprecated, especially with observability tools that have been moving to libbpf C, you may still find a use case where Python is the best fit. Start with the
+      - link "bcc Python Developer Tutorial" [ref=e299] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md
+      - text: . It has over 15 lessons that cover all the functions and caveats you'll likely run into. Also see the
+      - link "bcc Reference Guide" [ref=e300] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md
+      - text: ", which explains the API for the eBPF C and the bcc Python. I created both of these. My goal was to be practical and terse: show real examples and code snippets, cover internals and caveats, and do so as briefly as possible. If you hit page down once or twice, you'll hit the next heading, as I've deliberately kept sections short to avoid a wall of text."
+    - paragraph [ref=e301]: For people who have more of a casual interest in how bcc/BPF is programmed, I'll summarize key things to know next, and then explain the code from one tool in detail.
+    - heading "5 Things To Know" [level=3] [ref=e302]
+    - paragraph [ref=e303]: "If you want to dive into coding without reading those references, here's five things to know:"
+    - list [ref=e304]:
+      - listitem [ref=e305]: "eBPF C is restricted: no unbounded loops or kernel function calls. You can only use the bpf_* functions (and some compiler built-ins)."
+      - listitem [ref=e306]: All memory must be read onto the BPF stack first before manipulation via bpf_probe_read(), which does necessary checks. If you want to dereference a->b->c->d, then just try doing it first, as bcc has a rewriter that may turn it into the necessary bpf_probe_read()s. If it doesn't work, add explicit bpf_probe_reads()s.
+      - listitem [ref=e307]: "There are 3 ways to output data from kernel to user:"
+      - list [ref=e308]:
+        - listitem [ref=e309]: "bpf_trace_printk(). Debugging only, this writes to trace_pipe and can clash with other programs and tracers. It's very simple, so I've used it early on in the tutorial, but you should use the following instead:"
+        - listitem [ref=e310]: BPF_PERF_OUTPUT(). A way to sending per-event details to user space, via a custom struct you define. (The Python program currently needs a ct version of the struct definition – this should be automatic one day.)
+        - listitem [ref=e311]: BPF_HISTOGRAM() or other BPF maps. Maps are a key-value hash from which more advanced data structures can be built. They can be used for summary statistics or histograms, and read periodically from user space (efficient).
+      - listitem [ref=e312]: Use static tracepoints (tracepoints/USDT) instead of dynamic tracing (kprobes/uprobes) wherever possible. It's often not possible, but do try. Dynamic tracing is an unstable API, so your programs will break if the code it's instrumenting changes from one release to another.
+      - listitem [ref=e313]: Check for bcc developments or switch to bpftrace. Compared to bpftrace, bcc Python is far more verbose and laborious to code.
+    - 'heading "Tool example: biolatency.py" [level=3] [ref=e314]'
+    - paragraph [ref=e315]:
+      - text: The following are all the lines from my original
+      - link "biolatency.py" [ref=e316] [cursor=pointer]:
+        - /url: eBPF/biolatency.txt
+      - text: "tool, enumerated and commented:"
+    - generic [ref=e317]: "1 #!/usr/bin/python 2 # @lint-avoid-python-3-compatibility-imports"
+    - paragraph [ref=e318]: "Line 1: we're Python. Line 2: I believe suppress a lint warning (these were added for another major companies' build environment)."
+    - generic [ref=e319]: "3 # 4 # biolatency Summarize block device I/O latency as a histogram. 5 # For Linux, uses BCC, eBPF. 6 # 7 # USAGE: biolatency [-h] [-T] [-Q] [-m] [-D] [interval] [count] 8 # 9 # Copyright (c) 2015 Brendan Gregg. 10 # Licensed under the Apache License, Version 2.0 (the \"License\") 11 # 12 # 20-Sep-2015 Brendan Gregg Created this."
+    - paragraph [ref=e320]: "I have a certain style to my header comments. Line 4 names the tool, and hase a single sentence description. Line 5 adds any caveats: for Linux only, uses BCC/eBPF. It then has a synopsis line, copyright, and a history of major changes."
+    - generic [ref=e321]: 13 14 from __future__ import print_function 15 from bcc import BPF 16 from time import sleep, strftime 17 import argparse
+    - paragraph [ref=e322]: Note that we import BPF, which we'll use to interact with eBPF in the kernel.
+    - generic [ref=e323]: "18 19 # arguments 20 examples = \"\"\"examples: 21 ./biolatency # summarize block I/O latency as a histogram 22 ./biolatency 1 10 # print 1 second summaries, 10 times 23 ./biolatency -mT 1 # 1s summaries, milliseconds, and timestamps 24 ./biolatency -Q # include OS queued time in I/O time 25 ./biolatency -D # show each disk device separately 26 \"\"\" 27 parser = argparse.ArgumentParser( 28 description=\"Summarize block device I/O latency as a histogram\", 29 formatter_class=argparse.RawDescriptionHelpFormatter, 30 epilog=examples) 31 parser.add_argument(\"-T\", \"--timestamp\", action=\"store_true\", 32 help=\"include timestamp on output\") 33 parser.add_argument(\"-Q\", \"--queued\", action=\"store_true\", 34 help=\"include OS queued time in I/O time\") 35 parser.add_argument(\"-m\", \"--milliseconds\", action=\"store_true\", 36 help=\"millisecond histogram\") 37 parser.add_argument(\"-D\", \"--disks\", action=\"store_true\", 38 help=\"print a histogram per disk device\") 39 parser.add_argument(\"interval\", nargs=\"?\", default=99999999, 40 help=\"output interval, in seconds\") 41 parser.add_argument(\"count\", nargs=\"?\", default=99999999, 42 help=\"number of outputs\") 43 args = parser.parse_args() 44 countdown = int(args.count) 45 debug = 0 46"
+    - paragraph [ref=e324]: Lines 19 to 44 are argument processing. I'm using Python's argparse here.
+    - paragraph [ref=e325]: My intent is to make this a Unix-like tool, something similar to vmstat/iostat, to make it easy for others to recognize and learn. Hence the style of options and arguments, and also to do one thing and do it well. In this case, showing disk I/O latency as a histogram. I could have added a mode to dump per-event details, but made that a separate tool, biosnoop.py.
+    - paragraph [ref=e326]: You may be writing bcc/eBPF for other reasons, including agents to other monitoring software, and don't need to worry about the user interface.
+    - generic [ref=e327]: "47 # define BPF program 48 bpf_text = \"\"\" 49 #include <uapi/linux/ptrace.h>> 50 #include <linux/blkdev.h> 51 52 typedef struct disk_key { 53 char disk[DISK_NAME_LEN]; 54 u64 slot; 55 } disk_key_t; 56 BPF_HASH(start, struct request *); 57 STORAGE 58 59 // time block I/O 60 int trace_req_start(struct pt_regs *ctx, struct request *req) 61 { 62 u64 ts = bpf_ktime_get_ns(); 63 start.update(&req, &ts); 64 return 0; 65 } 66 67 // output 68 int trace_req_completion(struct pt_regs *ctx, struct request *req) 69 { 70 u64 *tsp, delta; 71 72 // fetch timestamp and calculate delta 73 tsp = start.lookup(&req); 74 if (tsp == 0) { 75 return 0; // missed issue 76 } 77 delta = bpf_ktime_get_ns() - *tsp; 78 FACTOR 79 80 // store as histogram 81 STORE 82 83 start.delete(&req); 84 return 0; 85 } 86 \"\"\""
+    - paragraph [ref=e328]: The eBPF program is declared as an inline C assigned to the variable bpf_text.
+    - paragraph [ref=e329]: Line 56 declares a hash array caled "start", which uses a struct request pointer as the key. The trace_req_start() function fetches a timestamp using bpf_ktime_get_ns() and then stores it in this hash, keyed by *req (I'm just using that pointer address as a UUID). The trace_req_completion() function then does a lookup on the hash with its *req, to fetch the start time of the request, which is then used to calculate the delta time on line 77. Line 83 deletes the timestamp from the hash.
+    - paragraph [ref=e330]: The prototypes to these functions begin with a struct pt_regs * for registers, and then as many of the probed function arguments as you want to include. I've included the first function argument in each, struct request *.
+    - paragraph [ref=e331]: "This program also declares storage for the output data and stores it, but there's a problem: biolatency has a -D option to emit per-disk histograms, instead of one histogram for everything, and this changes the storage code. So this eBPF program contains the text STORAGE and STORE (and FACTOR) which are merely strings that we'll search and replace with code next, depending on the options. I'd rather avoid code-that-writes-code if possible, since it makes it harder to debug."
+    - generic [ref=e332]: "87 88 # code substitutions 89 if args.milliseconds: 90 bpf_text = bpf_text.replace('FACTOR', 'delta /= 1000000;') 91 label = \"msecs\" 92 else: 93 bpf_text = bpf_text.replace('FACTOR', 'delta /= 1000;') 94 label = \"usecs\" 95 if args.disks: 96 bpf_text = bpf_text.replace('STORAGE', 97 'BPF_HISTOGRAM(dist, disk_key_t);') 98 bpf_text = bpf_text.replace('STORE', 99 'disk_key_t key = {.slot = bpf_log2l(delta)}; ' + 100 'bpf_probe_read(&key.disk, sizeof(key.disk), ' + 101 'req->rq_disk->disk_name); dist.increment(key);') 102 else: 103 bpf_text = bpf_text.replace('STORAGE', 'BPF_HISTOGRAM(dist);') 104 bpf_text = bpf_text.replace('STORE', 105 'dist.increment(bpf_log2l(delta));')"
+    - paragraph [ref=e333]: The FACTOR code just changes the units of the time we're recording, depending on the -m option.
+    - paragraph [ref=e334]: "Line 95 checks if per-disk has been requested (-D), and if so, replaces the STORAGE and STORE strings with code to do per-disk histograms. It uses the disk_key struct declared on line 52 which is the disk name and the slot (bucket) in the power-of-2 histogram. Line 99 takes the delta time and turns it into the power-of-2 slot index using the bpf_log2l() helper function. Lines 100 and 101 fetch the disk name via bpf_probe_read(), which is how all data is copied onto BPF's stack for operation. Line 101 includes many dereferences: req->rq_disk, rq_disk->disk_name: bcc's rewriter has transparently turned these into bpf_probe_read()s as well."
+    - paragraph [ref=e335]: Lines 103 to 105 deal with the single histogram case (not per-disk). A histogram is declared named "dist" using the BPF_HISTOGRAM macro. The slot (bucket) is found using the bpf_log2l() helper function, and then incremented in the histogram.
+    - paragraph [ref=e336]: This example is a little gritty, which is both good (realistic) and bad (intimidating). See the tutorial I linked to earlier for more simple examples.
+    - generic [ref=e337]: "106 if debug: 107 print(bpf_text)"
+    - paragraph [ref=e338]: Since I have code that writes code, I need a way to debug the final output. If debug is set, print it out.
+    - generic [ref=e339]: "108 109 # load BPF program 110 b = BPF(text=bpf_text) 111 if args.queued: 112 b.attach_kprobe(event=\"blk_account_io_start\", fn_name=\"trace_req_start\") 113 else: 114 b.attach_kprobe(event=\"blk_start_request\", fn_name=\"trace_req_start\") 115 b.attach_kprobe(event=\"blk_mq_start_request\", fn_name=\"trace_req_start\") 116 b.attach_kprobe(event=\"blk_account_io_completion\", 117 fn_name=\"trace_req_completion\") 118"
+    - paragraph [ref=e340]: Line 110 loads the eBPF program.
+    - paragraph [ref=e341]: Since this program was written before eBPF had tracepoint support, I wrote it to use kprobes (kernel dynamic tracing). It should be rewritten to use tracepoints, as they are a stable API, although that then also requires a later kernel version (Linux 4.7+).
+    - paragraph [ref=e342]: "biolatency.py has a -Q option to included time queued in the kernel. We can see how it's implemented in this code. If it is set, line 112 attaches our eBPF trace_req_start() function with a kprobe on the blk_account_io_start() kernel function, which tracks the request when it's first queued in the kernel. If not set, lnes 114 and 115 attach our eBPF function to different kernel functions, which is when the disk I/O is issued (it can be either of these). This only works because the first argument to any of these kernels functions is the same: struct request *. If their arguments were different, I'd need separate eBPF functions for each to handle that."
+    - generic [ref=e343]: "119 print(\"Tracing block device I/O... Hit Ctrl-C to end.\") 120 121 # output 122 exiting = 0 if args.interval else 1 123 dist = b.get_table(\"dist\")"
+    - paragraph [ref=e344]: Line 123 fetches the "dist" histogram that was declared and populated by the STORAGE/STORE code.
+    - generic [ref=e345]: "124 while (1): 125 try: 126 sleep(int(args.interval)) 127 except KeyboardInterrupt: 128 exiting = 1 129 130 print() 131 if args.timestamp: 132 print(\"%-8s\\n\" % strftime(\"%H:%M:%S\"), end=\"\") 133 134 dist.print_log2_hist(label, \"disk\") 135 dist.clear() 136 137 countdown -= 1 138 if exiting or countdown == 0: 139 exit()"
+    - paragraph [ref=e346]: This has logic for printing every interval, a certain number of times (countdown). Lines 131 and 132 print a timestamp if the -T option was used.
+    - paragraph [ref=e347]: Line 134 prints the histogram, or histograms if we're doing per-disk. The first argument is the label variable, which contains "usecs" or "msecs", and decorates the column of values in the output. The second argument is labels the secondary key, if dist has per-disk histograms. How print_log2_hist() can identify whether this is a single histogram or has a secondary key, I'll leave as an adventurous exercise in code spelunking of bcc and eBPF internals.
+    - paragraph [ref=e348]: Line 135 clears the histogram, ready for the next interval.
+    - paragraph [ref=e349]: "Here is some sample output:"
+    - generic [ref=e350]: "# biolatency Tracing block device I/O... Hit Ctrl-C to end. ^C usecs : count distribution 0 -> 1 : 0 | | 2 -> 3 : 0 | | 4 -> 7 : 0 | | 8 -> 15 : 0 | | 16 -> 31 : 0 | | 32 -> 63 : 0 | | 64 -> 127 : 1 | | 128 -> 255 : 12 |******** | 256 -> 511 : 15 |********** | 512 -> 1023 : 43 |******************************* | 1024 -> 2047 : 52 |**************************************| 2048 -> 4095 : 47 |********************************** | 4096 -> 8191 : 52 |**************************************| 8192 -> 16383 : 36 |************************** | 16384 -> 32767 : 15 |********** | 32768 -> 65535 : 2 |* | 65536 -> 131071 : 2 |* |"
+    - paragraph [ref=e351]: "Per-disk output:"
+    - generic [ref=e352]: "# biolatency -D Tracing block device I/O... Hit Ctrl-C to end. ^C disk = 'xvdb' usecs : count distribution 0 -> 1 : 0 | | 2 -> 3 : 0 | | 4 -> 7 : 0 | | 8 -> 15 : 0 | | 16 -> 31 : 0 | | 32 -> 63 : 0 | | 64 -> 127 : 18 |**** | 128 -> 255 : 167 |****************************************| 256 -> 511 : 90 |********************* | disk = 'xvdc' usecs : count distribution 0 -> 1 : 0 | | 2 -> 3 : 0 | | 4 -> 7 : 0 | | 8 -> 15 : 0 | | 16 -> 31 : 0 | | 32 -> 63 : 0 | | 64 -> 127 : 22 |**** | 128 -> 255 : 179 |****************************************| 256 -> 511 : 88 |******************* | disk = 'xvda1' usecs : count distribution 0 -> 1 : 0 | | 2 -> 3 : 0 | | 4 -> 7 : 0 | | 8 -> 15 : 0 | | 16 -> 31 : 0 | | 32 -> 63 : 0 | | 64 -> 127 : 0 | | 128 -> 255 : 0 | | 256 -> 511 : 167 |****************************************| 512 -> 1023 : 44 |********** | 1024 -> 2047 : 9 |** | 2048 -> 4095 : 4 | | 4096 -> 8191 : 34 |******** | 8192 -> 16383 : 44 |********** | 16384 -> 32767 : 33 |******* | 32768 -> 65535 : 1 | | 65536 -> 131071 : 1 | |"
+    - paragraph [ref=e353]: From the output we can see that xvdb and xvdc have similar latency histograms, whereas xvda1 is quite different and bimodal, with a higher latency mode between 4 and 32 milliseconds.
+    - heading "6. bpftrace" [level=1] [ref=e354]
+    - paragraph [ref=e355]:
+      - text: bpftrace is at
+      - link "github.com/iovisor/bpftrace" [ref=e356] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace
+      - text: ", and is a high-level front-end for BPF tracing, which uses libraries from"
+      - link "bcc" [ref=e357] [cursor=pointer]:
+        - /url: "#bcc"
+      - text: . bpftrace is ideal for ad hoc instrumentation with powerful custom one-liners and short scripts, whereas bcc is ideal for complex tools and daemons. bpftrace was created by
+      - link "Alastair Robertson" [ref=e358] [cursor=pointer]:
+        - /url: http://ajor.co.uk/
+      - text: as a spare time project.
+    - paragraph [ref=e359]:
+      - text: I contributed many capabilities and fixes to bpftrace, as well as tools and their example files and man pages. I also created the bpftrace
+      - link "One-Liners Tutorial" [ref=e360] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace/blob/master/docs/tutorial_one_liners.md
+      - text: ", the"
+      - link "Reference Guide" [ref=e361] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md
+      - text: ", and the"
+      - link "Internals Development Guide" [ref=e362] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace/blob/master/docs/internals_development.md
+      - text: ", and published blog"
+      - link "posts" [ref=e363] [cursor=pointer]:
+        - /url: http://www.brendangregg.com/blog/
+      - text: . I'll summarize bpftrace here, but I've written and published a lot more detail in those resources for those wishing to dig deeper.
+    - 'heading "6.1. bpftrace: Installation" [level=2] [ref=e364]'
+    - paragraph [ref=e365]:
+      - text: See the
+      - link "bpftrace install instructions" [ref=e366] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace/blob/master/INSTALL.md
+      - text: "for getting started on different Linux distros. One of these might be possible!:"
+    - generic [ref=e367]: "# snap install bpftrace # yum install bpftrace # apt-get install bpftrace"
+    - paragraph [ref=e368]: But these are still under development, and you may need to refer to the full instructions in the previous link to get it to work. The only place I know where it "just works" is within some large tech companies who have built it in their internal repos.
+    - paragraph [ref=e369]: "To test if your install works, try a basic one-liner:"
+    - generic [ref=e370]: "# sudo bpftrace -e 'BEGIN { printf(\"Hello BPF!\\n\"); exit(); }' Attaching 1 probe... Hello BPF!"
+    - 'heading "6.2. bpftrace: One-Liners" [level=2] [ref=e371]'
+    - paragraph [ref=e372]:
+      - text: The following are from my
+      - link "One-Liners Tutorial" [ref=e373] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace/blob/master/docs/tutorial_one_liners.md
+      - text: ", which has more details on each:"
+    - generic [ref=e374]: "1. Listing probes bpftrace -l 'tracepoint:syscalls:sys_enter_*' 2. Hello world bpftrace -e 'BEGIN { printf(\"hello world\\n\"); }' 3. File opens bpftrace -e 'tracepoint:syscalls:sys_enter_open { printf(\"%s %s\\n\", comm, str(args->filename)); }' 4. Syscall counts by process bpftrace -e 'tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }' 5. Distribution of read() bytes bpftrace -e 'tracepoint:syscalls:sys_exit_read /pid == 18644/ { @bytes = hist(args->retval); }' 6. Kernel dynamic tracing of read() bytes bpftrace -e 'kretprobe:vfs_read { @bytes = lhist(retval, 0, 2000, 200); }' 7. Timing read()s bpftrace -e 'kprobe:vfs_read { @start[tid] = nsecs; } kretprobe:vfs_read /@start[tid]/ { @ns[comm] = hist(nsecs - @start[tid]); delete(@start[tid]); }' 8. Count process-level events bpftrace -e 'tracepoint:sched:sched* { @[name] = count(); } interval:s:5 { exit(); }' 9. Profile on-CPU kernel stacks bpftrace -e 'profile:hz:99 { @[stack] = count(); }' 10. Scheduler tracing bpftrace -e 'tracepoint:sched:sched_switch { @[stack] = count(); }' 11. Block I/O tracing bpftrace -e 'tracepoint:block:block_rq_complete { @ = hist(args->nr_sector * 512); }'"
+    - paragraph [ref=e375]: If you can run and understand these one-liners, you'll have learned a lot of bpftrace.
+    - paragraph [ref=e376]: "Here is some output of file opens:"
+    - generic [ref=e377]: "# bpftrace -e 'tracepoint:syscalls:sys_enter_open { printf(\"%s %s\\n\", comm, str(args->filename)); }' Attaching 1 probe... snmpd /proc/net/dev snmpd /proc/net/if_inet6 snmpd /sys/class/net/docker0/device/vendor snmpd /proc/sys/net/ipv4/neigh/docker0/retrans_time_ms snmpd /proc/sys/net/ipv6/neigh/docker0/retrans_time_ms snmpd /proc/sys/net/ipv6/conf/docker0/forwarding snmpd /proc/sys/net/ipv6/neigh/docker0/base_reachable_time_ms snmpd /sys/class/net/eth0/device/vendor snmpd /sys/class/net/eth0/device/device snmpd /proc/sys/net/ipv4/neigh/eth0/retrans_time_ms snmpd /proc/sys/net/ipv6/neigh/eth0/retrans_time_ms snmpd /proc/sys/net/ipv6/conf/eth0/forwarding snmpd /proc/sys/net/ipv6/neigh/eth0/base_reachable_time_ms snmpd /sys/class/net/lo/device/vendor snmpd /proc/sys/net/ipv4/neigh/lo/retrans_time_ms snmpd /proc/sys/net/ipv6/neigh/lo/retrans_time_ms snmpd /proc/sys/net/ipv6/conf/lo/forwarding snmpd /proc/sys/net/ipv6/neigh/lo/base_reachable_time_ms snmp-pass /proc/cpuinfo snmp-pass /proc/stat"
+    - paragraph [ref=e378]: Tracing which files have been opened can be a quick way to locate config files, log files, data files, libraries, and other things of interest.
+    - paragraph [ref=e379]: "Here is some output of timing read()s:"
+    - generic [ref=e380]: "# bpftrace -e 'kprobe:vfs_read { @start[tid] = nsecs; } kretprobe:vfs_read /@start[tid]/ { @ns[comm] = hist(nsecs - @start[tid]); delete(@start[tid]); }' Attaching 2 probes... ^C @ns[sleep]: [1K, 2K) 1 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@| @ns[ls]: [256, 512) 1 |@@@@@@@@@@@@@@@@@ | [512, 1K) 3 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@| [1K, 2K) 1 |@@@@@@@@@@@@@@@@@ | [2K, 4K) 1 |@@@@@@@@@@@@@@@@@ | [4K, 8K) 0 | | [8K, 16K) 0 | | [16K, 32K) 1 |@@@@@@@@@@@@@@@@@ | @ns[systemd]: [4K, 8K) 9 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@| @ns[snmpd]: [512, 1K) 18 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@| [1K, 2K) 3 |@@@@@@@@ | [2K, 4K) 9 |@@@@@@@@@@@@@@@@@@@@@@@@@@ | [4K, 8K) 2 |@@@@@ | [8K, 16K) 3 |@@@@@@@@ | [16K, 32K) 3 |@@@@@@@@ | [32K, 64K) 1 |@@ | [64K, 128K) 0 | | [128K, 256K) 1 |@@ | @ns[snmp-pass]: [256, 512) 6 |@@@@@@@ | [512, 1K) 4 |@@@@ | [1K, 2K) 0 | | [2K, 4K) 0 | | [4K, 8K) 0 | | [8K, 16K) 0 | | [16K, 32K) 1 |@ | [32K, 64K) 13 |@@@@@@@@@@@@@@@ | [64K, 128K) 3 |@@@ | [128K, 256K) 43 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@| [256K, 512K) 5 |@@@@@@ | @ns[sshd]: [1K, 2K) 7 |@@@@@@@@@@ | [2K, 4K) 30 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ | [4K, 8K) 35 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@| [8K, 16K) 33 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ | [16K, 32K) 1 |@ |"
+    - paragraph [ref=e381]: The ASCII histogram shows the distribution of the latency, helping you see if it is multi-modal, or if there are latency outliers.
+    - 'heading "6.3. bpftrace: Programming Summary" [level=2] [ref=e382]'
+    - paragraph [ref=e383]:
+      - text: This is a summary/cheat sheet for programming in bpftrace. See the
+      - link "bpftrace reference guide" [ref=e384] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md
+      - text: for more information.
+    - paragraph [ref=e385]:
+      - text: "This is also available as a separate page you can print out:"
+      - link "bpftrace cheat sheet" [ref=e386] [cursor=pointer]:
+        - /url: BPF/bpftrace-cheat-sheet.html
+      - text: .
+    - heading "Syntax" [level=3] [ref=e387]
+    - generic [ref=e388]: "probe[,probe,...] /filter/ { action }"
+    - paragraph [ref=e389]: The probe specifies what events to instrument, the filter is optional and can filter down the events based on a boolean expression, and the action is the mini program that runs.
+    - paragraph [ref=e390]: "Here's hello world:"
+    - generic [ref=e391]: "# bpftrace -e 'BEGIN { printf(\"Hello eBPF!\\n\"); }'"
+    - paragraph [ref=e392]: The probe is BEGIN, a special probe that runs at the beginning of the program (like awk). There's no filter. The action is a printf() statement.
+    - paragraph [ref=e393]: "Now a real example:"
+    - generic [ref=e394]: "# bpftrace -e 'kretprobe:vfs_read /pid == 181/ { @bytes = hist(retval); }'"
+    - paragraph [ref=e395]: This uses a kretprobe to instrument the return of the sys_read() kernel function. If the PID is 181, a special map variable @bytes is populated with a log2 histogram function with the return value retval of sys_read(). This produces a histogram of the returned read size for PID 181. Is your app doing lots of 1 byte reads? Maybe that can be optimized.
+    - heading "Probe Types" [level=3] [ref=e396]
+    - paragraph [ref=e397]: "These are libraries of probes which are related. The currently supported types are (more will be added):"
+    - list [ref=e398]:
+      - table [ref=e399]:
+        - rowgroup [ref=e400]:
+          - row "Alias Type Description" [ref=e401]:
+            - columnheader "Alias" [ref=e402]
+            - columnheader "Type" [ref=e403]
+            - columnheader "Description" [ref=e404]
+          - row "t tracepoint Kernel static instrumentation points" [ref=e405]:
+            - cell "t" [ref=e406]
+            - cell "tracepoint" [ref=e407]
+            - cell "Kernel static instrumentation points" [ref=e408]
+          - row "U usdt User-level statically defined tracing" [ref=e409]:
+            - cell "U" [ref=e410]
+            - cell "usdt" [ref=e411]
+            - cell "User-level statically defined tracing" [ref=e412]
+          - row "k kprobe Kernel dynamic function instrumentation (standard)" [ref=e413]:
+            - cell "k" [ref=e414]
+            - cell "kprobe" [ref=e415]
+            - cell "Kernel dynamic function instrumentation (standard)" [ref=e416]
+          - row "kr kretprobe Kernel dynamic function return instrumentation (standard)" [ref=e417]:
+            - cell "kr" [ref=e418]
+            - cell "kretprobe" [ref=e419]
+            - cell "Kernel dynamic function return instrumentation (standard)" [ref=e420]
+          - row "f kfunc Kernel dynamic function instrumentation (BPF based)" [ref=e421]:
+            - cell "f" [ref=e422]
+            - cell "kfunc" [ref=e423]
+            - cell "Kernel dynamic function instrumentation (BPF based)" [ref=e424]
+          - row "fr kretfunc Kernel dynamic function return instrumentation (BPF based)" [ref=e425]:
+            - cell "fr" [ref=e426]
+            - cell "kretfunc" [ref=e427]
+            - cell "Kernel dynamic function return instrumentation (BPF based)" [ref=e428]
+          - row "u uprobe User-level dynamic function instrumentation" [ref=e429]:
+            - cell "u" [ref=e430]
+            - cell "uprobe" [ref=e431]
+            - cell "User-level dynamic function instrumentation" [ref=e432]
+          - row "ur uretprobe User-level dynamic function return instrumentation" [ref=e433]:
+            - cell "ur" [ref=e434]
+            - cell "uretprobe" [ref=e435]
+            - cell "User-level dynamic function return instrumentation" [ref=e436]
+          - row "s software Kernel software-based events" [ref=e437]:
+            - cell "s" [ref=e438]
+            - cell "software" [ref=e439]
+            - cell "Kernel software-based events" [ref=e440]
+          - row "h hardware Hardware counter-based instrumentation" [ref=e441]:
+            - cell "h" [ref=e442]
+            - cell "hardware" [ref=e443]
+            - cell "Hardware counter-based instrumentation" [ref=e444]
+          - row "w watchpoint Memory watchpoint events" [ref=e445]:
+            - cell "w" [ref=e446]
+            - cell "watchpoint" [ref=e447]
+            - cell "Memory watchpoint events" [ref=e448]
+          - row "p profile Timed sampling across all CPUs" [ref=e449]:
+            - cell "p" [ref=e450]
+            - cell "profile" [ref=e451]
+            - cell "Timed sampling across all CPUs" [ref=e452]
+          - row "i interval Timed reporting (from one CPU)" [ref=e453]:
+            - cell "i" [ref=e454]
+            - cell "interval" [ref=e455]
+            - cell "Timed reporting (from one CPU)" [ref=e456]
+          - row "iter Iterator tracing over kernel objects" [ref=e457]:
+            - cell [ref=e458]
+            - cell "iter" [ref=e459]
+            - cell "Iterator tracing over kernel objects" [ref=e460]
+          - row "BEGIN Start of bpftrace" [ref=e461]:
+            - cell [ref=e462]
+            - cell "BEGIN" [ref=e463]
+            - cell "Start of bpftrace" [ref=e464]
+          - row "END End of bpftrace" [ref=e465]:
+            - cell [ref=e466]
+            - cell "END" [ref=e467]
+            - cell "End of bpftrace" [ref=e468]
+    - paragraph [ref=e469]: Dynamic instrumentation lets you trace any software function in a running binary without restarting it. However, the functions it exposes are not considered a stable API, as they can change from one software version to another, breaking the bpftrace tools you develop. Try to use the static probe types wherever possible, as they are usually best effort stable.
+    - heading "Variable Types" [level=3] [ref=e470]
+    - list [ref=e471]:
+      - table [ref=e472]:
+        - rowgroup [ref=e473]:
+          - row "Variable Description" [ref=e474]:
+            - columnheader "Variable" [ref=e475]
+            - columnheader "Description" [ref=e476]
+          - row "@name global" [ref=e477]:
+            - cell "@name" [ref=e478]
+            - cell "global" [ref=e479]
+          - row "@name[key] hash" [ref=e480]:
+            - cell "@name[key]" [ref=e481]
+            - cell "hash" [ref=e482]
+          - row "@name[tid] thread-local" [ref=e483]:
+            - cell "@name[tid]" [ref=e484]
+            - cell "thread-local" [ref=e485]
+          - row "$name scratch" [ref=e486]:
+            - cell "$name" [ref=e487]
+            - cell "scratch" [ref=e488]
+    - paragraph [ref=e489]: "Variables with a '@' prefix use BPF maps, which can behave like associative arrays. They can be populated in one of two ways:"
+    - list [ref=e490]:
+      - listitem [ref=e491]: "variable assignment: @name = x;"
+      - listitem [ref=e492]: "function assignment: @name = hist(x);"
+    - paragraph [ref=e493]: There are various map-populating functions as builtins that provide quick ways to summarize data.
+    - heading "Builtin Variables" [level=3] [ref=e494]
+    - list [ref=e495]:
+      - table [ref=e496]:
+        - rowgroup [ref=e497]:
+          - row "Variable Description" [ref=e498]:
+            - columnheader "Variable" [ref=e499]
+            - columnheader "Description" [ref=e500]
+          - row "pid Process ID" [ref=e501]:
+            - cell "pid" [ref=e502]
+            - cell "Process ID" [ref=e503]
+          - row "tid Thread ID" [ref=e504]:
+            - cell "tid" [ref=e505]
+            - cell "Thread ID" [ref=e506]
+          - row "uid User ID" [ref=e507]:
+            - cell "uid" [ref=e508]
+            - cell "User ID" [ref=e509]
+          - row "username Username" [ref=e510]:
+            - cell "username" [ref=e511]
+            - cell "Username" [ref=e512]
+          - row "comm Process or command name" [ref=e513]:
+            - cell "comm" [ref=e514]
+            - cell "Process or command name" [ref=e515]
+          - row "curtask Current task_struct as a u64" [ref=e516]:
+            - cell "curtask" [ref=e517]
+            - cell "Current task_struct as a u64" [ref=e518]
+          - row "nsecs Current time in nanoseconds" [ref=e519]:
+            - cell "nsecs" [ref=e520]
+            - cell "Current time in nanoseconds" [ref=e521]
+          - row "elapsed Time in nanoseconds since bpftrace start" [ref=e522]:
+            - cell "elapsed" [ref=e523]
+            - cell "Time in nanoseconds since bpftrace start" [ref=e524]
+          - row "kstack Kernel stack trace" [ref=e525]:
+            - cell "kstack" [ref=e526]
+            - cell "Kernel stack trace" [ref=e527]
+          - row "ustack User-level stack trace" [ref=e528]:
+            - cell "ustack" [ref=e529]
+            - cell "User-level stack trace" [ref=e530]
+          - row "arg0...argN Function arguments" [ref=e531]:
+            - cell "arg0...argN" [ref=e532]
+            - cell "Function arguments" [ref=e533]
+          - row "args Tracepoint arguments" [ref=e534]:
+            - cell "args" [ref=e535]
+            - cell "Tracepoint arguments" [ref=e536]
+          - row "retval Function return value" [ref=e537]:
+            - cell "retval" [ref=e538]
+            - cell "Function return value" [ref=e539]
+          - row "func Function name" [ref=e540]:
+            - cell "func" [ref=e541]
+            - cell "Function name" [ref=e542]
+          - row "probe Full probe name" [ref=e543]:
+            - cell "probe" [ref=e544]
+            - cell "Full probe name" [ref=e545]
+          - row "$1...$N Positional parameters" [ref=e546]:
+            - cell "$1...$N" [ref=e547]
+            - cell "Positional parameters" [ref=e548]
+          - row "cgroup Default cgroup v2 ID" [ref=e549]:
+            - cell "cgroup" [ref=e550]
+            - cell "Default cgroup v2 ID" [ref=e551]
+    - heading "Builtin Functions" [level=3] [ref=e552]
+    - list [ref=e553]:
+      - table [ref=e554]:
+        - rowgroup [ref=e555]:
+          - row "Function Description" [ref=e556]:
+            - columnheader "Function" [ref=e557]
+            - columnheader "Description" [ref=e558]
+          - row "printf(\"...\") Print formatted string" [ref=e559]:
+            - cell "printf(\"...\")" [ref=e560]
+            - cell "Print formatted string" [ref=e561]
+          - row "time(\"...\") Print formatted time" [ref=e562]:
+            - cell "time(\"...\")" [ref=e563]
+            - cell "Print formatted time" [ref=e564]
+          - row "join(char *arr[]) Join array of strings with a space" [ref=e565]:
+            - cell "join(char *arr[])" [ref=e566]
+            - cell "Join array of strings with a space" [ref=e567]
+          - row "str(char *s [, int length]) Return string from s pointer" [ref=e568]:
+            - cell "str(char *s [, int length])" [ref=e569]
+            - cell "Return string from s pointer" [ref=e570]
+          - row "buf(void *p [, int length]) Return a hexadecimal string from p pointer" [ref=e571]:
+            - cell "buf(void *p [, int length])" [ref=e572]
+            - cell "Return a hexadecimal string from p pointer" [ref=e573]
+          - row "strncmp(char *s1, char *s2, int length) Compares two strings up to length" [ref=e574]:
+            - cell "strncmp(char *s1, char *s2, int length)" [ref=e575]
+            - cell "Compares two strings up to length" [ref=e576]
+          - row "sizeof(expression) Returns the size of the expression" [ref=e577]:
+            - cell "sizeof(expression)" [ref=e578]
+            - cell "Returns the size of the expression" [ref=e579]
+          - row "kstack([limit]) Kernel stack trace up to limit frames" [ref=e580]:
+            - cell "kstack([limit])" [ref=e581]
+            - cell "Kernel stack trace up to limit frames" [ref=e582]
+          - row "ustack([limit]) User-level stack trace up to limit frames" [ref=e583]:
+            - cell "ustack([limit])" [ref=e584]
+            - cell "User-level stack trace up to limit frames" [ref=e585]
+          - row "ksym(void *p) Resolve kernel address to symbol" [ref=e586]:
+            - cell "ksym(void *p)" [ref=e587]
+            - cell "Resolve kernel address to symbol" [ref=e588]
+          - row "usym(void *p) Resolve user-space address to symbol" [ref=e589]:
+            - cell "usym(void *p)" [ref=e590]
+            - cell "Resolve user-space address to symbol" [ref=e591]
+          - row "kaddr(char *name) Resolve kernel symbol name to address" [ref=e592]:
+            - cell "kaddr(char *name)" [ref=e593]
+            - cell "Resolve kernel symbol name to address" [ref=e594]
+          - row "uaddr(char *name) Resolve user-space symbol name to address" [ref=e595]:
+            - cell "uaddr(char *name)" [ref=e596]
+            - cell "Resolve user-space symbol name to address" [ref=e597]
+          - row "ntop([int af,]int|char[4:16] addr) Convert IP address data to text" [ref=e598]:
+            - cell "ntop([int af,]int|char[4:16] addr)" [ref=e599]
+            - cell "Convert IP address data to text" [ref=e600]
+          - row "reg(char *name) Return register value" [ref=e601]:
+            - cell "reg(char *name)" [ref=e602]
+            - cell "Return register value" [ref=e603]
+          - row "cgroupid(char *path) Return cgroupid for /sys/fs/cgroup/... path" [ref=e604]:
+            - cell "cgroupid(char *path)" [ref=e605]
+            - cell "Return cgroupid for /sys/fs/cgroup/... path" [ref=e606]
+          - row "time(\"...\") Print formatted time" [ref=e607]:
+            - cell "time(\"...\")" [ref=e608]
+            - cell "Print formatted time" [ref=e609]
+          - row "system(\"...\") Run shell command" [ref=e610]:
+            - cell "system(\"...\")" [ref=e611]
+            - cell "Run shell command" [ref=e612]
+          - row "cat(char *filename) Print file content" [ref=e613]:
+            - cell "cat(char *filename)" [ref=e614]
+            - cell "Print file content" [ref=e615]
+          - row "signal(char[] sig | int sig) Send a signal to the current task" [ref=e616]:
+            - cell "signal(char[] sig | int sig)" [ref=e617]
+            - cell "Send a signal to the current task" [ref=e618]
+          - row "override(u64 rc) Override a kernel function return value" [ref=e619]:
+            - cell "override(u64 rc)" [ref=e620]
+            - cell "Override a kernel function return value" [ref=e621]
+          - row "exit() Exits bpftrace" [ref=e622]:
+            - cell "exit()" [ref=e623]
+            - cell "Exits bpftrace" [ref=e624]
+          - row "@ = count() Count events" [ref=e625]:
+            - cell "@ = count()" [ref=e626]
+            - cell "Count events" [ref=e627]
+          - row "@ = sum(x) Sum the value" [ref=e628]:
+            - cell "@ = sum(x)" [ref=e629]
+            - cell "Sum the value" [ref=e630]
+          - row "@ = hist(x) Power-of-2 histogram for x" [ref=e631]:
+            - cell "@ = hist(x)" [ref=e632]
+            - cell "Power-of-2 histogram for x" [ref=e633]
+          - row "@ = lhist(x, min, max, step) Linear histogram for x" [ref=e634]:
+            - cell "@ = lhist(x, min, max, step)" [ref=e635]
+            - cell "Linear histogram for x" [ref=e636]
+          - row "@ = min(x) Record the minimum value seen" [ref=e637]:
+            - cell "@ = min(x)" [ref=e638]
+            - cell "Record the minimum value seen" [ref=e639]
+          - row "@ = max(x) Record the maximum value seen" [ref=e640]:
+            - cell "@ = max(x)" [ref=e641]
+            - cell "Record the maximum value seen" [ref=e642]
+          - row "@ = stats(x) Return the count, average, and total for this value" [ref=e643]:
+            - cell "@ = stats(x)" [ref=e644]
+            - cell "Return the count, average, and total for this value" [ref=e645]
+          - row "delete(@x[key]) Delete the map element" [ref=e646]:
+            - cell "delete(@x[key])" [ref=e647]
+            - cell "Delete the map element" [ref=e648]
+          - row "clear(@x) Delete all keys from the map" [ref=e649]:
+            - cell "clear(@x)" [ref=e650]
+            - cell "Delete all keys from the map" [ref=e651]
+    - paragraph [ref=e652]:
+      - text: There are additional lesser-used functions and capabilities not summarized here. See the
+      - link "Reference Guide" [ref=e653] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md
+      - text: .
+    - heading "7. perf" [level=1] [ref=e654]
+    - paragraph [ref=e655]:
+      - text: "eBPF can also be used from the Linux perf command (aka perf_events) in Linux 4.4 and newer. The newer the better, as perf/BPF support keeps improving with each release. I've provided one example so far on my perf page:"
+      - link "perf eBPF" [ref=e656] [cursor=pointer]:
+        - /url: perf.html#eBPF
+      - text: .
+    - heading "8. References" [level=1] [ref=e657]
+    - list [ref=e658]:
+      - listitem [ref=e659]:
+        - link "bcc (BPF Compiler Collection)" [ref=e660] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bcc
+        - text: "(github): tools, tutorial, reference guide, examples, man pages."
+      - listitem [ref=e661]:
+        - link "BPF docs" [ref=e662] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bpf-docs
+        - text: "(github): BPF docs."
+      - listitem [ref=e663]:
+        - link "Documentation/networking/filter.txt" [ref=e664] [cursor=pointer]:
+          - /url: https://www.kernel.org/doc/Documentation/networking/filter.txt
+        - text: (kernel.org) BPF & eBPF docs in the kernel source.
+    - heading "9. Other eBPF Uses" [level=1] [ref=e665]
+    - paragraph [ref=e666]: Other uses outside of observability. Just links for now.
+    - list [ref=e667]:
+      - listitem [ref=e668]:
+        - link "Cilium" [ref=e669] [cursor=pointer]:
+          - /url: https://cilium.io/
+        - text: ": API-aware networking and security."
+      - listitem [ref=e670]:
+        - link "Yet another new approach to seccomp" [ref=e671] [cursor=pointer]:
+          - /url: https://lwn.net/Articles/475043/
+        - text: by Jonathan Corbet.
+      - listitem [ref=e672]:
+        - link "eBPF/XDP SmartNIC offload (slides)" [ref=e673] [cursor=pointer]:
+          - /url: https://www.slideshare.net/Netronome/ebpfxdp-sigcomm-2018
+        - text: by David Beckett and Jakub Kicinski (Netronome).
+      - listitem [ref=e674]:
+        - link "When eBPF Meets FUSE (PDF)" [ref=e675] [cursor=pointer]:
+          - /url: https://events.linuxfoundation.org/wp-content/uploads/2017/11/When-eBPF-Meets-FUSE-Improving-Performance-of-User-File-Systems-Ashish-Bijlani-Georgia-Tech.pdf
+        - text: slides for OSS, by Ashish Bijlani.
+      - listitem [ref=e676]:
+        - link "Why is the kernel community replacing iptables with BPF?" [ref=e677] [cursor=pointer]:
+          - /url: https://cilium.io/blog/2018/04/17/why-is-the-kernel-community-replacing-iptables/
+        - text: by Thomas Graf (cilium).
+    - heading "10. Acknowledgements" [level=1] [ref=e678]
+    - paragraph [ref=e679]:
+      - text: "Many people have worked on tracers and contributed in different ways over the years to get to where we are today, including those who worked on the Linux frameworks that bcc/eBPF makes use of: tracepoints, kprobes, uprobes, ftrace, and perf_events. The most recent contributors include Alexei Starovoitov and Daniel Borkmann, who have lead eBPF development, and Brenden Blanco and Yonghong Song, who have lead bcc development. Many of the single purpose bcc tools were written by me (execsnoop, opensnoop, biolatency, ext4slower, tcpconnect, gethostlatency, etc), and two of the most important multi-tools (trace and argdist) were written by Sasha Goldshtein. I wrote a longer list of acknowledgements at the end of"
+      - link "this post" [ref=e680] [cursor=pointer]:
+        - /url: /blog/2016-10-27/dtrace-for-linux-2016.html
+      - text: . Thank you everyone!
+    - heading "11. Updates" [level=1] [ref=e681]
+    - paragraph [ref=e682]: Other resources about eBPF for observability, organized by year. (I'm still updating these updates...)
+    - heading "2013" [level=2] [ref=e683]
+    - list [ref=e684]:
+      - listitem [ref=e685]:
+        - link "enhanced BPF" [ref=e686] [cursor=pointer]:
+          - /url: https://lkml.org/lkml/2013/9/30/627
+        - text: by Alexei Starovoitov
+      - listitem [ref=e687]:
+        - link "tracing filters with BPF" [ref=e688] [cursor=pointer]:
+          - /url: https://lwn.net/Articles/575444/
+        - text: by Alexei Starovoitov
+    - heading "2014" [level=2] [ref=e689]
+    - list [ref=e690]:
+      - listitem [ref=e691]:
+        - link "BPF syscall, maps, verifier, samples" [ref=e692] [cursor=pointer]:
+          - /url: https://lkml.org/lkml/2014/6/27/545
+        - text: by Alexei Starovoitov
+    - heading "2015" [level=2] [ref=e693]
+    - list [ref=e694]:
+      - listitem [ref=e695]:
+        - link "Linux eBPF" [ref=e696] [cursor=pointer]:
+          - /url: /blog/2015-05-15/ebpf-one-small-step.html
+      - listitem [ref=e697]:
+        - 'link "bcc: Taming Linux 4.3+ Tracing Superpowers" [ref=e698] [cursor=pointer]':
+          - /url: /blog/2015-09-22/bcc-linux-4.3-tracing.html
+      - listitem [ref=e699]:
+        - link "tcpconnect and tcpaccept for Linux (bcc)" [ref=e700] [cursor=pointer]:
+          - /url: /blog/2015-10-31/tcpconnect-tcpaccept-bcc.html
+    - heading "2016" [level=2] [ref=e701]
+    - list [ref=e702]:
+      - listitem [ref=e703]:
+        - link "Linux eBPF Stack Trace Hack (bcc)" [ref=e704] [cursor=pointer]:
+          - /url: /blog/2016-01-18/ebpf-stack-trace-hack.html
+      - listitem [ref=e705]:
+        - link "Linux eBPF Off-CPU Flame Graph (bcc)" [ref=e706] [cursor=pointer]:
+          - /url: /blog/2016-01-20/ebpf-offcpu-flame-graph.html
+      - listitem [ref=e707]:
+        - link "Linux Wakeup and Off-Wake Profiling (bcc)" [ref=e708] [cursor=pointer]:
+          - /url: /blog/2016-02-01/linux-wakeup-offwake-profiling.html
+      - listitem [ref=e709]:
+        - link "Linux chain graph prototype (bcc)" [ref=e710] [cursor=pointer]:
+          - /url: /blog/2016-02-05/ebpf-chaingraph-prototype.html
+      - listitem [ref=e711]:
+        - 'link "Linux 4.x Performance: Using BPF Superpowers (slides)" [ref=e712] [cursor=pointer]':
+          - /url: https://www.slideshare.net/brendangregg/linux-bpf-superpowers
+      - listitem [ref=e713]:
+        - link "Linux eBPF/bcc uprobes" [ref=e714] [cursor=pointer]:
+          - /url: /blog/2016-02-08/linux-ebpf-bcc-uprobes.html
+      - listitem [ref=e715]:
+        - link "Linux BPF/bcc Road Ahead" [ref=e716] [cursor=pointer]:
+          - /url: /blog/2016-03-28/linux-bpf-bcc-road-ahead-2016.html
+      - listitem [ref=e717]:
+        - link "Ubuntu Xenial bcc/BPF" [ref=e718] [cursor=pointer]:
+          - /url: /blog/2016-06-14/ubuntu-xenial-bcc-bpf.html
+      - listitem [ref=e719]:
+        - 'link "Dive into BPF: a list of reading material" [ref=e720] [cursor=pointer]':
+          - /url: https://qmonnet.github.io/whirl-offload/2016/09/01/dive-into-bpf/
+        - text: by Quentin Monnet
+      - listitem [ref=e721]:
+        - link "Linux bcc/BPF Tracing Security Capabilities" [ref=e722] [cursor=pointer]:
+          - /url: /blog/2016-10-01/linux-bcc-security-capabilities.html
+      - listitem [ref=e723]:
+        - link "Linux MySQL Slow Query Tracing with bcc/BPF" [ref=e724] [cursor=pointer]:
+          - /url: /blog/2016-10-04/linux-bcc-mysqld-qslower.html
+      - listitem [ref=e725]:
+        - link "Linux bcc/BPF ext4 Latency Tracing" [ref=e726] [cursor=pointer]:
+          - /url: /blog/2016-10-06/linux-bcc-ext4dist-ext4slower.html
+      - listitem [ref=e727]:
+        - link "Linux bcc/BPF Run Queue (Scheduler) Latency" [ref=e728] [cursor=pointer]:
+          - /url: /blog/2016-10-08/linux-bcc-runqlat.html
+      - listitem [ref=e729]:
+        - link "Linux bcc/BPF Node.js USDT Tracing" [ref=e730] [cursor=pointer]:
+          - /url: /blog/2016-10-12/linux-bcc-nodejs-usdt.html
+      - listitem [ref=e731]:
+        - link "Staring into the eBPF Abyss (slides)" [ref=e732] [cursor=pointer]:
+          - /url: http://www.slideshare.net/goldshtn/staring-into-the-ebpf-abyss
+        - text: by Sasha Goldshtein.
+      - listitem [ref=e733]:
+        - link "Meet-cute between eBPF and Kernel Tracing (slides)" [ref=e734] [cursor=pointer]:
+          - /url: http://www.slideshare.net/vh21/meet-cutebetweenebpfandtracing
+        - text: by Viller Hsiao.
+      - listitem [ref=e735]:
+        - link "eBPF Trace from Kernel to Userspace (slides)" [ref=e736] [cursor=pointer]:
+          - /url: http://www.slideshare.net/suselab/ebpf-trace-from-kernel-to-userspace
+        - text: by Gary Lin.
+      - listitem [ref=e737]:
+        - link "Linux bcc tcptop" [ref=e738] [cursor=pointer]:
+          - /url: /blog/2016-10-15/linux-bcc-tcptop.html
+      - listitem [ref=e739]:
+        - link "Linux 4.9's Efficient BPF-based Profiler" [ref=e740] [cursor=pointer]:
+          - /url: /blog/2016-10-21/linux-efficient-profiler.html
+      - listitem [ref=e741]:
+        - link "DTrace for Linux 2016" [ref=e742] [cursor=pointer]:
+          - /url: /blog/2016-10-27/dtrace-for-linux-2016.html
+      - listitem [ref=e743]:
+        - 'link "Linux 4.x Tracing Tools: Using BPF Superpowers (slides)" [ref=e744] [cursor=pointer]':
+          - /url: http://www.slideshare.net/brendangregg/linux-4x-tracing-tools-using-bpf-superpowers
+      - listitem [ref=e745]:
+        - 'link "Linux bcc/BPF tcplife: TCP Lifespans" [ref=e746] [cursor=pointer]':
+          - /url: /blog/2016-11-30/linux-bcc-tcplife.html
+    - heading "2017" [level=2] [ref=e747]
+    - list [ref=e748]:
+      - listitem [ref=e749]:
+        - link "Golang bcc/BPF Function Tracing" [ref=e750] [cursor=pointer]:
+          - /url: /blog/2017-01-31/golang-bcc-bpf-function-tracing.html
+      - listitem [ref=e751]:
+        - 'link "BPF: Tracing and More (slides)" [ref=e752] [cursor=pointer]':
+          - /url: https://www.slideshare.net/brendangregg/bpf-tracing-and-more
+        - text: (
+        - link "youtube" [ref=e753] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=JRFNIKUROPE
+        - text: )
+      - listitem [ref=e754]:
+        - 'link "eBPF, part1: Past, Present, and Future" [ref=e755] [cursor=pointer]':
+          - /url: https://ferrisellis.com/posts/ebpf_past_present_future/
+        - text: by Ferris Ellis
+      - listitem [ref=e756]:
+        - 'link "eBPF, part 2: Syscall and Map Types" [ref=e757] [cursor=pointer]':
+          - /url: https://ferrisellis.com/posts/ebpf_syscall_and_maps/
+        - text: by Ferris Ellis
+      - listitem [ref=e758]:
+        - link "Performance Analysis Superpowers with Linux eBPF (slides)" [ref=e759] [cursor=pointer]:
+          - /url: https://www.slideshare.net/brendangregg/velocity-2017-performance-analysis-superpowers-with-linux-ebpf
+        - text: (
+        - link "youtube" [ref=e760] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=bj3qdEDbCD4
+        - text: )
+      - listitem [ref=e761]:
+        - link "Optimizing web servers for high throughput and low latency" [ref=e762] [cursor=pointer]:
+          - /url: https://blogs.dropbox.com/tech/2017/09/optimizing-web-servers-for-high-throughput-and-low-latency/
+        - text: (uses some bcc/BPF) by Alexey Ivanov.
+      - listitem [ref=e763]:
+        - 'link "Linux 4.x Tracing: Performance Analysis with bcc/BPF (slides)" [ref=e764] [cursor=pointer]':
+          - /url: https://www.slideshare.net/brendangregg/linux-4x-tracing-performance-analysis-with-bccbpf
+        - text: (
+        - link "youtube" [ref=e765] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=oc9000dM9-k
+        - text: )
+      - listitem [ref=e766]:
+        - link "A thorough introduction to eBPF" [ref=e767] [cursor=pointer]:
+          - /url: https://lwn.net/Articles/740157/
+        - text: by Matt Fleming.
+      - listitem [ref=e768]:
+        - link "7 tools for analyzing performance in Linux with bcc/BPF" [ref=e769] [cursor=pointer]:
+          - /url: https://opensource.com/article/17/11/bccbpf-performance
+        - text: .
+      - listitem [ref=e770]:
+        - link "JVM Monitoring with BPF at USENIX LISA17" [ref=e771] [cursor=pointer]:
+          - /url: https://twitter.com/goldshtn/status/926131097741774848
+        - text: .
+    - heading "2018" [level=2] [ref=e772]
+    - list [ref=e773]:
+      - listitem [ref=e774]:
+        - 'link "BPFd: Running BCC tools remotely across systems and architectures" [ref=e775] [cursor=pointer]':
+          - /url: https://lwn.net/Articles/744522/
+        - text: by Joel Fernandes
+      - listitem [ref=e776]:
+        - link "KPTI/KAISER Meltdown performance analysis" [ref=e777] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2018-02-09/kpti-kaiser-meltdown-performance.html
+        - text: (includes some bcc/BPF analysis)
+      - listitem [ref=e778]:
+        - link "Writing eBPF tracing tools in Rust" [ref=e779] [cursor=pointer]:
+          - /url: https://jvns.ca/blog/2018/02/05/rust-bcc/
+        - text: by Julia Evans.
+      - listitem [ref=e780]:
+        - link "Prototyping an ltrace clone using eBPF" [ref=e781] [cursor=pointer]:
+          - /url: https://jvns.ca/blog/2018/02/24/an-ltrace-clone-using-ebpf/
+        - text: by Julia Evans.
+      - listitem [ref=e782]:
+        - link "Some advanced BCC topics" [ref=e783] [cursor=pointer]:
+          - /url: https://lwn.net/Articles/747640/
+        - text: by Matt Fleming.
+      - listitem [ref=e784]:
+        - link "Using user-space tracepoints with BPF" [ref=e785] [cursor=pointer]:
+          - /url: https://lwn.net/Articles/753601/
+        - text: by Matt Fleming.
+      - listitem [ref=e786]:
+        - link "Linux system monitoring with eBPF" [ref=e787] [cursor=pointer]:
+          - /url: https://www.circonus.com/2018/05/linux-system-monitoring-with-ebpf/
+        - text: by Circonus.
+      - listitem [ref=e788]:
+        - link "TCP Tracepoints" [ref=e789] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2018-03-22/tcp-tracepoints.html
+      - listitem [ref=e790]:
+        - link "eBPF maps 101" [ref=e791] [cursor=pointer]:
+          - /url: https://www.slideshare.net/suselab/ebpf-maps-101
+        - text: by Al Cho (SUSE).
+      - listitem [ref=e792]:
+        - link "Linux bcc/eBPF tcpdrop" [ref=e793] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2018-05-31/linux-tcpdrop.html
+      - link "Linux System Monitoring with eBPF (slides)" [ref=e794] [cursor=pointer]:
+        - /url: https://www.slideshare.net/HeinrichHartmann/advanced-linux-system-monitoring-with-ebpf
+      - text: by Heinrich Hartmann (Circonus).
+      - listitem [ref=e795]:
+        - link "BPF verifier future" [ref=e796] [cursor=pointer]:
+          - /url: https://twitter.com/brendangregg/status/1002646110228316160
+        - text: by Alexei Starovoitov.
+      - listitem [ref=e797]:
+        - link "Sysdig developes eBPF support" [ref=e798] [cursor=pointer]:
+          - /url: https://github.com/draios/sysdig/wiki/eBPF-(beta)
+        - text: by Gianluca Borello.
+      - listitem [ref=e799]:
+        - link "Low-Overhead System Tracing With eBPF (youtube)" [ref=e800] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=Yrjk4W-F9iY
+        - text: talk (
+        - link "slides" [ref=e801] [cursor=pointer]:
+          - /url: https://www.slideshare.net/AkshayKapoor22/low-overhead-system-tracing-with-ebpf
+        - text: ) by Akshay Kapoor.
+      - listitem [ref=e802]:
+        - link "Building Network Functions with eBPF & BCC (slides)" [ref=e803] [cursor=pointer]:
+          - /url: https://www.slideshare.net/kerneltlv/building-network-functions-with-ebpf-bcc
+        - text: by Shmulik Ladkani (Meta Networks).
+      - listitem [ref=e804]:
+        - link "Taking eBPF (bcc tools) for a quick spin in RHEL 7.6 (beta)" [ref=e805] [cursor=pointer]:
+          - /url: https://allanmcaleavy.com/2018/08/27/taking-ebpf-bcc-tools-for-a-quick-spin-in-rhel-7-6-beta/
+        - text: ", by Allan McAleavy."
+      - listitem [ref=e806]:
+        - link "Introducing ebpf_exporter" [ref=e807] [cursor=pointer]:
+          - /url: https://blog.cloudflare.com/introducing-ebpf_exporter/
+        - text: by Ivan Babrou (Cloudflare).
+      - listitem [ref=e808]:
+        - link "How I ended up writing opensnoop in pure C using eBPF" [ref=e809] [cursor=pointer]:
+          - /url: https://bolinfest.github.io/opensnoop-native/
+        - text: by Michael Bolin.
+      - listitem [ref=e810]:
+        - link "High-level tracing with bpftrace" [ref=e811] [cursor=pointer]:
+          - /url: http://smackerelofopinion.blogspot.com/2018/11/high-level-tracing-with-bpftrace.html
+        - text: by Colin Ian King.
+      - listitem [ref=e812]:
+        - link "eBPF Powered Distributed Kubernetes Performance Analysis (video)" [ref=e813] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=GkMltybVHkU
+        - text: talk at KubeCon by Lorenzo Fontana.
+      - listitem [ref=e814]:
+        - link "Low-Overhead Tracing Using eBPF for Observability into Kubernetes Apps and Services (video)" [ref=e815] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=ug3lYZdN0Bk
+        - text: talk at KubeCon by Gaurav Gupta.
+      - listitem [ref=e816]:
+        - 'link "Linux: easy keylogger with eBPF" [ref=e817] [cursor=pointer]':
+          - /url: https://arighi.blogspot.com/2018/12/linux-easy-keylogger-with-ebpf.html
+        - text: by Andrea Righi.
+    - heading "2019" [level=2] [ref=e818]
+    - list [ref=e819]:
+      - listitem [ref=e820]:
+        - link "From High Ceph Latency to Kernel Patch with eBPF/BCC" [ref=e821] [cursor=pointer]:
+          - /url: https://habr.com/ru/company/selectel/blog/450818/
+        - text: by Алексей Захаров.
+      - listitem [ref=e822]:
+        - 'link "Learn eBPF Tracing: Tutorial and Examples" [ref=e823] [cursor=pointer]':
+          - /url: /blog/2019-01-01/learn-ebpf-tracing.html
+        - text: by myself.
+      - listitem [ref=e824]:
+        - 'link "BPF Performance Tools: Linux System and Application Observability (book)" [ref=e825] [cursor=pointer]':
+          - /url: bpf-performance-tools-book.html
+        - text: by myself, published by Addison Wesley.
+      - listitem [ref=e826]:
+        - link "Kernel analysis with bpftrace (lwn.net)" [ref=e827] [cursor=pointer]:
+          - /url: https://lwn.net/Articles/793749/
+        - text: by myself.
+      - listitem [ref=e828]:
+        - link "Playing with BPF" [ref=e829] [cursor=pointer]:
+          - /url: https://kirshatrov.com/2019/12/25/bpf-playground
+        - text: by Kir Shatrov.
+      - listitem [ref=e830]:
+        - link "A thorough introduction to bpftrace" [ref=e831] [cursor=pointer]:
+          - /url: /blog/2019-08-19/bpftrace.html
+        - text: by myself.
+      - listitem [ref=e832]:
+        - 'link "BPF: A New Type of Software" [ref=e833] [cursor=pointer]':
+          - /url: /blog/2019-12-02/bpf-a-new-type-of-software.html
+        - text: by myself.
+      - listitem [ref=e834]:
+        - link "BPF Theremin, Tetris, and Typewriters" [ref=e835] [cursor=pointer]:
+          - /url: /blog/2019-12-22/bpf-theremin.html
+        - text: by myself.
+      - listitem [ref=e836]:
+        - 'link "BPF binaries: BTF, CO-RE, and the future of BPF perf tools" [ref=e837] [cursor=pointer]':
+          - /url: /blog/2020-11-04/bpf-co-re-btf-libbpf.html
+        - text: by myself.
+    - heading "2020" [level=2] [ref=e838]
+    - list [ref=e839]:
+      - listitem [ref=e840]:
+        - link "Unlocking eBPF power" [ref=e841] [cursor=pointer]:
+          - /url: https://devopsspiral.com/articles/linux/ebpf-unlock/
+        - text: by Michał Wcisło shows a proof of concept tool that unlocks your laptop when your phone is nearby, using bpftrace.
+      - listitem [ref=e842]:
+        - link "ebpf.io" [ref=e843] [cursor=pointer]:
+          - /url: https://ebpf.io/
+        - text: ": eBPF (BPF) now has its own website."
+      - listitem [ref=e844]:
+        - 'link "BPF binaries: BTF, CO-RE, and the future of BPF perf tools" [ref=e845] [cursor=pointer]':
+          - /url: /blog/2020-11-04/bpf-co-re-btf-libbpf.html
+        - text: by myself.
+    - heading "2021" [level=2] [ref=e846]
+    - list [ref=e847]:
+      - listitem [ref=e848]:
+        - link "USENIX LISA2021 BPF Internals (eBPF)" [ref=e849] [cursor=pointer]:
+          - /url: /blog/2021-06-15/bpf-internals.html
+        - text: by myself.
+      - listitem [ref=e850]:
+        - link "How To Add eBPF Observability To Your Product" [ref=e851] [cursor=pointer]:
+          - /url: /blog/2021-07-03/how-to-add-bpf-observability.html
+        - text: by myself.
+  - separator [ref=e852]
+  - text: "Created: 28-Dec-2016"
+  - text: "Last Updated: 07-Sep-2021"
+  - text: Copyright 2021 Brendan Gregg

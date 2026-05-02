@@ -1,0 +1,701 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "Linux Performance" [level=1] [ref=e4]
+    - generic [ref=e5]:
+      - link [ref=e6] [cursor=pointer]:
+        - /url: Perf/linux_observability_tools.png
+        - img [ref=e7]
+      - text: "static, benchmarking, tuning:"
+      - link [ref=e8] [cursor=pointer]:
+        - /url: Perf/linux_static_tools.png
+        - img [ref=e9]
+      - link [ref=e10] [cursor=pointer]:
+        - /url: Perf/linux_benchmarking_tools.png
+        - img [ref=e11]
+      - link [ref=e12] [cursor=pointer]:
+        - /url: Perf/linux_tuning_tools.png
+        - img [ref=e13]
+      - text: sar,
+      - link "perf-tools" [ref=e14] [cursor=pointer]:
+        - /url: https://github.com/brendangregg/perf-tools#contents
+      - text: ","
+      - link "bcc/BPF" [ref=e15] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bcc#tools
+      - text: ":"
+      - link [ref=e16] [cursor=pointer]:
+        - /url: Perf/linux_observability_sar.png
+        - img [ref=e17]
+      - link [ref=e18] [cursor=pointer]:
+        - /url: Perf/perf-tools_2016.png
+        - img [ref=e19]
+      - link [ref=e20] [cursor=pointer]:
+        - /url: Perf/bcc_tracing_tools.png
+        - img [ref=e21]
+      - link "bpftrace" [ref=e22] [cursor=pointer]:
+        - /url: https://github.com/iovisor/bpftrace
+      - text: ","
+      - link "BPF book" [ref=e23] [cursor=pointer]:
+        - /url: http://www.brendangregg.com/bpf-performance-tools-book.html
+      - text: ":"
+      - link [ref=e24] [cursor=pointer]:
+        - /url: Perf/linux_bpftrace_tools.png
+        - img [ref=e25]
+      - link [ref=e26] [cursor=pointer]:
+        - /url: Perf/bpf_book_tools.png
+        - img [ref=e27]
+      - generic [ref=e28]:
+        - text: "Images license: creative commons"
+        - link "Attribution-ShareAlike 4.0" [ref=e29] [cursor=pointer]:
+          - /url: http://creativecommons.org/licenses/by-sa/4.0/
+        - text: .
+    - paragraph [ref=e30]:
+      - text: "This page links to various Linux performance material I've created, including the tools maps on the right. These use a large font size to suit slide decks. You can also print them out for your office wall. They show:"
+      - link "Linux observability tools" [ref=e31] [cursor=pointer]:
+        - /url: Perf/linux_observability_tools.png
+      - text: ","
+      - link "Linux static performance analysis tools" [ref=e32] [cursor=pointer]:
+        - /url: Perf/linux_static_tools.png
+      - text: ","
+      - link "Linux benchmarking tools" [ref=e33] [cursor=pointer]:
+        - /url: Perf/linux_benchmarking_tools.png
+      - text: ","
+      - link "Linux tuning tools" [ref=e34] [cursor=pointer]:
+        - /url: Perf/linux_tuning_tools.png
+      - text: ", and"
+      - link "Linux sar" [ref=e35] [cursor=pointer]:
+        - /url: Perf/linux_observability_sar.png
+      - text: . Check the year on the image (bottom right) to see how recent it is.
+    - paragraph [ref=e36]:
+      - text: "There is also a hi-res diagram combining observability, static performance tuning, and perf-tools/bcc:"
+      - link "png" [ref=e37] [cursor=pointer]:
+        - /url: Perf/linux_perf_tools_full.png
+      - text: ","
+      - link "svg" [ref=e38] [cursor=pointer]:
+        - /url: Perf/linux_perf_tools_full.svg
+      - text: (see
+      - link "discussion" [ref=e39] [cursor=pointer]:
+        - /url: https://www.reddit.com/r/linux/comments/4x4smu/linux_performance_tools_full_version_draft/
+      - text: ), but it is not as complete as the other diagrams. For even more diagrams, see my slide decks below.
+    - paragraph [ref=e40]:
+      - text: "On this page:"
+      - link "Tools" [ref=e41] [cursor=pointer]:
+        - /url: "#Tools"
+      - text: ","
+      - link "Documentation" [ref=e42] [cursor=pointer]:
+        - /url: "#Documentation"
+      - text: ","
+      - link "Talks" [ref=e43] [cursor=pointer]:
+        - /url: "#Talks"
+      - text: ","
+      - link "Resources" [ref=e44] [cursor=pointer]:
+        - /url: "#Resources"
+      - text: .
+    - heading "Tools" [level=2] [ref=e45]
+    - list [ref=e46]:
+      - listitem [ref=e47]:
+        - link "perf" [ref=e48] [cursor=pointer]:
+          - /url: perf.html
+        - text: ": perf one-liners, examples, visualizations."
+      - listitem [ref=e49]:
+        - link "eBPF tools" [ref=e50] [cursor=pointer]:
+          - /url: ebpf.html
+        - text: ": BPF/bcc tracing tools and examples."
+      - listitem [ref=e51]:
+        - link "perf-tools" [ref=e52] [cursor=pointer]:
+          - /url: https://github.com/brendangregg/perf-tools
+        - text: ": Ftrace perf tools (github)."
+      - listitem [ref=e53]:
+        - link "bcc" [ref=e54] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bcc#tools
+        - text: ": BPF/bcc perf tools (github)."
+      - listitem [ref=e55]:
+        - link "bpftrace" [ref=e56] [cursor=pointer]:
+          - /url: https://github.com/iovisor/bpftrace#tools
+        - text: ": BPF/bpftrace perf tools (github)."
+      - listitem [ref=e57]:
+        - link "Flame Graphs" [ref=e58] [cursor=pointer]:
+          - /url: flamegraphs.html
+        - text: ": using"
+        - link "perf" [ref=e59] [cursor=pointer]:
+          - /url: FlameGraphs/cpuflamegraphs.html#perf
+        - text: and other profilers.
+    - heading "Documentation" [level=2] [ref=e60]
+    - list [ref=e61]:
+      - listitem [ref=e62]:
+        - link "Linux Performance Analysis in 60,000 Milliseconds" [ref=e63] [cursor=pointer]:
+          - /url: http://techblog.netflix.com/2015/11/linux-performance-analysis-in-60s.html
+        - text: shows the first ten commands to use in an investigation (
+        - link "video" [ref=e64] [cursor=pointer]:
+          - /url: /blog/2015-12-03/linux-perf-60s-video.html
+        - text: ","
+        - link "PDF" [ref=e65] [cursor=pointer]:
+          - /url: /Articles/Netflix_Linux_Perf_Analysis_60s.pdf
+        - text: ). Written by myself and the performance engineering team at Netflix (2015).
+      - listitem [ref=e66]:
+        - text: My post
+        - link "Performance Tuning Linux Instances on EC2" [ref=e67] [cursor=pointer]:
+          - /url: /blog/2015-03-03/performance-tuning-linux-instances-on-ec2.html
+        - text: includes the tunables used at Netflix (2015).
+      - listitem [ref=e68]:
+        - text: A post on
+        - 'link "Linux Load Averages: Solving the Mystery" [ref=e69] [cursor=pointer]':
+          - /url: /blog/2017-08-08/linux-load-averages.html
+        - text: ", explaining what they are and why they include the uninterruptible sleep state (2017)."
+      - listitem [ref=e70]:
+        - text: The post
+        - link "The Return of the Frame Pointers" [ref=e71] [cursor=pointer]:
+          - /url: /blog/2024-03-17/the-return-of-the-frame-pointers.html
+        - text: ", describing what they are, why they are coming back in major Linux distros, and other stack walking techniques (2024)."
+      - listitem [ref=e72]:
+        - text: A
+        - link "gdb Debugging Full Example (Tutorial)" [ref=e73] [cursor=pointer]:
+          - /url: /blog/2016-08-09/gdb-example-ncurses.html
+        - text: ", including the use of some perf/debugging tools (2016)."
+      - listitem [ref=e74]:
+        - text: The book
+        - 'link "Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)" [ref=e75] [cursor=pointer]':
+          - /url: systems-performance-2nd-edition-book.html
+        - text: covers performance analysis methods and Linux tools, including perf, Ftrace, and eBPF.
+      - listitem [ref=e76]:
+        - text: The book
+        - 'link "BPF Performance Tools: Linux System and Application Observability" [ref=e77] [cursor=pointer]':
+          - /url: bpf-performance-tools-book.html
+        - text: tours over 100 eBPF performance analysis tools, while including short summaries of the traditional tools. In a way, this is volume 2, and Systems Performance 2nd Edition is volume 1.
+      - listitem [ref=e78]:
+        - text: "Generating flame graphs on Linux using perf & eBPF:"
+        - list [ref=e79]:
+          - link "CPU Flame Graphs" [ref=e80] [cursor=pointer]:
+            - /url: FlameGraphs/cpuflamegraphs.html#Linux
+          - link "Off-CPU Flame Graphs" [ref=e81] [cursor=pointer]:
+            - /url: FlameGraphs/offcpuflamegraphs.html#Linux
+          - link "Memory Flame Graphs" [ref=e82] [cursor=pointer]:
+            - /url: FlameGraphs/memoryflamegraphs.html#Linux
+      - listitem [ref=e83]:
+        - text: "Posts about eBPF, bcc, and bpftrace (2015-23):"
+        - list [ref=e84]:
+          - link "Linux eBPF" [ref=e85] [cursor=pointer]:
+            - /url: /blog/2015-05-15/ebpf-one-small-step.html
+          - text: (2015)
+          - 'link "bcc: Taming Linux 4.3+ Tracing Superpowers" [ref=e86] [cursor=pointer]':
+            - /url: /blog/2015-09-22/bcc-linux-4.3-tracing.html
+          - link "tcpconnect and tcpaccept for Linux (bcc)" [ref=e87] [cursor=pointer]:
+            - /url: /blog/2015-10-31/tcpconnect-tcpaccept-bcc.html
+          - link "Linux eBPF Stack Trace Hack (bcc)" [ref=e88] [cursor=pointer]:
+            - /url: /blog/2016-01-18/ebpf-stack-trace-hack.html
+          - text: (2016)
+          - link "Linux eBPF Off-CPU Flame Graph (bcc)" [ref=e89] [cursor=pointer]:
+            - /url: /blog/2016-01-20/ebpf-offcpu-flame-graph.html
+          - link "Linux Wakeup and Off-Wake Profiling (bcc)" [ref=e90] [cursor=pointer]:
+            - /url: /blog/2016-02-01/linux-wakeup-offwake-profiling.html
+          - link "Linux chain graph prototype (bcc)" [ref=e91] [cursor=pointer]:
+            - /url: /blog/2016-02-05/ebpf-chaingraph-prototype.html
+          - link "Linux eBPF/bcc uprobes" [ref=e92] [cursor=pointer]:
+            - /url: /blog/2016-02-08/linux-ebpf-bcc-uprobes.html
+          - link "Linux BPF/bcc Road Ahead" [ref=e93] [cursor=pointer]:
+            - /url: /blog/2016-03-28/linux-bpf-bcc-road-ahead-2016.html
+          - link "Ubuntu Xenial bcc/BPF" [ref=e94] [cursor=pointer]:
+            - /url: /blog/2016-06-14/ubuntu-xenial-bcc-bpf.html
+          - link "Linux bcc/BPF Tracing Security Capabilities" [ref=e95] [cursor=pointer]:
+            - /url: /blog/2016-10-01/linux-bcc-security-capabilities.html
+          - link "Linux MySQL Slow Query Tracing with bcc/BPF" [ref=e96] [cursor=pointer]:
+            - /url: /blog/2016-10-04/linux-bcc-mysqld-qslower.html
+          - link "Linux bcc/BPF ext4 Latency Tracing" [ref=e97] [cursor=pointer]:
+            - /url: /blog/2016-10-06/linux-bcc-ext4dist-ext4slower.html
+          - link "Linux bcc/BPF Run Queue (Scheduler) Latency" [ref=e98] [cursor=pointer]:
+            - /url: /blog/2016-10-08/linux-bcc-runqlat.html
+          - link "Linux bcc/BPF Node.js USDT Tracing" [ref=e99] [cursor=pointer]:
+            - /url: /blog/2016-10-12/linux-bcc-nodejs-usdt.html
+          - link "Linux bcc tcptop" [ref=e100] [cursor=pointer]:
+            - /url: /blog/2016-10-15/linux-bcc-tcptop.html
+          - link "Linux 4.9's Efficient BPF-based Profiler" [ref=e101] [cursor=pointer]:
+            - /url: /blog/2016-10-21/linux-efficient-profiler.html
+          - link "DTrace for Linux 2016" [ref=e102] [cursor=pointer]:
+            - /url: /blog/2016-10-27/dtrace-for-linux-2016.html
+          - 'link "Linux 4.x Tracing Tools: Using BPF Superpowers" [ref=e103] [cursor=pointer]':
+            - /url: /Slides/LISA2016_BPF_tools_16_9
+          - 'link "Linux bcc/BPF tcplife: TCP Lifespans" [ref=e104] [cursor=pointer]':
+            - /url: /blog/2016-11-30/linux-bcc-tcplife.html
+          - link "Golang bcc/BPF Function Tracing" [ref=e105] [cursor=pointer]:
+            - /url: /blog/2017-01-31/golang-bcc-bpf-function-tracing.html
+          - text: (2017)
+          - link "7 BPF tools for performance analysis on Fedora" [ref=e106] [cursor=pointer]:
+            - /url: https://opensource.com/article/17/11/bccbpf-performance
+          - link "TCP Tracepoints" [ref=e107] [cursor=pointer]:
+            - /url: /blog/2018-03-22/tcp-tracepoints.html
+          - text: (2018)
+          - link "Linux bcc/eBPF tcpdrop" [ref=e108] [cursor=pointer]:
+            - /url: /blog/2018-05-31/linux-tcpdrop.html
+          - link "bpftrace (DTrace 2.0) for Linux 2018" [ref=e109] [cursor=pointer]:
+            - /url: /blog/2018-10-08/dtrace-for-linux-2018.html
+          - 'link "Learn eBPF Tracing: Tutorial and Examples" [ref=e110] [cursor=pointer]':
+            - /url: /blog/2019-01-01/learn-ebpf-tracing.html
+          - text: (2019)
+          - link "A thorough introduction to bpftrace" [ref=e111] [cursor=pointer]:
+            - /url: /blog/2019-08-19/bpftrace.html
+          - 'link "BPF: A New Type of Software" [ref=e112] [cursor=pointer]':
+            - /url: /blog/2019-12-02/bpf-a-new-type-of-software.html
+          - link "BPF Theremin, Tetris, and Typewriters" [ref=e113] [cursor=pointer]:
+            - /url: /blog/2019-12-22/bpf-theremin.html
+          - 'link "BPF binaries: BTF, CO-RE, and the future of BPF perf tools" [ref=e114] [cursor=pointer]':
+            - /url: /blog/2020-11-04/bpf-co-re-btf-libbpf.html
+          - text: (2020)
+          - link "USENIX LISA2021 BPF Internals (eBPF)" [ref=e115] [cursor=pointer]:
+            - /url: /blog/2021-06-15/bpf-internals.html
+          - text: (2021)
+          - link "How To Add eBPF Observability To Your Product" [ref=e116] [cursor=pointer]:
+            - /url: /blog/2021-07-03/how-to-add-bpf-observability.html
+          - link "eBPF Observability Tools are not Security Tools" [ref=e117] [cursor=pointer]:
+            - /url: "/blog/2023-04-28/ebpf-security-issues.html "
+          - text: (2023)
+      - listitem [ref=e118]:
+        - text: My
+        - link "lwn.net" [ref=e119] [cursor=pointer]:
+          - /url: http://lwn.net
+        - text: article
+        - 'link "Ftrace: The Hidden Light Switch" [ref=e120] [cursor=pointer]':
+          - /url: http://lwn.net/Articles/608497/
+        - text: shows a use case for Linux ftrace (Aug, 2014).
+      - listitem [ref=e121]:
+        - text: "Posts about ftrace-based perf-tools (2014-5):"
+        - list [ref=e122]:
+          - link "iosnoop for Linux" [ref=e123] [cursor=pointer]:
+            - /url: /blog/2014-07-16/iosnoop-for-linux.html
+          - text: ","
+          - link "iosnoop Latency Heat Maps" [ref=e124] [cursor=pointer]:
+            - /url: /blog/2014-07-23/linux-iosnoop-latency-heat-maps.html
+          - text: ","
+          - link "opensnoop for Linux" [ref=e125] [cursor=pointer]:
+            - /url: /blog/2014-07-25/opensnoop-for-linux.html
+          - text: ","
+          - link "execsnoop for Linux" [ref=e126] [cursor=pointer]:
+            - /url: /blog/2014-07-28/execsnoop-for-linux.html
+          - text: ","
+          - 'link "ftrace: The Hidden Light Switch" [ref=e127] [cursor=pointer]':
+            - /url: /blog/2014-08-30/ftrace-the-hidden-light-switch.html
+          - text: ","
+          - link "tcpretrans" [ref=e128] [cursor=pointer]:
+            - /url: /blog/2014-09-06/linux-ftrace-tcp-retransmit-tracing.html
+          - link "Page Cache Hit Ratio" [ref=e129] [cursor=pointer]:
+            - /url: /blog/2014-12-31/linux-page-cache-hit-ratio.html
+          - text: ","
+          - 'link "uprobe: User-Level Dynamic Tracing" [ref=e130] [cursor=pointer]':
+            - /url: /blog/2015-06-28/linux-ftrace-uprobe.html
+          - text: ","
+          - link "Hacking Linux USDT" [ref=e131] [cursor=pointer]:
+            - /url: /blog/2015-07-03/hacking-linux-usdt-ftrace.html
+      - listitem [ref=e132]:
+        - text: "Posts about perf-based perf-tools:"
+        - link "perf Hacktogram" [ref=e133] [cursor=pointer]:
+          - /url: /blog/2014-07-10/perf-hacktogram.html
+        - text: .
+      - listitem [ref=e134]:
+        - text: "Posts about perf_events (2014-7):"
+        - list [ref=e135]:
+          - link "perf CPU Sampling" [ref=e136] [cursor=pointer]:
+            - /url: /blog/2014-06-22/perf-cpu-sample.html
+          - text: ","
+          - link "perf Static Tracepoints" [ref=e137] [cursor=pointer]:
+            - /url: /blog/2014-06-29/perf-static-tracepoints.html
+          - text: ","
+          - link "perf Heat Maps" [ref=e138] [cursor=pointer]:
+            - /url: /blog/2014-07-01/perf-heat-maps.html
+          - text: ","
+          - link "perf Counting" [ref=e139] [cursor=pointer]:
+            - /url: /blog/2014-07-03/perf-counting.html
+          - text: ","
+          - link "perf Kernel Line Tracing" [ref=e140] [cursor=pointer]:
+            - /url: /blog/2014-09-11/perf-kernel-line-tracing.html
+          - text: ","
+          - link "perf Off-CPU Time Flame Graphs" [ref=e141] [cursor=pointer]:
+            - /url: /blog/2015-02-26/linux-perf-off-cpu-flame-graph.html
+          - text: ","
+          - link "Linux Profiling at Netflix" [ref=e142] [cursor=pointer]:
+            - /url: /blog/2015-02-27/linux-profiling-at-netflix.html
+          - text: ","
+          - link "Java Mixed-Mode Flame Graphs" [ref=e143] [cursor=pointer]:
+            - /url: http://techblog.netflix.com/2015/07/java-in-flames.html
+          - text: (
+          - link "PDF" [ref=e144] [cursor=pointer]:
+            - /url: /Articles/Netflix_Java_in_Flames.pdf
+          - text: ),
+          - link "Linux 4.5 perf folded format" [ref=e145] [cursor=pointer]:
+            - /url: /blog/2016-04-30/linux-perf-folded.html
+          - text: ","
+          - link "perf sched for Linux CPU scheduler analysis" [ref=e146] [cursor=pointer]:
+            - /url: /blog/2017-03-16/perf-sched.html
+      - listitem [ref=e147]:
+        - text: A page on
+        - link "Working Set Size Estimation" [ref=e148] [cursor=pointer]:
+          - /url: /wss.html
+        - text: for Linux (2018+).
+      - listitem [ref=e149]:
+        - text: A post on
+        - link "KPTI/KAISER Meltdown Initial Performance Regressions" [ref=e150] [cursor=pointer]:
+          - /url: /blog/2018-02-09/kpti-kaiser-meltdown-performance.html
+        - text: (2018).
+      - listitem [ref=e151]:
+        - text: In
+        - 'link "The PMCs of EC2: Measuring IPC" [ref=e152] [cursor=pointer]':
+          - /url: /blog/2017-05-04/the-pmcs-of-ec2.html
+        - text: I showed the new Performance Monitoring Counter (PMC) support in the AWS EC2 cloud (2017).
+      - listitem [ref=e153]:
+        - link "CPU Utilization is Wrong" [ref=e154] [cursor=pointer]:
+          - /url: /blog/2017-05-09/cpu-utilization-is-wrong.html
+        - text: ": a post explaining the growing problem of memory stall cycles dominating the %CPU metric (2017)."
+      - listitem [ref=e155]:
+        - text: A post about
+        - link "Linux 4.7 Hist Triggers" [ref=e156] [cursor=pointer]:
+          - /url: http://www.brendangregg.com/blog/2016-06-08/linux-hist-triggers.html
+        - text: (2016).
+      - listitem [ref=e157]:
+        - text: The post
+        - link "The Speed of Time" [ref=e158] [cursor=pointer]:
+          - /url: /blog/2021-09-26/the-speed-of-time.html
+        - text: ", a case study from 2014 of analyzing Linux clocksource performance in virtualized environments (2021)."
+      - listitem [ref=e159]:
+        - text: The blog post
+        - link "strace Wow Much Syscall" [ref=e160] [cursor=pointer]:
+          - /url: /blog/2014-05-11/strace-wow-much-syscall.html
+        - text: discusses strace(1) for production use, and compares it to advanced tracing tools (2014).
+      - listitem [ref=e161]:
+        - 'link "USE Method: Linux Performance Checklist" [ref=e162] [cursor=pointer]':
+          - /url: USEmethod/use-linux.html
+        - text: ; also see the
+        - link "USE Method" [ref=e163] [cursor=pointer]:
+          - /url: usemethod.html
+        - text: page for the description of this methodology.
+      - listitem [ref=e164]:
+        - link "Off-CPU Analysis Method" [ref=e165] [cursor=pointer]:
+          - /url: offcpuanalysis.html
+        - text: ", where I demonstrate this methodology on Linux."
+    - heading "Talks" [level=2] [ref=e166]
+    - paragraph [ref=e167]: "In rough order of recommended viewing or difficulty, intro to more advanced:"
+    - heading "1. Linux Systems Performance (USENIX LISA 2019)" [level=3] [ref=e168]
+    - paragraph [ref=e169]: "This is my summary of Linux systems performance in 40 minutes, covering six facets: observability, methodologies, benchmarking, profiling, tracing, and tuning. It's intended for everyone as a tour of fundamentals, and some companies have indicated they will use it for new hire training."
+    - paragraph [ref=e170]:
+      - text: A video of the talk is on
+      - link "usenix.org" [ref=e171] [cursor=pointer]:
+        - /url: https://www.usenix.org/conference/lisa19/presentation/gregg-linux
+      - text: and
+      - link "youtube" [ref=e172] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=fhBHvsi0Ql0&feature=emb_logo
+      - text: ", here are the"
+      - link "slides" [ref=e173] [cursor=pointer]:
+        - /url: /Slides/LISA2019_Linux_Systems_Performance
+      - text: or as a
+      - link "PDF" [ref=e174] [cursor=pointer]:
+        - /url: /Slides/LISA2019_Linux_Systems_Performance.pdf
+      - text: .
+    - paragraph [ref=e175]:
+      - iframe [ref=e176]:
+        - generic [active] [ref=f1e1]:
+          - generic [ref=f1e4]:
+            - region "Slides" [ref=f1e5]:
+              - img "Slide 1" [ref=f1e7]
+              - img "Slide 2" [ref=f1e9]
+              - img "Slide 3" [ref=f1e11]
+              - img "Slide 4" [ref=f1e13]
+              - img "Slide 5" [ref=f1e15]
+              - img "Slide 6" [ref=f1e17]
+              - img "Slide 7" [ref=f1e19]
+              - img "Slide 8" [ref=f1e21]
+              - img "Slide 9" [ref=f1e23]
+              - img "Slide 10" [ref=f1e25]
+              - img "Slide 11" [ref=f1e27]
+              - img "Slide 12" [ref=f1e29]
+              - img "Slide 13" [ref=f1e31]
+              - img "Slide 14" [ref=f1e33]
+              - img "Slide 15" [ref=f1e35]
+              - img "Slide 16" [ref=f1e37]
+              - img "Slide 17" [ref=f1e39]
+              - img "Slide 18" [ref=f1e41]
+              - img "Slide 19" [ref=f1e43]
+              - img "Slide 20" [ref=f1e45]
+              - img "Slide 21" [ref=f1e47]
+              - img "Slide 22" [ref=f1e49]
+              - img "Slide 23" [ref=f1e51]
+              - img "Slide 24" [ref=f1e53]
+              - img "Slide 25" [ref=f1e55]
+              - img "Slide 26" [ref=f1e57]
+              - img "Slide 27" [ref=f1e59]
+              - img "Slide 28" [ref=f1e61]
+              - img "Slide 29" [ref=f1e63]
+              - img "Slide 30" [ref=f1e65]
+              - img "Slide 31" [ref=f1e67]
+              - img "Slide 32" [ref=f1e69]
+              - img "Slide 33" [ref=f1e71]
+              - img "Slide 34" [ref=f1e73]
+              - img "Slide 35" [ref=f1e75]
+              - img "Slide 36" [ref=f1e77]
+              - img "Slide 37" [ref=f1e79]
+              - img "Slide 38" [ref=f1e81]
+              - img "Slide 39" [ref=f1e83]
+              - img "Slide 40" [ref=f1e85]
+              - img "Slide 41" [ref=f1e87]
+              - img "Slide 42" [ref=f1e89]
+              - img "Slide 43" [ref=f1e91]
+              - img "Slide 44" [ref=f1e93]
+              - img "Slide 45" [ref=f1e95]
+              - img "Slide 46" [ref=f1e97]
+              - img "Slide 47" [ref=f1e99]
+              - img "Slide 48" [ref=f1e101]
+              - img "Slide 49" [ref=f1e103]
+              - img "Slide 50" [ref=f1e105]
+              - img "Slide 51" [ref=f1e107]
+              - img "Slide 52" [ref=f1e109]
+              - img "Slide 53" [ref=f1e111]
+              - img "Slide 54" [ref=f1e113]
+              - img "Slide 55" [ref=f1e115]
+              - img "Slide 56" [ref=f1e117]
+              - img "Slide 57" [ref=f1e119]
+              - img "Slide 58" [ref=f1e121]
+              - img "Slide 59" [ref=f1e123]
+              - img "Slide 60" [ref=f1e125]
+              - img "Slide 61" [ref=f1e127]
+              - img "Slide 62" [ref=f1e129]
+              - img "Slide 63" [ref=f1e131]
+              - img "Slide 64" [ref=f1e133]
+            - generic [ref=f1e134]:
+              - link "View on Slideshare" [ref=f1e136] [cursor=pointer]:
+                - /url: https://www.slideshare.net/slideshow/lisa2019-linux-systems-performance/188327256
+              - navigation [ref=f1e137]:
+                - button "Previous Slide" [disabled]:
+                  - img "chevron-left icon"
+                - generic [ref=f1e138]:
+                  - generic [ref=f1e139]: "1"
+                  - generic [ref=f1e140]: / 64
+                - button "Next Slide" [ref=f1e141] [cursor=pointer]:
+                  - img "chevron-right icon" [ref=f1e142]
+              - button "Share" [ref=f1e143] [cursor=pointer]:
+                - img "share-dot icon" [ref=f1e144]
+              - button "View Fullscreen" [ref=f1e145] [cursor=pointer]:
+                - img "maximize icon" [ref=f1e146]
+          - alert [ref=f1e147]
+      - iframe [ref=e177]
+    - paragraph [ref=e178]: For a lot more information on observability tools, profiling, and tracing, see the talks that follow.
+    - heading "2. Linux Performance 2018 (PerconaLive 2018)" [level=3] [ref=e179]
+    - paragraph [ref=e180]: This was a 20 minute keynote summary of recent changes and features in Linux performance in 2018.
+    - paragraph [ref=e181]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e182] [cursor=pointer]:
+        - /url: https://youtu.be/sV3XfrfjrPo?t=30m51s
+      - text: ", and the slides are on"
+      - link "slideshare" [ref=e183] [cursor=pointer]:
+        - /url: https://www.slideshare.net/brendangregg/linux-performance-2018-perconalive-keynote-95516934
+      - text: or as a
+      - link "PDF." [ref=e184] [cursor=pointer]:
+        - /url: Slides/Percona2018_Linux_Performance.pdf
+    - link [ref=e185] [cursor=pointer]:
+      - /url: Slides/Percona2018_Linux_Performance.pdf
+      - paragraph [ref=e186]:
+        - iframe [ref=e187]
+        - iframe [ref=e188]
+    - heading "3. Linux Performance Tools (Velocity 2015)" [level=3] [ref=e189]
+    - paragraph [ref=e190]: "At Velocity 2015, I gave a 90 minute tutorial on Linux performance tools, summarizing performance observability, benchmarking, tuning, static performance tuning, and tracing tools. I also covered performance methodology, and included some live demos. This should be useful for everyone working on Linux systems. If you just saw my PerconaLive2016 talk, then some content should be familiar, but with many extras: I focus a lot more on the tools in this talk."
+    - paragraph [ref=e191]:
+      - text: A video of the talk is on youtube (
+      - link "playlist" [ref=e192] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=FJW8nGV4jxY&list=PLhhdIMVi0o5RNrf8E2dUijvGpqKLB9TCR
+      - text: ;
+      - link "part 1" [ref=e193] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=FJW8nGV4jxY
+      - text: ","
+      - link "part 2" [ref=e194] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=zrr2nUln9Kk
+      - text: ) and the slides are on
+      - link "slideshare" [ref=e195] [cursor=pointer]:
+        - /url: http://www.slideshare.net/brendangregg/velocity-2015-linux-perf-tools
+      - text: or as a
+      - link "PDF" [ref=e196] [cursor=pointer]:
+        - /url: /Slides/Velocity2015_LinuxPerfTools.pdf
+      - text: .
+    - paragraph [ref=e197]:
+      - iframe [ref=e198]
+      - iframe [ref=e199]
+    - paragraph [ref=e200]:
+      - text: This was similar to my
+      - link "SCaLE11x" [ref=e201] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=0yyorhl6IjM
+      - text: and
+      - link "LinuxCon" [ref=e202] [cursor=pointer]:
+        - /url: /blog/2014-08-23/linux-perf-tools-linuxcon-na-2014.html
+      - text: talks, however, with 90 minutes I was able to cover more tools and methodologies, making it the most complete tour of the topic I've done. I also posted about it on the
+      - link "Netflix Tech Blog" [ref=e203] [cursor=pointer]:
+        - /url: http://techblog.netflix.com/2015/08/netflix-at-velocity-2015-linux.html
+      - text: .
+    - heading "4. How Netflix Tunes EC2 Instances for Performance (AWS re:Invent, 2017)" [level=3] [ref=e204]
+    - paragraph [ref=e205]: Instead of performance observability, this talk is about tuning. I begin by providing Netflix background, covering instance types and features in the AWS EC2 cloud, and then talk about Linux kernel tunables and observability.
+    - paragraph [ref=e206]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e207] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=89fYOo1V2pA
+      - text: and the slides are on
+      - link "slideshare" [ref=e208] [cursor=pointer]:
+        - /url: https://www.slideshare.net/brendangregg/how-netflix-tunes-ec2-instances-for-performance
+      - text: ":"
+    - paragraph [ref=e209]:
+      - iframe [ref=e210]
+      - iframe [ref=e211]
+    - heading "5. Container Performance Analysis (DockerCon, 2017)" [level=3] [ref=e212]
+    - paragraph [ref=e213]: At DockerCon 2017 in Austin, I gave a talk on Linux container performance analysis, showing how to find bottlenecks in the host vs the container, how to profiler container apps, and dig deeper into the kernel.
+    - paragraph [ref=e214]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e215] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=bK9A5ODIgac
+      - text: and the slides are on
+      - link "slideshare" [ref=e216] [cursor=pointer]:
+        - /url: https://www.slideshare.net/brendangregg/container-performance-analysis
+      - text: .
+    - paragraph [ref=e217]:
+      - iframe [ref=e218]
+      - iframe [ref=e219]
+    - heading "6. Broken Linux Performance Tools (SCaLE14x, 2016)" [level=3] [ref=e220]
+    - paragraph [ref=e221]:
+      - text: At the Southern California Linux Expo (
+      - link "SCaLE 14x" [ref=e222] [cursor=pointer]:
+        - /url: http://www.socallinuxexpo.org/scale/14x
+      - text: ), I gave a talk on Broken Linux Performance Tools. This was a follow-on to my earlier Linux Performance Tools talk originally at SCaLE11x (and more recently at
+      - link "Velocity" [ref=e223] [cursor=pointer]:
+        - /url: "#Velocity2015"
+      - text: as a tutorial). This broken tools talk was a tour of common problems with Linux system tools, metrics, statistics, visualizations, measurement overhead, and benchmarks. It also includes advice on how to cope (the green "What You Can Do" slides).
+    - paragraph [ref=e224]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e225] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=OPio8V-z03c
+      - text: and the slides are on
+      - link "slideshare" [ref=e226] [cursor=pointer]:
+        - /url: http://www.slideshare.net/brendangregg/broken-linux-performance-tools-2016
+      - text: or as a
+      - link "PDF" [ref=e227] [cursor=pointer]:
+        - /url: Slides/SCALE2016_Broken_Linux_Performance_Tools.pdf
+      - text: .
+    - paragraph [ref=e228]:
+      - iframe [ref=e229]
+      - iframe [ref=e230]
+    - heading "7. Using Linux perf at Netflix (Kernel Recipes, 2017)" [level=3] [ref=e231]
+    - paragraph [ref=e232]:
+      - text: At
+      - link "Kernel Recipes 2017" [ref=e233] [cursor=pointer]:
+        - /url: https://kernel-recipes.org/en/2017/talks/perf-in-netflix/
+      - text: I gave an updated talk on Linux perf at Netflix, focusing on getting CPU profiling and flame graphs to work. This talk includes a crash course on perf_events, plus gotchas such as fixing stack traces and symbols when profiling Java, Node.js, VMs, and containers.
+    - paragraph [ref=e234]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e235] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=UVM3WX8Lq2k
+      - text: and the slides are on
+      - link "slideshare" [ref=e236] [cursor=pointer]:
+        - /url: https://www.slideshare.net/brendangregg/kernel-recipes-2017-using-linux-perf-at-netflix
+      - text: ":"
+    - paragraph [ref=e237]:
+      - iframe [ref=e238]
+      - iframe [ref=e239]
+    - paragraph [ref=e240]:
+      - text: There's also an older version of this talk from 2015, which I've
+      - link "posted" [ref=e241] [cursor=pointer]:
+        - /url: /blog/2015-02-27/linux-profiling-at-netflix.html
+      - text: about. To learn more about flame graphs, see my
+      - link "flame graphs presentation" [ref=e242] [cursor=pointer]:
+        - /url: flamegraphs.html#Presentation
+      - text: .
+    - heading "8. Give me 15 minutes and I'll change your view of Linux tracing (LISA, 2016)" [level=3] [ref=e243]
+    - paragraph [ref=e244]:
+      - text: I gave this demo at USENIX/LISA 2016, showing ftrace, perf, and bcc/BPF. A video is on
+      - link "youtube" [ref=e245] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=GsMs3n8CB6g
+      - text: (sorry, the sound effects are a bit too loud):.
+    - paragraph [ref=e246]:
+      - iframe [ref=e247]
+    - paragraph [ref=e248]:
+      - text: "This was the first part of a longer talk on Linux 4.x Tracing Tools: Using BPF Superpowers. See the full"
+      - link "talk video" [ref=e249] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=UmOU3I36T2U
+      - text: and
+      - link "talk slides" [ref=e250] [cursor=pointer]:
+        - /url: http://www.slideshare.net/brendangregg/linux-4x-tracing-tools-using-bpf-superpowers
+      - text: .
+    - heading "9. Performance analysis superpowers with Linux eBPF (O'Reilly Velocity, 2017)" [level=3] [ref=e251]
+    - paragraph [ref=e252]: This talk covers using enhanced BPF (aka eBPF) features added to the Linux 4.x series for performance analysis, observability, and debugging. The front-end used in this talk is bcc (BPF compiler collection), an open source project that provides BPF interfaces and a collection of tools.
+    - paragraph [ref=e253]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e254] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=bj3qdEDbCD4
+      - text: ", and the slides are on"
+      - link "slideshare" [ref=e255] [cursor=pointer]:
+        - /url: https://www.slideshare.net/brendangregg/velocity-2017-performance-analysis-superpowers-with-linux-ebpf
+      - text: or as a
+      - link "PDF" [ref=e256] [cursor=pointer]:
+        - /url: /Slides/Velocity2017_BPF_superpowers.pdf
+      - text: .
+    - paragraph [ref=e257]:
+      - iframe [ref=e258]
+      - iframe [ref=e259]
+    - 'heading "10. Linux Performance Analysis: New Tools and Old Secrets (ftrace) (LISA 2014)" [level=3] [ref=e260]'
+    - paragraph [ref=e261]:
+      - text: "At USENIX LISA 2014, I gave a talk on the new ftrace and perf_events tools I've been developing: the"
+      - link "perf-tools" [ref=e262] [cursor=pointer]:
+        - /url: https://github.com/brendangregg/perf-tools
+      - text: "collection on github, which mostly uses ftrace: a tracer that has been built into the Linux kernel for many years, but few have discovered (practically a secret)."
+    - paragraph [ref=e263]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e264] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=R4IKeMQhM0Y
+      - text: ", and the slides are on"
+      - link "slideshare" [ref=e265] [cursor=pointer]:
+        - /url: http://www.slideshare.net/brendangregg/linux-performance-analysis-new-tools-and-old-secrets
+      - text: or as a
+      - link "PDF" [ref=e266] [cursor=pointer]:
+        - /url: /Slides/LISA2014_LinuxPerfAnalysisNewTools.pdf
+      - text: . In a
+      - link "post" [ref=e267] [cursor=pointer]:
+        - /url: /blog/2015-03-17/usenix-lisa-2014-linux-ftrace-perf-tools.markdown
+      - text: about this talk, I included some more screenshots of these tools in action.
+    - heading "11. Performance Checklists for SREs (SREcon, 2016)" [level=3] [ref=e268]
+    - paragraph [ref=e269]:
+      - text: At
+      - link "SREcon 2016 Santa Clara" [ref=e270] [cursor=pointer]:
+        - /url: https://www.usenix.org/conference/srecon16/program
+      - text: ", I gave the closing talk on performance checklists for SREs (Site Reliability Engineers). The later half of this talk included Linux checklists for incident performance response. These may be useful whether you're analyzing Linux performance in a hurry or not."
+    - paragraph [ref=e271]:
+      - text: A video of the talk is on
+      - link "youtube" [ref=e272] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=zxCWXNigDpA
+      - text: and
+      - link "usenix" [ref=e273] [cursor=pointer]:
+        - /url: https://www.usenix.org/conference/srecon16/program/presentation/gregg
+      - text: ", and the slides are on"
+      - link "slideshare" [ref=e274] [cursor=pointer]:
+        - /url: http://www.slideshare.net/brendangregg/srecon-2016-performance-checklists-for-sres
+      - text: and as a
+      - link "PDF" [ref=e275] [cursor=pointer]:
+        - /url: Slides/SREcon_2016_perf_checklists.pdf
+      - text: . I included the checklists in a
+      - link "blog post" [ref=e276] [cursor=pointer]:
+        - /url: /blog/2016-05-04/srecon2016-perf-checklists-for-sres.html
+      - text: .
+    - heading "Resources" [level=2] [ref=e277]
+    - paragraph [ref=e278]: "Other resources (not by me) I'd recommend for the topic of Linux performance:"
+    - list [ref=e279]:
+      - listitem [ref=e280]:
+        - link "RHEL Performance Guide" [ref=e281] [cursor=pointer]:
+          - /url: https://github.com/myllynen/rhel-performance-guide
+        - text: includes many CLI tools and tunables.
+      - listitem [ref=e282]:
+        - link "Performance analysis & tuning of Red Hat Enterprise Linux - 2015 Red Hat Summit" [ref=e283] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=ckarvGJE8Qc
+        - text: "(video 2hrs): this is a great and in-depth tour of Linux performance tuning that should be largely applicable to all Linux distros."
+      - listitem [ref=e284]:
+        - link "Linux Instrumentation" [ref=e285] [cursor=pointer]:
+          - /url: http://www.slideshare.net/DarkStarSword/instrumentation
+        - text: ": slides from a great talk in June 2010 by Ian Munsie, which summarizes the different Linux tracers very well. If you're trying to understand all the tracers and frameworks, this is worth studying (keeping in mind it's from 2010)."
+      - listitem [ref=e286]:
+        - link "Julia Evans blog" [ref=e287] [cursor=pointer]:
+          - /url: http://jvns.ca/
+        - text: has many posts about many topics, including performance tools.
+      - listitem [ref=e288]:
+        - link "Davidlohr Bueso's" [ref=e289] [cursor=pointer]:
+          - /url: http://blog.stgolabs.net/search/label/linux
+        - text: Linux performance posts.
+    - list
+  - separator [ref=e290]
+  - text: "Last updated: 17-Mar-2024"
+  - text: Copyright 2024 Brendan Gregg, all rights reserved

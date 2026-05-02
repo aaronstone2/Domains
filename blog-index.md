@@ -1,0 +1,635 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - heading "Brendan Gregg's Blog" [level=1] [ref=e5]:
+      - link "Brendan Gregg's Blog" [ref=e6] [cursor=pointer]:
+        - /url: /blog/index.html
+    - link "home" [ref=e7] [cursor=pointer]:
+      - /url: /blog/index.html
+  - generic [ref=e8]:
+    - heading "Blog Posts" [level=1] [ref=e9]
+    - list [ref=e10]:
+      - listitem [ref=e11]:
+        - text: 07 Feb 2026 »
+        - link "Why I joined OpenAI" [ref=e12] [cursor=pointer]:
+          - /url: /blog/2026-02-07/why-i-joined-openai.html
+      - listitem [ref=e13]:
+        - text: 05 Dec 2025 »
+        - link "Leaving Intel" [ref=e14] [cursor=pointer]:
+          - /url: /blog/2025-12-05/leaving-intel.html
+      - listitem [ref=e15]:
+        - text: 28 Nov 2025 »
+        - link "On \"AI Brendans\" or \"Virtual Brendans\"" [ref=e16] [cursor=pointer]:
+          - /url: /blog/2025-11-28/ai-virtual-brendans.html
+      - listitem [ref=e17]:
+        - text: 22 Nov 2025 »
+        - link "Intel is listening, don't waste your shot" [ref=e18] [cursor=pointer]:
+          - /url: /blog/2025-11-22/intel-is-listening.html
+      - listitem [ref=e19]:
+        - text: 17 Nov 2025 »
+        - link "Third Stage Engineering" [ref=e20] [cursor=pointer]:
+          - /url: /blog/2025-11-17/third-stage-engineering.html
+      - listitem [ref=e21]:
+        - text: 04 Aug 2025 »
+        - link "When to Hire a Computer Performance Engineering Team (2025) part 1 of 2" [ref=e22] [cursor=pointer]:
+          - /url: /blog/2025-08-04/when-to-hire-a-computer-performance-engineering-team-2025-part1.html
+      - listitem [ref=e23]:
+        - text: 22 May 2025 »
+        - link "3 Years of Extremely Remote Work" [ref=e24] [cursor=pointer]:
+          - /url: /blog/2025-05-22/3-years-of-extremely-remote-work.html
+      - listitem [ref=e25]:
+        - text: 01 May 2025 »
+        - link "Doom GPU Flame Graphs" [ref=e26] [cursor=pointer]:
+          - /url: /blog/2025-05-01/doom-gpu-flame-graphs.html
+      - listitem [ref=e27]:
+        - text: 29 Oct 2024 »
+        - link "AI Flame Graphs" [ref=e28] [cursor=pointer]:
+          - /url: /blog/2024-10-29/ai-flame-graphs.html
+      - listitem [ref=e29]:
+        - text: 22 Jul 2024 »
+        - link "No More Blue Fridays" [ref=e30] [cursor=pointer]:
+          - /url: /blog/2024-07-22/no-more-blue-fridays.html
+      - listitem [ref=e31]:
+        - text: 24 Mar 2024 »
+        - link "Linux Crisis Tools" [ref=e32] [cursor=pointer]:
+          - /url: /blog/2024-03-24/linux-crisis-tools.html
+      - listitem [ref=e33]:
+        - text: 17 Mar 2024 »
+        - link "The Return of the Frame Pointers" [ref=e34] [cursor=pointer]:
+          - /url: /blog/2024-03-17/the-return-of-the-frame-pointers.html
+      - listitem [ref=e35]:
+        - text: 10 Mar 2024 »
+        - link "eBPF Documentary" [ref=e36] [cursor=pointer]:
+          - /url: /blog/2024-03-10/ebpf-documentary.html
+      - listitem [ref=e37]:
+        - text: 28 Apr 2023 »
+        - link "eBPF Observability Tools Are Not Security Tools" [ref=e38] [cursor=pointer]:
+          - /url: /blog/2023-04-28/ebpf-security-issues.html
+      - listitem [ref=e39]:
+        - text: 01 Mar 2023 »
+        - 'link "USENIX SREcon APAC 2022: Computing Performance: What''s on the Horizon" [ref=e40] [cursor=pointer]':
+          - /url: /blog/2023-03-01/computer-performance-future-2022.html
+      - listitem [ref=e41]:
+        - text: 17 Feb 2023 »
+        - 'link "USENIX SREcon APAC 2023: CFP" [ref=e42] [cursor=pointer]':
+          - /url: /blog/2023-02-17/srecon-apac-2023.html
+      - listitem [ref=e43]:
+        - text: 02 May 2022 »
+        - link "Brendan@Intel.com" [ref=e44] [cursor=pointer]:
+          - /url: /blog/2022-05-02/brendan-at-intel.html
+      - listitem [ref=e45]:
+        - text: 15 Apr 2022 »
+        - link "Netflix End of Series 1" [ref=e46] [cursor=pointer]:
+          - /url: /blog/2022-04-15/netflix-farewell-1.html
+      - listitem [ref=e47]:
+        - text: 09 Apr 2022 »
+        - link "TensorFlow Library Performance" [ref=e48] [cursor=pointer]:
+          - /url: /blog/2022-04-09/tensorflow-library-performance.html
+      - listitem [ref=e49]:
+        - text: 19 Mar 2022 »
+        - link "Why Don't You Use ..." [ref=e50] [cursor=pointer]:
+          - /url: /blog/2022-03-19/why-dont-you-use.html
+      - listitem [ref=e51]:
+        - text: 26 Sep 2021 »
+        - link "The Speed of Time" [ref=e52] [cursor=pointer]:
+          - /url: /blog/2021-09-26/the-speed-of-time.html
+      - listitem [ref=e53]:
+        - text: 06 Sep 2021 »
+        - link "ZFS Is Mysteriously Eating My CPU" [ref=e54] [cursor=pointer]:
+          - /url: /blog/2021-09-06/zfs-is-mysteriously-eating-my-cpu.html
+      - listitem [ref=e55]:
+        - text: 30 Aug 2021 »
+        - link "Analyzing a High Rate of Paging" [ref=e56] [cursor=pointer]:
+          - /url: /blog/2021-08-30/high-rate-of-paging.html
+      - listitem [ref=e57]:
+        - text: 27 Aug 2021 »
+        - link "Slack's Secret STDERR Messages" [ref=e58] [cursor=pointer]:
+          - /url: /blog/2021-08-27/slack-crashes-secret-stderr.html
+      - listitem [ref=e59]:
+        - text: 05 Jul 2021 »
+        - 'link "USENIX LISA2021 Computing Performance: On the Horizon" [ref=e60] [cursor=pointer]':
+          - /url: /blog/2021-07-05/computing-performance-on-the-horizon.html
+      - listitem [ref=e61]:
+        - text: 03 Jul 2021 »
+        - link "How To Add eBPF Observability To Your Product" [ref=e62] [cursor=pointer]:
+          - /url: /blog/2021-07-03/how-to-add-bpf-observability.html
+      - listitem [ref=e63]:
+        - text: 15 Jun 2021 »
+        - link "USENIX LISA2021 BPF Internals (eBPF)" [ref=e64] [cursor=pointer]:
+          - /url: /blog/2021-06-15/bpf-internals.html
+      - listitem [ref=e65]:
+        - text: 04 Jun 2021 »
+        - link "An Unbelievable Demo" [ref=e66] [cursor=pointer]:
+          - /url: /blog/2021-06-04/an-unbelievable-demo.html
+      - listitem [ref=e67]:
+        - text: 29 May 2021 »
+        - link "Moving my US tech job to Australia" [ref=e68] [cursor=pointer]:
+          - /url: /blog/2021-05-29/moving-to-australia.html
+      - listitem [ref=e69]:
+        - text: 23 May 2021 »
+        - link "What is Observability" [ref=e70] [cursor=pointer]:
+          - /url: /blog/2021-05-23/what-is-observability.html
+      - listitem [ref=e71]:
+        - text: 09 May 2021 »
+        - link "Poor Disk Performance" [ref=e72] [cursor=pointer]:
+          - /url: /blog/2021-05-09/poor-disk-performance.html
+      - listitem [ref=e73]:
+        - text: 04 Nov 2020 »
+        - 'link "BPF binaries: BTF, CO-RE, and the future of BPF perf tools" [ref=e74] [cursor=pointer]':
+          - /url: /blog/2020-11-04/bpf-co-re-btf-libbpf.html
+      - listitem [ref=e75]:
+        - text: 15 Jul 2020 »
+        - 'link "Systems Performance: Enterprise and the Cloud, 2nd Edition" [ref=e76] [cursor=pointer]':
+          - /url: /blog/2020-07-15/systems-performance-2nd-edition.html
+      - listitem [ref=e77]:
+        - text: 08 Mar 2020 »
+        - link "LISA2019 Linux Systems Performance" [ref=e78] [cursor=pointer]:
+          - /url: /blog/2020-03-08/lisa2019-linux-systems-performance.html
+      - listitem [ref=e79]:
+        - text: 22 Dec 2019 »
+        - link "BPF Theremin, Tetris, and Typewriters" [ref=e80] [cursor=pointer]:
+          - /url: /blog/2019-12-22/bpf-theremin.html
+      - listitem [ref=e81]:
+        - text: 02 Dec 2019 »
+        - 'link "BPF: A New Type of Software" [ref=e82] [cursor=pointer]':
+          - /url: /blog/2019-12-02/bpf-a-new-type-of-software.html
+      - listitem [ref=e83]:
+        - text: 15 Oct 2019 »
+        - link "Two kernel mysteries and the most technical talk I've ever seen" [ref=e84] [cursor=pointer]:
+          - /url: /blog/2019-10-15/kernelrecipes-kernel-ftrace-internals.html
+      - listitem [ref=e85]:
+        - text: 19 Aug 2019 »
+        - link "A thorough introduction to bpftrace" [ref=e86] [cursor=pointer]:
+          - /url: /blog/2019-08-19/bpftrace.html
+      - listitem [ref=e87]:
+        - text: 15 Jul 2019 »
+        - 'link "BPF Performance Tools: Linux System and Application Observability (book)" [ref=e88] [cursor=pointer]':
+          - /url: /blog/2019-07-15/bpf-performance-tools-book.html
+      - listitem [ref=e89]:
+        - text: 26 Apr 2019 »
+        - link "YOW! 2018 Cloud Performance Root Cause Analysis at Netflix" [ref=e90] [cursor=pointer]:
+          - /url: /blog/2019-04-26/yow2018-cloud-performance-netflix.html
+      - listitem [ref=e91]:
+        - text: 01 Jan 2019 »
+        - 'link "Learn eBPF Tracing: Tutorial and Examples" [ref=e92] [cursor=pointer]':
+          - /url: /blog/2019-01-01/learn-ebpf-tracing.html
+      - listitem [ref=e93]:
+        - text: 15 Dec 2018 »
+        - link "FlameScope Origin" [ref=e94] [cursor=pointer]:
+          - /url: /blog/2018-12-15/flamescope-origin.html
+      - listitem [ref=e95]:
+        - text: 08 Nov 2018 »
+        - link "FlameScope Pattern Recognition" [ref=e96] [cursor=pointer]:
+          - /url: /blog/2018-11-08/flamescope-pattern-recognition.html
+      - listitem [ref=e97]:
+        - text: 08 Oct 2018 »
+        - link "bpftrace (DTrace 2.0) for Linux 2018" [ref=e98] [cursor=pointer]:
+          - /url: /blog/2018-10-08/dtrace-for-linux-2018.html
+      - listitem [ref=e99]:
+        - text: 30 Jun 2018 »
+        - 'link "Evaluating the Evaluation: A Benchmarking Checklist" [ref=e100] [cursor=pointer]':
+          - /url: /blog/2018-06-30/benchmarking-checklist.html
+      - listitem [ref=e101]:
+        - text: 31 May 2018 »
+        - link "Linux bcc/eBPF tcpdrop" [ref=e102] [cursor=pointer]:
+          - /url: /blog/2018-05-31/linux-tcpdrop.html
+      - listitem [ref=e103]:
+        - text: 19 May 2018 »
+        - link "Sloth Cloud Instance" [ref=e104] [cursor=pointer]:
+          - /url: /blog/2018-05-19/sloth-cloud-instance.html
+      - listitem [ref=e105]:
+        - text: 30 Apr 2018 »
+        - 'link "USENIX LISA 2018: CFP Now Open" [ref=e106] [cursor=pointer]':
+          - /url: /blog/2018-04-30/usenix-lisa-2018-cfp.html
+      - listitem [ref=e107]:
+        - text: 22 Mar 2018 »
+        - link "TCP Tracepoints" [ref=e108] [cursor=pointer]:
+          - /url: /blog/2018-03-22/tcp-tracepoints.html
+      - listitem [ref=e109]:
+        - text: 09 Feb 2018 »
+        - link "KPTI/KAISER Meltdown Initial Performance Regressions" [ref=e110] [cursor=pointer]:
+          - /url: /blog/2018-02-09/kpti-kaiser-meltdown-performance.html
+      - listitem [ref=e111]:
+        - text: 17 Jan 2018 »
+        - link "How To Measure the Working Set Size on Linux" [ref=e112] [cursor=pointer]:
+          - /url: /blog/2018-01-17/measure-working-set-size.html
+      - listitem [ref=e113]:
+        - text: 31 Dec 2017 »
+        - 'link "AWS re:Invent 2017: How Netflix Tunes EC2" [ref=e114] [cursor=pointer]':
+          - /url: /blog/2017-12-31/reinvent-netflix-ec2-tuning.html
+      - listitem [ref=e115]:
+        - text: 29 Nov 2017 »
+        - 'link "AWS EC2 Virtualization 2017: Introducing Nitro" [ref=e116] [cursor=pointer]':
+          - /url: /blog/2017-11-29/aws-ec2-virtualization-2017.html
+      - listitem [ref=e117]:
+        - text: 13 Nov 2017 »
+        - link "Brilliant Jerks in Engineering" [ref=e118] [cursor=pointer]:
+          - /url: /blog/2017-11-13/brilliant-jerks.html
+      - listitem [ref=e119]:
+        - text: 28 Oct 2017 »
+        - 'link "EuroBSDcon: System Performance Analysis Methodologies" [ref=e120] [cursor=pointer]':
+          - /url: /blog/2017-10-28/bsd-performance-analysis-methodologies.html
+      - listitem [ref=e121]:
+        - text: 05 Sep 2017 »
+        - link "Solaris to Linux Migration 2017" [ref=e122] [cursor=pointer]:
+          - /url: /blog/2017-09-05/solaris-to-linux-2017.html
+      - listitem [ref=e123]:
+        - text: 24 Aug 2017 »
+        - link "Total Solar Eclipse 2017" [ref=e124] [cursor=pointer]:
+          - /url: /blog/2017-08-24/total-solar-eclipse-2017.html
+      - listitem [ref=e125]:
+        - text: 08 Aug 2017 »
+        - 'link "Linux Load Averages: Solving the Mystery" [ref=e126] [cursor=pointer]':
+          - /url: /blog/2017-08-08/linux-load-averages.html
+      - listitem [ref=e127]:
+        - text: 30 Jul 2017 »
+        - 'link "Coloring Flame Graphs: Code Hues" [ref=e128] [cursor=pointer]':
+          - /url: /blog/2017-07-30/coloring-flamegraphs-code-type.html
+      - listitem [ref=e129]:
+        - text: 30 Jun 2017 »
+        - link "Java Package Flame Graph" [ref=e130] [cursor=pointer]:
+          - /url: /blog/2017-06-30/package-flame-graph.html
+      - listitem [ref=e131]:
+        - text: 16 May 2017 »
+        - link "Working at Netflix 2017" [ref=e132] [cursor=pointer]:
+          - /url: /blog/2017-05-16/working-at-netflix-2017.html
+      - listitem [ref=e133]:
+        - text: 15 May 2017 »
+        - link "Container Performance Analysis at DockerCon 2017" [ref=e134] [cursor=pointer]:
+          - /url: /blog/2017-05-15/container-performance-analysis-dockercon-2017.html
+      - listitem [ref=e135]:
+        - text: 09 May 2017 »
+        - link "CPU Utilization is Wrong" [ref=e136] [cursor=pointer]:
+          - /url: /blog/2017-05-09/cpu-utilization-is-wrong.html
+      - listitem [ref=e137]:
+        - text: 04 May 2017 »
+        - 'link "The PMCs of EC2: Measuring IPC" [ref=e138] [cursor=pointer]':
+          - /url: /blog/2017-05-04/the-pmcs-of-ec2.html
+      - listitem [ref=e139]:
+        - text: 29 Apr 2017 »
+        - link "USENIX/LISA 2016 Linux bcc/BPF Tools" [ref=e140] [cursor=pointer]:
+          - /url: /blog/2017-04-29/usenix-lisa-2016-bcc-bpf-tools.html
+      - listitem [ref=e141]:
+        - text: 23 Apr 2017 »
+        - link "USENIX/LISA 2013 Blazing Performance with Flame Graphs" [ref=e142] [cursor=pointer]:
+          - /url: /blog/2017-04-23/usenix-lisa-2013-flame-graphs.html
+      - listitem [ref=e143]:
+        - text: 16 Mar 2017 »
+        - link "perf sched for Linux CPU scheduler analysis" [ref=e144] [cursor=pointer]:
+          - /url: /blog/2017-03-16/perf-sched.html
+      - listitem [ref=e145]:
+        - text: 06 Feb 2017 »
+        - link "Flame Graphs vs Tree Maps vs Sunburst" [ref=e146] [cursor=pointer]:
+          - /url: /blog/2017-02-06/flamegraphs-vs-treemaps-vs-sunburst.html
+      - listitem [ref=e147]:
+        - text: 05 Feb 2017 »
+        - link "Where has my disk space gone? Flame graphs for file systems" [ref=e148] [cursor=pointer]:
+          - /url: /blog/2017-02-05/file-system-flame-graph.html
+      - listitem [ref=e149]:
+        - text: 31 Jan 2017 »
+        - link "Golang bcc/BPF Function Tracing" [ref=e150] [cursor=pointer]:
+          - /url: /blog/2017-01-31/golang-bcc-bpf-function-tracing.html
+      - listitem [ref=e151]:
+        - text: 27 Dec 2016 »
+        - link "Give me 15 minutes and I'll change your view of Linux tracing" [ref=e152] [cursor=pointer]:
+          - /url: /blog/2016-12-27/linux-tracing-in-15-minutes.html
+      - listitem [ref=e153]:
+        - text: 30 Nov 2016 »
+        - 'link "Linux bcc/BPF tcplife: TCP Lifespans" [ref=e154] [cursor=pointer]':
+          - /url: /blog/2016-11-30/linux-bcc-tcplife.html
+      - listitem [ref=e155]:
+        - text: 27 Oct 2016 »
+        - link "DTrace for Linux 2016" [ref=e156] [cursor=pointer]:
+          - /url: /blog/2016-10-27/dtrace-for-linux-2016.html
+      - listitem [ref=e157]:
+        - text: 21 Oct 2016 »
+        - link "Linux 4.9's Efficient BPF-based Profiler" [ref=e158] [cursor=pointer]:
+          - /url: /blog/2016-10-21/linux-efficient-profiler.html
+      - listitem [ref=e159]:
+        - text: 15 Oct 2016 »
+        - link "Linux bcc tcptop" [ref=e160] [cursor=pointer]:
+          - /url: /blog/2016-10-15/linux-bcc-tcptop.html
+      - listitem [ref=e161]:
+        - text: 12 Oct 2016 »
+        - link "Linux bcc/BPF Node.js USDT Tracing" [ref=e162] [cursor=pointer]:
+          - /url: /blog/2016-10-12/linux-bcc-nodejs-usdt.html
+      - listitem [ref=e163]:
+        - text: 08 Oct 2016 »
+        - link "Linux bcc/BPF Run Queue (Scheduler) Latency" [ref=e164] [cursor=pointer]:
+          - /url: /blog/2016-10-08/linux-bcc-runqlat.html
+      - listitem [ref=e165]:
+        - text: 06 Oct 2016 »
+        - link "Linux bcc ext4 Latency Tracing" [ref=e166] [cursor=pointer]:
+          - /url: /blog/2016-10-06/linux-bcc-ext4dist-ext4slower.html
+      - listitem [ref=e167]:
+        - text: 04 Oct 2016 »
+        - link "Linux MySQL Slow Query Tracing with bcc/BPF" [ref=e168] [cursor=pointer]:
+          - /url: /blog/2016-10-04/linux-bcc-mysqld-qslower.html
+      - listitem [ref=e169]:
+        - text: 01 Oct 2016 »
+        - link "Linux bcc Tracing Security Capabilities" [ref=e170] [cursor=pointer]:
+          - /url: /blog/2016-10-01/linux-bcc-security-capabilities.html
+      - listitem [ref=e171]:
+        - text: 28 Sep 2016 »
+        - link "Java Warmup" [ref=e172] [cursor=pointer]:
+          - /url: /blog/2016-09-28/java-warmup.html
+      - listitem [ref=e173]:
+        - text: 03 Sep 2016 »
+        - link "Sudden Disk Utilization" [ref=e174] [cursor=pointer]:
+          - /url: /blog/2016-09-03/sudden-disk-busy.html
+      - listitem [ref=e175]:
+        - text: 09 Aug 2016 »
+        - 'link "gdb Debugging Full Example (Tutorial): ncurses" [ref=e176] [cursor=pointer]':
+          - /url: /blog/2016-08-09/gdb-example-ncurses.html
+      - listitem [ref=e177]:
+        - text: 23 Jul 2016 »
+        - link "Deirdré" [ref=e178] [cursor=pointer]:
+          - /url: /blog/2016-07-23/deirdre.html
+      - listitem [ref=e179]:
+        - text: 13 Jul 2016 »
+        - link "llnode for Node.js Memory Leak Analysis" [ref=e180] [cursor=pointer]:
+          - /url: /blog/2016-07-13/llnode-nodejs-memory-leak-analysis.html
+      - listitem [ref=e181]:
+        - text: 14 Jun 2016 »
+        - link "Ubuntu Xenial bcc/BPF" [ref=e182] [cursor=pointer]:
+          - /url: /blog/2016-06-14/ubuntu-xenial-bcc-bpf.html
+      - listitem [ref=e183]:
+        - text: 08 Jun 2016 »
+        - link "Hist Triggers in Linux 4.7" [ref=e184] [cursor=pointer]:
+          - /url: /blog/2016-06-08/linux-hist-triggers.html
+      - listitem [ref=e185]:
+        - text: 04 May 2016 »
+        - 'link "SREcon: Performance Checklists for SREs 2016" [ref=e186] [cursor=pointer]':
+          - /url: /blog/2016-05-04/srecon2016-perf-checklists-for-sres.html
+      - listitem [ref=e187]:
+        - text: 30 Apr 2016 »
+        - link "Linux 4.5 perf folded format" [ref=e188] [cursor=pointer]:
+          - /url: /blog/2016-04-30/linux-perf-folded.html
+      - listitem [ref=e189]:
+        - text: 30 Mar 2016 »
+        - link "Working at Netflix 2016" [ref=e190] [cursor=pointer]:
+          - /url: /blog/2016-03-30/working-at-netflix-2016.html
+      - listitem [ref=e191]:
+        - text: 28 Mar 2016 »
+        - link "Linux BPF/bcc Road Ahead, March 2016" [ref=e192] [cursor=pointer]:
+          - /url: /blog/2016-03-28/linux-bpf-bcc-road-ahead-2016.html
+      - listitem [ref=e193]:
+        - text: 05 Mar 2016 »
+        - link "Linux BPF Superpowers" [ref=e194] [cursor=pointer]:
+          - /url: /blog/2016-03-05/linux-bpf-superpowers.html
+      - listitem [ref=e195]:
+        - text: 08 Feb 2016 »
+        - link "Linux eBPF/bcc uprobes" [ref=e196] [cursor=pointer]:
+          - /url: /blog/2016-02-08/linux-ebpf-bcc-uprobes.html
+      - listitem [ref=e197]:
+        - text: 05 Feb 2016 »
+        - link "Who is waking the waker? (Linux chain graph prototype)" [ref=e198] [cursor=pointer]:
+          - /url: /blog/2016-02-05/ebpf-chaingraph-prototype.html
+      - listitem [ref=e199]:
+        - text: 01 Feb 2016 »
+        - link "Linux Wakeup and Off-Wake Profiling" [ref=e200] [cursor=pointer]:
+          - /url: /blog/2016-02-01/linux-wakeup-offwake-profiling.html
+      - listitem [ref=e201]:
+        - text: 27 Jan 2016 »
+        - 'link "Unikernel Profiling: Flame Graphs from dom0" [ref=e202] [cursor=pointer]':
+          - /url: /blog/2016-01-27/unikernel-profiling-from-dom0.html
+      - listitem [ref=e203]:
+        - text: 20 Jan 2016 »
+        - link "Linux eBPF Off-CPU Flame Graph" [ref=e204] [cursor=pointer]:
+          - /url: /blog/2016-01-20/ebpf-offcpu-flame-graph.html
+      - listitem [ref=e205]:
+        - text: 18 Jan 2016 »
+        - link "Linux eBPF Stack Trace Hack" [ref=e206] [cursor=pointer]:
+          - /url: /blog/2016-01-18/ebpf-stack-trace-hack.html
+      - listitem [ref=e207]:
+        - text: 03 Dec 2015 »
+        - link "Linux Performance Analysis in 60s (video)" [ref=e208] [cursor=pointer]:
+          - /url: /blog/2015-12-03/linux-perf-60s-video.html
+      - listitem [ref=e209]:
+        - text: 06 Nov 2015 »
+        - link "Java Mixed-Mode Flame Graphs at Netflix, JavaOne 2015" [ref=e210] [cursor=pointer]:
+          - /url: /blog/2015-11-06/java-mixed-mode-flame-graphs.html
+      - listitem [ref=e211]:
+        - text: 31 Oct 2015 »
+        - link "tcpconnect and tcpaccept for Linux (bcc)" [ref=e212] [cursor=pointer]:
+          - /url: /blog/2015-10-31/tcpconnect-tcpaccept-bcc.html
+      - listitem [ref=e213]:
+        - text: 22 Sep 2015 »
+        - 'link "bcc: Taming Linux 4.3+ Tracing Superpowers" [ref=e214] [cursor=pointer]':
+          - /url: /blog/2015-09-22/bcc-linux-4.3-tracing.html
+      - listitem [ref=e215]:
+        - text: 11 Aug 2015 »
+        - link "Flame Graph Search" [ref=e216] [cursor=pointer]:
+          - /url: /blog/2015-08-11/flame-graph-search.html
+      - listitem [ref=e217]:
+        - text: 08 Jul 2015 »
+        - link "Choosing a Linux Tracer (2015)" [ref=e218] [cursor=pointer]:
+          - /url: /blog/2015-07-08/choosing-a-linux-tracer.html
+      - listitem [ref=e219]:
+        - text: 03 Jul 2015 »
+        - link "Hacking Linux USDT with Ftrace" [ref=e220] [cursor=pointer]:
+          - /url: /blog/2015-07-03/hacking-linux-usdt-ftrace.html
+      - listitem [ref=e221]:
+        - text: 28 Jun 2015 »
+        - 'link "Linux uprobe: User-Level Dynamic Tracing" [ref=e222] [cursor=pointer]':
+          - /url: /blog/2015-06-28/linux-ftrace-uprobe.html
+      - listitem [ref=e223]:
+        - text: 23 Jun 2015 »
+        - link "Netflix Instance Analysis Requirements" [ref=e224] [cursor=pointer]:
+          - /url: /blog/2015-06-23/netflix-instance-analysis-requirements.html
+      - listitem [ref=e225]:
+        - text: 15 May 2015 »
+        - 'link "eBPF: One Small Step" [ref=e226] [cursor=pointer]':
+          - /url: /blog/2015-05-15/ebpf-one-small-step.html
+      - listitem [ref=e227]:
+        - text: 15 May 2015 »
+        - link "The DTraceToolkit Project Has Ended" [ref=e228] [cursor=pointer]:
+          - /url: /blog/2015-05-15/dtracetoolkit-has-ended.html
+      - listitem [ref=e229]:
+        - text: 30 Apr 2015 »
+        - 'link "SE-Radio Episode 225: Systems Performance" [ref=e230] [cursor=pointer]':
+          - /url: /blog/2015-04-30/se-radio-systems-performance.html
+      - listitem [ref=e231]:
+        - text: 17 Mar 2015 »
+        - link "USENIX/LISA 2014 New Tools and Old Secrets (perf-tools)" [ref=e232] [cursor=pointer]:
+          - /url: /blog/2015-03-17/usenix-lisa-2014-linux-ftrace-perf-tools.html
+      - listitem [ref=e233]:
+        - text: 12 Mar 2015 »
+        - link "FreeBSD Off-CPU Flame Graphs" [ref=e234] [cursor=pointer]:
+          - /url: /blog/2015-03-12/freebsd-offcpu-flame-graphs.html
+      - listitem [ref=e235]:
+        - text: 10 Mar 2015 »
+        - link "FreeBSD Flame Graphs" [ref=e236] [cursor=pointer]:
+          - /url: /blog/2015-03-10/freebsd-flame-graphs.html
+      - listitem [ref=e237]:
+        - text: 06 Mar 2015 »
+        - 'link "MeetBSD CA: Performance Analysis of BSD" [ref=e238] [cursor=pointer]':
+          - /url: /blog/2015-03-06/performance-analysis-bsd.html
+      - listitem [ref=e239]:
+        - text: 03 Mar 2015 »
+        - link "Performance Tuning Linux Instances on EC2" [ref=e240] [cursor=pointer]:
+          - /url: /blog/2015-03-03/performance-tuning-linux-instances-on-ec2.html
+      - listitem [ref=e241]:
+        - text: 28 Feb 2015 »
+        - 'link "Tracing Summit 2014: From DTrace To Linux" [ref=e242] [cursor=pointer]':
+          - /url: /blog/2015-02-28/from-dtrace-to-linux.html
+      - listitem [ref=e243]:
+        - text: 27 Feb 2015 »
+        - 'link "SCALE13x: Linux Profiling at Netflix" [ref=e244] [cursor=pointer]':
+          - /url: /blog/2015-02-27/linux-profiling-at-netflix.html
+      - listitem [ref=e245]:
+        - text: 26 Feb 2015 »
+        - link "Linux perf_events Off-CPU Time Flame Graph" [ref=e246] [cursor=pointer]:
+          - /url: /blog/2015-02-26/linux-perf-off-cpu-flame-graph.html
+      - listitem [ref=e247]:
+        - text: 20 Jan 2015 »
+        - link "Working at Netflix" [ref=e248] [cursor=pointer]:
+          - /url: /blog/2015-01-20/working-at-netflix.html
+      - listitem [ref=e249]:
+        - text: 31 Dec 2014 »
+        - link "Linux Page Cache Hit Ratio" [ref=e250] [cursor=pointer]:
+          - /url: /blog/2014-12-31/linux-page-cache-hit-ratio.html
+      - listitem [ref=e251]:
+        - text: 22 Nov 2014 »
+        - link "Linux Performance Tools 2014" [ref=e252] [cursor=pointer]:
+          - /url: /blog/2014-11-22/linux-perf-tools-2014.html
+      - listitem [ref=e253]:
+        - text: 09 Nov 2014 »
+        - link "Differential Flame Graphs" [ref=e254] [cursor=pointer]:
+          - /url: /blog/2014-11-09/differential-flame-graphs.html
+      - listitem [ref=e255]:
+        - text: 31 Oct 2014 »
+        - 'link "CPI Flame Graphs: Catching Your CPUs Napping" [ref=e256] [cursor=pointer]':
+          - /url: /blog/2014-10-31/cpi-flame-graphs.html
+      - listitem [ref=e257]:
+        - text: 27 Sep 2014 »
+        - 'link "From Clouds to Roots: Performance Analysis at Netflix" [ref=e258] [cursor=pointer]':
+          - /url: /blog/2014-09-27/from-clouds-to-roots.html
+      - listitem [ref=e259]:
+        - text: 17 Sep 2014 »
+        - link "node.js Flame Graphs on Linux" [ref=e260] [cursor=pointer]:
+          - /url: /blog/2014-09-17/node-flame-graphs-on-linux.html
+      - listitem [ref=e261]:
+        - text: 15 Sep 2014 »
+        - link "The MSRs of EC2" [ref=e262] [cursor=pointer]:
+          - /url: /blog/2014-09-15/the-msrs-of-ec2.html
+      - listitem [ref=e263]:
+        - text: 11 Sep 2014 »
+        - 'link "Kernel Line Tracing: Linux perf Rides the Rocket" [ref=e264] [cursor=pointer]':
+          - /url: /blog/2014-09-11/perf-kernel-line-tracing.html
+      - listitem [ref=e265]:
+        - text: 06 Sep 2014 »
+        - link "Linux ftrace TCP Retransmit Tracing" [ref=e266] [cursor=pointer]:
+          - /url: /blog/2014-09-06/linux-ftrace-tcp-retransmit-tracing.html
+      - listitem [ref=e267]:
+        - text: 30 Aug 2014 »
+        - 'link "ftrace: The Hidden Light Switch" [ref=e268] [cursor=pointer]':
+          - /url: /blog/2014-08-30/ftrace-the-hidden-light-switch.html
+      - listitem [ref=e269]:
+        - text: 23 Aug 2014 »
+        - link "Linux Performance Tools at LinuxCon North America 2014" [ref=e270] [cursor=pointer]:
+          - /url: /blog/2014-08-23/linux-perf-tools-linuxcon-na-2014.html
+      - listitem [ref=e271]:
+        - text: 28 Jul 2014 »
+        - 'link "execsnoop For Linux: See Short-Lived Processes" [ref=e272] [cursor=pointer]':
+          - /url: /blog/2014-07-28/execsnoop-for-linux.html
+      - listitem [ref=e273]:
+        - text: 25 Jul 2014 »
+        - link "opensnoop For Linux" [ref=e274] [cursor=pointer]:
+          - /url: /blog/2014-07-25/opensnoop-for-linux.html
+      - listitem [ref=e275]:
+        - text: 23 Jul 2014 »
+        - link "Linux iosnoop Latency Heat Maps" [ref=e276] [cursor=pointer]:
+          - /url: /blog/2014-07-23/linux-iosnoop-latency-heat-maps.html
+      - listitem [ref=e277]:
+        - text: 16 Jul 2014 »
+        - link "iosnoop For Linux" [ref=e278] [cursor=pointer]:
+          - /url: /blog/2014-07-16/iosnoop-for-linux.html
+      - listitem [ref=e279]:
+        - text: 13 Jul 2014 »
+        - link "Linux ftrace Function Counting" [ref=e280] [cursor=pointer]:
+          - /url: /blog/2014-07-13/linux-ftrace-function-counting.html
+      - listitem [ref=e281]:
+        - text: 10 Jul 2014 »
+        - link "perf Hacktogram" [ref=e282] [cursor=pointer]:
+          - /url: /blog/2014-07-10/perf-hacktogram.html
+      - listitem [ref=e283]:
+        - text: 03 Jul 2014 »
+        - link "perf Counting" [ref=e284] [cursor=pointer]:
+          - /url: /blog/2014-07-03/perf-counting.html
+      - listitem [ref=e285]:
+        - text: 01 Jul 2014 »
+        - link "perf Heat Maps" [ref=e286] [cursor=pointer]:
+          - /url: /blog/2014-07-01/perf-heat-maps.html
+      - listitem [ref=e287]:
+        - text: 29 Jun 2014 »
+        - link "perf Static Tracepoints" [ref=e288] [cursor=pointer]:
+          - /url: /blog/2014-06-29/perf-static-tracepoints.html
+      - listitem [ref=e289]:
+        - text: 22 Jun 2014 »
+        - link "perf CPU Sampling" [ref=e290] [cursor=pointer]:
+          - /url: /blog/2014-06-22/perf-cpu-sample.html
+      - listitem [ref=e291]:
+        - text: 12 Jun 2014 »
+        - link "Java Flame Graphs" [ref=e292] [cursor=pointer]:
+          - /url: /blog/2014-06-12/java-flame-graphs.html
+      - listitem [ref=e293]:
+        - text: 09 Jun 2014 »
+        - link "Java CPU Sampling Using hprof" [ref=e294] [cursor=pointer]:
+          - /url: /blog/2014-06-09/java-cpu-sampling-using-hprof.html
+      - listitem [ref=e295]:
+        - text: 23 May 2014 »
+        - link "OS X 10.9.3 Recurring Panics" [ref=e296] [cursor=pointer]:
+          - /url: /blog/2014-05-23/osx-10.9.3-is-toxic.html
+      - listitem [ref=e297]:
+        - text: 17 May 2014 »
+        - link "Free, as in, We Own Your IP" [ref=e298] [cursor=pointer]:
+          - /url: /blog/2014-05-17/free-as-in-we-own-your-ip.html
+      - listitem [ref=e299]:
+        - text: 16 May 2014 »
+        - link "USENIX/LISA 2013 Metrics Workshop" [ref=e300] [cursor=pointer]:
+          - /url: /blog/2014-05-16/usenix-lisa-2013-metrics-workshop.html
+      - listitem [ref=e301]:
+        - text: 11 May 2014 »
+        - link "strace Wow Much Syscall" [ref=e302] [cursor=pointer]:
+          - /url: /blog/2014-05-11/strace-wow-much-syscall.html
+      - listitem [ref=e303]:
+        - text: 09 May 2014 »
+        - link "Xen Feature Detection" [ref=e304] [cursor=pointer]:
+          - /url: /blog/2014-05-09/xen-feature-detection.html
+      - listitem [ref=e305]:
+        - text: 07 May 2014 »
+        - 'link "Xen Modes: What Color Is Your Xen?" [ref=e306] [cursor=pointer]':
+          - /url: /blog/2014-05-07/what-color-is-your-xen.html
+      - listitem [ref=e307]:
+        - text: 03 May 2014 »
+        - link "The Benchmark Paradox" [ref=e308] [cursor=pointer]:
+          - /url: /blog/2014-05-03/the-benchmark-paradox.html
+      - listitem [ref=e309]:
+        - text: 02 May 2014 »
+        - link "Compilers Love Messing With Benchmarks" [ref=e310] [cursor=pointer]:
+          - /url: /blog/2014-05-02/compilers-love-messing-with-benchmarks.html
+      - listitem [ref=e311]:
+        - text: 27 Apr 2014 »
+        - 'link "Compilers: Let Me Obfuscate That For You" [ref=e312] [cursor=pointer]':
+          - /url: /blog/2014-04-27/let-me-obfuscate-that-for-you.html
+      - listitem [ref=e313]:
+        - text: 26 Apr 2014 »
+        - link "The noploop CPU Benchmark" [ref=e314] [cursor=pointer]:
+          - /url: /blog/2014-04-26/the-noploop-cpu-benchmark.html
+      - listitem [ref=e315]:
+        - text: 20 Apr 2014 »
+        - link "A New, Static, Blog" [ref=e316] [cursor=pointer]:
+          - /url: /blog/2014-04-20/a-new-static-blog.html
+    - heading "Archive" [level=1] [ref=e317]
+    - paragraph [ref=e318]:
+      - text: Older, archived posts are in my
+      - link "blog archive" [ref=e319] [cursor=pointer]:
+        - /url: /blog/archive.html
+      - text: . See my
+      - link "homepage" [ref=e320] [cursor=pointer]:
+        - /url: /
+      - text: for other material I've written.
+  - generic [ref=e322]:
+    - text: Copyright 2025 Brendan Gregg.
+    - link "About this blog" [ref=e323] [cursor=pointer]:
+      - /url: /blog/about.html
