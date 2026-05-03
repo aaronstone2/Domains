@@ -1,0 +1,50 @@
+{
+  "id": "08-process-d-state",
+  "title": "Process is stuck and even SIGKILL won't kill it",
+  "difficulty": "advanced",
+  "domains": ["linux"],
+  "primary_fm": "linux.fm.process-stuck-d-state",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/08-process-d-state.md",
+  "turns": [
+    {
+      "user_message": "I tried to kill a stuck rsync process but `kill -9 <pid>` doesn't make it go away. `ps` shows the process is still there. The whole machine feels normal, this one process is just frozen. What's happening?",
+      "se_response_summary": "SIGKILL ignored = process in D state (uninterruptible sleep). Kernel can't deliver any signal until syscall returns. Two common holders: (1) Disk I/O hanging — NFS server gone, dying drive, multipath stuck. (2) FS op blocked. Diagnose with /proc/<pid>/stack (kernel call stack), /proc/<pid>/wchan (kernel function blocking), dmesg, mount. Map of wchan → cause: nfs_wait_on_request=NFS server; io_schedule=block I/O; cifs_demultiplex=SMB; fuse_get_req=FUSE userspace daemon hung.",
+      "expected_harness_commands": ["lookup", "playbook linux.fm.process-stuck-d-state"],
+      "expected_keywords": ["D state", "uninterruptible sleep", "/proc/", "stack", "wchan", "nfs_wait_on_request", "io_schedule", "dmesg", "TASK_KILLABLE"],
+      "hints": [
+        "Why doesn't SIGKILL work on a D-state process?",
+        "What two files in /proc/<pid>/ tell you what subsystem is blocking?"
+      ]
+    },
+    {
+      "user_message": "ps shows STAT=D wchan=nfs_wait_on_request. /proc/<pid>/stack shows nfs_wait_on_request → nfs_lock_and_join_requests → nfs_updatepage → vfs_write → ksys_write. dmesg shows 'nfs: server backup-nfs.acme.io not responding, still trying'.",
+      "se_response_summary": "Confirmed NFS hang on backup-nfs.acme.io. Two paths: (A) Fix the server (preferred) — once it accepts requests, kernel NFS retry succeeds, rsync continues. No client action needed. (B) Force client to give up if server permanently gone: sudo umount -fl /mnt/nfs/backup. -f=force (drop in-flight), -l=lazy (detach now). Kernel returns EIO to pending RPC, rsync syscall exits, queued SIGKILL fires. For prevention: fstab options soft,timeo=30,retrans=3 instead of default hard.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["umount -fl", "force", "lazy", "EIO", "soft", "hard", "timeo", "retrans", "_netdev"],
+      "hints": [
+        "What two flags to umount break the wait without waiting for the server?",
+        "What fstab option family prevents future hangs from being uninterruptible?"
+      ]
+    },
+    {
+      "user_message": "umount -fl worked, process gone. Server's still down — turns out the NFS box's disk array failed. While we wait for ops to fix it, what could prevent this from happening again on a flaky network?",
+      "se_response_summary": "Three layers: (1) Mount options: read-mostly use soft+timeo+retrans; read-write keep hard but add intr+timeo. Prefer NFS v4.x. (2) systemd auto-recovery: define mount unit with TimeoutSec, plus a watchdog timer with OnUnitActiveSec=5min that resets-failed and restarts the mount. (3) Workload pattern: don't rsync directly to NFS; stage to local then ship via separate retry-able process. Keeps primary workload immune to NFS hiccups.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["soft", "intr", "timeo", "retrans", "vers=4.2", "systemd timer", "OnUnitActiveSec", "stage to local"],
+      "hints": [
+        "What's the right mount-option set for read-mostly vs read-write workloads?",
+        "How do you architect around a flaky NFS dependency, not just tune around it?"
+      ]
+    },
+    {
+      "user_message": "If wchan had shown `io_schedule` instead of an NFS function — different diagnosis?",
+      "se_response_summary": "io_schedule = block-device wait, not network FS. Different order: (1) dmesg | grep -E 'i/o error|sense key|aborted|smart' for hardware errors. (2) iostat -xz to find which device has high svctm/await. (3) ls -l /proc/<pid>/fd to match files to devices. (4) smartctl -a /dev/sdX for drive health (reallocated/pending sectors). (5) cat /proc/mdstat for RAID rebuild. (6) multipath -ll for failed paths. Fix depends: dying drive=replace, multipath=bounce path, RAID=wait or repair.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["io_schedule", "dmesg", "iostat -xz", "smartctl", "/proc/mdstat", "multipath -ll", "reallocated", "sense key"],
+      "hints": [
+        "What does io_schedule mean — network or block device?",
+        "What hardware-level signals tell you it's a dying drive?"
+      ]
+    }
+  ]
+}

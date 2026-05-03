@@ -1,0 +1,50 @@
+{
+  "id": "09-image-pull-fail",
+  "title": "docker pull fails 'unauthorized'",
+  "difficulty": "mid",
+  "domains": ["docker", "k8s", "devin", "ecs"],
+  "primary_fm": "docker.fm.image-pull-private-registry-auth",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/09-image-pull-fail.md",
+  "turns": [
+    {
+      "user_message": "CI started failing this morning with 'pull access denied for myorg/myapp, repository does not exist or may require docker login'. Nothing changed in CI config. Image exists; I can pull it from my laptop. Why?",
+      "se_response_summary": "Five mechanisms behind 'unauthorized'/'pull access denied': (1) Creds missing/expired on the runner specifically (most likely given 'works locally'). (2) Token rotated (ECR/GAR/short-lived). (3) Wrong registry/path or IP allowlist. (4) Docker Hub anonymous rate limit (different error: 'toomanyrequests'). (5) Repository policy/RBAC change. Error wording 'repo does not exist or may require login' is specifically the 'no/bad creds' case — narrows to (1) or (2). Three checks: (a) cat ~/.docker/config.json | jq .auths; (b) curl -u USER:PASS https://<registry>/v2/...; (c) what registry?",
+      "expected_harness_commands": ["lookup", "playbook docker.fm.image-pull-private-registry-auth"],
+      "expected_keywords": ["docker login", "ECR token", "12-hour", "config.json", "auths", "v2/", "credential helper", "DOCKER_DEFAULT_PLATFORM"],
+      "hints": [
+        "What does the exact wording 'repository does not exist or may require docker login' tell you about which fm to walk?",
+        "What's the registry-hostname-specific table of common cause→fix?"
+      ]
+    },
+    {
+      "user_message": "It's ECR (123456789.dkr.ecr.us-east-1.amazonaws.com/myorg/myapp:v0.42). Yeah, looking at our CI history, this same job hit a similar failure 12 hours ago that auto-recovered on a retry. So the 12-hour token thing fits.",
+      "se_response_summary": "ECR tokens are 12-hour. Fix: refresh login at start of every CI job, not once at runner setup. aws ecr get-login-password | docker login --username AWS --password-stdin <account>.dkr.ecr.us-east-1.amazonaws.com. For GitHub Actions: aws-actions/amazon-ecr-login@v2 wraps this. For cluster-side (EKS/ECS), prefer IRSA (IAM Roles for Service Accounts) — kubelet/agent fetches fresh token automatically; no 12-hour pain.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["aws ecr get-login-password", "docker login --password-stdin", "amazon-ecr-login@v2", "IRSA", "12-hour", "every job"],
+      "hints": [
+        "Where in the CI flow does the docker login go?",
+        "What's the cluster-side equivalent that doesn't need rotating creds?"
+      ]
+    },
+    {
+      "user_message": "The same image fails to pull in our EKS cluster too — pods stuck ImagePullBackOff. Same fix?",
+      "se_response_summary": "Same root cause, different mechanism in k8s. Two patterns: (A) Node IAM role (preferred, most EKS) — instance role has AmazonEC2ContainerRegistryReadOnly; kubelet calls ECR with that role; no docker login involved. Validate: aws ecr get-authorization-token from the node. (B) imagePullSecrets in pod spec (manual creds) — stale after 12h. Fix by switching to (A), or set up a CronJob that refreshes the Secret every 6h. Diagnose pod-side: kubectl describe pod | grep -i 'failed\\|pull'; kubectl get events.",
+      "expected_harness_commands": ["playbook k8s.fm.imagepullbackoff"],
+      "expected_keywords": ["IRSA", "node IAM role", "imagePullSecrets", "AmazonEC2ContainerRegistryReadOnly", "kubelet", "kubectl describe pod", "Failed to pull image"],
+      "hints": [
+        "What's IRSA short for, and why does it solve the rotating-creds problem?",
+        "If you genuinely need cross-account ECR + Secret, how do you avoid 12-hour breakage?"
+      ]
+    },
+    {
+      "user_message": "Devin sometimes hits docker pull rate limit errors when building from Docker Hub images. Different error?",
+      "se_response_summary": "Different fm: docker.fm.image-pull-rate-limit. Distinguish by 'toomanyrequests' keyword vs 'denied/unauthorized'. Docker Hub anonymous = ~100/6h per IP; authed = ~200; paid = unlimited. Three fixes: (1) Authenticate (even free Docker Hub doubles the limit) — Devin blueprint setup with docker login. (2) Mirror Docker Hub in private registry (ECR/GAR/Harbor) and pull FROM <mirror>/library/alpine. (3) Devin's onboard-network doc covers configuring an org-level Docker Hub mirror.",
+      "expected_harness_commands": ["playbook docker.fm.image-pull-rate-limit"],
+      "expected_keywords": ["toomanyrequests", "rate limit", "anonymous", "authenticated", "mirror", "ECR", "Devin Docker Hub mirror"],
+      "hints": [
+        "What's the exact error keyword that distinguishes rate-limit from auth-denied?",
+        "What's the most-scalable fix for high-volume CI hitting Docker Hub limits?"
+      ]
+    }
+  ]
+}

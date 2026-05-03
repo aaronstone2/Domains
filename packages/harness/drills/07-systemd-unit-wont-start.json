@@ -1,0 +1,51 @@
+{
+  "id": "07-systemd-unit-wont-start",
+  "title": "My systemd unit won't start",
+  "difficulty": "entry-mid",
+  "domains": ["linux"],
+  "primary_fm": "linux.fm.systemd-unit-restart-loop",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/07-systemd-unit-wont-start.md",
+  "turns": [
+    {
+      "user_message": "I have a systemd service for our internal collector. After a config change, `sudo systemctl start collector` returns 'Failed to start collector.service: Unit collector.service has failed.' and `systemctl status` shows it as failed. Logs aren't obvious to me. What's the right diagnostic order?",
+      "se_response_summary": "systemd hides the actual error in journal; status is just summary. Order: (1) systemctl status <unit> — exit code, last 10 journal entries; (2) journalctl -u <unit> -e — full unit log with binary's actual error; (3) systemd-analyze verify <unit> — catches malformed unit files. Status-code table: 203/EXEC=binary missing/non-exec; 200/USER=user not found; start-limit-hit=StartLimitBurst exhausted (do reset-failed before next start).",
+      "expected_harness_commands": ["lookup", "playbook linux.fm.systemd-unit-restart-loop"],
+      "expected_keywords": ["systemctl status", "journalctl -u", "systemd-analyze verify", "203/EXEC", "200/USER", "start-limit-hit", "reset-failed"],
+      "hints": [
+        "Where does the actual error live (not in `status` summary)?",
+        "What does status code 203/EXEC mean?",
+        "After many fast restarts, what does systemd do, and what command resets it?"
+      ]
+    },
+    {
+      "user_message": "status shows: Active: failed (Result: start-limit-hit), Process: ExecStart=... (code=exited, status=2). Journal shows: 'Error parsing config: yaml: unmarshal error at line 14: cannot unmarshal !!str into int', then 'collector.service: Main process exited, code=exited, status=2/INVALIDARGUMENT', then 'start request repeated too quickly'.",
+      "se_response_summary": "Two issues stacked: (1) Real cause = YAML parse error at line 14 (string where int expected, e.g. timeout: \"30\" not timeout: 30). Open file, fix the type. (2) Compound issue = start-limit-hit. systemd refuses further attempts even after fix. Path: fix YAML → sudo systemctl reset-failed collector → sudo systemctl start collector. Validate: journalctl -u collector -f shows clean startup.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["YAML", "line 14", "string", "int", "reset-failed", "start", "journalctl -f"],
+      "hints": [
+        "What two distinct issues does the journal output show?",
+        "After fixing the underlying issue, what's the one-time command needed to reset the start-limit counter?"
+      ]
+    },
+    {
+      "user_message": "Yep — line 14 was `timeout: \"30\"` instead of `timeout: 30`. Fixed and started clean. To prevent the start-limit issue, what's the right tuning?",
+      "se_response_summary": "Two-part: loosen StartLimit + validate config before starting. (A) [Unit] StartLimitIntervalSec=600s StartLimitBurst=10; [Service] Restart=on-failure RestartSec=5s. 10 restarts in 10min = catches truly broken without locking out for transient. daemon-reload after editing. (B) [Service] ExecStartPre=/usr/local/bin/collector --config-check /etc/collector.yaml. Bad config now fails the start with a clear message before main process tries.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["StartLimitBurst", "StartLimitIntervalSec", "Restart=on-failure", "RestartSec", "ExecStartPre", "config-check", "daemon-reload", "LimitCORE"],
+      "hints": [
+        "What's the [Unit]-level setting that controls how aggressive the restart-loop guard is?",
+        "How do you catch a bad config before the main process even tries?"
+      ]
+    },
+    {
+      "user_message": "Different unit problem: I have a `mounts/data.mount` unit that's been failing since the upstream NFS server hiccuped. NFS is back but the unit is still failed and won't auto-recover. How does that work?",
+      "se_response_summary": "Mount units are weirder than service units; don't auto-restart the same way. Path: (1) sudo systemctl reset-failed mounts-data.mount; sudo systemctl start mounts-data.mount. (2) For NFS, fstab options should include _netdev,soft,timeo=30,retrans=3 so hangs are recoverable. (3) For auto-recovery, drop a systemd timer that watchdog-restarts the failed mount. (4) mount units in newer systemd (>=v244) DO support Restart=on-failure.",
+      "expected_harness_commands": ["playbook linux.fm.systemd-mount-failed-fstab"],
+      "expected_keywords": ["reset-failed", "systemctl start", "_netdev", "soft", "timeo", "retrans", "OnUnitActiveSec", "watchdog"],
+      "hints": [
+        "Why don't mount units auto-recover the same way as service units?",
+        "What fstab options make NFS mounts recover from hangs gracefully?"
+      ]
+    }
+  ]
+}

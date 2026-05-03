@@ -545,3 +545,24 @@ Per user direction (continue one-phase-at-a-time), focused single-section delive
 6. **Cross-platform shell auto-detection** — on Windows tries `wsl.exe bash -c` → `bash.exe -c` (Git Bash) → `cmd.exe /c`; selected shell reported in capture header
 7. **Verified on Windows** (the user's interview-prep environment): `--list` works; `docker-state` captures real Docker Desktop info via WSL; `--from-fm docker.fm.exit-137-oomkilled` runs the playbook's diagnostic steps and `dmesg` returned actual recent OOM kills; `--output` writes file cleanly; redaction confirmed against AWS key + GH PAT + password= + JWT inputs
 8. **Documented** in `packages/harness/PROGRESS.md` (full Phase 9 section), `domains/_shared/rehearsal/scenarios/README.md` (bundle table + usage), and `01-docker-oom.md` scenario (worked-example with verified output)
+
+## Phase 10 — Interactive drill mode
+
+### Session P10 — 2026-05-03 — DONE
+
+Per user direction (one-phase-at-a-time, complete fully before next), focused single-section deliverable: **`harness drill` interactive practice REPL**. Per-package detail: `packages/harness/PROGRESS.md`.
+
+Makes the 10 rehearsal scenarios actually practice-able rather than just readable. Walks through each turn, pauses for the user's response, scores keyword/command coverage, reveals canonical answer, ends with a study list.
+
+**Deliverables (each completed in order):**
+
+1. **Drill JSON schema** at `packages/harness/drills/SCHEMA.md` — `{id, title, difficulty, domains, primary_fm, scenario_md, turns: [{user_message, se_response_summary, expected_harness_commands, expected_keywords, hints}]}`
+2. **10 drill JSON files** at `packages/harness/drills/` — one per scenario, structured turns with hints/keywords/commands extracted from the markdown
+3. **`drill.ts` REPL** at `packages/harness/src/commands/drill.ts` — TTY/piped-stdin input source, multi-line answer reading, special inputs (hint/show/skip/quit), substring-match scoring, final summary
+4. **Wired into commands index** + `pnpm --filter @domains/harness typecheck` clean
+5. **Verified on Windows** — `--list`, `random`, number-prefix ID resolution (`drill 04` → `04-dns-slow-pod`), hint cycling, `show`/`quit`/`skip` flows, scripted scoring via piped stdin (`printf 'docker inspect OOMKilled dmesg memory.events ...\n.\n' | pnpm harness drill 01-docker-oom` → "7/10 keywords hit, missed: killed process" exactly)
+6. **Documented** — `packages/harness/PROGRESS.md` (full Phase 10 section), `scenarios/README.md` (drill usage with input commands), this rollup
+
+**Cross-platform input handling:** detects `process.stdin.isTTY` and falls back to "read all stdin upfront, replay line-by-line" for piped/CI use. This was the tricky part on Windows — `readline.question()` hangs on non-TTY stdin.
+
+**Final harness state — 9 subcommands:** stats, lookup, playbook, concept, cite, related, query, capture, drill.

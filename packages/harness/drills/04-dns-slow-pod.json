@@ -1,0 +1,50 @@
+{
+  "id": "04-dns-slow-pod",
+  "title": "DNS lookups are slow inside pods",
+  "difficulty": "mid",
+  "domains": ["k8s", "linux", "docker"],
+  "primary_fm": "k8s.fm.dns-pod-search-too-many",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/04-dns-slow-pod.md",
+  "turns": [
+    {
+      "user_message": "Our pods make a lot of outbound HTTPS calls to external APIs. Latency went from ~50 ms to ~3 seconds. The APIs are fine — I tested from my laptop. Inside the pods it feels like DNS is slow. How do I confirm and fix?",
+      "se_response_summary": "3 seconds is the canonical glibc resolver retry-timeout signature. K8s default ndots:5 + long search list = every external name like 'api.stripe.com' (2 dots) tries search domains first: api.stripe.com.<ns>.svc.cluster.local → NXDOMAIN, then .svc.cluster.local → NXDOMAIN, then .cluster.local → NXDOMAIN, finally api.stripe.com. Each is ~500ms, sums to 3s. Confirm: kubectl exec <pod> -- cat /etc/resolv.conf (expect ndots:5 + search). Then time it: time getent hosts api.stripe.com vs time getent hosts api.stripe.com. (trailing dot skips search).",
+      "expected_harness_commands": ["lookup", "playbook k8s.fm.dns-pod-search-too-many"],
+      "expected_keywords": ["ndots:5", "search", "trailing dot", "FQDN", "NXDOMAIN", "resolv.conf", "search-amplification", "3 seconds"],
+      "hints": [
+        "What does the number 3 seconds suggest about the failure mode?",
+        "Why does k8s default ndots:5 cause this for external names but not internal?"
+      ]
+    },
+    {
+      "user_message": "Confirmed. ndots:5, search list as you described. Without trailing dot: 2.8s. With trailing dot: 47ms. So the search-expansion is the problem. What's the right fix?",
+      "se_response_summary": "Two equally valid fixes; pick by what you control. (A) Pod-side ndots:2 via spec.dnsConfig.options (no app change, recommended). (B) App code uses trailing dot for FQDN. DON'T use ndots:1 — breaks cluster-internal short names like 'myservice'. Validate: time getent hosts api.stripe.com from pod, expect <100ms.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["dnsConfig", "options", "ndots", "trailing dot", "FQDN", "ClusterFirst", "myservice"],
+      "hints": [
+        "What's the safest ndots value? (Not 1!)",
+        "What's the YAML field on a pod spec to override DNS options?"
+      ]
+    },
+    {
+      "user_message": "ndots:2 fixed it for the pods. But why is the k8s default ndots:5? Seems wasteful.",
+      "se_response_summary": "Two reasons: (1) K8s service DNS records have 5 dots (<svc>.<ns>.svc.cluster.local), so ndots:5 makes search-expansion the only way short names like 'myservice' resolve to 'myservice.<ns>.svc.cluster.local'. (2) Backward compat with apps that hardcode short names. The cost (search-amplification for external names) wasn't appreciated initially; now widely-known.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["service DNS", "5 dots", "myservice", "backward compat", "short names"],
+      "hints": [
+        "Why does the k8s service-name convention 'force' ndots:5?",
+        "What's the design tradeoff — internal short names vs external lookup speed?"
+      ]
+    },
+    {
+      "user_message": "What if it weren't ndots — what other things make pod DNS slow?",
+      "se_response_summary": "Common runners-up (each has a dedicated playbook): (1) k8s.fm.dns-resolution-fail — CoreDNS down/no endpoints (everything fails); (2) k8s.fm.coredns-loop-detection — forward . loops via host resolv.conf; (3) k8s.fm.networkpolicy-default-deny-too-broad — UDP/53 to coredns blocked; (4) linux.fm.conntrack-table-full — host conntrack overflow drops UDP DNS replies; (5) slow upstream DNS itself (CoreDNS metrics show).",
+      "expected_harness_commands": ["lookup CoreDNS", "lookup conntrack"],
+      "expected_keywords": ["CoreDNS", "endpoints", "loop", "NetworkPolicy", "conntrack", "forward ."],
+      "hints": [
+        "If every lookup fails (not just external), what's the likely cause?",
+        "What table on the host can fill up and silently drop UDP DNS replies?"
+      ]
+    }
+  ]
+}

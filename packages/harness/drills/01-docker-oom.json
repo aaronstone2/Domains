@@ -1,0 +1,43 @@
+{
+  "id": "01-docker-oom",
+  "title": "Container exited with code 137",
+  "difficulty": "entry",
+  "domains": ["docker", "linux", "k8s"],
+  "primary_fm": "docker.fm.exit-137-oomkilled",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/01-docker-oom.md",
+  "turns": [
+    {
+      "user_message": "Hey, I've got a container that keeps exiting with code 137 right around the time my batch job hits its peak memory. `docker ps -a` shows it as Exited (137). I've already tried restarting it twice. What's going on?",
+      "se_response_summary": "137 = 128 + SIGKILL(9). Most likely cause: cgroup memory-controller OOM kill. Three quick checks: (1) docker inspect <c> --format '{{.State.OOMKilled}}' — expect true; (2) dmesg -T | grep 'killed process' — names victim PID + RSS; (3) docker inspect --format '{{.HostConfig.Memory}}' — see what the limit is. Don't fix yet, confirm.",
+      "expected_harness_commands": ["lookup", "playbook docker.fm.exit-137-oomkilled"],
+      "expected_keywords": ["OOMKilled", "dmesg", "killed process", "memory.events", "--memory", "cgroup", "SIGKILL", "137"],
+      "hints": [
+        "What does 137 decode to as a signal? (128 + N)",
+        "Which docker inspect field tells you it was OOM-killed vs SIGKILL'd from outside?",
+        "Where does the kernel log the OOM kill?"
+      ]
+    },
+    {
+      "user_message": "Yeah `OOMKilled=true 137`, dmesg shows `Killed process 12345 (java) total-vm:4194304kB anon-rss:2097152kB`. Memory limit is `2147483648`. So I'm hitting my 2 GB cap. I thought my Java heap was 512 MB though?",
+      "se_response_summary": "Java RSS != heap. Heap is just one piece — metaspace + JIT code + native libs + thread stacks + GC bookkeeping easily push 512 MB heap to 1.5-2 GB RSS. Two paths: (A) Tune JVM with -XX:MaxRAMPercentage=60.0 + UseContainerSupport (default in JDK 11+) so it respects the cgroup limit, or (B) raise --memory if workload is honestly bigger. Validate via cat /sys/fs/cgroup/.../memory.events — oom_kill should stop incrementing.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["MaxRAMPercentage", "UseContainerSupport", "metaspace", "JIT", "RSS", "memory.events", "--memory"],
+      "hints": [
+        "What's in Java's RSS besides the heap?",
+        "Does -Xmx by itself cap total memory? What about modern JDK + container support?",
+        "How do you confirm the fix worked from the cgroup side?"
+      ]
+    },
+    {
+      "user_message": "What if it's running in Kubernetes? Same diagnosis?",
+      "se_response_summary": "Same root cause (cgroup OOM), different surface. In k8s: kubectl describe shows 'Reason: OOMKilled, ExitCode: 137'. Limit comes from spec.containers[].resources.limits.memory. Diagnose with kubectl describe pod + kubectl get events. IMPORTANT distinction: if requests are set but limits aren't, you might hit node-pressure eviction first (k8s.fm.evicted-by-node-pressure, not k8s.fm.oomkilled). Fix: requests==limits for Guaranteed QoS class.",
+      "expected_harness_commands": ["related linux.primitives.oom-killer 2"],
+      "expected_keywords": ["kubectl describe", "Reason: OOMKilled", "limits.memory", "Evicted", "Guaranteed", "requests==limits"],
+      "hints": [
+        "Does k8s use the same Linux OOM killer underneath?",
+        "What's the difference between OOMKilled and Evicted in k8s pod status?",
+        "What's QoS class and why does requests==limits matter?"
+      ]
+    }
+  ]
+}

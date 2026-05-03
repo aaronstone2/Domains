@@ -115,6 +115,28 @@ Default redactions: AWS access keys, GitHub PATs, JWTs, password=/token=/api_key
 
 Cross-platform: on Linux runs via `/bin/sh`; on Windows auto-detects WSL → Git Bash → cmd.exe (in that order).
 
+## Interactive practice (`harness drill`)
+
+Phase 10 added a `drill` subcommand that plays back any of these 10 scenarios as a turn-by-turn practice REPL. Each turn pauses for your response, then scores it against expected keywords/commands and reveals the canonical SE answer.
+
+```
+pnpm harness drill 01-docker-oom    # specific drill
+pnpm harness drill 04                # number-prefix resolution
+pnpm harness drill random            # random pick
+pnpm harness drill --list            # list all 10
+```
+
+Inputs during a turn:
+- Type your response, finish with `.` on a line by itself
+- `hint` — get a progressive hint (each scenario has 3 per turn)
+- `show` — reveal canonical without scoring (give up)
+- `skip` — skip this turn
+- `quit` — abort the drill
+
+Scoring is substring-match for `expected_harness_commands` (e.g. `playbook docker.fm.exit-137-oomkilled`) and `expected_keywords` (concept names, file paths, command flags). At the end, you get a coverage report + top-12 missed concepts to study.
+
+This makes the scenarios actually practice-able rather than just readable. The drills mirror the markdown scenarios — both stay in sync.
+
 ## What's NOT in these scenarios (and why)
 
 - **Real production data.** All examples use placeholder names and made-up timestamps; the realism is in the wording and decision-tree, not in invented log lines.

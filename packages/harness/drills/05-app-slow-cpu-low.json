@@ -1,0 +1,41 @@
+{
+  "id": "05-app-slow-cpu-low",
+  "title": "App is slow under load but CPU shows low",
+  "difficulty": "advanced",
+  "domains": ["linux", "methodology"],
+  "primary_fm": "methodology.fm.cpu-utilization-misleading",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/05-app-slow-cpu-low.md",
+  "turns": [
+    {
+      "user_message": "Our service is slow under load. p99 latency went from 80 ms to 600 ms. But `top` shows the process at 35% CPU and the host has plenty of headroom. RED dashboard shows error rate is fine — just latency. Where do I look?",
+      "se_response_summary": "Classic 'CPU% lies' (Brendan Gregg). Three causes in priority order, fastest signal first: (1) Low IPC — CPU is stalled not busy. perf stat -p <pid> -- sleep 10, look at instructions/cycles. <0.5 = stalled. (2) Off-CPU time — thread blocked on lock/IO/network. offcputime-bpfcc -p <pid> 30 OR perf record -e sched:sched_switch. (3) cgroup CFS throttling. cat /sys/fs/cgroup/cpu.stat, look at nr_throttled.",
+      "expected_harness_commands": ["lookup", "playbook methodology.fm.cpu-utilization-misleading"],
+      "expected_keywords": ["IPC", "perf stat", "instructions", "off-CPU", "offcputime", "cpu.stat", "nr_throttled", "Brendan Gregg"],
+      "hints": [
+        "What's the 'CPU is busy but not doing work' failure mode called?",
+        "What's perf-stat's IPC ratio mean? What's healthy?",
+        "If you're in a container, what cgroup mechanism could halt your workload while CPU% looks low?"
+      ]
+    },
+    {
+      "user_message": "perf stat shows IPC of 0.155 (extremely stalled). offcputime shows 80% of off-CPU time in futex_wait stacks. cpu.stat nr_throttled is 0.",
+      "se_response_summary": "Both signals point at the same root cause: lock contention. Threads briefly spin on userspace mutex fast path (looks like CPU) then block in futex_wait kernel (looks like off-CPU). Latency spikes because requests queue on the lock. Find the lock with userspace stacks: perf record -F 99 -e sched:sched_switch -g --call-graph dwarf -p <pid>; perf script | flamegraph.pl > offcpu.svg. Widest column with futex_wait at bottom + your code on top = the lock. Fixes: shrink critical section / RWMutex / lock striping / lock-free.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["lock contention", "futex_wait", "perf record", "--call-graph dwarf", "FlameGraph", "shrink critical section", "RWMutex", "striping"],
+      "hints": [
+        "Both low IPC AND high off-CPU futex — what single root cause produces both?",
+        "How do you generate an off-CPU flame graph with userspace stacks?"
+      ]
+    },
+    {
+      "user_message": "What if perf stat had shown IPC of 1.5 (healthy) and offcputime had shown nothing big — just normal scheduler activity? Where else could the latency be?",
+      "se_response_summary": "Latency is somewhere else, not in CPU. Order of suspects: (1) Downstream service slow — distributed tracing (OpenTelemetry/DataDog) shows which span is fat; (2) GC pauses (Java -Xlog:gc*, Go GODEBUG=gctrace=1) — STW pauses don't show on CPU; (3) Network — ss -ti for retransmits, RTT, cwnd; (4) Connection-pool exhaustion — ORM/HTTP-client metrics for 'wait time'; (5) DNS — covered in scenario 4.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["OpenTelemetry", "tracing", "GC pauses", "ss -ti", "connection pool", "downstream", "DNS"],
+      "hints": [
+        "If IPC + off-CPU + throttle all look fine, what else can produce latency without CPU?",
+        "What's the methodology framework for ruling out resources one at a time?"
+      ]
+    }
+  ]
+}

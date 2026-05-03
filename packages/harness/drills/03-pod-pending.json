@@ -1,0 +1,49 @@
+{
+  "id": "03-pod-pending",
+  "title": "Pod stuck in Pending",
+  "difficulty": "mid",
+  "domains": ["k8s"],
+  "primary_fm": "k8s.fm.pod-pending-failedscheduling",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/03-pod-pending.md",
+  "turns": [
+    {
+      "user_message": "I deployed a new service but the pod is stuck in Pending and never starts. `kubectl get pods` shows it's been Pending for 10 minutes. Other pods in the same namespace work fine. What do I do?",
+      "se_response_summary": "Pending = scheduler hasn't placed it. Single most useful command: kubectl describe pod <name> | tail -30 — Events section names the reason. Common reasons map 1:1 to fixes: 'Insufficient cpu/memory' (shrink request OR scale OR change selector); 'untolerated taint' (add toleration); 'didn't match Pod's node affinity' (fix selector vs labels); 'unbound PVC' (storage); 'didn't have free ports' (hostPort conflict).",
+      "expected_harness_commands": ["lookup", "playbook k8s.fm.pod-pending-failedscheduling"],
+      "expected_keywords": ["kubectl describe", "Events", "FailedScheduling", "Insufficient", "untolerated taint", "PVC"],
+      "hints": [
+        "Where does the actual reason live? (Not in `kubectl get`)",
+        "What's the table mapping common Event messages to fixes?"
+      ]
+    },
+    {
+      "user_message": "Warning FailedScheduling 87s (x12 over 11m): 0/4 nodes are available: 1 node(s) had untolerated taint {nvidia.com/gpu: present}, 3 Insufficient memory. Pod requests 8Gi memory.",
+      "se_response_summary": "Two issues bundled, one is the actual blocker. GPU taint is by design — not the issue. The actual blocker is '3 nodes can't fit 8Gi.' Get breakdown: kubectl describe nodes | grep -E 'Name:|Allocated' -A 5. Cross-check with kubectl get pod <name> -o jsonpath='{.spec.containers[*].resources.requests}'. Three paths in priority: (1) lower request if over-provisioned (most common); (2) add a node; (3) free capacity by evicting elsewhere.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["GPU taint", "Allocated", "kubectl describe nodes", "lower request", "actual usage", "Burstable"],
+      "hints": [
+        "Which of the two FailedScheduling reasons is actually blocking?",
+        "How do you compare requested vs actual usage to decide whether to shrink?"
+      ]
+    },
+    {
+      "user_message": "Actual usage is more like 4Gi according to top. I'll lower the request. While I'm at it — the GPU taint is intentional but I want to make sure my ML pod can land on it. Reminder of how that works?",
+      "se_response_summary": "Toleration says 'I'm allowed,' nodeSelector says 'I want.' Both needed for an ML pod to land specifically on the GPU node. Toleration must match key+value+effect EXACTLY. Add: spec.tolerations + spec.nodeSelector matching a GPU-only label. Verify: kubectl get nodes -l nvidia.com/gpu=true; kubectl describe pod <ml> | grep -A2 Tolerations.",
+      "expected_harness_commands": ["playbook k8s.fm.taint-toleration-mismatch"],
+      "expected_keywords": ["tolerations", "nodeSelector", "key", "value", "effect", "exactly", "kubernetes.io/arch"],
+      "hints": [
+        "Does a matching toleration force the pod to that node, or just allow it?",
+        "What's the part of the toleration that has to match exactly?"
+      ]
+    },
+    {
+      "user_message": "What if `kubectl describe pod` shows no events at all — just blank?",
+      "se_response_summary": "No events = scheduling never tried. Three checks fastest-first: (1) scheduler alive — kubectl get pods -n kube-system -l component=kube-scheduler; (2) ResourceQuota blocking — kubectl describe quota -n <ns> (Used >= Hard); (3) admission webhook timing out / failing — kubectl get validatingwebhookconfiguration; the harness playbook k8s.fm.admission-webhook-timeout walks the full case.",
+      "expected_harness_commands": ["playbook k8s.fm.admission-webhook-timeout"],
+      "expected_keywords": ["kube-scheduler", "ResourceQuota", "admission webhook", "validatingwebhookconfiguration", "failurePolicy"],
+      "hints": [
+        "What's a non-scheduler thing that can intercept pod creation before it reaches the scheduler?"
+      ]
+    }
+  ]
+}

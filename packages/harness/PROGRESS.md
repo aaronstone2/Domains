@@ -16,6 +16,9 @@ Status: Phase 9 complete. 8 subcommands operational against the 7-domain corpus 
 | `pnpm harness capture <bundle>` | Run a curated diagnostic-command bundle and emit Markdown blob | `pnpm harness capture oom` |
 | `pnpm harness capture --from-fm <id>` | Synthesize a bundle from a failure_mode's diagnostic_steps | `pnpm harness capture --from-fm docker.fm.exit-137-oomkilled` |
 | `pnpm harness capture --list` | List available bundles | `pnpm harness capture --list` |
+| `pnpm harness drill <id>` | Interactive practice REPL — walk a scenario turn-by-turn, score keywords/commands you mention | `pnpm harness drill 01-docker-oom` |
+| `pnpm harness drill random` | Pick a random drill | `pnpm harness drill random` |
+| `pnpm harness drill --list` | List available drills | `pnpm harness drill --list` |
 
 ## Corpus snapshot
 
@@ -136,6 +139,51 @@ Per-bundle additional regex patterns supported via the `redact` field.
 - `pnpm harness capture --from-fm docker.fm.exit-137-oomkilled` → 4 diagnostic_steps from playbook ran, `dmesg` returned actual recent OOM kills from WSL kernel
 - `pnpm harness capture <bundle> --output file.md` → 12057 bytes written cleanly
 - Redaction test: AWS key, GitHub PAT, password=, JWT all replaced with `<REDACTED>` in output
+
+## Phase 10 — Interactive drill mode
+
+Added `harness drill` for practice — turn-by-turn playback of the 10 rehearsal scenarios with scoring against expected keywords/commands.
+
+### Drill scenarios shipped
+
+10 drill JSONs at `packages/harness/drills/` mirroring the markdown scenarios at `domains/_shared/rehearsal/scenarios/`. Schema at `packages/harness/drills/SCHEMA.md`.
+
+| Drill | Difficulty | Turns |
+|---|---|---:|
+| `01-docker-oom` | entry | 3 |
+| `02-container-egress-tree` | mid | 4 |
+| `03-pod-pending` | mid | 4 |
+| `04-dns-slow-pod` | mid | 4 |
+| `05-app-slow-cpu-low` | advanced | 3 |
+| `06-devin-internal-svc` | mid | 4 |
+| `07-systemd-unit-wont-start` | entry-mid | 4 |
+| `08-process-d-state` | advanced | 4 |
+| `09-image-pull-fail` | mid | 4 |
+| `10-postmortem-blame` | soft-skills | 4 |
+
+### How drill mode works
+
+1. Show a turn's `user_message`.
+2. Wait for input — multi-line answer terminated by `.` on its own line.
+3. Special inputs: `hint` (next progressive hint), `show` (reveal canonical without scoring), `skip`, `quit`.
+4. Score: substring match the user's answer against `expected_harness_commands` and `expected_keywords` (case-insensitive).
+5. Show coverage (e.g. `7/10`), the canonical SE response, then move to next turn.
+6. Final summary: total cmd/keyword coverage, top-12 missed concepts to study.
+
+### Cross-platform input handling
+
+Detects TTY-vs-piped stdin:
+- TTY: standard `readline` interactive prompt.
+- Piped (CI / scripted invocation): reads all of stdin upfront, replays line-by-line. Lets the drill be smoke-tested via `printf`.
+
+Verified on Windows: `--list`, `random`, number-prefix resolution (`drill 04` → `04-dns-slow-pod`), hint cycling (`hint` 3x then "no more hints"), `show` reveals canonical, `quit` aborts cleanly, scripted scoring works (e.g. `printf 'docker inspect OOMKilled dmesg memory.events --memory cgroup SIGKILL 137\n.\nshow\nshow\n' | pnpm harness drill 01-docker-oom` produced "7/10 keywords hit, missed: killed process").
+
+### Drill ID resolution
+
+Accepts:
+- Full slug: `01-docker-oom`
+- Number prefix: `01` (zero-padded if needed)
+- Filename with extension: `01-docker-oom.json`
 
 ## Known limitations
 

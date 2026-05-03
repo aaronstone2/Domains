@@ -1,0 +1,50 @@
+{
+  "id": "06-devin-internal-svc",
+  "title": "Devin can't reach our internal staging service",
+  "difficulty": "mid",
+  "domains": ["devin", "linux"],
+  "primary_fm": "devin.fm.session-cant-reach-internal-svc",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/06-devin-internal-svc.md",
+  "turns": [
+    {
+      "user_message": "We installed Devin last week. The agent works great for OSS PRs but it can't reach our internal staging API at staging.internal.acme.io. The session log shows 'Could not resolve host: staging.internal.acme.io'. What do we configure?",
+      "se_response_summary": "'Could not resolve host' = DNS, not TCP. DevBox is fresh microVM, no idea where internal hostnames live. Four possible mechanisms in priority: (1) No DNS — internal-only zone, DevBox doesn't know your DNS server. (2) No VPN — even if DNS resolved, no route. (3) No corporate HTTP proxy. (4) Cert chain — private CA. The error narrows to (1) or (2). Settings → Integrations → VPN; Settings → Enterprise → Network setup. Decision tree: VPN | static-IP-allowlist | HTTPS_PROXY | corp CA bundle.",
+      "expected_harness_commands": ["lookup", "playbook devin.fm.vpn-not-engaging"],
+      "expected_keywords": ["resolve host", "DNS", "VPN", "static egress IP", "HTTPS_PROXY", "CA bundle", "blueprint", "OpenVPN"],
+      "hints": [
+        "Does 'Could not resolve host' point to TCP or DNS?",
+        "What's the canonical Devin onboarding doc for internal-network access?"
+      ]
+    },
+    {
+      "user_message": "We have OpenVPN config. I added it via Settings → Integrations. But sessions still can't reach the service. Where do I check?",
+      "se_response_summary": "Org config is necessary but not sufficient — the DevBox has to actually start openvpn at session boot. Diagnose inside DevBox: pgrep -a openvpn (expect daemon), ip addr show tun0 (expect tun interface with IP), tail /var/log/openvpn/*.log (look for AUTH_FAILED / TLS handshake fail / 'Initialization Sequence Completed'). Most common cause: blueprint setup writes config but doesn't start openvpn. Fix: add 'sudo openvpn --config ... --daemon' to setup, with a wait-for-tun0 loop.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["pgrep openvpn", "tun0", "ip addr", "AUTH_FAILED", "Initialization Sequence Completed", "blueprint", "setup"],
+      "hints": [
+        "What proves openvpn is actually running (not just configured)?",
+        "Where in the blueprint do you add a long-running daemon?"
+      ]
+    },
+    {
+      "user_message": "VPN comes up now (`tun0` has IP, log shows `Initialization Sequence Completed`). But Devin still gets `Could not resolve host`. From the terminal I can `curl https://10.50.1.5/health` (the IP) but not by name.",
+      "se_response_summary": "VPN got the route, DNS still using public resolver. Two fixes: (A) Let VPN push DNS via openvpn-systemd-resolved + --up script (cleaner if VPN config has dhcp-option DNS). (B) Hardcode internal DNS in /etc/resolv.conf via blueprint setup (simpler). Validate: getent hosts staging.internal.acme.io should return the internal IP.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["dhcp-option DNS", "openvpn-systemd-resolved", "resolv.conf", "nameserver", "search domain", "getent"],
+      "hints": [
+        "Why does VPN routing alone not bring DNS along?",
+        "What's the blueprint-side fix to inject internal DNS?"
+      ]
+    },
+    {
+      "user_message": "Worked! Now Devin's git ops to our internal Bitbucket Server fail with 'SSL certificate problem: self signed certificate in certificate chain'. Same blueprint?",
+      "se_response_summary": "Internal cert signed by corp CA that DevBox base image doesn't trust. Add via blueprint: secrets [name: CORP_CA, target: /usr/local/share/ca-certificates/corp.crt]; setup: sudo update-ca-certificates. Caveat: Java/Node have their own trust stores — JAVA: keytool -import; NODE: NODE_EXTRA_CA_CERTS env; Python: REQUESTS_CA_BUNDLE; curl/git use system store after update-ca-certificates ✓.",
+      "expected_harness_commands": ["playbook devin.fm.internal-svc-cert-untrusted"],
+      "expected_keywords": ["update-ca-certificates", "ca-certificates.crt", "keytool", "NODE_EXTRA_CA_CERTS", "REQUESTS_CA_BUNDLE", "JAVA", "Node"],
+      "hints": [
+        "Where does Linux look for trusted CAs by default?",
+        "Which language runtimes have their own trust stores you have to update separately?"
+      ]
+    }
+  ]
+}

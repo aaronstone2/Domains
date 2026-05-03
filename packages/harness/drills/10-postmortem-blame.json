@@ -1,0 +1,51 @@
+{
+  "id": "10-postmortem-blame",
+  "title": "Our postmortem became a trial",
+  "difficulty": "soft-skills",
+  "domains": ["methodology"],
+  "primary_fm": "methodology.fm.retro-becomes-trial",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/10-postmortem-blame.md",
+  "turns": [
+    {
+      "user_message": "I'm an engineering manager. We had a Sev2 last Tuesday, an engineer made a one-line config mistake, payment service down 18 minutes. We held the postmortem yesterday and it went badly — the engineer was visibly upset, leadership asked 'why didn't you' questions, now the engineer is talking about quitting. I've also noticed adjacent teams trying to avoid being assigned to deploys. I think we screwed up the postmortem. Can you help me think about how to recover?",
+      "se_response_summary": "This is a cultural failure, not technical. Three concentric loops: (Loop 1, this week) 1:1 with the engineer ASAP — own the failure of the process, not their failure. Make their continued employment unambiguous. (Loop 2, the doc) Rewrite blamelessly: replace names with roles, reframe 'X forgot to' as 'process didn't catch'. List contributing factors not 'the cause'. Senior leader publicly thanks for honesty. (Loop 3, structural) Adopt blameless template (Google SRE Book Ch 15, PagerDuty), tracked action-item backlog with deadlines, practice on a fake one. Avoid: 'making an example' — every incident-research finding for 30 years says reporting drops and detection time triples.",
+      "expected_harness_commands": ["lookup", "playbook methodology.fm.retro-becomes-trial", "playbook methodology.fm.postmortem-blame"],
+      "expected_keywords": ["blameless", "Google SRE Book", "Ch 15", "PagerDuty", "1:1", "depersonalize", "contributing factors", "make an example"],
+      "hints": [
+        "What's the canonical reference for blameless-postmortem culture?",
+        "Three concentric loops — what's the immediate vs structural fix?",
+        "Why is 'making an example' counterproductive in operational research?"
+      ]
+    },
+    {
+      "user_message": "The 'rewrite' part is going to be hard — leadership wants to see 'accountability.' How do I push back without making it political?",
+      "se_response_summary": "Reframe what leadership is asking for. They want assurance 'this won't happen again' — blameless postmortem produces a STRONGER version of that. Frame: 'Blameless doesn't mean no consequences — it means consequences target the system, because that's what actually prevents recurrence.' The 1-paragraph leadership pitch: name what the system-level fix would be (YAML schema validation in CI, canary period, rollback runbook), how each becomes a tracked action item with owner+deadline. Add citations: Google SRE Book Ch 15, Sidney Dekker's Just Culture / Field Guide to Understanding 'Human Error'. Numerical: post-incident reporting rates fall 40-60% in blame-heavy environments.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["accountability", "system-level", "Sidney Dekker", "Just Culture", "Field Guide", "tracked action items", "owner", "deadline", "canary"],
+      "hints": [
+        "How do you reframe 'we need accountability' without giving in?",
+        "What books/research can you cite to senior leaders?"
+      ]
+    },
+    {
+      "user_message": "The engineer asked me yesterday whether I want them to step away from production deploys for a while. What do I say?",
+      "se_response_summary": "Don't say yes — even if they want it. Saying yes confirms 'you're the problem, you should be removed.' Say: 'I appreciate the offer but no — I want you on the team that designs the canary-period and YAML-validation fixes. You have firsthand knowledge of where the gap is. If you want a few days off the on-call rotation while you reset, I'll cover it. But I don't want you off deploys long-term.' Two effects: (1) reframes deploy from 'place I failed' to 'place I have unique knowledge'. (2) Offers real time-limited break without implicit punishment. If they take the break, manager covers — visible signal inverse to public-trial.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["don't say yes", "tactical empathy", "on the team that fixes it", "cover the on-call", "unique knowledge", "document the recovery"],
+      "hints": [
+        "Is the engineer's offer a real request or a probe for trust?",
+        "How do you reframe their relationship with deploys after the failure?"
+      ]
+    },
+    {
+      "user_message": "What about the engineers on adjacent teams who are now avoiding deploy assignments?",
+      "se_response_summary": "They're rationally protecting themselves — saw a public trial. Three things move this: (1) Do the rewrite IN PUBLIC — share the rewritten postmortem with framing 'we got this wrong; here's what changed and why.' Adjacent teams need to see the process change, not hear about it. (2) Make the deploy process safer for everyone (YAML schema, canary, automated rollback) — addresses the legitimate underlying risk. (3) Tell the recovery story at all-hands: original was blameful, engineer was harmed, we recognized it, here's what changed. Engineers recalibrate based on watching THIS one was handled. Cite methodology.fm.action-items-never-done — if recovery AIs don't ship, cultural shift won't stick.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["public", "all-hands", "process change", "watching how this was handled", "action items never done", "deadlines", "report completion"],
+      "hints": [
+        "Why don't adjacent teams change behavior based on memos?",
+        "What ensures the cultural shift sticks beyond this one incident?"
+      ]
+    }
+  ]
+}

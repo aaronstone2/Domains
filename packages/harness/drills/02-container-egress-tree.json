@@ -1,0 +1,52 @@
+{
+  "id": "02-container-egress-tree",
+  "title": "Container can't reach the internet",
+  "difficulty": "mid",
+  "domains": ["docker", "linux", "k8s"],
+  "primary_fm": "docker.fm.container-no-egress-umbrella",
+  "scenario_md": "domains/_shared/rehearsal/scenarios/02-container-egress-tree.md",
+  "turns": [
+    {
+      "user_message": "I just spun up a container with `docker run -it ubuntu bash` and `curl google.com` from inside it hangs forever. Container's the only one on the host. What do I check?",
+      "se_response_summary": "This is branchy — partition the failure first with a layer probe: docker exec <c> sh -c 'ping 127.0.0.1; ip route show default; ping <gateway>; ping 8.8.8.8; getent hosts example.com'. Whichever line fails first identifies the layer (loopback / route / gateway / external NAT / DNS). Don't fix yet — figure out which branch.",
+      "expected_harness_commands": ["lookup", "playbook docker.fm.container-no-egress-umbrella", "related docker.fm.container-no-egress-umbrella"],
+      "expected_keywords": ["ping", "ip route", "getent", "8.8.8.8", "layer", "gateway", "DNS"],
+      "hints": [
+        "What's a single one-liner that probes 5 layers in order?",
+        "Does the harness have a single umbrella fm for this?",
+        "If L4 (external IP) fails but L3 (gateway) works, what's the cause space?"
+      ]
+    },
+    {
+      "user_message": "L1, L2, L3 all fine. L4 fails (`8.8.8.8` 100% loss). L5 obviously also fails since DNS goes upstream. So gateway works but external doesn't.",
+      "se_response_summary": "L4 fail = host can't NAT container traffic out. Three host-side checks: (1) sysctl net.ipv4.ip_forward — must be 1; (2) sudo iptables -t nat -L POSTROUTING -n -v | grep MASQ — should have MASQUERADE for the bridge subnet; (3) check for firewalld/ufw intercepting. Most likely answer: ip_forward is 0 or someone flushed iptables and MASQUERADE is missing.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["ip_forward", "MASQUERADE", "POSTROUTING", "firewalld", "ufw", "sysctl"],
+      "hints": [
+        "What kernel sysctl needs to be 1 for the host to forward container traffic?",
+        "What iptables chain handles outbound NAT?",
+        "What other firewall might be intercepting before docker's chains?"
+      ]
+    },
+    {
+      "user_message": "`net.ipv4.ip_forward = 0`. Found it. How do I fix permanently — the host reboots and I want this to stick.",
+      "se_response_summary": "Two-step: enable now + persist. (1) sudo sysctl -w net.ipv4.ip_forward=1 (immediate, lost on reboot). (2) echo 'net.ipv4.ip_forward=1' | sudo tee /etc/sysctl.d/99-docker-fwd.conf; sudo sysctl --system (survives reboot). Validate: curl from container works. Why this happens: hardened images / cloud-init AMIs default it to 0; systemd-sysctl resets at boot from /etc/sysctl.d/.",
+      "expected_harness_commands": [],
+      "expected_keywords": ["sysctl -w", "/etc/sysctl.d/", "sysctl --system", "99-docker", "persist"],
+      "hints": [
+        "What's the immediate-vs-persistent split for sysctl?",
+        "Where do you drop a custom snippet so it survives reboot?"
+      ]
+    },
+    {
+      "user_message": "What if the same symptom showed up in a Kubernetes pod instead of a docker container?",
+      "se_response_summary": "Different mechanism, same observable symptom. K8s-side cause is usually NetworkPolicy default-deny-egress blocking traffic. Diagnose: kubectl get networkpolicy -n <ns>. Fix: explicit allow-egress rule + don't forget DNS to coredns. Host-side ip_forward / iptables checks still apply (k8s nodes need forwarding too, but most distros set it). Walk pnpm harness playbook k8s.fm.networkpolicy-default-deny-too-broad.",
+      "expected_harness_commands": ["playbook k8s.fm.networkpolicy-default-deny-too-broad"],
+      "expected_keywords": ["NetworkPolicy", "default-deny", "egress", "coredns", "kube-dns"],
+      "hints": [
+        "What's the k8s-specific mechanism for blocking pod egress?",
+        "If you write a default-deny NetworkPolicy, what must you explicitly allow for DNS to keep working?"
+      ]
+    }
+  ]
+}
