@@ -1,0 +1,132 @@
+[
+  {
+    "id":"docker.fm.image-pull-private-registry-auth",
+    "symptom":"`docker pull` from private registry fails 'unauthorized: incorrect username or password' OR 'denied: requested access to the resource is denied' OR 'pull access denied for X, repository does not exist or may require docker login'",
+    "error_patterns":["unauthorized","denied: requested access","pull access denied","repository does not exist or may require docker login","authentication required","no basic auth credentials"],
+    "root_cause_class":"registry-auth",
+    "affected_concepts":["docker.engine.docker-cli","docker.engine.cfg.daemon.json.tls","docker.runtime.auth-bearer-token","docker.runtime.www-authenticate"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Identify what wording the error uses (narrows the cause)","command":"docker pull <image> 2>&1 | tail -3","expected":"'pull access denied' = no/bad creds; 'toomanyrequests' = rate limit (different fm); 'denied' alone = repo policy","source_id":"oci-distribution-spec"},
+      {"step":2,"action":"Check what credentials docker has","command":"cat ~/.docker/config.json 2>/dev/null | jq '.auths | keys'","expected":"list of registry hostnames you've logged into; if missing your registry, no creds at all","source_id":"docker-docs-engine-security"},
+      {"step":3,"action":"Test auth directly against the registry's v2 API","command":"curl -u \"$USER:$PASS\" -I https://<registry>/v2/<org>/<repo>/manifests/latest","expected":"200=auth+repo OK; 401=auth bad; 404=auth OK but repo/tag wrong","source_id":"oci-distribution-spec"},
+      {"step":4,"action":"For ECR specifically, check token age (12-hour expiry)","command":"aws sts get-caller-identity && aws ecr get-login-password --region <region> | head -c 20","expected":"sts works → IAM ok; if get-login-password fails, IAM perms issue not token age","source_id":"docker-docs-engine-security"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For Docker Hub / GHCR / Harbor: re-login","command":"docker login <registry>","validation":"docker pull succeeds","rollback":"docker logout <registry>","source_id":"docker-docs-engine-security"},
+      {"step":2,"action":"For ECR: refresh the 12-hour token now AND wire into CI to refresh per-job","command":"aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account>.dkr.ecr.us-east-1.amazonaws.com","validation":"~/.docker/config.json has fresh auth entry","rollback":"docker logout <ecr-host>","source_id":"docker-docs-engine-security"},
+      {"step":3,"action":"For GitHub Actions / shared CI: use the official login action so it refreshes per-job","command":"# .github/workflows/x.yml: - uses: aws-actions/amazon-ecr-login@v2  # or docker/login-action@v3","validation":"subsequent steps inherit auth; no stale token","rollback":"remove the action step","source_id":"docker-docs-engine-security"},
+      {"step":4,"action":"For cluster pulls (EKS/ECS): switch from imagePullSecrets to IRSA / task IAM role so pulls use the assumed role's automatically-refreshed token","command":"# EKS: annotate ServiceAccount with eks.amazonaws.com/role-arn=<arn> that has AmazonEC2ContainerRegistryReadOnly","validation":"kubelet can pull without imagePullSecret","rollback":"recreate imagePullSecret","source_id":"docker-docs-engine-security"}
+    ],
+    "confidence":0.95,
+    "last_verified":"2026-05-03",
+    "source_ids":["docker-docs-engine-security","docker-docs-daemon-remote-access","oci-distribution-spec"]
+  },
+  {
+    "id":"linux.fm.systemd-unit-restart-loop",
+    "symptom":"systemd unit goes 'failed' after StartLimitBurst (5 by default) restarts; further `systemctl start` returns 'start-limit-hit' until counter is reset",
+    "error_patterns":["start-limit-hit","StartLimitBurst","start request repeated too quickly","Result: start-limit-hit","Failed to start"],
+    "root_cause_class":"systemd-restart",
+    "affected_concepts":["linux.systemd.unit-state-failed","linux.systemd.restart-policy","linux.systemd.restart-rate-limit"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Get the current state + last 10 journal lines","command":"sudo systemctl status <unit> --no-pager -l","expected":"Active: failed (Result: start-limit-hit); recent restart count","source_id":"systemd-systemctl-1"},
+      {"step":2,"action":"Read the FULL unit log for the actual underlying error","command":"sudo journalctl -u <unit> -e --no-pager","expected":"the binary's real exit reason (status=2/INVALIDARGUMENT, status=203/EXEC, YAML parse error, etc.) BEFORE the start-limit-hit message","source_id":"systemd-systemd-service-5"},
+      {"step":3,"action":"Verify the unit file isn't malformed","command":"sudo systemd-analyze verify <unit>","expected":"silent = OK; any output = unit-file syntax issue","source_id":"systemd-systemd-analyze-1"},
+      {"step":4,"action":"Inspect StartLimit settings","command":"systemctl show <unit> -p StartLimitBurst,StartLimitIntervalSec,Restart,RestartSec","expected":"defaults: Burst=5, Interval=10s, Restart=on-failure (or 'no' = never restarts)","source_id":"systemd-systemd-service-5"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Fix the underlying error first (see step 2 of diagnostic). DON'T just reset the counter — it'll just hit the limit again","command":"# edit config / fix permissions / fix ExecStart path, then:","validation":"running the binary directly succeeds: sudo -u <user> /path/to/bin --check-config","rollback":null,"source_id":"systemd-systemd-service-5"},
+      {"step":2,"action":"Reset the failure counter, then start","command":"sudo systemctl reset-failed <unit> && sudo systemctl start <unit> && sudo systemctl status <unit>","validation":"Active: active (running); journal shows clean startup","rollback":"sudo systemctl stop <unit>","source_id":"systemd-systemctl-1"},
+      {"step":3,"action":"Loosen StartLimit so transient failures don't lock you out","command":"# edit /etc/systemd/system/<unit>.d/restart.conf:\\n# [Unit]\\n# StartLimitIntervalSec=600s\\n# StartLimitBurst=10\\n# [Service]\\n# Restart=on-failure\\n# RestartSec=5s\\nsudo systemctl daemon-reload","validation":"systemctl show shows new values; transient failure no longer locks unit","rollback":"rm /etc/systemd/system/<unit>.d/restart.conf; daemon-reload","source_id":"systemd-systemd-service-5"},
+      {"step":4,"action":"Add ExecStartPre to validate config before main process starts (catches bad config early without consuming a restart slot)","command":"# [Service]\\n# ExecStartPre=/usr/local/bin/<bin> --config-check /etc/<bin>.yaml\\n# ExecStart=/usr/local/bin/<bin> --config /etc/<bin>.yaml","validation":"bad config now fails ExecStartPre with clear error, never starts main process","rollback":"remove ExecStartPre","source_id":"systemd-systemd-exec-5"}
+    ],
+    "confidence":0.95,
+    "last_verified":"2026-05-03",
+    "source_ids":["systemd-systemd-service-5","systemd-systemctl-1","systemd-systemd-analyze-1","systemd-systemd-exec-5"]
+  },
+  {
+    "id":"k8s.fm.dns-pod-search-too-many",
+    "symptom":"DNS lookups inside pods take 3-5 seconds for external hostnames (api.stripe.com, s3.amazonaws.com) — search-domain amplification with the default ndots:5",
+    "error_patterns":["search","ndots","slow dns","NXDOMAIN","3 seconds","2.8 seconds","resolution timeout"],
+    "root_cause_class":"dns",
+    "affected_concepts":["k8s.networking.dns-pod-search","k8s.networking.dns-policy-clusterfirst","k8s.networking.cluster-dns","k8s.networking.coredns"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Show pod's resolv.conf — confirm ndots and search list","command":"kubectl exec <pod> -- cat /etc/resolv.conf","expected":"options ndots:5 + search <ns>.svc.cluster.local svc.cluster.local cluster.local — that's the source","source_id":"k8s-dns"},
+      {"step":2,"action":"Time a no-trailing-dot lookup (triggers search expansion)","command":"kubectl exec <pod> -- sh -c 'time getent hosts api.stripe.com 2>&1'","expected":"~3 seconds total (4 NXDOMAINs at ~750ms each, then the real lookup)","source_id":"k8s-dns"},
+      {"step":3,"action":"Time a trailing-dot lookup (FQDN, skips search) for comparison","command":"kubectl exec <pod> -- sh -c 'time getent hosts api.stripe.com. 2>&1'","expected":"<100ms — confirms search expansion is the issue","source_id":"k8s-dns"},
+      {"step":4,"action":"Cross-check CoreDNS isn't also slow on its end","command":"kubectl exec <pod> -- dig +tries=1 +time=2 @$(kubectl get svc -n kube-system kube-dns -o jsonpath='{.spec.clusterIP}') api.stripe.com.","expected":"<100ms; if slow here too, the issue is in CoreDNS or upstream, not search","source_id":"k8s-dns"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Pod-side fix: set ndots:2 via dnsConfig.options (no app change)","command":"# spec.dnsPolicy: ClusterFirst\\n# spec.dnsConfig:\\n#   options:\\n#     - name: ndots\\n#       value: \"2\"\\nkubectl rollout restart deploy/<name>","validation":"new pod's resolv.conf shows ndots:2; getent hosts api.stripe.com finishes <100ms","rollback":"remove dnsConfig from spec; rollout restart","source_id":"k8s-dns"},
+      {"step":2,"action":"App-code fix: append trailing dot for known external services","command":"# Python: requests.get('https://api.stripe.com.')\\n# Go: http.Get('https://api.stripe.com./...')\\n# In env: APP_API_URL=https://api.stripe.com.","validation":"app's outbound calls measurably faster; CoreDNS metric coredns_dns_responses_total{rcode=\"NXDOMAIN\"} drops","rollback":"remove trailing dot","source_id":"k8s-dns"},
+      {"step":3,"action":"Cluster-wide fix: configure CoreDNS to short-circuit known external suffixes (advanced; only if many teams hit this)","command":"# Corefile snippet:\\n# template ANY ANY {\\n#   match \"^(.*)\\\\.svc\\\\.cluster\\\\.local\\\\.$\"\\n#   ... \\n# }","validation":"reduced search-amplification load on CoreDNS","rollback":"remove template plugin","source_id":"k8s-dns"}
+    ],
+    "confidence":0.95,
+    "last_verified":"2026-05-03",
+    "source_ids":["k8s-dns","k8s-debug-services","man7-resolv-conf-5"]
+  },
+  {
+    "id":"devin.fm.session-cant-reach-internal-svc",
+    "symptom":"Devin DevBox can't reach internal/private service (staging.internal.acme.io). Session log: 'Could not resolve host', or 'connection timed out', or 'self-signed certificate in certificate chain'",
+    "error_patterns":["could not connect","could not resolve host","connection timed out","self-signed certificate","unable to get issuer","name resolution failed"],
+    "root_cause_class":"network",
+    "affected_concepts":["devin.devbox.vpn-openvpn","devin.devbox.vpn-alternatives","devin.devbox.blueprint","devin.devbox.secrets-reference"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Classify the error (DNS vs TCP vs TLS — different fixes)","command":"# session log shows one of:\\n# 'Could not resolve host' → DNS\\n# 'Connection timed out' / 'No route' → routing/firewall\\n# 'self-signed certificate' → TLS trust","expected":"narrows to one of three branches","source_id":"devin-docs-onboard-vpn"},
+      {"step":2,"action":"From inside DevBox terminal: test the layers","command":"# DNS:  getent hosts staging.internal.acme.io\\n# Routing: curl -v --max-time 5 https://10.50.1.5/health  (use IP not name)\\n# TLS:  openssl s_client -connect staging.internal.acme.io:443 -servername staging.internal.acme.io < /dev/null 2>&1 | head -20","expected":"identifies which layer fails","source_id":"devin-docs-onboard-vpn"},
+      {"step":3,"action":"Check VPN client state","command":"pgrep -a openvpn; ip addr show tun0 2>/dev/null | head -3; tail -20 /var/log/openvpn/*.log 2>/dev/null","expected":"openvpn daemon running + tun0 has IP + log shows 'Initialization Sequence Completed'","source_id":"devin-docs-onboard-vpn"},
+      {"step":4,"action":"Check VPN-pushed DNS landed in resolv.conf","command":"cat /etc/resolv.conf","expected":"nameserver line pointing at internal DNS (10.x or similar); search line for internal domain","source_id":"devin-docs-onboard-vpn"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For VPN not running: ensure blueprint setup actually starts it (config alone isn't enough)","command":"# environment.yaml setup: |\\n#   sudo openvpn --config /etc/openvpn/client.conf --auth-user-pass /etc/openvpn/auth.txt --daemon --writepid /run/openvpn.pid\\n#   for i in $(seq 1 30); do ip link show tun0 >/dev/null 2>&1 && break; sleep 1; done","validation":"new session: ip addr show tun0 succeeds within 30s of boot","rollback":"remove openvpn lines from setup","source_id":"devin-docs-onboard-vpn"},
+      {"step":2,"action":"For DNS-only failure: inject internal DNS via blueprint","command":"# environment.yaml setup: |\\n#   echo 'nameserver 10.50.1.1' | sudo tee /etc/resolv.conf\\n#   echo 'nameserver 8.8.8.8' | sudo tee -a /etc/resolv.conf  # public fallback\\n#   echo 'search internal.acme.io' | sudo tee -a /etc/resolv.conf","validation":"getent hosts staging.internal.acme.io returns internal IP","rollback":"restore distro default resolv.conf","source_id":"devin-docs-onboard-vpn"},
+      {"step":3,"action":"For TLS untrusted: install corp CA bundle into DevBox trust store","command":"# environment.yaml: secrets: [{name: CORP_CA, target: /usr/local/share/ca-certificates/corp.crt}]\\n# setup: sudo update-ca-certificates","validation":"openssl s_client shows verify return code: 0 (ok); curl https://internal works","rollback":"sudo rm /usr/local/share/ca-certificates/corp.crt && sudo update-ca-certificates --fresh","source_id":"devin-docs-admin-security"},
+      {"step":4,"action":"For language runtimes (Java/Node/Python) with their own trust stores","command":"# Java: keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -file corp.crt -alias corp\\n# Node: export NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/corp.crt\\n# Python: export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt","validation":"per-runtime test (java client, node app, python script) succeeds against internal HTTPS","rollback":"unset env vars / keytool -delete","source_id":"devin-docs-onboard-vpn"}
+    ],
+    "confidence":0.85,
+    "last_verified":"2026-05-03",
+    "source_ids":["devin-docs-onboard-vpn","devin-docs-admin-security","devin-docs-onboard-environment-blueprints"]
+  },
+  {
+    "id":"methodology.fm.cpu-utilization-misleading",
+    "symptom":"App is slow under load but `top`/`kubectl top` shows low CPU usage (e.g. 35%) and no errors. RED metrics look fine; only latency is degraded. Classic Brendan Gregg 'CPU utilization is wrong' scenario.",
+    "error_patterns":["high CPU","but throughput OK","misleading util","slow but CPU low","p99 latency spike","off-CPU"],
+    "root_cause_class":"observability",
+    "affected_concepts":["methodology.use-method","methodology.red-method","methodology.four-golden-signals","methodology.off-cpu-flame-graph"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check IPC (instructions per cycle) — distinguishes 'CPU stalled' from 'CPU truly idle'","command":"sudo perf stat -p $(pgrep -f <app>) -- sleep 10","expected":"healthy: IPC > 1.0; suspicious: IPC < 0.5; severely stalled: IPC < 0.2 — means CPU is 'busy' but waiting on memory/cache/branch-mispredict","source_id":"man7-perf-stat-1"},
+      {"step":2,"action":"Off-CPU analysis — where is the thread blocked?","command":"sudo offcputime-bpfcc -p $(pgrep -f <app>) 30 2>&1 | tail -30  # OR  sudo perf record -F 99 -e sched:sched_switch -g --call-graph dwarf -p <pid> -- sleep 30","expected":"top off-CPU stacks point at lock (futex_wait), IO (io_schedule), socket (tcp_recvmsg), or DB driver","source_id":"brendangregg-offcpu"},
+      {"step":3,"action":"Check cgroup CFS throttling (containerized workloads)","command":"cat /sys/fs/cgroup/<cg>/cpu.stat   # OR for k8s pod: kubectl exec <pod> -- cat /sys/fs/cgroup/cpu.stat","expected":"nr_throttled non-zero AND increasing = CPU limit being hit even though average looks fine","source_id":"kernel-docs-cgroup-v2"},
+      {"step":4,"action":"Check Pressure Stall Information (PSI) for memory + CPU + IO contention","command":"cat /proc/pressure/cpu /proc/pressure/io /proc/pressure/memory","expected":"avg10/avg60/avg300 percentages; non-trivial 'some' or 'full' = saturation we'd otherwise miss","source_id":"kernel-docs-mm-concepts"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For low-IPC + futex_wait combo: lock contention. Find the lock + shrink critical section","command":"# Generate flame graph: perf record -g --call-graph dwarf -p <pid> -- sleep 30; perf script | flamegraph.pl > offcpu.svg\\n# Identify the lock; refactor app: move expensive work outside critical section, switch to RWMutex if many readers, or shard state","validation":"IPC rises above 1.0; off-CPU futex stacks shrink; p99 latency drops","rollback":"app-level revert","source_id":"brendangregg-offcpu"},
+      {"step":2,"action":"For cgroup throttling: widen quota window (longer period accommodates bursts)","command":"# k8s: spec.containers[].resources.limits.cpu: '4'  # raise limit\\n# OR: kubeletConfig CPUManagerPolicy=static if predictable cores available","validation":"cpu.stat nr_throttled stops increasing under same load","rollback":"prior limit","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"For low IPC w/ no off-CPU: memory bandwidth or NUMA. Pin app to one node + check LLC misses","command":"sudo perf stat -e cycles,instructions,LLC-loads,LLC-load-misses -p <pid> -- sleep 10\\n# If LLC miss rate >10%: numactl --cpunodebind=0 --membind=0 ./<app>","validation":"LLC miss rate drops; IPC rises","rollback":"omit numactl","source_id":"man7-perf-stat-1"}
+    ],
+    "confidence":0.9,
+    "last_verified":"2026-05-03",
+    "source_ids":["man7-perf-stat-1","brendangregg-offcpu","brendangregg-linux-perf","brendangregg-cpu-utilization-wrong","kernel-docs-cgroup-v2"]
+  },
+  {
+    "id":"methodology.fm.retro-becomes-trial",
+    "symptom":"Postmortem turns into blame; engineer at risk of leaving; adjacent teams now avoiding deploy assignments; reporting culture chilling effect",
+    "error_patterns":["blame","trial","postmortem","retrospective","'why didn't you'","named the engineer","engineer reluctant"],
+    "root_cause_class":"culture",
+    "affected_concepts":["methodology.blameless-postmortem","methodology.postmortem","methodology.blame-someone-else-anti-method","methodology.action-item","methodology.symptoms-vs-causes"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Review the postmortem doc for blame language","command":"# Search for: engineer's name appearing as subject of failure verbs ('Sarah forgot', 'X didn't notice')\\n# Versus role-based, system-level framing ('the deploy process didn't catch')","expected":"if names appear as subjects of failures, framing is broken","source_id":"sre-postmortem-culture"},
+      {"step":2,"action":"Check the action items — are they 'be more careful' or system-level?","command":"# 'Sarah will be more careful' → failed framing\\n# 'Add YAML schema validation in CI' / 'Add 60s canary period' → system-level (correct)","expected":"action items target the system, not the human","source_id":"sre-postmortem-culture"},
+      {"step":3,"action":"Survey the chilling effect: any engineers avoiding deploys / on-call?","command":"# Talk privately to 3 engineers on adjacent teams. Ask: 'how did you feel about that postmortem?' Look for: 'I'd rather not be the one when something breaks'","expected":"if multiple engineers avoid risk-taking → chilling effect confirmed","source_id":"sre-postmortem-culture"},
+      {"step":4,"action":"Audit history of action items from past postmortems","command":"# Linear/Jira/etc: postmortem AIs from last 6 months","expected":"<50% completion rate is a culture signal — postmortems aren't producing real change","source_id":"sre-postmortem-culture"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Loop 1 (today): private 1:1 with the engineer. Own the failure of the process, not their failure","command":"# Open with 'how are you doing'; explicitly say 'the postmortem went off the rails — that was a process failure I'm responsible for, and I'm going to fix it'; make their continued employment unambiguous","validation":"engineer feels heard; not at flight risk","rollback":null,"source_id":"sre-postmortem-culture"},
+      {"step":2,"action":"Loop 2 (this week): rewrite the postmortem doc blamelessly","command":"# Replace names with roles ('the deploy engineer'); reframe each 'X forgot to' as 'process didn't catch'; list contributing factors not 'the cause'; have a senior leader publicly thank the engineer for their honesty","validation":"new doc reads as systems analysis, not court transcript","rollback":"git revert (but don't)","source_id":"sre-postmortem-culture"},
+      {"step":3,"action":"Loop 3 (structural): adopt blameless template + tracked action items","command":"# Adopt PagerDuty incident response template OR Google SRE Book Ch 15 example\\n# Action items into team backlog with owners + deadlines; report completion at sprint reviews","validation":"next postmortem follows new template by default","rollback":null,"source_id":"sre-postmortem-culture"},
+      {"step":4,"action":"Show the team the recovery story (rebuilds adjacent-team trust)","command":"# At all-hands: 'we got this postmortem wrong; here's what we changed and why' — visible signal that contradicts the original public-trial","validation":"adjacent engineers notice; willingness to take deploy assignments returns over weeks","rollback":null,"source_id":"sre-postmortem-culture"}
+    ],
+    "confidence":0.85,
+    "last_verified":"2026-05-03",
+    "source_ids":["sre-postmortem-culture","sre-being-oncall","sre-managing-incidents"]
+  }
+]

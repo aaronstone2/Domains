@@ -592,3 +592,55 @@ Per user direction (one-phase-at-a-time, complete fully), focused single-section
 - All current fm-ids checked against `harness lookup` to verify they resolve
 
 Cross-linked: every fm-id is `pnpm harness playbook <id>`-runnable; every section references the broader rehearsal scenarios + drill mode for deeper practice.
+
+## Phase 12 — bootstrap.sh (interview-day installer)
+
+### Session P12 — 2026-05-03 — DONE
+
+`bootstrap.sh` at repo root + `.aliases` + `cmd_history.txt` + root `README.md`. Installs the full diagnostic + productivity stack on a fresh Linux VM in one command, optionally launching Claude. API keys NEVER stored — passed at run time via `--anthropic-key=...`.
+
+Idempotent (bashrc additions guarded by markers); cross-platform shell awareness; LF line endings forced via `.gitattributes` so the script works on Linux from a Windows checkout.
+
+Interview-day one-liner:
+
+```bash
+git clone https://github.com/aaronstone2/Domains && cd Domains && \
+  ./bootstrap.sh --anthropic-key='sk-ant-...' --launch
+```
+
+## Phase 13 — Quality pass on thin failure_modes
+
+### Session P13 — 2026-05-03 — DONE
+
+User direction: "do a phase and complete it like all of a section carefully and precisely... high quality." Audit revealed that of 415 fms, 250 were critically thin (<2 diag OR <2 fix steps). Scoped Phase 13 to a bounded high-impact subset: **6 thin primary-scenario fms + all 28 methodology fms = 34 fms deepened to 3+ diag, 2+ fix.**
+
+**Primary-scenario fms (the 6 used in rehearsals):**
+
+| fm-id | before (diag/fix) | after (diag/fix) |
+|---|---|---|
+| docker.fm.image-pull-private-registry-auth | 2/2 | **4/4** |
+| linux.fm.systemd-unit-restart-loop | 1/2 | **4/4** |
+| k8s.fm.dns-pod-search-too-many | 1/2 | **4/3** |
+| devin.fm.session-cant-reach-internal-svc | 2/1 | **4/4** |
+| methodology.fm.cpu-utilization-misleading | 2/1 | **4/3** |
+| methodology.fm.retro-becomes-trial | 1/2 | **4/4** |
+
+**Methodology domain (28 fms total):** all 28 brought to 3+ diag / 2+ fix. Avg now **3.07 diag / 2.96 fix** with **zero thin or critical-thin**. Up from 1.11/1.79 with 26/28 thin.
+
+Output files:
+- `domains/_shared/extract/failure_modes_p13_primary_quality.json` — 6 deepened primary fms
+- `domains/methodology/extract/failure_modes_p13_quality.json` — 26 deepened methodology fms (excluding the 2 already in primary file)
+
+Pattern: each fm now has 3-4 specific diagnostic commands with concrete `expected:` outcomes, plus 2-4 fix steps with copy-pasteable commands and explicit `validate:` + `rollback:` paths. No more 1-step playbooks for the most-likely interview-day fms.
+
+**Remaining thin counts (Phase 14+ scope):**
+
+| Domain | thin_or_worse | total | next pass priority |
+|---|---:|---:|---|
+| linux | 80 | 91 | high (most-cited debugging surface) |
+| firecracker | 69 | 71 | medium (interview-relevant if Cognition-specific question) |
+| docker | 65 | 74 | high |
+| k8s | 52 | 64 | high |
+| ecs | 47 | 50 | low (less-likely interview surface) |
+| devin | 36 | 37 | high (Cognition product) |
+| methodology | 0 | 28 | ✓ done in P13 |
