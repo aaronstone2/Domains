@@ -1,0 +1,668 @@
+[
+  {
+    "id": "methodology.cmd.perf.list",
+    "command": "perf list",
+    "purpose": "List events available to perf_events on this kernel — tracepoints, PMC events, software events. The first command to run when planning a perf session.",
+    "flags": [
+      {"name": "<filter>", "value": "<glob>", "doc": "Filter by event glob, e.g. 'sched:*' or 'syscalls:*'."}
+    ],
+    "examples": [
+      {"invocation": "perf list", "expected_output": "Long list of events grouped by category", "scenario": "Initial discovery of available events"},
+      {"invocation": "perf list 'sched:*'", "expected_output": "Just scheduler tracepoints", "scenario": "Find scheduler events for context-switch tracing"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.stat",
+    "command": "perf stat",
+    "purpose": "Count events without recording each one — the lowest-overhead perf mode. Default counts a basic CPU set; -e specifies events; -a is system-wide; -p targets a PID.",
+    "flags": [
+      {"name": "-a", "value": null, "doc": "All CPUs (system-wide)."},
+      {"name": "-d", "value": null, "doc": "Detailed CPU counter statistics including extras."},
+      {"name": "-p", "value": "<PID>", "doc": "Target a specific PID."},
+      {"name": "-e", "value": "<event[,event,...]>", "doc": "Specific event(s). Supports tracepoints, PMCs, raw event specs (e.g. r003c)."},
+      {"name": "-I", "value": "<msec>", "doc": "Print summary every msec (continuous monitoring)."},
+      {"name": "--", "value": null, "doc": "Separates perf flags from the target command."}
+    ],
+    "examples": [
+      {"invocation": "perf stat -a -- sleep 10", "expected_output": "task-clock, context-switches, cycles, instructions, branches, branch-misses for 10s", "scenario": "Quick system-wide CPU health snapshot — IPC and context-switch rate"},
+      {"invocation": "perf stat -d ./mybinary", "expected_output": "Detailed counter set for one run", "scenario": "Per-binary cache + instruction statistics"},
+      {"invocation": "perf stat -e cycles,instructions,cache-references,cache-misses -a sleep 10", "expected_output": "Just those four counters system-wide", "scenario": "Compute IPC and cache-miss rate manually"},
+      {"invocation": "perf stat -e 'syscalls:sys_enter_*' -p PID", "expected_output": "Syscall count by type for that PID", "scenario": "Process-level syscall profile"},
+      {"invocation": "perf stat -e 'sched:*' -p PID sleep 10", "expected_output": "Scheduler event counts for the PID over 10s", "scenario": "Scheduling-pressure characterization"}
+    ],
+    "source_ids": ["brendangregg-perf", "brendangregg-cpu-utilization-wrong"]
+  },
+  {
+    "id": "methodology.cmd.perf.record",
+    "command": "perf record",
+    "purpose": "Sample CPU stacks or trace specific events to a perf.data file for later analysis (perf report / perf script / FlameGraph generation). The workhorse for CPU profiling and tracepoint capture.",
+    "flags": [
+      {"name": "-F", "value": "<freq>", "doc": "Sampling frequency in Hz (typical: 99 to avoid lockstep with timer interrupts)."},
+      {"name": "-a", "value": null, "doc": "All CPUs (system-wide)."},
+      {"name": "-g", "value": null, "doc": "Capture call graphs (stack traces) using frame pointers by default."},
+      {"name": "--call-graph", "value": "dwarf|fp|lbr", "doc": "Stack-walking method. fp needs frame pointers; dwarf is universal but heavier; lbr uses Last Branch Record."},
+      {"name": "-p", "value": "<PID>", "doc": "Target a single PID."},
+      {"name": "-e", "value": "<event>", "doc": "Event to sample (tracepoint, raw PMC, etc.)."},
+      {"name": "-c", "value": "<count>", "doc": "Sample period (one sample per N events). Use with PMC events like cache misses."},
+      {"name": "--filter", "value": "<expr>", "doc": "Filter events by tracepoint variable predicate (e.g. 'rwbs == \"WS\"')."},
+      {"name": "-o", "value": "<file>", "doc": "Output file (default perf.data)."}
+    ],
+    "examples": [
+      {"invocation": "perf record -F 99 -a -g -- sleep 30", "expected_output": "perf.data file with ~30s of all-CPU stack samples", "scenario": "Standard system-wide CPU profile for FlameGraph generation"},
+      {"invocation": "perf record -F 99 -p PID --call-graph dwarf sleep 10", "expected_output": "perf.data with PID stacks unwound via DWARF", "scenario": "When the target wasn't built with frame pointers"},
+      {"invocation": "perf record -e block:block_rq_issue -ag", "expected_output": "Block I/O issue events with stack traces", "scenario": "Disk-I/O-issuing code-path investigation"},
+      {"invocation": "perf record -e context-switches -ag -- sleep 10", "expected_output": "Context-switch samples with stacks", "scenario": "Off-CPU starting point — what's leaving CPU"},
+      {"invocation": "perf record -e LLC-load-misses -c 100 -ag -- sleep 5", "expected_output": "Stack samples at every 100 last-level-cache misses", "scenario": "Memory-stall investigation — where are LLC misses coming from"},
+      {"invocation": "perf record -F 99 -e cpu-clock --cgroup=docker/<id> -a -- sleep 10", "expected_output": "Cgroup-scoped CPU profile", "scenario": "Profile a specific Docker container only"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.report",
+    "command": "perf report",
+    "purpose": "Display a perf.data file as a hierarchical (tree) summary with percentages. Default UI is the ncurses TUI; --stdio for text output. The default consumer of perf.data after perf record.",
+    "flags": [
+      {"name": "-n", "value": null, "doc": "Show sample count column."},
+      {"name": "--stdio", "value": null, "doc": "Text output instead of ncurses TUI."},
+      {"name": "-g", "value": "folded", "doc": "Stack format: 'folded' = one line per stack (input shape for flamegraph.pl)."}
+    ],
+    "examples": [
+      {"invocation": "perf report", "expected_output": "Interactive TUI with hot functions + drill-down", "scenario": "Quick visual inspection of profile"},
+      {"invocation": "perf report --stdio -n -g folded", "expected_output": "Folded-stack lines, sample-count prefixed", "scenario": "Pipe into flamegraph.pl for FlameGraph generation"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.script",
+    "command": "perf script",
+    "purpose": "Dump every event from perf.data as text, one line per event with timestamp, comm, PID, stack. The raw form needed for custom post-processing (flame graphs, sequence analysis).",
+    "flags": [
+      {"name": "--header", "value": null, "doc": "Include data header (was previously default)."},
+      {"name": "-F", "value": "<fields>", "doc": "Customize fields, e.g. comm,pid,tid,cpu,time,event,ip,sym,dso (>= Linux 4.1)."},
+      {"name": "-D", "value": null, "doc": "Dump raw contents as hex (debugging)."}
+    ],
+    "examples": [
+      {"invocation": "perf script", "expected_output": "Plaintext event stream", "scenario": "Default text dump for piping to flamegraph stack-folding"},
+      {"invocation": "perf script --header -F comm,pid,tid,cpu,time,event,ip,sym,dso", "expected_output": "Customized columns", "scenario": "Build precise CSV-ish input for downstream tools"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.top",
+    "command": "perf top",
+    "purpose": "Live top-N functions by sample count, refreshed continuously. Like top(1) but for code-paths instead of processes.",
+    "flags": [
+      {"name": "-F", "value": "<freq>", "doc": "Sampling frequency."},
+      {"name": "-e", "value": "<event>", "doc": "Event to sample."},
+      {"name": "-ns", "value": "<sort-keys>", "doc": "-n shows sample count; -s sorts by given keys (e.g. comm,dso)."}
+    ],
+    "examples": [
+      {"invocation": "perf top -F 49", "expected_output": "Live ranked function list", "scenario": "Fast triage — what's the system spending CPU on right now"},
+      {"invocation": "perf top -F 49 -ns comm,dso", "expected_output": "Sorted by process + shared object", "scenario": "Process-level attribution view"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.annotate",
+    "command": "perf annotate",
+    "purpose": "Disassemble hot functions and overlay percentages from perf.data on each instruction. Shows precisely which line is hot inside a function.",
+    "flags": [
+      {"name": "--stdio", "value": null, "doc": "Text output."}
+    ],
+    "examples": [
+      {"invocation": "perf annotate --stdio", "expected_output": "Disassembly of recorded functions with sample %", "scenario": "Pinpoint hot instruction in a hot function (needs debuginfo)"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.probe",
+    "command": "perf probe",
+    "purpose": "Add or remove dynamic tracepoints (kprobes/uprobes) at runtime. Lets you observe arbitrary kernel or user-space functions with arguments — without recompiling.",
+    "flags": [
+      {"name": "--add", "value": "<probe>", "doc": "Create a probe (also implicit if no other action given)."},
+      {"name": "-d", "value": "<probe>", "doc": "Delete a probe."},
+      {"name": "-V", "value": "<func>", "doc": "Show available variables for that function (needs debuginfo)."},
+      {"name": "-L", "value": "<func>", "doc": "Show line probes for the function (needs debuginfo)."},
+      {"name": "-x", "value": "<binary>", "doc": "Target a user-space binary (uprobe)."},
+      {"name": "-l", "value": null, "doc": "List currently created probes."}
+    ],
+    "examples": [
+      {"invocation": "perf probe --add tcp_sendmsg", "expected_output": "Probe added; usable as probe:tcp_sendmsg", "scenario": "Catch every kernel TCP send"},
+      {"invocation": "perf probe 'tcp_sendmsg%return $retval'", "expected_output": "Return probe capturing retval", "scenario": "Latency or return-value distribution analysis"},
+      {"invocation": "perf probe 'do_sys_open filename:string'", "expected_output": "Probe with the filename arg as a string", "scenario": "Trace which file paths are being opened (needs debuginfo)"},
+      {"invocation": "perf probe -x /lib64/libc.so.6 malloc", "expected_output": "uprobe on libc malloc", "scenario": "User-level dynamic tracing of malloc calls"},
+      {"invocation": "perf probe -d tcp_sendmsg", "expected_output": "Probe removed", "scenario": "Cleanup after investigation"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.c2c",
+    "command": "perf c2c",
+    "purpose": "Cache-line contention analysis (Linux 4.10+). Records and reports cache-line transfers between CPUs — the key signal for false-sharing and NUMA hot spots.",
+    "flags": [
+      {"name": "record", "value": null, "doc": "Subcommand: capture cache-line events."},
+      {"name": "report", "value": null, "doc": "Subcommand: render the captured data."}
+    ],
+    "examples": [
+      {"invocation": "perf c2c record -a -- sleep 10", "expected_output": "perf.data with cache-line events", "scenario": "10-second system-wide cache-coherence capture"},
+      {"invocation": "perf c2c report", "expected_output": "Report sorted by cache-line traffic", "scenario": "Identify false-sharing or NUMA-mishomed lines"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.perf.trace",
+    "command": "perf trace",
+    "purpose": "strace-like tool built on perf_events — much lower overhead than strace because it uses perf's in-kernel buffer instead of ptrace.",
+    "flags": [
+      {"name": "-p", "value": "<PID>", "doc": "Trace a specific PID."}
+    ],
+    "examples": [
+      {"invocation": "perf trace -p PID", "expected_output": "Per-syscall trace lines with latencies", "scenario": "Latency-aware syscall trace without strace's order-of-magnitude slowdown"}
+    ],
+    "source_ids": ["brendangregg-perf"]
+  },
+  {
+    "id": "methodology.cmd.bpftrace.kprobe",
+    "command": "bpftrace -e 'kprobe:<func> { ... }'",
+    "purpose": "Attach a kprobe to a kernel function and run a BPF action block. The most common bpftrace shape for kernel-side dynamic tracing.",
+    "flags": [
+      {"name": "-e", "value": "<program>", "doc": "Inline bpftrace program."},
+      {"name": "-l", "value": "<glob>", "doc": "List probes matching glob (e.g. 'kprobe:tcp_*')."}
+    ],
+    "examples": [
+      {"invocation": "bpftrace -e 'kprobe:tcp_sendmsg { @[comm] = count(); }'", "expected_output": "Per-process count of tcp_sendmsg calls on Ctrl-C", "scenario": "Attribute kernel TCP sends to user processes"},
+      {"invocation": "bpftrace -e 'kretprobe:vfs_read /pid == 1234/ { @ns = hist(nsecs - @start[tid]); } kprobe:vfs_read /pid == 1234/ { @start[tid] = nsecs; }'", "expected_output": "Histogram of vfs_read latency for PID 1234", "scenario": "Per-process latency histogram of a kernel function"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "bpftrace-language"]
+  },
+  {
+    "id": "methodology.cmd.bpftrace.uprobe",
+    "command": "bpftrace -e 'uprobe:<binary>:<symbol> { ... }'",
+    "purpose": "User-space dynamic tracing — attach to any function in any binary at runtime. Higher overhead than kprobes due to user/kernel boundary crossing.",
+    "flags": [
+      {"name": "-e", "value": "<program>", "doc": "Inline bpftrace program."}
+    ],
+    "examples": [
+      {"invocation": "bpftrace -e 'uprobe:/bin/bash:readline { printf(\"%s\\n\", str(retval)); }'", "expected_output": "Each typed bash command printed", "scenario": "Audit interactive bash command lines"},
+      {"invocation": "bpftrace -e 'uprobe:/lib/x86_64-linux-gnu/libc.so.6:malloc { @[ustack] = count(); }'", "expected_output": "Stack-attributed malloc call counts", "scenario": "Find which user-space stacks allocate the most"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "bpftrace-language"]
+  },
+  {
+    "id": "methodology.cmd.bpftrace.tracepoint",
+    "command": "bpftrace -e 'tracepoint:<category>:<name> { ... }'",
+    "purpose": "Attach to a stable kernel tracepoint (more durable across kernel versions than kprobes). Discoverable via bpftrace -l 'tracepoint:*'.",
+    "flags": [
+      {"name": "-e", "value": "<program>", "doc": "Inline bpftrace program."}
+    ],
+    "examples": [
+      {"invocation": "bpftrace -e 'tracepoint:syscalls:sys_enter_open { @[comm] = count(); }'", "expected_output": "open() syscall counts by process", "scenario": "Stable alternative to kprobing do_sys_open"},
+      {"invocation": "bpftrace -e 'tracepoint:block:block_rq_issue { @[comm] = count(); }'", "expected_output": "Block I/O attribution", "scenario": "Disk-I/O-issuing process attribution"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "bpftrace-language"]
+  },
+  {
+    "id": "methodology.cmd.bpftrace.profile",
+    "command": "bpftrace -e 'profile:hz:99 { ... }'",
+    "purpose": "Timed sampling — fire on every CPU at the specified rate. Equivalent to perf record -F for sampling + bpftrace's expressive aggregations.",
+    "flags": [
+      {"name": "-e", "value": "<program>", "doc": "Inline bpftrace program."}
+    ],
+    "examples": [
+      {"invocation": "bpftrace -e 'profile:hz:99 /pid == 1234/ { @[ustack] = count(); }'", "expected_output": "User stack histogram for PID 1234 at 99 Hz", "scenario": "CPU profile of one process; pipe to FlameGraph"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "bpftrace-language"]
+  },
+  {
+    "id": "methodology.cmd.bcc.execsnoop",
+    "command": "execsnoop",
+    "purpose": "Trace new process creation via the exec() syscall. Prints PID, parent PID, comm, and full argv as each exec() fires. Essential for catching short-lived processes invisible to top/ps.",
+    "flags": [
+      {"name": "-T", "value": null, "doc": "Print timestamp column."},
+      {"name": "-x", "value": null, "doc": "Include failed exec()s."},
+      {"name": "-n", "value": "<name>", "doc": "Filter by process name regex."}
+    ],
+    "examples": [
+      {"invocation": "execsnoop", "expected_output": "Live stream of exec() events", "scenario": "Catch shell scripts spawning subprocesses"},
+      {"invocation": "execsnoop -T -x", "expected_output": "Includes timestamps and failed exec()s", "scenario": "Audit-trail capture"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.bcc.opensnoop",
+    "command": "opensnoop",
+    "purpose": "Trace open() syscalls system-wide, printing process and full file path as files are opened.",
+    "flags": [
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."},
+      {"name": "-T", "value": null, "doc": "Timestamps."},
+      {"name": "-x", "value": null, "doc": "Failed opens only."}
+    ],
+    "examples": [
+      {"invocation": "opensnoop", "expected_output": "Live stream of opens with PID/COMM/path", "scenario": "Find which config file a service is reading"},
+      {"invocation": "opensnoop -p PID -x", "expected_output": "Failed opens by that PID", "scenario": "Diagnose 'no such file' errors when stat/open is failing"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.bcc.biolatency",
+    "command": "biolatency",
+    "purpose": "Block-device I/O latency as a power-of-2 histogram. Reveals tail latency and bimodal distributions that mean-latency hides.",
+    "flags": [
+      {"name": "-D", "value": null, "doc": "Break down by disk."},
+      {"name": "-m", "value": null, "doc": "Output in milliseconds (default microseconds)."},
+      {"name": "-T", "value": null, "doc": "Include timestamp."},
+      {"name": "<interval>", "value": "<sec>", "doc": "Print every N seconds (positional)."}
+    ],
+    "examples": [
+      {"invocation": "biolatency", "expected_output": "Single histogram on Ctrl-C", "scenario": "One-shot disk latency snapshot"},
+      {"invocation": "biolatency -mT 1", "expected_output": "Per-second ms histograms with timestamps", "scenario": "Watch tail latency trends live"},
+      {"invocation": "biolatency -D 5 12", "expected_output": "12 five-second per-disk histograms", "scenario": "Per-disk latency over a one-minute window"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.biosnoop",
+    "command": "biosnoop",
+    "purpose": "Per-event block I/O trace — comm, PID, disk, R/W, sector, bytes, latency for every I/O. The drill-down companion to biolatency's histogram.",
+    "flags": [
+      {"name": "-Q", "value": null, "doc": "Include time spent in the queue (full latency from queue-insert to completion)."}
+    ],
+    "examples": [
+      {"invocation": "biosnoop", "expected_output": "Streaming per-I/O lines", "scenario": "Attribute slow I/Os to specific processes after biolatency shows tail"},
+      {"invocation": "biosnoop -Q", "expected_output": "Same stream including queue time", "scenario": "Distinguish disk-side vs queue-side latency"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.ext4slower",
+    "command": "ext4slower",
+    "purpose": "Trace ext4 file-system operations slower than a configurable threshold. Surfaces filesystem-level slow paths without flooding output. (bcc has matching tools for btrfs, xfs, zfs.)",
+    "flags": [
+      {"name": "<min_ms>", "value": "<ms>", "doc": "Slowness threshold in milliseconds (positional)."}
+    ],
+    "examples": [
+      {"invocation": "ext4slower 1", "expected_output": "All ext4 ops > 1 ms", "scenario": "Catch FS-level latency spikes during a workload"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.cachestat",
+    "command": "cachestat",
+    "purpose": "Linux page-cache hit/miss/dirty stats summarized per second. Surfaces page-cache effectiveness; low hit rates suggest working-set > RAM or anti-pattern access.",
+    "flags": [
+      {"name": "<interval>", "value": "<sec>", "doc": "Update interval (positional)."}
+    ],
+    "examples": [
+      {"invocation": "cachestat 1", "expected_output": "Per-second HITS/MISSES/DIRTIES/HIT%/cache size", "scenario": "Validate that repeated reads benefit from page cache"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.bcc.tcpconnect",
+    "command": "tcpconnect",
+    "purpose": "Trace TCP connect() syscalls with PID, IP, and port. Captures outbound connection attempts that aren't visible via netstat-style snapshots.",
+    "flags": [
+      {"name": "-t", "value": null, "doc": "Timestamp column."},
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."}
+    ],
+    "examples": [
+      {"invocation": "tcpconnect", "expected_output": "Live PID/COMM/IP/port stream", "scenario": "Find which process is opening unexpected outbound connections"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.tcpaccept",
+    "command": "tcpaccept",
+    "purpose": "Trace TCP accept() syscalls — passive (inbound) connections with PID, source IP, port.",
+    "flags": [
+      {"name": "-t", "value": null, "doc": "Timestamps."}
+    ],
+    "examples": [
+      {"invocation": "tcpaccept", "expected_output": "Inbound connection stream", "scenario": "Find which process is serving on a port and where clients are coming from"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.tcplife",
+    "command": "tcplife",
+    "purpose": "Trace TCP connection lifetimes — for each completed (closed) connection: PID, comm, addresses, ports, bytes, duration.",
+    "flags": [
+      {"name": "-L", "value": "<port[,port,...]>", "doc": "Filter by local port."}
+    ],
+    "examples": [
+      {"invocation": "tcplife -L 80", "expected_output": "All HTTP server-side connection summaries", "scenario": "Per-connection HTTP duration without app-level instrumentation"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.tcpretrans",
+    "command": "tcpretrans",
+    "purpose": "Trace TCP retransmits with addresses, ports, and TCP state. Surfaces network reliability issues without per-packet overhead — retransmits are normally <<1% of traffic.",
+    "flags": [
+      {"name": "-l", "value": null, "doc": "Include tail-loss-probe events."}
+    ],
+    "examples": [
+      {"invocation": "tcpretrans", "expected_output": "Live retransmit stream with TCP states", "scenario": "Pinpoint flaky network paths or stalled peers"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.bcc.profile",
+    "command": "profile",
+    "purpose": "Timed CPU stack-trace sampling using eBPF (not perf record) — far more efficient on Linux 4.9+ because it summarizes in kernel context.",
+    "flags": [
+      {"name": "-F", "value": "<freq>", "doc": "Sample frequency (Hz)."},
+      {"name": "-d", "value": null, "doc": "Insert delimiter between kernel and user stacks."},
+      {"name": "-f", "value": null, "doc": "Folded output (one line per stack — for flamegraph.pl)."},
+      {"name": "<duration>", "value": "<sec>", "doc": "Sample duration (positional)."}
+    ],
+    "examples": [
+      {"invocation": "profile -fd -F 49 10", "expected_output": "10s of folded 49 Hz samples", "scenario": "Pipe directly into flamegraph.pl for a CPU FlameGraph"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.runqlat",
+    "command": "runqlat",
+    "purpose": "Run-queue latency histogram — time threads spent waiting on the CPU run queue before being scheduled. Direct measurement of CPU saturation in USE-method terms.",
+    "flags": [
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."},
+      {"name": "<interval>", "value": "<sec>", "doc": "Periodic update."}
+    ],
+    "examples": [
+      {"invocation": "runqlat 1 10", "expected_output": "Per-second histogram for 10 seconds", "scenario": "Detect CPU saturation hidden behind sub-100% utilization"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.offcputime",
+    "command": "offcputime",
+    "purpose": "Aggregate per-stack off-CPU time using kernel context-switch tracing. The canonical off-CPU analysis tool for Linux. Output is folded-stack-format suitable for FlameGraph.",
+    "flags": [
+      {"name": "-K", "value": null, "doc": "Kernel stacks only."},
+      {"name": "-U", "value": null, "doc": "User stacks only."},
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."},
+      {"name": "-f", "value": null, "doc": "Folded output for FlameGraph."},
+      {"name": "<duration>", "value": "<sec>", "doc": "Capture duration."}
+    ],
+    "examples": [
+      {"invocation": "offcputime -K -p $(pgrep -nx tar)", "expected_output": "Kernel-stack-attributed off-CPU times for tar", "scenario": "Find why tar is blocked off-CPU (likely disk I/O paths)"},
+      {"invocation": "offcputime -p $(pgrep -nx mysqld) 30", "expected_output": "Kernel + user stacks for mysqld over 30s", "scenario": "Identify which mysqld query paths block on disk vs lock"}
+    ],
+    "source_ids": ["brendangregg-offcpu"]
+  },
+  {
+    "id": "methodology.cmd.bcc.cpudist",
+    "command": "cpudist",
+    "purpose": "Histogram of on-CPU or off-CPU run lengths per task. -O switches from on-CPU to off-CPU mode.",
+    "flags": [
+      {"name": "-O", "value": null, "doc": "Off-CPU mode (default is on-CPU)."},
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."}
+    ],
+    "examples": [
+      {"invocation": "cpudist -O -p $(pgrep -nx tar)", "expected_output": "Off-CPU duration histogram for tar", "scenario": "Distribution of blocked-time durations — bimodal? heavy-tailed?"}
+    ],
+    "source_ids": ["brendangregg-offcpu"]
+  },
+  {
+    "id": "methodology.cmd.bcc.funccount",
+    "command": "funccount",
+    "purpose": "Count kernel (or user) function calls matching a pattern. Discovery tool: which paths fired? -i provides interval-based output.",
+    "flags": [
+      {"name": "-i", "value": "<sec>", "doc": "Print summary every N seconds."},
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."},
+      {"name": "<pattern>", "value": "<glob>", "doc": "Function pattern (positional)."}
+    ],
+    "examples": [
+      {"invocation": "funccount -i 1 'tcp_send*'", "expected_output": "Per-second counts of all tcp_send* kernel functions", "scenario": "Discover which TCP send paths are hot"},
+      {"invocation": "funccount -p 185 'vfs_*'", "expected_output": "VFS function counts for PID 185", "scenario": "Per-process file-system call breakdown"}
+    ],
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.bcc.stackcount",
+    "command": "stackcount",
+    "purpose": "Count stack traces leading to a given function or tracepoint. Answers 'who calls X?' across the kernel — find which code paths trigger an event.",
+    "flags": [
+      {"name": "<probe>", "value": "<spec>", "doc": "Function or tracepoint to count stacks for (positional)."}
+    ],
+    "examples": [
+      {"invocation": "stackcount submit_bio", "expected_output": "Stack trace counts that lead to submit_bio (block I/O issue)", "scenario": "Identify which code paths issue disk I/O"},
+      {"invocation": "stackcount t:block:block_rq_insert", "expected_output": "Same via the stable tracepoint", "scenario": "Stable cross-version alternative to kprobing submit_bio"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.argdist",
+    "command": "argdist",
+    "purpose": "One-shot frequency count or histogram of function arguments. Useful for quick distribution analysis without writing a full bpftrace program.",
+    "flags": [
+      {"name": "-C", "value": "<spec>", "doc": "Frequency count by argument."},
+      {"name": "-H", "value": "<spec>", "doc": "Power-of-2 histogram by argument."},
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."}
+    ],
+    "examples": [
+      {"invocation": "argdist -C 'p::tcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size):u32:size'", "expected_output": "Frequency table of tcp_sendmsg send sizes", "scenario": "Send-size distribution at the kernel level"},
+      {"invocation": "argdist -H 'p::tcp_sendmsg(...):u32:size'", "expected_output": "Same as histogram", "scenario": "Visualize send-size distribution"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.trace",
+    "command": "trace",
+    "purpose": "Quick per-event tracer for kernel/user functions. Lets you print arguments without writing a bcc script. Format: 'p::FUNC \"FMT\", expr1, expr2'.",
+    "flags": [
+      {"name": "<probe-spec>", "value": "<expr>", "doc": "Probe spec + format string + variables (positional)."},
+      {"name": "-K", "value": null, "doc": "Include kernel stack."},
+      {"name": "-U", "value": null, "doc": "Include user stack."}
+    ],
+    "examples": [
+      {"invocation": "trace 'p::do_sys_open \"%s\", arg2'", "expected_output": "Each opened path as it happens", "scenario": "Quick file-open tracer, lighter than opensnoop"},
+      {"invocation": "trace 'r::do_sys_open \"ret: %d\", retval'", "expected_output": "Return values of do_sys_open", "scenario": "See open() return codes (errors)"},
+      {"invocation": "trace -K 'do_nanosleep \"mode: %d\", arg2'", "expected_output": "Each nanosleep with kernel stack", "scenario": "Find which kernel paths invoke do_nanosleep"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.funclatency",
+    "command": "funclatency",
+    "purpose": "Latency (function duration) histogram for kernel/user functions.",
+    "flags": [
+      {"name": "-p", "value": "<PID>", "doc": "Filter by PID."},
+      {"name": "-u", "value": null, "doc": "Microseconds output."},
+      {"name": "<func>", "value": null, "doc": "Function name (positional)."}
+    ],
+    "examples": [
+      {"invocation": "funclatency -p 181 -u vfs_read", "expected_output": "Microsecond-resolution histogram of vfs_read for PID 181", "scenario": "Per-process kernel call latency distribution"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.bcc.gethostlatency",
+    "command": "gethostlatency",
+    "purpose": "Trace getaddrinfo/gethostbyname (DNS lookup) latency at the libresolver level. Identifies slow DNS as an application-latency cause.",
+    "flags": [],
+    "examples": [
+      {"invocation": "gethostlatency", "expected_output": "Per-call DNS lookup latency", "scenario": "Diagnose intermittent app slowness traced to DNS"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.perftools.iosnoop",
+    "command": "iosnoop",
+    "purpose": "ftrace-based per-event block I/O tracer for kernels too old for bcc/eBPF. Disk I/O details with latency.",
+    "flags": [
+      {"name": "-Q", "value": null, "doc": "Include queue time."}
+    ],
+    "examples": [
+      {"invocation": "./iosnoop", "expected_output": "Live per-I/O lines", "scenario": "Disk I/O attribution on Linux 3.x systems"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.iolatency",
+    "command": "iolatency",
+    "purpose": "ftrace-based block I/O latency histogram for older Linux kernels.",
+    "flags": [
+      {"name": "-Q", "value": null, "doc": "Include queue insert latency."}
+    ],
+    "examples": [
+      {"invocation": "./iolatency -Q", "expected_output": "Power-of-2 histogram per second", "scenario": "biolatency-equivalent on pre-eBPF kernels"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.tpoint",
+    "command": "tpoint",
+    "purpose": "ftrace-based tracepoint tracer with optional filter and stack-trace capture.",
+    "flags": [
+      {"name": "-s", "value": null, "doc": "Include stack traces."},
+      {"name": "<tracepoint>", "value": null, "doc": "Tracepoint name (positional)."},
+      {"name": "<filter>", "value": null, "doc": "Filter expression (positional)."}
+    ],
+    "examples": [
+      {"invocation": "./tpoint -s block:block_rq_insert 'rwbs ~ \"*R*\"'", "expected_output": "Read I/O insertions with kernel stacks", "scenario": "Stack-attributed read-only block-I/O tracing"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.funcgraph",
+    "command": "funcgraph",
+    "purpose": "ftrace function-call graph with timing — shows children and durations of a kernel function.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./funcgraph do_sys_open", "expected_output": "Hierarchical call graph below do_sys_open", "scenario": "Understand the structure and time inside a kernel call path"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.functrace",
+    "command": "functrace",
+    "purpose": "ftrace dynamic tracer of kernel function calls matching a pattern.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./functrace 'tcp_*'", "expected_output": "Live trace of every matched kernel function call", "scenario": "See which kernel funcs in a pattern fire"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.funcslower",
+    "command": "funcslower",
+    "purpose": "ftrace-based: trace kernel functions that ran slower than a threshold. Filters out the noise of non-slow calls.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./funcslower vfs_read 1000", "expected_output": "vfs_read calls > 1ms", "scenario": "Catch latency outliers in a hot kernel path"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.killsnoop",
+    "command": "killsnoop",
+    "purpose": "Trace kill() signals with sender process, target PID, and signal number. Surfaces unexpected SIGKILLs and OOM-killer activity.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./killsnoop", "expected_output": "Live signal stream", "scenario": "Diagnose mysterious process termination"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.syscount",
+    "command": "syscount",
+    "purpose": "Count syscalls by syscall name or by process. Quick top-N syscall summary.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./syscount", "expected_output": "Ranked syscall counts", "scenario": "Identify dominant syscalls during a workload"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.bitesize",
+    "command": "bitesize",
+    "purpose": "Histogram of disk I/O sizes by process — power-of-2 buckets. Reveals whether I/O is small-random vs large-sequential.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./bitesize", "expected_output": "Per-process I/O-size histogram", "scenario": "Distinguish DBs doing many tiny IOs from streaming workloads"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.flamegraph.stackcollapse",
+    "command": "stackcollapse-perf.pl",
+    "purpose": "Convert perf script output into folded-stack format — one line per unique stack with a leading count. The standard input shape for flamegraph.pl.",
+    "flags": [],
+    "examples": [
+      {"invocation": "perf script | stackcollapse-perf.pl > out.folded", "expected_output": "Folded-stack file ready for flamegraph.pl", "scenario": "Step 2 of CPU FlameGraph pipeline (after perf record + perf script)"}
+    ],
+    "source_ids": ["brendangregg-flamegraphs"]
+  },
+  {
+    "id": "methodology.cmd.flamegraph.flamegraph",
+    "command": "flamegraph.pl",
+    "purpose": "Render a folded-stack file as an interactive SVG FlameGraph. The original implementation; 100+ alternatives now exist (d3-flame-graph, speedscope, etc.).",
+    "flags": [
+      {"name": "--inverted", "value": null, "doc": "Render as icicle chart (top-down)."},
+      {"name": "--colors", "value": "<scheme>", "doc": "Color scheme (mem, java, js, etc.)."},
+      {"name": "--width", "value": "<px>", "doc": "Image width."},
+      {"name": "--title", "value": "<text>", "doc": "Title text."}
+    ],
+    "examples": [
+      {"invocation": "flamegraph.pl out.folded > flame.svg", "expected_output": "Interactive FlameGraph SVG", "scenario": "Step 3 of the standard CPU FlameGraph pipeline"},
+      {"invocation": "flamegraph.pl --inverted --colors mem out.folded > icicle.svg", "expected_output": "Inverted icicle with memory-flame-graph green palette", "scenario": "Memory-leak FlameGraph rendering"}
+    ],
+    "source_ids": ["brendangregg-flamegraphs"]
+  },
+  {
+    "id": "methodology.cmd.bpftrace.list",
+    "command": "bpftrace -l",
+    "purpose": "List available probes matching a glob — discovery before attaching.",
+    "flags": [
+      {"name": "-l", "value": "<glob>", "doc": "Probe pattern."}
+    ],
+    "examples": [
+      {"invocation": "bpftrace -l 'tracepoint:syscalls:*'", "expected_output": "All syscall tracepoints", "scenario": "Discover available syscall tracepoints"},
+      {"invocation": "bpftrace -l 'kprobe:tcp_*'", "expected_output": "All TCP-named kprobes the kernel exposes", "scenario": "Find kprobeable TCP kernel functions"}
+    ],
+    "source_ids": ["bpftrace-language"]
+  },
+  {
+    "id": "methodology.cmd.bpftrace.profile-time",
+    "command": "bpftrace -e 'profile:hz:99 { @[ustack, kstack] = count(); }'",
+    "purpose": "All-CPU mixed kernel/user stack profile via timed sampling — bpftrace's one-liner equivalent of perf record + folded output.",
+    "flags": [],
+    "examples": [
+      {"invocation": "bpftrace -e 'profile:hz:99 { @[ustack, kstack] = count(); }' > out.bt", "expected_output": "Stack-count map", "scenario": "Quick FlameGraph data when bcc tools unavailable"}
+    ],
+    "source_ids": ["bpftrace-language"]
+  },
+  {
+    "id": "methodology.cmd.bcc.bashreadline",
+    "command": "bashreadline",
+    "purpose": "Trace commands as they're typed at any bash prompt on the system (uprobe on bash's readline).",
+    "flags": [],
+    "examples": [
+      {"invocation": "bashreadline", "expected_output": "Each Enter-key bash command on the system", "scenario": "Audit interactive shell activity"}
+    ],
+    "source_ids": ["brendangregg-ebpf"]
+  },
+  {
+    "id": "methodology.cmd.perftools.kprobe",
+    "command": "perf-tools/kprobe",
+    "purpose": "ftrace-based wrapper to dynamically trace any kernel function call or its return with variables. Simpler interface than 'perf probe' for one-off investigation.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./kprobe 'r:do_sys_open file=+0(%si):string'", "expected_output": "Each do_sys_open return with the filename", "scenario": "Quick file-open tracing without bcc"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  },
+  {
+    "id": "methodology.cmd.perftools.uprobe",
+    "command": "perf-tools/uprobe",
+    "purpose": "ftrace-based wrapper for user-level dynamic tracing — counterpart to perf-tools/kprobe but for user functions.",
+    "flags": [],
+    "examples": [
+      {"invocation": "./uprobe 'p:libc:malloc'", "expected_output": "Live malloc trace via uprobe", "scenario": "User-level malloc tracing on older kernels"}
+    ],
+    "source_ids": ["perf-tools-readme"]
+  }
+]

@@ -113,26 +113,6 @@ def _cmd_load(args: argparse.Namespace) -> int:
     return 0
 
 
-def _cmd_extract(args: argparse.Namespace) -> int:
-    """Extract structured rows (concepts/commands/config_keys) from documents via Claude SDK.
-
-    Reads documents through a read-only DuckDB connection (no lock conflict with motherduck MCP).
-    Writes JSON arrays to `domains/<domain>/<subdomain>/extract/<table>.json`. Idempotent
-    merge-by-id on re-runs. After extraction, load via motherduck MCP using
-    `INSERT OR REPLACE BY NAME ... SELECT * FROM read_json(...)`.
-    """
-    from ingest.extract_structured import run_for_subdomain  # lazy: anthropic import is heavy
-
-    out = run_for_subdomain(
-        domain=args.domain,
-        subdomain=args.subdomain,
-        table=args.table,
-        source_ids_filter=args.source_ids or None,
-    )
-    print(f"extract: {out}")
-    return 0
-
-
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="ingest")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -165,26 +145,6 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_load.add_argument("--domain", required=True)
     p_load.set_defaults(func=_cmd_load)
-
-    p_extract = sub.add_parser(
-        "extract",
-        help="extract structured rows (concepts|commands|config_keys) from documents via Claude SDK",
-    )
-    p_extract.add_argument("--domain", required=True)
-    p_extract.add_argument("--subdomain", required=True)
-    p_extract.add_argument(
-        "--table",
-        required=True,
-        choices=["concepts", "commands", "config_keys"],
-    )
-    p_extract.add_argument(
-        "--source-id",
-        action="append",
-        default=[],
-        dest="source_ids",
-        help="Filter to specific source(s); repeat to specify multiple.",
-    )
-    p_extract.set_defaults(func=_cmd_extract)
 
     args = p.parse_args(argv)
     return int(args.func(args))

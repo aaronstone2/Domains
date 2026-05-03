@@ -29,7 +29,8 @@ sources:
     subdomain: product
     tier: T1
     license_note: reference-only
-    parser: trafilatura
+    parser: github-md
+    notes: parser switched from trafilatura to github-md on 2026-05-02 — trafilatura returned 0 chars on plaintext URL index; passthrough captures the full URL list
   - id: devin-docs-sitemap
     url: https://docs.devin.ai/sitemap.xml
     title: Devin docs sitemap.xml
@@ -279,6 +280,2434 @@ sources:
     tier: T1
     license_note: reference-only
     parser: trafilatura
+  - id: devin-status-incidents-archive
+    url: https://www.devinstatus.com/api/v2/incidents.json
+    title: Devin Status — Resolved Incidents Archive (JSON API; 47+ incidents at fetch time)
+    domain: devin
+    subdomain: devbox
+    tier: T0
+    license_note: redistribute-ok
+    parser: json-passthrough
+    notes: empirical failure-mode corpus; pretty-printed JSON via parser=json-passthrough; refresh by re-running ingest fetch --source-id devin-status-incidents-archive
+
+  # ============================================================
+  # DEVIN — Phase 1 expansion (2026-05-02): admin/security, release-notes, onboard, integrations, work-with, API conceptual, blog, GitHub
+  # ============================================================
+
+  # ---------- admin / security ----------
+  - id: devin-docs-admin-security
+    url: https://docs.devin.ai/admin/security
+    title: Admin — Security (DevBox isolation model, secret handling, threat model)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+    notes: failure-mode source
+
+  # ---------- release-notes (empirical "what changed / what broke" timeline) ----------
+  - id: devin-docs-release-notes-overview
+    url: https://docs.devin.ai/release-notes/overview
+    title: Release Notes — Overview
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-release-notes-2024
+    url: https://docs.devin.ai/release-notes/2024
+    title: Release Notes — 2024
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-release-notes-2025
+    url: https://docs.devin.ai/release-notes/2025
+    title: Release Notes — 2025
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-release-notes-2026
+    url: https://docs.devin.ai/release-notes/2026
+    title: Release Notes — 2026
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- onboard-devin (DevBox config) ----------
+  - id: devin-docs-onboard-environment-blueprints
+    url: https://docs.devin.ai/onboard-devin/environment/blueprints
+    title: Onboarding — Environment Blueprints (multi-tier inheritance)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-onboard-environment-windows-support
+    url: https://docs.devin.ai/onboard-devin/environment/windows-support
+    title: Onboarding — Environment Windows Support
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+    notes: relevant — user is on Windows 11
+  - id: devin-docs-onboard-agents-md
+    url: https://docs.devin.ai/onboard-devin/agents-md
+    title: Onboarding — agents.md (per-repo agent config schema)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-onboard-index-repo
+    url: https://docs.devin.ai/onboard-devin/index-repo
+    title: Onboarding — Index Repository (caching, indexing strategy)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-onboard-knowledge-onboarding
+    url: https://docs.devin.ai/onboard-devin/knowledge-onboarding
+    title: Onboarding — Knowledge Onboarding (uploading knowledge to Devin)
+    domain: devin
+    subdomain: knowledge-playbooks
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-onboard-vpn
+    url: https://docs.devin.ai/onboard-devin/vpn
+    title: Onboarding — VPN / Private Network Setup
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+    notes: failure-mode source — VPN misconfiguration is a classic support ticket
+
+  # ---------- integrations (additional connectors) ----------
+  - id: devin-docs-integrations-bitbucket
+    url: https://docs.devin.ai/integrations/bitbucket
+    title: Integrations — Bitbucket
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-gitlab
+    url: https://docs.devin.ai/integrations/gitlab
+    title: Integrations — GitLab
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-microsoft-teams
+    url: https://docs.devin.ai/integrations/microsoft-teams
+    title: Integrations — Microsoft Teams
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-pr-templates
+    url: https://docs.devin.ai/integrations/pr-templates
+    title: Integrations — PR Templates
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-integrations-self-hosted-scm-artifacts
+    url: https://docs.devin.ai/integrations/self-hosted-scm-artifacts
+    title: Integrations — Self-Hosted SCM / Artifacts (Jenkins, Artifactory, self-hosted Git)
+    domain: devin
+    subdomain: integrations
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- work-with-devin (debug/capability surfaces) ----------
+  - id: devin-docs-work-session-tools
+    url: https://docs.devin.ai/work-with-devin/devin-session-tools
+    title: Work with Devin — Session Tools (debugging primitives, command palette)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-work-testing-and-recordings
+    url: https://docs.devin.ai/work-with-devin/testing-and-recordings
+    title: Work with Devin — Testing and Recordings (replay/repro)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-work-slash-commands
+    url: https://docs.devin.ai/work-with-devin/slash-commands
+    title: Work with Devin — Slash Commands (primary user lever in a session)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- product-guides (additional features) ----------
+  - id: devin-docs-product-secrets
+    url: https://docs.devin.ai/product-guides/secrets
+    title: Product Guides — Secrets (env var / credential storage)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+    notes: failure-mode source — secrets handling is ticket gold
+  - id: devin-docs-product-scheduled-sessions
+    url: https://docs.devin.ai/product-guides/scheduled-sessions
+    title: Product Guides — Scheduled Sessions (background job automation)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+    notes: scheduled-session crashes appeared in status incidents
+
+  # ---------- essential-guidelines (instructional patterns) ----------
+  - id: devin-docs-essential-good-vs-bad
+    url: https://docs.devin.ai/essential-guidelines/good-vs-bad-instructions
+    title: Essential Guidelines — Good vs Bad Instructions
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-essential-sdlc-integration
+    url: https://docs.devin.ai/essential-guidelines/sdlc-integration
+    title: Essential Guidelines — SDLC Integration (DevOps / CI patterns)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- api conceptual (auth, pagination, version overviews) ----------
+  - id: devin-docs-api-authentication
+    url: https://docs.devin.ai/api-reference/authentication
+    title: API Reference — Authentication
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-api-personal-access-tokens
+    url: https://docs.devin.ai/api-reference/personal-access-tokens
+    title: API Reference — Personal Access Tokens
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-api-common-flows
+    url: https://docs.devin.ai/api-reference/common-flows
+    title: API Reference — Common Flows (session lifecycle, message patterns)
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-api-concepts-pagination
+    url: https://docs.devin.ai/api-reference/concepts/pagination
+    title: API Reference — Pagination Concepts
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-api-v1-overview
+    url: https://docs.devin.ai/api-reference/v1/overview
+    title: API Reference — v1 Overview
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-api-v2-overview
+    url: https://docs.devin.ai/api-reference/v2/overview
+    title: API Reference — v2 Overview (Enterprise)
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-api-v3-overview
+    url: https://docs.devin.ai/api-reference/v3/overview
+    title: API Reference — v3 Overview (Latest Enterprise)
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-api-getting-started-migration-guide
+    url: https://docs.devin.ai/api-reference/getting-started/migration-guide
+    title: API Reference — Getting Started — Migration Guide (v1→v2→v3)
+    domain: devin
+    subdomain: api
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- cognition blog HIGH-priority (engineering deep-dives) ----------
+  - id: cognition-blog-cloud-agents
+    url: https://cognition.ai/blog/what-we-learned-building-cloud-agents
+    title: Cognition Blog — What We Learned Building Cloud Agents (DevBox isolation, hypervisor snapshotting)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: highest single-source debugging signal density per Phase 1 Explore agent
+  - id: cognition-blog-multi-agents-working
+    url: https://cognition.ai/blog/multi-agents-working
+    title: Cognition Blog — Multi-Agents What's Actually Working (single-threaded write, code review loops)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: cognition-blog-agent-trace
+    url: https://cognition.ai/blog/agent-trace
+    title: Cognition Blog — Agent Trace (open spec for context graph of code)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # ---------- cognition blog MED-priority ----------
+  - id: cognition-blog-how-cognition-uses-devin
+    url: https://cognition.ai/blog/how-cognition-uses-devin-to-build-devin
+    title: Cognition Blog — How Cognition Uses Devin to Build Devin (internal patterns, MCP integrations)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: cognition-blog-swe-check-10x-faster
+    url: https://cognition.ai/blog/swe-check-10x-faster
+    title: Cognition Blog — SWE-Check 10x Faster Bug Detection (specialized model, latency)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: cognition-blog-swe-1-6
+    url: https://cognition.ai/blog/swe-1-6
+    title: Cognition Blog — SWE-1.6 (model UX improvements, parallel tool calls)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: cognition-blog-swe-1-6-preview
+    url: https://cognition.ai/blog/swe-1-6-preview
+    title: Cognition Blog — SWE-1.6 Preview (RL scaling, benchmark vs UX)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: cognition-blog-devin-for-terminal
+    url: https://cognition.ai/blog/devin-for-terminal
+    title: Cognition Blog — Devin for Terminal (local-to-cloud handoff, parallel agents)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: cognition-blog-devin-can-now-manage-devins
+    url: https://cognition.ai/blog/devin-can-now-manage-devins
+    title: Cognition Blog — Devin Can Now Manage Devins (managed instances, isolation, coordinator patterns)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # ---------- enterprise — security-access (RBAC, IDP, IP allowlist) ----------
+  - id: devin-docs-enterprise-security-custom-roles
+    url: https://docs.devin.ai/enterprise/security-access/custom-roles
+    title: Enterprise — Security Access — Custom Roles (RBAC)
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-enterprise-security-idp-groups
+    url: https://docs.devin.ai/enterprise/security-access/idp-groups
+    title: Enterprise — Security Access — IDP Groups (sync drift = ticket source)
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-enterprise-security-ip-access-lists
+    url: https://docs.devin.ai/enterprise/security-access/ip-access-lists
+    title: Enterprise — Security Access — IP Access Lists (allowlist failure-mode)
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-enterprise-security-trust-center
+    url: https://docs.devin.ai/enterprise/security-access/trust-center
+    title: Enterprise — Security Access — Trust Center
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- enterprise — environment-management ----------
+  - id: devin-docs-enterprise-environment-overview
+    url: https://docs.devin.ai/enterprise/environment-management/overview
+    title: Enterprise — Environment Management — Overview (DevBox at scale)
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-enterprise-environment-best-practices
+    url: https://docs.devin.ai/enterprise/environment-management/best-practices
+    title: Enterprise — Environment Management — Best Practices (blueprint strategy)
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-enterprise-environment-rollout
+    url: https://docs.devin.ai/enterprise/environment-management/rollout
+    title: Enterprise — Environment Management — Rollout (phased rollout)
+    domain: devin
+    subdomain: enterprise
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- work-with-devin SHOULD (capability) ----------
+  - id: devin-docs-work-ask-devin
+    url: https://docs.devin.ai/work-with-devin/ask-devin
+    title: Work with Devin — Ask Devin (basic interaction model)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-work-devin-review
+    url: https://docs.devin.ai/work-with-devin/devin-review
+    title: Work with Devin — Devin Review (code review mode)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-work-computer-use
+    url: https://docs.devin.ai/work-with-devin/computer-use
+    title: Work with Devin — Computer Use (screen/input automation; recent failure surface)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- product-guides SHOULD ----------
+  - id: devin-docs-product-bot-comment-settings
+    url: https://docs.devin.ai/product-guides/bot-comment-settings
+    title: Product Guides — Bot Comment Settings (PR comment rendering config)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-product-deployment-capabilities
+    url: https://docs.devin.ai/product-guides/deployment-capabilities
+    title: Product Guides — Deployment Capabilities (deploy/release automation)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+  - id: devin-docs-product-using-playbooks
+    url: https://docs.devin.ai/product-guides/using-playbooks
+    title: Product Guides — Using Playbooks (execution flow)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: reference-only
+    parser: mintlify
+
+  # ---------- API per-endpoint sentinels (for partition trafilatura test) ----------
+  - id: devin-docs-api-v1-sessions-create
+    url: https://docs.devin.ai/api-reference/v1/sessions/create-a-new-devin-session.md
+    title: API Reference v1 — Sessions — Create a New Devin Session (sentinel)
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+    notes: sentinel — Mintlify serves raw markdown via .md suffix; passthrough parser
+  - id: devin-docs-api-v2-sessions-list
+    url: https://docs.devin.ai/api-reference/v2/sessions/list-enterprise-sessions.md
+    title: API Reference v2 — Sessions — List Enterprise Sessions (sentinel)
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+    notes: sentinel — Mintlify .md suffix passthrough
+
+  # ---------- GitHub repo READMEs (Cognition orgs; MIT/Apache where verified) ----------
+  - id: cognitionai-swebench-results-readme
+    url: https://raw.githubusercontent.com/CognitionAI/devin-swebench-results/main/README.md
+    title: CognitionAI/devin-swebench-results README (SWE-bench harness + results)
+    domain: devin
+    subdomain: product
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: MIT-licensed per repo metadata
+  - id: cognitionai-metabase-mcp-readme
+    url: https://raw.githubusercontent.com/CognitionAI/metabase-mcp-server/main/README.md
+    title: CognitionAI/metabase-mcp-server README (canonical MCP server example)
+    domain: devin
+    subdomain: mcp
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: MIT-licensed per repo metadata
+  - id: cognitionai-database-toolbox-readme
+    url: https://raw.githubusercontent.com/CognitionAI/database-toolbox/main/README.md
+    title: CognitionAI/database-toolbox README (20+ database MCP integrations)
+    domain: devin
+    subdomain: mcp
+    tier: T2
+    license_note: redistribute-ok
+    parser: github-md
+    notes: Apache-2.0 per repo metadata
+  - id: cognitionai-blockdiff-readme
+    url: https://raw.githubusercontent.com/CognitionAI/blockdiff/main/README.md
+    title: CognitionAI/blockdiff README (CoW VM disk diffs — DevBox snapshot infra)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: unknown
+    parser: github-md
+    notes: GitHub API reports license=null on 2026-05-02; no LICENSE file in repo. Private-corpus-only ingest, no republication. High signal for DevBox internals.
+  - id: cognitionai-deepwiki-readme
+    url: https://raw.githubusercontent.com/CognitionAI/deepwiki/main/README.md
+    title: CognitionAI/deepwiki README (Devin-generated docs tool)
+    domain: devin
+    subdomain: product
+    tier: T2
+    license_note: unknown
+    parser: github-md
+    notes: GitHub API reports license=null on 2026-05-02; no LICENSE file. Private-corpus-only ingest.
+
+  # ---------- API per-endpoint bulk partition (subdomain=api-endpoints, T2; .md suffix passthrough) ----------
+  - id: devin-docs-api-v1-attachments-download-attachment-files
+    url: https://docs.devin.ai/api-reference/v1/attachments/download-attachment-files.md
+    title: 'Download an attachment'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-attachments-upload-files-for-devin-to-work-with
+    url: https://docs.devin.ai/api-reference/v1/attachments/upload-files-for-devin-to-work-with.md
+    title: 'Upload an attachment'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-knowledge-create-knowledge
+    url: https://docs.devin.ai/api-reference/v1/knowledge/create-knowledge.md
+    title: 'Create knowledge entry'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-knowledge-delete-knowledge
+    url: https://docs.devin.ai/api-reference/v1/knowledge/delete-knowledge.md
+    title: 'Delete knowledge entry'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-knowledge-list-knowledge
+    url: https://docs.devin.ai/api-reference/v1/knowledge/list-knowledge.md
+    title: 'List all knowledge'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-knowledge-update-knowledge
+    url: https://docs.devin.ai/api-reference/v1/knowledge/update-knowledge.md
+    title: 'Update knowledge entry'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-misc-overview
+    url: https://docs.devin.ai/api-reference/v1/overview.md
+    title: 'v1 API Overview (Legacy)'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-playbooks-create-playbook
+    url: https://docs.devin.ai/api-reference/v1/playbooks/create-playbook.md
+    title: 'Create Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-playbooks-delete-playbook
+    url: https://docs.devin.ai/api-reference/v1/playbooks/delete-playbook.md
+    title: 'Delete Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-playbooks-get-playbook
+    url: https://docs.devin.ai/api-reference/v1/playbooks/get-playbook.md
+    title: 'Get Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-playbooks-list-playbooks
+    url: https://docs.devin.ai/api-reference/v1/playbooks/list-playbooks.md
+    title: 'List Playbooks'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-playbooks-update-playbook
+    url: https://docs.devin.ai/api-reference/v1/playbooks/update-playbook.md
+    title: 'Update Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-secrets-create-secret
+    url: https://docs.devin.ai/api-reference/v1/secrets/create-secret.md
+    title: 'Create Secret'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-secrets-delete-secret
+    url: https://docs.devin.ai/api-reference/v1/secrets/delete-secret.md
+    title: 'Delete a secret'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-secrets-list-secrets
+    url: https://docs.devin.ai/api-reference/v1/secrets/list-secrets.md
+    title: 'List secrets'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-sessions-create-a-new-devin-session
+    url: https://docs.devin.ai/api-reference/v1/sessions/create-a-new-devin-session.md
+    title: 'Create a new session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-sessions-list-sessions
+    url: https://docs.devin.ai/api-reference/v1/sessions/list-sessions.md
+    title: 'List sessions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-sessions-retrieve-details-about-an-existing-session
+    url: https://docs.devin.ai/api-reference/v1/sessions/retrieve-details-about-an-existing-session.md
+    title: 'Retrieve details about an existing session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-sessions-send-a-message-to-an-existing-devin-session
+    url: https://docs.devin.ai/api-reference/v1/sessions/send-a-message-to-an-existing-devin-session.md
+    title: 'Send a message to a session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-sessions-terminate-a-session
+    url: https://docs.devin.ai/api-reference/v1/sessions/terminate-a-session.md
+    title: 'Terminate a session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v1-sessions-update-session-tags
+    url: https://docs.devin.ai/api-reference/v1/sessions/update-session-tags.md
+    title: 'Update session tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-api-keys-list-enterprise-api-keys
+    url: https://docs.devin.ai/api-reference/v2/api-keys/list-enterprise-api-keys.md
+    title: 'List API Keys'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-api-keys-provision-service-key
+    url: https://docs.devin.ai/api-reference/v2/api-keys/provision-service-key.md
+    title: 'Create a Service API Key'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-api-keys-revoke-all-enterprise-api-keys
+    url: https://docs.devin.ai/api-reference/v2/api-keys/revoke-all-enterprise-api-keys.md
+    title: 'Revoke All API Keys'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-api-keys-revoke-enterprise-api-key
+    url: https://docs.devin.ai/api-reference/v2/api-keys/revoke-enterprise-api-key.md
+    title: 'Revoke API Key'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-misc-audit-logs
+    url: https://docs.devin.ai/api-reference/v2/audit-logs.md
+    title: 'Get Audit Logs'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-consumption-consumption-cycles
+    url: https://docs.devin.ai/api-reference/v2/consumption/consumption-cycles.md
+    title: 'Consumption Cycles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-consumption-daily-consumption
+    url: https://docs.devin.ai/api-reference/v2/consumption/daily-consumption.md
+    title: 'Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-consumption-pr-metrics
+    url: https://docs.devin.ai/api-reference/v2/consumption/pr-metrics.md
+    title: 'PR Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-consumption-searches-metrics
+    url: https://docs.devin.ai/api-reference/v2/consumption/searches-metrics.md
+    title: 'Searches Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-consumption-sessions-metrics
+    url: https://docs.devin.ai/api-reference/v2/consumption/sessions-metrics.md
+    title: 'Sessions Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-consumption-usage-metrics
+    url: https://docs.devin.ai/api-reference/v2/consumption/usage-metrics.md
+    title: 'Usage Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-consumption-user-daily-consumption
+    url: https://docs.devin.ai/api-reference/v2/consumption/user-daily-consumption.md
+    title: 'User Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-groups-add-enterprise-groups
+    url: https://docs.devin.ai/api-reference/v2/groups/add-enterprise-groups.md
+    title: 'Add Enterprise Groups'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-groups-get-group-details
+    url: https://docs.devin.ai/api-reference/v2/groups/get-group-details.md
+    title: 'Get Group Details'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-groups-list-enterprise-groups
+    url: https://docs.devin.ai/api-reference/v2/groups/list-enterprise-groups.md
+    title: 'List Enterprise Groups'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-infrastructure-list-enterprise-hypervisors
+    url: https://docs.devin.ai/api-reference/v2/infrastructure/list-enterprise-hypervisors.md
+    title: 'List Hypervisors'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-delete-enterprise-member
+    url: https://docs.devin.ai/api-reference/v2/members/delete-enterprise-member.md
+    title: 'Delete Enterprise Member'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-get-member-details
+    url: https://docs.devin.ai/api-reference/v2/members/get-member-details.md
+    title: 'Get Member Details'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-invite-enterprise-members
+    url: https://docs.devin.ai/api-reference/v2/members/invite-enterprise-members.md
+    title: 'Invite Enterprise Members'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-list-enterprise-members
+    url: https://docs.devin.ai/api-reference/v2/members/list-enterprise-members.md
+    title: 'List Enterprise Members'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-list-roles
+    url: https://docs.devin.ai/api-reference/v2/members/list-roles.md
+    title: 'List available roles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-migrate-member-roles
+    url: https://docs.devin.ai/api-reference/v2/members/migrate-member-roles.md
+    title: 'Migrate member roles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-update-member-roles
+    url: https://docs.devin.ai/api-reference/v2/members/update-member-roles.md
+    title: 'Update member roles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-members-user-organizations
+    url: https://docs.devin.ai/api-reference/v2/members/user-organizations.md
+    title: 'User Organizations'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-org-group-limits-get-org-group-limits
+    url: https://docs.devin.ai/api-reference/v2/org-group-limits/get-org-group-limits.md
+    title: 'Get Organization Group Limits'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-org-group-limits-update-org-group-limits
+    url: https://docs.devin.ai/api-reference/v2/org-group-limits/update-org-group-limits.md
+    title: 'Update Organization Group Limits'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-add-group-to-organization
+    url: https://docs.devin.ai/api-reference/v2/organizations/add-group-to-organization.md
+    title: 'Add Group to Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-add-organization-members
+    url: https://docs.devin.ai/api-reference/v2/organizations/add-organization-members.md
+    title: 'Add Organization Members'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-add-organization-permissions
+    url: https://docs.devin.ai/api-reference/v2/organizations/add-organization-permissions.md
+    title: 'Add Organization Permissions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-clone-repository
+    url: https://docs.devin.ai/api-reference/v2/organizations/clone-repository.md
+    title: 'Clone a Repository into an Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-create-organization
+    url: https://docs.devin.ai/api-reference/v2/organizations/create-organization.md
+    title: 'Create Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-delete-organization
+    url: https://docs.devin.ai/api-reference/v2/organizations/delete-organization.md
+    title: 'Delete Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-delete-organization-permission
+    url: https://docs.devin.ai/api-reference/v2/organizations/delete-organization-permission.md
+    title: 'Delete Organization Permission'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-get-organization-details
+    url: https://docs.devin.ai/api-reference/v2/organizations/get-organization-details.md
+    title: 'Get Organization Details'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-list-organizations
+    url: https://docs.devin.ai/api-reference/v2/organizations/list-organizations.md
+    title: 'List Organizations'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-migrate-organization-member-roles
+    url: https://docs.devin.ai/api-reference/v2/organizations/migrate-organization-member-roles.md
+    title: 'Migrate organization member roles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-organization-connections
+    url: https://docs.devin.ai/api-reference/v2/organizations/organization-connections.md
+    title: 'Organization Connections'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-organization-groups
+    url: https://docs.devin.ai/api-reference/v2/organizations/organization-groups.md
+    title: 'Organization Groups'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-organization-members
+    url: https://docs.devin.ai/api-reference/v2/organizations/organization-members.md
+    title: 'Organization Members'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-organization-permissions
+    url: https://docs.devin.ai/api-reference/v2/organizations/organization-permissions.md
+    title: 'Organization Permissions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-remove-group-from-organization
+    url: https://docs.devin.ai/api-reference/v2/organizations/remove-group-from-organization.md
+    title: 'Remove Group from Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-remove-user-from-organization
+    url: https://docs.devin.ai/api-reference/v2/organizations/remove-user-from-organization.md
+    title: 'Remove User from Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-update-organization
+    url: https://docs.devin.ai/api-reference/v2/organizations/update-organization.md
+    title: 'Update Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-organizations-update-organization-member-roles
+    url: https://docs.devin.ai/api-reference/v2/organizations/update-organization-member-roles.md
+    title: 'Update organization member roles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-misc-overview
+    url: https://docs.devin.ai/api-reference/v2/overview.md
+    title: 'v2 API Overview (Legacy)'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-playbooks-create-playbook
+    url: https://docs.devin.ai/api-reference/v2/playbooks/create-playbook.md
+    title: 'Create Enterprise Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-playbooks-delete-playbook
+    url: https://docs.devin.ai/api-reference/v2/playbooks/delete-playbook.md
+    title: 'Delete Enterprise Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-playbooks-get-playbook
+    url: https://docs.devin.ai/api-reference/v2/playbooks/get-playbook.md
+    title: 'Get Enterprise Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-playbooks-list-playbooks
+    url: https://docs.devin.ai/api-reference/v2/playbooks/list-playbooks.md
+    title: 'List Enterprise Playbooks'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-playbooks-update-playbook
+    url: https://docs.devin.ai/api-reference/v2/playbooks/update-playbook.md
+    title: 'Update Enterprise Playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-repositories-bulk-index-repositories
+    url: https://docs.devin.ai/api-reference/v2/repositories/bulk-index-repositories.md
+    title: 'Bulk Index Repositories'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-repositories-get-repository-status
+    url: https://docs.devin.ai/api-reference/v2/repositories/get-repository-status.md
+    title: 'Get Repository Indexing Status'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-self-get-self
+    url: https://docs.devin.ai/api-reference/v2/self/get-self.md
+    title: 'Get Self'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-sessions-get-enterprise-session
+    url: https://docs.devin.ai/api-reference/v2/sessions/get-enterprise-session.md
+    title: 'Get Enterprise Session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-sessions-list-enterprise-sessions
+    url: https://docs.devin.ai/api-reference/v2/sessions/list-enterprise-sessions.md
+    title: 'List Enterprise Sessions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-sessions-list-enterprise-sessions-insights
+    url: https://docs.devin.ai/api-reference/v2/sessions/list-enterprise-sessions-insights.md
+    title: 'List Enterprise Sessions (Insights)'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-sessions-list-organization-sessions
+    url: https://docs.devin.ai/api-reference/v2/sessions/list-organization-sessions.md
+    title: 'List Organization Sessions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-sessions-list-organization-sessions-insights
+    url: https://docs.devin.ai/api-reference/v2/sessions/list-organization-sessions-insights.md
+    title: 'List Organization Sessions (Insights)'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-snapshots-get-enterprise-snapshot
+    url: https://docs.devin.ai/api-reference/v2/snapshots/get-enterprise-snapshot.md
+    title: 'Get Enterprise Snapshot Details'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v2-user-usage-get-user-usage-analysis-beta
+    url: https://docs.devin.ai/api-reference/v2/user-usage/get-user-usage-analysis-beta.md
+    title: 'Get User Usage Analysis (Beta)'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-attachments-get-organizations-attachments
+    url: https://docs.devin.ai/api-reference/v3/attachments/get-organizations-attachments.md
+    title: 'Download an attachment'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-attachments-post-organizations-attachments
+    url: https://docs.devin.ai/api-reference/v3/attachments/post-organizations-attachments.md
+    title: 'Upload an attachment'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-audit-logs-enterprise-audit-logs
+    url: https://docs.devin.ai/api-reference/v3/audit-logs/enterprise-audit-logs.md
+    title: 'List Audit Logs'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-audit-logs-organizations-audit-logs
+    url: https://docs.devin.ai/api-reference/v3/audit-logs/organizations-audit-logs.md
+    title: 'List Organization Audit Logs'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-consumption-cycles
+    url: https://docs.devin.ai/api-reference/v3/consumption/consumption-cycles.md
+    title: 'List Consumption Cycles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-consumption-daily
+    url: https://docs.devin.ai/api-reference/v3/consumption/consumption-daily.md
+    title: 'Get Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-consumption-daily-organizations
+    url: https://docs.devin.ai/api-reference/v3/consumption/consumption-daily-organizations.md
+    title: 'Get Organization Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-consumption-daily-service-users
+    url: https://docs.devin.ai/api-reference/v3/consumption/consumption-daily-service-users.md
+    title: 'Get Service User Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-consumption-daily-sessions
+    url: https://docs.devin.ai/api-reference/v3/consumption/consumption-daily-sessions.md
+    title: 'Get Session Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-consumption-daily-users
+    url: https://docs.devin.ai/api-reference/v3/consumption/consumption-daily-users.md
+    title: 'Get User Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-organizations-consumption-daily
+    url: https://docs.devin.ai/api-reference/v3/consumption/organizations-consumption-daily.md
+    title: 'Get Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-organizations-consumption-daily-service-users
+    url: https://docs.devin.ai/api-reference/v3/consumption/organizations-consumption-daily-service-users.md
+    title: 'Get Service User Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-organizations-consumption-daily-sessions
+    url: https://docs.devin.ai/api-reference/v3/consumption/organizations-consumption-daily-sessions.md
+    title: 'Get Session Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-consumption-organizations-consumption-daily-users
+    url: https://docs.devin.ai/api-reference/v3/consumption/organizations-consumption-daily-users.md
+    title: 'Get User Daily Consumption'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-git-connections-git-providers-connections
+    url: https://docs.devin.ai/api-reference/v3/git-connections/git-providers-connections.md
+    title: 'List Git Connections'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-git-permissions-clear-organizations-git-providers-permissions
+    url: https://docs.devin.ai/api-reference/v3/git-permissions/clear-organizations-git-providers-permissions.md
+    title: 'Clear Git Permissions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-git-permissions-delete-organizations-git-providers-permissions
+    url: https://docs.devin.ai/api-reference/v3/git-permissions/delete-organizations-git-providers-permissions.md
+    title: 'Delete Git Permission'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-git-permissions-organizations-git-providers-permissions
+    url: https://docs.devin.ai/api-reference/v3/git-permissions/organizations-git-providers-permissions.md
+    title: 'List Git Permissions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-git-permissions-post-organizations-git-providers-permissions
+    url: https://docs.devin.ai/api-reference/v3/git-permissions/post-organizations-git-providers-permissions.md
+    title: 'Create Git Permissions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-git-permissions-put-organizations-git-providers-permissions
+    url: https://docs.devin.ai/api-reference/v3/git-permissions/put-organizations-git-providers-permissions.md
+    title: 'Replace Git Permissions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-guardrail-violations-enterprise-guardrail-violations
+    url: https://docs.devin.ai/api-reference/v3/guardrail-violations/enterprise-guardrail-violations.md
+    title: 'List Guardrail Violations'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-guardrail-violations-organizations-guardrail-violations
+    url: https://docs.devin.ai/api-reference/v3/guardrail-violations/organizations-guardrail-violations.md
+    title: 'List Organization Guardrail Violations'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-hypervisors-hypervisors
+    url: https://docs.devin.ai/api-reference/v3/hypervisors/hypervisors.md
+    title: 'List Hypervisors'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-delete-enterprise-idp-group
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/delete-enterprise-idp-group.md
+    title: 'Delete Account IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-delete-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/delete-members-idp-groups.md
+    title: 'Delete IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-delete-organizations-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/delete-organizations-members-idp-groups.md
+    title: 'Delete Organization IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-enterprise-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/enterprise-idp-groups.md
+    title: 'List Account IDP Groups'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-get-members-idp-group
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/get-members-idp-group.md
+    title: 'Get IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-list-organizations-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/list-organizations-members-idp-groups.md
+    title: 'List Organization IDP Groups'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/members-idp-groups.md
+    title: 'List IDP Groups'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-organizations-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/organizations-members-idp-groups.md
+    title: 'Get Organization IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-patch-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/patch-members-idp-groups.md
+    title: 'Update IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-patch-organizations-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/patch-organizations-members-idp-groups.md
+    title: 'Update Organization IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-post-enterprise-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/post-enterprise-idp-groups.md
+    title: 'Register Account IDP Groups'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-post-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/post-members-idp-groups.md
+    title: 'Assign IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-idp-groups-post-organizations-members-idp-groups
+    url: https://docs.devin.ai/api-reference/v3/idp-groups/post-organizations-members-idp-groups.md
+    title: 'Assign Organization IDP Group'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-ip-access-list-clear-ip-access-list
+    url: https://docs.devin.ai/api-reference/v3/ip-access-list/clear-ip-access-list.md
+    title: 'Clear IP Access List'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-ip-access-list-get-ip-access-list
+    url: https://docs.devin.ai/api-reference/v3/ip-access-list/get-ip-access-list.md
+    title: 'Get IP Access List'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-ip-access-list-replace-ip-access-list
+    url: https://docs.devin.ai/api-reference/v3/ip-access-list/replace-ip-access-list.md
+    title: 'Replace IP Access List'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-active-users
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-active-users.md
+    title: 'Get Active Users for Custom Date Range'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-dau
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-dau.md
+    title: 'Get Daily Active Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-mau
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-mau.md
+    title: 'Get Monthly Active Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-prs
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-prs.md
+    title: 'Get PR Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-searches
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-searches.md
+    title: 'Get Search Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-sessions
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-sessions.md
+    title: 'Get Session Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-sessions-by-category
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-sessions-by-category.md
+    title: 'Get Session Metrics by Category'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-usage
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-usage.md
+    title: 'Get Usage Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-metrics-wau
+    url: https://docs.devin.ai/api-reference/v3/metrics/metrics-wau.md
+    title: 'Get Weekly Active Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-active-users
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-active-users.md
+    title: 'Get Active Users for Custom Date Range'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-dau
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-dau.md
+    title: 'Get Daily Active Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-mau
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-mau.md
+    title: 'Get Monthly Active Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-prs
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-prs.md
+    title: 'Get PR Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-searches
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-searches.md
+    title: 'Get Search Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-sessions
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-sessions.md
+    title: 'Get Session Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-usage
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-usage.md
+    title: 'Get Organization Usage Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-usage-org
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-usage-org.md
+    title: 'Get Usage Metrics'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-metrics-organizations-metrics-wau
+    url: https://docs.devin.ai/api-reference/v3/metrics/organizations-metrics-wau.md
+    title: 'Get Weekly Active Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-delete-enterprise-knowledge-notes-note-id
+    url: https://docs.devin.ai/api-reference/v3/notes/delete-enterprise-knowledge-notes-note-id.md
+    title: 'Delete a note'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-delete-organizations-knowledge-notes-note-id
+    url: https://docs.devin.ai/api-reference/v3/notes/delete-organizations-knowledge-notes-note-id.md
+    title: 'Delete an org-level note'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-enterprise-knowledge-folders
+    url: https://docs.devin.ai/api-reference/v3/notes/enterprise-knowledge-folders.md
+    title: 'Get knowledge folder structure with note counts.'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-enterprise-knowledge-notes
+    url: https://docs.devin.ai/api-reference/v3/notes/enterprise-knowledge-notes.md
+    title: 'List all notes.'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-get-enterprise-knowledge-note
+    url: https://docs.devin.ai/api-reference/v3/notes/get-enterprise-knowledge-note.md
+    title: 'Get a note by ID'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-get-organizations-knowledge-note
+    url: https://docs.devin.ai/api-reference/v3/notes/get-organizations-knowledge-note.md
+    title: 'Get an org-level note'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-organizations-knowledge-folders
+    url: https://docs.devin.ai/api-reference/v3/notes/organizations-knowledge-folders.md
+    title: 'Get knowledge folder structure with note counts.'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-organizations-knowledge-notes
+    url: https://docs.devin.ai/api-reference/v3/notes/organizations-knowledge-notes.md
+    title: 'List org-level notes'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-post-enterprise-knowledge-notes
+    url: https://docs.devin.ai/api-reference/v3/notes/post-enterprise-knowledge-notes.md
+    title: 'Create an enterprise-level note'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-post-organizations-knowledge-notes
+    url: https://docs.devin.ai/api-reference/v3/notes/post-organizations-knowledge-notes.md
+    title: 'Create an org-level note'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-put-enterprise-knowledge-notes-note-id
+    url: https://docs.devin.ai/api-reference/v3/notes/put-enterprise-knowledge-notes-note-id.md
+    title: 'Update a note'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-notes-put-organizations-knowledge-notes-note-id
+    url: https://docs.devin.ai/api-reference/v3/notes/put-organizations-knowledge-notes-note-id.md
+    title: 'Update an org-level note'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-org-group-limits-get-org-group-limits
+    url: https://docs.devin.ai/api-reference/v3/org-group-limits/get-org-group-limits.md
+    title: 'Get Organization Group Limits'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-org-group-limits-update-org-group-limits
+    url: https://docs.devin.ai/api-reference/v3/org-group-limits/update-org-group-limits.md
+    title: 'Update Organization Group Limits'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-organizations-delete-organizations
+    url: https://docs.devin.ai/api-reference/v3/organizations/delete-organizations.md
+    title: 'Delete Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-organizations-get-enterprise-organization
+    url: https://docs.devin.ai/api-reference/v3/organizations/get-enterprise-organization.md
+    title: 'Get Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-organizations-organizations
+    url: https://docs.devin.ai/api-reference/v3/organizations/organizations.md
+    title: 'List Organizations'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-organizations-patch-organizations
+    url: https://docs.devin.ai/api-reference/v3/organizations/patch-organizations.md
+    title: 'Update Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-organizations-post-organizations
+    url: https://docs.devin.ai/api-reference/v3/organizations/post-organizations.md
+    title: 'Create Organization'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-misc-overview
+    url: https://docs.devin.ai/api-reference/v3/overview.md
+    title: 'Permissions & RBAC'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-delete-enterprise-playbooks-playbook-id
+    url: https://docs.devin.ai/api-reference/v3/playbooks/delete-enterprise-playbooks-playbook-id.md
+    title: 'Delete a playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-delete-organizations-playbooks-playbook-id
+    url: https://docs.devin.ai/api-reference/v3/playbooks/delete-organizations-playbooks-playbook-id.md
+    title: 'Delete an org-level playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-enterprise-playbooks
+    url: https://docs.devin.ai/api-reference/v3/playbooks/enterprise-playbooks.md
+    title: 'List all playbooks.'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-get-enterprise-playbook
+    url: https://docs.devin.ai/api-reference/v3/playbooks/get-enterprise-playbook.md
+    title: 'Get a playbook by ID.'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-get-organizations-playbook
+    url: https://docs.devin.ai/api-reference/v3/playbooks/get-organizations-playbook.md
+    title: 'Get an org-level playbook by ID'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-organizations-playbooks
+    url: https://docs.devin.ai/api-reference/v3/playbooks/organizations-playbooks.md
+    title: 'List org-level playbooks'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-post-enterprise-playbooks
+    url: https://docs.devin.ai/api-reference/v3/playbooks/post-enterprise-playbooks.md
+    title: 'Create an enterprise-level playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-post-organizations-playbooks
+    url: https://docs.devin.ai/api-reference/v3/playbooks/post-organizations-playbooks.md
+    title: 'Create an org-level playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-put-enterprise-playbooks-playbook-id
+    url: https://docs.devin.ai/api-reference/v3/playbooks/put-enterprise-playbooks-playbook-id.md
+    title: 'Update a playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-playbooks-put-organizations-playbooks-playbook-id
+    url: https://docs.devin.ai/api-reference/v3/playbooks/put-organizations-playbooks-playbook-id.md
+    title: 'Update an org-level playbook'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-queue-enterprise-queue
+    url: https://docs.devin.ai/api-reference/v3/queue/enterprise-queue.md
+    title: 'Get Queue'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-roles-roles
+    url: https://docs.devin.ai/api-reference/v3/roles/roles.md
+    title: 'List Roles'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-schedules-delete-organizations-schedule
+    url: https://docs.devin.ai/api-reference/v3/schedules/delete-organizations-schedule.md
+    title: 'Delete schedule'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-schedules-get-organizations-schedule
+    url: https://docs.devin.ai/api-reference/v3/schedules/get-organizations-schedule.md
+    title: 'Get schedule'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-schedules-organizations-schedules
+    url: https://docs.devin.ai/api-reference/v3/schedules/organizations-schedules.md
+    title: 'List schedules'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-schedules-patch-organizations-schedule
+    url: https://docs.devin.ai/api-reference/v3/schedules/patch-organizations-schedule.md
+    title: 'Update schedule'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-schedules-post-organizations-schedules
+    url: https://docs.devin.ai/api-reference/v3/schedules/post-organizations-schedules.md
+    title: 'Create schedule'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-secrets-delete-organizations-secrets
+    url: https://docs.devin.ai/api-reference/v3/secrets/delete-organizations-secrets.md
+    title: 'Delete an org-level secret'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-secrets-organizations-secrets
+    url: https://docs.devin.ai/api-reference/v3/secrets/organizations-secrets.md
+    title: 'List org-level secrets'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-secrets-post-organizations-secrets
+    url: https://docs.devin.ai/api-reference/v3/secrets/post-organizations-secrets.md
+    title: 'Create an org-level secret'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-self-self
+    url: https://docs.devin.ai/api-reference/v3/self/self.md
+    title: 'Get Self'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-delete-enterprise-service-user-api-key
+    url: https://docs.devin.ai/api-reference/v3/service-users/delete-enterprise-service-user-api-key.md
+    title: 'Revoke API key for service user'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-delete-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/delete-members-service-users.md
+    title: 'Delete Service User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-delete-organizations-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/delete-organizations-members-service-users.md
+    title: 'Delete Organization Service User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-get-enterprise-service-user-api-keys
+    url: https://docs.devin.ai/api-reference/v3/service-users/get-enterprise-service-user-api-keys.md
+    title: 'List API keys for service user'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-get-members-service-user
+    url: https://docs.devin.ai/api-reference/v3/service-users/get-members-service-user.md
+    title: 'Get Service User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/members-service-users.md
+    title: 'List Service Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-organizations-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/organizations-members-service-users.md
+    title: 'List Organization Service Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-patch-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/patch-members-service-users.md
+    title: 'Update Service User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-patch-organizations-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/patch-organizations-members-service-users.md
+    title: 'Update Organization Service User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-post-enterprise-service-user-api-keys
+    url: https://docs.devin.ai/api-reference/v3/service-users/post-enterprise-service-user-api-keys.md
+    title: 'Create API key for service user'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-post-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/post-members-service-users.md
+    title: 'Assign Service User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-post-organizations-members-service-users
+    url: https://docs.devin.ai/api-reference/v3/service-users/post-organizations-members-service-users.md
+    title: 'Assign Organization Service User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-service-users-rotate-enterprise-service-user-api-key
+    url: https://docs.devin.ai/api-reference/v3/service-users/rotate-enterprise-service-user-api-key.md
+    title: 'Rotate API key for service user'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-delete-organizations-sessions
+    url: https://docs.devin.ai/api-reference/v3/sessions/delete-organizations-sessions.md
+    title: 'Terminate Session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-enterprise-sessions
+    url: https://docs.devin.ai/api-reference/v3/sessions/enterprise-sessions.md
+    title: 'List sessions for account'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-enterprise-sessions-insights
+    url: https://docs.devin.ai/api-reference/v3/sessions/enterprise-sessions-insights.md
+    title: 'List sessions with insights'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-enterprise-session
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-enterprise-session.md
+    title: 'Get session details'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-enterprise-session-attachments
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-enterprise-session-attachments.md
+    title: 'List session attachments'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-enterprise-session-insights
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-enterprise-session-insights.md
+    title: 'Get session insights'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-enterprise-session-messages
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-enterprise-session-messages.md
+    title: 'List session messages'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-enterprise-session-tags
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-enterprise-session-tags.md
+    title: 'Get session tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-organizations-session
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-organizations-session.md
+    title: 'Get Session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-organizations-session-attachments
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-organizations-session-attachments.md
+    title: 'List session attachments'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-organizations-session-insights
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-organizations-session-insights.md
+    title: 'Get session insights'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-organizations-session-messages
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-organizations-session-messages.md
+    title: 'List session messages'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-get-organizations-session-tags
+    url: https://docs.devin.ai/api-reference/v3/sessions/get-organizations-session-tags.md
+    title: 'Get session tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-organizations-sessions
+    url: https://docs.devin.ai/api-reference/v3/sessions/organizations-sessions.md
+    title: 'List Sessions'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-organizations-sessions-insights
+    url: https://docs.devin.ai/api-reference/v3/sessions/organizations-sessions-insights.md
+    title: 'List sessions with insights'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-enterprise-session-insights-generate
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-enterprise-session-insights-generate.md
+    title: 'Generate session insights'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-enterprise-session-tags
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-enterprise-session-tags.md
+    title: 'Append session tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-enterprise-sessions-messages
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-enterprise-sessions-messages.md
+    title: 'Send a message to a session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-organizations-session-insights-generate
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-organizations-session-insights-generate.md
+    title: 'Generate session insights'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-organizations-session-tags
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-organizations-session-tags.md
+    title: 'Append session tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-organizations-sessions
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-organizations-sessions.md
+    title: 'Create Session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-organizations-sessions-archive
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-organizations-sessions-archive.md
+    title: 'Archive Session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-post-organizations-sessions-messages
+    url: https://docs.devin.ai/api-reference/v3/sessions/post-organizations-sessions-messages.md
+    title: 'Send a message to a session'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-put-enterprise-session-tags
+    url: https://docs.devin.ai/api-reference/v3/sessions/put-enterprise-session-tags.md
+    title: 'Replace session tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-sessions-put-organizations-session-tags
+    url: https://docs.devin.ai/api-reference/v3/sessions/put-organizations-session-tags.md
+    title: 'Replace session tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-delete-enterprise-organizations-default-tag
+    url: https://docs.devin.ai/api-reference/v3/tags/delete-enterprise-organizations-default-tag.md
+    title: 'Clear Organization Default Tag'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-delete-organizations-tags
+    url: https://docs.devin.ai/api-reference/v3/tags/delete-organizations-tags.md
+    title: 'Clear Organization Tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-delete-organizations-tags-tag
+    url: https://docs.devin.ai/api-reference/v3/tags/delete-organizations-tags-tag.md
+    title: 'Remove Organization Tag'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-get-enterprise-organizations-default-tag
+    url: https://docs.devin.ai/api-reference/v3/tags/get-enterprise-organizations-default-tag.md
+    title: 'Get Organization Default Tag'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-organizations-tags
+    url: https://docs.devin.ai/api-reference/v3/tags/organizations-tags.md
+    title: 'Get Organization Allowed Tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-post-organizations-tags
+    url: https://docs.devin.ai/api-reference/v3/tags/post-organizations-tags.md
+    title: 'Append Organization Tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-put-enterprise-organizations-default-tag
+    url: https://docs.devin.ai/api-reference/v3/tags/put-enterprise-organizations-default-tag.md
+    title: 'Set Organization Default Tag'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-tags-put-organizations-tags
+    url: https://docs.devin.ai/api-reference/v3/tags/put-organizations-tags.md
+    title: 'Replace Organization Allowed Tags'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-delete-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/delete-members-users.md
+    title: 'Delete User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-delete-organizations-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/delete-organizations-members-users.md
+    title: 'Delete Organization User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-get-members-user
+    url: https://docs.devin.ai/api-reference/v3/users/get-members-user.md
+    title: 'Get User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-members-idp-users
+    url: https://docs.devin.ai/api-reference/v3/users/members-idp-users.md
+    title: 'List IDP Group Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/members-users.md
+    title: 'List Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-organizations-members-idp-users
+    url: https://docs.devin.ai/api-reference/v3/users/organizations-members-idp-users.md
+    title: 'List Organization IDP Group Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-organizations-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/organizations-members-users.md
+    title: 'List Organization Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-patch-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/patch-members-users.md
+    title: 'Update User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-patch-organizations-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/patch-organizations-members-users.md
+    title: 'Update Organization User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-post-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/post-members-users.md
+    title: 'Invite Users'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
+  - id: devin-docs-api-v3-users-post-organizations-members-users
+    url: https://docs.devin.ai/api-reference/v3/users/post-organizations-members-users.md
+    title: 'Assign Organization User'
+    domain: devin
+    subdomain: api-endpoints
+    tier: T2
+    license_note: reference-only
+    parser: github-md
 
   # ============================================================
   # DOCKER — engine, daemon, CLI

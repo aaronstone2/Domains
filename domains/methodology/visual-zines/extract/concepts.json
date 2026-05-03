@@ -1,0 +1,50 @@
+[
+  {
+    "id": "methodology.tracing-taxonomy",
+    "name": "Linux Tracing Taxonomy",
+    "kind": "framework",
+    "description": "Mental model from Julia Evans (with Brendan Gregg's framing) for Linux's tracing landscape: split into three layers — data sources (kprobes / uprobes / tracepoints / USDT), collection mechanisms (ftrace / perf_events / eBPF), and user frontends (perf, bcc, bpftrace, ftrace shell wrappers, LTTng, SystemTap). Most confusion in Linux tracing comes from conflating these layers.",
+    "source_ids": ["jvns-tracing-systems"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.strace",
+    "name": "strace",
+    "kind": "tool",
+    "description": "Classic Linux user-space tool that traces syscalls made by a target process via the ptrace(2) interface. Very simple to use but has high overhead — every traced syscall causes two extra context switches. Per Julia Evans, often the favorite debugging tool despite the cost.",
+    "source_ids": ["jvns-tracing-systems"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.ltrace",
+    "name": "ltrace",
+    "kind": "tool",
+    "description": "Library-call tracer — traces calls into shared libraries (e.g., libc malloc, free, fopen) via ptrace. The library-level counterpart to strace's syscall view. Higher overhead than uprobes-based tools.",
+    "source_ids": ["jvns-tracing-systems"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.systemtap",
+    "name": "SystemTap",
+    "kind": "tool",
+    "description": "Pre-eBPF Linux tracing/scripting tool. Compiles a stap script into a kernel module loaded into the running kernel. Powerful and battle-tested but complex to set up; largely superseded by eBPF on modern kernels but still used on RHEL where stap has long-standing support.",
+    "source_ids": ["jvns-tracing-systems"],
+    "aliases": ["stap"]
+  },
+  {
+    "id": "methodology.lttng",
+    "name": "LTTng",
+    "kind": "tool",
+    "description": "Linux Trace Toolkit Next Generation — high-performance kernel + user-space tracing system from Polytechnique Montréal. Optimized for low overhead and large trace volumes. Includes lttng-ust for user-space tracepoints. Used heavily in academic + telecom contexts; less common in general SRE work.",
+    "source_ids": ["jvns-tracing-systems"],
+    "aliases": ["Linux Trace Toolkit Next Generation"]
+  },
+  {
+    "id": "methodology.dtrace",
+    "name": "DTrace",
+    "kind": "tool",
+    "description": "Sun/Solaris dynamic tracing system from 2003 — the conceptual ancestor of eBPF-based tracing. Uses static probe points (USDT-equivalent) and a custom scripting language (D). Available on illumos, FreeBSD, macOS; Linux port exists but is largely superseded by bpftrace + eBPF.",
+    "source_ids": ["jvns-tracing-systems"],
+    "aliases": []
+  }
+]

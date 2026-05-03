@@ -1,0 +1,326 @@
+[
+  {
+    "id": "methodology.cfg.postmortem-template.date",
+    "scope": "postmortem-template",
+    "key": "date",
+    "type": "date",
+    "default_value": null,
+    "description": "Date the incident occurred. ISO-8601 format. Top-of-document field in the SRE postmortem template.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.authors",
+    "scope": "postmortem-template",
+    "key": "authors",
+    "type": "list[string]",
+    "default_value": null,
+    "description": "List of postmortem authors. Distinct from incident participants — these are the people accountable for the postmortem document itself.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.status",
+    "scope": "postmortem-template",
+    "key": "status",
+    "type": "enum",
+    "default_value": "Draft",
+    "description": "Current state of the postmortem document, e.g., 'Draft', 'In review', 'Complete', 'Complete, action items in progress'. Tracks whether the doc is still being collaboratively written or has reached its final form.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.summary",
+    "scope": "postmortem-template",
+    "key": "summary",
+    "type": "string",
+    "default_value": null,
+    "description": "One- or two-sentence elevator-pitch summary of the incident: what happened, when, for how long, and the user-visible effect. The first thing a reviewer reads.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.impact",
+    "scope": "postmortem-template",
+    "key": "impact",
+    "type": "string",
+    "default_value": null,
+    "description": "Effect on users, revenue, internal teams. Quantified where possible (e.g., 'estimated 1.21B queries lost, no revenue impact'). Captures why the incident matters beyond technical detail.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.root-causes",
+    "scope": "postmortem-template",
+    "key": "root_causes",
+    "type": "string",
+    "default_value": null,
+    "description": "Explanation of contributing causes. Often plural — 5 Whys (Ohno 1988) is recommended for surfacing them. Example: 'Cascading failure due to combination of exceptionally high load and a resource leak when searches failed due to terms not being in the corpus.'",
+    "source_ids": ["sre-example-postmortem", "sre-postmortem-culture"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.trigger",
+    "scope": "postmortem-template",
+    "key": "trigger",
+    "type": "string",
+    "default_value": null,
+    "description": "Specific event that initiated the visible failure (often distinct from the underlying root cause). Example: 'Latent bug triggered by sudden increase in traffic.'",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.resolution",
+    "scope": "postmortem-template",
+    "key": "resolution",
+    "type": "string",
+    "default_value": null,
+    "description": "Sequence of actions taken to mitigate and resolve the incident. Captures both the successful fix and any temporary mitigations that preceded it.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.detection",
+    "scope": "postmortem-template",
+    "key": "detection",
+    "type": "string",
+    "default_value": null,
+    "description": "How the incident was first noticed: monitoring alert, customer report, on-call observation. Surfaces gaps in monitoring (manual discovery often triggers a postmortem on its own).",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.action-items",
+    "scope": "postmortem-template",
+    "key": "action_items",
+    "type": "list[struct]",
+    "default_value": null,
+    "description": "List of follow-up tasks. Each item: action_item (text), type (mitigate / prevent / process / other), owner, bug ID. Action items translate postmortem learning into concrete change.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.action-item.type",
+    "scope": "postmortem-template",
+    "key": "action_items.type",
+    "type": "enum",
+    "default_value": null,
+    "description": "Action-item category. 'mitigate' = improve incident response; 'prevent' = stop recurrence; 'process' = procedural improvement (testing schedule, playbook); 'other' = miscellaneous (e.g., 'freeze production until error budget recovers').",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.action-item.owner",
+    "scope": "postmortem-template",
+    "key": "action_items.owner",
+    "type": "string",
+    "default_value": null,
+    "description": "Person responsible for completing this action item. Single owner — accountability over consensus.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.action-item.bug",
+    "scope": "postmortem-template",
+    "key": "action_items.bug",
+    "type": "string",
+    "default_value": null,
+    "description": "Linked bug-tracker ID (or 'n/a' if the work isn't bug-tracked). Connects postmortem follow-ups to engineering workflow.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.what-went-well",
+    "scope": "postmortem-template",
+    "key": "lessons_learned.what_went_well",
+    "type": "list[string]",
+    "default_value": null,
+    "description": "Bulleted list of things that worked during the incident. Often overlooked but essential for reinforcing good practices and avoiding the trap of treating every postmortem as pure failure.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.what-went-wrong",
+    "scope": "postmortem-template",
+    "key": "lessons_learned.what_went_wrong",
+    "type": "list[string]",
+    "default_value": null,
+    "description": "Bulleted list of failures during incident response — gaps in monitoring, missed steps, slow communication. The action-items section addresses these.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.where-we-got-lucky",
+    "scope": "postmortem-template",
+    "key": "lessons_learned.where_we_got_lucky",
+    "type": "list[string]",
+    "default_value": null,
+    "description": "Bulleted list of near-misses — things that helped by coincidence, not by design. Surfaces fragile dependencies that might not save us next time. ('The goat teleporter was available for emergency use despite lack of certification.')",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.timeline",
+    "scope": "postmortem-template",
+    "key": "timeline",
+    "type": "list[struct]",
+    "default_value": null,
+    "description": "Timestamp-ordered narrative of the incident — UTC times paired with event descriptions. Includes 'OUTAGE BEGINS', 'INCIDENT BEGINS', mitigation actions, 'OUTAGE MITIGATED', 'OUTAGE ENDS', 'INCIDENT ENDS'. Sourced from the live incident document.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.postmortem-template.supporting-information",
+    "scope": "postmortem-template",
+    "key": "supporting_information",
+    "type": "list[string]",
+    "default_value": null,
+    "description": "Links to monitoring dashboards, log captures, IRC logs, IM logs, screenshots, graphs. Captures evidence trail for future reference and trend analysis.",
+    "source_ids": ["sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.slo.target",
+    "scope": "slo",
+    "key": "target",
+    "type": "number",
+    "default_value": null,
+    "description": "Target percentage of requests meeting the SLI bound. Example: '99% of Get RPC calls' — 99 is the target. Often expressed as a percentile (90, 95, 99, 99.9, 99.99) or 'nines' shorthand.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.slo.threshold",
+    "scope": "slo",
+    "key": "threshold",
+    "type": "number",
+    "default_value": null,
+    "description": "Numerical bound the SLI must beat. Example: '99% of calls complete in less than 100 ms' — 100ms is the threshold. Can be lower-bound (latency, error rate) or upper-bound (throughput, success rate).",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.slo.measurement-window",
+    "scope": "slo",
+    "key": "measurement_window",
+    "type": "duration",
+    "default_value": "1 minute",
+    "description": "Time window over which the SLI is aggregated. Example: 'averaged over 1 minute'. Choosing this is non-trivial — too short = noisy, too long = hides bursts.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.slo.aggregation-region",
+    "scope": "slo",
+    "key": "aggregation_region",
+    "type": "string",
+    "default_value": "All tasks in a cluster",
+    "description": "Spatial scope of aggregation: 'all tasks in a cluster', 'per-region', 'per-customer', etc. Standardizing this across SLOs lets you reason about them without re-deriving every time.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.slo.included-requests",
+    "scope": "slo",
+    "key": "included_requests",
+    "type": "string",
+    "default_value": null,
+    "description": "Which requests count toward the SLO: e.g., 'HTTP GETs from black-box monitoring jobs', 'all user-facing RPC calls'. Excluding internal probes or test traffic prevents skew.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.slo.error-budget",
+    "scope": "slo",
+    "key": "error_budget",
+    "type": "number",
+    "default_value": null,
+    "description": "Allowed failure rate that complements the SLO target — '99.9% target' implies a 0.1% error budget. Tracked daily/weekly, with monthly/quarterly assessment. Used as input to release-cadence decisions.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.sli.metric-type",
+    "scope": "sli",
+    "key": "metric_type",
+    "type": "enum",
+    "default_value": null,
+    "description": "What's being measured: latency, error_rate, throughput, availability, durability, correctness. Latency + availability are nearly universal across services; durability is critical for storage.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.sli.aggregation",
+    "scope": "sli",
+    "key": "aggregation",
+    "type": "enum",
+    "default_value": null,
+    "description": "How raw measurements are reduced: rate, average, percentile (median, p95, p99, p99.9). Per the SRE book, percentiles dominate — averages obscure tail behavior.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.sli.measurement-frequency",
+    "scope": "sli",
+    "key": "measurement_frequency",
+    "type": "duration",
+    "default_value": "10 seconds",
+    "description": "How frequently the underlying samples are collected. Example: 'every 10 seconds'. Per-second can be expensive to collect/store; minute-granularity hides spikes.",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.sli.collection-side",
+    "scope": "sli",
+    "key": "collection_side",
+    "type": "enum",
+    "default_value": "server",
+    "description": "Where the SLI is captured: 'server' (most common, cheapest) or 'client' (catches user-side problems like JavaScript latency that server-side metrics miss).",
+    "source_ids": ["sre-slos"]
+  },
+  {
+    "id": "methodology.cfg.four-golden-signals.latency",
+    "scope": "four-golden-signals",
+    "key": "latency",
+    "type": "histogram",
+    "default_value": null,
+    "description": "Time to service a request. Track success and failure latencies separately — a 500 served in 5 ms might artificially deflate average latency. Bucket as a histogram (e.g., exponential boundaries: 0–10ms, 10–30ms, 30–100ms, 100–300ms, etc.) so you see the tail.",
+    "source_ids": ["sre-monitoring-signals"]
+  },
+  {
+    "id": "methodology.cfg.four-golden-signals.traffic",
+    "scope": "four-golden-signals",
+    "key": "traffic",
+    "type": "rate",
+    "default_value": null,
+    "description": "Demand placed on the system in a high-level service-specific unit: HTTP req/sec for web, network I/O or concurrent sessions for streaming, transactions/retrievals/sec for KV stores.",
+    "source_ids": ["sre-monitoring-signals"]
+  },
+  {
+    "id": "methodology.cfg.four-golden-signals.errors",
+    "scope": "four-golden-signals",
+    "key": "errors",
+    "type": "rate",
+    "default_value": null,
+    "description": "Rate of failed requests — explicit (HTTP 500), implicit (200 with wrong content), or by-policy ('any request over 1 second is an error'). End-to-end tests catch wrong-content failures load balancers can't see.",
+    "source_ids": ["sre-monitoring-signals"]
+  },
+  {
+    "id": "methodology.cfg.four-golden-signals.saturation",
+    "scope": "four-golden-signals",
+    "key": "saturation",
+    "type": "fraction",
+    "default_value": null,
+    "description": "How 'full' the service is — emphasizing the most-constrained resource (memory, I/O, threads). Many systems degrade before 100% utilization, so a target threshold is essential. Latency increases are often a leading indicator of saturation.",
+    "source_ids": ["sre-monitoring-signals"]
+  },
+  {
+    "id": "methodology.cfg.incident-document.incident-id",
+    "scope": "incident-document",
+    "key": "incident_id",
+    "type": "string",
+    "default_value": null,
+    "description": "Unique identifier for the incident — typically a sequential number ('incident #465') used throughout email, chat, and the postmortem.",
+    "source_ids": ["sre-managing-incidents", "sre-example-postmortem"]
+  },
+  {
+    "id": "methodology.cfg.incident-document.commander",
+    "scope": "incident-document",
+    "key": "commander",
+    "type": "string",
+    "default_value": null,
+    "description": "Current Incident Commander. Updated explicitly during handoffs ('You're now the incident commander, okay?' / firm acknowledgment).",
+    "source_ids": ["sre-managing-incidents"]
+  },
+  {
+    "id": "methodology.cfg.incident-document.command-post",
+    "scope": "incident-document",
+    "key": "command_post",
+    "type": "string",
+    "default_value": null,
+    "description": "Where stakeholders find the IC: physical war room, IRC channel ('#shakespeare'), Slack channel, video bridge. Bots in the channel log alerts and traffic for postmortem reconstruction.",
+    "source_ids": ["sre-managing-incidents"]
+  },
+  {
+    "id": "methodology.cfg.incident-declaration.criteria",
+    "scope": "incident-declaration",
+    "key": "criteria",
+    "type": "list[string]",
+    "default_value": null,
+    "description": "Conditions that escalate an event to incident: (1) need a second team to fix, (2) outage is customer-visible, (3) unsolved after an hour of concentrated analysis. Define BEFORE incidents to avoid rationalization in the moment.",
+    "source_ids": ["sre-managing-incidents"]
+  }
+]

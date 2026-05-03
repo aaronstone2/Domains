@@ -82,8 +82,57 @@ By tier: T1=12 (canonical), T2=27 (respected secondary), T3=5 (high-quality blog
 - **Phase 3** (Concepts/Commands/Config): extract the framework names (USE/RED/Four Golden Signals/TSA/Off-CPU), the diagnostic commands (`perf`, `bpftrace`, `bcc-tools/*`), and the structured prompts (postmortem template) into `methodology.concepts`, `methodology.commands`, `methodology.config_keys`.
 - **Phase 4** (Failure-modes): mostly cross-references — methodology rarely has its own failure-modes; the value is in linking *which methodology applies to which docker/linux/devin failure-mode*. Land in `methodology.relationships`.
 
+## Phase 3 — Concepts/Commands/Config-keys
+
+### Session 3.1 — 2026-05-02 — DONE
+
+Per-leaf detail: `use-red-method/PROGRESS.md`, `sre-debugging/PROGRESS.md`, `visual-zines/PROGRESS.md`.
+
+**Outputs across all 3 leaves:**
+
+| Table | use-red-method | sre-debugging | visual-zines | Total |
+|---|---:|---:|---:|---:|
+| `methodology.concepts` | 77 | 38 | 6 | **121** |
+| `methodology.commands` | 50 | 0 | 0 | **50** |
+| `methodology.config_keys` | 0 | 36 | 0 | **36** |
+
+207 rows total. Targets per `~/.claude/plans/groovy-yawning-raven.md` (full-range): ~110 / ~180 / ~35. **Concepts above target, config_keys on target, commands count below target — but each command has rich `flags[]` + `examples[]` STRUCT arrays (avg ~5 flags + ~3 examples per row) so per-row knowledge density exceeds equivalent count of one-liners.**
+
+**Verified (ran via motherduck SQL):**
+
+- All 24 canonical cross-domain referent IDs resolve (use-method, red-method, tsa-method, four-golden-signals, off-cpu-analysis, flame-graph, error-budget, blameless-postmortem, incident-commander, sli, slo, sla, cascading-failure, alert-fatigue, ebpf, bcc, bpftrace, kprobe, uprobe, tracepoint, usdt, ipc, cpu-utilization-misleading, tracing-taxonomy).
+- 0 orphan `source_ids` references across all 3 tables.
+- Random-sample eyeball passes for each table.
+
+**Leaf scaffolding:**
+
+- All 3 leaf folders scaffolded via `pnpm leaf add methodology/<leaf>` (idempotent — preserves existing PLAN.md / PROGRESS.md, fills in README.md + `extract/` + `queries/` + `.gitkeep`).
+
+**Infra notes:**
+
+- The DuckDB load path used in this session: motherduck MCP `INSERT OR REPLACE BY NAME ... SELECT * FROM read_json[_auto](path[, columns = {...}])`. For the STRUCT-typed `commands` table, explicit `columns` spec is required (otherwise the inferred schema mismatches `flags STRUCT(name, value, doc)[]` / `examples STRUCT(invocation, expected_output, scenario)[]`).
+- During the session I scaffolded a Python+Anthropic-SDK extractor module at `domains/_shared/ingest/ingest/extract_structured.py` with three tool_use schemas (one per target table). **It was reverted at the user's request** because we have Claude Code Max — extraction work happens in-session against documents read from the DB, not via metered API calls. The module + the `ingest extract` CLI subcommand were removed; `pyproject.toml` rolled back from anthropic dep. If we later want it back for batch processing of larger corpora (docker, linux), the design in the plan file is intact.
+- Encountered DuckDB lock contention from orphan `mcp-server-motherduck` processes left over from previous Claude Code sessions. Killed the older instances (5:59 PM + 6:07 PM start times) to free the lock for the active session's MCP. **Pattern note:** when motherduck MCP returns 'file is being used by another process (PID X)', diagnose via `Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match 'mcp-server-motherduck' }` and kill the older trees.
+
+**Source list adjustments made during execution:**
+
+- None. The 44-source corpus from session 1.1 was used as-is; no new methodology sources surfaced as gaps during P3 (the doctrine of "P1 is dynamic" wasn't exercised here because the corpus was already comprehensive for the framework vocabulary).
+
+**Deferred to follow-up sessions:**
+
+- Full BCC tool catalog (~15-20 more tools) — bcc-readme has many; canonical 12 covered.
+- bpftrace stdlib detail (printf, hist, lhist, count, sum, kstack, ustack, etc.) as command rows.
+- `bpftrace-oneliners` extraction — overlaps heavily, low marginal value.
+- OCR for `jvns-debugging-zine` (image-only PDF).
+- Wizard Zines individual-comic URL harvest from `wizardzines-comics-index` (407 KB link list).
+- `methodology.failure_modes` — horizontal Phase 4 (deferred per PREAMBLE doctrine until all domains have P3).
+- `methodology.relationships` — horizontal Phase 5.
+
+**Next:** **Vertical pivots to docker** — Phase 1 + Phase 3 combined session for the docker domain. Domain order under the doctrine: methodology ✓ → docker → linux → devin → k8s. Per the priority list in `phase-3-deep-extraction.md`, start with `docker/engine`.
+
 ## Cross-references
 
-- Plan file: `~/.claude/plans/read-domains-shared-sessions-phase-1-sou-floofy-lampson.md`
+- Plan file (Phase 3): `~/.claude/plans/groovy-yawning-raven.md`
+- Plan file (Phase 1): `~/.claude/plans/read-domains-shared-sessions-phase-1-sou-floofy-lampson.md`
 - Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`
-- Pipe-able session prompt: `domains/_shared/sessions/phase-1-source-corpus.md`
+- Pipe-able session prompts: `domains/_shared/sessions/phase-1-source-corpus.md`, `phase-3-deep-extraction.md`

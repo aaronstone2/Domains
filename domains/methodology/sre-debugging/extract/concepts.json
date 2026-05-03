@@ -1,0 +1,306 @@
+[
+  {
+    "id": "methodology.four-golden-signals",
+    "name": "Four Golden Signals",
+    "kind": "framework",
+    "description": "Latency, Traffic, Errors, Saturation. From Google SRE Book Ch. 6: 'If you can only measure four metrics of your user-facing system, focus on these four.' The canonical user-facing-service monitoring framework. Pairs with the USE Method (resources) and RED Method (service requests).",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": ["LTES", "Golden Signals"]
+  },
+  {
+    "id": "methodology.monitoring",
+    "name": "Monitoring",
+    "kind": "concept",
+    "description": "Collecting, processing, aggregating, and displaying real-time quantitative data about a system: query counts, error counts, processing times, server lifetimes. Foundation for alerting, dashboards, debugging, and capacity planning.",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.white-box-monitoring",
+    "name": "White-Box Monitoring",
+    "kind": "concept",
+    "description": "Monitoring based on metrics exposed by the internals of the system — logs, JVM Profiling Interface, HTTP /metrics endpoints. Allows detection of imminent problems and failures masked by retries. Sometimes symptom-oriented, sometimes cause-oriented depending on instrumentation depth.",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.black-box-monitoring",
+    "name": "Black-Box Monitoring",
+    "kind": "concept",
+    "description": "Testing externally visible behavior as a user would see it. Symptom-oriented and active — 'the system isn't working correctly, right now'. Useless for not-yet-occurring imminent problems but ideal for paging discipline (only alert on real, ongoing user impact).",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.dashboard",
+    "name": "Dashboard",
+    "kind": "concept",
+    "description": "Web-based summary view of a service's core metrics. Pre-built to surface the most important metrics; may include filters, ticket-queue length, on-call name, recent pushes. Per the SRE book, dashboards should answer basic service questions and normally include the Four Golden Signals.",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.alert",
+    "name": "Alert",
+    "kind": "concept",
+    "description": "A notification intended for a human, pushed to a system such as a bug/ticket queue, email alias, or pager. Classified by destination as tickets, email alerts, or pages.",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.page",
+    "name": "Page",
+    "kind": "concept",
+    "description": "A pager-routed alert demanding immediate human action. The most expensive class of alert because it interrupts on-call sleep/personal time. Per the SRE book: every page should be actionable, require intelligence, and represent a novel or unseen problem.",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.alert-fatigue",
+    "name": "Alert Fatigue",
+    "kind": "anti-pattern",
+    "description": "Pager fatigue / alert spam: when alerts fire too frequently, on-callers second-guess, skim, or ignore them — including real ones masked in the noise. Tracked via incidents-per-shift; mitigated by ruthlessly cutting low-signal alerts and tuning thresholds.",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": ["Pager Fatigue", "Alert Spam"]
+  },
+  {
+    "id": "methodology.symptoms-vs-causes",
+    "name": "Symptoms vs Causes",
+    "kind": "concept",
+    "description": "A monitoring system should answer two distinct questions: what's broken (symptom) and why (cause). Pages should fire on symptoms (real user-visible impact); cause-oriented heuristics aid debugging but should not page. In multi-layered systems, one person's symptom is another person's cause.",
+    "source_ids": ["sre-monitoring-signals"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.tail-latency",
+    "name": "Tail Latency",
+    "kind": "metric",
+    "description": "Latency of the slowest fraction of requests (e.g., p99, p99.9). Often dominates user experience because users hit several backends per page render — a 99th-percentile of one backend becomes the median for the frontend. Mean latency hides tail behavior; always track distributions.",
+    "source_ids": ["sre-monitoring-signals", "sre-slos"],
+    "aliases": ["P99 latency", "P99.9 latency"]
+  },
+  {
+    "id": "methodology.percentile-latency",
+    "name": "Percentile Latency",
+    "kind": "metric",
+    "description": "Latency expressed as a percentile of the request distribution (median = p50; p90, p99, p99.9 increasingly stress the tail). User studies show people prefer slightly slower with low variance over fast-with-high-variance, so SLOs commonly target p99 or p99.9.",
+    "source_ids": ["sre-slos"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.sli",
+    "name": "Service Level Indicator",
+    "kind": "metric",
+    "description": "Carefully defined quantitative measure of some aspect of service level provided. Common SLIs: request latency, error rate, throughput, availability (well-formed requests that succeed), durability (likelihood of long-term retention). Aggregated over a measurement window into rate/average/percentile.",
+    "source_ids": ["sre-slos"],
+    "aliases": ["SLI"]
+  },
+  {
+    "id": "methodology.slo",
+    "name": "Service Level Objective",
+    "kind": "metric",
+    "description": "Target value or range for a service level measured by an SLI. Form: 'SLI ≤ target' or 'lower ≤ SLI ≤ upper'. Example: '99% of Get RPC calls will complete in less than 100 ms.' SLOs reflect what users care about; choosing them is product/business work, not pure engineering.",
+    "source_ids": ["sre-slos"],
+    "aliases": ["SLO"]
+  },
+  {
+    "id": "methodology.sla",
+    "name": "Service Level Agreement",
+    "kind": "concept",
+    "description": "Explicit or implicit contract with users including consequences (financial or other) of meeting/missing SLOs. Distinguished from SLO: an SLO is a target; an SLA is what happens when the target is missed. A real 'SLA violation' would trigger breach-of-contract; most casual 'SLA violation' talk actually means missed SLO.",
+    "source_ids": ["sre-slos"],
+    "aliases": ["SLA"]
+  },
+  {
+    "id": "methodology.error-budget",
+    "name": "Error Budget",
+    "kind": "concept",
+    "description": "Rate at which SLOs can be missed. 'An error budget is just an SLO for meeting other SLOs.' Used as input to release-cadence decisions: if budget remains, ship faster; if budget is exhausted, freeze and stabilize. Reframes reliability as a business resource, not an absolute.",
+    "source_ids": ["sre-slos"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.availability",
+    "name": "Availability",
+    "kind": "metric",
+    "description": "Fraction of time a service is usable, often defined as the fraction of well-formed requests that succeed. 100% is impossible, near-100% achievable; expressed as 'nines' (99% = 2 nines, 99.999% = 5 nines). Google Compute Engine target: 99.95% (three and a half nines).",
+    "source_ids": ["sre-slos"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.durability",
+    "name": "Durability",
+    "kind": "metric",
+    "description": "Likelihood data will be retained over a long period — the storage-system counterpart to availability. Critical for storage SLIs alongside availability + latency.",
+    "source_ids": ["sre-slos"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.yield",
+    "name": "Yield",
+    "kind": "metric",
+    "description": "Fraction of well-formed requests that succeed — synonym for availability when applied at request level. Per the SRE book's SLO chapter terminology.",
+    "source_ids": ["sre-slos"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.nines",
+    "name": "Nines",
+    "kind": "concept",
+    "description": "Shorthand notation for high-availability targets: '2 nines' = 99%, '3 nines' = 99.9%, '5 nines' = 99.999%. Each nine corresponds to ~10× less downtime: 5 nines ≈ 5 min/year, 4 nines ≈ 52 min/year, 3 nines ≈ 8.76 hr/year.",
+    "source_ids": ["sre-slos"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.qps",
+    "name": "Queries Per Second",
+    "kind": "metric",
+    "description": "Requests-per-second metric — typically determined by user demand, not chosen as an SLO. Pairs with latency: higher QPS often correlates with larger latency, with performance cliffs beyond a load threshold.",
+    "source_ids": ["sre-slos"],
+    "aliases": ["QPS"]
+  },
+  {
+    "id": "methodology.incident-commander",
+    "name": "Incident Commander",
+    "kind": "role",
+    "description": "Holds the high-level state about an incident; structures the response task force, assigns responsibilities, removes roadblocks for Ops. De facto holds all roles not delegated. The single accountable decision-maker during an incident.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": ["IC"]
+  },
+  {
+    "id": "methodology.operations-lead",
+    "name": "Operations Lead",
+    "kind": "role",
+    "description": "Works with the Incident Commander to apply operational tools to mitigate the incident. The Ops team is the only group authorized to modify the system during an incident — prevents the 'freelancing' anti-pattern.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": ["Ops Lead", "Ops"]
+  },
+  {
+    "id": "methodology.communication-lead",
+    "name": "Communication Lead",
+    "kind": "role",
+    "description": "Public face of the incident response task force. Issues periodic updates to the response team and stakeholders (typically email), keeps the incident document accurate and up to date. Removes communication burden from IC and Ops.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": ["Comms Lead"]
+  },
+  {
+    "id": "methodology.planning-lead",
+    "name": "Planning Lead",
+    "kind": "role",
+    "description": "Supports Ops with longer-term issues during an incident: filing bugs, ordering dinner, arranging handoffs, tracking how the system has diverged from norm so it can be reverted on resolution.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": ["Planning"]
+  },
+  {
+    "id": "methodology.incident-command-system",
+    "name": "Incident Command System",
+    "kind": "framework",
+    "description": "Incident response framework derived from FEMA's National Incident Management System. Google's incident management is built on it. Scales smoothly via recursive separation of responsibilities — leaders can delegate by creating sub-incidents.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": ["ICS", "IMAG"]
+  },
+  {
+    "id": "methodology.command-post",
+    "name": "Command Post",
+    "kind": "concept",
+    "description": "Recognized location where stakeholders can find the Incident Commander. Often a 'War Room' (physical or virtual). Google uses IRC + bots that log incident traffic and alerts to the channel — invaluable for postmortem reconstruction.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": ["War Room"]
+  },
+  {
+    "id": "methodology.incident-state-document",
+    "name": "Live Incident State Document",
+    "kind": "template-field",
+    "description": "Living document the IC maintains during an incident, editable by multiple people concurrently (Google Docs / wiki). Most-important info at the top. Retained for postmortem analysis. Should NOT depend on the software you're trying to fix.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.incident-handoff",
+    "name": "Incident Handoff",
+    "kind": "concept",
+    "description": "Explicit transfer of Incident Commander role across time zones / shifts. Outgoing IC must verbally state 'You're now the incident commander, okay?' and not leave the call until firm acknowledgment. Communicated to all responders.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.incident-declaration-criteria",
+    "name": "Incident Declaration Criteria",
+    "kind": "concept",
+    "description": "Per the SRE book, an event is an incident if any of: (1) you need a second team to fix it, (2) the outage is customer-visible, (3) it's unsolved after an hour of concentrated analysis. Better to declare early and close fast than spin up the framework hours into a problem.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.postmortem",
+    "name": "Postmortem",
+    "kind": "framework",
+    "description": "Written record of an incident, its impact, the actions taken to mitigate or resolve it, the root cause(s), and follow-up actions to prevent recurrence. Goals: ensure the incident is documented, all contributing causes are understood, effective preventive actions land. NOT punishment — a learning opportunity for the entire company.",
+    "source_ids": ["sre-postmortem-culture"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.blameless-postmortem",
+    "name": "Blameless Postmortem",
+    "kind": "framework",
+    "description": "Postmortem that focuses on identifying systemic contributing causes without indicting individuals or teams. Originated in healthcare and avionics where mistakes can be fatal. Assumes everyone involved had good intentions and acted on the best info available — 'you can't fix people, you fix systems'. A cornerstone of SRE culture.",
+    "source_ids": ["sre-postmortem-culture"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.postmortem-trigger",
+    "name": "Postmortem Trigger",
+    "kind": "concept",
+    "description": "Pre-defined criteria that mandate a postmortem. Common triggers: user-visible downtime above a threshold, data loss of any kind, on-call intervention (rollback, traffic rerouting), resolution time above threshold, monitoring failure (manual incident discovery). Define BEFORE incidents to avoid rationalization.",
+    "source_ids": ["sre-postmortem-culture"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.contributing-cause",
+    "name": "Contributing Cause",
+    "kind": "concept",
+    "description": "Factor that contributed to an incident. Plural by design — most incidents have multiple contributing causes (insufficient automation, software that crashed on bogus input, insufficient testing of the fix). Replaces the singular 'root cause' framing for systemic understanding.",
+    "source_ids": ["sre-monitoring-signals", "sre-postmortem-culture"],
+    "aliases": ["Contributing Factor"]
+  },
+  {
+    "id": "methodology.action-item",
+    "name": "Action Item",
+    "kind": "template-field",
+    "description": "Specific follow-up task from a postmortem with owner, priority, type (mitigate / prevent / process / other), and due date. Bug-fix-priority is review criterion. Action items are how postmortem learning translates to actual change.",
+    "source_ids": ["sre-postmortem-culture"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.postmortem-review",
+    "name": "Postmortem Review",
+    "kind": "concept",
+    "description": "Formal senior-engineer review of postmortem drafts: is incident data complete? are impact assessments thorough? was the root cause sufficiently deep? is the action plan appropriate? are bug-fix priorities right? was outcome shared with stakeholders? 'No postmortem left unreviewed.'",
+    "source_ids": ["sre-postmortem-culture"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.wheel-of-misfortune",
+    "name": "Wheel of Misfortune",
+    "kind": "framework",
+    "description": "Disaster role-playing exercise: a previous postmortem is reenacted with engineers playing the roles. Original incident commander attends to make it realistic. Used to onboard new SREs and keep incident management skills sharp.",
+    "source_ids": ["sre-postmortem-culture"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.cascading-failure",
+    "name": "Cascading Failure",
+    "kind": "concept",
+    "description": "Failure that grows by overwhelming healthy components — typically when load spilled from a failed component overloads its neighbors, propagating. Classic origin pattern: lose 1 of 5 datacenters, the others can't handle 25% extra load and fall over in sequence. Mitigated by graceful degradation and load shedding.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.recursive-separation-of-responsibilities",
+    "name": "Recursive Separation of Responsibilities",
+    "kind": "concept",
+    "description": "Incident response design pattern: every responder knows their role and doesn't stray onto someone else's. If a role's load is excessive, ask the planning lead for more staff or delegate to subordinates / sub-incidents. Counterintuitively, clear separation gives more autonomy than less — no second-guessing colleagues.",
+    "source_ids": ["sre-managing-incidents"],
+    "aliases": []
+  }
+]

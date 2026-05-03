@@ -1,0 +1,618 @@
+[
+  {
+    "id": "methodology.use-method",
+    "name": "USE Method",
+    "kind": "framework",
+    "description": "For every resource, check Utilization, Saturation, and Errors. Brendan Gregg's checklist-driven methodology for finding resource bottlenecks: iterate the resource list, ask the three questions, follow the signal. First in print in Gregg 2013 (CACM).",
+    "source_ids": ["brendangregg-methodology", "brendangregg-usemethod", "brendangregg-use-method-linux"],
+    "aliases": ["Utilization Saturation Errors", "USE"]
+  },
+  {
+    "id": "methodology.red-method",
+    "name": "RED Method",
+    "kind": "framework",
+    "description": "For every service or microservice, check Request rate, Errors, and Duration. Service-oriented counterpart to USE; introduced by Tom Wilkie at Weaveworks. Pairs with the Four Golden Signals from Google SRE.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Request Errors Duration", "RED"]
+  },
+  {
+    "id": "methodology.tsa-method",
+    "name": "TSA Method",
+    "kind": "framework",
+    "description": "Thread State Analysis. For each thread of interest, measure time spent in each operating system thread state (Executing, Runnable, Swapping, Sleeping, Lock, Idle), then investigate states from most to least frequent using appropriate tools.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Thread State Analysis"]
+  },
+  {
+    "id": "methodology.off-cpu-analysis",
+    "name": "Off-CPU Analysis",
+    "kind": "framework",
+    "description": "Methodology for analyzing thread-wait latency: profile per-thread off-CPU time with stack traces, coalesce times with like stacks, and study stacks from largest to shortest. Surfaces blocked-thread time that on-CPU profiling misses. Application stack traces don't change while off-CPU, so a single sample at the end of the off-CPU period captures the wait context.",
+    "source_ids": ["brendangregg-methodology", "brendangregg-offcpu"],
+    "aliases": ["Off-CPU Profiling"]
+  },
+  {
+    "id": "methodology.cpu-profile-method",
+    "name": "CPU Profile Method",
+    "kind": "framework",
+    "description": "Generate a CPU profile (ideally a CPU flame graph) and understand all software in the profile that occupies more than ~1% of samples. Counterpart to off-CPU analysis for on-CPU work.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.stack-profile-method",
+    "name": "Stack Profile Method",
+    "kind": "framework",
+    "description": "Profile thread stack traces both on- and off-CPU, coalesce, then study stacks bottom-up. A unified extension of CPU + off-CPU profiling.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.workload-characterization",
+    "name": "Workload Characterization Method",
+    "kind": "framework",
+    "description": "Answer four questions: Who is causing the load? Why is the load called? What is the load? How is the load changing over time? Apply before tuning to ensure you're optimizing the right thing.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.drill-down-analysis",
+    "name": "Drill-Down Analysis Method",
+    "kind": "framework",
+    "description": "Start at the highest level, examine next-level details, pick the most interesting breakdown, and recurse until the problem is solved. The default top-down decomposition pattern for performance investigation.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.time-division-method",
+    "name": "Time Division Method",
+    "kind": "framework",
+    "description": "Measure operation time (or latency), divide it into logical synchronous components, continue dividing until the latency origin is identified, then quantify the speedup if it's fixed. Formerly called the Latency Analysis Method.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Latency Analysis Method"]
+  },
+  {
+    "id": "methodology.5-whys",
+    "name": "5 Whys Performance Method",
+    "kind": "framework",
+    "description": "Given delivered performance, ask 'why?' and answer; given the previous answer, ask 'why?' again; repeat up to five times. Drives root-cause discovery beyond surface symptoms.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Five Whys"]
+  },
+  {
+    "id": "methodology.by-layer-method",
+    "name": "By-Layer Method",
+    "kind": "framework",
+    "description": "Measure latency at each layer of the stack — dynamic languages, executable, libraries, syscalls, kernel (FS, network), device drivers — and investigate the lowest layer that introduces latency. Latency-tracing companion to USE.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.tools-method",
+    "name": "Tools Method",
+    "kind": "framework",
+    "description": "List available performance tools, list the useful metrics each provides, list possible interpretations of each metric, then run selected tools and interpret. Tool-centric counterpart to the USE Method's resource-centric approach.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.problem-statement-method",
+    "name": "Problem Statement Method",
+    "kind": "framework",
+    "description": "Establish a clear problem statement before diving into analysis: What makes you think there's a performance problem? Has this system ever performed well? What changed recently? Can the degradation be expressed as latency or run time? Does it affect others? What is the environment? Sun Microsystems origin.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.scientific-method",
+    "name": "Scientific Method (Performance)",
+    "kind": "framework",
+    "description": "Question, Hypothesis, Prediction, Test, Analysis. Apply the standard scientific cycle to performance investigation — formulate a falsifiable hypothesis before measuring.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.ooda-loop",
+    "name": "OODA Loop",
+    "kind": "framework",
+    "description": "Observe, Orient, Decide, Act. Decision-cycle methodology from John Boyd (US Air Force), popularized in technology by Roy Rapoport at Netflix. Useful for incident response cadence.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.process-of-elimination",
+    "name": "Process of Elimination",
+    "kind": "framework",
+    "description": "Divide the target into components, choose a test that exonerates many untested components quickly, perform the test, recurse on remaining unknowns. Binary-search-style narrowing.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.ad-hoc-checklist-method",
+    "name": "Ad Hoc Checklist Method",
+    "kind": "framework",
+    "description": "Run-A-If-B-Do-C style checklist: site- or service-specific lists of known signals to inspect. Complementary to the USE Method's per-resource checklist.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.rtfm-method",
+    "name": "RTFM Method",
+    "kind": "framework",
+    "description": "Read The Fine Manual: when researching performance tools and metrics, consult man pages, books, web search, co-workers, prior talk slides/video, support services, source code, experimentation, and social media — in roughly that order.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.active-benchmarking",
+    "name": "Active Benchmarking Method",
+    "kind": "framework",
+    "description": "Configure the benchmark to run for a long duration; while it runs, analyze performance using other tools to determine the limiting factor. Counterpart to the Passive Benchmarking Anti-Method.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.method-r",
+    "name": "Method R",
+    "kind": "framework",
+    "description": "Select user actions that matter for the business workload, measure causes of response time for those actions, calculate the best net-payoff optimization, and tune if the gain is sufficient. From Millsap & Holt's Optimizing Oracle Performance (2003).",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.performance-evaluation-steps",
+    "name": "Performance Evaluation Steps",
+    "kind": "framework",
+    "description": "Ten-step performance-study procedure: state goals + system boundaries; list services + outcomes; select metrics; list parameters; select factors + values; select workload; design experiments; analyze data; present results; iterate. From Jain 1991.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.capacity-planning-process",
+    "name": "Capacity Planning Process",
+    "kind": "framework",
+    "description": "Instrument the system, monitor system usage, characterize workload, predict performance under different alternatives, and select the lowest-cost / highest-performance alternative. From Jain 1991.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.intel-top-down",
+    "name": "Intel Hierarchical Top-Down Performance Characterization",
+    "kind": "framework",
+    "description": "CPU-pipeline-aware methodology: are UOPs issued? if yes, are they retired (good) or bad-speculation? if not, allocation stall → back-end vs front-end stalls. From Ahmad Yasin (Intel), in the IA-32 Optimization Reference Manual B.3.2.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Top-Down Microarchitecture Analysis Method"]
+  },
+  {
+    "id": "methodology.performance-mantras",
+    "name": "Performance Mantras",
+    "kind": "framework",
+    "description": "Don't do it. Do it, but don't do it again. Do it less. Do it later. Do it when they're not looking. Do it concurrently. Do it cheaper. Hierarchy of optimization preferences from Craig Hanson and Pat Crain.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.benchmarking-checklist",
+    "name": "Benchmarking Checklist",
+    "kind": "framework",
+    "description": "Six-question sanity check before trusting a benchmark: Why not double? Did it break limits? Did it error? Does it reproduce? Does it matter? Did it even happen? From Brendan Gregg.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.streetlight-anti-method",
+    "name": "Streetlight Anti-Method",
+    "kind": "anti-pattern",
+    "description": "Picking observability tools because they're familiar, found on the Internet, or found at random — then running them and looking for obvious issues. Named after the streetlight effect; documented as a bug, not a feature.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.blame-someone-else-anti-method",
+    "name": "Blame-Someone-Else Anti-Method",
+    "kind": "anti-pattern",
+    "description": "Find a system or environment component you are not responsible for; hypothesize that the issue is there; redirect to the responsible team; when proven wrong, repeat. The anti-pattern that motivates owning the investigation.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.drunk-man-anti-method",
+    "name": "Drunk Man Anti-Method",
+    "kind": "anti-pattern",
+    "description": "Change things at random until the problem goes away. Plays well with confirmation bias and rarely identifies root cause.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.random-change-anti-method",
+    "name": "Random Change Anti-Method",
+    "kind": "anti-pattern",
+    "description": "Measure baseline, change a random tunable in one direction, measure; change in the other direction, measure; keep whichever was better. Methodical version of the Drunk Man — still anti, because it doesn't ask why.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.passive-benchmarking-anti-method",
+    "name": "Passive Benchmarking Anti-Method",
+    "kind": "anti-pattern",
+    "description": "Pick a benchmark tool, run it with a variety of options, slide-deck the results, hand to management. The anti-pattern that Active Benchmarking corrects.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.traffic-light-anti-method",
+    "name": "Traffic Light Anti-Method",
+    "kind": "anti-pattern",
+    "description": "Open a dashboard; if all green, assume everything is good; if something is red, assume that's the problem. Discounts both green-but-broken and red-but-irrelevant signals.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.utilization",
+    "name": "Utilization",
+    "kind": "metric",
+    "description": "Fraction of time a resource was busy servicing work, or for storage resources the fraction of capacity used. The first of the three USE-Method questions for every resource.",
+    "source_ids": ["brendangregg-methodology", "brendangregg-usemethod"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.saturation",
+    "name": "Saturation",
+    "kind": "metric",
+    "description": "Degree to which a resource has extra work it can't service — typically measured by queue length or wait time. The second of the three USE-Method questions; surfaces issues hidden by sub-100% utilization.",
+    "source_ids": ["brendangregg-methodology", "brendangregg-usemethod"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.error-rate",
+    "name": "Error Rate",
+    "kind": "metric",
+    "description": "Count or rate of error events for a resource (USE) or service (RED). Errors are often present even when utilization and latency are healthy and represent the cleanest signal of a real problem.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Errors"]
+  },
+  {
+    "id": "methodology.request-rate",
+    "name": "Request Rate",
+    "kind": "metric",
+    "description": "Number of requests per second handled by a service. The 'R' in RED. Pairs with errors and duration to characterize service health.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Throughput", "Traffic"]
+  },
+  {
+    "id": "methodology.duration",
+    "name": "Duration",
+    "kind": "metric",
+    "description": "How long a request takes. The 'D' in RED. Distribution matters — track tail latency (p95, p99) not just mean.",
+    "source_ids": ["brendangregg-methodology"],
+    "aliases": ["Latency", "Response Time"]
+  },
+  {
+    "id": "methodology.flame-graph",
+    "name": "Flame Graph",
+    "kind": "tool",
+    "description": "Visualization of stack-trace-sampled profile data: x-axis is alphabetically-sorted sample population (NOT time), y-axis is stack depth from bottom. Wider rectangles = more frequent stacks. Top edge = on-CPU; below = ancestry. Created by Brendan Gregg in 2011 to debug a MySQL CPU issue. Implemented by flamegraph.pl and 100+ other tools.",
+    "source_ids": ["brendangregg-methodology", "brendangregg-flamegraphs"],
+    "aliases": ["FlameGraph"]
+  },
+  {
+    "id": "methodology.cpu-flame-graph",
+    "name": "CPU Flame Graph",
+    "kind": "tool",
+    "description": "Flame graph variant generated from CPU stack profile data (typical: perf record + flamegraph.pl). The original variant — debugging on-CPU code paths.",
+    "source_ids": ["brendangregg-flamegraphs"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.icicle-chart",
+    "name": "Icicle Chart",
+    "kind": "tool",
+    "description": "Flame graph upside-down: y-axis grows downward from the root frame at the top. Useful when stacks are very deep — the initial view shows the bulk of the profile without scrolling. Generated via flamegraph.pl --inverted.",
+    "source_ids": ["brendangregg-flamegraphs"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.flame-chart",
+    "name": "Flame Chart",
+    "kind": "tool",
+    "description": "Time-on-x-axis variant of flame graphs, first added by Google Chrome's WebKit Web Inspector. Studies time-based patterns rather than aggregate hot paths. Distinct from flame graphs (which sort x by alphabet to maximize frame merging) — both are useful.",
+    "source_ids": ["brendangregg-flamegraphs"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.differential-flame-graph",
+    "name": "Differential Flame Graph",
+    "kind": "tool",
+    "description": "Flame graph variant for comparing two profiles (e.g., regression testing) by coloring frames red/blue based on which profile contributed more samples. Surfaces what changed between two states.",
+    "source_ids": ["brendangregg-flamegraphs"],
+    "aliases": ["CPI Flame Graph"]
+  },
+  {
+    "id": "methodology.memory-leak-flame-graph",
+    "name": "Memory Leak Flame Graph",
+    "kind": "tool",
+    "description": "Flame graph variant where stacks are sampled at byte-allocation events instead of CPU samples; width = bytes allocated. Identifies code paths responsible for memory growth or leaks. Colored green by convention to distinguish from CPU flame graphs.",
+    "source_ids": ["brendangregg-flamegraphs"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.off-cpu-flame-graph",
+    "name": "Off-CPU Flame Graph",
+    "kind": "tool",
+    "description": "Flame graph variant rendering off-CPU time (where threads were blocked) sampled with stack traces. Identifies blocking code paths. Yichun Zhang (2013) introduced the concept.",
+    "source_ids": ["brendangregg-flamegraphs", "brendangregg-offcpu"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.flamescope",
+    "name": "FlameScope",
+    "kind": "tool",
+    "description": "Performance analysis tool by Brendan Gregg + Martin Spier (Netflix) that visualizes profiles as subsecond-offset heat maps and lets the user select time ranges to render as flame graphs. Reveals variation, perturbations, and periodic activity that aggregate flame graphs hide.",
+    "source_ids": ["brendangregg-flamegraphs"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.off-cpu-tracing",
+    "name": "Off-CPU Tracing",
+    "kind": "technique",
+    "description": "Off-CPU analysis approach that traces every kernel context switch (e.g., finish_task_switch on Linux) with stack traces and timestamps, then aggregates by stack to compute per-stack off-CPU time. Captures all wait events for any application without per-app instrumentation.",
+    "source_ids": ["brendangregg-offcpu"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.off-cpu-sampling",
+    "name": "Off-CPU Sampling",
+    "kind": "technique",
+    "description": "Off-CPU analysis approach that samples blocked-thread stacks at a timer interval (or via a wall-time profiler that filters to off-CPU stacks). Lower fidelity than tracing but bounded overhead; rarely used by system profilers because of per-thread sampling cost.",
+    "source_ids": ["brendangregg-offcpu"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.off-cpu-time",
+    "name": "Off-CPU Time",
+    "kind": "metric",
+    "description": "Time a thread spent waiting off-CPU (blocked on I/O, locks, timers, scheduler queues, paging) rather than running. Measurable as totals via /proc statistics or per-event via tracers like the bcc cpudist tool (-O mode).",
+    "source_ids": ["brendangregg-offcpu"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.context-switch",
+    "name": "Context Switch",
+    "kind": "concept",
+    "description": "Kernel-scheduler event that swaps the running thread on a CPU. Off-CPU tracing instruments the function that finishes a context switch (Linux: finish_task_switch). Voluntary switches happen on blocking calls; involuntary ones happen under CPU pressure or interrupts.",
+    "source_ids": ["brendangregg-offcpu"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.frame-pointer",
+    "name": "Frame Pointer",
+    "kind": "concept",
+    "description": "Register (e.g., RBP on x86_64) holding the previous stack frame's base address. Required by frame-pointer-based stack walkers (perf, eBPF). The -fomit-frame-pointer compiler flag breaks this; Java needs -XX:+PreserveFramePointer (added in JDK 8u60 + JDK 9) to preserve it.",
+    "source_ids": ["brendangregg-offcpu", "brendangregg-flamegraphs"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.bpf",
+    "name": "Berkeley Packet Filter",
+    "kind": "concept",
+    "description": "In-kernel sandboxed virtual machine originally designed for tcpdump-style packet filtering. tcpdump expressions compile to BPF bytecode that the VM executes. Predecessor of eBPF.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": ["BPF", "classic BPF", "cBPF"]
+  },
+  {
+    "id": "methodology.ebpf",
+    "name": "Extended BPF",
+    "kind": "concept",
+    "description": "Linux 4.x extension of classic BPF: lets the in-kernel BPF VM run on events other than packets and do actions other than filtering. Programs are written in C, compiled to BPF bytecode, verified by the kernel verifier (no loops or backwards branches), then attached to event sources (kprobes, uprobes, tracepoints, perf_events). Used for tracing, security, software-defined networks, XDP.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": ["eBPF", "BPF"]
+  },
+  {
+    "id": "methodology.bcc",
+    "name": "BPF Compiler Collection",
+    "kind": "tool",
+    "description": "Collection of eBPF tracing tools and a C/Python/Lua frontend for writing more (github.com/iovisor/bcc). Recommended for complex tools and daemons. Provides 100+ ready-to-run tools (execsnoop, opensnoop, biolatency, etc.). The Python interface is now considered deprecated in favor of libbpf+CO-RE.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": ["BCC"]
+  },
+  {
+    "id": "methodology.bpftrace",
+    "name": "bpftrace",
+    "kind": "tool",
+    "description": "High-level tracing language and frontend for eBPF, modeled on AWK/DTrace. Recommended for one-liners and short scripts. github.com/iovisor/bpftrace.",
+    "source_ids": ["brendangregg-ebpf", "bpftrace-language"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.kprobe",
+    "name": "Kprobe",
+    "kind": "concept",
+    "description": "Linux kernel dynamic-tracing primitive: instrument any kernel function entry (kprobe) or return (kretprobe) at runtime by overwriting the first instruction with a breakpoint trap. Used by eBPF, ftrace, perf, SystemTap. Brittle across kernel versions because function names change.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": ["kprobes", "kretprobe"]
+  },
+  {
+    "id": "methodology.uprobe",
+    "name": "Uprobe",
+    "kind": "concept",
+    "description": "User-level dynamic tracing primitive: attach to any user function entry/return at runtime. Has higher overhead than kprobes (~10x) since context switches across the user/kernel boundary on every event.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": ["uprobes", "uretprobe"]
+  },
+  {
+    "id": "methodology.tracepoint",
+    "name": "Tracepoint",
+    "kind": "concept",
+    "description": "Static kernel tracing instrumentation point — placed by kernel developers and exposed under /sys/kernel/debug/tracing/events. Stable interface across kernel versions, unlike kprobes. Examples: block:block_rq_insert, sched:sched_switch, syscalls:sys_enter_*.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": ["kernel tracepoint"]
+  },
+  {
+    "id": "methodology.usdt",
+    "name": "USDT",
+    "kind": "concept",
+    "description": "User Statically Defined Tracing — application-embedded probe points that user-space tracers can attach to. Like tracepoints but for user-space apps. Compiled in via DTrace-style probe macros; visible to BCC, bpftrace, SystemTap.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": ["User Statically Defined Tracing"]
+  },
+  {
+    "id": "methodology.bpf-map",
+    "name": "BPF Map",
+    "kind": "concept",
+    "description": "In-kernel data structure (array, hash, histogram, stack-trace, etc.) used by eBPF programs to store state and pass data to user-space. Doing in-kernel summarization via maps is what makes eBPF tracing efficient — much lower overhead than dumping every event.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.bpf-verifier",
+    "name": "BPF Verifier",
+    "kind": "concept",
+    "description": "Kernel component that statically validates BPF bytecode before allowing it to run: rejects programs with loops, backwards branches, unbounded execution, or unsafe memory access. The reason BPF is safe to load from user-space.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.libbpf",
+    "name": "libbpf",
+    "kind": "tool",
+    "description": "Modern C library for loading BPF programs into the kernel — pairs with BTF (BPF Type Format) and CO-RE (Compile Once, Run Everywhere) for portable programs. Replaces the BCC Python toolchain for production-grade tools (per Brendan Gregg's 2020 update).",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.ftrace",
+    "name": "ftrace",
+    "kind": "tool",
+    "description": "Linux's built-in static + dynamic tracing framework, exposed via /sys/kernel/debug/tracing. Predates eBPF; the perf-tools wrapper scripts use it. Underrated — many capabilities aren't exposed via perf_events but are reachable through ftrace directly.",
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"],
+    "aliases": ["FTRACE"]
+  },
+  {
+    "id": "methodology.perf-events",
+    "name": "perf_events",
+    "kind": "tool",
+    "description": "Linux's standard performance counter and tracing subsystem (also called 'perf'). Provides timed sampling, PMC reads, and tracepoint instrumentation. Frontend: the perf(1) command. Used as one of eBPF's event sources.",
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"],
+    "aliases": ["perf", "perf_events"]
+  },
+  {
+    "id": "methodology.pmc",
+    "name": "Performance Monitoring Counters",
+    "kind": "metric",
+    "description": "Hardware counters in modern CPUs that tally microarchitectural events: cycles, instructions, cache misses, branch mispredicts, stalled cycles, etc. Read via perf stat. The only honest way to know whether a CPU is instruction-bound vs memory-stalled.",
+    "source_ids": ["brendangregg-cpu-utilization-wrong"],
+    "aliases": ["PMCs", "Performance Monitoring Counter"]
+  },
+  {
+    "id": "methodology.ipc",
+    "name": "Instructions Per Cycle",
+    "kind": "metric",
+    "description": "Number of CPU instructions retired per clock cycle, averaged over a window. Brendan Gregg's rule of thumb: IPC < 1.0 → likely memory-stalled (tune memory I/O, caching, NUMA locality); IPC > 1.0 → instruction-bound (reduce code execution, look at CPU flame graphs). Modern Intel CPUs can retire 4 instructions per cycle ('4-wide').",
+    "source_ids": ["brendangregg-cpu-utilization-wrong"],
+    "aliases": ["IPC"]
+  },
+  {
+    "id": "methodology.cpu-utilization-misleading",
+    "name": "CPU Utilization is Misleading",
+    "kind": "concept",
+    "description": "%CPU as reported by top(1) and most monitoring tools is really 'non-idle time' — it includes cycles stalled on memory I/O, which now dominate modern workloads. High %CPU often means the memory subsystem is the bottleneck, not the CPU package. Pair %CPU with IPC (or PMC stalled-cycles metrics) before tuning.",
+    "source_ids": ["brendangregg-cpu-utilization-wrong"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.execsnoop",
+    "name": "execsnoop",
+    "kind": "tool",
+    "description": "Trace new processes via the exec() syscall, printing PID, parent PID, command, and arguments live as they run. Available in both bcc/eBPF and perf-tools/ftrace flavors. Essential for catching short-lived processes invisible to top/ps.",
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme", "bcc-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.opensnoop",
+    "name": "opensnoop",
+    "kind": "tool",
+    "description": "Trace open() syscalls printing process name and full path. Identifies which processes are reading which files (useful for config-file discovery, missing-file diagnosis, and attribution). Both bcc and perf-tools versions.",
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme", "bcc-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.biolatency",
+    "name": "biolatency",
+    "kind": "tool",
+    "description": "Block I/O latency as a power-of-2 histogram (bcc/eBPF). Reveals bimodal distributions and tail latency that mean-latency metrics hide. -D mode breaks down by disk; -m for milliseconds. Fundamental disk-investigation tool.",
+    "source_ids": ["brendangregg-ebpf", "bcc-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.biosnoop",
+    "name": "biosnoop",
+    "kind": "tool",
+    "description": "Per-event block I/O tracer (bcc/eBPF) showing time, comm, PID, disk, R/W, sector, bytes, and latency for every I/O. Use when biolatency's histogram identifies outliers and you need to attribute them to a specific process.",
+    "source_ids": ["brendangregg-ebpf", "bcc-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.iosnoop",
+    "name": "iosnoop",
+    "kind": "tool",
+    "description": "perf-tools/ftrace counterpart to biosnoop: trace disk I/O events with latency. Older Linux kernels (3.2+) where eBPF isn't available. The biosnoop bcc tool supersedes it on modern kernels.",
+    "source_ids": ["perf-tools-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.cachestat",
+    "name": "cachestat",
+    "kind": "tool",
+    "description": "Linux page cache hit/miss/dirty statistics, summarized per second. Surfaces page-cache effectiveness — a low hit rate can mean working-set > RAM or anti-pattern access. Available in both bcc and perf-tools flavors.",
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme", "bcc-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.profile",
+    "name": "profile",
+    "kind": "tool",
+    "description": "bcc/eBPF tool for timed CPU stack-trace sampling. -F sets frequency (typical: 49 Hz to dodge timer alignment); -d emits delimited frames; folded output goes straight to flamegraph.pl. Replaces perf record + perf script for most flame-graph workflows on Linux 4.9+.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.runqlat",
+    "name": "runqlat",
+    "kind": "tool",
+    "description": "Run-queue latency histogram (bcc/eBPF): time threads spent waiting on the CPU run queue before being scheduled. High runqlat = CPU saturation in USE-method terms. Direct measurement of what 'CPU is busy' should mean.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.tcpconnect",
+    "name": "tcpconnect",
+    "kind": "tool",
+    "description": "bcc/eBPF tool tracing TCP active connections (connect() syscall) with PID, IP, port. Pairs with tcpaccept (passive connections) and tcplife (per-connection lifetime).",
+    "source_ids": ["brendangregg-ebpf", "bcc-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.tcpretrans",
+    "name": "tcpretrans",
+    "kind": "tool",
+    "description": "Trace TCP retransmits with addresses, ports, and TCP state. Surfaces network reliability issues without the overhead of tracing every send/receive (since retransmits are typically <<1% of traffic). Both bcc and perf-tools flavors.",
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme", "bcc-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.funccount",
+    "name": "funccount",
+    "kind": "tool",
+    "description": "Count kernel (or user) function calls matched by a wildcard pattern. Discovery tool: which TCP send paths fired? which VFS calls happened? -p filters by PID. bcc and perf-tools flavors.",
+    "source_ids": ["brendangregg-ebpf", "perf-tools-readme"],
+    "aliases": []
+  },
+  {
+    "id": "methodology.stackcount",
+    "name": "stackcount",
+    "kind": "tool",
+    "description": "Count stack traces leading to a given function or tracepoint (bcc/eBPF). Answers 'who calls X?' across the kernel — useful for understanding which code paths trigger an event of interest.",
+    "source_ids": ["brendangregg-ebpf"],
+    "aliases": []
+  }
+]
