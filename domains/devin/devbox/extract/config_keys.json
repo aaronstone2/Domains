@@ -1,0 +1,587 @@
+[
+  {
+    "id": "devin.devbox.cfg.blueprint.runs-on",
+    "scope": "blueprint",
+    "key": "runs-on",
+    "type": "string|list[string]",
+    "default_value": "default",
+    "description": "Top-level blueprint field selecting target platform. String or list. Allowed values: `default` (alias for linux), `linux`, `windows`. List form (`[default, windows]`) runs identical commands on each platform, producing one snapshot per platform. For platform-specific commands use multi-block YAML.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint.initialize",
+    "scope": "blueprint",
+    "key": "initialize",
+    "type": "list[step] | string",
+    "default_value": null,
+    "description": "Top-level blueprint section. Holds steps that run ONCE during builds; results persist in the snapshot. Use for language runtimes, system packages, global CLI tools.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint.maintenance",
+    "scope": "blueprint",
+    "key": "maintenance",
+    "type": "list[step] | string",
+    "default_value": null,
+    "description": "Top-level blueprint section. Runs during builds AND surfaced (not auto-executed) to the agent at session start. Should be fast and incremental; use `npm install`, not `npm ci`.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint.knowledge",
+    "scope": "blueprint",
+    "key": "knowledge",
+    "type": "list[{name, contents}]",
+    "default_value": null,
+    "description": "Top-level blueprint section. Reference info loaded into Devin's context at session start (NOT executed). Lightweight, focused on executable command refs (lint/test/build).",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint-step.name",
+    "scope": "blueprint-step",
+    "key": "name",
+    "type": "string",
+    "default_value": null,
+    "description": "Human-readable label for a blueprint step. Surfaced in build logs.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint-step.run",
+    "scope": "blueprint-step",
+    "key": "run",
+    "type": "string (multi-line)",
+    "default_value": null,
+    "description": "Shell-script body for a blueprint step. Must be non-interactive — interactive commands hang and time out. Subject to a 1-hour per-step timeout.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml", "devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint-step.uses",
+    "scope": "blueprint-step",
+    "key": "uses",
+    "type": "string (action ref)",
+    "default_value": null,
+    "description": "GitHub Action reference, e.g., `github.com/actions/setup-node@v4`. Devin downloads and runs the action during build, the same way GitHub CI runners execute action steps. Supported for setup-python, setup-node, setup-go, etc.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml", "devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint-step.with",
+    "scope": "blueprint-step",
+    "key": "with",
+    "type": "map<string,string>",
+    "default_value": null,
+    "description": "Inputs passed to a referenced GitHub Action. E.g., `with: { node-version: '20' }` for `actions/setup-node@v4`.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint-knowledge-entry.name",
+    "scope": "blueprint-knowledge-entry",
+    "key": "name",
+    "type": "string",
+    "default_value": null,
+    "description": "Identifier for a knowledge entry — e.g., `lint`, `test`, `build`. Used by Devin to look up the canonical command for a category.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint-knowledge-entry.contents",
+    "scope": "blueprint-knowledge-entry",
+    "key": "contents",
+    "type": "string",
+    "default_value": null,
+    "description": "Body of a knowledge entry — typically a single executable command (e.g., `npm run lint`). NOT executed by the runtime; loaded into Devin's context as reference info.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.blueprint.multi-document-separator",
+    "scope": "blueprint",
+    "key": "---",
+    "type": "literal",
+    "default_value": null,
+    "description": "Multi-document YAML separator. Lets a single blueprint editor file contain multiple blocks — used for multi-platform blueprints (one block per `runs-on`) and for organizing complex blueprints into logical sections.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml", "devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.secret.reference-syntax",
+    "scope": "secrets",
+    "key": "$VARIABLE_NAME",
+    "type": "string (bash interpolation)",
+    "default_value": null,
+    "description": "Reference syntax for secrets stored in Devin's Secrets dashboard. Available in blueprint shell commands and live session shells. Place credential-writing steps in `maintenance` (not `initialize`) so credentials are refreshed on each periodic build.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml", "devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.timing.build-step-timeout",
+    "scope": "build-timing",
+    "key": "step-timeout",
+    "type": "duration",
+    "default_value": "1h",
+    "description": "Per-step timeout during a build. Steps exceeding this are killed and the build fails. Common cause of hits: compiling large native dependencies from source — use pre-built binaries instead. Also triggered by commands waiting for interactive input.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.timing.setup-command-timeout",
+    "scope": "build-timing",
+    "key": "setup-command-timeout",
+    "type": "duration",
+    "default_value": "5m",
+    "description": "Timeout for a single command during the classic-config repo-setup wizard. Cognition explicitly recommends against giving Devin commands that take longer than 5 minutes — performance degrades significantly.",
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cfg.timing.periodic-refresh-cadence",
+    "scope": "build-timing",
+    "key": "periodic-refresh-cadence",
+    "type": "duration",
+    "default_value": "~24h",
+    "description": "Approximate cadence at which builds run automatically to refresh dependencies. Skipped while a snapshot is pinned.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.timing.pin-age-limit",
+    "scope": "build-timing",
+    "key": "pin-age-limit",
+    "type": "duration",
+    "default_value": "7d",
+    "description": "Maximum age of a build that's still pinnable. Builds older than 7 days cannot be pinned. Status must also be Success or Partial.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.timing.typical-build-duration",
+    "scope": "build-timing",
+    "key": "typical-build-duration",
+    "type": "duration-range",
+    "default_value": "5m-15m",
+    "description": "Typical end-to-end build time for an org's blueprint(s). Used for capacity planning when waiting on a fresh snapshot.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.runtime.home-dir-linux",
+    "scope": "filesystem",
+    "key": "home-dir.linux",
+    "type": "path",
+    "default_value": "/home/ubuntu",
+    "description": "Default home directory for the DevBox user on Linux. Used in path-based blueprint commands that need an absolute reference.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.runtime.home-dir-windows",
+    "scope": "filesystem",
+    "key": "home-dir.windows",
+    "type": "path",
+    "default_value": "/c/Users/Administrator",
+    "description": "Default home directory on Windows DevBox (Git-Bash-style path).",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.runtime.repos-dir",
+    "scope": "filesystem",
+    "key": "repos-dir",
+    "type": "path",
+    "default_value": "<home>/repos/<repo-name>",
+    "description": "Per-repo working-tree path. On Linux: /home/ubuntu/repos/<repo-name>. On Windows: /c/Users/Administrator/repos/<repo-name>. Each configured repo lives in its own subdirectory.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support", "devin-docs-onboard-environment-blueprints"]
+  },
+  {
+    "id": "devin.devbox.cfg.runtime.file-attachments-dir",
+    "scope": "filesystem",
+    "key": "file-attachments-dir",
+    "type": "path",
+    "default_value": "<home>/.files/",
+    "description": "Directory where uploaded files are written. Linux: /home/ubuntu/.files/. Windows: /c/Users/Administrator/.files/. Files dragged-and-dropped into the embedded VS Code instance land here.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.runtime.cdp-endpoint",
+    "scope": "browser",
+    "key": "cdp-endpoint",
+    "type": "url",
+    "default_value": "http://localhost:29229",
+    "description": "Chrome DevTools Protocol endpoint exposed by DevBox's Chrome browser. Playwright connects here for browser-based authentication automation and systematic data entry.",
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cfg.bashrc.path",
+    "scope": "shell",
+    "key": "~/.bashrc",
+    "type": "path",
+    "default_value": "<home>/.bashrc",
+    "description": "User shell init file inside DevBox. Direnv hook is pre-configured. Common edits: PATH manipulation, per-repo `nvm use` cd-hooks. Edit via `devin ~/.bashrc`.",
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cfg.direnv.envrc-filename",
+    "scope": "direnv",
+    "key": ".envrc",
+    "type": "filename",
+    "default_value": ".envrc",
+    "description": "Per-repo environment-variable file consumed by direnv. Created at the repo root; loaded after running `direnv allow` once.",
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cfg.vpn.openvpn-config-path",
+    "scope": "vpn",
+    "key": "openvpn.config-path",
+    "type": "path",
+    "default_value": null,
+    "description": "Location to which the user uploads `config.ovpn`. Drag-and-drop into the VS Code instance; choose any path in DevBox (typically /etc/openvpn/ or ~/).",
+    "source_ids": ["devin-docs-onboard-vpn"]
+  },
+  {
+    "id": "devin.devbox.cfg.vpn.systemd-service-unit",
+    "scope": "vpn",
+    "key": "systemd.openvpn.service",
+    "type": "path",
+    "default_value": "/etc/systemd/system/openvpn.service",
+    "description": "Path to the systemd unit file that auto-starts OpenVPN at session boot. Created by the user during VPN setup; references the config.ovpn from the previous step.",
+    "source_ids": ["devin-docs-onboard-vpn"]
+  },
+  {
+    "id": "devin.devbox.cfg.network.outbound-ip.1",
+    "scope": "outbound-ip-allowlist",
+    "key": "outbound-ip-1",
+    "type": "ipv4",
+    "default_value": "100.20.50.251",
+    "description": "Devin egress IP — must be allowlisted on customer firewalls / SCM allowlists / internal services. Documented in Admin > Common Issues > IP Whitelisting.",
+    "source_ids": ["devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.devbox.cfg.network.outbound-ip.2",
+    "scope": "outbound-ip-allowlist",
+    "key": "outbound-ip-2",
+    "type": "ipv4",
+    "default_value": "44.238.19.62",
+    "description": "Devin egress IP (allowlist target).",
+    "source_ids": ["devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.devbox.cfg.network.outbound-ip.3",
+    "scope": "outbound-ip-allowlist",
+    "key": "outbound-ip-3",
+    "type": "ipv4",
+    "default_value": "52.10.84.81",
+    "description": "Devin egress IP (allowlist target).",
+    "source_ids": ["devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.devbox.cfg.network.outbound-ip.4",
+    "scope": "outbound-ip-allowlist",
+    "key": "outbound-ip-4",
+    "type": "ipv4",
+    "default_value": "52.183.72.253",
+    "description": "Devin egress IP (allowlist target).",
+    "source_ids": ["devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.devbox.cfg.network.outbound-ip.5",
+    "scope": "outbound-ip-allowlist",
+    "key": "outbound-ip-5",
+    "type": "ipv4",
+    "default_value": "20.172.46.235",
+    "description": "Devin egress IP (allowlist target).",
+    "source_ids": ["devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.devbox.cfg.network.outbound-ip.6",
+    "scope": "outbound-ip-allowlist",
+    "key": "outbound-ip-6",
+    "type": "ipv4",
+    "default_value": "52.159.232.99",
+    "description": "Devin egress IP (allowlist target).",
+    "source_ids": ["devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.devbox.cfg.network.outbound-ip.7",
+    "scope": "outbound-ip-allowlist",
+    "key": "outbound-ip-7",
+    "type": "ipv4",
+    "default_value": "4.204.199.103",
+    "description": "Devin egress IP (allowlist target).",
+    "source_ids": ["devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.devbox.cfg.repo-state.configured",
+    "scope": "repo-state",
+    "key": "Configured",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Repo state: has a blueprint with initialize/maintenance/knowledge — fully set up in the snapshot.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.repo-state.included",
+    "scope": "repo-state",
+    "key": "Included",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Repo state: cloned into the snapshot but no custom blueprint. Devin can read the code but has no setup commands for it.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.repo-state.available",
+    "scope": "repo-state",
+    "key": "Available",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Repo state: connected to the org but not added to the environment. Not cloned. Visible in repo selector but not yet usable.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.build-status.success",
+    "scope": "build-status",
+    "key": "Success",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Build status: all steps completed; snapshot is ready to use.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.build-status.partial",
+    "scope": "build-status",
+    "key": "Partial",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Build status: some repo-level steps failed; snapshot is usable. Repos that succeeded work normally; repos that failed need their blueprints fixed.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.build-status.failed",
+    "scope": "build-status",
+    "key": "Failed",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Build status: critical failure (org or enterprise tier setup failed). Snapshot is NOT usable.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.build-status.cancelled",
+    "scope": "build-status",
+    "key": "Cancelled",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Build status: superseded by a newer build or manually cancelled.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cfg.billing.session-acu-soft-cap",
+    "scope": "billing",
+    "key": "session-acu-soft-cap",
+    "type": "integer",
+    "default_value": "10",
+    "description": "Cognition's recommended per-session ACU ceiling. Beyond ~10 ACU per session, agent performance noticeably degrades. Soft cap (the product nudges, doesn't enforce).",
+    "source_ids": ["cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.devbox.cfg.billing.usage-budget-bill-trigger",
+    "scope": "billing",
+    "key": "usage-budget-bill-trigger",
+    "type": "currency",
+    "default_value": "$2000",
+    "description": "Threshold above which usage-based billing triggers an immediate bill (rather than waiting for end-of-cycle). Whichever comes first: hitting $2,000 in additional usage OR end of billing cycle.",
+    "source_ids": ["cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.devbox.cfg.workspace.large-performant-toggle-path",
+    "scope": "ui-path",
+    "key": "large-performant-toggle",
+    "type": "string (UI path)",
+    "default_value": "Settings > Devin's Workspace > Danger Zone",
+    "description": "UI location of the Large Performant (Beta) VM-tier toggle. Default for new teams; existing teams must opt in (requires resetting machine setup; experimental auto-migration via support@cognition.ai).",
+    "source_ids": ["cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.devbox.cfg.windows.shell",
+    "scope": "windows-runtime",
+    "key": "default-shell",
+    "type": "string",
+    "default_value": "Git Bash",
+    "description": "Default shell on Windows DevBox. Same bash semantics as Linux DevBox — most blueprint commands work cross-platform without modification.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.windows.path-format",
+    "scope": "windows-runtime",
+    "key": "path-format",
+    "type": "string",
+    "default_value": "/c/...",
+    "description": "Git Bash path style on Windows DevBox (e.g., /c/Users/Administrator instead of C:\\Users\\Administrator). Required when Windows-specific paths appear in blueprint commands.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.windows.package-managers",
+    "scope": "windows-runtime",
+    "key": "package-managers",
+    "type": "list[string]",
+    "default_value": "[choco, winget, direct-installer]",
+    "description": "Available package managers on Windows DevBox: Chocolatey (choco), winget, or direct download scripts. apt-get is NOT available.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.linux.package-manager",
+    "scope": "linux-runtime",
+    "key": "package-manager",
+    "type": "string",
+    "default_value": "apt-get",
+    "description": "Default package manager on Linux DevBox.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cfg.agents-md.section.setup-commands",
+    "scope": "agents-md",
+    "key": "Setup Commands",
+    "type": "section",
+    "default_value": null,
+    "description": "AGENTS.md section listing setup commands the agent should run. Devin reads this before starting work. Example entries: 'Install dependencies: npm install', 'Start development server: npm run dev', 'Run tests: npm test', 'Build for production: npm run build'.",
+    "source_ids": ["devin-docs-onboard-agents-md"]
+  },
+  {
+    "id": "devin.devbox.cfg.agents-md.section.code-style",
+    "scope": "agents-md",
+    "key": "Code Style",
+    "type": "section",
+    "default_value": null,
+    "description": "AGENTS.md section listing code-style requirements (e.g., 'Use TypeScript strict mode', 'Prefer functional components in React', 'Use ESLint and Prettier configurations').",
+    "source_ids": ["devin-docs-onboard-agents-md"]
+  },
+  {
+    "id": "devin.devbox.cfg.agents-md.section.testing-guidelines",
+    "scope": "agents-md",
+    "key": "Testing Guidelines",
+    "type": "section",
+    "default_value": null,
+    "description": "AGENTS.md section listing testing requirements (frameworks, coverage targets, when to run).",
+    "source_ids": ["devin-docs-onboard-agents-md"]
+  },
+  {
+    "id": "devin.devbox.cfg.agents-md.section.project-structure",
+    "scope": "agents-md",
+    "key": "Project Structure",
+    "type": "section",
+    "default_value": null,
+    "description": "AGENTS.md section enumerating top-level directories (e.g., '/src - Main application code', '/tests - Test files', '/docs - Documentation', '/public - Static assets').",
+    "source_ids": ["devin-docs-onboard-agents-md"]
+  },
+  {
+    "id": "devin.devbox.cfg.agents-md.section.development-workflow",
+    "scope": "agents-md",
+    "key": "Development Workflow",
+    "type": "section",
+    "default_value": null,
+    "description": "AGENTS.md section describing branching/PR/commit conventions.",
+    "source_ids": ["devin-docs-onboard-agents-md"]
+  },
+  {
+    "id": "devin.devbox.cfg.security.encryption-in-transit",
+    "scope": "security",
+    "key": "encryption-in-transit",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "All data transmission encrypted in transit. Production systems also routinely monitored via logging, error handling, live-metrics dashboards.",
+    "source_ids": ["devin-docs-admin-security"]
+  },
+  {
+    "id": "devin.devbox.cfg.security.encryption-at-rest",
+    "scope": "security",
+    "key": "encryption-at-rest",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "Data encrypted at rest in Cognition's AWS production environment.",
+    "source_ids": ["devin-docs-admin-security"]
+  },
+  {
+    "id": "devin.devbox.cfg.security.data-controls.training-opt-in",
+    "scope": "data-controls",
+    "key": "training-opt-in",
+    "type": "boolean",
+    "default_value": "false",
+    "description": "Whether the customer's data may be used for Cognition model training. Default false (opt-out by default). Toggle on the Data Controls settings page. Enterprise customers' data is NEVER used for training regardless of toggle.",
+    "source_ids": ["devin-docs-admin-security"]
+  },
+  {
+    "id": "devin.devbox.cfg.security.mfa-required",
+    "scope": "security",
+    "key": "mfa-required",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "All Cognition employees and contractors required to use multi-factor authentication on all main work applications.",
+    "source_ids": ["devin-docs-admin-security"]
+  },
+  {
+    "id": "devin.devbox.cfg.security.cloud-region",
+    "scope": "security",
+    "key": "cloud-region",
+    "type": "string",
+    "default_value": "AWS",
+    "description": "Cognition's production cloud environment is hosted in AWS.",
+    "source_ids": ["devin-docs-admin-security"]
+  },
+  {
+    "id": "devin.devbox.cfg.security.vulnerability-disclosure-email",
+    "scope": "security",
+    "key": "vulnerability-disclosure-email",
+    "type": "email",
+    "default_value": "security@cognition.ai",
+    "description": "Address for security vulnerability reports. Documented in Admin > Security.",
+    "source_ids": ["devin-docs-admin-security"]
+  },
+  {
+    "id": "devin.devbox.cfg.security.support-email",
+    "scope": "support",
+    "key": "support-email",
+    "type": "email",
+    "default_value": "support@cognition.ai",
+    "description": "Customer-support contact address. Used for VM-tier auto-migration requests, integration issues, and other operational asks.",
+    "source_ids": ["devin-docs-admin-common-issues", "cognition-blog-jan-25-product-update", "devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cfg.status-page.component.web-client",
+    "scope": "status-component",
+    "key": "Web Client",
+    "type": "component",
+    "default_value": null,
+    "description": "Status-page component representing the Devin web app. Reported uptime ~99.92% over 90 days at fetch time.",
+    "source_ids": ["devin-status-page"]
+  },
+  {
+    "id": "devin.devbox.cfg.status-page.component.agent",
+    "scope": "status-component",
+    "key": "Agent",
+    "type": "component",
+    "default_value": null,
+    "description": "Status-page component representing Devin's agent runtime. Reported uptime ~99.83% at fetch time.",
+    "source_ids": ["devin-status-page"]
+  },
+  {
+    "id": "devin.devbox.cfg.status-page.component.integrations",
+    "scope": "status-component",
+    "key": "Integrations",
+    "type": "component",
+    "default_value": null,
+    "description": "Status-page component representing third-party integrations. Reported uptime ~100% at fetch time.",
+    "source_ids": ["devin-status-page"]
+  },
+  {
+    "id": "devin.devbox.cfg.status-page.component.enterprise",
+    "scope": "status-component",
+    "key": "Enterprise",
+    "type": "component",
+    "default_value": null,
+    "description": "Status-page component representing the Enterprise plane. Reported uptime ~99.9% at fetch time.",
+    "source_ids": ["devin-status-page"]
+  },
+  {
+    "id": "devin.devbox.cfg.status-page.component.web-client-enterprise",
+    "scope": "status-component",
+    "key": "Web Client (Enterprise)",
+    "type": "component",
+    "default_value": null,
+    "description": "Status-page component for the enterprise web app surface. Reported uptime ~99.92% at fetch time.",
+    "source_ids": ["devin-status-page"]
+  },
+  {
+    "id": "devin.devbox.cfg.status-page.component.agent-enterprise",
+    "scope": "status-component",
+    "key": "Agent (Enterprise)",
+    "type": "component",
+    "default_value": null,
+    "description": "Status-page component for the enterprise agent runtime. Reported uptime ~99.88% at fetch time.",
+    "source_ids": ["devin-status-page"]
+  }
+]

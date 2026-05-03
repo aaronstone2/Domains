@@ -1,0 +1,614 @@
+[
+  {
+    "id": "devin.integrations.cfg.github-perm.read.dependabot-alerts",
+    "scope": "github-app-permission",
+    "key": "dependabot_alerts",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to resolve dependabot alerts (i.e., bumping dependency versions).",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.actions",
+    "scope": "github-app-permission",
+    "key": "actions",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to view configured Actions to understand if its changes pass CI.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.deployments",
+    "scope": "github-app-permission",
+    "key": "deployments",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to view which versions of a repository were deployed.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.metadata",
+    "scope": "github-app-permission",
+    "key": "metadata",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to view crucial repository metadata such as ownership.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.packages",
+    "scope": "github-app-permission",
+    "key": "packages",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to view which versions of a repo were shipped as a package.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.pages",
+    "scope": "github-app-permission",
+    "key": "pages",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to consult GitHub Pages associated with a repo (e.g., to view documentation).",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.security-advisories",
+    "scope": "github-app-permission",
+    "key": "repository_security_advisories",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to view security advisories to help fix security issues.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.members",
+    "scope": "github-app-permission",
+    "key": "members",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to view members of an organization.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.read.webhooks",
+    "scope": "github-app-permission",
+    "key": "webhooks",
+    "type": "permission-read",
+    "default_value": "read",
+    "description": "GitHub App permission. Read access. Allows Devin to view configured hooks (e.g., linting, type-checking).",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.checks",
+    "scope": "github-app-permission",
+    "key": "checks",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to view and report check results — communicate CI pass/fail.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.commit-statuses",
+    "scope": "github-app-permission",
+    "key": "commit_statuses",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to view and set commit statuses indicating CI pass/fail.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.contents",
+    "scope": "github-app-permission",
+    "key": "contents",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to contribute to the codebase.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.discussions",
+    "scope": "github-app-permission",
+    "key": "discussions",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to contribute to GitHub Discussions.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.issues",
+    "scope": "github-app-permission",
+    "key": "issues",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to open new issues.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.pull-requests",
+    "scope": "github-app-permission",
+    "key": "pull_requests",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to create new PRs.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.projects",
+    "scope": "github-app-permission",
+    "key": "projects",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to view and manage projects associated with a repo (task retrieval).",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.github-perm.write.workflows",
+    "scope": "github-app-permission",
+    "key": "workflows",
+    "type": "permission-write",
+    "default_value": "read+write",
+    "description": "GitHub App permission. Read+write. Allows Devin to set up new workflows (CI/CD configuration).",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.pr-template.search.devin-uppercase-1",
+    "scope": "pr-template-search",
+    "key": "PULL_REQUEST_TEMPLATE/devin_pr_template.md",
+    "type": "search-path",
+    "default_value": "PULL_REQUEST_TEMPLATE/devin_pr_template.md",
+    "description": "First search path for Devin-specific PR template. Both uppercase and lowercase variants are supported.",
+    "source_ids": ["devin-docs-integrations-gh", "devin-docs-integrations-pr-templates"]
+  },
+  {
+    "id": "devin.integrations.cfg.pr-template.search.devin-docs",
+    "scope": "pr-template-search",
+    "key": "docs/PULL_REQUEST_TEMPLATE/devin_pr_template.md",
+    "type": "search-path",
+    "default_value": "docs/PULL_REQUEST_TEMPLATE/devin_pr_template.md",
+    "description": "Second search path for Devin-specific PR template (under docs/).",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.pr-template.search.devin-github",
+    "scope": "pr-template-search",
+    "key": ".github/PULL_REQUEST_TEMPLATE/devin_pr_template.md",
+    "type": "search-path",
+    "default_value": ".github/PULL_REQUEST_TEMPLATE/devin_pr_template.md",
+    "description": "Third search path for Devin-specific PR template (under .github/).",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.pr-template.search.standard-root",
+    "scope": "pr-template-search",
+    "key": "pull_request_template.md",
+    "type": "search-path",
+    "default_value": "pull_request_template.md",
+    "description": "Fourth search path — standard GitHub PR template at repo root. Both uppercase and lowercase variants supported.",
+    "source_ids": ["devin-docs-integrations-gh", "devin-docs-integrations-pr-templates"]
+  },
+  {
+    "id": "devin.integrations.cfg.pr-template.search.standard-docs",
+    "scope": "pr-template-search",
+    "key": "docs/pull_request_template.md",
+    "type": "search-path",
+    "default_value": "docs/pull_request_template.md",
+    "description": "Fifth search path — standard PR template under docs/.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.pr-template.search.standard-github",
+    "scope": "pr-template-search",
+    "key": ".github/pull_request_template.md",
+    "type": "search-path",
+    "default_value": ".github/pull_request_template.md",
+    "description": "Sixth search path — standard PR template under .github/.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.pr-template.fallback-default",
+    "scope": "pr-template",
+    "key": "fallback-default-template",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "If none of the search paths match, Devin falls back to a built-in default template with sections: Summary, Review & Testing Checklist, (Optional) Mermaid diagram, Notes.",
+    "source_ids": ["devin-docs-integrations-pr-templates"]
+  },
+  {
+    "id": "devin.integrations.cfg.gpg-signing.git-user-name",
+    "scope": "gpg-signing",
+    "key": "GIT_USER_NAME",
+    "type": "secret",
+    "default_value": null,
+    "description": "Devin secret holding the git user.name to set on signed commits. Must match the GPG key UID's name.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.gpg-signing.git-user-email",
+    "scope": "gpg-signing",
+    "key": "GIT_USER_EMAIL",
+    "type": "secret",
+    "default_value": null,
+    "description": "Devin secret holding the git user.email. Must match the GPG key UID's email AND the GitHub account where the public key is uploaded — GitHub verifies signatures against the commit author identity.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.gpg-signing.private-key-base64",
+    "scope": "gpg-signing",
+    "key": "GPG_PRIVATE_KEY_BASE64",
+    "type": "secret",
+    "default_value": null,
+    "description": "Base64-encoded GPG private key, stored as a Devin secret. Imported at session start by the org-wide blueprint to enable commit signing.",
+    "source_ids": ["devin-docs-integrations-gh"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack-perm.chat-write",
+    "scope": "slack-permission",
+    "key": "chat:write, chat:write.customize",
+    "type": "oauth-scope",
+    "default_value": null,
+    "description": "Slack OAuth scopes. Send messages as @Devin or with a customized username/avatar. Required for Devin to respond to user requests.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack-perm.commands",
+    "scope": "slack-permission",
+    "key": "commands",
+    "type": "oauth-scope",
+    "default_value": null,
+    "description": "Slack OAuth scope. Add shortcuts and slash commands.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack-perm.files",
+    "scope": "slack-permission",
+    "key": "files:read, files:write, remote_files:read, remote_files:write",
+    "type": "oauth-scope",
+    "default_value": null,
+    "description": "Slack OAuth scopes. Upload, edit, delete files (including remote files). Required for sending/receiving attachments.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack-perm.history",
+    "scope": "slack-permission",
+    "key": "channels:history, groups:history, im:history",
+    "type": "oauth-scope",
+    "default_value": null,
+    "description": "Slack OAuth scopes. View messages and content in channels/groups/DMs Devin is in. Required to retrieve thread context when launched mid-thread.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack-perm.im",
+    "scope": "slack-permission",
+    "key": "im:read, im:write",
+    "type": "oauth-scope",
+    "default_value": null,
+    "description": "Slack OAuth scopes. Start DMs with people; view basic info about DMs Devin is in. Required for the per-run notification feature.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack-perm.reactions",
+    "scope": "slack-permission",
+    "key": "reactions:write",
+    "type": "oauth-scope",
+    "default_value": null,
+    "description": "Slack OAuth scope. Add/edit emoji reactions. Used to mark runs as completed or failed.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack-perm.users",
+    "scope": "slack-permission",
+    "key": "users:read, users:read.email, users.profile:read",
+    "type": "oauth-scope",
+    "default_value": null,
+    "description": "Slack OAuth scopes. View workspace users + emails + profiles. Required to match Slack users with Devin users by email.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-graph.organization-read-all",
+    "scope": "teams-graph-permission",
+    "key": "Organization.Read.All",
+    "type": "graph-app-permission",
+    "default_value": null,
+    "description": "Microsoft Graph Application permission (tenant-wide). Read basic org profile. Used to validate the tenant where the app is being installed.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-graph.user-readbasic-all",
+    "scope": "teams-graph-permission",
+    "key": "User.ReadBasic.All",
+    "type": "graph-app-permission",
+    "default_value": null,
+    "description": "Microsoft Graph Application permission. Read basic user profiles. Used to map member identities and resolve mentions in linked Teams.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-graph.appcatalog-read-all",
+    "scope": "teams-graph-permission",
+    "key": "AppCatalog.Read.All",
+    "type": "graph-app-permission",
+    "default_value": null,
+    "description": "Microsoft Graph Application permission. Read the Teams app catalog. Used to locate Devin's app and fetch teamsAppId for installation.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-graph.app-install-rwc",
+    "scope": "teams-graph-permission",
+    "key": "TeamsAppInstallation.ReadWriteAndConsentSelfForTeam.All",
+    "type": "graph-app-permission",
+    "default_value": null,
+    "description": "Microsoft Graph Application permission. Install/uninstall Devin's own app and grant app RSC. Used to install/remove the bot in a selected Team from the Devin dashboard.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.channel-message-read",
+    "scope": "teams-rsc-permission",
+    "key": "ChannelMessage.Read.Group",
+    "type": "rsc-team",
+    "default_value": null,
+    "description": "Teams RSC. Per Team/Channel. Read channel messages where the app is installed. Used to process channel conversations (summaries, triggers, syncing).",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.channel-message-send",
+    "scope": "teams-rsc-permission",
+    "key": "ChannelMessage.Send.Group",
+    "type": "rsc-team",
+    "default_value": null,
+    "description": "Teams RSC. Send messages in channels (new posts and threaded replies) where the app is installed.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.member-read",
+    "scope": "teams-rsc-permission",
+    "key": "Member.Read.Group",
+    "type": "rsc-team",
+    "default_value": null,
+    "description": "Teams RSC. Read team membership. Used for identity mapping, permission checks, mention routing.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.team-settings-read",
+    "scope": "teams-rsc-permission",
+    "key": "TeamSettings.Read.Group",
+    "type": "rsc-team",
+    "default_value": null,
+    "description": "Teams RSC. Read Team settings. Used to respect Team-level policies and tailor behavior.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.chat-member-read",
+    "scope": "teams-rsc-permission",
+    "key": "ChatMember.Read.Chat",
+    "type": "rsc-chat",
+    "default_value": null,
+    "description": "Teams RSC. Read chat participants. Used for response addressing and audit trails.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.chat-message-read",
+    "scope": "teams-rsc-permission",
+    "key": "ChatMessage.Read.Chat",
+    "type": "rsc-chat",
+    "default_value": null,
+    "description": "Teams RSC. Read messages in chats where the bot participates. Used to process prompts, context, follow-ups.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.chat-message-send",
+    "scope": "teams-rsc-permission",
+    "key": "ChatMessage.Send.Chat",
+    "type": "rsc-chat",
+    "default_value": null,
+    "description": "Teams RSC. Send messages in 1:1 and group chats (DMs) where the bot participates. NOT for channels.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.teams-rsc.chat-settings-read",
+    "scope": "teams-rsc-permission",
+    "key": "ChatSettings.Read.Chat",
+    "type": "rsc-chat",
+    "default_value": null,
+    "description": "Teams RSC. Read chat settings (e.g., moderation). Used to align behavior with chat policies (rate limits, who can post, etc.).",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-oauth.scope.read-me",
+    "scope": "jira-oauth-scope",
+    "key": "read:me",
+    "type": "oauth-classic-scope",
+    "default_value": null,
+    "description": "Jira OAuth 2.0 Classic scope. Read the authenticated user's profile.",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-oauth.scope.read-jira-user",
+    "scope": "jira-oauth-scope",
+    "key": "read:jira-user",
+    "type": "oauth-classic-scope",
+    "default_value": null,
+    "description": "Jira OAuth 2.0 Classic scope. Read Jira users.",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-oauth.scope.read-jira-work",
+    "scope": "jira-oauth-scope",
+    "key": "read:jira-work",
+    "type": "oauth-classic-scope",
+    "default_value": null,
+    "description": "Jira OAuth 2.0 Classic scope. Read Jira work items (issues, projects).",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-oauth.scope.write-jira-work",
+    "scope": "jira-oauth-scope",
+    "key": "write:jira-work",
+    "type": "oauth-classic-scope",
+    "default_value": null,
+    "description": "Jira OAuth 2.0 Classic scope. Write Jira work items — create/update issues/comments under the service-account identity.",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.automation-trigger.semantics",
+    "scope": "automation-trigger",
+    "key": "edge-detection",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "Automation triggers (Jira and Linear) use edge detection. They fire on transition INTO a matching state, not for tickets already matching when the trigger is configured.",
+    "source_ids": ["devin-docs-integrations-jira", "devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-trigger.projects",
+    "scope": "jira-automation-trigger",
+    "key": "projects",
+    "type": "list[project-key]",
+    "default_value": null,
+    "description": "Jira automation-trigger filter. Only fire for tickets in specified Jira projects.",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-trigger.labels",
+    "scope": "jira-automation-trigger",
+    "key": "labels",
+    "type": "list[label]",
+    "default_value": null,
+    "description": "Jira automation-trigger filter. Only fire when a ticket has these labels.",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-trigger.statuses",
+    "scope": "jira-automation-trigger",
+    "key": "statuses",
+    "type": "list[status]",
+    "default_value": null,
+    "description": "Jira automation-trigger filter. Only fire when a ticket reaches one of these statuses (e.g., 'To Do', 'In Progress').",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira-trigger.playbook",
+    "scope": "jira-automation-trigger",
+    "key": "playbook",
+    "type": "playbook-id",
+    "default_value": null,
+    "description": "Jira automation-trigger optional override. Specifies which playbook to use for the auto-triggered session.",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.linear-trigger.teams",
+    "scope": "linear-automation-trigger",
+    "key": "teams",
+    "type": "list[team-key]",
+    "default_value": null,
+    "description": "Linear automation-trigger filter. Only fire for tickets in these Linear teams.",
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cfg.linear-trigger.labels",
+    "scope": "linear-automation-trigger",
+    "key": "labels",
+    "type": "list[label]",
+    "default_value": null,
+    "description": "Linear automation-trigger filter. Only fire when a ticket has these labels.",
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cfg.linear-trigger.statuses",
+    "scope": "linear-automation-trigger",
+    "key": "statuses",
+    "type": "list[status]",
+    "default_value": null,
+    "description": "Linear automation-trigger filter. Only fire when a ticket reaches one of these statuses (e.g., 'Todo', 'In Progress').",
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cfg.linear-trigger.playbook",
+    "scope": "linear-automation-trigger",
+    "key": "playbook",
+    "type": "playbook-id",
+    "default_value": null,
+    "description": "Linear automation-trigger optional override. Specifies which playbook to use for the auto-triggered session.",
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cfg.linear.default-playbook",
+    "scope": "linear",
+    "key": "default-playbook",
+    "type": "playbook-macro",
+    "default_value": "!plan",
+    "description": "Default playbook used when a Linear ticket is assigned to Devin without a specific playbook label. Set to `!plan` for new connections.",
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira.session-mode",
+    "scope": "jira",
+    "key": "session-mode",
+    "type": "enum",
+    "default_value": "direct",
+    "description": "Jira session-mode toggle. Values: `direct` (Devin creates a full session, posts updates back) or `scoping` (Devin only analyzes and posts a scoping comment with summary + plan + confidence; user manually starts the session).",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.jira.label-matching",
+    "scope": "jira",
+    "key": "devin-label-matching",
+    "type": "string",
+    "default_value": "word-boundary, case-insensitive",
+    "description": "Match semantics for the generic 'devin' label trigger in Jira. Standalone-word match: `devin`, `Devin`, `devin-workshop`, `devin-task` trigger; `devinworkshop` and `devin_workshop` do NOT.",
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cfg.support.enterprise-email",
+    "scope": "support",
+    "key": "enterprise-support-email",
+    "type": "email",
+    "default_value": "enterprise@cognition.ai",
+    "description": "Cognition enterprise-support contact. Used for self-hosted SCM/artifact onboarding hand-off and other enterprise integration setup.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  },
+  {
+    "id": "devin.integrations.cfg.slack.app-container-paid-required",
+    "scope": "slack",
+    "key": "app-container-requires-paid-plan",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "The Slack AI assistant sidebar (app container) experience requires a paid Slack plan. All other Devin Slack features (@mentions, /ask-devin, /dana, message shortcuts) work on any plan including free workspaces.",
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cfg.alb.layer",
+    "scope": "load-balancer",
+    "key": "alb.layer",
+    "type": "integer",
+    "default_value": "7",
+    "description": "Application Load Balancer layer. HTTP/HTTPS. NATs source IPs — backends see the ALB's internal IP, not Devin's source IP.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  },
+  {
+    "id": "devin.integrations.cfg.nlb.layer",
+    "scope": "load-balancer",
+    "key": "nlb.layer",
+    "type": "integer",
+    "default_value": "4",
+    "description": "Network Load Balancer layer. TCP. Preserves source IPs — backends see Devin's actual source IPs.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  },
+  {
+    "id": "devin.integrations.cfg.tls.required-port",
+    "scope": "self-hosted-network",
+    "key": "tls-port",
+    "type": "integer",
+    "default_value": "443",
+    "description": "Required port for HTTPS traffic from Devin to self-hosted endpoints.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  },
+  {
+    "id": "devin.integrations.cfg.dns-change.json",
+    "scope": "self-hosted-network",
+    "key": "dns-change.json",
+    "type": "filename",
+    "default_value": "dns-change.json",
+    "description": "AWS Route 53 change-batch JSON file format. Used during self-hosted SCM/artifact onboarding to publish a DNS record pointing at the load balancer.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  }
+]

@@ -1,0 +1,514 @@
+[
+  {
+    "id": "devin.devbox.devbox",
+    "name": "DevBox",
+    "kind": "subsystem",
+    "description": "Devin's per-session execution environment — a Linux-based VM workspace with the customer's repos cloned, tools installed, dependencies resolved, and configuration applied. Functionally equivalent to a developer's laptop: OS, terminal, toolchain, cloned repos. Each session boots a fresh copy from the active snapshot; in-session changes are discarded at session end. Also branded in admin contexts as 'Devin's Machine' or 'Devin's Workspace'.",
+    "source_ids": ["devin-docs-onboard-environment", "cognition-blog-cloud-agents", "devin-docs-onboard-repo-setup"],
+    "aliases": ["Devin's environment", "Devin's machine", "Devin's Workspace"]
+  },
+  {
+    "id": "devin.devbox.microvm",
+    "name": "microVM",
+    "kind": "runtime-object",
+    "description": "Hypervisor-managed VM per agent session, providing dedicated kernel + isolated storage / networking / compute. Cognition's microVM implementation took over a year of hypervisor engineering. Side benefit: agents can use full browser, desktop apps, and arbitrary tool stacks. The fundamental isolation unit underneath every Devin session.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": ["VM-based isolation", "per-session VM", "dedicated VM"]
+  },
+  {
+    "id": "devin.devbox.hypervisor",
+    "name": "Hypervisor",
+    "kind": "subsystem",
+    "description": "The Cognition-built virtualization layer that manages microVMs, performs snapshot/restore at the level of memory + process trees + filesystem, and shuts down compute while agents idle. Allows sessions to survive async gaps (CI waits, code review delays, follow-up commits) lasting minutes to days without burning compute to stay alive.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.snapshot",
+    "name": "Snapshot",
+    "kind": "runtime-object",
+    "description": "A frozen, bootable image of a Devin environment — VM image with tools, repos, dependencies pre-installed. Each org has ONE active snapshot. Every session boots from a fresh copy. In-session changes don't persist back. Direct analogue to a Docker image, except produced by a build that runs the org's blueprint(s).",
+    "source_ids": ["devin-docs-onboard-environment", "devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": ["VM image", "machine snapshot"]
+  },
+  {
+    "id": "devin.devbox.session",
+    "name": "Session",
+    "kind": "runtime-object",
+    "description": "A single agent run. Boots a fresh copy of the active snapshot. At session start: latest code is pulled for the relevant repos; maintenance commands are surfaced to the agent (NOT auto-executed); per-repo knowledge entries are loaded into Devin's context. Knowledge is per-repo — Devin only sees knowledge for the repo it's working on.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment", "cognition-blog-cloud-agents"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.snapshot-machine-state",
+    "name": "Machine-state snapshot",
+    "kind": "feature",
+    "description": "Hypervisor-level snapshot of a session's full machine state — memory, process trees, filesystem. Lets compute shut down while the agent is idle and resume exactly where it left off when a CI result or review comment arrives. Working reliably across thousands of concurrent sessions with different repos / dependencies / runtime envs took longer than any other piece of Cognition infra.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": ["full-state snapshot", "session pause/resume"]
+  },
+  {
+    "id": "devin.devbox.blueprint",
+    "name": "Blueprint",
+    "kind": "file",
+    "description": "YAML configuration describing what to install and how to set up Devin's environment. Direct analogue to a Dockerfile. Authored / edited in the Settings UI. Has three sections: initialize, maintenance, knowledge. Saved blueprints trigger automatic builds. Multi-document YAML supported via `---` separator.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml", "devin-docs-onboard-environment"],
+    "aliases": ["declarative configuration"]
+  },
+  {
+    "id": "devin.devbox.blueprint-section-initialize",
+    "name": "Blueprint `initialize` section",
+    "kind": "feature",
+    "description": "Blueprint section for things that only need to happen ONCE: language runtimes, system packages, global CLI tools. Runs during builds only; results persist in the snapshot.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.blueprint-section-maintenance",
+    "name": "Blueprint `maintenance` section",
+    "kind": "feature",
+    "description": "Blueprint section for dependency installs that should stay current. Runs during builds AND surfaced to the agent at session start (NOT auto-executed). Should be fast and incremental — `npm install`, not `npm ci`. The agent may re-run if it detects dependencies changed since the last build.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.blueprint-section-knowledge",
+    "name": "Blueprint `knowledge` section",
+    "kind": "feature",
+    "description": "Reference info loaded into Devin's context at session start — NOT executed. Tells Devin the correct lint / test / build commands. Distinct from the standalone Knowledge product feature, which holds architecture docs, conventions, and team workflows. Per-repo: Devin only sees the entries for the repo it's working on.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.build",
+    "name": "Build",
+    "kind": "subsystem",
+    "description": "The process that runs your blueprint(s), clones repos, and produces a snapshot. Direct analogue to `docker build`. Builds are additive across tiers (enterprise → org → repo) — lower tiers cannot override what a higher tier set up. Builds typically take 5–15 minutes; individual steps time out after 1 hour.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.build-status",
+    "name": "Build status",
+    "kind": "feature",
+    "description": "One of: Success (all steps completed, snapshot ready), Partial (some repo-level steps failed but snapshot is usable — succeeded repos work, failed repos need blueprint fixes), Failed (critical failure at org or enterprise tier — snapshot not usable), Cancelled (superseded or manually cancelled).",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.blueprint-tier-enterprise",
+    "name": "Enterprise blueprint tier",
+    "kind": "feature",
+    "description": "Highest tier in the additive 3-tier blueprint hierarchy. Applies across all organizations under an enterprise account. Sets baseline tools that org and repo blueprints can build on top of.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.blueprint-tier-organization",
+    "name": "Organization (Org-wide) blueprint tier",
+    "kind": "feature",
+    "description": "Mid tier in the additive 3-tier hierarchy. Configured at Settings > Environment > Blueprints > Org-wide setup. Holds tools shared across all repos: language runtimes, package managers, Docker auth.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.blueprint-tier-repository",
+    "name": "Repository blueprint tier",
+    "kind": "feature",
+    "description": "Lowest tier in the additive 3-tier hierarchy. One per configured repo, at Settings > Environment > Blueprints > [repo name]. Holds project-specific setup: `npm install`, lint/test/build commands. A repo's `maintenance` can use tools installed by the org's `initialize`.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repository-state",
+    "name": "Repository state",
+    "kind": "feature",
+    "description": "One of: Configured (has a blueprint with initialize/maintenance/knowledge — fully set up in the snapshot), Included (cloned into the snapshot but no custom blueprint — Devin can read the code), Available (connected to the org but not added to the environment — not cloned).",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.snapshot-pinning",
+    "name": "Snapshot pinning",
+    "kind": "feature",
+    "description": "Locks the org to a specific build's snapshot. Useful when a new build introduces a regression, or to freeze the environment for a batch of sessions. While pinned: periodic refreshes are skipped; UI shows 'Auto-updates paused'. Pinnable builds must be Success or Partial and < 7 days old. Unpinning ('Resume auto-updates') switches back to the latest successful build.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": ["Auto-updates paused", "snapshot freeze"]
+  },
+  {
+    "id": "devin.devbox.machine-version-history",
+    "name": "Machine Version History",
+    "kind": "feature",
+    "description": "Tab under Settings > Devin's Machine that lets you revert to a previous environment snapshot. Used after accidentally introducing a breaking change in setup. Restored snapshots replace the active snapshot.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": ["snapshot rollback"]
+  },
+  {
+    "id": "devin.devbox.periodic-refresh",
+    "name": "Periodic snapshot refresh",
+    "kind": "feature",
+    "description": "Automatic build trigger that runs roughly every 24 hours to keep dependencies fresh. Skipped while a snapshot is pinned. Saving a new blueprint cancels any queued/in-progress build and starts a new one.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": ["auto-update build", "daily refresh"]
+  },
+  {
+    "id": "devin.devbox.build-trigger",
+    "name": "Build trigger",
+    "kind": "feature",
+    "description": "Events that initiate a new build: saving a blueprint (create/update/delete), adding/removing a repository, adding a repository secret, manual 'Build snapshot' click, periodic refresh (~24h), or a Devin in-session blueprint suggestion that gets approved.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.classic-configuration",
+    "name": "Classic configuration",
+    "kind": "feature",
+    "description": "Legacy environment-setup mode using an interactive wizard (8 steps: Git Pull, Configure Secrets, Install Dependencies, Maintain Dependencies, Set up Lint, Set up Tests, Run Local App, browser login) inside an embedded VS Code terminal. Superseded by declarative blueprints. Migration path documented; Devin can handle most of the migration automatically.",
+    "source_ids": ["devin-docs-onboard-repo-setup", "devin-docs-onboard-environment"],
+    "aliases": ["interactive wizard", "manual setup"]
+  },
+  {
+    "id": "devin.devbox.repo-setup-step-git-pull",
+    "name": "Repo Setup — Git Pull step",
+    "kind": "feature",
+    "description": "Classic-config step 1. Command Devin runs at the start of each session to pull latest changes. Default usually fine. Devin must have access to submodules.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repo-setup-step-configure-secrets",
+    "name": "Repo Setup — Configure Secrets step",
+    "kind": "feature",
+    "description": "Classic-config step 2. Set up secrets / env vars Devin needs to work with the repo. Reference via `$VARIABLE_NAME` in shell commands; manage via the Secrets dashboard.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repo-setup-step-install-deps",
+    "name": "Repo Setup — Install Dependencies step",
+    "kind": "feature",
+    "description": "Classic-config step 3. Initial dependency install. Runs once during setup to prepare Devin's environment for the repo.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repo-setup-step-maintain-deps",
+    "name": "Repo Setup — Maintain Dependencies step",
+    "kind": "feature",
+    "description": "Classic-config step 4. Commands run after `git pull` during session startup in case new dependencies were added — typically the same install command (`npm install`, `pip install -r requirements.txt`).",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repo-setup-step-lint",
+    "name": "Repo Setup — Set up Lint step",
+    "kind": "feature",
+    "description": "Classic-config step 5. Lint commands; Devin checks output before committing changes.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repo-setup-step-test",
+    "name": "Repo Setup — Set up Tests step",
+    "kind": "feature",
+    "description": "Classic-config step 6. Test commands; Devin checks output before committing changes.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repo-setup-step-run-local",
+    "name": "Repo Setup — Run Local App step",
+    "kind": "feature",
+    "description": "Classic-config step 7. How Devin runs your code locally — useful when Devin must execute the app to test/debug. Browser tab can be used to log in to websites; cookies persist across sessions.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.setup-agent",
+    "name": "Devin AI Setup Agent",
+    "kind": "feature",
+    "description": "AI assistant that proposes setup commands per step based on codebase analysis. Surfaces suggestion cards in the timeline; user approves/rejects each. Used during repo setup and during 'Let Devin do it' blueprint generation.",
+    "source_ids": ["devin-docs-onboard-repo-setup", "devin-docs-onboard-environment-blueprints"],
+    "aliases": ["Setup Agent", "suggestion cards"]
+  },
+  {
+    "id": "devin.devbox.embedded-vscode",
+    "name": "Embedded VS Code",
+    "kind": "subsystem",
+    "description": "VS Code instance running inside DevBox; the primary terminal/editor surface for environment setup and live debugging. Drag-and-drop file uploads route to a known directory (`.files/`). Used to run blueprint commands manually, inspect filesystem, and edit files directly.",
+    "source_ids": ["devin-docs-onboard-repo-setup", "devin-docs-onboard-vpn"],
+    "aliases": ["VSCode Terminal", "VS Code instance"]
+  },
+  {
+    "id": "devin.devbox.cdp-endpoint",
+    "name": "Chrome DevTools Protocol endpoint",
+    "kind": "network",
+    "description": "DevBox's Chrome browser exposes a CDP endpoint at `http://localhost:29229` that Playwright can connect to. Used for browser-based authentication flows (SSO, OAuth) and systematic data entry — Devin can write and run Playwright scripts against its own running browser.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": ["CDP", "Playwright endpoint"]
+  },
+  {
+    "id": "devin.devbox.direnv",
+    "name": "direnv",
+    "kind": "tool",
+    "description": "Pre-installed in DevBox; hook is already configured in `~/.bashrc`. Manages per-repo environment variables via `.envrc` files. After creating `.envrc` in a repo root, run `direnv allow` to load. Recommended pattern for managing repo-scoped env vars.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.nvm",
+    "name": "nvm (Node Version Manager)",
+    "kind": "tool",
+    "description": "Pre-installed in Linux DevBox. Used to install/select Node versions per repo (e.g., `nvm install 18`, `nvm use 18`). Combine with `~/.bashrc` edits to auto-select per repo.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.bashrc",
+    "name": "~/.bashrc",
+    "kind": "file",
+    "description": "User shell init file inside DevBox. Edit via `devin ~/.bashrc` (which opens it in VS Code). Common edits: PATH manipulation, per-repo env auto-selection (cd-hooks calling `nvm use`), direnv hook (already configured by default).",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.envrc",
+    "name": ".envrc",
+    "kind": "file",
+    "description": "direnv config file at a repo's root. Holds repo-scoped env var assignments. Loaded automatically when entering the directory after `direnv allow` is run once.",
+    "source_ids": ["devin-docs-onboard-repo-setup"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.agents-md",
+    "name": "AGENTS.md",
+    "kind": "file",
+    "description": "Open standard (https://agents.md) — a 'README for agents' file at the project root. Devin reads it before starting work. Typical sections: Setup Commands, Code Style, Testing Guidelines, Project Structure, Development Workflow. Vendor-neutral; complementary to Devin's blueprint configuration.",
+    "source_ids": ["devin-docs-onboard-agents-md"],
+    "aliases": ["agents.md"]
+  },
+  {
+    "id": "devin.devbox.windows-support",
+    "name": "Windows DevBox support",
+    "kind": "feature",
+    "description": "DevBox available on Windows on a limited basis (contact sales for access). Uses Git Bash (same shell as Linux), so most blueprint commands work cross-platform. Different file system layout (`/c/Users/Administrator` vs `/home/ubuntu`) and package manager (`choco` / `winget` instead of `apt-get`).",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.runs-on-field",
+    "name": "Blueprint `runs-on` field",
+    "kind": "feature",
+    "description": "Top-level blueprint field selecting platform: `default` / `linux` / `windows`. Accepts a string OR a list (e.g., `[default, windows]`) — list runs identical commands on each platform, producing one snapshot per platform. For platform-specific commands, use the multi-block YAML format with one block per platform.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.multi-platform-blueprint",
+    "name": "Multi-platform (multi-block) blueprint",
+    "kind": "feature",
+    "description": "Multi-document YAML blueprint where each `---`-separated block declares its own `runs-on` label. Each block produces a separate snapshot build for its platform. The pattern for platform-specific commands (apt-get vs choco).",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"],
+    "aliases": ["multi-block blueprint"]
+  },
+  {
+    "id": "devin.devbox.large-performant-vm",
+    "name": "Large Performant VM (Beta)",
+    "kind": "feature",
+    "description": "Updated VM-infra tier introduced in Jan 2025 to address Docker storage/perf issues on Devin's machine. Default for new teams. Existing teams enable via Settings > Devin's Workspace > Danger Zone > switch to 'Large Performant (Beta)' (requires resetting machine setup); experimental auto-migration available via support.",
+    "source_ids": ["cognition-blog-jan-25-product-update"],
+    "aliases": ["Large Performant"]
+  },
+  {
+    "id": "devin.devbox.acu",
+    "name": "Agent Compute Unit (ACU)",
+    "kind": "feature",
+    "description": "Billing unit for Devin Enterprise (and the underlying metric for self-serve usage). Customers receive a monthly ACU capacity; usage above capacity bills as additional usage. Cognition recommends keeping sessions under 10 ACUs because Devin's performance degrades in long sessions.",
+    "source_ids": ["devin-docs-admin-billing", "cognition-blog-jan-25-product-update"],
+    "aliases": ["ACU"]
+  },
+  {
+    "id": "devin.devbox.usage-budget",
+    "name": "Usage budget / Additional usage budget",
+    "kind": "feature",
+    "description": "Pay-as-you-go cap. Once monthly ACU capacity is consumed, sessions continue charging up to this budget. Billed at end of cycle OR when usage exceeds $2,000 (whichever comes first). Set in Settings > Plans > Manage Plan Limits or Settings > Usage and Limits > Manage Additional Usage Budget. Introduced January 9, 2025.",
+    "source_ids": ["cognition-blog-jan-25-product-update"],
+    "aliases": ["pay-as-you-go cap"]
+  },
+  {
+    "id": "devin.devbox.devin-for-terminal",
+    "name": "Devin for Terminal",
+    "kind": "feature",
+    "description": "Local CLI agent with full access to the user's codebase, tools, and environment. Installed via `curl -fsSL https://cli.devin.ai/install.sh | bash`. Lets the user choose any frontier model (Opus 4.7, GPT-5.5, SWE-1.6). Supports local-to-cloud handoff: hand the same session to a cloud DevBox when work outgrows the laptop. Custom Rust terminal renderer.",
+    "source_ids": ["cognition-blog-devin-for-terminal"],
+    "aliases": ["devin CLI", "local-to-cloud handoff"]
+  },
+  {
+    "id": "devin.devbox.blockdiff",
+    "name": "BlockDiff",
+    "kind": "tool",
+    "description": "Cognition open-source Apache-2.0 tool (https://github.com/CognitionAI/blockdiff). Computes block-level diffs of files (especially VM disk images) using CoW filesystem metadata. Supports two modes: (1) creating a diff between a base image and a target, (2) compactifying a sparse file (sparse 100GB → compact 10GB blockdiff). The DevBox snapshot infra primitive — explains how Cognition snapshots VM disks efficiently at scale.",
+    "source_ids": ["cognitionai-blockdiff-readme", "cognition-blog-cloud-agents"],
+    "aliases": ["block-level diff", "CoW VM disk diff"]
+  },
+  {
+    "id": "devin.devbox.repository-indexing",
+    "name": "Repository indexing",
+    "kind": "feature",
+    "description": "Build of a search/understanding index over a repo's contents. Distinct from environment configuration. Enables Ask Devin and DeepWiki. Triggered via Settings > Repositories > Index repo on a per-repo, per-branch basis. Multiple branches per repo can be indexed via 'Manage' > 'Add branch'.",
+    "source_ids": ["devin-docs-onboard-index-repo"],
+    "aliases": ["index repo"]
+  },
+  {
+    "id": "devin.devbox.deepwiki",
+    "name": "DeepWiki",
+    "kind": "feature",
+    "description": "AI-generated documentation surface for any repo (https://github.com/CognitionAI/deepwiki). Depends on repository indexing. Surfaces architecture / module / function-level summaries that Devin can reference during sessions.",
+    "source_ids": ["devin-docs-onboard-index-repo"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.ask-devin",
+    "name": "Ask Devin",
+    "kind": "feature",
+    "description": "Codebase-question-answering feature. Depends on repository indexing. Used inside the Devin product to query 'where is X defined?', 'who calls Y?', etc.",
+    "source_ids": ["devin-docs-onboard-index-repo"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.knowledge-feature",
+    "name": "Knowledge (product feature)",
+    "kind": "feature",
+    "description": "Standalone product feature for persisting architecture docs, conventions, and team workflows that Devin should know. Distinct from blueprint `knowledge` section (which holds short command refs). Per-repo: Devin only sees knowledge for the repo it's working on. Configured at Settings > Devin's Settings > Knowledge.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "cognition-blog-jan-25-product-update"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.secrets-reference",
+    "name": "Secret reference (`$VARIABLE_NAME`)",
+    "kind": "feature",
+    "description": "Bash-syntax reference to a secret stored in Devin's Secrets dashboard. Available inside blueprint commands (initialize/maintenance) and inside live sessions. Materialized into the snapshot if used in `initialize` (value persists), or refreshed on every periodic build if used in `maintenance` (recommended for credentials that rotate).",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml", "devin-docs-onboard-environment-windows-support"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.file-attachments-dir",
+    "name": "File attachments directory (`.files/`)",
+    "kind": "file",
+    "description": "Directory inside DevBox where uploaded files are written. Linux: `/home/ubuntu/.files/`. Windows: `/c/Users/Administrator/.files/`. Source of truth for files dragged into the embedded VS Code instance.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.repos-directory",
+    "name": "Repos directory (`~/repos/<repo-name>`)",
+    "kind": "file",
+    "description": "Per-repo working-tree location inside DevBox. Linux: `/home/ubuntu/repos/<repo-name>`. Windows: `/c/Users/Administrator/repos/<repo-name>`. Each configured repo lives in its own subdirectory; dependencies are installed independently.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support", "devin-docs-onboard-environment-blueprints"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.vpn-openvpn",
+    "name": "OpenVPN client (pre-installed)",
+    "kind": "tool",
+    "description": "VPN client pre-installed in DevBox's workspace. Configured by uploading a `config.ovpn` file and creating a systemd service unit at `/etc/systemd/system/openvpn.service`. The default VPN solution for accessing customer-internal resources (internal package registries, staging services, self-hosted services).",
+    "source_ids": ["devin-docs-onboard-vpn"],
+    "aliases": ["VPN", "client VPN"]
+  },
+  {
+    "id": "devin.devbox.vpn-alternatives",
+    "name": "Alternative VPN clients (Fortinet, Palo Alto GlobalProtect)",
+    "kind": "feature",
+    "description": "Non-OpenVPN clients can be installed in DevBox. Publicly-available clients (Fortinet) install via package manager during setup. Private clients requiring binary install (Palo Alto GlobalProtect) are uploaded to the workspace and installed manually. All configured to start at session boot.",
+    "source_ids": ["devin-docs-onboard-vpn"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.outbound-ip-allowlist",
+    "name": "Devin outbound IP allowlist",
+    "kind": "network",
+    "description": "Set of public IPs from which Devin's services originate outbound traffic. Customers must allowlist these on their side (corporate firewalls, SCM IP allowlists, internal services) for Devin to reach internal endpoints. Documented IPs as of P1: 100.20.50.251, 44.238.19.62, 52.10.84.81, 52.183.72.253, 20.172.46.235, 52.159.232.99, 4.204.199.103.",
+    "source_ids": ["devin-docs-admin-common-issues"],
+    "aliases": ["IP whitelisting", "Devin egress IPs"]
+  },
+  {
+    "id": "devin.devbox.async-gap-survival",
+    "name": "Async-gap survival",
+    "kind": "feature",
+    "description": "DevBox's defining capability over containerized agents: surviving the minutes / hours / days waits between session steps (CI runs, code reviews, follow-up commits). Containers can't snapshot state then shut down compute reliably. Hypervisor-level snapshots solve this — compute shuts down while idle, restores when a CI result or review comment arrives.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": ["session pause/resume", "async hop"]
+  },
+  {
+    "id": "devin.devbox.warm-vm-pool",
+    "name": "Warm VM pool",
+    "kind": "subsystem",
+    "description": "Pre-provisioned pool of VMs kept ready for incoming sessions. The orchestration layer predicts demand and keeps the pool sized appropriately, so session-start latency is bounded. Built and maintained by a dedicated Cognition team. Sized to thousands of concurrent VMs.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": ["VM pool"]
+  },
+  {
+    "id": "devin.devbox.identity-chaining",
+    "name": "Identity chaining",
+    "kind": "subsystem",
+    "description": "Mechanism by which each session inherits the dispatching engineer's permissions across every system it touches (SCM, CI, package registries, ticketing). Every action recorded in a tamper-evident audit trail. Enterprise governance plumbing built and maintained at scale.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": ["access scoping", "session-permission inheritance"]
+  },
+  {
+    "id": "devin.devbox.audit-trail",
+    "name": "Tamper-evident audit trail",
+    "kind": "subsystem",
+    "description": "Append-only log of every action a session takes across SCM / CI / package-registry / docs / ticketing systems. Tamper-evident at the data plane — required by enterprise customers for security and compliance.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.aws-deployment",
+    "name": "AWS production deployment",
+    "kind": "subsystem",
+    "description": "Devin's cloud environment runs in AWS. Access granted on as-required basis based on business roles; only a small number of employees / contractors have direct production access. All transmission encrypted in transit and at rest. Production monitored via logging, error handling, live metrics dashboards; unusual states (high error rates, slowness, failures) trigger alerts.",
+    "source_ids": ["devin-docs-admin-security"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.soc2-type-ii",
+    "name": "SOC 2 Type II certification",
+    "kind": "feature",
+    "description": "Certification Cognition obtained in March 2024. Auditors reviewed all security policies / procedures / internal and third-party controls related to data security, privacy, processing integrity, confidentiality, availability. Public Trust Center at https://trust.cognition.ai/.",
+    "source_ids": ["devin-docs-admin-security"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.data-controls-opt-in",
+    "name": "Data Controls — opt-in to model training",
+    "kind": "feature",
+    "description": "By default Cognition does NOT use customer data for model training. Opt-in toggle on the Data Controls settings page. Enterprise customers are NEVER trained on (regardless of toggle).",
+    "source_ids": ["devin-docs-admin-security"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.status-page",
+    "name": "Devin status page",
+    "kind": "subsystem",
+    "description": "Public status surface at https://www.devinstatus.com/. Tracks 6 components: Web Client, Agent, Integrations, Enterprise, Web Client (Enterprise), Agent (Enterprise). Subscribable via email, SMS, Slack, Microsoft Teams, webhook. Powers a JSON incidents archive at /api/v2/incidents.json (T0 corpus source — primary live capture).",
+    "source_ids": ["devin-status-page", "devin-status-incidents-archive"],
+    "aliases": ["status.devin.ai", "devinstatus.com"]
+  },
+  {
+    "id": "devin.devbox.incident-record",
+    "name": "Status incident record",
+    "kind": "runtime-object",
+    "description": "Single resolved-incident entry from the status JSON API. Carries timestamps (created/updated/resolved), affected components, status (investigating/identified/monitoring/resolved), and a human-readable narrative. ~47 records archived as of 2026-05-02 — gold layer for Phase 4 failure-modes mining.",
+    "source_ids": ["devin-status-incidents-archive"],
+    "aliases": []
+  },
+  {
+    "id": "devin.devbox.subshell-monorepo-pattern",
+    "name": "Monorepo subshell pattern",
+    "kind": "feature",
+    "description": "For monorepos, blueprint commands use subshells `(cd <subdir> && <command>)` so the working directory resets between steps. Required because each blueprint step otherwise inherits the previous step's `cd`.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"],
+    "aliases": []
+  }
+]

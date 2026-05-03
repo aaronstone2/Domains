@@ -1,0 +1,356 @@
+[
+  {
+    "id": "devin.devbox.cmd.install-devin-cli",
+    "command": "curl -fsSL https://cli.devin.ai/install.sh | bash",
+    "purpose": "Install Devin for Terminal (the local CLI agent). One-shot installer that fetches and runs the install script over HTTPS. Minimum ~1 minute time-to-prompt after install.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl -fsSL https://cli.devin.ai/install.sh | bash", "expected_output": "Installs the `devin` binary to ~/.local/bin or similar; prints onboarding link", "scenario": "Onboarding to Devin for Terminal on a fresh laptop"}
+    ],
+    "source_ids": ["cognition-blog-devin-for-terminal"]
+  },
+  {
+    "id": "devin.devbox.cmd.devin-edit-bashrc",
+    "command": "devin ~/.bashrc",
+    "purpose": "Open a file inside DevBox in the embedded VS Code instance. Used during repo setup to edit the user shell init file (PATH, per-repo nvm-use hooks, direnv). Equivalent of `code <file>` in VS Code's CLI.",
+    "flags": [
+      {"name": "<path>", "value": "<file path>", "doc": "Absolute or ~-relative path inside DevBox to open in VS Code."}
+    ],
+    "examples": [
+      {"invocation": "devin ~/.bashrc", "expected_output": "Opens ~/.bashrc in the embedded VS Code editor", "scenario": "Editing shell init for per-repo node version selection"},
+      {"invocation": "devin /etc/systemd/system/openvpn.service", "expected_output": "Opens the OpenVPN systemd unit for editing", "scenario": "Configuring VPN auto-start"}
+    ],
+    "source_ids": ["devin-docs-onboard-repo-setup", "devin-docs-onboard-vpn"]
+  },
+  {
+    "id": "devin.devbox.cmd.direnv-allow",
+    "command": "direnv allow",
+    "purpose": "Authorize direnv to load the current directory's `.envrc` file. Required once per repo after creating or modifying `.envrc` — direnv refuses to load unauthorized files for security.",
+    "flags": [],
+    "examples": [
+      {"invocation": "direnv allow", "expected_output": "direnv: loading .envrc; direnv: export +VAR1 +VAR2", "scenario": "After creating .envrc with project-specific env vars"}
+    ],
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cmd.nvm-install",
+    "command": "nvm install <version>",
+    "purpose": "Install a specific Node.js version via the pre-installed nvm in DevBox. Combine with `nvm use` to select it for the current shell.",
+    "flags": [
+      {"name": "<version>", "value": "<semver>", "doc": "Node version to install, e.g., 18, 20, 18.19.0."}
+    ],
+    "examples": [
+      {"invocation": "nvm install 18", "expected_output": "Downloads and installs Node 18.x LTS", "scenario": "Repo requires Node 18; pin via ~/.bashrc cd-hook"},
+      {"invocation": "nvm install 20", "expected_output": "Downloads and installs Node 20.x", "scenario": "Different repo requires Node 20"}
+    ],
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cmd.nvm-use",
+    "command": "nvm use <version>",
+    "purpose": "Activate a specific Node.js version in the current shell. Typically called from a ~/.bashrc cd-hook so it auto-runs when entering a repo directory.",
+    "flags": [
+      {"name": "<version>", "value": "<semver>", "doc": "Installed Node version to activate."}
+    ],
+    "examples": [
+      {"invocation": "nvm use 18", "expected_output": "Now using node v18.x.x (npm v9.x.x)", "scenario": "Auto-fired when cd into a Node-18 repo via ~/.bashrc hook"}
+    ],
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cmd.choco-install",
+    "command": "choco install <package> [-y] [--version=<v>]",
+    "purpose": "Install a package via Chocolatey on Windows DevBox. The default Windows package manager option in DevBox blueprints.",
+    "flags": [
+      {"name": "<package>", "value": "<name>", "doc": "Chocolatey package id."},
+      {"name": "-y", "value": null, "doc": "Auto-confirm prompts (required for non-interactive blueprint runs)."},
+      {"name": "--version", "value": "<version>", "doc": "Pin a specific package version."}
+    ],
+    "examples": [
+      {"invocation": "choco install nodejs-lts -y", "expected_output": "Installs Node.js LTS for Windows", "scenario": "Windows blueprint Initialize step"},
+      {"invocation": "choco install python --version=3.12 -y", "expected_output": "Installs Python 3.12", "scenario": "Pinned Python version in Windows blueprint"},
+      {"invocation": "choco install visualstudio2022buildtools -y", "expected_output": "Installs VS 2022 Build Tools", "scenario": "C++/VS-required project blueprint"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.winget-install",
+    "command": "winget install --id <package-id> --accept-source-agreements --accept-package-agreements",
+    "purpose": "Install a package via winget on Windows DevBox. Alternative to Chocolatey; preferred for Microsoft-published SDKs.",
+    "flags": [
+      {"name": "--id", "value": "<package-id>", "doc": "Reverse-DNS package id, e.g., Microsoft.DotNet.SDK.8."},
+      {"name": "--accept-source-agreements", "value": null, "doc": "Auto-accept source EULAs (required non-interactively)."},
+      {"name": "--accept-package-agreements", "value": null, "doc": "Auto-accept package EULAs (required non-interactively)."}
+    ],
+    "examples": [
+      {"invocation": "winget install --id Microsoft.DotNet.SDK.8 --accept-source-agreements --accept-package-agreements", "expected_output": "Installs .NET SDK 8 on Windows", "scenario": ".NET project blueprint"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.blockdiff-create",
+    "command": "blockdiff create <output.bdiff> <target.img> [--base <base.img>]",
+    "purpose": "Create a block-level diff (.bdiff) of `target.img` against `base.img`, or compactify `target.img` if --base is omitted. The DevBox snapshot infra primitive — fast block-level VM disk diffs using CoW filesystem metadata.",
+    "flags": [
+      {"name": "<output.bdiff>", "value": "<file>", "doc": "Output .bdiff file path."},
+      {"name": "<target.img>", "value": "<file>", "doc": "Target VM disk image to diff."},
+      {"name": "--base", "value": "<base.img>", "doc": "Optional base image. With --base, output is the diff vs base. Without --base, output compactifies a sparse file (sparse 100GB → compact 10GB)."}
+    ],
+    "examples": [
+      {"invocation": "blockdiff create output.bdiff target.img --base base.img", "expected_output": "Writes output.bdiff containing only blocks that differ from base.img", "scenario": "Create incremental snapshot for upload"},
+      {"invocation": "blockdiff create compact.bdiff target.img", "expected_output": "Writes compact.bdiff containing only allocated blocks (sparse-file compactification)", "scenario": "Compactify a 100GB sparse file with 10GB of real data for storage upload"}
+    ],
+    "source_ids": ["cognitionai-blockdiff-readme"]
+  },
+  {
+    "id": "devin.devbox.cmd.blockdiff-apply",
+    "command": "blockdiff apply <input.bdiff> <target.img> [--base <base.img>]",
+    "purpose": "Apply a .bdiff to produce a target image. With --base, reconstructs target from base + diff. Without --base, materializes a sparse target image from a compactified diff.",
+    "flags": [
+      {"name": "<input.bdiff>", "value": "<file>", "doc": "Input .bdiff file."},
+      {"name": "<target.img>", "value": "<file>", "doc": "Target VM disk image to write."},
+      {"name": "--base", "value": "<base.img>", "doc": "Optional base image. With --base, target = base + diff. Without --base, target = materialized sparse from compactified diff."}
+    ],
+    "examples": [
+      {"invocation": "blockdiff apply input.bdiff target.img --base base.img", "expected_output": "Writes target.img reconstructed from base.img + input.bdiff", "scenario": "Reconstruct a snapshot from base + incremental diff"},
+      {"invocation": "blockdiff apply compact.bdiff target.img", "expected_output": "Writes target.img as a sparse file with the original allocation pattern", "scenario": "Restore sparse file from compactified diff"}
+    ],
+    "source_ids": ["cognitionai-blockdiff-readme"]
+  },
+  {
+    "id": "devin.devbox.cmd.subshell-cd",
+    "command": "(cd <subdir> && <command>)",
+    "purpose": "Run a blueprint or shell command in a subshell with a temporary working directory change. The canonical monorepo pattern in DevBox blueprints — working directory resets after the subshell exits, so the next blueprint step starts fresh.",
+    "flags": [
+      {"name": "<subdir>", "value": "<path>", "doc": "Subdirectory to cd into for the duration of the subshell."},
+      {"name": "<command>", "value": "<shell>", "doc": "Command(s) to run in that subdirectory."}
+    ],
+    "examples": [
+      {"invocation": "(cd packages/web && npm install)", "expected_output": "Installs deps in packages/web; current shell's cwd unchanged", "scenario": "Monorepo blueprint: install deps in one package without affecting others"},
+      {"invocation": "(cd backend && pip install -r requirements.txt) && (cd frontend && npm install)", "expected_output": "Installs deps in both subdirs sequentially; cwd unchanged", "scenario": "Multi-language monorepo maintenance step"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cmd.openvpn-systemctl-enable",
+    "command": "systemctl enable openvpn && systemctl start openvpn",
+    "purpose": "Enable and start the OpenVPN systemd service inside DevBox. Used after creating /etc/systemd/system/openvpn.service to bring up the VPN connection at session boot.",
+    "flags": [],
+    "examples": [
+      {"invocation": "systemctl enable openvpn && systemctl start openvpn", "expected_output": "Enables and starts openvpn service; subsequent boots auto-start it", "scenario": "VPN setup, after dropping config.ovpn and creating the unit file"}
+    ],
+    "source_ids": ["devin-docs-onboard-vpn"]
+  },
+  {
+    "id": "devin.devbox.cmd.uv-install",
+    "command": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+    "purpose": "Install uv (Astral's Python package/project manager) in DevBox. Surfaced in the Linux blueprint examples as a fast alternative to pip+venv.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl -LsSf https://astral.sh/uv/install.sh | sh", "expected_output": "Installs uv to ~/.local/bin", "scenario": "Linux blueprint Initialize step for a Python repo"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.uv-sync",
+    "command": "uv sync",
+    "purpose": "Resolve and install Python dependencies into the project venv per the uv-managed lockfile. Cross-platform (works on Linux and Windows DevBox).",
+    "flags": [],
+    "examples": [
+      {"invocation": "uv sync", "expected_output": "Installs locked deps; updates venv", "scenario": "Maintenance step in a Python uv-managed repo"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.dotnet-restore",
+    "command": "dotnet restore",
+    "purpose": ".NET project dependency restore. Used in Windows blueprints for .NET repositories.",
+    "flags": [],
+    "examples": [
+      {"invocation": "dotnet restore", "expected_output": "Restores NuGet packages", "scenario": ".NET project Maintenance step on Windows DevBox"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.msbuild-restore",
+    "command": "msbuild /t:Restore <Solution.sln>",
+    "purpose": "Restore a Visual Studio C++ solution's NuGet packages via MSBuild. Used in C++ Windows blueprints.",
+    "flags": [
+      {"name": "/t:Restore", "value": null, "doc": "Run the Restore target."},
+      {"name": "<Solution.sln>", "value": "<file>", "doc": "Solution file to restore."}
+    ],
+    "examples": [
+      {"invocation": "msbuild /t:Restore MySolution.sln", "expected_output": "Restores NuGet packages for the solution", "scenario": "Visual Studio / C++ project on Windows DevBox"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.msbuild-build",
+    "command": "msbuild <Solution.sln> /p:Configuration=Release",
+    "purpose": "Build a VS C++ solution in Release configuration via MSBuild.",
+    "flags": [
+      {"name": "<Solution.sln>", "value": "<file>", "doc": "Solution file to build."},
+      {"name": "/p:Configuration", "value": "Release|Debug", "doc": "Build configuration."}
+    ],
+    "examples": [
+      {"invocation": "msbuild MySolution.sln /p:Configuration=Release", "expected_output": "Builds Release artifacts under bin/Release/", "scenario": "Knowledge `build` entry for a Windows C++ blueprint"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.vstest-console",
+    "command": "vstest.console.exe <TestDll>",
+    "purpose": "Run unit tests via the Visual Studio test runner. Used as the test command in Windows C++ blueprints.",
+    "flags": [
+      {"name": "<TestDll>", "value": "<dll>", "doc": "Path to the test assembly DLL."}
+    ],
+    "examples": [
+      {"invocation": "vstest.console.exe bin/Release/Tests.dll", "expected_output": "Runs tests; reports pass/fail summary", "scenario": "Windows blueprint knowledge `test` entry for a C++ project"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.dotnet-format-check",
+    "command": "dotnet format --verify-no-changes",
+    "purpose": "Verify that .NET code is already formatted (no changes would be made). Suitable as a lint command — exits non-zero if the source needs formatting.",
+    "flags": [
+      {"name": "--verify-no-changes", "value": null, "doc": "Exit non-zero if formatting changes would be applied."}
+    ],
+    "examples": [
+      {"invocation": "dotnet format --verify-no-changes", "expected_output": "Returns 0 if formatted; non-zero if changes needed", "scenario": "Knowledge `lint` entry in a .NET Windows blueprint"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.devbox.cmd.npm-install",
+    "command": "npm install",
+    "purpose": "Install Node.js dependencies. Surfaced as the canonical `maintenance` example in Devin's docs because it's fast and incremental (does not enforce package-lock.json strictly the way `npm ci` does).",
+    "flags": [],
+    "examples": [
+      {"invocation": "npm install", "expected_output": "Installs / updates node_modules; respects package-lock.json", "scenario": "Standard Node.js Maintenance step"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml", "devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cmd.pip-install-r",
+    "command": "pip install -r requirements.txt",
+    "purpose": "Install Python dependencies from a requirements file. Surfaced as a canonical Maintenance example in repo-setup docs.",
+    "flags": [
+      {"name": "-r", "value": "<requirements-file>", "doc": "Read requirements from file."}
+    ],
+    "examples": [
+      {"invocation": "pip install -r requirements.txt", "expected_output": "Installs all listed packages", "scenario": "Python Maintenance step"}
+    ],
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cmd.npm-script",
+    "command": "npm run <script>",
+    "purpose": "Run an npm script defined in package.json. Used in blueprint `knowledge` entries to wire up lint / test / build commands.",
+    "flags": [
+      {"name": "<script>", "value": "<name>", "doc": "Script name from package.json scripts."}
+    ],
+    "examples": [
+      {"invocation": "npm run lint", "expected_output": "Runs the lint script", "scenario": "Knowledge `lint` entry"},
+      {"invocation": "npm run dev", "expected_output": "Starts development server", "scenario": "AGENTS.md Setup Commands example"},
+      {"invocation": "npm run build", "expected_output": "Produces a production build", "scenario": "Knowledge `build` entry"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-windows-support", "devin-docs-onboard-agents-md"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-build-snapshot",
+    "command": "[UI] Settings > Environment > Snapshots > Build snapshot",
+    "purpose": "Manually trigger a new build of the active blueprint(s). Equivalent to a user-initiated build trigger; the periodic refresh and blueprint-save triggers cover most cases automatically.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Click 'Build snapshot' in Settings > Environment > Snapshots", "expected_output": "A new build is queued; live progress visible in the UI", "scenario": "After bumping a system package version, trigger an immediate snapshot rebuild instead of waiting for the next periodic refresh"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-pin-snapshot",
+    "command": "[UI] Settings > Environment > Snapshots > Pin",
+    "purpose": "Pin the org to a specific snapshot. Pinnable builds must be Success or Partial and < 7 days old. While pinned: periodic refreshes are skipped; UI shows 'Auto-updates paused'.",
+    "flags": [],
+    "examples": [
+      {"invocation": "In Settings > Environment > Snapshots, find a known-good build and click 'Pin'", "expected_output": "Snapshot is pinned; auto-updates paused", "scenario": "A new build introduced a regression — pin the previous good snapshot until the regression is fixed"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-resume-auto-updates",
+    "command": "[UI] Settings > Environment > Snapshots > Resume auto-updates",
+    "purpose": "Unpin the snapshot, returning to the latest successful build and re-enabling periodic refreshes.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Click 'Resume auto-updates' in Settings > Environment > Snapshots", "expected_output": "Pin lifted; org tracks latest successful build going forward", "scenario": "After confirming a regression is fixed, return to auto-updating snapshots"}
+    ],
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-onboard-environment-yaml"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-restore-snapshot",
+    "command": "[UI] Settings > Devin's Machine > Version History > Restore",
+    "purpose": "Roll back to a previous snapshot from version history. Used when a setup change accidentally broke the environment.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > Devin's Machine > Version History > select prior snapshot > Restore", "expected_output": "Active snapshot reverts to the selected version", "scenario": "A new repo addition broke an unrelated build step; revert to the last known-good snapshot"}
+    ],
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-add-repository",
+    "command": "[UI] Settings > Devin's Machine > Add repository",
+    "purpose": "Add a repository to Devin's environment. Triggers entry into the repo-setup wizard (classic) or blueprint editor (declarative). Only one classic-mode setup can be in progress at a time.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > Devin's Machine > Add repository > select repo(s) > Start", "expected_output": "Setup flow begins for selected repos", "scenario": "Onboarding a new repo to Devin's environment"}
+    ],
+    "source_ids": ["devin-docs-onboard-repo-setup"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-index-repo",
+    "command": "[UI] Settings > Repositories > Index repo",
+    "purpose": "Build a search/understanding index over a repo. Required for Ask Devin and DeepWiki. Distinct from environment configuration.",
+    "flags": [
+      {"name": "branch", "value": "<branch-name>", "doc": "Branch to analyze. Multiple branches can be indexed via 'Manage' > 'Add branch'."}
+    ],
+    "examples": [
+      {"invocation": "Settings > Repositories > Index repo > select branch(es) > Index", "expected_output": "Indexing job runs; takes minutes proportional to repo size", "scenario": "Onboarding for code-search features"}
+    ],
+    "source_ids": ["devin-docs-onboard-index-repo"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-large-performant-toggle",
+    "command": "[UI] Settings > Devin's Workspace > Danger Zone > switch to Large Performant (Beta)",
+    "purpose": "Migrate an existing team's DevBox to the Large Performant VM tier (improved Docker storage / perf). Default for new teams. Requires resetting machine setup; experimental auto-migration available via support@cognition.ai.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > Devin's Workspace > Danger Zone > switch to 'Large Performant (Beta)'", "expected_output": "Machine setup reset; new VM tier in effect after rebuild", "scenario": "Existing team hitting Docker storage / perf issues — opt into the new VM infra"}
+    ],
+    "source_ids": ["cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-set-usage-budget",
+    "command": "[UI] Settings > Plans > Manage Plan Limits (or Usage and Limits > Manage Additional Usage Budget)",
+    "purpose": "Set the additional usage budget cap for pay-as-you-go ACU billing. Sessions stop after monthly capacity + this budget is exhausted; billed at end of cycle or when usage exceeds $2,000 (whichever comes first).",
+    "flags": [
+      {"name": "budget", "value": "<USD>", "doc": "Maximum dollar value of additional usage allowed in a billing cycle."}
+    ],
+    "examples": [
+      {"invocation": "Set Additional Usage Budget to $500", "expected_output": "Usage above included quota bills up to $500/cycle", "scenario": "Allow some pay-as-you-go elasticity but cap exposure"}
+    ],
+    "source_ids": ["cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.devbox.cmd.ui-disconnect-integration",
+    "command": "[UI] Settings > Integrations > [GitHub|Slack] > Disconnect",
+    "purpose": "Disconnect an integration that's blocking a new connection (because another Devin org/enterprise already holds it). Required when migrating an org's GitHub or Slack integration to a different Devin account.",
+    "flags": [
+      {"name": "scope", "value": "Enterprise|Org", "doc": "Enterprise: Settings > connected-accounts. Teams (Org): Settings > integrations."}
+    ],
+    "examples": [
+      {"invocation": "Enterprise: Settings > connected-accounts > GitHub > Disconnect; then on github.com: Settings > Installations > Devin.ai > Configure > Danger zone > Uninstall", "expected_output": "GitHub integration cleared on both Devin and GitHub sides", "scenario": "Migrating an org's GitHub integration from a stale Devin account to a new one"}
+    ],
+    "source_ids": ["devin-docs-admin-common-issues"]
+  }
+]

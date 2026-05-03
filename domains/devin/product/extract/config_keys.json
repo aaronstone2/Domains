@@ -1,0 +1,137 @@
+[
+  {
+    "id": "devin.product.cfg.feature-flag.devin-review",
+    "scope": "feature-flag",
+    "key": "devin-review.github-enterprise-support",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "Devin Review supports GitHub Enterprise Server in addition to GitHub Cloud.",
+    "source_ids": ["devin-docs-work-devin-review"]
+  },
+  {
+    "id": "devin.product.cfg.feature-flag.computer-use-availability",
+    "scope": "feature-flag",
+    "key": "computer-use.availability",
+    "type": "string",
+    "default_value": "general",
+    "description": "Computer Use feature availability. Recent surface — failure modes still being characterized.",
+    "source_ids": ["devin-docs-work-computer-use"]
+  },
+  {
+    "id": "devin.product.cfg.feature-flag.windows-availability",
+    "scope": "feature-flag",
+    "key": "windows-devbox.availability",
+    "type": "string",
+    "default_value": "limited-basis",
+    "description": "Windows DevBox available on a limited basis. Contact us to learn more.",
+    "source_ids": ["devin-docs-onboard-environment-windows-support"]
+  },
+  {
+    "id": "devin.product.cfg.feature-flag.pat-availability",
+    "scope": "feature-flag",
+    "key": "personal-access-tokens.availability",
+    "type": "string",
+    "default_value": "closed-beta-feature-flagged",
+    "description": "Personal Access Tokens currently closed-beta and feature-flagged. NOT available for SSO/enterprise accounts. Contact support for access.",
+    "source_ids": ["devin-docs-api-personal-access-tokens"]
+  },
+  {
+    "id": "devin.product.cfg.plan-feature.session-acu-soft-cap",
+    "scope": "plan-feature",
+    "key": "session-acu-soft-cap",
+    "type": "integer",
+    "default_value": "10",
+    "description": "Cognition's recommended per-session ACU ceiling. Performance degrades beyond this. Soft (the product nudges, doesn't enforce).",
+    "source_ids": ["cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.product.cfg.plan-feature.usage-budget-bill-trigger",
+    "scope": "plan-feature",
+    "key": "usage-budget-bill-trigger",
+    "type": "currency",
+    "default_value": "$2000",
+    "description": "Threshold above which usage-based billing triggers an immediate bill (rather than waiting for end-of-cycle).",
+    "source_ids": ["cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.product.cfg.knowledge.scope-per-repo",
+    "scope": "knowledge-feature",
+    "key": "scope",
+    "type": "string",
+    "default_value": "per-repo",
+    "description": "Knowledge entries (product feature) are per-repo. Devin only sees knowledge for the repo it's working on. Distinct from blueprint knowledge sections.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-product-knowledge"]
+  },
+  {
+    "id": "devin.product.cfg.devin-review.surface-url",
+    "scope": "ui-path",
+    "key": "devin-review-url",
+    "type": "url",
+    "default_value": "https://app.devin.ai/review",
+    "description": "Devin Review surface URL.",
+    "source_ids": ["devin-docs-work-devin-review"]
+  },
+  {
+    "id": "devin.product.cfg.docs.sitemap-url",
+    "scope": "doc-source",
+    "key": "sitemap.xml",
+    "type": "url",
+    "default_value": "https://docs.devin.ai/sitemap.xml",
+    "description": "Master URL inventory for the documentation. ~264 KB at fetch time.",
+    "source_ids": ["devin-docs-sitemap"]
+  },
+  {
+    "id": "devin.product.cfg.docs.llms-txt-url",
+    "scope": "doc-source",
+    "key": "llms.txt",
+    "type": "url",
+    "default_value": "https://docs.devin.ai/llms.txt",
+    "description": "AI-friendly index for the documentation. ~52 KB. Lists all available pages.",
+    "source_ids": ["devin-docs-llms-index"]
+  },
+  {
+    "id": "devin.product.cfg.cli-install.url",
+    "scope": "cli",
+    "key": "install-script-url",
+    "type": "url",
+    "default_value": "https://cli.devin.ai/install.sh",
+    "description": "Install script for Devin for Terminal (the local CLI).",
+    "source_ids": ["cognition-blog-devin-for-terminal"]
+  },
+  {
+    "id": "devin.product.cfg.frontier-models",
+    "scope": "model-selection",
+    "key": "frontier-model-options",
+    "type": "list[string]",
+    "default_value": "[Opus 4.7, GPT-5.5, SWE-1.6]",
+    "description": "Frontier model options available in Devin for Terminal.",
+    "source_ids": ["cognition-blog-devin-for-terminal"]
+  },
+  {
+    "id": "devin.product.cfg.bug-catcher.severity-immediate",
+    "scope": "devin-review-bug-catcher",
+    "key": "severity-immediate-attention",
+    "type": "string",
+    "default_value": "Severe",
+    "description": "Bug confidence label requiring immediate attention. Other levels surfaced as flags.",
+    "source_ids": ["devin-docs-work-devin-review"]
+  },
+  {
+    "id": "devin.product.cfg.terminal.vt100-supported",
+    "scope": "terminal",
+    "key": "vt100-supported",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "Devin for Terminal demonstrably runs on VT-100 terminals (the foundational terminal interface since 1978).",
+    "source_ids": ["cognition-blog-devin-for-terminal"]
+  },
+  {
+    "id": "devin.product.cfg.terminal.renderer-language",
+    "scope": "terminal",
+    "key": "renderer-language",
+    "type": "string",
+    "default_value": "Rust",
+    "description": "Devin for Terminal's UI uses a custom Rust terminal-rendering library for speed/responsiveness.",
+    "source_ids": ["cognition-blog-devin-for-terminal"]
+  }
+]

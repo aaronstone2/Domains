@@ -1,0 +1,394 @@
+[
+  {
+    "id": "devin.integrations.github-app",
+    "name": "GitHub App integration",
+    "kind": "integration",
+    "description": "App-based connection between Devin and a GitHub organization. Installed via Settings > Integrations > GitHub > Add Connection. Supports All-repositories or Select-repositories scope. Inherits permissions at the organization level (NOT individual user level). Required for Devin to create PRs, respond to PR comments, set commit statuses, and contribute to discussions/issues.",
+    "source_ids": ["devin-docs-integrations-gh", "devin-docs-integrations-overview"],
+    "aliases": ["Devin.ai Integration"]
+  },
+  {
+    "id": "devin.integrations.github-enterprise-server",
+    "name": "GitHub Enterprise Server integration",
+    "kind": "integration",
+    "description": "Self-hosted GitHub Enterprise Server connection using personal access tokens (rather than the GitHub App flow). Setup documented at /enterprise/integrations/github-enterprise-server. Required for customers running on-prem GitHub.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": ["GHES"]
+  },
+  {
+    "id": "devin.integrations.gitlab",
+    "name": "GitLab integration",
+    "kind": "integration",
+    "description": "Connection to GitLab.com or GitLab Self-Hosted (Enterprise plan only). Setup via Settings > Integrations > Gitlab > Connect (with optional Self-Hosted dropdown). Recommended pattern: dedicated GitLab account for Devin. Devin sees/responds to MR comments only when explicitly asked — does not auto-wake on new comments.",
+    "source_ids": ["devin-docs-integrations-gitlab"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.bitbucket-cloud",
+    "name": "Bitbucket Cloud integration",
+    "kind": "integration",
+    "description": "OAuth-based connection to Bitbucket Cloud. Setup via Settings > Integrations > Bitbucket > Connect. Recommended: dedicated Bitbucket account for Devin (e.g., devin@yourcompany.com). Devin sees/responds to PR comments only when explicitly asked.",
+    "source_ids": ["devin-docs-integrations-bitbucket"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.bitbucket-data-center",
+    "name": "Bitbucket Data Center integration",
+    "kind": "integration",
+    "description": "Self-hosted Bitbucket connection. Setup via Settings > Integrations > Bitbucket > 'Bitbucket Data Center'. Requires the Bitbucket DC URL and service-account credentials. The service account needs project + repository permissions.",
+    "source_ids": ["devin-docs-integrations-bitbucket"],
+    "aliases": ["Bitbucket DC"]
+  },
+  {
+    "id": "devin.integrations.azure-devops",
+    "name": "Azure DevOps integration",
+    "kind": "integration",
+    "description": "Connection to Azure DevOps repositories and pipelines. Listed in the integrations overview alongside GitHub / GitLab / Bitbucket. Sub-page (`/integrations/azure-devops`) deferred from Phase 1 — content not yet ingested.",
+    "source_ids": ["devin-docs-integrations-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.slack",
+    "name": "Slack integration",
+    "kind": "integration",
+    "description": "Slack app for triggering and managing Devin runs from Slack. Triggered by `@Devin` mention in any channel. Supports inline keywords (!ask, !deep, mute, unmute, sleep, archive, EXIT, !dana). Optional dedicated #devin-runs channel pattern. Each user must link their individual account so Slack identity → Devin user. Slack-app-container (sidebar) requires a paid Slack plan; everything else works on free workspaces.",
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.microsoft-teams",
+    "name": "Microsoft Teams integration",
+    "kind": "integration",
+    "description": "Microsoft Teams app for triggering Devin runs. Triggered by @Devin mention in a Team channel or chat. Same inline keywords as Slack (!ask, !deep, mute, unmute, sleep, archive, EXIT, help). Each user must link their account so Teams identity → Devin user.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams", "devin-docs-integrations-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.jira",
+    "name": "Jira integration",
+    "kind": "integration",
+    "description": "Atlassian Jira connection for triggering Devin from tickets. Four trigger paths: assign to Devin (uses default playbook), playbook-label macro (e.g., !plan, !implement, !triage), generic 'devin' label (default playbook), or @mention Devin in a comment (no playbook, uses comment as task). Word-boundary matching is case-insensitive.",
+    "source_ids": ["devin-docs-integrations-jira"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.linear",
+    "name": "Linear integration",
+    "kind": "integration",
+    "description": "Linear connection for triggering Devin from tickets. Three trigger paths: assign to Devin (default playbook), synced playbook label (e.g., !plan), @mention Devin in a comment. Includes native MCP tooling — when connected, Linear MCP is automatically available without separate marketplace setup. Default playbook for new connections is `!plan`.",
+    "source_ids": ["devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.self-hosted-scm",
+    "name": "Self-hosted SCM connection",
+    "kind": "feature",
+    "description": "Pattern for connecting Devin to self-hosted GitLab / Bitbucket DC / etc. Two setup options: (1) Direct IP whitelisting at firewall — simplest, recommended; (2) Centralized Application Load Balancer or Network Load Balancer fronting multiple services. Enterprise-plan-only.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.self-hosted-artifacts",
+    "name": "Self-hosted artifact repository connection",
+    "kind": "feature",
+    "description": "Pattern for connecting Devin to self-hosted Artifactory / Nexus. Same options as SCM (direct whitelisting OR load balancer). When fronted by an Application Load Balancer (Layer 7), source IPs are NAT'd — must configure IP allowlist on the artifact repo itself, not just the ALB. NLB (Layer 4) preserves source IPs, so allowlisting at the LB is sufficient.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.network-load-balancer",
+    "name": "Network Load Balancer (NLB) — Layer 4",
+    "kind": "feature",
+    "description": "TCP-level load balancer that preserves original source IP addresses. Backend services see Devin's actual source IPs, so IP allowlisting at the load balancer is sufficient. Requires manual security group configuration for each Devin IP. Suitable for IP-whitelisting-driven setups.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"],
+    "aliases": ["NLB"]
+  },
+  {
+    "id": "devin.integrations.application-load-balancer",
+    "name": "Application Load Balancer (ALB) — Layer 7",
+    "kind": "feature",
+    "description": "HTTP/HTTPS load balancer with advanced routing capabilities. Traffic is NAT'd — backends see the ALB's internal IPs, NOT Devin's source IPs. Recommended for most use cases when paired with AWS WAF for IP filtering. For artifact repos behind an ALB, IP allowlisting MUST be configured on the artifact repo (Artifactory/Nexus) itself.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"],
+    "aliases": ["ALB"]
+  },
+  {
+    "id": "devin.integrations.aws-waf",
+    "name": "AWS WAF (Web Application Firewall)",
+    "kind": "feature",
+    "description": "AWS service used to enforce IP allowlists at the ALB level. The recommended pattern for IP-filtering Layer-7 load balancers fronting Devin-accessible services.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.aws-kms",
+    "name": "AWS KMS (Key Management Service)",
+    "kind": "feature",
+    "description": "Cognition's encryption-key store. Manages and periodically rotates the keys used by Devin. Surfaced in the GitHub integration FAQ.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.pr-template",
+    "name": "PR Template (GitHub-style)",
+    "kind": "feature",
+    "description": "Devin uses GitHub-style pull request templates when generating or regenerating PR descriptions. Searches a fixed set of repository locations and uses the first match. Falls back to a built-in default with sections for Summary / Review & Testing Checklist / (Optional) Mermaid diagram / Notes when no file matches.",
+    "source_ids": ["devin-docs-integrations-pr-templates", "devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.devin-pr-template",
+    "name": "devin_pr_template.md (Devin-specific PR template)",
+    "kind": "file",
+    "description": "Optional Devin-specific PR template that overrides the standard human-facing template only for Devin's PRs. Filename `devin_pr_template.md` (case-insensitive — both DEVIN_PR_TEMPLATE.md and devin_pr_template.md are supported). Searched at six paths in priority order before falling back to the standard pull_request_template.md locations.",
+    "source_ids": ["devin-docs-integrations-pr-templates", "devin-docs-integrations-gh"],
+    "aliases": ["DEVIN_PR_TEMPLATE.md"]
+  },
+  {
+    "id": "devin.integrations.commit-signing-gpg",
+    "name": "GPG commit signing",
+    "kind": "feature",
+    "description": "Configuration that signs Devin's commits with a GPG key. Must be set up at the org-wide (or enterprise) blueprint layer because each session boots a fresh machine — keys generated mid-session are lost. Requires a dedicated GitHub user account, a GPG key with that account's email as UID, the public key uploaded to that account's GitHub keys, and the base64-encoded private key + GIT_USER_NAME / GIT_USER_EMAIL stored as Devin secrets.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.branch-protection",
+    "name": "Branch protection",
+    "kind": "feature",
+    "description": "GitHub/GitLab/Bitbucket repo setting that requires checks to pass before a branch can be merged. Cognition recommends enabling on main/master to gate Devin's merges (and human-authored merges) on CI passing.",
+    "source_ids": ["devin-docs-integrations-gh", "devin-docs-integrations-gitlab", "devin-docs-integrations-bitbucket", "devin-docs-admin-security"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.dedicated-service-account",
+    "name": "Dedicated service account (per integration)",
+    "kind": "credential",
+    "description": "Recommended pattern across SCM and ticketing integrations: create an integration-specific user account (devin@yourcompany.com or similar) rather than using a personal account. Cleaner audit trails, separate permission management, easier rotation. Surfaces in GitHub, GitLab, Bitbucket, Bitbucket DC, Jira, and self-hosted SCM docs.",
+    "source_ids": ["devin-docs-integrations-bitbucket", "devin-docs-integrations-gitlab", "devin-docs-integrations-self-hosted-scm-artifacts", "devin-docs-integrations-jira"],
+    "aliases": ["service account", "dedicated bot identity"]
+  },
+  {
+    "id": "devin.integrations.jira-playbook-label",
+    "name": "Jira playbook label",
+    "kind": "feature",
+    "description": "Jira label whose name matches a Devin playbook macro (e.g., `!plan`, `!implement`, `!triage`). Adding the label to a ticket triggers Devin with that specific playbook. Labels must be created manually in the Jira project — copy the name from Devin's integration settings.",
+    "source_ids": ["devin-docs-integrations-jira"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.jira-devin-label",
+    "name": "Jira `devin` label (generic trigger)",
+    "kind": "feature",
+    "description": "Jira label whose name contains 'devin' as a standalone word (case-insensitive, word-boundary matching). Adding it triggers Devin with the default playbook. Examples that trigger: `devin`, `Devin`, `devin-workshop`, `devin-task`. Examples that DON'T: `devinworkshop`, `devin_workshop`.",
+    "source_ids": ["devin-docs-integrations-jira"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.linear-synced-playbook-label",
+    "name": "Linear synced playbook label",
+    "kind": "feature",
+    "description": "Linear label automatically synced from Devin's integration settings into the 'Devin Playbooks' label group in Linear. Adding the label to a ticket triggers Devin with the specific playbook. Default playbook for new connections is `!plan`.",
+    "source_ids": ["devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.default-playbook",
+    "name": "Default playbook (per integration)",
+    "kind": "feature",
+    "description": "Per-integration setting designating which playbook Devin uses when triggered without a specific playbook label (assignment, generic 'devin' label, etc.). Configurable in Jira and Linear integration settings.",
+    "source_ids": ["devin-docs-integrations-jira", "devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.automation-trigger",
+    "name": "Automation trigger (Jira / Linear)",
+    "kind": "feature",
+    "description": "Auto-start condition: Devin starts a session when a ticket transitions to a state matching configured filters (project/team, labels, status, optional playbook). Uses EDGE detection — fires on transition INTO matching state, not for tickets already matching.",
+    "source_ids": ["devin-docs-integrations-jira", "devin-docs-integrations-linear"],
+    "aliases": ["edge-triggered automation"]
+  },
+  {
+    "id": "devin.integrations.session-mode-direct",
+    "name": "Session mode — Direct session creation (Jira)",
+    "kind": "feature",
+    "description": "Default Jira session-mode toggle. Devin creates a full session and works on the issue, posting updates back to Jira (PR links, session links, follow-up replies).",
+    "source_ids": ["devin-docs-integrations-jira"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.session-mode-scoping",
+    "name": "Session mode — Scoping only (Jira)",
+    "kind": "feature",
+    "description": "Alternative Jira session-mode. Devin only analyzes the ticket and posts a scoping comment with summary + implementation plan + confidence estimate. The user clicks a link to start a session manually.",
+    "source_ids": ["devin-docs-integrations-jira"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.enterprise-jira-project-mapping",
+    "name": "Enterprise Jira project mapping",
+    "kind": "feature",
+    "description": "Enterprise-only configuration mapping each Jira project to a specific Devin organization. Required for the Jira integration to work in enterprise setups with multiple Devin orgs.",
+    "source_ids": ["devin-docs-integrations-jira"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.enterprise-linear-team-mapping",
+    "name": "Enterprise Linear team mapping",
+    "kind": "feature",
+    "description": "Enterprise-only configuration mapping each Linear team to a specific Devin organization. Required for the Linear integration to work in enterprise setups.",
+    "source_ids": ["devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.linear-agent-session-ui",
+    "name": "Linear agent session UI",
+    "kind": "feature",
+    "description": "Linear's native agent-session interface. Devin posts real-time activity feed (commands run, files edited, progress summaries), syncs its todo list to Linear's plan UI, accepts follow-up messages in the session thread, and supports a stop-signal that puts Devin to sleep on the current task.",
+    "source_ids": ["devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.jira-oauth-service-account",
+    "name": "Jira OAuth 2.0 service account",
+    "kind": "credential",
+    "description": "Optional dedicated Jira identity for Devin's comments. Created via Atlassian admin > OAuth 2.0 service account with Classic scopes: read:me, read:jira-user, read:jira-work, write:jira-work. Connected by entering client ID and client secret in Devin's Jira integration settings. Makes Devin's comments appear under a bot identity instead of the connecting user's personal account.",
+    "source_ids": ["devin-docs-integrations-jira"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.teams-rsc-permissions",
+    "name": "Microsoft Teams Resource-Specific Consent (RSC)",
+    "kind": "feature",
+    "description": "Teams permission model granting per-Team/Chat scopes only where the bot is installed. Used by Devin to limit message access to specific surfaces. Includes ChannelMessage.Read.Group, ChannelMessage.Send.Group, Member.Read.Group, TeamSettings.Read.Group, ChatMember.Read.Chat, ChatMessage.Read.Chat, ChatMessage.Send.Chat, ChatSettings.Read.Chat. Removing the app from a Team/Chat revokes RSC for that resource.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"],
+    "aliases": ["RSC"]
+  },
+  {
+    "id": "devin.integrations.teams-graph-app-permissions",
+    "name": "Microsoft Graph Application permissions (Teams)",
+    "kind": "feature",
+    "description": "Tenant-wide Graph permissions Devin's Teams integration requires; granted via Admin Consent in Entra ID. Includes Organization.Read.All, User.ReadBasic.All, AppCatalog.Read.All, TeamsAppInstallation.ReadWriteAndConsentSelfForTeam.All. Used only for discovery + installation orchestration — NOT for reading message content (that flows through RSC).",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"],
+    "aliases": ["tenant-wide Graph permissions"]
+  },
+  {
+    "id": "devin.integrations.teams-x509-cert-auth",
+    "name": "Microsoft Teams X.509 certificate authentication",
+    "kind": "credential",
+    "description": "Service-to-service authentication mechanism Devin's Teams integration uses (rather than client secrets). X.509 client assertion. Applies to Microsoft Graph calls, bot communications with the Bot Framework adapter, and any app-only API calls.",
+    "source_ids": ["devin-docs-integrations-microsoft-teams"],
+    "aliases": ["client certificate", "client assertion"]
+  },
+  {
+    "id": "devin.integrations.dedicated-runs-channel",
+    "name": "Dedicated #devin-runs channel pattern",
+    "kind": "feature",
+    "description": "Recommended Slack workspace pattern: a single #devin-runs channel where all Devin conversations live. Improves team-level visibility, lets engineers learn from each other's runs.",
+    "source_ids": ["devin-docs-integrations-slack"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.session-keyword-set",
+    "name": "Inline session-keyword set",
+    "kind": "feature",
+    "description": "Set of inline keywords supported across Slack and Teams: `!ask`, `!deep`, `mute`, `unmute`, `(aside)`, `!aside`, `sleep`, `archive`, `EXIT`, `help`. Slack also supports `!dana`, `!fast`, `![macro_name]` for slash-style invocations.",
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.user-account-link",
+    "name": "Per-user identity link",
+    "kind": "feature",
+    "description": "Required step where each individual user links their integration identity (Slack email / Teams identity / Linear account) to their Devin user. Without it Devin can't attribute a session to the correct user. Slack uses email matching (Slack email must equal Devin email).",
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams", "devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.repo-permissions-enterprise",
+    "name": "Enterprise Repository Permissions",
+    "kind": "feature",
+    "description": "Enterprise-admin-only setting at Enterprise Settings > Repository Permissions. Maps each connected SCM repository to one or more Devin organizations under the enterprise. Orgs cannot see/use repos until explicitly granted access.",
+    "source_ids": ["devin-docs-integrations-gh", "devin-docs-onboard-environment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.dependabot-alerts",
+    "name": "Dependabot alerts (read access)",
+    "kind": "feature",
+    "description": "GitHub permission Devin requires (read). Lets Devin resolve dependabot alerts on the customer's behalf — i.e., bumping dependency versions in PRs.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.commit-statuses-write",
+    "name": "Commit statuses (read+write)",
+    "kind": "feature",
+    "description": "GitHub permission Devin requires (read+write). Lets Devin set commit statuses indicating CI pass/fail, mirroring its understanding of check results.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.checks-write",
+    "name": "Checks (read+write)",
+    "kind": "feature",
+    "description": "GitHub permission Devin requires (read+write). Lets Devin view and report check results, communicating CI pass/fail back to the user.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.workflows-write",
+    "name": "Workflows (read+write)",
+    "kind": "feature",
+    "description": "GitHub permission Devin requires (read+write). Lets Devin set up new GitHub Actions workflows — used during repo onboarding to configure CI/CD.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.no-repo-creation",
+    "name": "No repository-creation permission",
+    "kind": "feature",
+    "description": "Explicit security boundary: Devin's GitHub App permissions do NOT include repository creation. Devin cannot create new repositories in the customer's GitHub account.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.org-level-permissions",
+    "name": "Organization-level permissions (NOT user-level)",
+    "kind": "feature",
+    "description": "Devin uses the permissions granted at the GitHub organization level, NOT the permissions of the individual user running a session. All users with access to both the GitHub and Devin organizations share the same Devin integration permissions.",
+    "source_ids": ["devin-docs-integrations-gh"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.async-pr-comment-policy",
+    "name": "Async PR/MR comment policy",
+    "kind": "feature",
+    "description": "On GitLab and Bitbucket, Devin can SEE/RESPOND to PR/MR comments only when explicitly asked — Devin does NOT auto-wake to respond to new comments. (GitHub integration handles auto-responses; this is a behavior gap noted in GitLab + Bitbucket docs.)",
+    "source_ids": ["devin-docs-integrations-gitlab", "devin-docs-integrations-bitbucket"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.support-channel-slack-connect",
+    "name": "Slack Connect support channel",
+    "kind": "feature",
+    "description": "Customer can request a dedicated Slack Connect channel with the Cognition team via app.devin.ai/settings/support. Used for SCM/integration setup escalation, especially self-hosted onboarding.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts", "devin-docs-integrations-gitlab"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.dns-record-for-load-balancer",
+    "name": "DNS record for self-hosted load balancer",
+    "kind": "feature",
+    "description": "Required step in the self-hosted-SCM/artifacts onboarding: after configuring the LB and IP allowlist, publish a DNS record (e.g., gitlab.yourcompany.com) that Devin uses to reach the service. Often configured via dns-change.json in AWS Route 53.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"],
+    "aliases": []
+  },
+  {
+    "id": "devin.integrations.tls-https-required",
+    "name": "HTTPS / valid SSL required",
+    "kind": "feature",
+    "description": "All self-hosted SCM/artifact endpoints exposed to Devin must use HTTPS with valid trusted SSL certificates. Plain HTTP is not supported.",
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"],
+    "aliases": []
+  }
+]

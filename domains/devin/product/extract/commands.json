@@ -1,0 +1,123 @@
+[
+  {
+    "id": "devin.product.cmd.ui-devin-review-open",
+    "command": "[UI] Open Devin Review at app.devin.ai/review",
+    "purpose": "Land on the Devin Review surface — your open PRs organized by category. Entry point for code review workflow.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Browse to app.devin.ai/review", "expected_output": "PR list grouped by category", "scenario": "Start a code review session"}
+    ],
+    "source_ids": ["devin-docs-work-devin-review"]
+  },
+  {
+    "id": "devin.product.cmd.ui-review-merge-pr",
+    "command": "[UI] Devin Review > PR detail > Merge",
+    "purpose": "Merge a PR directly from Devin Review without leaving the page.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Open PR in Devin Review > Merge button", "expected_output": "PR merged on GitHub", "scenario": "Approve + merge in one place"}
+    ],
+    "source_ids": ["devin-docs-work-devin-review"]
+  },
+  {
+    "id": "devin.product.cmd.ui-review-toggle-auto-merge",
+    "command": "[UI] Devin Review > PR detail > Toggle auto-merge",
+    "purpose": "Toggle GitHub auto-merge on/off from inside Devin Review.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Open PR > toggle auto-merge", "expected_output": "Auto-merge enabled/disabled", "scenario": "Defer merge until checks pass"}
+    ],
+    "source_ids": ["devin-docs-work-devin-review"]
+  },
+  {
+    "id": "devin.product.cmd.ui-review-chat-edit",
+    "command": "[UI] Devin Review > chat > 'Make this change' > Apply as commit",
+    "purpose": "Ask the chat agent for code edits, review the suggestions, and apply as a commit to the PR branch from inside Devin Review.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Highlight a function in the diff > 'Apply prop drilling fix' > review > Apply", "expected_output": "Commit pushed to PR branch", "scenario": "In-review code change without leaving the surface"}
+    ],
+    "source_ids": ["devin-docs-work-devin-review"]
+  },
+  {
+    "id": "devin.product.cmd.ui-add-knowledge",
+    "command": "[UI] Settings > Devin's Settings > Knowledge > Add knowledge",
+    "purpose": "Add product-Knowledge-feature entries (architecture docs, conventions, team workflows) used by Devin across sessions in a repo.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > Devin's Settings > Knowledge > 'Add knowledge: 'Always run pnpm typecheck before committing''", "expected_output": "Knowledge entry stored", "scenario": "Encode a team convention"}
+    ],
+    "source_ids": ["devin-docs-product-knowledge", "cognition-blog-jan-25-product-update"]
+  },
+  {
+    "id": "devin.product.cmd.ui-create-playbook",
+    "command": "[UI] Settings > Playbooks > Create playbook",
+    "purpose": "Create a reusable instruction set with optional macro identifier. Macros (e.g., `!plan`, `!review`) become triggers in Slack/Teams/Jira/Linear.",
+    "flags": [
+      {"name": "name", "value": "<text>", "doc": "Playbook name."},
+      {"name": "instructions", "value": "<text>", "doc": "Body of the playbook."},
+      {"name": "macro", "value": "<!name>", "doc": "Optional macro for label/keyword triggering."}
+    ],
+    "examples": [
+      {"invocation": "Settings > Playbooks > Create > name='Plan only', macro='!plan', instructions='Read the issue, propose a plan, do not edit'", "expected_output": "Playbook saved", "scenario": "Codify a planning-only workflow"}
+    ],
+    "source_ids": ["devin-docs-product-playbooks", "devin-docs-product-using-playbooks"]
+  },
+  {
+    "id": "devin.product.cmd.ui-create-schedule",
+    "command": "[UI] Settings > Schedules > Create schedule",
+    "purpose": "Create a recurring or one-time scheduled session.",
+    "flags": [
+      {"name": "prompt", "value": "<text>", "doc": "Session prompt."},
+      {"name": "cron_schedule", "value": "<cron>", "doc": "Cron expression."},
+      {"name": "timezone", "value": "<IANA tz>", "doc": "Timezone."}
+    ],
+    "examples": [
+      {"invocation": "Settings > Schedules > Create > prompt='Run weekly dependency upgrade', cron='0 9 * * 1', tz='America/New_York'", "expected_output": "Schedule active", "scenario": "Weekly Monday-9am dep-upgrade"}
+    ],
+    "source_ids": ["devin-docs-product-scheduled-sessions"]
+  },
+  {
+    "id": "devin.product.cmd.ui-add-secret",
+    "command": "[UI] Settings > Secrets > Add secret",
+    "purpose": "Add a secret. Referenced as $NAME in blueprints and sessions. Org-scoped by default; can also be created at enterprise tier.",
+    "flags": [
+      {"name": "name", "value": "<NAME>", "doc": "Variable name."},
+      {"name": "value", "value": "<value>", "doc": "Secret value."}
+    ],
+    "examples": [
+      {"invocation": "Settings > Secrets > Add > name='NPM_TOKEN', value='...'", "expected_output": "Secret stored", "scenario": "Provision npm publish credential"}
+    ],
+    "source_ids": ["devin-docs-product-secrets"]
+  },
+  {
+    "id": "devin.product.cmd.ui-session-insights-open",
+    "command": "[UI] Open session > Session Insights tab",
+    "purpose": "View per-session ACU usage, timeline, and AI-generated summary.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Open a completed session > Insights tab", "expected_output": "Insights panel renders", "scenario": "Retro on a session"}
+    ],
+    "source_ids": ["devin-docs-product-session-insights"]
+  },
+  {
+    "id": "devin.product.cmd.cli-install-devin",
+    "command": "curl -fsSL https://cli.devin.ai/install.sh | bash",
+    "purpose": "Install Devin for Terminal (the local CLI agent). Cross-references the devbox concept of the same name.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl -fsSL https://cli.devin.ai/install.sh | bash", "expected_output": "devin binary installed", "scenario": "Onboard local CLI"}
+    ],
+    "source_ids": ["cognition-blog-devin-for-terminal"]
+  },
+  {
+    "id": "devin.product.cmd.ui-devin-mcp-marketplace",
+    "command": "[UI] Settings > MCP Marketplace > browse + Enable",
+    "purpose": "Browse the MCP marketplace to enable third-party tool integrations. 1-click for many; credentials/headers for others.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > MCP Marketplace > Datadog > Enable + provide DD-API-KEY", "expected_output": "Datadog MCP available next session", "scenario": "Add observability MCP"}
+    ],
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  }
+]

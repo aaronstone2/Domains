@@ -1,0 +1,605 @@
+[
+  {
+    "id": "devin.api.cfg.auth.authorization-header",
+    "scope": "auth",
+    "key": "Authorization",
+    "type": "http-header",
+    "default_value": "Bearer <cog_...>",
+    "description": "Required HTTP header on every Devin API request. Format: `Authorization: Bearer <token>`. Token starts with `cog_` (current API) or `apk_user_`/`apk_` (legacy). Same shape for both Service User API Keys and PATs.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.auth.token-prefix-cog",
+    "scope": "auth",
+    "key": "token-prefix",
+    "type": "string",
+    "default_value": "cog_",
+    "description": "Prefix on all current-API tokens (service-user keys + PATs).",
+    "source_ids": ["devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.auth.legacy-prefix-apk",
+    "scope": "auth",
+    "key": "legacy-token-prefix",
+    "type": "string",
+    "default_value": "apk_, apk_user_",
+    "description": "Legacy v1/v2 token prefixes. Continue working during deprecation period; not accepted by Devin MCP server.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-getting-started-migration-guide"]
+  },
+  {
+    "id": "devin.api.cfg.session.body.prompt",
+    "scope": "session-create-body",
+    "key": "prompt",
+    "type": "string (required)",
+    "default_value": null,
+    "description": "Required body field on Create Session. Initial agent instruction.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.session.body.title",
+    "scope": "session-create-body",
+    "key": "title",
+    "type": "string (optional)",
+    "default_value": null,
+    "description": "Optional human-readable title for the session.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.session.body.playbook",
+    "scope": "session-create-body",
+    "key": "playbook",
+    "type": "string (optional)",
+    "default_value": null,
+    "description": "Optional playbook ID. When set, applies the playbook's instructions to the session.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.session.body.tags",
+    "scope": "session-create-body",
+    "key": "tags",
+    "type": "list[string] (optional)",
+    "default_value": null,
+    "description": "Optional tags to apply at creation. Must be in the org's allowed tags list.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.session.body.acu-limit",
+    "scope": "session-create-body",
+    "key": "acu_limit",
+    "type": "integer (optional)",
+    "default_value": null,
+    "description": "Optional Agent Compute Unit cap for the session. Session terminates when limit is reached.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.session.body.create-as-user-id",
+    "scope": "session-create-body",
+    "key": "create_as_user_id",
+    "type": "string (optional)",
+    "default_value": null,
+    "description": "Optional user ID. When set, attributes the session to that user (appears in their list, counts toward their usage). Requires ImpersonateOrgSessions permission.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-overview"]
+  },
+  {
+    "id": "devin.api.cfg.pagination.first",
+    "scope": "pagination",
+    "key": "first",
+    "type": "integer",
+    "default_value": "varies-by-endpoint",
+    "description": "Cursor pagination page-size parameter. Default varies by endpoint.",
+    "source_ids": ["devin-docs-api-concepts-pagination"]
+  },
+  {
+    "id": "devin.api.cfg.pagination.after",
+    "scope": "pagination",
+    "key": "after",
+    "type": "string (cursor)",
+    "default_value": null,
+    "description": "Cursor pagination — opaque cursor from a previous response's end_cursor. Omit for the first page.",
+    "source_ids": ["devin-docs-api-concepts-pagination"]
+  },
+  {
+    "id": "devin.api.cfg.pagination.has-next-page",
+    "scope": "pagination-response",
+    "key": "has_next_page",
+    "type": "boolean",
+    "default_value": null,
+    "description": "Pagination response field. True if more results follow.",
+    "source_ids": ["devin-docs-api-concepts-pagination"]
+  },
+  {
+    "id": "devin.api.cfg.pagination.end-cursor",
+    "scope": "pagination-response",
+    "key": "end_cursor",
+    "type": "string (cursor)",
+    "default_value": null,
+    "description": "Pagination response field. Pass as `after` for the next page. Null when has_next_page is false.",
+    "source_ids": ["devin-docs-api-concepts-pagination"]
+  },
+  {
+    "id": "devin.api.cfg.pagination.total",
+    "scope": "pagination-response",
+    "key": "total",
+    "type": "integer (optional)",
+    "default_value": null,
+    "description": "Pagination response field. Total matching items count. May be omitted for performance reasons.",
+    "source_ids": ["devin-docs-api-concepts-pagination"]
+  },
+  {
+    "id": "devin.api.cfg.knowledge.body.name",
+    "scope": "knowledge-note-body",
+    "key": "name",
+    "type": "string",
+    "default_value": null,
+    "description": "Knowledge note name field.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.knowledge.body.trigger",
+    "scope": "knowledge-note-body",
+    "key": "trigger",
+    "type": "string",
+    "default_value": null,
+    "description": "Knowledge note trigger condition (when this knowledge applies).",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.knowledge.body.body",
+    "scope": "knowledge-note-body",
+    "key": "body",
+    "type": "string",
+    "default_value": null,
+    "description": "Knowledge note content body.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.playbook.body.name",
+    "scope": "playbook-body",
+    "key": "name",
+    "type": "string",
+    "default_value": null,
+    "description": "Playbook name.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.playbook.body.instructions",
+    "scope": "playbook-body",
+    "key": "instructions",
+    "type": "string (text)",
+    "default_value": null,
+    "description": "Playbook body / instructions.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.playbook.body.macro",
+    "scope": "playbook-body",
+    "key": "macro",
+    "type": "string (optional, !-prefixed)",
+    "default_value": null,
+    "description": "Optional macro identifier (e.g., `!plan`). Required for label-based triggers in Jira/Linear/Slack.",
+    "source_ids": ["devin-docs-api-v1-overview", "devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.schedule.body.cron-schedule",
+    "scope": "schedule-body",
+    "key": "cron_schedule",
+    "type": "string (cron expression)",
+    "default_value": null,
+    "description": "Cron expression. Standard 5-field format. Example: `0 9 * * 1-5` = 9am every weekday.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.schedule.body.timezone",
+    "scope": "schedule-body",
+    "key": "timezone",
+    "type": "string (IANA tz)",
+    "default_value": null,
+    "description": "IANA timezone for cron-schedule interpretation. Example: 'America/New_York'.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.schedule.body.is-enabled",
+    "scope": "schedule-body",
+    "key": "is_enabled",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "Whether the schedule is active. Toggle off to pause without deleting.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.base-url.api-default",
+    "scope": "base-url",
+    "key": "api-default",
+    "type": "url",
+    "default_value": "https://api.devin.ai",
+    "description": "Default Devin API base URL.",
+    "source_ids": ["devin-docs-api-overview", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.base-url.app",
+    "scope": "base-url",
+    "key": "app-default",
+    "type": "url",
+    "default_value": "https://app.devin.ai",
+    "description": "Default Devin web-app URL. Session URLs returned by the API have the form `https://app.devin.ai/sessions/<id>`.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.base-url.enterprise-custom-domain",
+    "scope": "base-url",
+    "key": "enterprise-custom-domain-pattern",
+    "type": "url-pattern",
+    "default_value": "api.<co>.devinenterprise.com",
+    "description": "Custom enterprise API domain pattern. Replace api.devin.ai with the customer's domain (e.g., api.your-company.devinenterprise.com) for dedicated-deployment Enterprise customers.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.read-account-meta",
+    "scope": "rbac-permission-enterprise",
+    "key": "ReadAccountMeta",
+    "type": "permission",
+    "default_value": "default-granted",
+    "description": "Default-granted to all service users. Controls /v3/self.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-enterprise-settings",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageEnterpriseSettings",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls audit logs + organization tags.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-organizations",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageOrganizations",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls Organizations CRUD + Organization group limits.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-account-membership",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageAccountMembership",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls Roles, Enterprise users, Enterprise IdP groups, Enterprise service-user membership, IdP-group registration.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-account-service-users",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageAccountServiceUsers",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls service-user provisioning at the enterprise level.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-account-knowledge",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageAccountKnowledge",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls enterprise-level knowledge notes.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-account-playbooks",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageAccountPlaybooks",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls enterprise-level playbooks.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-git-integrations",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageGitIntegrations",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls Git connections + Git permissions.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-billing",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageBilling",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls consumption cycles + daily consumption breakdowns.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.view-account-metrics",
+    "scope": "rbac-permission-enterprise",
+    "key": "ViewAccountMetrics",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls usage metrics (DAU/WAU/MAU, PRs, sessions, searches, active users) + queue status.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.view-enterprise-infra-details",
+    "scope": "rbac-permission-enterprise",
+    "key": "ViewEnterpriseInfraDetails",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls hypervisors endpoint.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.view-account-sessions",
+    "scope": "rbac-permission-enterprise",
+    "key": "ViewAccountSessions",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls enterprise-scoped session list + detail (read-only). Inherits to ViewOrgSessions in all orgs.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-account-sessions",
+    "scope": "rbac-permission-enterprise",
+    "key": "ManageAccountSessions",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls sending messages to sessions at the enterprise level.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-org-secrets",
+    "scope": "rbac-permission-org",
+    "key": "ManageOrgSecrets",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls secrets CRUD at the org level.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-org-knowledge",
+    "scope": "rbac-permission-org",
+    "key": "ManageOrgKnowledge",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls org-level knowledge notes.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-org-playbooks",
+    "scope": "rbac-permission-org",
+    "key": "ManageOrgPlaybooks",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls org-level playbooks.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-org-service-users",
+    "scope": "rbac-permission-org",
+    "key": "ManageOrgServiceUsers",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls org-level service-user provisioning.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-org-schedules",
+    "scope": "rbac-permission-org",
+    "key": "ManageOrgSchedules",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls scheduled sessions.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.view-org-sessions",
+    "scope": "rbac-permission-org",
+    "key": "ViewOrgSessions",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls org-scoped session list + detail (read-only).",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.manage-org-sessions",
+    "scope": "rbac-permission-org",
+    "key": "ManageOrgSessions",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls sending messages, terminating, archiving sessions in an org.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.use-devin-sessions",
+    "scope": "rbac-permission-org",
+    "key": "UseDevinSessions",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls creating sessions.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.api.cfg.permission.impersonate-org-sessions",
+    "scope": "rbac-permission-org",
+    "key": "ImpersonateOrgSessions",
+    "type": "permission",
+    "default_value": null,
+    "description": "Controls creating sessions on behalf of other users (`create_as_user_id`).",
+    "source_ids": ["devin-docs-api-v3-overview", "devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.error.200",
+    "scope": "http-status",
+    "key": "200",
+    "type": "status-code",
+    "default_value": "OK",
+    "description": "Successful request.",
+    "source_ids": ["devin-docs-api-overview"]
+  },
+  {
+    "id": "devin.api.cfg.error.201",
+    "scope": "http-status",
+    "key": "201",
+    "type": "status-code",
+    "default_value": "Created",
+    "description": "Resource created successfully.",
+    "source_ids": ["devin-docs-api-overview"]
+  },
+  {
+    "id": "devin.api.cfg.error.400",
+    "scope": "http-status",
+    "key": "400",
+    "type": "status-code",
+    "default_value": "Bad Request",
+    "description": "Invalid request parameters.",
+    "source_ids": ["devin-docs-api-overview"]
+  },
+  {
+    "id": "devin.api.cfg.error.401",
+    "scope": "http-status",
+    "key": "401",
+    "type": "status-code",
+    "default_value": "Unauthorized",
+    "description": "Missing or invalid API key.",
+    "source_ids": ["devin-docs-api-overview", "devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.error.403",
+    "scope": "http-status",
+    "key": "403",
+    "type": "status-code",
+    "default_value": "Forbidden",
+    "description": "Insufficient permissions.",
+    "source_ids": ["devin-docs-api-overview", "devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.error.404",
+    "scope": "http-status",
+    "key": "404",
+    "type": "status-code",
+    "default_value": "Not Found",
+    "description": "Resource not found.",
+    "source_ids": ["devin-docs-api-overview"]
+  },
+  {
+    "id": "devin.api.cfg.error.429",
+    "scope": "http-status",
+    "key": "429",
+    "type": "status-code",
+    "default_value": "Too Many Requests",
+    "description": "Rate limit exceeded.",
+    "source_ids": ["devin-docs-api-overview"]
+  },
+  {
+    "id": "devin.api.cfg.error.500",
+    "scope": "http-status",
+    "key": "500",
+    "type": "status-code",
+    "default_value": "Internal Server Error",
+    "description": "Server error.",
+    "source_ids": ["devin-docs-api-overview"]
+  },
+  {
+    "id": "devin.api.cfg.env-var.devin-api-key",
+    "scope": "env-var-convention",
+    "key": "DEVIN_API_KEY",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Recommended env var for storing the service-user API key. Used in all common-flows examples.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.env-var.devin-org-id",
+    "scope": "env-var-convention",
+    "key": "DEVIN_ORG_ID",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Recommended env var for the org ID. Found on Settings > Service Users where the key was created.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.self-response.principal-type",
+    "scope": "self-response",
+    "key": "principal_type",
+    "type": "enum",
+    "default_value": null,
+    "description": "GET /v3/self response field. Values: 'service_user', 'user'.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.self-response.service-user-id",
+    "scope": "self-response",
+    "key": "service_user_id",
+    "type": "string",
+    "default_value": null,
+    "description": "Populated when principal_type='service_user'.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.self-response.org-id",
+    "scope": "self-response",
+    "key": "org_id",
+    "type": "string|null",
+    "default_value": null,
+    "description": "Populated for org-scoped service users; null for enterprise-scoped service users (which span orgs).",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cfg.recommendation.least-privilege",
+    "scope": "security-best-practice",
+    "key": "least-privilege",
+    "type": "string",
+    "default_value": null,
+    "description": "Apply the minimum permissions required when assigning service-user roles.",
+    "source_ids": ["devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.recommendation.key-rotation",
+    "scope": "security-best-practice",
+    "key": "key-rotation",
+    "type": "string",
+    "default_value": null,
+    "description": "Rotate keys regularly — generate new keys + revoke old ones periodically.",
+    "source_ids": ["devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.recommendation.secret-storage",
+    "scope": "security-best-practice",
+    "key": "secret-storage",
+    "type": "string",
+    "default_value": null,
+    "description": "Store API keys in env vars or secret-management systems — never in source code.",
+    "source_ids": ["devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.recommendation.audit-monitoring",
+    "scope": "security-best-practice",
+    "key": "audit-monitoring",
+    "type": "string",
+    "default_value": null,
+    "description": "Review audit logs for unexpected API activity.",
+    "source_ids": ["devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.recommendation.compromised-key",
+    "scope": "security-best-practice",
+    "key": "compromised-key-action",
+    "type": "string",
+    "default_value": "revoke + regenerate",
+    "description": "Revoke compromised keys immediately and generate a new one.",
+    "source_ids": ["devin-docs-api-authentication"]
+  },
+  {
+    "id": "devin.api.cfg.poll.terminal-states",
+    "scope": "session-poll",
+    "key": "terminal-states",
+    "type": "list[enum]",
+    "default_value": "[exit, error, suspended]",
+    "description": "Session statuses at which polling should stop. Common-flows example breaks out of the polling loop on any of these.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  }
+]

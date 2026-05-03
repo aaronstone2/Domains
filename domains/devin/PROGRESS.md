@@ -96,9 +96,53 @@ Pass rate: 3/8 exact top-1, 4/8 top-3 / adjacent, 1/8 miss. Acceptable for Phase
 - **Phase 4** (Failure-modes): the gold layer. Status incidents JSON gives 47+ empirical incidents. `/admin/common-issues` (4 issues), VPN setup, IP allowlist, secrets handling, scheduled-session crashes — each a candidate `failure_modes` row.
 - **Phase 5** (Relationships): cross-link DevBox concepts to docker/linux underpinning concepts (e.g. blockdiff README → Linux CoW snapshots → docker storage drivers).
 
+## Phase 3 — Structured extraction (concepts / commands / config_keys)
+
+### Session 3.1 — 2026-05-02 — DONE (all 7 leaves in one session)
+
+**Plan file:** `C:\Users\adsto\.claude\plans\read-domains-shared-sessions-phase-3-de-glittery-iverson.md`
+
+**Approach:** the Claude Code agent IS the extractor (codified in `domains/_shared/sessions/phase-3-deep-extraction.md` Phase 0.1 of this session). No separate Anthropic SDK extractor module. Agent reads `<domain>.documents` via `motherduck` MCP, drafts JSON files by hand, loads via `INSERT INTO devin.<table> SELECT * FROM read_json_auto(...)`.
+
+**All 7 leaves scaffolded** via `pnpm leaf add devin/<leaf>` (idempotent). Per-leaf customized PLAN.md + PROGRESS.md.
+
+**Final row counts:**
+
+| Leaf                  | Concepts | Commands | Config keys |
+| ---                   | ---:     | ---:     | ---:        |
+| `devbox`              | 64       | 30       | 65          |
+| `integrations`        | 49       | 28       | 68          |
+| `mcp`                 | 43       | 15       | 69          |
+| `api` (incl api-endpoints) | 51 | 234      | 67          |
+| `product`             | 58       | 11       | 15          |
+| `enterprise`          | 35       | 12       | 58          |
+| `knowledge-playbooks` | 19       | 8        | 15          |
+| **TOTAL**             | **319**  | **338**  | **357**     |
+
+**Verification:**
+- Source-id integrity: 0 broken `source_ids[]` references across the entire devin schema (1 fix-up applied — removed an invented `cognition-blog-devin-review` source from the product devin-review concept; that blog post wasn't part of Phase 1's source set).
+- Distinct concept kinds: 23.
+- Distinct config_keys scopes: 90.
+- Failure-modes (deferred to horizontal P4): 0 rows in `devin.failure_modes`.
+- Relationships (deferred to horizontal P5): 0 rows in `devin.relationships`.
+
+**Per-leaf P4 + P5 candidate seeds** documented in each leaf's PROGRESS.md. Top-level cross-domain link candidates worth wiring in P5:
+- devbox.snapshot ↔ docker/runtime checkpoint, linux/filesystem CoW (BlockDiff)
+- devbox.firewall-allowlist ↔ linux/networking netfilter
+- integrations.github-app ↔ api.session-create (payload schema)
+- integrations.ip-allowlist-integration ↔ devbox.outbound-ip-allowlist (mirrored config)
+- mcp.database-toolbox ↔ docker/engine (containerized)
+- api.create_as_user_id ↔ enterprise.idp-group-auto-assign
+- enterprise.three-tier-blueprint-hierarchy ↔ devbox.blueprint
+- knowledge-playbooks.macro ↔ integrations.jira-playbook-label / linear-synced-playbook-label
+
+**Phase-3 doc updated:** `domains/_shared/sessions/phase-3-deep-extraction.md` now codifies the agent-as-extractor decision so future sessions don't re-litigate it.
+
 ## Cross-references
 
-- Plan file: `C:\Users\adsto\.claude\plans\swift-honking-pretzel.md`
+- Phase 3 plan file: `C:\Users\adsto\.claude\plans\read-domains-shared-sessions-phase-3-de-glittery-iverson.md`
+- Phase 1 plan file: `C:\Users\adsto\.claude\plans\swift-honking-pretzel.md`
 - Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`
-- Pipe-able session prompt: `domains/_shared/sessions/phase-1-source-corpus.md`
+- Pipe-able session prompts: `domains/_shared/sessions/phase-1-source-corpus.md`, `domains/_shared/sessions/phase-3-deep-extraction.md`
 - Sister-domain Phase 1: `domains/methodology/PROGRESS.md`
+- Per-leaf PROGRESS.md: `domains/devin/<leaf>/PROGRESS.md` × 7

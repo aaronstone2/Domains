@@ -1,0 +1,524 @@
+[
+  {
+    "id": "devin.enterprise.cfg.deployment.brain-location",
+    "scope": "deployment",
+    "key": "brain.location",
+    "type": "string",
+    "default_value": "Cognition Cloud",
+    "description": "Brain ALWAYS resides in Cognition Cloud, regardless of deployment model. Customer cannot run Devin's brain locally.",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.deployment.devbox-location",
+    "scope": "deployment",
+    "key": "devbox.location",
+    "type": "enum",
+    "default_value": "Cognition Cloud",
+    "description": "DevBox runs in Cognition Cloud (Enterprise Cloud deployment) OR customer-dedicated single-tenant VPC (Customer Dedicated Deployment).",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.deployment.network-setup-cloud",
+    "scope": "deployment",
+    "key": "network.cloud",
+    "type": "string",
+    "default_value": "Public / IP whitelist",
+    "description": "Enterprise Cloud deployment networking. Customer endpoints must be public OR support IP allowlisting.",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.deployment.network-setup-dedicated",
+    "scope": "deployment",
+    "key": "network.dedicated",
+    "type": "enum",
+    "default_value": "AWS PrivateLink (preferred) | IPSec",
+    "description": "Customer Dedicated Deployment networking. Preferred: AWS PrivateLink. Alternative: IPSec tunnel. Supports MFA VPN and OpenVPN to internal resources.",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.deployment.mfa-vpn-cloud-incompatible",
+    "scope": "deployment",
+    "key": "mfa-vpn.cloud-deployment",
+    "type": "boolean",
+    "default_value": "false",
+    "description": "MFA VPNs are NOT compatible with Enterprise Cloud deployment. Customers requiring MFA VPN access must use Customer Dedicated Deployment.",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.network.devinapps-com",
+    "scope": "network",
+    "key": "*.devinapps.com",
+    "type": "domain-allowlist",
+    "default_value": "HTTPS/443",
+    "description": "End-user workstation outbound connectivity requirement. Domain serves IDE / VSCode frontend and Desktop / browser viewer iframes. Corporate proxies/firewalls must allowlist.",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.network.cross-tenant-port",
+    "scope": "network",
+    "key": "cross-tenant-port",
+    "type": "integer",
+    "default_value": "443",
+    "description": "Port for cross-tenant communication. HTTPS only. WebSocket on top of HTTPS/443.",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.rollout.testing",
+    "scope": "rollout-mode",
+    "key": "testing",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Rollout mode: only opted-in orgs use blueprints. Reversible.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"]
+  },
+  {
+    "id": "devin.enterprise.cfg.rollout.available",
+    "scope": "rollout-mode",
+    "key": "available",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Rollout mode: org admins on classic see migration callout; can self-service migrate.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"]
+  },
+  {
+    "id": "devin.enterprise.cfg.rollout.enabled-by-default",
+    "scope": "rollout-mode",
+    "key": "enabled-by-default",
+    "type": "enum-value",
+    "default_value": null,
+    "description": "Rollout mode: new orgs default to blueprints. PERMANENT — only Cognition admin can undo.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.use-deepwiki",
+    "scope": "org-level-permission",
+    "key": "Use DeepWiki",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Access to DeepWiki functionality.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.use-ask-devin",
+    "scope": "org-level-permission",
+    "key": "Use Ask Devin",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Access to Ask Devin feature.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.use-devin-sessions",
+    "scope": "org-level-permission",
+    "key": "Use Devin Sessions",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Create and use Devin sessions.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-membership",
+    "scope": "org-level-permission",
+    "key": "Manage Membership",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Add/remove users and groups; assign or unassign permission roles.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-settings",
+    "scope": "org-level-permission",
+    "key": "Manage Settings",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Manage settings at the organization level.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-playbooks",
+    "scope": "org-level-permission",
+    "key": "Manage Playbooks",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Create/edit/delete organization playbooks.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-secrets",
+    "scope": "org-level-permission",
+    "key": "Manage Secrets",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Create/edit/delete organization secrets.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-knowledge",
+    "scope": "org-level-permission",
+    "key": "Manage Knowledge",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Create/edit/delete organization knowledge.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-snapshots",
+    "scope": "org-level-permission",
+    "key": "Manage Snapshots",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Create/edit/delete machine snapshots.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.index-repositories",
+    "scope": "org-level-permission",
+    "key": "Index Repositories",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Index repositories for AskDevin and DeepWiki generation.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-sessions",
+    "scope": "org-level-permission",
+    "key": "Manage Sessions (org)",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Edit Devin sessions from other users in the organization.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.view-sessions",
+    "scope": "org-level-permission",
+    "key": "View Sessions (org)",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. View Devin sessions from other users in the organization.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-api-keys",
+    "scope": "org-level-permission",
+    "key": "Manage API Keys",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Create/delete/use API keys.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.manage-mcp-servers",
+    "scope": "org-level-permission",
+    "key": "Manage MCP Servers",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. Create/edit/delete MCP servers.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.view-metrics",
+    "scope": "org-level-permission",
+    "key": "View Metrics (org)",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. View organization metrics.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.org-perm.view-consumption",
+    "scope": "org-level-permission",
+    "key": "View Consumption",
+    "type": "permission",
+    "default_value": null,
+    "description": "Org-level permission. View organization consumption.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-organizations",
+    "scope": "account-level-permission",
+    "key": "Manage Organizations",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. View/create/edit/delete enterprise organizations.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-account-membership",
+    "scope": "account-level-permission",
+    "key": "Manage Account Membership",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. View/create/edit/delete enterprise + organization membership; create/edit/delete custom roles.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-enterprise-settings",
+    "scope": "account-level-permission",
+    "key": "Manage Enterprise Settings",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. View/edit settings at the enterprise + organization levels.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-git-integrations",
+    "scope": "account-level-permission",
+    "key": "Manage Git Integrations",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Create/edit/delete Git integrations (GitHub, GitLab, ADO, Bitbucket); manage repo permissions and indexing.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-chat-integrations",
+    "scope": "account-level-permission",
+    "key": "Manage Chat Integrations",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Create/edit/delete chat integrations (Microsoft Teams, Slack).",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-ticket-integrations",
+    "scope": "account-level-permission",
+    "key": "Manage Ticket Integrations",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Create/edit/delete ticketing integrations (Jira, Linear).",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.use-account-tools",
+    "scope": "account-level-permission",
+    "key": "Use Account Tools",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Use Devin sessions, Ask Devin, and DeepWiki across any org.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-account-resources",
+    "scope": "account-level-permission",
+    "key": "Manage Account Resources",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Create/edit/delete playbooks, secrets, knowledge across any org.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles", "devin-docs-enterprise-environment-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-account-snapshots",
+    "scope": "account-level-permission",
+    "key": "Manage Account Snapshots",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Create/edit/delete machine snapshots in any org; manage account-level snapshots + index repos.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.index-account-repositories",
+    "scope": "account-level-permission",
+    "key": "Index Account Repositories",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Index repositories for AskDevin/DeepWiki generation across the enterprise.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-sessions",
+    "scope": "account-level-permission",
+    "key": "Manage Sessions (account)",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Edit Devin sessions from other users across any org.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.view-sessions",
+    "scope": "account-level-permission",
+    "key": "View Sessions (account)",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. View Devin sessions from other users across any org.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.view-enterprise-infra-details",
+    "scope": "account-level-permission",
+    "key": "View Enterprise Infra Details",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. View enterprise infrastructure details.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-account-api-keys",
+    "scope": "account-level-permission",
+    "key": "Manage Account API Keys",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Create/edit/delete/use API keys in the enterprise and any org.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-account-mcp-servers",
+    "scope": "account-level-permission",
+    "key": "Manage Account MCP Servers",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. Create/edit/delete MCP servers across any org.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.view-account-metrics",
+    "scope": "account-level-permission",
+    "key": "View Account Metrics",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. View enterprise metrics.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.acct-perm.manage-billing",
+    "scope": "account-level-permission",
+    "key": "Manage Billing",
+    "type": "permission",
+    "default_value": null,
+    "description": "Account-level permission. View/edit consumption for the enterprise.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.builtin-role.org-admin",
+    "scope": "builtin-role-org",
+    "key": "Admin (org)",
+    "type": "role-builtin",
+    "default_value": null,
+    "description": "Built-in org-level role. Full administrative access within the organization.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.builtin-role.org-member",
+    "scope": "builtin-role-org",
+    "key": "Member (org)",
+    "type": "role-builtin",
+    "default_value": null,
+    "description": "Built-in org-level role. Standard user access with core functionality.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.builtin-role.org-deepwiki-only",
+    "scope": "builtin-role-org",
+    "key": "DeepWiki Only (org)",
+    "type": "role-builtin",
+    "default_value": null,
+    "description": "Built-in org-level role. Limited access restricted to DeepWiki + AskDevin functionality, including repository indexing permissions.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.builtin-role.account-admin",
+    "scope": "builtin-role-account",
+    "key": "Admin (account)",
+    "type": "role-builtin",
+    "default_value": null,
+    "description": "Built-in account-level role. Full administrative access across the entire enterprise.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.builtin-role.account-member",
+    "scope": "builtin-role-account",
+    "key": "Member (account)",
+    "type": "role-builtin",
+    "default_value": null,
+    "description": "Built-in account-level role. Standard user access across all organizations in the enterprise.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.idp.groups-claim",
+    "scope": "sso-config",
+    "key": "groups",
+    "type": "sso-claim",
+    "default_value": null,
+    "description": "Required SSO assertion claim for IdP-group → role auto-assignment. SSO provider must send the `groups` array in the assertion.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cfg.security.encryption-in-transit-at-rest",
+    "scope": "security",
+    "key": "encryption.in-transit-and-at-rest",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "All data is encrypted in transit AND at rest.",
+    "source_ids": ["devin-docs-enterprise-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.security.mfa-internal-required",
+    "scope": "security",
+    "key": "mfa.internal-required",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "All Cognition employees and contractors required to use MFA on all primary work applications.",
+    "source_ids": ["devin-docs-enterprise-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.security.annual-training",
+    "scope": "security",
+    "key": "security-training-cadence",
+    "type": "string",
+    "default_value": "annual",
+    "description": "All employees and contractors undergo annual security training (password management, social engineering, phishing).",
+    "source_ids": ["devin-docs-enterprise-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.security.vuln-disclosure-email",
+    "scope": "security",
+    "key": "vuln-disclosure-email",
+    "type": "email",
+    "default_value": "security@cognition.ai",
+    "description": "Address for reporting security issues.",
+    "source_ids": ["devin-docs-enterprise-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.deployment.support-email",
+    "scope": "support",
+    "key": "enterprise-sales-email",
+    "type": "email",
+    "default_value": "enterprise@cognition.ai",
+    "description": "Cognition Enterprise Sales contact email.",
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  },
+  {
+    "id": "devin.enterprise.cfg.training.opt-in-default-false",
+    "scope": "data-controls",
+    "key": "default-training-opt-in",
+    "type": "boolean",
+    "default_value": "false",
+    "description": "By default, Cognition does NOT use customer data for model training. Enterprise customers' data is NEVER used for training regardless of toggle.",
+    "source_ids": ["devin-docs-enterprise-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.build.typical-duration",
+    "scope": "build-timing",
+    "key": "typical-duration",
+    "type": "duration-range",
+    "default_value": "5m-15m",
+    "description": "Typical end-to-end build time, including all three blueprint tiers.",
+    "source_ids": ["devin-docs-enterprise-environment-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.build.step-timeout",
+    "scope": "build-timing",
+    "key": "step-timeout",
+    "type": "duration",
+    "default_value": "1h",
+    "description": "Per-step timeout. Same as devbox-tier convention; reaffirmed for enterprise blueprints.",
+    "source_ids": ["devin-docs-enterprise-environment-overview"]
+  },
+  {
+    "id": "devin.enterprise.cfg.rollout.pin-age-limit",
+    "scope": "snapshot-pinning",
+    "key": "pin-age-limit",
+    "type": "duration",
+    "default_value": "7d",
+    "description": "Maximum age of a build that's still pinnable. Same as devbox tier.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"]
+  }
+]

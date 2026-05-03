@@ -1,0 +1,346 @@
+[
+  {
+    "id": "devin.mcp.mcp-protocol",
+    "name": "Model Context Protocol (MCP)",
+    "kind": "protocol",
+    "description": "Open standard (https://modelcontextprotocol.io/) enabling AI applications to securely connect to data sources and tools. 'A USB-C port for AI applications.' Devin uses MCP to mount tool servers into agent sessions — both Anthropic-shipped and customer-built.",
+    "source_ids": ["devin-docs-mcp-marketplace", "devin-docs-devin-mcp", "devin-docs-deepwiki-mcp", "cognitionai-database-toolbox-readme"],
+    "aliases": ["MCP"]
+  },
+  {
+    "id": "devin.mcp.transport-stdio",
+    "name": "STDIO transport",
+    "kind": "transport",
+    "description": "Local MCP transport. Server runs as a local process; stdin/stdout exchange JSON-RPC messages. Required fields: command, args, env vars. Best for local CLI-based servers (npx, uvx, docker). Stdout MUST contain only valid JSON-RPC — any logging/debug output to stdout breaks the protocol.",
+    "source_ids": ["devin-docs-mcp-marketplace", "cognitionai-database-toolbox-readme"],
+    "aliases": ["stdio"]
+  },
+  {
+    "id": "devin.mcp.transport-sse",
+    "name": "SSE transport (Server-Sent Events)",
+    "kind": "transport",
+    "description": "Remote MCP transport over Server-Sent Events. Required fields: server URL, headers. Legacy / being deprecated in favor of Streamable HTTP. Devin still supports it for legacy server compatibility.",
+    "source_ids": ["devin-docs-mcp-marketplace", "devin-docs-devin-mcp", "devin-docs-deepwiki-mcp"],
+    "aliases": ["SSE", "/sse endpoint"]
+  },
+  {
+    "id": "devin.mcp.transport-http",
+    "name": "Streamable HTTP transport",
+    "kind": "transport",
+    "description": "Remote MCP transport over Streamable HTTP. Required fields: server URL, headers. Recommended for new integrations — more reliable across clients (Cloudflare, OpenAI, Claude). Endpoint convention: `<server-base>/mcp`.",
+    "source_ids": ["devin-docs-mcp-marketplace", "devin-docs-devin-mcp", "devin-docs-deepwiki-mcp"],
+    "aliases": ["HTTP", "Streamable HTTP", "/mcp endpoint"]
+  },
+  {
+    "id": "devin.mcp.tools-list",
+    "name": "MCP `tools/list` method",
+    "kind": "feature",
+    "description": "Standard MCP RPC method that returns the server's available tools. Devin's 'Test listing tools' button invokes this against a freshly-spun-up isolated environment. Servers that connect but expose no tools have typically not implemented this method or have failed to register tools (often due to missing env vars).",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.marketplace",
+    "name": "MCP Marketplace",
+    "kind": "feature",
+    "description": "Curated catalog of vetted MCP servers, browsable in Settings > MCP Marketplace. Many MCPs are 1-click enable; others require credentials (API keys, OAuth tokens, headers). 'Add Your Own' surface for custom servers.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.add-your-own",
+    "name": "Add Your Own (custom MCP server)",
+    "kind": "feature",
+    "description": "MCP-Marketplace surface for adding any custom MCP server. Form-driven: server name, optional icon, short description, transport type (STDIO/SSE/HTTP), transport-specific config. JSON schema is shown for clarity but not edited directly.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": ["custom MCP server"]
+  },
+  {
+    "id": "devin.mcp.test-listing-tools",
+    "name": "Test listing tools (button)",
+    "kind": "feature",
+    "description": "MCP-Marketplace UI action that spins up an isolated environment, connects to the configured server, and attempts tool discovery via tools/list. Disabled until the server config is saved. Validation failures categorize as: connectivity, authentication, or timeout.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.devin-mcp-server",
+    "name": "Devin MCP server",
+    "kind": "server",
+    "description": "Cognition-hosted MCP server providing programmatic access to Devin's platform — sessions, playbooks, knowledge, schedules, integrations — plus repository documentation/search. Base URL https://mcp.devin.ai/. Authenticated; requires a Devin API key. Supports public + private repository access (unlike the free DeepWiki MCP).",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": ["mcp.devin.ai"]
+  },
+  {
+    "id": "devin.mcp.deepwiki-mcp-server",
+    "name": "DeepWiki MCP server",
+    "kind": "server",
+    "description": "Free, no-auth Cognition-hosted MCP server providing access to PUBLIC repository documentation/search via DeepWiki. Base URL https://mcp.deepwiki.com/. Three tools: read_wiki_structure, read_wiki_contents, ask_question. The light-weight public counterpart of Devin MCP.",
+    "source_ids": ["devin-docs-deepwiki-mcp"],
+    "aliases": ["mcp.deepwiki.com"]
+  },
+  {
+    "id": "devin.mcp.tool.read-wiki-structure",
+    "name": "Tool: read_wiki_structure",
+    "kind": "tool",
+    "description": "Get a list of documentation topics for a GitHub repository. Available on both DeepWiki MCP (public repos) and Devin MCP (public + private with auth).",
+    "source_ids": ["devin-docs-deepwiki-mcp", "devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.read-wiki-contents",
+    "name": "Tool: read_wiki_contents",
+    "kind": "tool",
+    "description": "View full documentation for a GitHub repository. Available on DeepWiki MCP (public) and Devin MCP (public + private).",
+    "source_ids": ["devin-docs-deepwiki-mcp", "devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.ask-question",
+    "name": "Tool: ask_question",
+    "kind": "tool",
+    "description": "Ask any question about one or more repositories (up to 10 on Devin MCP) and get an AI-powered, context-grounded response. Available on DeepWiki MCP (public) and Devin MCP (public + private).",
+    "source_ids": ["devin-docs-deepwiki-mcp", "devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.list-available-repos",
+    "name": "Tool: list_available_repos",
+    "kind": "tool",
+    "description": "List all repositories available to query with the authenticated Devin account. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-session-create",
+    "name": "Tool: devin_session_create",
+    "kind": "tool",
+    "description": "Create one or more Devin sessions. Each session can have a prompt, title, playbook, tags, and ACU limit. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-session-search",
+    "name": "Tool: devin_session_search",
+    "kind": "tool",
+    "description": "Search and filter Devin sessions by tags, playbook, origin, schedule, user, creation/update time. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-session-interact",
+    "name": "Tool: devin_session_interact",
+    "kind": "tool",
+    "description": "Interact with a Devin session. Sub-actions: get status, send messages, sleep, terminate, archive, read messages and attachments, manage tags. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-session-events",
+    "name": "Tool: devin_session_events",
+    "kind": "tool",
+    "description": "Inspect events within a session — list summaries, fetch full event details, search event contents by text. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-session-gather",
+    "name": "Tool: devin_session_gather",
+    "kind": "tool",
+    "description": "Wait for multiple Devin sessions to reach a settled state (finished, errored, sleeping, or waiting) before returning. Useful after creating parallel sessions instead of polling in a loop. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-playbook-manage",
+    "name": "Tool: devin_playbook_manage",
+    "kind": "tool",
+    "description": "Full CRUD for playbooks. List, get, create, update, delete. Supports automation macros (e.g., `!my_macro`). Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-knowledge-manage",
+    "name": "Tool: devin_knowledge_manage",
+    "kind": "tool",
+    "description": "Full CRUD for knowledge notes — list, get, create, update, delete, browse folder structure. Also manages knowledge SUGGESTIONS — list, view, dismiss pending. Filters: repo, folder, search query. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.devin-schedule-manage",
+    "name": "Tool: devin_schedule_manage",
+    "kind": "tool",
+    "description": "Full CRUD for schedules. Supports cron expressions (recurring), one-time scheduling, notification preferences, agent selection. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.tool.list-integrations",
+    "name": "Tool: list_integrations",
+    "kind": "tool",
+    "description": "List native integrations (GitHub, Jira, Slack) and MCP servers with install status + settings URLs. Filter: installed | not-installed | all. Devin MCP only.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.x-org-id-header",
+    "name": "X-Org-Id header (enterprise auth)",
+    "kind": "feature",
+    "description": "HTTP header that enterprise service-user keys and PATs MUST send to specify which Devin organization to target. The MCP tools operate on org-level resources (sessions/playbooks/knowledge); the org_id is otherwise auto-resolved from org-scoped service-user keys.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.api-key-cog-prefix",
+    "name": "Devin API key (`cog_` prefix)",
+    "kind": "credential",
+    "description": "Auth token for Devin MCP server. Three flavors: org-scoped service user key (auto-resolves org), enterprise service user key (requires X-Org-Id), personal access token (requires X-Org-Id). All three use `cog_` prefix. Legacy `apk_`/`apk_user_` prefixes are NOT supported.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": ["service-user key"]
+  },
+  {
+    "id": "devin.mcp.database-toolbox",
+    "name": "Database Toolbox (CognitionAI)",
+    "kind": "server",
+    "description": "Apache-2.0 production-ready Docker images that connect AI agents to 22+ database systems through MCP. Built on Google's Database Toolbox base. Universal interface across SQL/NoSQL/graph/analytics platforms. Universal image: `us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest`.",
+    "source_ids": ["cognitionai-database-toolbox-readme"],
+    "aliases": ["MCP Database Toolbox"]
+  },
+  {
+    "id": "devin.mcp.database-toolbox-prebuilt",
+    "name": "Database Toolbox `--prebuilt` mode",
+    "kind": "feature",
+    "description": "Database Toolbox CLI flag `--prebuilt <db-id>` for databases with built-in support. 12 prebuilt: AlloyDB, BigQuery, Cloud SQL (MySQL/PostgreSQL/SQL Server), Dataplex, Firestore, Looker, MySQL, PostgreSQL, Spanner, SQL Server. Most common configuration mode.",
+    "source_ids": ["cognitionai-database-toolbox-readme"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.database-toolbox-tools-file",
+    "name": "Database Toolbox `--tools-file` mode",
+    "kind": "feature",
+    "description": "Database Toolbox CLI flag `--tools-file <path.yaml>` for databases requiring custom configuration YAML files. ~10 databases use this mode: Bigtable, Couchbase, Dgraph, MongoDB, Neo4j, Redis, Redshift, Snowflake, SQLite, TiDB, Valkey.",
+    "source_ids": ["cognitionai-database-toolbox-readme"],
+    "aliases": ["--tools-file"]
+  },
+  {
+    "id": "devin.mcp.metabase-mcp-server",
+    "name": "Metabase MCP server (CognitionAI)",
+    "kind": "server",
+    "description": "MIT-licensed Cognition-built MCP server for Metabase analytics platform. 81+ tools spanning Dashboard Management (23), Card/Question Management (21), Database Management (13), Table Management (16), additional tools (9). Tool-loading flags: --essential (default), --all, --write, --read. Auth: API key (preferred) or username/password (fallback).",
+    "source_ids": ["cognitionai-metabase-mcp-readme"],
+    "aliases": ["@cognitionai/metabase-mcp-server"]
+  },
+  {
+    "id": "devin.mcp.metabase-tool-loading-flags",
+    "name": "Metabase MCP tool-loading flags",
+    "kind": "feature",
+    "description": "Metabase MCP server CLI flags controlling which subset of tools to load: --essential (default — minimal set), --all (load all 80+ tools), --write (write/modification tools only), --read (read-only tools only).",
+    "source_ids": ["cognitionai-metabase-mcp-readme"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.read-only-connection",
+    "name": "Read-only connection (production DB pattern)",
+    "kind": "feature",
+    "description": "Recommended pattern for connecting Devin to production databases via MCP: use a read-only connection string OR a database user with restricted permissions. Devin executes queries based on user instructions; scoping access prevents accidental writes.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.oauth-flow",
+    "name": "MCP server OAuth flow",
+    "kind": "feature",
+    "description": "First-time auth path for OAuth-based MCP servers. Devin prompts the user (during their first session OR when they click 'Test listing tools') to visit a URL and complete OAuth in a browser. Devin waits for the callback. ONLY org admins can authenticate OAuth-based MCP servers.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.service-account-recommendation",
+    "name": "OAuth service-account recommendation",
+    "kind": "feature",
+    "description": "Strong recommendation: use a SERVICE ACCOUNT (not a personal account) when authenticating OAuth-based MCP servers. Access is shared across the organization; all members' sessions use the same authenticated connection.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.cataloged-marketplace-mcps",
+    "name": "Cataloged marketplace MCPs (one-click)",
+    "kind": "feature",
+    "description": "Many marketplace MCPs require no configuration — just click 'Enable'. The user is prompted to connect a service account during their first session or via 'Test listing tools'. Includes: AlloyDB, Asana, Atlassian, BigQuery, Cloud SQL (MySQL/PostgreSQL/SQL Server), Cloudflare, Cortex, Dataplex, Fireflies, Firestore, Jam, Linear, Looker, Metabase, MySQL, Neon, Notion, PostgreSQL, Prisma, Sentry, Spanner, SQL Server, Vercel.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": ["1-click MCPs"]
+  },
+  {
+    "id": "devin.mcp.linear-native-tools",
+    "name": "Linear native MCP tools (auto-mounted)",
+    "kind": "feature",
+    "description": "When the Linear integration is connected, Devin already has native Linear tools using the integration's authentication. Linear MCP does NOT need to be configured separately from the marketplace.",
+    "source_ids": ["devin-docs-mcp-marketplace", "devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.snyk-mcp-pattern",
+    "name": "Snyk MCP pattern (custom env + CLI install)",
+    "kind": "feature",
+    "description": "Snyk MCP requires three steps: (1) configure the MCP server with custom env var (not in default docs), (2) install Snyk CLI on Devin's machine, (3) trust folder. Some scans require an `unmanaged: true` flag (e.g., C++) which can be set in knowledge or during a session.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.devin-as-data-analyst",
+    "name": "Devin as data analyst (in Slack via DB MCPs)",
+    "kind": "feature",
+    "description": "Use case: connect Devin to database MCPs (Postgres, BigQuery, etc.) and trigger from Slack with !ask. Devin acts as a data analyst answering ad-hoc questions over the data. Step-by-step guide on the marketplace docs page.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.session-logs-debugging",
+    "name": "Session logs debugging (MCP failures)",
+    "kind": "feature",
+    "description": "When an MCP server fails during a session, Devin logs the error in session output. Look for MCP-related messages — connection errors, tool-call timeouts, schema mismatches. The first stop for debugging custom MCP server issues.",
+    "source_ids": ["devin-docs-mcp-marketplace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.universal-toolbox-image",
+    "name": "Universal Database Toolbox Docker image",
+    "kind": "file",
+    "description": "Single Docker image at `us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest` that powers all 22+ Database Toolbox configurations. SBOM, provenance attestation, multi-arch support. Pulled once; runs configured per database via flags + env vars.",
+    "source_ids": ["cognitionai-database-toolbox-readme"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.metabase-81-tools",
+    "name": "Metabase MCP — 81+ tools coverage",
+    "kind": "feature",
+    "description": "Metabase MCP server's tool surface: 23 dashboard-management, 21 card/question-management, 13 database-management, 16 table-management, 9 additional (collections/search/users/activity/playground-links). Effectively complete Metabase API coverage.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.metabase-auth-api-key",
+    "name": "Metabase MCP — API key auth (preferred)",
+    "kind": "credential",
+    "description": "Preferred Metabase MCP authentication via METABASE_API_KEY env var. Server logs 'Using Metabase API Key' when active. Alternative fallback: username/password (METABASE_USERNAME + METABASE_PASSWORD).",
+    "source_ids": ["cognitionai-metabase-mcp-readme"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.legacy-api-key-not-supported",
+    "name": "Legacy API key prefix not supported",
+    "kind": "feature",
+    "description": "Devin MCP server does NOT accept legacy `apk_` / `apk_user_` prefix API keys. Customers using legacy keys must rotate to a service-user API key (`cog_` prefix) before connecting MCP clients.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.mcp.deepwiki-mcp-no-auth",
+    "name": "DeepWiki MCP — no-auth, public-only",
+    "kind": "feature",
+    "description": "DeepWiki MCP server is a free, no-authentication-required service. Public repositories ONLY. For private-repo access, use the authenticated Devin MCP server (mcp.devin.ai) instead.",
+    "source_ids": ["devin-docs-deepwiki-mcp"],
+    "aliases": []
+  }
+]

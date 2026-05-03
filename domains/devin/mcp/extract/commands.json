@@ -1,0 +1,185 @@
+[
+  {
+    "id": "devin.mcp.cmd.docker-pull-toolbox",
+    "command": "docker pull us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest",
+    "purpose": "Pull the universal Database Toolbox Docker image. One image powers all 22+ database integrations; pulled once before configuring per-database.",
+    "flags": [],
+    "examples": [
+      {"invocation": "docker pull us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest", "expected_output": "Image pulled to local Docker", "scenario": "Initial setup before any DB configuration"}
+    ],
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.docker-run-toolbox-prebuilt-postgres",
+    "command": "docker run --rm -i ... us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest --prebuilt postgres --stdio",
+    "purpose": "Run the Database Toolbox Docker image as an MCP server in STDIO mode against PostgreSQL using the prebuilt config. Requires POSTGRES_HOST, POSTGRES_DATABASE, POSTGRES_USER, POSTGRES_PASSWORD env vars.",
+    "flags": [
+      {"name": "--rm", "value": null, "doc": "Auto-remove container on exit."},
+      {"name": "-i", "value": null, "doc": "Interactive (stdin attached) — required for STDIO MCP."},
+      {"name": "--prebuilt", "value": "postgres", "doc": "Use the prebuilt PostgreSQL configuration."},
+      {"name": "--stdio", "value": null, "doc": "Required MCP transport flag."},
+      {"name": "-e", "value": "<VAR>", "doc": "Pass an env var into the container."}
+    ],
+    "examples": [
+      {"invocation": "POSTGRES_HOST=localhost POSTGRES_DATABASE=mydb POSTGRES_USER=postgres POSTGRES_PASSWORD=secret docker run --rm -i -e POSTGRES_HOST -e POSTGRES_DATABASE -e POSTGRES_USER -e POSTGRES_PASSWORD us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest --prebuilt postgres --stdio", "expected_output": "MCP server connected; tools/list responds with the postgres tool set", "scenario": "Quick-start: connect Devin (or any MCP client) to a local PostgreSQL"}
+    ],
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.docker-run-toolbox-tools-file",
+    "command": "docker run --rm -i ... -v <yaml>:/config/<db>.yaml ... toolbox:latest --tools-file /config/<db>.yaml --stdio",
+    "purpose": "Run the Database Toolbox in STDIO mode against a database that requires a custom tools-file YAML (Bigtable, Couchbase, Dgraph, MongoDB, Neo4j, Redis, Redshift, Snowflake, SQLite, TiDB, Valkey).",
+    "flags": [
+      {"name": "--tools-file", "value": "<path>", "doc": "Path inside the container to a tools-config YAML."},
+      {"name": "--stdio", "value": null, "doc": "Required MCP transport flag."},
+      {"name": "-v", "value": "<host:cont>", "doc": "Bind-mount the YAML into the container."}
+    ],
+    "examples": [
+      {"invocation": "docker run --rm -i -e MONGODB_HOST -e MONGODB_DATABASE -v $MONGODB_TOOLS_FILE:/config/mongodb.yaml us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest --tools-file /config/mongodb.yaml --stdio", "expected_output": "MCP server connected against MongoDB; tool surface defined by the YAML", "scenario": "MongoDB integration via Database Toolbox"}
+    ],
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.npx-metabase-default",
+    "command": "npx @cognitionai/metabase-mcp-server",
+    "purpose": "Run the Metabase MCP server in default (essential-tools) mode. Loads the smaller, curated tool set.",
+    "flags": [],
+    "examples": [
+      {"invocation": "METABASE_URL=https://your-metabase-instance.com METABASE_API_KEY=your_key npx @cognitionai/metabase-mcp-server", "expected_output": "MCP server connected with essential Metabase tools", "scenario": "Default Metabase MCP setup"}
+    ],
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.npx-metabase-all",
+    "command": "npx @cognitionai/metabase-mcp-server --all",
+    "purpose": "Run the Metabase MCP server with ALL 80+ tools loaded. Use when you need the full Metabase API surface.",
+    "flags": [
+      {"name": "--all", "value": null, "doc": "Load every available tool."}
+    ],
+    "examples": [
+      {"invocation": "npx @cognitionai/metabase-mcp-server --all", "expected_output": "MCP server with all dashboard/card/database/table/auxiliary tools available", "scenario": "Full-coverage Metabase MCP for power-user workflows"}
+    ],
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.npx-metabase-read",
+    "command": "npx @cognitionai/metabase-mcp-server --read",
+    "purpose": "Run the Metabase MCP server with read-only tools only. Recommended for production-data scenarios where Devin should not modify Metabase state.",
+    "flags": [
+      {"name": "--read", "value": null, "doc": "Load only read-only tools."}
+    ],
+    "examples": [
+      {"invocation": "npx @cognitionai/metabase-mcp-server --read", "expected_output": "MCP server exposes only list/get/execute tools — no create/update/delete", "scenario": "Production analytics access without write risk"}
+    ],
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.npx-metabase-write",
+    "command": "npx @cognitionai/metabase-mcp-server --write",
+    "purpose": "Run the Metabase MCP server with write/modification tools only. Used in dedicated write-path workflows.",
+    "flags": [
+      {"name": "--write", "value": null, "doc": "Load only write/modification tools."}
+    ],
+    "examples": [
+      {"invocation": "npx @cognitionai/metabase-mcp-server --write", "expected_output": "MCP server exposes create/update/delete tools", "scenario": "Dedicated dashboard-creation workflow"}
+    ],
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.npm-install-metabase",
+    "command": "npm install -g @cognitionai/metabase-mcp-server && metabase-mcp-server",
+    "purpose": "Globally install the Metabase MCP server and run via the binary directly. Alternative to npx.",
+    "flags": [],
+    "examples": [
+      {"invocation": "npm install -g @cognitionai/metabase-mcp-server; metabase-mcp-server", "expected_output": "Server runs from globally installed location", "scenario": "Pinned-version install for shared environments"}
+    ],
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.docker-run-metabase",
+    "command": "docker run -it --rm -e METABASE_URL=... -e METABASE_API_KEY=... ghcr.io/CognitionAI/metabase-mcp-server",
+    "purpose": "Run the Metabase MCP server from the prebuilt Docker image hosted on ghcr.io.",
+    "flags": [
+      {"name": "-it", "value": null, "doc": "Interactive + TTY."},
+      {"name": "--rm", "value": null, "doc": "Auto-remove on exit."},
+      {"name": "-e", "value": "<VAR>=<val>", "doc": "Set env var inside the container."}
+    ],
+    "examples": [
+      {"invocation": "docker run -it --rm -e METABASE_URL=https://your-metabase-instance.com -e METABASE_API_KEY=your_key ghcr.io/CognitionAI/metabase-mcp-server", "expected_output": "Containerized Metabase MCP server running", "scenario": "Containerized deployment"}
+    ],
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cmd.curl-slack-auth-test",
+    "command": "curl -H \"Authorization: Bearer xoxb-<token>\" https://slack.com/api/auth.test",
+    "purpose": "Probe Slack to retrieve the team_id (required for the Slack MCP marketplace integration). Returns the workspace-team identifier under which the bot token was issued.",
+    "flags": [
+      {"name": "-H", "value": "<header>", "doc": "Set HTTP header — used to pass the bot Authorization."}
+    ],
+    "examples": [
+      {"invocation": "curl -H \"Authorization: Bearer xoxb-...\" https://slack.com/api/auth.test", "expected_output": "JSON with `team_id`, `user_id`, `team`, `user`, `bot_id`", "scenario": "Configuring the Slack MCP marketplace integration"}
+    ],
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cmd.curl-slack-conversations-list",
+    "command": "curl -H \"Authorization: Bearer xoxb-<token>\" https://slack.com/api/conversations.list",
+    "purpose": "List Slack channel IDs visible to the bot. Used to map channel names to IDs for the Slack MCP marketplace integration. Requires bot scopes channels:read, groups:read, mpim:read, im:read.",
+    "flags": [
+      {"name": "-H", "value": "<header>", "doc": "Set HTTP header for Authorization."}
+    ],
+    "examples": [
+      {"invocation": "curl -H \"Authorization: Bearer xoxb-...\" https://slack.com/api/conversations.list", "expected_output": "JSON with channel IDs + names + types", "scenario": "Configuring the Slack MCP integration's channel filter"}
+    ],
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cmd.ui-mcp-marketplace-enable",
+    "command": "[UI] Settings > MCP Marketplace > <server> > Enable",
+    "purpose": "Enable a marketplace MCP server for the org. For 1-click servers, just click Enable. For configured servers, provide credentials/headers in the form first.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > MCP Marketplace > Datadog > Enable; provide DD-API-KEY + DD-APPLICATION-KEY headers", "expected_output": "Datadog MCP available in next sessions", "scenario": "Connecting Datadog to Devin via MCP"}
+    ],
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cmd.ui-add-your-own-mcp",
+    "command": "[UI] Settings > MCP Marketplace > Add Your Own",
+    "purpose": "Configure a custom MCP server. Form-driven: name, optional icon, description, transport (STDIO/SSE/HTTP), transport-specific config. Save, then click 'Test listing tools' to verify connectivity.",
+    "flags": [
+      {"name": "Server Name", "value": "<text>", "doc": "Descriptive name."},
+      {"name": "Transport", "value": "STDIO|SSE|HTTP", "doc": "Transport type."},
+      {"name": "Icon", "value": "<emoji|url>", "doc": "Optional icon."},
+      {"name": "Short Description", "value": "<text>", "doc": "Brief summary."}
+    ],
+    "examples": [
+      {"invocation": "Settings > MCP Marketplace > Add Your Own > Name='Internal API Gateway', Transport=HTTP, Server URL=https://gw.acme.com/mcp, Auth=Bearer xxx", "expected_output": "Server saved; click 'Test listing tools' to validate", "scenario": "Connecting an internal API as an MCP server"}
+    ],
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cmd.ui-test-listing-tools",
+    "command": "[UI] Settings > MCP Marketplace > <server> > Test listing tools",
+    "purpose": "Spin up an isolated test environment, connect to the MCP server, and discover tools via tools/list. Disabled until the config is saved. Failures categorize as connectivity / authentication / timeout.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Click 'Test listing tools' on a saved custom MCP server", "expected_output": "Either: tool list rendered, or error message indicating which class of failure", "scenario": "Validating a custom MCP server during setup"}
+    ],
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cmd.npx-uvx-stdio-server",
+    "command": "STDIO server: command=npx|uvx|docker, args=[...], env={...}",
+    "purpose": "Generic shape for a custom STDIO MCP server. The 'command' is a launcher (npx/uvx/docker); 'args' is the command-line arg list; 'env' carries the secrets/config the server reads.",
+    "flags": [
+      {"name": "Command", "value": "npx|uvx|docker|<exe>", "doc": "Executable to launch."},
+      {"name": "Arguments", "value": "<args>", "doc": "Command-line arguments to the executable."},
+      {"name": "Environment Variables", "value": "<key=value pairs>", "doc": "Env vars set in the server's process."}
+    ],
+    "examples": [
+      {"invocation": "command='uvx', args=['my-mcp-tool', '--mode=read'], env={'TOKEN': '$MCP_API_KEY'}", "expected_output": "STDIO server launched with uvx", "scenario": "Python-based custom MCP server"}
+    ],
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  }
+]

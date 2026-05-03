@@ -1,0 +1,623 @@
+[
+  {
+    "id": "devin.mcp.cfg.devin-mcp.base-url",
+    "scope": "devin-mcp-server",
+    "key": "base-url",
+    "type": "url",
+    "default_value": "https://mcp.devin.ai/",
+    "description": "Base server URL for the authenticated Devin MCP server. Streamable HTTP endpoint at /mcp; legacy SSE /sse deprecated.",
+    "source_ids": ["devin-docs-devin-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.devin-mcp.endpoint-mcp",
+    "scope": "devin-mcp-server",
+    "key": "endpoint",
+    "type": "path",
+    "default_value": "/mcp",
+    "description": "Recommended Streamable HTTP endpoint for Devin MCP server. Full URL: https://mcp.devin.ai/mcp.",
+    "source_ids": ["devin-docs-devin-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.devin-mcp.endpoint-sse-deprecated",
+    "scope": "devin-mcp-server",
+    "key": "endpoint-sse",
+    "type": "path",
+    "default_value": "/sse",
+    "description": "Legacy SSE endpoint — DEPRECATED. Migrate clients to /mcp.",
+    "source_ids": ["devin-docs-devin-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.deepwiki-mcp.base-url",
+    "scope": "deepwiki-mcp-server",
+    "key": "base-url",
+    "type": "url",
+    "default_value": "https://mcp.deepwiki.com/",
+    "description": "Base server URL for the free no-auth DeepWiki MCP server. Public repos only.",
+    "source_ids": ["devin-docs-deepwiki-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.deepwiki-mcp.endpoint-mcp",
+    "scope": "deepwiki-mcp-server",
+    "key": "endpoint",
+    "type": "path",
+    "default_value": "/mcp",
+    "description": "Recommended Streamable HTTP endpoint for DeepWiki MCP server.",
+    "source_ids": ["devin-docs-deepwiki-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.devin-mcp.api-key-prefix",
+    "scope": "devin-mcp-auth",
+    "key": "api-key-prefix",
+    "type": "string",
+    "default_value": "cog_",
+    "description": "Prefix Devin MCP auth tokens use. Three flavors share this prefix: org-scoped service-user keys (auto-resolves org), enterprise service-user keys (need X-Org-Id), personal access tokens (need X-Org-Id).",
+    "source_ids": ["devin-docs-devin-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.devin-mcp.legacy-prefix-unsupported",
+    "scope": "devin-mcp-auth",
+    "key": "legacy-prefix-unsupported",
+    "type": "string",
+    "default_value": "apk_, apk_user_",
+    "description": "Legacy API key prefixes that are NOT accepted by Devin MCP server. Customers using these must rotate to a `cog_`-prefixed service-user key first.",
+    "source_ids": ["devin-docs-devin-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.devin-mcp.x-org-id-header",
+    "scope": "devin-mcp-auth",
+    "key": "X-Org-Id",
+    "type": "http-header",
+    "default_value": null,
+    "description": "Required header for enterprise service-user keys + PATs. Specifies which Devin organization to target. Org-scoped service-user keys auto-resolve the org and don't need this header.",
+    "source_ids": ["devin-docs-devin-mcp"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.universal-image",
+    "scope": "database-toolbox",
+    "key": "image",
+    "type": "docker-image",
+    "default_value": "us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest",
+    "description": "Universal Database Toolbox Docker image. One image for all 22+ database integrations.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.flag.prebuilt",
+    "scope": "database-toolbox-flag",
+    "key": "--prebuilt",
+    "type": "cli-flag",
+    "default_value": null,
+    "description": "Database Toolbox CLI flag selecting a built-in DB configuration. Valid values: alloydb-postgres, bigquery, cloud-sql-mysql, cloud-sql-postgres, cloud-sql-mssql, dataplex, firestore, looker, mysql, postgres, spanner, mssql.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.flag.tools-file",
+    "scope": "database-toolbox-flag",
+    "key": "--tools-file",
+    "type": "cli-flag",
+    "default_value": null,
+    "description": "Database Toolbox CLI flag pointing to a custom tools-config YAML. Used by Bigtable, Couchbase, Dgraph, MongoDB, Neo4j, Redis, Redshift, Snowflake, SQLite, TiDB, Valkey.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.flag.stdio",
+    "scope": "database-toolbox-flag",
+    "key": "--stdio",
+    "type": "cli-flag",
+    "default_value": null,
+    "description": "Required Database Toolbox CLI flag for MCP STDIO transport.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.alloydb.env",
+    "scope": "database-toolbox-env",
+    "key": "ALLOYDB_POSTGRES_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "AlloyDB env-var family: ALLOYDB_POSTGRES_PROJECT, _REGION, _CLUSTER, _INSTANCE, _DATABASE, _USER, _PASSWORD. Plus GOOGLE_APPLICATION_CREDENTIALS pointing at a service-account JSON.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.bigquery.env",
+    "scope": "database-toolbox-env",
+    "key": "BIGQUERY_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "BigQuery env-var family: BIGQUERY_PROJECT (required), BIGQUERY_DATASET (required), BIGQUERY_LOCATION (optional, default 'US'), GOOGLE_APPLICATION_CREDENTIALS_PATH.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.bigtable.env",
+    "scope": "database-toolbox-env",
+    "key": "BIGTABLE_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Bigtable env-var family (custom YAML mode): BIGTABLE_PROJECT, _INSTANCE, _TABLE, BIGTABLE_TOOLS_FILE, GOOGLE_APPLICATION_CREDENTIALS_PATH.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.cloud-sql-mysql.env",
+    "scope": "database-toolbox-env",
+    "key": "CLOUD_SQL_MYSQL_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Cloud SQL for MySQL env-var family: CLOUD_SQL_MYSQL_PROJECT, _REGION, _INSTANCE, _DATABASE, _USER, _IP_ADDRESS, _PASSWORD; GOOGLE_APPLICATION_CREDENTIALS.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.cloud-sql-postgres.env",
+    "scope": "database-toolbox-env",
+    "key": "CLOUD_SQL_POSTGRES_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Cloud SQL for PostgreSQL env-var family: CLOUD_SQL_POSTGRES_PROJECT, _REGION, _INSTANCE, _DATABASE, _USER, _IP_ADDRESS, _PASSWORD; GOOGLE_APPLICATION_CREDENTIALS.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.cloud-sql-mssql.env",
+    "scope": "database-toolbox-env",
+    "key": "CLOUD_SQL_MSSQL_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Cloud SQL for SQL Server env-var family: CLOUD_SQL_MSSQL_PROJECT, _REGION, _INSTANCE, _DATABASE, _USER, _IP_ADDRESS, _PASSWORD; GOOGLE_APPLICATION_CREDENTIALS.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.couchbase.env",
+    "scope": "database-toolbox-env",
+    "key": "COUCHBASE_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Couchbase env-var family (custom YAML mode): COUCHBASE_HOST, _PORT (default 8091), _BUCKET, _USERNAME, _PASSWORD, COUCHBASE_TOOLS_FILE.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.dataplex.env",
+    "scope": "database-toolbox-env",
+    "key": "DATAPLEX_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Dataplex env-var family: DATAPLEX_PROJECT, DATAPLEX_LOCATION, GOOGLE_APPLICATION_CREDENTIALS pointing at service-account JSON. Special: supports inline DATAPLEX_CREDENTIALS_JSON via mktemp + bind-mount pattern.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.postgres.env.host",
+    "scope": "database-toolbox-env",
+    "key": "POSTGRES_HOST",
+    "type": "env-var",
+    "default_value": null,
+    "description": "PostgreSQL host. Required for prebuilt postgres mode.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.postgres.env.database",
+    "scope": "database-toolbox-env",
+    "key": "POSTGRES_DATABASE",
+    "type": "env-var",
+    "default_value": null,
+    "description": "PostgreSQL database name. Required.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.postgres.env.user",
+    "scope": "database-toolbox-env",
+    "key": "POSTGRES_USER",
+    "type": "env-var",
+    "default_value": null,
+    "description": "PostgreSQL username. Required.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.postgres.env.password",
+    "scope": "database-toolbox-env",
+    "key": "POSTGRES_PASSWORD",
+    "type": "env-var",
+    "default_value": null,
+    "description": "PostgreSQL password. Required. Pass via Devin Secrets, not hardcoded in args.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.spanner.env",
+    "scope": "database-toolbox-env",
+    "key": "SPANNER_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Spanner env-var family: SPANNER_PROJECT, SPANNER_INSTANCE, SPANNER_DATABASE; GOOGLE_APPLICATION_CREDENTIALS.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.firestore.env",
+    "scope": "database-toolbox-env",
+    "key": "FIRESTORE_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Firestore env-var family: FIRESTORE_PROJECT (required), FIRESTORE_DATABASE (optional, default '(default)'), GOOGLE_APPLICATION_CREDENTIALS.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.toolbox.looker.env",
+    "scope": "database-toolbox-env",
+    "key": "LOOKER_*",
+    "type": "env-var-set",
+    "default_value": null,
+    "description": "Looker env-var family: LOOKER_BASE_URL, LOOKER_CLIENT_ID, LOOKER_CLIENT_SECRET.",
+    "source_ids": ["cognitionai-database-toolbox-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.env.url",
+    "scope": "metabase-mcp-env",
+    "key": "METABASE_URL",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Required. URL to the Metabase instance, e.g., https://metabase.acme.com.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.env.api-key",
+    "scope": "metabase-mcp-env",
+    "key": "METABASE_API_KEY",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Preferred Metabase auth. API key. When set, the server logs 'Using Metabase API Key'.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.env.username",
+    "scope": "metabase-mcp-env",
+    "key": "METABASE_USERNAME",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Fallback Metabase auth (with METABASE_PASSWORD). Used when METABASE_API_KEY is not set.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.env.password",
+    "scope": "metabase-mcp-env",
+    "key": "METABASE_PASSWORD",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Fallback Metabase auth (with METABASE_USERNAME).",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.flag.essential",
+    "scope": "metabase-mcp-flag",
+    "key": "--essential",
+    "type": "cli-flag",
+    "default_value": "default",
+    "description": "Default Metabase MCP tool-loading mode. Loads only essential tools (smaller curated set).",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.flag.all",
+    "scope": "metabase-mcp-flag",
+    "key": "--all",
+    "type": "cli-flag",
+    "default_value": null,
+    "description": "Metabase MCP tool-loading flag. Load all 80+ available tools.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.flag.read",
+    "scope": "metabase-mcp-flag",
+    "key": "--read",
+    "type": "cli-flag",
+    "default_value": null,
+    "description": "Metabase MCP tool-loading flag. Load only read-only tools. Recommended for production-data scenarios.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.flag.write",
+    "scope": "metabase-mcp-flag",
+    "key": "--write",
+    "type": "cli-flag",
+    "default_value": null,
+    "description": "Metabase MCP tool-loading flag. Load only write/modification tools.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.metabase.node-version",
+    "scope": "metabase-mcp",
+    "key": "node-version-recommended",
+    "type": "version",
+    "default_value": ">=20.19.0",
+    "description": "Recommended Node.js version for Metabase MCP server. npm >= 8.0.0 also recommended.",
+    "source_ids": ["cognitionai-metabase-mcp-readme"]
+  },
+  {
+    "id": "devin.mcp.cfg.datadog.headers",
+    "scope": "marketplace-mcp-headers",
+    "key": "Datadog: DD-API-KEY + DD-APPLICATION-KEY",
+    "type": "http-headers",
+    "default_value": null,
+    "description": "Datadog MCP server requires two HTTP headers: DD-API-KEY (Organization Settings > API Keys) and DD-APPLICATION-KEY (Organization Settings > Application Keys).",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.slack-marketplace.bot-token",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Slack: bot token (xoxb-)",
+    "type": "credential",
+    "default_value": null,
+    "description": "Slack MCP requires a Bot User OAuth Token (starts 'xoxb-'). Found at api.slack.com/apps > <your app> > OAuth & Permissions. Requires app-level tokens + at least 1 scope + workspace install.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.slack-marketplace.team-id",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Slack: team ID",
+    "type": "credential",
+    "default_value": null,
+    "description": "Slack workspace team ID. Retrieve via `curl -H \"Authorization: Bearer xoxb-...\" https://slack.com/api/auth.test`.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.slack-marketplace.channel-ids",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Slack: channel IDs",
+    "type": "credential",
+    "default_value": null,
+    "description": "Slack channel IDs. Retrieve via conversations.list. Requires bot scopes channels:read, groups:read, mpim:read, im:read.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.supabase.pat",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Supabase: PAT",
+    "type": "credential",
+    "default_value": null,
+    "description": "Supabase MCP requires a personal access token from supabase.com/dashboard/account/tokens.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.figma.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Figma: API key",
+    "type": "credential",
+    "default_value": null,
+    "description": "Figma MCP requires an API key from Profile > Settings > Security > Personal access tokens. Recommended scopes: read on File content + Dev resources.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.stripe.bearer",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Stripe: Authorization Bearer <api-key>",
+    "type": "http-header",
+    "default_value": null,
+    "description": "Stripe MCP requires Authorization header in the format `Bearer <STRIPE_API_KEY>`.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.zapier.bearer",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Zapier: Authorization Bearer <token>",
+    "type": "http-header",
+    "default_value": null,
+    "description": "Zapier MCP requires Authorization Bearer token. Extract from the server URL at https://mcp.zapier.com/mcp/servers > Connect (the **** segment of the server URL).",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.airtable.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Airtable: API key",
+    "type": "credential",
+    "default_value": null,
+    "description": "Airtable MCP requires an API key from airtable.com/create/tokens.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.dockerhub.creds",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Docker Hub: username + PAT",
+    "type": "credential",
+    "default_value": null,
+    "description": "Docker Hub MCP requires a username (My Hub) and Personal Access Token (Account settings > Personal access tokens).",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.sonarqube.creds",
+    "scope": "marketplace-mcp-credentials",
+    "key": "SonarQube: token + org + URL",
+    "type": "credential",
+    "default_value": null,
+    "description": "SonarQube MCP requires three: API token (My Account > Security), org name (your username), URL (self-hosted: http://localhost:9000 or https://sonarqube.<co>; SonarCloud: https://sonarcloud.io).",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.netlify.pat",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Netlify: PAT",
+    "type": "credential",
+    "default_value": null,
+    "description": "Netlify MCP requires a Personal Access Token from app.netlify.com/user/applications#personal-access-tokens. Copy on creation — won't be shown again.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.pulumi.access-token",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Pulumi: access token",
+    "type": "credential",
+    "default_value": null,
+    "description": "Pulumi MCP requires an access token from the Access tokens section in the Pulumi dashboard sidebar.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.heroku.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Heroku: API key",
+    "type": "credential",
+    "default_value": null,
+    "description": "Heroku MCP requires an API key from https://dashboard.heroku.com/account.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.circleci.token",
+    "scope": "marketplace-mcp-credentials",
+    "key": "CircleCI: CIRCLECI_TOKEN + CIRCLECI_BASE_URL",
+    "type": "credential",
+    "default_value": null,
+    "description": "CircleCI MCP requires CIRCLECI_TOKEN env var (created at app.circleci.com/settings/user/tokens; copy on creation, won't show again). Optional CIRCLECI_BASE_URL (default 'https://circleci.com'; on-prem customers must set).",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.cortex.token",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Cortex: PAT",
+    "type": "credential",
+    "default_value": null,
+    "description": "Cortex MCP requires a personal access token from Settings > My access tokens. Default API URL: https://api.getcortexapp.com.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.square.bearer",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Square: Authorization Bearer <token>",
+    "type": "http-header",
+    "default_value": null,
+    "description": "Square MCP requires an Authorization Bearer header with a Square access token.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.hubspot.token",
+    "scope": "marketplace-mcp-credentials",
+    "key": "HubSpot: private app access token",
+    "type": "env-var",
+    "default_value": null,
+    "description": "HubSpot MCP requires an access token. Create a private app: Settings > Integrations > Private Apps > Create private app > set scopes > copy token from the Auth tab.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.redis.creds",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Redis: host + port + username + password",
+    "type": "credential-set",
+    "default_value": null,
+    "description": "Redis MCP requires Redis host, port, username, password.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.google-maps.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Google Maps: API key + per-API enables",
+    "type": "credential",
+    "default_value": null,
+    "description": "Google Maps MCP requires an API key (console.cloud.google.com/apis/credentials) AND each individual Google Maps API enabled in the project.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.firecrawl.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "FIRECRAWL_API_KEY",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Firecrawl MCP requires API key from firecrawl.dev/app/api-keys.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.elasticsearch.url",
+    "scope": "marketplace-mcp-credentials",
+    "key": "ES_URL",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Elasticsearch URL/endpoint, found on the /overview page in Elasticsearch.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.elasticsearch.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "ES_API_KEY",
+    "type": "env-var",
+    "default_value": null,
+    "description": "Elasticsearch API key, created on the /indices/index_details/<name>/data page.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.elasticsearch.skip-ssl-verify",
+    "scope": "marketplace-mcp-credentials",
+    "key": "ES_SSL_SKIP_VERIFY",
+    "type": "env-var-bool",
+    "default_value": "false",
+    "description": "Elasticsearch optional flag. When `true`, skips SSL/TLS certificate verification when connecting.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.postgres-marketplace.connection-string",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Postgres MCP: connection string",
+    "type": "credential",
+    "default_value": null,
+    "description": "Marketplace Postgres MCP requires only the Postgres connection string. Use a read-only connection or restricted-permission user for production data.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.grafana.creds",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Grafana: URL + service-account token",
+    "type": "credential-set",
+    "default_value": null,
+    "description": "Grafana MCP requires Grafana URL and a service-account token. Create at Administration > Users and access > Service accounts > Add service account > Add service account token.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.pinecone.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Pinecone: API key",
+    "type": "credential",
+    "default_value": null,
+    "description": "Pinecone MCP requires an API key. NOTE: only Pinecone indexes with INTEGRATED EMBEDDING are supported (as of 7/16/25). External-embedding indexes not yet supported.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.snyk.unmanaged-flag",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Snyk: unmanaged: true (per-language)",
+    "type": "config-flag",
+    "default_value": null,
+    "description": "Snyk MCP requires `unmanaged: true` flag for some frameworks (e.g., C++) to run scans correctly. Set in knowledge or during a session.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.replicate.api-token",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Replicate: API token",
+    "type": "credential",
+    "default_value": null,
+    "description": "Replicate MCP requires an API token from replicate.com/account/api-tokens.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.parallel.api-key",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Parallel: API key",
+    "type": "credential",
+    "default_value": null,
+    "description": "Parallel MCP requires an API key from platform.parallel.ai.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.plaid.bearer",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Plaid: OAuth Bearer access token",
+    "type": "credential",
+    "default_value": null,
+    "description": "Plaid MCP requires an OAuth Bearer access token. Generate from dashboard.plaid.com/developers/keys.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.playwright.no-config",
+    "scope": "marketplace-mcp-credentials",
+    "key": "Playwright: no env vars",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "Playwright MCP requires no environment variables. 1-click enable.",
+    "source_ids": ["devin-docs-mcp-marketplace"]
+  },
+  {
+    "id": "devin.mcp.cfg.linear-mcp.skip",
+    "scope": "marketplace-mcp",
+    "key": "Linear: skip MCP if integration connected",
+    "type": "boolean",
+    "default_value": "true",
+    "description": "If the Linear integration is connected, Linear MCP does NOT need to be configured separately. Devin already has native Linear tools using the integration's auth.",
+    "source_ids": ["devin-docs-mcp-marketplace", "devin-docs-integrations-linear"]
+  }
+]

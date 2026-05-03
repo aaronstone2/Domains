@@ -1,0 +1,95 @@
+[
+  {
+    "id": "devin.knowledge-playbooks.cmd.ui-add-knowledge",
+    "command": "[UI] Settings > Devin's Settings > Knowledge > Add",
+    "purpose": "Add a knowledge entry (org-scoped, optionally enterprise-scoped) used by Devin across sessions in the matching repo.",
+    "flags": [
+      {"name": "name", "value": "<text>", "doc": "Knowledge note name."},
+      {"name": "trigger", "value": "<text>", "doc": "When this knowledge applies."},
+      {"name": "body", "value": "<markdown>", "doc": "Knowledge body."}
+    ],
+    "examples": [
+      {"invocation": "Settings > Devin's Settings > Knowledge > Add > 'Coding standards' / 'When writing code in any repo' / 'Use TypeScript strict mode'", "expected_output": "Knowledge entry stored", "scenario": "Encode a team convention"}
+    ],
+    "source_ids": ["devin-docs-product-knowledge", "devin-docs-onboard-knowledge-onboarding"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cmd.api-create-knowledge-note",
+    "command": "POST /v3/organizations/{org_id}/knowledge/notes (cross-ref devin/api leaf)",
+    "purpose": "Programmatic equivalent of the UI 'Add knowledge' action. See devin/api leaf for full endpoint coverage.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl -X POST .../knowledge/notes -d '{\"name\":\"X\",\"trigger\":\"Y\",\"body\":\"Z\"}'", "expected_output": "{\"note_id\":\"...\"}", "scenario": "Codify standards via CI/CD"}
+    ],
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cmd.ui-create-playbook",
+    "command": "[UI] Settings > Playbooks > Create playbook",
+    "purpose": "Create a reusable instruction set, optionally with a `!`-prefixed macro for label-based triggering.",
+    "flags": [
+      {"name": "name", "value": "<text>", "doc": "Playbook name."},
+      {"name": "instructions", "value": "<text>", "doc": "Playbook body."},
+      {"name": "macro", "value": "<!name>", "doc": "Optional macro identifier."}
+    ],
+    "examples": [
+      {"invocation": "Settings > Playbooks > Create > name='PR Review', macro='!review', instructions='Review the PR for bugs, security, style'", "expected_output": "Playbook saved + macro `!review` available as label/keyword", "scenario": "Codify PR-review workflow"}
+    ],
+    "source_ids": ["devin-docs-product-playbooks"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cmd.ui-trigger-playbook-via-label",
+    "command": "[Jira/Linear] Add label `!plan` (or other macro) to a ticket",
+    "purpose": "Trigger Devin with a specific playbook by adding a macro-named label to a ticket.",
+    "flags": [
+      {"name": "label", "value": "<!macro>", "doc": "Playbook macro label."}
+    ],
+    "examples": [
+      {"invocation": "On JIRA-1234, add label `!plan`", "expected_output": "Devin starts a session using the !plan playbook", "scenario": "Plan-only run on a feature ticket"}
+    ],
+    "source_ids": ["devin-docs-integrations-jira", "devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cmd.ui-add-secret",
+    "command": "[UI] Settings > Secrets > Add secret",
+    "purpose": "Add a secret. Referenced as $NAME in blueprints/sessions/playbooks. Org-scoped; enterprise tier also available via Settings > Devin's base environment > Secrets.",
+    "flags": [
+      {"name": "name", "value": "<NAME>", "doc": "Variable name."},
+      {"name": "value", "value": "<value>", "doc": "Secret value."}
+    ],
+    "examples": [
+      {"invocation": "Settings > Secrets > Add > 'INTERNAL_NPM_TOKEN' / '...'", "expected_output": "Secret stored, referenced as $INTERNAL_NPM_TOKEN", "scenario": "Provision internal-registry credential"}
+    ],
+    "source_ids": ["devin-docs-product-secrets", "devin-docs-enterprise-environment-best-practices"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cmd.ui-rotate-secret",
+    "command": "[UI] Settings > Secrets > Edit > update value",
+    "purpose": "Rotate a secret in place. New value takes effect on next build for blueprint-referenced secrets.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Edit INTERNAL_NPM_TOKEN > paste new value > save", "expected_output": "Next build picks up new value", "scenario": "Periodic credential rotation"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cmd.api-playbook-manage",
+    "command": "MCP tool: devin_playbook_manage (cross-ref devin/mcp leaf)",
+    "purpose": "Programmatic full CRUD on playbooks via the Devin MCP server. Supports macros.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Call devin_playbook_manage(action='create', name='X', instructions='Y', macro='!x')", "expected_output": "Playbook created", "scenario": "CI-driven playbook bootstrap"}
+    ],
+    "source_ids": ["devin-docs-devin-mcp"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cmd.api-knowledge-manage",
+    "command": "MCP tool: devin_knowledge_manage",
+    "purpose": "Programmatic full CRUD on knowledge notes + suggestions via the Devin MCP server. Filterable by repo/folder/search.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Call devin_knowledge_manage(action='list', repo='monorepo', folder='conventions')", "expected_output": "Knowledge entries", "scenario": "Browse + curate knowledge programmatically"}
+    ],
+    "source_ids": ["devin-docs-devin-mcp"]
+  }
+]

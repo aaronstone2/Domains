@@ -1,0 +1,154 @@
+[
+  {
+    "id": "devin.knowledge-playbooks.knowledge-source",
+    "name": "Knowledge source (org/enterprise)",
+    "kind": "knowledge-source",
+    "description": "Persistent context blob Devin uses across sessions. Fields: name, trigger, body. Three tiers: org, enterprise, repo. Per-repo: Devin only sees knowledge entries for the repo it's working on.",
+    "source_ids": ["devin-docs-product-knowledge", "devin-docs-onboard-knowledge-onboarding"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.knowledge-onboarding",
+    "name": "Knowledge onboarding (uploading knowledge to Devin)",
+    "kind": "feature",
+    "description": "Initial process to populate Devin's knowledge base for a repo or org. Documented at /onboard-devin/knowledge-onboarding.",
+    "source_ids": ["devin-docs-onboard-knowledge-onboarding"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.playbook-creating",
+    "name": "Playbook (creating)",
+    "kind": "playbook",
+    "description": "Reusable instruction set encoded once and triggered by name/macro across surfaces (Slack/Teams/Jira/Linear). Fields: name, instructions, optional macro (e.g., `!plan`).",
+    "source_ids": ["devin-docs-product-playbooks"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.playbook-using",
+    "name": "Playbook (using)",
+    "kind": "feature",
+    "description": "Trigger paths: assign ticket to Devin (default playbook), label macro (`!plan`/`!implement`/`!triage`/`!review`), Slack/Teams keyword `![macro]`, or `assign + comment` flows.",
+    "source_ids": ["devin-docs-product-using-playbooks"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.playbook-macro",
+    "name": "Playbook macro identifier",
+    "kind": "feature",
+    "description": "Optional `!`-prefixed identifier on a playbook. Required for label-based triggers in Jira/Linear and Slack-keyword triggers like `![ship-it]`.",
+    "source_ids": ["devin-docs-product-playbooks", "devin-docs-product-using-playbooks", "devin-docs-integrations-jira", "devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.default-playbook",
+    "name": "Default playbook (per integration)",
+    "kind": "feature",
+    "description": "Per-integration setting for which playbook fires when triggered without a specific macro. Linear default for new connections: `!plan`. Configurable in Jira/Linear settings.",
+    "source_ids": ["devin-docs-integrations-jira", "devin-docs-integrations-linear"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.knowledge-trigger-field",
+    "name": "Knowledge `trigger` field",
+    "kind": "feature",
+    "description": "Knowledge note field describing WHEN the knowledge applies. Devin surfaces matching knowledge into context based on trigger relevance.",
+    "source_ids": ["devin-docs-api-common-flows"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.knowledge-folder",
+    "name": "Knowledge folder (structure)",
+    "kind": "feature",
+    "description": "Hierarchical folder structure for knowledge notes. Both org and enterprise scope. Folder structure with note counts retrievable via API.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.knowledge-suggestion",
+    "name": "Knowledge suggestion (pending)",
+    "kind": "feature",
+    "description": "AI-generated suggestion for new knowledge entries based on observed session patterns. List/view/dismiss via the devin_knowledge_manage MCP tool.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.secret-resource",
+    "name": "Secret",
+    "kind": "secret",
+    "description": "Stored credential referenced as $VARIABLE_NAME from blueprints, sessions, and playbooks. Three tiers (enterprise, org, repo) with cascading precedence (more specific wins on name collision).",
+    "source_ids": ["devin-docs-product-secrets", "devin-docs-onboard-environment-blueprints", "devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.secret-rotation",
+    "name": "Secret rotation",
+    "kind": "feature",
+    "description": "Rotate by deleting old + creating new (or by upserting in UI). New value takes effect on the next build for blueprint-referenced secrets. Recommended best practice: regular rotation cadence.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.secret-cascade-precedence",
+    "name": "Secret cascade precedence",
+    "kind": "feature",
+    "description": "Secrets cascade enterprise → org → repo with more specific tiers winning on name collision. Use intentionally to override enterprise defaults at the team level.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.secret-naming",
+    "name": "Secret naming convention",
+    "kind": "feature",
+    "description": "Best-practice: use descriptive names like `INTERNAL_NPM_TOKEN`, not `TOKEN_1`. Avoids confusion across multiple admins and over time.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.secret-no-yaml-rule",
+    "name": "Never put secrets in YAML rule",
+    "kind": "feature",
+    "description": "Strong best-practice: NEVER put secrets directly in blueprint YAML. Secrets in YAML end up in logs, build artifacts, and audit trails. Use the secrets management UI instead.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.secret-audit",
+    "name": "Secret audit (periodic review)",
+    "kind": "feature",
+    "description": "Best-practice: periodically review which secrets exist and whether they're still needed. Remove unused secrets to reduce attack surface.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.knowledge-additive-across-tiers",
+    "name": "Knowledge additivity across blueprint tiers",
+    "kind": "feature",
+    "description": "Knowledge items are additive across enterprise/org/repo tiers. Devin sees all of them. Multiple tiers can define same-named knowledge items without overwriting.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices", "devin-docs-enterprise-environment-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.playbook-instructions",
+    "name": "Playbook `instructions` field",
+    "kind": "feature",
+    "description": "Body of a playbook. Free-form text describing what Devin should do when the playbook fires.",
+    "source_ids": ["devin-docs-product-playbooks", "devin-docs-api-common-flows"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.playbook-mcp-management",
+    "name": "Programmatic playbook management (devin_playbook_manage)",
+    "kind": "feature",
+    "description": "MCP tool exposed by Devin MCP for full CRUD on playbooks (list/get/create/update/delete) including macro support. Org-level + enterprise-level.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.knowledge-playbooks.knowledge-mcp-management",
+    "name": "Programmatic knowledge management (devin_knowledge_manage)",
+    "kind": "feature",
+    "description": "MCP tool exposed by Devin MCP for full CRUD on knowledge notes + suggestions (list/get/create/update/delete; browse folder structure; manage suggestions). Filterable by repo/folder/search.",
+    "source_ids": ["devin-docs-devin-mcp"],
+    "aliases": []
+  }
+]

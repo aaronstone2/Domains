@@ -1,0 +1,410 @@
+[
+  {
+    "id": "devin.api.principal-token-model",
+    "name": "Principal + Token authentication model",
+    "kind": "auth",
+    "description": "Devin API authentication model. PRINCIPAL is who you are (identity); TOKEN is how you prove it (credential). Two principal types: Service User (non-human) and User (human). Two corresponding token types: Service User API Key and Personal Access Token (PAT). Both share the `cog_` prefix and the same Authorization header format.",
+    "source_ids": ["devin-docs-api-authentication"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.service-user",
+    "name": "Service User (non-human principal)",
+    "kind": "auth",
+    "description": "Non-human principal designed for API integrations and CI/CD. RBAC role-controlled. Created via Settings > Service users (org) or Enterprise settings > Service users. Recommended over PATs for production automation.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.personal-access-token",
+    "name": "Personal Access Token (PAT)",
+    "kind": "credential",
+    "description": "Token authenticating as the human user who created it — user's identity, permissions, and org memberships apply. Currently in CLOSED BETA, feature-flagged. NOT available for SSO/enterprise accounts. `cog_` prefix.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-personal-access-tokens"],
+    "aliases": ["PAT"]
+  },
+  {
+    "id": "devin.api.service-user-api-key",
+    "name": "Service User API Key",
+    "kind": "credential",
+    "description": "API key tied to a service user. `cog_` prefix; shown only once at creation time. Used in `Authorization: Bearer <key>` header. Recommended for automation, CI/CD, production workflows.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.legacy-personal-api-key",
+    "name": "Legacy Personal API Key",
+    "kind": "credential",
+    "description": "Deprecated. Tied to a user account. Prefix `apk_user_`. Used with v1 and v2 APIs. Inherits user permissions; no RBAC. Continues to work during deprecation period; not accepted by Devin MCP server.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-getting-started-migration-guide"],
+    "aliases": ["apk_user_ key"]
+  },
+  {
+    "id": "devin.api.legacy-service-api-key",
+    "name": "Legacy Service API Key",
+    "kind": "credential",
+    "description": "Deprecated. Organization-scoped service key. Prefix `apk_`. Used with v1 API. No RBAC.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-getting-started-migration-guide"],
+    "aliases": ["apk_ key"]
+  },
+  {
+    "id": "devin.api.api-version-v1",
+    "name": "API v1 (legacy, deprecated)",
+    "kind": "api-version",
+    "description": "Legacy v1 API. Base URL `https://api.devin.ai/v1/*`. Org-scoped flat structure. Auth via `apk_user_` / `apk_` keys. No RBAC. Continues working during deprecation period; will be removed.",
+    "source_ids": ["devin-docs-api-v1-overview", "devin-docs-api-getting-started-migration-guide"],
+    "aliases": ["v1"]
+  },
+  {
+    "id": "devin.api.api-version-v2",
+    "name": "API v2 (legacy enterprise, deprecated)",
+    "kind": "api-version",
+    "description": "Legacy v2 API. Base URL `https://api.devin.ai/v2/enterprise/*`. Enterprise-Admin-role only. Personal API keys only (no service keys). Continues during deprecation; lacks new features (RBAC, session attribution, cursor pagination).",
+    "source_ids": ["devin-docs-api-v2-overview", "devin-docs-api-getting-started-migration-guide"],
+    "aliases": ["v2"]
+  },
+  {
+    "id": "devin.api.api-version-v3",
+    "name": "API v3 (current)",
+    "kind": "api-version",
+    "description": "Current API. Two scopes: Organization (`/v3/organizations/{org_id}/*`) and Enterprise (`/v3/enterprise/*`). Service user tokens (`cog_`). Full RBAC. Cursor-based pagination. Session attribution via `create_as_user_id`. Custom enterprise domains supported.",
+    "source_ids": ["devin-docs-api-overview", "devin-docs-api-v3-overview"],
+    "aliases": ["v3", "current API"]
+  },
+  {
+    "id": "devin.api.organization-scope",
+    "name": "Organization API scope",
+    "kind": "feature",
+    "description": "v3 sub-API rooted at `/v3/organizations/{org_id}/*`. Manages resources within a single organization — sessions, knowledge, playbooks, secrets, schedules, service-users, audit-logs, etc. Where most integrations start.",
+    "source_ids": ["devin-docs-api-overview", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.enterprise-scope",
+    "name": "Enterprise API scope",
+    "kind": "feature",
+    "description": "v3 sub-API rooted at `/v3/enterprise/*`. Cross-organization — analytics, audit logs, user/role/IdP-group management, billing, infrastructure (hypervisors), service-user provisioning, organization CRUD. Available to enterprise customers.",
+    "source_ids": ["devin-docs-api-overview", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.create-as-user-id",
+    "name": "`create_as_user_id` (session attribution)",
+    "kind": "feature",
+    "description": "Optional parameter on Create Session. When set, the session is attributed to the specified user — appears in their session list, counts toward their usage. Requires the `ImpersonateOrgSessions` permission on the calling service user's role.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-overview", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.custom-enterprise-domain",
+    "name": "Custom enterprise API domain",
+    "kind": "feature",
+    "description": "Devin Enterprise customers with dedicated deployments replace `api.devin.ai` with their own domain (e.g., `api.your-company.devinenterprise.com`).",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": ["dedicated deployment domain"]
+  },
+  {
+    "id": "devin.api.cursor-pagination",
+    "name": "Cursor-based pagination",
+    "kind": "feature",
+    "description": "Pagination model used by all v3 list endpoints. Query params: `first` (page size, integer, default varies), `after` (opaque cursor; omit on first page). Response: items[], has_next_page, end_cursor, optional total. Replaces offset/limit from v1/v2.",
+    "source_ids": ["devin-docs-api-concepts-pagination", "devin-docs-api-getting-started-migration-guide"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.permission-rbac",
+    "name": "Role-Based Access Control (RBAC)",
+    "kind": "auth",
+    "description": "Permission model in v3. Each endpoint is gated by a specific named permission. Service-user roles aggregate permissions. Two scopes: Enterprise permissions and Organization permissions. Enterprise service users automatically inherit corresponding org-level permissions across all orgs.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": ["RBAC"]
+  },
+  {
+    "id": "devin.api.permission-inheritance",
+    "name": "Enterprise→Organization permission inheritance",
+    "kind": "feature",
+    "description": "Enterprise service users assigned an enterprise-level role automatically get the corresponding org-level permission in every organization. Example: ViewAccountSessions grants ViewOrgSessions in all orgs.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.session-resource",
+    "name": "Session (API resource)",
+    "kind": "api-resource",
+    "description": "The core agent-run resource. Created by POST /v3/organizations/{org_id}/sessions. Has a session_id, URL (https://app.devin.ai/sessions/<id>), status, prompt, optional title/playbook/tags/ACU-limit. Polls via Get Session; receives messages via Send Message.",
+    "source_ids": ["devin-docs-api-common-flows", "devin-docs-api-v1-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.session-status",
+    "name": "Session status enum",
+    "kind": "feature",
+    "description": "Session lifecycle states. v1: running. v3 introduces more granular settled states: exit, error, suspended (and more — full schema on endpoint reference pages). Used by polling code (`while status not in {'exit','error','suspended'}: poll`).",
+    "source_ids": ["devin-docs-api-common-flows", "devin-docs-api-getting-started-migration-guide"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.session-attachment",
+    "name": "Session attachment",
+    "kind": "api-resource",
+    "description": "File produced by a session (logs, screenshots, generated code). Listed via GET /v3/organizations/{org_id}/sessions/{session_id}/attachments — returns items[] with attachment_id, name, url. Download from `url` directly.",
+    "source_ids": ["devin-docs-api-common-flows"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.knowledge-note-resource",
+    "name": "Knowledge note (API resource)",
+    "kind": "api-resource",
+    "description": "Persistent context Devin uses across sessions. Fields: name, trigger (when this knowledge applies), body (the content). Org-level (POST /v3/organizations/{org_id}/knowledge/notes) and Enterprise-level (POST /v3/enterprise/knowledge/notes).",
+    "source_ids": ["devin-docs-api-common-flows", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.knowledge-folder",
+    "name": "Knowledge folder (structure)",
+    "kind": "api-resource",
+    "description": "Hierarchical folder structure containing knowledge notes. Counts of notes per folder retrievable via GET /v3/organizations/{org_id}/knowledge/folders.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.playbook-resource",
+    "name": "Playbook (API resource)",
+    "kind": "api-resource",
+    "description": "Reusable instruction set Devin can be parameterized with. Fields: name, instructions, optional macro (e.g., `!plan`). Org-level + Enterprise-level. Triggers on assignment, label, comment-mention via integrations.",
+    "source_ids": ["devin-docs-api-common-flows", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.secret-resource",
+    "name": "Secret (API resource)",
+    "kind": "api-resource",
+    "description": "Stored credential referenced as `$VARIABLE_NAME` from blueprints and sessions. Org-level only (Devin's secrets dashboard). Endpoints under /v3/organizations/{org_id}/secrets.",
+    "source_ids": ["devin-docs-api-v1-overview", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.schedule-resource",
+    "name": "Schedule (API resource)",
+    "kind": "api-resource",
+    "description": "Recurring or one-time auto-session trigger. Fields: prompt, cron_schedule (cron expression), timezone, is_enabled, optional notification preferences and agent selection. Org-level. Endpoint: /v3/organizations/{org_id}/schedules.",
+    "source_ids": ["devin-docs-api-common-flows", "devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.idp-group-resource",
+    "name": "IdP group (API resource)",
+    "kind": "api-resource",
+    "description": "Identity-provider group sync. Both enterprise and organization scope. Used for SSO-driven membership management. Endpoints CRUD groups + assign/unassign users.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.tag-resource",
+    "name": "Tag (session tag)",
+    "kind": "api-resource",
+    "description": "User-defined string label attached to sessions. Org-allowed-tags configurable; default-tag settable. Sessions can have tags added/replaced/removed. Used for org-side categorization of agent runs.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.guardrail-violation-resource",
+    "name": "Guardrail violation (API resource)",
+    "kind": "api-resource",
+    "description": "Tripped-policy event surfaced for compliance review. Both enterprise and org scope. Endpoint: GET /v3/organizations/{org_id}/guardrail-violations and GET /v3/enterprise/guardrail-violations.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.audit-log-entry",
+    "name": "Audit log entry",
+    "kind": "api-resource",
+    "description": "Tamper-evident record of an action. Both enterprise and org scope. v3: GET /v3/enterprise/audit-logs and GET /v3/organizations/{org_id}/audit-logs.",
+    "source_ids": ["devin-docs-api-v3-overview", "devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.consumption-cycle",
+    "name": "Consumption cycle",
+    "kind": "api-resource",
+    "description": "Billing cycle summary. Endpoint: GET /v3/enterprise/consumption/cycles. Tracks ACU usage per cycle.",
+    "source_ids": ["devin-docs-api-v3-overview", "devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.daily-consumption",
+    "name": "Daily consumption breakdown",
+    "kind": "api-resource",
+    "description": "Per-day ACU consumption. Multiple breakdowns: by user, by service-user, by session, by organization. Both enterprise and org scope.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.metric-active-users",
+    "name": "Active users metrics (DAU/WAU/MAU/custom-range)",
+    "kind": "metric",
+    "description": "Engagement metrics. Endpoints for daily/weekly/monthly active users and a custom-date-range variant. Both enterprise and org scope.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.metric-pr",
+    "name": "PR metrics",
+    "kind": "metric",
+    "description": "Pull-request-creation analytics. Both enterprise and org scope. Endpoint: GET /v3/enterprise/metrics/prs and GET /v3/organizations/{org_id}/metrics/prs.",
+    "source_ids": ["devin-docs-api-v3-overview", "devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.metric-session",
+    "name": "Session metrics",
+    "kind": "metric",
+    "description": "Session-count/category analytics. Both enterprise and org scope. Includes sessions-by-category for richer slicing.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.metric-usage",
+    "name": "Usage metrics",
+    "kind": "metric",
+    "description": "Generic usage analytics surface. Enterprise: /v3/enterprise/metrics/usage. Organization: /v3/organizations/{org_id}/metrics/usage and ../usage-org.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.metric-search",
+    "name": "Search metrics",
+    "kind": "metric",
+    "description": "Search-related analytics. Both enterprise and org scope.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.queue-status",
+    "name": "Queue status",
+    "kind": "api-resource",
+    "description": "Snapshot of the session queue. Enterprise-only (GET /v3/enterprise/queue). Surfaces queueing pressure for capacity planning.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.role-resource",
+    "name": "Role (API resource)",
+    "kind": "api-resource",
+    "description": "RBAC role aggregating permissions. Endpoint: GET /v3/enterprise/roles. Roles are assigned to users + service users.",
+    "source_ids": ["devin-docs-api-v3-overview", "devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.hypervisor-resource",
+    "name": "Hypervisor (API resource)",
+    "kind": "api-resource",
+    "description": "Infrastructure-layer surface. Enterprise-only. GET /v3/enterprise/hypervisors. Surfaces hypervisor-level state for the customer's deployment.",
+    "source_ids": ["devin-docs-api-v3-overview", "devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.ip-access-list",
+    "name": "IP access list (API resource)",
+    "kind": "api-resource",
+    "description": "Enterprise IP allowlist. Endpoints: GET / replace / clear. Restricts which IPs can access the customer's enterprise.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.session-insights",
+    "name": "Session insights",
+    "kind": "feature",
+    "description": "AI-generated summary/analysis of session behavior. Generated on-demand via POST endpoint; retrievable via GET. Used for after-the-fact retrospective on agent runs.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.repository-indexing-status",
+    "name": "Repository indexing status (API)",
+    "kind": "api-resource",
+    "description": "Status of code-search index build for a repository. v2 endpoint: GET /v2/repositories/<repo>/status. Bulk index endpoint: POST /v2/repositories/bulk-index.",
+    "source_ids": ["devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.snapshot-resource",
+    "name": "Snapshot (API resource — enterprise)",
+    "kind": "api-resource",
+    "description": "Enterprise-deployment-level snapshot detail. v2 endpoint: GET /v2/snapshots/<id>. Surfaces details about a specific environment snapshot.",
+    "source_ids": ["devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.repository-clone",
+    "name": "Repository clone (API)",
+    "kind": "feature",
+    "description": "Programmatic clone of a repository into a Devin organization. v2 endpoint: POST /v2/organizations/<org>/clone-repository.",
+    "source_ids": ["devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.org-group-limits",
+    "name": "Organization group limits",
+    "kind": "api-resource",
+    "description": "Per-org limits configurable by enterprise admins. Endpoints: GET / Update. Includes ACU caps and similar quotas.",
+    "source_ids": ["devin-docs-api-v3-overview", "devin-docs-api-v2-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.git-connection-resource",
+    "name": "Git connection (API resource)",
+    "kind": "api-resource",
+    "description": "Per-org connection to a Git provider. Endpoint: GET /v3/organizations/{org_id}/git-providers/connections.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.git-permission-resource",
+    "name": "Git permission (API resource)",
+    "kind": "api-resource",
+    "description": "Per-repo Git access permission. Endpoints: GET / Create / Replace / Delete / Clear under /v3/organizations/{org_id}/git-providers/permissions.",
+    "source_ids": ["devin-docs-api-v3-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.error-401",
+    "name": "401 Unauthorized",
+    "kind": "error-code",
+    "description": "Missing/invalid Authorization header, expired/invalid API key, malformed Bearer token, or using a legacy `apk_` key with the Devin MCP server (which only accepts `cog_`). Solution: verify Authorization header.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.error-403",
+    "name": "403 Forbidden",
+    "kind": "error-code",
+    "description": "Service user lacks required permission, wrong key type for endpoint (legacy key with v3), or attempting to access resources outside scope. v2 endpoints require Enterprise Admin role.",
+    "source_ids": ["devin-docs-api-authentication", "devin-docs-api-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.error-404",
+    "name": "404 Not Found",
+    "kind": "error-code",
+    "description": "Incorrect endpoint URL OR resource doesn't exist OR caller doesn't have access (returns 404 instead of 403 to prevent existence leakage).",
+    "source_ids": ["devin-docs-api-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.error-429",
+    "name": "429 Too Many Requests",
+    "kind": "error-code",
+    "description": "Rate limit exceeded. Wait + retry with backoff. Apply at the per-key or per-org level depending on endpoint.",
+    "source_ids": ["devin-docs-api-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.api.principal-types",
+    "name": "Principal types in /self response",
+    "kind": "feature",
+    "description": "GET /v3/self response field `principal_type` distinguishes 'service_user' from 'user'. For service users, populates service_user_id, service_user_name, org_id (or null for enterprise-scoped service users that span orgs).",
+    "source_ids": ["devin-docs-api-common-flows"],
+    "aliases": []
+  }
+]

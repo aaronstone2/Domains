@@ -1,0 +1,137 @@
+[
+  {
+    "id": "devin.knowledge-playbooks.cfg.knowledge.scope-tier",
+    "scope": "knowledge-tier",
+    "key": "scope-tier",
+    "type": "enum",
+    "default_value": "[enterprise, organization, repository]",
+    "description": "Tier scopes for knowledge notes. Enterprise = company-wide. Organization = team-level. Repository = project-level. Items are additive across tiers.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.knowledge.note.name",
+    "scope": "knowledge-note",
+    "key": "name",
+    "type": "string",
+    "default_value": null,
+    "description": "Knowledge note name field.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.knowledge.note.trigger",
+    "scope": "knowledge-note",
+    "key": "trigger",
+    "type": "string",
+    "default_value": null,
+    "description": "When this knowledge applies. Devin uses to decide relevance.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.knowledge.note.body",
+    "scope": "knowledge-note",
+    "key": "body",
+    "type": "string (markdown)",
+    "default_value": null,
+    "description": "Knowledge content body.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.playbook.name",
+    "scope": "playbook",
+    "key": "name",
+    "type": "string",
+    "default_value": null,
+    "description": "Playbook name.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.playbook.instructions",
+    "scope": "playbook",
+    "key": "instructions",
+    "type": "string",
+    "default_value": null,
+    "description": "Playbook body / instructions to Devin.",
+    "source_ids": ["devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.playbook.macro",
+    "scope": "playbook",
+    "key": "macro",
+    "type": "string (!name)",
+    "default_value": null,
+    "description": "Optional `!`-prefixed macro identifier. Required for label-based triggers.",
+    "source_ids": ["devin-docs-product-playbooks", "devin-docs-integrations-jira", "devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.playbook.scope",
+    "scope": "playbook-tier",
+    "key": "scope",
+    "type": "enum",
+    "default_value": "[enterprise, organization]",
+    "description": "Playbook tier scopes. Enterprise = visible across all orgs. Organization = scoped to one org.",
+    "source_ids": ["devin-docs-api-v3-overview"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.secret.tier",
+    "scope": "secret-tier",
+    "key": "tier",
+    "type": "enum",
+    "default_value": "[enterprise, organization, repository]",
+    "description": "Secret tiers. Cascade with more specific winning on name collision.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.secret.naming-best-practice",
+    "scope": "secret",
+    "key": "naming-convention",
+    "type": "string",
+    "default_value": "<DESCRIPTIVE_UPPERCASE_SNAKE>",
+    "description": "Best practice — use descriptive UPPERCASE_SNAKE_CASE names. `INTERNAL_NPM_TOKEN`, not `TOKEN_1`.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.secret.reference-syntax",
+    "scope": "secret",
+    "key": "reference-syntax",
+    "type": "string",
+    "default_value": "$VARIABLE_NAME",
+    "description": "Reference syntax for secrets in blueprints, sessions, and playbooks.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-product-secrets"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.secret.ban-yaml-storage",
+    "scope": "secret",
+    "key": "yaml-storage",
+    "type": "boolean",
+    "default_value": "FORBIDDEN",
+    "description": "Never put secrets directly in blueprint YAML — always use the secrets management UI. Secrets in YAML end up in logs, build artifacts, and audit trails.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.secret.refresh-cadence",
+    "scope": "secret",
+    "key": "refresh-cadence",
+    "type": "string",
+    "default_value": "next-build (for blueprint-referenced); session-start (for session-referenced)",
+    "description": "When a rotated secret value takes effect. Recommended: place credential-writing steps in `maintenance` (not `initialize`) so credentials refresh on every periodic build.",
+    "source_ids": ["devin-docs-onboard-environment-blueprints", "devin-docs-enterprise-environment-best-practices"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.default-playbook.linear",
+    "scope": "default-playbook",
+    "key": "default-playbook.linear-new-connections",
+    "type": "string",
+    "default_value": "!plan",
+    "description": "Default playbook used when a Linear ticket is assigned to Devin without a specific label. `!plan` for new Linear connections.",
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.knowledge-playbooks.cfg.macro-conventions",
+    "scope": "playbook-macro",
+    "key": "common-macro-names",
+    "type": "list[string]",
+    "default_value": "[!plan, !implement, !triage, !review]",
+    "description": "Common playbook macros surfaced in the docs across Jira/Linear/Slack integrations. Customer-defined macros also supported.",
+    "source_ids": ["devin-docs-integrations-jira", "devin-docs-integrations-linear"]
+  }
+]

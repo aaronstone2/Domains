@@ -8,6 +8,22 @@
 
 Open Claude Code in `C:\Users\adsto\git\domains`. Paste this file or say: *"Run domains/_shared/sessions/phase-3-deep-extraction.md for `<domain>/<leaf>`."*
 
+## Extraction model — the agent IS the extractor (not a separate program)
+
+**Decided 2026-05-02; do not re-litigate.** Phase 3 extraction is performed by the Claude Code agent reading docs in-context. **No standalone Anthropic SDK extractor module is built.** The methodology session set this pattern, the devin session confirmed it. The user pays for Claude Code Max and wants the agent's reading + judgement applied directly — not buffered through a separately-prompted program.
+
+The flow per leaf:
+
+1. Query `<domain>.documents` via the `motherduck` MCP for the leaf's docs (filter via `<domain>.sources.subdomain`). Order by `length(content_md) DESC` so the densest docs come first.
+2. Read `content_md` directly. For long docs, use the FTS index — `SELECT … FROM fts_main_<domain>_documents.match_bm25(…)` — to locate dense passages.
+3. Write extracted rows by hand into `domains/<domain>/<leaf>/extract/{concepts,commands,config_keys}.json`. JSON arrays, one object per row, each object matching the schema STRUCT shape (see `domains/_shared/schema.sql`).
+4. Load to DuckDB with a direct `INSERT INTO <domain>.<table> SELECT * FROM read_json_auto('domains/<domain>/<leaf>/extract/<table>.json', format='array')` via the `motherduck` MCP. **No CLI extension needed for loading; methodology + devin both used this path.**
+5. Verify each load: row counts hit the leaf's target order-of-magnitude; every `source_ids[]` element resolves in `<domain>.sources`; spot-check 5 random rows per table.
+
+**`id` convention:** `<domain>.<leaf>.<slug>` for concepts, `<domain>.<leaf>.cmd.<slug>` for commands, `<domain>.<leaf>.cfg.<scope>.<slug>` for config_keys (matches `methodology.cmd.perf.list` pattern).
+
+**Why no SDK extractor:** the surface area per session is small enough (one leaf, ~5–40 docs) that human-grade reading by the agent yields better signal than a generic structured-extraction prompt against another model instance — and the agent is already in-session with the schema, the domain context, and the interview goal in mind.
+
 ## Read first
 - [`PREAMBLE.md`](./PREAMBLE.md)
 - The leaf's existing files: `domains/<domain>/<leaf>/README.md` (if exists), `PLAN.md` (if exists), `PROGRESS.md`
@@ -105,7 +121,8 @@ Move to the next leaf in the priority order. Once all priority leaves are at min
 
 ## Reuse map specific to this phase
 
-- LLM structured extraction — use Claude via the Anthropic SDK with `tool_use`-shaped JSON schema matching the table's column types. Don't free-form-prompt.
+- **Structured extraction is the agent.** See *"Extraction model"* above. Do not write a separate Anthropic-SDK extractor — the agent reads docs in-context, drafts JSON, and loads via `read_json_auto`.
 - Manpage parsing — `man7.org` HTML structure is consistent; a small lxml selector can grab SYNOPSIS / DESCRIPTION / DIAGNOSTICS reliably.
 - GitHub issue mining — `gh api repos/<owner>/<repo>/issues?state=closed&labels=bug&per_page=100` + reaction sort. Issues with 10+ thumbs-ups are usually canonical.
-- DuckDB JSON ingestion — `read_json_auto('extract/concepts.json')` is one-line and respects nested arrays/structs.
+- DuckDB JSON ingestion — `INSERT INTO <domain>.<table> SELECT * FROM read_json_auto('extract/<table>.json', format='array')` respects nested STRUCT arrays.
+- Existing extracts to mirror as shape examples — `domains/methodology/sre-debugging/extract/concepts.json`, `domains/methodology/use-red-method/extract/commands.json`, `domains/methodology/sre-debugging/extract/config_keys.json`.

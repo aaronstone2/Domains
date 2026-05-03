@@ -1,0 +1,466 @@
+[
+  {
+    "id": "devin.product.devin-review",
+    "name": "Devin Review (code review platform)",
+    "kind": "feature",
+    "description": "Full-service code review surface inside the Devin webapp. Smart diff organization, copy/move detection, bug catcher (with confidence levels), GitHub-compatible comment/approve/request-changes, codebase-aware chat, PR workflow actions (merge/close/draft/auto-merge), code-changes-from-chat. Supports GitHub Cloud + GitHub Enterprise Server. Surface URL: app.devin.ai/review.",
+    "source_ids": ["devin-docs-work-devin-review", "cognition-blog-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.swe-check",
+    "name": "SWE-Check (10x faster bug detection)",
+    "kind": "feature",
+    "description": "Cognition-built specialized model for fast bug detection in PRs. 10x faster than the prior approach. Powers the Devin Review bug-catcher with confidence-level labeling. Latency-optimized vs full agent runs.",
+    "source_ids": ["cognition-blog-swe-check-10x-faster"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.swe-1-6-model",
+    "name": "SWE-1.6 (Cognition's coding model)",
+    "kind": "feature",
+    "description": "Cognition's specialized coding model. Improvements over predecessors: parallel tool calls, better UX, RL-scaled training. Available in Devin for Terminal alongside Opus 4.7 and GPT-5.5.",
+    "source_ids": ["cognition-blog-swe-1-6", "cognition-blog-swe-1-6-preview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.single-threaded-write",
+    "name": "Single-threaded write",
+    "kind": "feature",
+    "description": "Coordination pattern where multiple agents may read/explore in parallel but only one agent writes at a time. Cognition's documented multi-agent learning: parallel writes don't work; serial writes with parallel review do.",
+    "source_ids": ["cognition-blog-multi-agents-working"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.multi-agent-fleet",
+    "name": "Multi-agent fleet (managed Devins)",
+    "kind": "feature",
+    "description": "Pattern of running multiple coordinated Devin sessions. Devin can now Manage Devins — coordinator-style spawning of subordinate agents. Includes scheduling Devins via cron (`Devin can now Schedule Devins`).",
+    "source_ids": ["cognition-blog-devin-can-now-manage-devins"],
+    "aliases": ["managed Devins"]
+  },
+  {
+    "id": "devin.product.computer-use",
+    "name": "Computer Use",
+    "kind": "feature",
+    "description": "Screen + keyboard/mouse automation surface for Devin. Lets the agent interact with arbitrary GUI applications inside DevBox. Recent surface — failure modes still being characterized.",
+    "source_ids": ["devin-docs-work-computer-use"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.skills",
+    "name": "Skills (product feature)",
+    "kind": "feature",
+    "description": "Reusable agent capabilities surfaced through the Skills product guide. Used to encapsulate complex multi-step procedures as named, reusable units.",
+    "source_ids": ["devin-docs-product-skills"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.session-insights",
+    "name": "Session Insights",
+    "kind": "feature",
+    "description": "Per-session analysis surface. Shows ACU usage, timeline, agent decisions. Generated on-demand via API; surfaced in the Devin webapp post-session.",
+    "source_ids": ["devin-docs-product-session-insights"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.scheduled-sessions",
+    "name": "Scheduled Sessions",
+    "kind": "feature",
+    "description": "Cron-driven recurring or one-time agent sessions. Configured per org via the Schedules API (or UI). Triggered by cron expression + timezone.",
+    "source_ids": ["devin-docs-product-scheduled-sessions"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.session-tools",
+    "name": "Devin Session Tools",
+    "kind": "feature",
+    "description": "Debugging primitives + command palette available within an active session. Used for low-level inspection of session state.",
+    "source_ids": ["devin-docs-work-session-tools"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.slash-commands",
+    "name": "Slash commands (in session)",
+    "kind": "feature",
+    "description": "Primary user lever inside a session. Slash-prefixed commands invoke specific behaviors / modes. Documented at /work-with-devin/slash-commands.",
+    "source_ids": ["devin-docs-work-slash-commands"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.ask-devin-feature",
+    "name": "Ask Devin",
+    "kind": "feature",
+    "description": "Quick-question codebase Q&A surface. Answers via indexed-repo context. Org-level permission `Use Ask Devin`. Lower-cost alternative to a full session.",
+    "source_ids": ["devin-docs-work-ask-devin"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.knowledge-feature",
+    "name": "Knowledge (product feature, distinct from blueprint knowledge)",
+    "kind": "feature",
+    "description": "Persistent context Devin uses across sessions — architecture docs, conventions, team workflows. Distinct from blueprint `knowledge` section (short command refs). Per-repo: Devin only sees knowledge for the repo it's working on. Configurable in Settings > Devin's Settings > Knowledge.",
+    "source_ids": ["devin-docs-product-knowledge", "devin-docs-onboard-knowledge-onboarding"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.bot-comment-settings",
+    "name": "Bot comment settings",
+    "kind": "feature",
+    "description": "Configurable PR comment rendering — controls how Devin's PR comments appear (verbosity, formatting, attribution).",
+    "source_ids": ["devin-docs-product-bot-comment-settings"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.testing-and-recordings",
+    "name": "Testing and Recordings",
+    "kind": "feature",
+    "description": "Replay/repro feature. Records session interactions for later replay or debugging.",
+    "source_ids": ["devin-docs-work-testing-and-recordings"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.sdlc-integration",
+    "name": "SDLC integration patterns",
+    "kind": "feature",
+    "description": "Documented patterns for incorporating Devin into the SDLC: DevOps / CI loops, deployment workflows, release automation.",
+    "source_ids": ["devin-docs-essential-sdlc-integration"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.deployment-capabilities",
+    "name": "Deployment capabilities",
+    "kind": "feature",
+    "description": "Devin's capacity to drive deploy/release automation — typically through SCM integrations + CI integration.",
+    "source_ids": ["devin-docs-product-deployment-capabilities"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.essential-instructing",
+    "name": "Instructing Devin Effectively",
+    "kind": "feature",
+    "description": "Essential-guideline doc on prompt-engineering for Devin sessions. Companion to the good-vs-bad-instructions and when-to-use-Devin docs.",
+    "source_ids": ["devin-docs-essential-instructing"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.good-vs-bad-instructions",
+    "name": "Good vs Bad Instructions",
+    "kind": "feature",
+    "description": "Essential-guideline doc contrasting effective vs ineffective task framing.",
+    "source_ids": ["devin-docs-essential-good-vs-bad"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.when-to-use-devin",
+    "name": "When to Use Devin",
+    "kind": "feature",
+    "description": "Essential-guideline doc on selecting tasks suited to agent execution. Covers task scoping, complexity calibration.",
+    "source_ids": ["devin-docs-essential-when-to-use"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.deepwiki-feature",
+    "name": "DeepWiki (Devin-generated repo docs)",
+    "kind": "feature",
+    "description": "AI-generated documentation surface for any repo. Open-source at https://github.com/CognitionAI/deepwiki. Depends on repository indexing. DeepWiki MCP server (mcp.deepwiki.com) provides public-repo programmatic access.",
+    "source_ids": ["cognitionai-deepwiki-readme", "devin-docs-deepwiki-mcp"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.swebench-results",
+    "name": "SWE-bench results / harness",
+    "kind": "feature",
+    "description": "Cognition's published benchmark results on SWE-bench. Repository at github.com/CognitionAI/devin-swebench-results includes per-eval JSON results + harness. Used as a public benchmark reference for Devin's capability progression.",
+    "source_ids": ["cognitionai-swebench-results-readme"],
+    "aliases": ["SWE-bench harness"]
+  },
+  {
+    "id": "devin.product.agent-trace-spec",
+    "name": "Agent Trace (open spec)",
+    "kind": "feature",
+    "description": "Cognition-published open specification for the context graph of code that an agent traces during a session. Open vendor-neutral spec.",
+    "source_ids": ["cognition-blog-agent-trace"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.devin-2",
+    "name": "Devin 2.0 (April 2025)",
+    "kind": "release-note",
+    "description": "Major Devin release (April 3, 2025). Introduced product-level upgrades documented in the Devin 2 blog post.",
+    "source_ids": ["cognition-blog-devin-2"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.devin-2-2",
+    "name": "Devin 2.2 (Feb 24, 2026)",
+    "kind": "release-note",
+    "description": "Latest major Devin release. Feature deltas captured in the 2026 release notes.",
+    "source_ids": ["devin-docs-release-notes-2026"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.devin-agent-preview-sonnet-4-5",
+    "name": "Devin Agent Preview (Sonnet 4.5)",
+    "kind": "release-note",
+    "description": "September 29, 2025 release. Devin's agent preview running on Anthropic Sonnet 4.5.",
+    "source_ids": ["devin-docs-release-notes-2025"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.devin-2-1",
+    "name": "Devin 2.1 (May 15, 2025)",
+    "kind": "release-note",
+    "description": "May 15, 2025 release. Documented in the 2025 release notes.",
+    "source_ids": ["devin-docs-release-notes-2025"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.devin-can-schedule-devins",
+    "name": "Devin can now Schedule Devins (March 20, 2026)",
+    "kind": "release-note",
+    "description": "March 20, 2026 release. Adds cron-driven session scheduling.",
+    "source_ids": ["devin-docs-release-notes-2026"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.devin-can-manage-devins",
+    "name": "Devin can now Manage Devins (March 19, 2026)",
+    "kind": "release-note",
+    "description": "March 19, 2026 release. Coordinator pattern: a parent Devin spawns and manages subordinate Devin sessions.",
+    "source_ids": ["devin-docs-release-notes-2026", "cognition-blog-devin-can-now-manage-devins"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.devin-in-windsurf",
+    "name": "Devin in Windsurf (April 15, 2026)",
+    "kind": "release-note",
+    "description": "April 15, 2026 release. Devin agent capabilities surfaced inside the Windsurf IDE.",
+    "source_ids": ["devin-docs-release-notes-2026"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.codemaps",
+    "name": "Windsurf Codemaps (Nov 4, 2025)",
+    "kind": "feature",
+    "description": "Cognition feature surfaced via Windsurf for understanding code before edit. November 4, 2025 release.",
+    "source_ids": ["devin-docs-release-notes-2025"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.ai-data-analyst",
+    "name": "AI Data Analyst (Aug 2025)",
+    "kind": "feature",
+    "description": "August 28, 2025 release. Devin used as a data-analyst — typically connected to database MCPs for ad-hoc analytics.",
+    "source_ids": ["devin-docs-release-notes-2025"],
+    "aliases": ["Dana"]
+  },
+  {
+    "id": "devin.product.deepwiki-launch",
+    "name": "DeepWiki: AI docs for any repo (May 5, 2025)",
+    "kind": "release-note",
+    "description": "May 5, 2025 release of DeepWiki — AI-generated documentation tooling.",
+    "source_ids": ["devin-docs-release-notes-2025"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.deepwiki-mcp-launch",
+    "name": "DeepWiki MCP Server (May 22, 2025)",
+    "kind": "release-note",
+    "description": "May 22, 2025. Launched the no-auth public-repo MCP server at mcp.deepwiki.com.",
+    "source_ids": ["devin-docs-release-notes-2025"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.audio-messages-slack",
+    "name": "Audio messages in Slack (Jan 2025)",
+    "kind": "feature",
+    "description": "January 2025 product update. Devin can respond to audio messages sent via Slack — triggers session via voice clip.",
+    "source_ids": ["cognition-blog-jan-25-product-update"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.usage-based-billing-launch",
+    "name": "Usage-based billing (January 9, 2025)",
+    "kind": "release-note",
+    "description": "January 9, 2025. Launched pay-as-you-go billing with Additional Usage Budget cap. Bills at end of cycle OR when usage exceeds $2,000 (whichever comes first).",
+    "source_ids": ["cognition-blog-jan-25-product-update"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.enterprise-accounts-launch",
+    "name": "Enterprise Accounts (Jan 2025)",
+    "kind": "release-note",
+    "description": "January 2025 release. Enterprise accounts enable centralized management of multiple Devin organizations — admin, billing, member access controls.",
+    "source_ids": ["cognition-blog-jan-25-product-update"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.cloud-agents-blog",
+    "name": "What We Learned Building Cloud Agents (blog)",
+    "kind": "feature",
+    "description": "Cognition blog post covering DevBox isolation, hypervisor snapshotting, async-gap survival, and the orchestration/governance/integration triad. Foundational architecture overview.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.how-cognition-uses-devin",
+    "name": "How Cognition Uses Devin to Build Devin (blog)",
+    "kind": "feature",
+    "description": "Cognition's own usage patterns + internal MCP integrations. Real-world fluency-building reference.",
+    "source_ids": ["cognition-blog-how-cognition-uses-devin"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.itau-case-study",
+    "name": "Itaú case study (17K engineers, 11mo)",
+    "kind": "feature",
+    "description": "Customer case study cited in the Cloud Agents blog. Itaú (largest private bank in Latin America), 11 months in with ~17,000 engineers: 5–6× faster migrations, 70% auto-remediation of static-analysis security vulnerabilities, 2× test-coverage increase.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.engineer-fluency",
+    "name": "Engineer fluency (operational concept)",
+    "kind": "feature",
+    "description": "Skill engineers develop by managing concurrent agent sessions over months on real projects. Distinct from writing code. Measured fluency comes from delegating + reviewing at scale.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.review-volume-shift",
+    "name": "Review-volume shift (org-process implication)",
+    "kind": "feature",
+    "description": "When agents do significant share of execution, code review volume increases dramatically. Review processes designed for human-authored code don't transfer cleanly. Teams must establish what rigorous review looks like at higher volume.",
+    "source_ids": ["cognition-blog-cloud-agents"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.session-acu-soft-cap",
+    "name": "10-ACU per-session soft cap",
+    "kind": "feature",
+    "description": "Cognition's recommended per-session ACU ceiling. Performance noticeably degrades beyond ~10 ACU. Soft (product nudges, doesn't enforce).",
+    "source_ids": ["cognition-blog-jan-25-product-update"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.bug-catcher-confidence-levels",
+    "name": "Devin Review bug-catcher confidence levels",
+    "kind": "feature",
+    "description": "Devin Review bug-catcher labels detected bugs by confidence. 'Severe' bugs require immediate attention. Lower-confidence bugs surfaced as flags.",
+    "source_ids": ["devin-docs-work-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.smart-diff-organization",
+    "name": "Smart diff organization (Devin Review)",
+    "kind": "feature",
+    "description": "Devin Review groups changes logically (related edits together) instead of alphabetical. Makes large PRs more navigable.",
+    "source_ids": ["devin-docs-work-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.copy-move-detection",
+    "name": "Copy/move detection (Devin Review)",
+    "kind": "feature",
+    "description": "Devin Review detects when code has been copied or moved and displays as a copy/move instead of full delete + insert. Reduces noise in refactor PRs.",
+    "source_ids": ["devin-docs-work-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.codebase-aware-chat",
+    "name": "Codebase-aware chat (Devin Review)",
+    "kind": "feature",
+    "description": "PR-level chat that pulls in context from the rest of the codebase. Can ask Devin from any comment, bug, or flag in the diff view.",
+    "source_ids": ["devin-docs-work-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.code-changes-from-chat",
+    "name": "Code changes from chat (Devin Review)",
+    "kind": "feature",
+    "description": "Ask Devin Review's chat to make code edits; review the suggested changes; apply as a commit to the PR branch without leaving the surface.",
+    "source_ids": ["devin-docs-work-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.pr-workflow-actions",
+    "name": "PR workflow actions (Devin Review)",
+    "kind": "feature",
+    "description": "Merge / close / convert-to-draft / mark-ready-for-review / toggle-auto-merge directly from Devin Review. No need to switch to GitHub.",
+    "source_ids": ["devin-docs-work-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.review-github-compat",
+    "name": "GitHub compatibility (Devin Review)",
+    "kind": "feature",
+    "description": "Devin Review's comments / approvals / change-requests sync back to GitHub bidirectionally. Supports GitHub Cloud + GitHub Enterprise Server.",
+    "source_ids": ["devin-docs-work-devin-review"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.docs-sitemap",
+    "name": "docs.devin.ai sitemap.xml",
+    "kind": "feature",
+    "description": "Master URL inventory at https://docs.devin.ai/sitemap.xml. ~264 KB at fetch time. Used by Phase 1 ingest to enumerate Mintlify pages.",
+    "source_ids": ["devin-docs-sitemap"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.docs-llms-txt",
+    "name": "docs.devin.ai llms.txt",
+    "kind": "feature",
+    "description": "AI-friendly index at https://docs.devin.ai/llms.txt. ~52 KB. Lists all available pages — used by AI agents to discover the documentation structure.",
+    "source_ids": ["devin-docs-llms-index"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.release-notes-2024",
+    "name": "Release notes — 2024",
+    "kind": "feature",
+    "description": "2024 release notes covering June 2024, September 2024, December 2024 (parts 1 + 2) updates. ~24 KB.",
+    "source_ids": ["devin-docs-release-notes-2024"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.release-notes-2025",
+    "name": "Release notes — 2025",
+    "kind": "feature",
+    "description": "2025 release notes — biggest year for new features (DeepWiki, Devin 2.0/2.1, Sonnet 4.5 preview, audio in Slack, enterprise accounts, AI Data Analyst, Codemaps, Devin Review, multi-agent updates). ~47 KB.",
+    "source_ids": ["devin-docs-release-notes-2025"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.release-notes-2026",
+    "name": "Release notes — 2026",
+    "kind": "feature",
+    "description": "2026 release notes — Devin can Manage Devins, Devin can Schedule Devins, Devin in Windsurf, Devin 2.2, Devin for Terminal. ~40 KB.",
+    "source_ids": ["devin-docs-release-notes-2026"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.deepwiki-readme",
+    "name": "CognitionAI/deepwiki repo",
+    "kind": "feature",
+    "description": "Open-source companion to DeepWiki (license unverified at fetch time; treated as private-corpus-only ingest). Supplements docs with implementation detail.",
+    "source_ids": ["cognitionai-deepwiki-readme"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.user-best-practices",
+    "name": "User best practices (limitations, hallucinations, branch protection)",
+    "kind": "feature",
+    "description": "Documented user-side guardrails. Devin may hallucinate, introduce bugs, or suggest insecure code. Recommended: code reviews, branch protections, standard org review processes.",
+    "source_ids": ["devin-docs-admin-security", "devin-docs-enterprise-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.product.session-keyword-cheatsheet",
+    "name": "Session inline-keyword cheatsheet",
+    "kind": "feature",
+    "description": "Session-control keywords usable in Slack/Teams: !ask, !deep, mute, unmute, sleep, archive, EXIT, (aside), help; plus Slack-specific !dana, !fast, ![macro_name].",
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"],
+    "aliases": []
+  }
+]

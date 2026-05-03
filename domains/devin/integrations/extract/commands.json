@@ -1,0 +1,317 @@
+[
+  {
+    "id": "devin.integrations.cmd.mention-devin-slack",
+    "command": "@Devin <message>",
+    "purpose": "Trigger a Devin session in Slack from any channel by tagging @Devin. Devin responds in-thread; users continue the conversation in the thread. Attachments supported.",
+    "flags": [
+      {"name": "<message>", "value": "<text + attachments>", "doc": "The task instructions. May include code snippets, URLs, attachments."}
+    ],
+    "examples": [
+      {"invocation": "@Devin please bump the lodash version in this repo and open a PR", "expected_output": "Devin opens a thread, acknowledges, and starts working", "scenario": "Trivial dependency bump initiated from Slack"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cmd.mention-devin-teams",
+    "command": "@Devin <message>",
+    "purpose": "Trigger a Devin session from a Microsoft Teams channel or chat. Devin responds in-thread.",
+    "flags": [
+      {"name": "<message>", "value": "<text>", "doc": "Task instructions."}
+    ],
+    "examples": [
+      {"invocation": "@Devin investigate why CI is failing on PR 1234", "expected_output": "Devin acknowledges and posts a session link", "scenario": "Bug-triage from Teams"}
+    ],
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.ask",
+    "command": "!ask <question>",
+    "purpose": "Get a quick codebase answer without spinning up a full agent session. Available in Slack and Teams. Lower-cost alternative to a full session for read-only questions.",
+    "flags": [
+      {"name": "<question>", "value": "<text>", "doc": "Question text — typically a 'where is X?' / 'how does Y work?' type query."}
+    ],
+    "examples": [
+      {"invocation": "!ask where is the rate limiter implemented in our auth service?", "expected_output": "Quick answer with file references — no agent session created", "scenario": "Codebase navigation in Slack"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.deep",
+    "command": "!deep <question>",
+    "purpose": "Deeper research answer using advanced search. Higher-effort variant of !ask. Available in Slack and Teams.",
+    "flags": [
+      {"name": "<question>", "value": "<text>", "doc": "Question requiring multi-file search and reasoning."}
+    ],
+    "examples": [
+      {"invocation": "!deep what's the full request flow when a user uploads an avatar?", "expected_output": "Multi-step traced answer with cross-file citations", "scenario": "Architecture-level question in Slack"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.mute",
+    "command": "mute (or @Devin mute)",
+    "purpose": "Prevent Devin from seeing further messages in the current thread. Useful when humans need to confer without Devin reacting.",
+    "flags": [],
+    "examples": [
+      {"invocation": "mute", "expected_output": "Devin stops processing thread messages", "scenario": "Side-conversation between human reviewers in Devin's run thread"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.unmute",
+    "command": "unmute (or @Devin unmute)",
+    "purpose": "Re-enable Devin's processing of thread messages after a `mute`.",
+    "flags": [],
+    "examples": [
+      {"invocation": "unmute", "expected_output": "Devin resumes processing thread messages", "scenario": "Re-engaging Devin after a side-conversation"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.aside",
+    "command": "(aside) <message>  OR  !aside <message>",
+    "purpose": "Cause Devin to ignore a single message (useful for commenting on Devin's run directly in-thread without affecting Devin's behavior).",
+    "flags": [
+      {"name": "<message>", "value": "<text>", "doc": "Message Devin should ignore."}
+    ],
+    "examples": [
+      {"invocation": "(aside) lol that's the second time it's tried that approach", "expected_output": "Message visible to humans; ignored by Devin", "scenario": "Human-only thread chatter without disturbing Devin's run"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.sleep",
+    "command": "sleep",
+    "purpose": "Put Devin to sleep on the current task. Send any message in the thread to wake Devin back up.",
+    "flags": [],
+    "examples": [
+      {"invocation": "sleep", "expected_output": "Devin enters sleep state; will resume on next message", "scenario": "Pausing while waiting on external dependency (CI, third-party review)"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.archive",
+    "command": "archive (or @Devin archive)",
+    "purpose": "Put Devin to sleep AND archive the session. Cleaner than `sleep` for sessions you're done with.",
+    "flags": [],
+    "examples": [
+      {"invocation": "archive", "expected_output": "Session archived; thread deactivated", "scenario": "Wrapping up a completed Devin run"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.exit",
+    "command": "EXIT",
+    "purpose": "End the current Devin session immediately.",
+    "flags": [],
+    "examples": [
+      {"invocation": "EXIT", "expected_output": "Session ends; thread deactivated", "scenario": "Aborting a session that's gone off-track"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack", "devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.help",
+    "command": "help",
+    "purpose": "Show the available inline keywords and functions. Available in Microsoft Teams.",
+    "flags": [],
+    "examples": [
+      {"invocation": "help", "expected_output": "List of !ask, !deep, mute, unmute, sleep, archive, EXIT, etc.", "scenario": "Teaching new users the keyword set"}
+    ],
+    "source_ids": ["devin-docs-integrations-microsoft-teams"]
+  },
+  {
+    "id": "devin.integrations.cmd.dana-slack",
+    "command": "!dana <message>",
+    "purpose": "Slack-only: launch a Dana session (Cognition's data-analyst agent variant). Equivalent to `!dana` triggers in the Slack inline-keyword set.",
+    "flags": [
+      {"name": "<message>", "value": "<text>", "doc": "Data-analysis prompt for Dana."}
+    ],
+    "examples": [
+      {"invocation": "!dana what was the p99 latency for the checkout service in the last 7 days?", "expected_output": "Dana queries telemetry and posts the answer", "scenario": "Quick analytics question in Slack"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cmd.macro-slack",
+    "command": "![macro_name] <message>",
+    "purpose": "Slack-only: invoke a named playbook macro at session start. Examples include user-defined `![ship-it]`, `![investigate]`, etc.",
+    "flags": [
+      {"name": "[macro_name]", "value": "<name>", "doc": "Macro name from the customer's playbook configuration."},
+      {"name": "<message>", "value": "<text>", "doc": "Optional task instructions appended to the playbook context."}
+    ],
+    "examples": [
+      {"invocation": "![ship-it] PR 4567", "expected_output": "Devin starts a session using the 'ship-it' playbook on PR 4567", "scenario": "Playbook-driven Slack-triggered run"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cmd.fast-slack",
+    "command": "!fast <message>",
+    "purpose": "Slack-only: launch a fast-mode Devin session. Trades off depth for speed.",
+    "flags": [
+      {"name": "<message>", "value": "<text>", "doc": "Task instructions."}
+    ],
+    "examples": [
+      {"invocation": "!fast fix the typo in README.md line 47", "expected_output": "Devin runs in fast mode and opens a one-line PR quickly", "scenario": "Trivial change in Slack"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cmd.jira-assign-to-devin",
+    "command": "[Jira] Assign ticket to Devin",
+    "purpose": "Trigger a Devin session from Jira by assigning the ticket to Devin's service account. Uses the default playbook configured in the Jira integration settings.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Set Assignee to Devin on JIRA-1234", "expected_output": "Devin opens a session against the ticket using the default playbook", "scenario": "Standard ticket-driven Devin trigger"}
+    ],
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cmd.jira-add-playbook-label",
+    "command": "[Jira] Add playbook-macro label",
+    "purpose": "Trigger Devin with a specific playbook by adding a label whose name matches the macro (e.g., `!plan`, `!implement`, `!triage`).",
+    "flags": [
+      {"name": "label", "value": "<!macro>", "doc": "Playbook macro label name. Must already exist in the Jira project."}
+    ],
+    "examples": [
+      {"invocation": "Add label `!plan` to JIRA-5678", "expected_output": "Devin starts a session using the !plan playbook", "scenario": "Plan-only run on a new feature ticket"}
+    ],
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cmd.jira-add-devin-label",
+    "command": "[Jira] Add `devin` label (or any label containing 'devin' as a standalone word)",
+    "purpose": "Trigger Devin using the default playbook by adding a generic devin-label. Word-boundary matching, case-insensitive: `devin`, `Devin`, `devin-workshop`, `devin-task` all match. `devinworkshop` and `devin_workshop` do NOT.",
+    "flags": [
+      {"name": "label", "value": "devin|<word-with-devin>", "doc": "Label name."}
+    ],
+    "examples": [
+      {"invocation": "Add label `devin` to JIRA-9012", "expected_output": "Devin starts a session using the default playbook", "scenario": "Quickest manual trigger"}
+    ],
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cmd.jira-mention-comment",
+    "command": "[Jira] @Devin <instructions> (in ticket comment)",
+    "purpose": "Trigger Devin from a Jira ticket comment. Devin uses the comment text as the task instruction (no playbook applied). If a session already exists for the ticket, the comment is forwarded to that session.",
+    "flags": [
+      {"name": "<instructions>", "value": "<text>", "doc": "Task description for Devin."}
+    ],
+    "examples": [
+      {"invocation": "Comment on JIRA-1234: '@Devin please reproduce the failure described in the issue and propose a fix'", "expected_output": "Devin opens a session and starts working", "scenario": "Ad-hoc instructions on a non-default ticket"}
+    ],
+    "source_ids": ["devin-docs-integrations-jira"]
+  },
+  {
+    "id": "devin.integrations.cmd.linear-assign-to-devin",
+    "command": "[Linear] Assign ticket to Devin",
+    "purpose": "Trigger Devin from Linear via assignment. Uses the default playbook (`!plan` for new connections).",
+    "flags": [],
+    "examples": [
+      {"invocation": "Assign LIN-456 to Devin", "expected_output": "Devin opens a session via Linear's agent-session UI", "scenario": "Standard Linear-driven trigger"}
+    ],
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cmd.linear-add-playbook-label",
+    "command": "[Linear] Add synced playbook label",
+    "purpose": "Trigger Devin with a specific playbook by adding a label from the 'Devin Playbooks' label group.",
+    "flags": [
+      {"name": "label", "value": "<!macro>", "doc": "Playbook label synced from Devin's integration settings."}
+    ],
+    "examples": [
+      {"invocation": "Add label `!implement` to LIN-789", "expected_output": "Devin starts a session using the !implement playbook", "scenario": "Implementation run on a planned ticket"}
+    ],
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cmd.linear-mention-comment",
+    "command": "[Linear] @Devin <instructions> (in ticket comment)",
+    "purpose": "Trigger Devin from a Linear ticket comment with custom instructions. No playbook applied.",
+    "flags": [
+      {"name": "<instructions>", "value": "<text>", "doc": "Task description."}
+    ],
+    "examples": [
+      {"invocation": "Comment on LIN-101: '@Devin investigate the reported memory leak in the worker pool'", "expected_output": "Devin opens a session and begins investigation", "scenario": "Ad-hoc task on a Linear ticket"}
+    ],
+    "source_ids": ["devin-docs-integrations-linear"]
+  },
+  {
+    "id": "devin.integrations.cmd.ui-disconnect-github",
+    "command": "[GitHub] github.com/settings/installations > Devin.ai Integration > Configure > Danger zone > Uninstall",
+    "purpose": "Remove Devin's GitHub App installation from a GitHub organization — required when migrating an org's Devin integration to a different Devin account.",
+    "flags": [],
+    "examples": [
+      {"invocation": "github.com/settings/installations > Devin.ai > Configure > scroll to Danger zone > Uninstall", "expected_output": "Devin's app uninstalled from GitHub side", "scenario": "Migrating from a stale Devin org/enterprise"}
+    ],
+    "source_ids": ["devin-docs-integrations-gh", "devin-docs-admin-common-issues"]
+  },
+  {
+    "id": "devin.integrations.cmd.ui-rename-slack-bot",
+    "command": "[Slack] Workspace Admin > Configure apps > Installed Apps > Devin > App Details > Configuration tab > Bot User > rename",
+    "purpose": "Rename Devin in a Slack workspace (the bot's display name).",
+    "flags": [],
+    "examples": [
+      {"invocation": "Slack admin > Configure apps > Devin > App Details > Configuration > Bot User > 'Robobot'", "expected_output": "Bot now appears as @Robobot in the workspace", "scenario": "Workspace branding"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cmd.ui-enable-slack-notifications",
+    "command": "[Devin run UI] menu > Enable Slack notifications",
+    "purpose": "Enable per-run private Slack notifications. Devin DMs the user on status updates for that session.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Open a run, click menu > Enable Slack notifications", "expected_output": "DMs from Devin on every status update for that run", "scenario": "Async monitoring of a long-running session"}
+    ],
+    "source_ids": ["devin-docs-integrations-slack"]
+  },
+  {
+    "id": "devin.integrations.cmd.aws-create-nlb",
+    "command": "[AWS] Create Network Load Balancer with security groups for Devin egress IPs",
+    "purpose": "Stand up an NLB to front a self-hosted SCM/artifact endpoint, configured with security-group rules per Devin egress IP. Required for the manual-security-groups self-hosted setup pattern (NLB preserves source IPs).",
+    "flags": [
+      {"name": "security-groups", "value": "<sg-id>", "doc": "Security group with rules for each Devin egress IP."},
+      {"name": "target-group", "value": "<tg-arn>", "doc": "Target group pointing at the internal service."}
+    ],
+    "examples": [
+      {"invocation": "Create NLB; attach SG with 7 inbound TCP/443 rules (one per Devin egress IP); attach target group pointing at GitLab self-hosted", "expected_output": "Public NLB endpoint reachable only from Devin's IPs", "scenario": "Self-hosted GitLab exposure to Devin"}
+    ],
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  },
+  {
+    "id": "devin.integrations.cmd.aws-create-alb-with-waf",
+    "command": "[AWS] Create Application Load Balancer + WAF with IP-allowlist rule",
+    "purpose": "Stand up an ALB fronting a self-hosted endpoint, with AWS WAF enforcing IP allowlist. Recommended for most use cases. NOTE: ALB NATs source IPs — for artifact repos, IP allowlisting must ALSO be configured at the artifact repo itself.",
+    "flags": [
+      {"name": "waf-acl", "value": "<acl-arn>", "doc": "WAF ACL with an IP-set rule listing Devin egress IPs."}
+    ],
+    "examples": [
+      {"invocation": "Create ALB; attach WAF ACL with IP-allowlist rule referencing Devin's 7 egress IPs", "expected_output": "ALB rejects traffic outside Devin's IPs at WAF level", "scenario": "Self-hosted GitLab + Artifactory behind one ALB"}
+    ],
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  },
+  {
+    "id": "devin.integrations.cmd.aws-route53-dns-change",
+    "command": "[AWS] aws route53 change-resource-record-sets --hosted-zone-id <id> --change-batch file://dns-change.json",
+    "purpose": "Publish a DNS record pointing at the load balancer that fronts the self-hosted endpoint, so Devin can reach it via a stable domain name.",
+    "flags": [
+      {"name": "--hosted-zone-id", "value": "<zone-id>", "doc": "Route 53 hosted-zone identifier."},
+      {"name": "--change-batch", "value": "file://dns-change.json", "doc": "JSON change batch describing the new A/AAAA record."}
+    ],
+    "examples": [
+      {"invocation": "aws route53 change-resource-record-sets --hosted-zone-id Z123 --change-batch file://dns-change.json", "expected_output": "DNS record propagates; Devin can connect via gitlab.yourcompany.com", "scenario": "Final step of self-hosted SCM onboarding"}
+    ],
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  },
+  {
+    "id": "devin.integrations.cmd.email-enterprise-support",
+    "command": "Email enterprise@cognition.ai with self-hosted SCM URL + artifact repo URL + auth requirements",
+    "purpose": "Hand off self-hosted-SCM/artifacts integration to Cognition support after the network plumbing is ready. Cognition completes the connection from their side.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Email enterprise@cognition.ai: 'Self-hosted GitLab at https://gitlab.acme.com (NLB-fronted, 7 Devin IPs allowed); Artifactory at https://artifacts.acme.com; service account `devin-bot`'", "expected_output": "Cognition completes the integration setup on their side", "scenario": "Final hand-off in self-hosted SCM onboarding"}
+    ],
+    "source_ids": ["devin-docs-integrations-self-hosted-scm-artifacts"]
+  }
+]

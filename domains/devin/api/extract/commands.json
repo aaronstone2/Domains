@@ -1,0 +1,1911 @@
+[
+  {
+    "id": "devin.api.cmd.curl-self",
+    "command": "GET /v3/self",
+    "purpose": "Verify credentials and identify the authenticated principal. Returns principal_type ('service_user'|'user'), service_user_id, service_user_name, org_id (null for enterprise-scoped). The first call in any auth-debug flow.",
+    "flags": [
+      {"name": "Authorization", "value": "Bearer <cog_...>", "doc": "Required header. cog_-prefixed service-user key or PAT."}
+    ],
+    "examples": [
+      {"invocation": "curl https://api.devin.ai/v3/self -H \"Authorization: Bearer $DEVIN_API_KEY\"", "expected_output": "{\"principal_type\":\"service_user\",\"service_user_id\":\"service-user-abc123\",\"service_user_name\":\"CI Bot\",\"org_id\":null}", "scenario": "First step of common-flows auth verification"}
+    ],
+    "source_ids": ["devin-docs-api-v3-self-self", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-organizations",
+    "command": "GET /v3/enterprise/organizations",
+    "purpose": "List organizations under the enterprise. For enterprise service users to enumerate orgs they can act on.",
+    "flags": [
+      {"name": "Authorization", "value": "Bearer <cog_...>", "doc": "Enterprise service user key with ManageOrganizations or ViewAccountSessions."}
+    ],
+    "examples": [
+      {"invocation": "curl https://api.devin.ai/v3/enterprise/organizations -H \"Authorization: Bearer $DEVIN_API_KEY\"", "expected_output": "{\"items\":[{\"org_id\":\"...\", ...}], \"has_next_page\":false, \"end_cursor\":null}", "scenario": "Discover orgs for cross-org operations"}
+    ],
+    "source_ids": ["devin-docs-api-v3-organizations-organizations", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.create-session-v3",
+    "command": "POST /v3/organizations/{org_id}/sessions",
+    "purpose": "Create a Devin session. Body fields: prompt (required), title (optional), playbook (optional), tags (optional), ACU limit (optional), create_as_user_id (optional, requires ImpersonateOrgSessions).",
+    "flags": [
+      {"name": "prompt", "value": "<text>", "doc": "Required. Initial agent instruction."},
+      {"name": "title", "value": "<string>", "doc": "Optional session title."},
+      {"name": "playbook", "value": "<id>", "doc": "Optional playbook to apply."},
+      {"name": "tags", "value": "<list[string]>", "doc": "Optional session tags."},
+      {"name": "create_as_user_id", "value": "<user_id>", "doc": "Optional. Attribute the session to a specific user. Requires ImpersonateOrgSessions permission."}
+    ],
+    "examples": [
+      {"invocation": "curl -X POST https://api.devin.ai/v3/organizations/$ORG_ID/sessions -H \"Authorization: Bearer $KEY\" -H \"Content-Type: application/json\" -d '{\"prompt\":\"Create a Python script that analyzes CSV data\"}'", "expected_output": "{\"session_id\":\"devin-abc123\",\"url\":\"https://app.devin.ai/sessions/devin-abc123\",\"status\":\"running\"}", "scenario": "Programmatic session start from CI/CD"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-post-organizations-sessions", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.get-session-v3",
+    "command": "GET /v3/organizations/{org_id}/sessions/{session_id}",
+    "purpose": "Retrieve session status, prompt, output, and metadata. Used to poll lifecycle (`status` in {'running','exit','error','suspended'}).",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl https://api.devin.ai/v3/organizations/$ORG_ID/sessions/$SESSION_ID -H \"Authorization: Bearer $KEY\"", "expected_output": "{\"session_id\":\"...\", \"status\":\"running\", ...}", "scenario": "Polling session for completion in a script"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-get-organizations-session", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.list-session-messages-v3",
+    "command": "GET /v3/organizations/{org_id}/sessions/{session_id}/messages",
+    "purpose": "List all messages exchanged with a session. Used for follow-up monitoring or transcript export.",
+    "flags": [
+      {"name": "first", "value": "<int>", "doc": "Page size."},
+      {"name": "after", "value": "<cursor>", "doc": "Cursor from prior page."}
+    ],
+    "examples": [
+      {"invocation": "curl \"https://api.devin.ai/v3/organizations/$ORG_ID/sessions/$SESSION_ID/messages\" -H \"Authorization: Bearer $KEY\"", "expected_output": "{\"items\":[{role,content,created_at}, ...], ...}", "scenario": "Polling for messages while session runs"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-get-organizations-session-messages", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.send-session-message-v3",
+    "command": "POST /v3/organizations/{org_id}/sessions/{session_id}/messages",
+    "purpose": "Send a follow-up message to a session. Continues the agent conversation.",
+    "flags": [
+      {"name": "content", "value": "<text>", "doc": "Message body."}
+    ],
+    "examples": [
+      {"invocation": "curl -X POST .../sessions/$SID/messages -H \"Authorization: Bearer $KEY\" -d '{\"content\":\"please re-run the tests\"}'", "expected_output": "Acknowledgment + message_id", "scenario": "Follow-up instruction mid-session"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-post-organizations-sessions-messages"]
+  },
+  {
+    "id": "devin.api.cmd.list-sessions-v3",
+    "command": "GET /v3/organizations/{org_id}/sessions",
+    "purpose": "List sessions in an org. Cursor-paginated. Filterable on creation/update time, tags, playbook, schedule, etc.",
+    "flags": [{"name": "first", "value": "<int>", "doc": "Page size."}, {"name": "after", "value": "<cursor>", "doc": "Pagination cursor."}],
+    "examples": [
+      {"invocation": "curl \"...?first=50\" -H \"Authorization: Bearer $KEY\"", "expected_output": "Paginated session list", "scenario": "Bulk-list sessions for analytics"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-organizations-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.list-sessions-insights-v3",
+    "command": "GET /v3/organizations/{org_id}/sessions/insights",
+    "purpose": "List sessions with their AI-generated insights attached. Insights summarize session behavior post-hoc.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl .../sessions/insights -H \"Authorization: Bearer $KEY\"", "expected_output": "Sessions list with insights field populated", "scenario": "Retrospective analysis pipeline"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-organizations-sessions-insights"]
+  },
+  {
+    "id": "devin.api.cmd.get-session-insights-v3",
+    "command": "GET /v3/organizations/{org_id}/sessions/{session_id}/insights",
+    "purpose": "Retrieve AI-generated insights for a single session.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl .../sessions/$SID/insights -H \"Authorization: Bearer $KEY\"", "expected_output": "Insights object", "scenario": "Display per-session retrospective"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-get-organizations-session-insights"]
+  },
+  {
+    "id": "devin.api.cmd.generate-session-insights-v3",
+    "command": "POST /v3/organizations/{org_id}/sessions/{session_id}/insights/generate",
+    "purpose": "Trigger generation of insights for a session. Returns the new/updated insights record.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl -X POST .../sessions/$SID/insights/generate -H \"Authorization: Bearer $KEY\"", "expected_output": "Insights generation accepted", "scenario": "On-demand insight refresh"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-post-organizations-session-insights-generate"]
+  },
+  {
+    "id": "devin.api.cmd.list-session-attachments-v3",
+    "command": "GET /v3/organizations/{org_id}/sessions/{session_id}/attachments",
+    "purpose": "List attachments produced/uploaded during a session. Each item has attachment_id, name, and url to download.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl .../sessions/$SID/attachments -H \"Authorization: Bearer $KEY\"", "expected_output": "{\"items\":[{\"attachment_id\":\"att_123\",\"name\":\"output.py\",\"url\":\"https://...\"}]}", "scenario": "Download session outputs in CI"}
+    ],
+    "source_ids": ["devin-docs-api-v3-sessions-get-organizations-session-attachments", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.get-session-tags-v3",
+    "command": "GET /v3/organizations/{org_id}/sessions/{session_id}/tags",
+    "purpose": "Retrieve the tags currently set on a session.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../sessions/$SID/tags -H \"Authorization: Bearer $KEY\"", "expected_output": "{\"tags\":[\"...\"]}", "scenario": "Filter sessions by tag in dashboards"}],
+    "source_ids": ["devin-docs-api-v3-sessions-get-organizations-session-tags"]
+  },
+  {
+    "id": "devin.api.cmd.append-session-tags-v3",
+    "command": "POST /v3/organizations/{org_id}/sessions/{session_id}/tags",
+    "purpose": "Append tags to a session without removing existing ones.",
+    "flags": [{"name": "tags", "value": "<list[string]>", "doc": "Tags to add."}],
+    "examples": [{"invocation": "curl -X POST .../sessions/$SID/tags -d '{\"tags\":[\"hot-fix\"]}'", "expected_output": "Updated tag list", "scenario": "Mark a session post-hoc"}],
+    "source_ids": ["devin-docs-api-v3-sessions-post-organizations-session-tags"]
+  },
+  {
+    "id": "devin.api.cmd.replace-session-tags-v3",
+    "command": "PUT /v3/organizations/{org_id}/sessions/{session_id}/tags",
+    "purpose": "Replace the full tag set on a session (idempotent set semantics).",
+    "flags": [{"name": "tags", "value": "<list[string]>", "doc": "New full tag set."}],
+    "examples": [{"invocation": "curl -X PUT .../sessions/$SID/tags -d '{\"tags\":[\"prod\",\"hotfix\"]}'", "expected_output": "Tags replaced", "scenario": "Re-tag during reconciliation"}],
+    "source_ids": ["devin-docs-api-v3-sessions-put-organizations-session-tags"]
+  },
+  {
+    "id": "devin.api.cmd.archive-session-v3",
+    "command": "POST /v3/organizations/{org_id}/sessions/{session_id}/archive",
+    "purpose": "Archive a completed session (sleep + archive). Removes from active list.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../sessions/$SID/archive -H \"Authorization: Bearer $KEY\"", "expected_output": "Archive accepted", "scenario": "Cleanup after run completion"}],
+    "source_ids": ["devin-docs-api-v3-sessions-post-organizations-sessions-archive"]
+  },
+  {
+    "id": "devin.api.cmd.terminate-session-v3",
+    "command": "DELETE /v3/organizations/{org_id}/sessions/{session_id}",
+    "purpose": "Terminate (and delete) a session. Permanent.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../sessions/$SID -H \"Authorization: Bearer $KEY\"", "expected_output": "Session terminated", "scenario": "Abort a runaway session"}],
+    "source_ids": ["devin-docs-api-v3-sessions-delete-organizations-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-sessions-v3",
+    "command": "GET /v3/enterprise/sessions",
+    "purpose": "Cross-org list of sessions for the entire enterprise account. Read-only by default.",
+    "flags": [{"name": "first", "value": "<int>", "doc": "Page size."}, {"name": "after", "value": "<cursor>", "doc": "Pagination cursor."}],
+    "examples": [{"invocation": "curl /v3/enterprise/sessions -H \"Authorization: Bearer $KEY\"", "expected_output": "All sessions across orgs", "scenario": "Enterprise-wide session reporting"}],
+    "source_ids": ["devin-docs-api-v3-sessions-enterprise-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-sessions-insights-v3",
+    "command": "GET /v3/enterprise/sessions/insights",
+    "purpose": "Enterprise sessions with insights attached.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/sessions/insights -H \"Authorization: Bearer $KEY\"", "expected_output": "Sessions + insights", "scenario": "Enterprise retrospective dashboards"}],
+    "source_ids": ["devin-docs-api-v3-sessions-enterprise-sessions-insights"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-session-v3",
+    "command": "GET /v3/enterprise/sessions/{session_id}",
+    "purpose": "Get enterprise-scoped session detail (cross-org).",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/sessions/$SID -H \"Authorization: Bearer $KEY\"", "expected_output": "Session detail", "scenario": "Drill-down from enterprise dashboard"}],
+    "source_ids": ["devin-docs-api-v3-sessions-get-enterprise-session"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-session-attachments-v3",
+    "command": "GET /v3/enterprise/sessions/{session_id}/attachments",
+    "purpose": "Enterprise-scoped session attachments list.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/sessions/$SID/attachments -H \"Authorization: Bearer $KEY\"", "expected_output": "Attachments list", "scenario": "Cross-org attachment retrieval"}],
+    "source_ids": ["devin-docs-api-v3-sessions-get-enterprise-session-attachments"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-session-messages-v3",
+    "command": "GET /v3/enterprise/sessions/{session_id}/messages",
+    "purpose": "Enterprise-scoped session message list.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/sessions/$SID/messages -H \"Authorization: Bearer $KEY\"", "expected_output": "Messages", "scenario": "Cross-org transcript export"}],
+    "source_ids": ["devin-docs-api-v3-sessions-get-enterprise-session-messages"]
+  },
+  {
+    "id": "devin.api.cmd.send-enterprise-session-message-v3",
+    "command": "POST /v3/enterprise/sessions/{session_id}/messages",
+    "purpose": "Send a message to a session from the enterprise scope.",
+    "flags": [{"name": "content", "value": "<text>", "doc": "Message body."}],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/sessions/$SID/messages -d '{\"content\":\"...\"}'", "expected_output": "Message accepted", "scenario": "Cross-org follow-up"}],
+    "source_ids": ["devin-docs-api-v3-sessions-post-enterprise-sessions-messages"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-session-tags-v3",
+    "command": "GET /v3/enterprise/sessions/{session_id}/tags",
+    "purpose": "Enterprise-scoped tag retrieval.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/sessions/$SID/tags -H \"Authorization: Bearer $KEY\"", "expected_output": "Tags", "scenario": "Cross-org tag inspection"}],
+    "source_ids": ["devin-docs-api-v3-sessions-get-enterprise-session-tags"]
+  },
+  {
+    "id": "devin.api.cmd.append-enterprise-session-tags-v3",
+    "command": "POST /v3/enterprise/sessions/{session_id}/tags",
+    "purpose": "Enterprise-scoped append tags.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/sessions/$SID/tags -d '{\"tags\":[\"audit\"]}'", "expected_output": "Tags appended", "scenario": "Cross-org bulk tag"}],
+    "source_ids": ["devin-docs-api-v3-sessions-post-enterprise-session-tags"]
+  },
+  {
+    "id": "devin.api.cmd.replace-enterprise-session-tags-v3",
+    "command": "PUT /v3/enterprise/sessions/{session_id}/tags",
+    "purpose": "Enterprise-scoped replace tags.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v3/enterprise/sessions/$SID/tags", "expected_output": "Tags replaced", "scenario": "Cross-org tag normalization"}],
+    "source_ids": ["devin-docs-api-v3-sessions-put-enterprise-session-tags"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-session-insights-v3",
+    "command": "GET /v3/enterprise/sessions/{session_id}/insights",
+    "purpose": "Enterprise-scoped session insights.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/sessions/$SID/insights -H \"Authorization: Bearer $KEY\"", "expected_output": "Insights", "scenario": "Cross-org retrospective"}],
+    "source_ids": ["devin-docs-api-v3-sessions-get-enterprise-session-insights"]
+  },
+  {
+    "id": "devin.api.cmd.generate-enterprise-session-insights-v3",
+    "command": "POST /v3/enterprise/sessions/{session_id}/insights/generate",
+    "purpose": "Enterprise-scoped insights generation.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/sessions/$SID/insights/generate", "expected_output": "Insights gen accepted", "scenario": "Bulk insight refresh by audit"}],
+    "source_ids": ["devin-docs-api-v3-sessions-post-enterprise-session-insights-generate"]
+  },
+  {
+    "id": "devin.api.cmd.upload-attachment-v3",
+    "command": "POST /v3/organizations/{org_id}/attachments",
+    "purpose": "Upload a file as an attachment for sessions to use.",
+    "flags": [{"name": "file", "value": "<binary>", "doc": "Multipart file upload."}],
+    "examples": [{"invocation": "curl -X POST .../attachments -F file=@./input.csv -H \"Authorization: Bearer $KEY\"", "expected_output": "{\"attachment_id\":\"att_123\"}", "scenario": "Pre-upload reference data"}],
+    "source_ids": ["devin-docs-api-v3-attachments-post-organizations-attachments"]
+  },
+  {
+    "id": "devin.api.cmd.download-attachment-v3",
+    "command": "GET /v3/organizations/{org_id}/attachments/{attachment_id}",
+    "purpose": "Download an attachment by ID.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../attachments/att_123 -H \"Authorization: Bearer $KEY\" -o file.bin", "expected_output": "File bytes", "scenario": "Programmatic file retrieval"}],
+    "source_ids": ["devin-docs-api-v3-attachments-get-organizations-attachments"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-knowledge-notes-v3",
+    "command": "GET /v3/organizations/{org_id}/knowledge/notes",
+    "purpose": "List org-level knowledge notes. Filterable by repo/folder/search query.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../knowledge/notes -H \"Authorization: Bearer $KEY\"", "expected_output": "{\"items\":[...]}", "scenario": "Inventory existing knowledge"}],
+    "source_ids": ["devin-docs-api-v3-notes-organizations-knowledge-notes"]
+  },
+  {
+    "id": "devin.api.cmd.create-org-knowledge-note-v3",
+    "command": "POST /v3/organizations/{org_id}/knowledge/notes",
+    "purpose": "Create a new org-level knowledge note. Body fields: name, trigger, body.",
+    "flags": [{"name": "name", "value": "<string>", "doc": "Note name."}, {"name": "trigger", "value": "<string>", "doc": "When this knowledge applies."}, {"name": "body", "value": "<markdown>", "doc": "Knowledge content."}],
+    "examples": [{"invocation": "curl -X POST .../knowledge/notes -d '{\"name\":\"Coding standards\",\"trigger\":\"When writing code\",\"body\":\"...\"}'", "expected_output": "{\"note_id\":\"...\"}", "scenario": "Codify standards programmatically"}],
+    "source_ids": ["devin-docs-api-v3-notes-post-organizations-knowledge-notes", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-knowledge-note-v3",
+    "command": "GET /v3/organizations/{org_id}/knowledge/notes/{note_id}",
+    "purpose": "Retrieve a single org-level knowledge note.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../knowledge/notes/$NOTE_ID -H \"Authorization: Bearer $KEY\"", "expected_output": "Note record", "scenario": "Fetch specific knowledge"}],
+    "source_ids": ["devin-docs-api-v3-notes-get-organizations-knowledge-note"]
+  },
+  {
+    "id": "devin.api.cmd.update-org-knowledge-note-v3",
+    "command": "PUT /v3/organizations/{org_id}/knowledge/notes/{note_id}",
+    "purpose": "Update an existing org-level knowledge note.",
+    "flags": [{"name": "name", "value": "<string>", "doc": "Updated name."}, {"name": "trigger", "value": "<string>", "doc": "Updated trigger."}, {"name": "body", "value": "<markdown>", "doc": "Updated body."}],
+    "examples": [{"invocation": "curl -X PUT .../knowledge/notes/$NOTE_ID -d '{\"name\":\"...\",\"trigger\":\"...\",\"body\":\"...\"}'", "expected_output": "Updated note", "scenario": "Iterative refinement of standards"}],
+    "source_ids": ["devin-docs-api-v3-notes-put-organizations-knowledge-notes-note-id"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-knowledge-note-v3",
+    "command": "DELETE /v3/organizations/{org_id}/knowledge/notes/{note_id}",
+    "purpose": "Delete an org-level knowledge note.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../knowledge/notes/$NOTE_ID", "expected_output": "Deleted", "scenario": "Sunset obsolete knowledge"}],
+    "source_ids": ["devin-docs-api-v3-notes-delete-organizations-knowledge-notes-note-id"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-knowledge-folders-v3",
+    "command": "GET /v3/organizations/{org_id}/knowledge/folders",
+    "purpose": "Get org-level knowledge folder structure with note counts per folder.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../knowledge/folders -H \"Authorization: Bearer $KEY\"", "expected_output": "Folder tree with counts", "scenario": "Build a knowledge browser"}],
+    "source_ids": ["devin-docs-api-v3-notes-organizations-knowledge-folders"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-knowledge-notes-v3",
+    "command": "GET /v3/enterprise/knowledge/notes",
+    "purpose": "Enterprise-scoped knowledge notes list.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/knowledge/notes -H \"Authorization: Bearer $KEY\"", "expected_output": "Notes", "scenario": "Enterprise knowledge audit"}],
+    "source_ids": ["devin-docs-api-v3-notes-enterprise-knowledge-notes"]
+  },
+  {
+    "id": "devin.api.cmd.create-enterprise-knowledge-note-v3",
+    "command": "POST /v3/enterprise/knowledge/notes",
+    "purpose": "Create an enterprise-level knowledge note (visible across all orgs).",
+    "flags": [{"name": "name", "value": "<string>", "doc": "Name."}, {"name": "trigger", "value": "<string>", "doc": "Trigger."}, {"name": "body", "value": "<markdown>", "doc": "Body."}],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/knowledge/notes -d '{...}'", "expected_output": "Created", "scenario": "Enterprise-wide policy as knowledge"}],
+    "source_ids": ["devin-docs-api-v3-notes-post-enterprise-knowledge-notes"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-knowledge-note-v3",
+    "command": "GET /v3/enterprise/knowledge/notes/{note_id}",
+    "purpose": "Get an enterprise-level knowledge note.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/knowledge/notes/$NID", "expected_output": "Note", "scenario": "Read enterprise note"}],
+    "source_ids": ["devin-docs-api-v3-notes-get-enterprise-knowledge-note"]
+  },
+  {
+    "id": "devin.api.cmd.update-enterprise-knowledge-note-v3",
+    "command": "PUT /v3/enterprise/knowledge/notes/{note_id}",
+    "purpose": "Update an enterprise-level knowledge note.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v3/enterprise/knowledge/notes/$NID -d '{...}'", "expected_output": "Updated", "scenario": "Refine enterprise policy"}],
+    "source_ids": ["devin-docs-api-v3-notes-put-enterprise-knowledge-notes-note-id"]
+  },
+  {
+    "id": "devin.api.cmd.delete-enterprise-knowledge-note-v3",
+    "command": "DELETE /v3/enterprise/knowledge/notes/{note_id}",
+    "purpose": "Delete an enterprise-level knowledge note.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/knowledge/notes/$NID", "expected_output": "Deleted", "scenario": "Sunset enterprise policy"}],
+    "source_ids": ["devin-docs-api-v3-notes-delete-enterprise-knowledge-notes-note-id"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-knowledge-folders-v3",
+    "command": "GET /v3/enterprise/knowledge/folders",
+    "purpose": "Enterprise knowledge folder structure with counts.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/knowledge/folders", "expected_output": "Folder tree", "scenario": "Enterprise knowledge browser"}],
+    "source_ids": ["devin-docs-api-v3-notes-enterprise-knowledge-folders"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-playbooks-v3",
+    "command": "GET /v3/organizations/{org_id}/playbooks",
+    "purpose": "List org-level playbooks.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../playbooks -H \"Authorization: Bearer $KEY\"", "expected_output": "Playbooks list", "scenario": "Inventory playbooks"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-organizations-playbooks"]
+  },
+  {
+    "id": "devin.api.cmd.create-org-playbook-v3",
+    "command": "POST /v3/organizations/{org_id}/playbooks",
+    "purpose": "Create an org-level playbook.",
+    "flags": [{"name": "name", "value": "<string>", "doc": "Playbook name."}, {"name": "instructions", "value": "<text>", "doc": "Playbook body."}, {"name": "macro", "value": "<!name>", "doc": "Optional macro for label triggers."}],
+    "examples": [{"invocation": "curl -X POST .../playbooks -d '{\"name\":\"PR Review\",\"instructions\":\"...\"}'", "expected_output": "{\"playbook_id\":\"...\"}", "scenario": "Codify a workflow"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-post-organizations-playbooks", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-playbook-v3",
+    "command": "GET /v3/organizations/{org_id}/playbooks/{playbook_id}",
+    "purpose": "Retrieve an org-level playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../playbooks/$PID", "expected_output": "Playbook record", "scenario": "Render playbook in admin UI"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-get-organizations-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.update-org-playbook-v3",
+    "command": "PUT /v3/organizations/{org_id}/playbooks/{playbook_id}",
+    "purpose": "Update an org-level playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT .../playbooks/$PID -d '{...}'", "expected_output": "Updated", "scenario": "Iterate playbook content"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-put-organizations-playbooks-playbook-id"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-playbook-v3",
+    "command": "DELETE /v3/organizations/{org_id}/playbooks/{playbook_id}",
+    "purpose": "Delete an org-level playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../playbooks/$PID", "expected_output": "Deleted", "scenario": "Sunset playbook"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-delete-organizations-playbooks-playbook-id"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-playbooks-v3",
+    "command": "GET /v3/enterprise/playbooks",
+    "purpose": "List enterprise-level playbooks (visible to all orgs).",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/playbooks", "expected_output": "List", "scenario": "Enterprise playbook audit"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-enterprise-playbooks"]
+  },
+  {
+    "id": "devin.api.cmd.create-enterprise-playbook-v3",
+    "command": "POST /v3/enterprise/playbooks",
+    "purpose": "Create an enterprise-level playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/playbooks -d '{...}'", "expected_output": "Created", "scenario": "Enterprise-wide standardized playbook"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-post-enterprise-playbooks"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-playbook-v3",
+    "command": "GET /v3/enterprise/playbooks/{playbook_id}",
+    "purpose": "Get an enterprise playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/playbooks/$PID", "expected_output": "Playbook", "scenario": "Render in admin UI"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-get-enterprise-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.update-enterprise-playbook-v3",
+    "command": "PUT /v3/enterprise/playbooks/{playbook_id}",
+    "purpose": "Update an enterprise-level playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v3/enterprise/playbooks/$PID -d '{...}'", "expected_output": "Updated", "scenario": "Iterate enterprise playbook"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-put-enterprise-playbooks-playbook-id"]
+  },
+  {
+    "id": "devin.api.cmd.delete-enterprise-playbook-v3",
+    "command": "DELETE /v3/enterprise/playbooks/{playbook_id}",
+    "purpose": "Delete an enterprise-level playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/playbooks/$PID", "expected_output": "Deleted", "scenario": "Sunset enterprise playbook"}],
+    "source_ids": ["devin-docs-api-v3-playbooks-delete-enterprise-playbooks-playbook-id"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-secrets-v3",
+    "command": "GET /v3/organizations/{org_id}/secrets",
+    "purpose": "List secrets metadata in an org. Values are never returned via API.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../secrets -H \"Authorization: Bearer $KEY\"", "expected_output": "{\"items\":[{\"secret_id\":\"...\",\"name\":\"...\"}]}", "scenario": "Audit secret inventory"}],
+    "source_ids": ["devin-docs-api-v3-secrets-organizations-secrets"]
+  },
+  {
+    "id": "devin.api.cmd.create-org-secret-v3",
+    "command": "POST /v3/organizations/{org_id}/secrets",
+    "purpose": "Create an org-level secret. Value is set once and never returned again.",
+    "flags": [{"name": "name", "value": "<string>", "doc": "Secret name (referenced as $name)."}, {"name": "value", "value": "<string>", "doc": "Secret value."}],
+    "examples": [{"invocation": "curl -X POST .../secrets -d '{\"name\":\"NPM_TOKEN\",\"value\":\"...\"}'", "expected_output": "{\"secret_id\":\"...\"}", "scenario": "Provision build credentials"}],
+    "source_ids": ["devin-docs-api-v3-secrets-post-organizations-secrets"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-secret-v3",
+    "command": "DELETE /v3/organizations/{org_id}/secrets/{secret_id}",
+    "purpose": "Delete an org-level secret.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../secrets/$SID -H \"Authorization: Bearer $KEY\"", "expected_output": "Deleted", "scenario": "Rotate by deleting old + creating new"}],
+    "source_ids": ["devin-docs-api-v3-secrets-delete-organizations-secrets"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-schedules-v3",
+    "command": "GET /v3/organizations/{org_id}/schedules",
+    "purpose": "List schedules in an org.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../schedules -H \"Authorization: Bearer $KEY\"", "expected_output": "Schedules list with cron + status", "scenario": "Inventory recurring jobs"}],
+    "source_ids": ["devin-docs-api-v3-schedules-organizations-schedules"]
+  },
+  {
+    "id": "devin.api.cmd.create-org-schedule-v3",
+    "command": "POST /v3/organizations/{org_id}/schedules",
+    "purpose": "Create a schedule for recurring auto-sessions.",
+    "flags": [{"name": "prompt", "value": "<text>", "doc": "Session prompt."}, {"name": "cron_schedule", "value": "<cron>", "doc": "Cron expression."}, {"name": "timezone", "value": "<tz>", "doc": "IANA timezone."}, {"name": "is_enabled", "value": "<bool>", "doc": "Active flag."}],
+    "examples": [{"invocation": "curl -X POST .../schedules -d '{\"prompt\":\"Run tests\",\"cron_schedule\":\"0 9 * * 1-5\",\"timezone\":\"America/New_York\"}'", "expected_output": "{\"schedule_id\":\"...\"}", "scenario": "Daily 9am test run on weekdays"}],
+    "source_ids": ["devin-docs-api-v3-schedules-post-organizations-schedules", "devin-docs-api-common-flows"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-schedule-v3",
+    "command": "GET /v3/organizations/{org_id}/schedules/{schedule_id}",
+    "purpose": "Get a single schedule.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../schedules/$SID", "expected_output": "Schedule record", "scenario": "Render schedule detail"}],
+    "source_ids": ["devin-docs-api-v3-schedules-get-organizations-schedule"]
+  },
+  {
+    "id": "devin.api.cmd.update-org-schedule-v3",
+    "command": "PATCH /v3/organizations/{org_id}/schedules/{schedule_id}",
+    "purpose": "Update a schedule (cron expression, timezone, is_enabled, etc.).",
+    "flags": [{"name": "cron_schedule", "value": "<cron>", "doc": "New cron expression."}, {"name": "is_enabled", "value": "<bool>", "doc": "Pause/resume."}],
+    "examples": [{"invocation": "curl -X PATCH .../schedules/$SID -d '{\"cron_schedule\":\"0 8 * * 1-5\"}'", "expected_output": "Updated", "scenario": "Adjust schedule time"}],
+    "source_ids": ["devin-docs-api-v3-schedules-patch-organizations-schedule"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-schedule-v3",
+    "command": "DELETE /v3/organizations/{org_id}/schedules/{schedule_id}",
+    "purpose": "Delete a schedule.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../schedules/$SID", "expected_output": "Deleted", "scenario": "Remove obsolete schedule"}],
+    "source_ids": ["devin-docs-api-v3-schedules-delete-organizations-schedule"]
+  },
+  {
+    "id": "devin.api.cmd.list-roles-v3",
+    "command": "GET /v3/enterprise/roles",
+    "purpose": "List available RBAC roles in the enterprise.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/roles -H \"Authorization: Bearer $KEY\"", "expected_output": "Roles list with permissions", "scenario": "Lookup role IDs for service-user creation"}],
+    "source_ids": ["devin-docs-api-v3-roles-roles"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-audit-logs-v3",
+    "command": "GET /v3/enterprise/audit-logs",
+    "purpose": "Enterprise-wide audit log entries. For compliance and forensic review.",
+    "flags": [{"name": "first", "value": "<int>", "doc": "Page size."}, {"name": "after", "value": "<cursor>", "doc": "Pagination cursor."}],
+    "examples": [{"invocation": "curl /v3/enterprise/audit-logs", "expected_output": "Audit entries", "scenario": "Compliance review"}],
+    "source_ids": ["devin-docs-api-v3-audit-logs-enterprise-audit-logs"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-audit-logs-v3",
+    "command": "GET /v3/organizations/{org_id}/audit-logs",
+    "purpose": "Org-scoped audit log entries.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../audit-logs", "expected_output": "Audit entries", "scenario": "Org-level forensics"}],
+    "source_ids": ["devin-docs-api-v3-audit-logs-organizations-audit-logs"]
+  },
+  {
+    "id": "devin.api.cmd.list-consumption-cycles-v3",
+    "command": "GET /v3/enterprise/consumption/cycles",
+    "purpose": "List billing cycles with their summaries.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/consumption/cycles", "expected_output": "Cycles list", "scenario": "Billing dashboard"}],
+    "source_ids": ["devin-docs-api-v3-consumption-consumption-cycles"]
+  },
+  {
+    "id": "devin.api.cmd.get-daily-consumption-v3",
+    "command": "GET /v3/enterprise/consumption/daily",
+    "purpose": "Daily consumption breakdown across the enterprise.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/consumption/daily", "expected_output": "Daily series", "scenario": "Time-series billing chart"}],
+    "source_ids": ["devin-docs-api-v3-consumption-consumption-daily"]
+  },
+  {
+    "id": "devin.api.cmd.get-daily-consumption-by-org-v3",
+    "command": "GET /v3/enterprise/consumption/daily/organizations",
+    "purpose": "Daily consumption broken down by organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/consumption/daily/organizations", "expected_output": "By-org series", "scenario": "Cross-org cost attribution"}],
+    "source_ids": ["devin-docs-api-v3-consumption-consumption-daily-organizations"]
+  },
+  {
+    "id": "devin.api.cmd.get-daily-consumption-by-user-v3",
+    "command": "GET /v3/enterprise/consumption/daily/users",
+    "purpose": "Daily consumption broken down by user.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/consumption/daily/users", "expected_output": "By-user series", "scenario": "User-level cost"}],
+    "source_ids": ["devin-docs-api-v3-consumption-consumption-daily-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-daily-consumption-by-service-user-v3",
+    "command": "GET /v3/enterprise/consumption/daily/service-users",
+    "purpose": "Daily consumption broken down by service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/consumption/daily/service-users", "expected_output": "By-service-user series", "scenario": "Bot-cost attribution"}],
+    "source_ids": ["devin-docs-api-v3-consumption-consumption-daily-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-daily-consumption-by-session-v3",
+    "command": "GET /v3/enterprise/consumption/daily/sessions",
+    "purpose": "Daily consumption broken down by session.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/consumption/daily/sessions", "expected_output": "By-session series", "scenario": "Per-run cost analytics"}],
+    "source_ids": ["devin-docs-api-v3-consumption-consumption-daily-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-daily-consumption-v3",
+    "command": "GET /v3/organizations/{org_id}/consumption/daily",
+    "purpose": "Org-scoped daily consumption summary.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../consumption/daily", "expected_output": "Org daily series", "scenario": "Org-level billing"}],
+    "source_ids": ["devin-docs-api-v3-consumption-organizations-consumption-daily"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-daily-consumption-by-user-v3",
+    "command": "GET /v3/organizations/{org_id}/consumption/daily/users",
+    "purpose": "Org daily consumption by user.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../consumption/daily/users", "expected_output": "By-user", "scenario": "Org user-level cost"}],
+    "source_ids": ["devin-docs-api-v3-consumption-organizations-consumption-daily-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-daily-consumption-by-service-user-v3",
+    "command": "GET /v3/organizations/{org_id}/consumption/daily/service-users",
+    "purpose": "Org daily consumption by service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../consumption/daily/service-users", "expected_output": "By-svc-user", "scenario": "Org bot-cost attribution"}],
+    "source_ids": ["devin-docs-api-v3-consumption-organizations-consumption-daily-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-daily-consumption-by-session-v3",
+    "command": "GET /v3/organizations/{org_id}/consumption/daily/sessions",
+    "purpose": "Org daily consumption by session.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../consumption/daily/sessions", "expected_output": "By-session", "scenario": "Org per-run cost"}],
+    "source_ids": ["devin-docs-api-v3-consumption-organizations-consumption-daily-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-dau-v3",
+    "command": "GET /v3/enterprise/metrics/dau",
+    "purpose": "Enterprise daily-active-users metric.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/dau", "expected_output": "DAU series", "scenario": "Engagement dashboard"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-dau"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-wau-v3",
+    "command": "GET /v3/enterprise/metrics/wau",
+    "purpose": "Enterprise weekly-active-users metric.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/wau", "expected_output": "WAU series", "scenario": "Engagement"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-wau"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-mau-v3",
+    "command": "GET /v3/enterprise/metrics/mau",
+    "purpose": "Enterprise monthly-active-users metric.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/mau", "expected_output": "MAU series", "scenario": "Engagement"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-mau"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-active-users-v3",
+    "command": "GET /v3/enterprise/metrics/active-users",
+    "purpose": "Enterprise active users for a custom date range.",
+    "flags": [{"name": "start", "value": "<date>", "doc": "Range start."}, {"name": "end", "value": "<date>", "doc": "Range end."}],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/active-users?start=...&end=...", "expected_output": "Active count", "scenario": "Custom-window engagement"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-active-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-prs-v3",
+    "command": "GET /v3/enterprise/metrics/prs",
+    "purpose": "Enterprise PR metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/prs", "expected_output": "PR series", "scenario": "PR creation analytics"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-prs"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-sessions-v3",
+    "command": "GET /v3/enterprise/metrics/sessions",
+    "purpose": "Enterprise session count metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/sessions", "expected_output": "Session metrics", "scenario": "Session analytics"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-sessions-by-category-v3",
+    "command": "GET /v3/enterprise/metrics/sessions/by-category",
+    "purpose": "Session metrics broken down by category.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/sessions/by-category", "expected_output": "Category breakdown", "scenario": "Category-sliced analytics"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-sessions-by-category"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-searches-v3",
+    "command": "GET /v3/enterprise/metrics/searches",
+    "purpose": "Enterprise search metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/searches", "expected_output": "Search metrics", "scenario": "Search usage"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-searches"]
+  },
+  {
+    "id": "devin.api.cmd.get-metrics-usage-v3",
+    "command": "GET /v3/enterprise/metrics/usage",
+    "purpose": "Enterprise generic usage metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/metrics/usage", "expected_output": "Usage", "scenario": "Top-level usage dashboard"}],
+    "source_ids": ["devin-docs-api-v3-metrics-metrics-usage"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-dau-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/dau",
+    "purpose": "Org daily-active-users metric.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/dau", "expected_output": "DAU", "scenario": "Org engagement"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-dau"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-wau-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/wau",
+    "purpose": "Org weekly-active-users metric.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/wau", "expected_output": "WAU", "scenario": "Org engagement"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-wau"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-mau-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/mau",
+    "purpose": "Org monthly-active-users metric.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/mau", "expected_output": "MAU", "scenario": "Org engagement"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-mau"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-active-users-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/active-users",
+    "purpose": "Org active users for a custom date range.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/active-users?start=...&end=...", "expected_output": "Active count", "scenario": "Org window analytics"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-active-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-prs-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/prs",
+    "purpose": "Org PR metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/prs", "expected_output": "PR series", "scenario": "Org PR analytics"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-prs"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-sessions-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/sessions",
+    "purpose": "Org session metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/sessions", "expected_output": "Session metrics", "scenario": "Org session analytics"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-searches-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/searches",
+    "purpose": "Org search metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/searches", "expected_output": "Searches", "scenario": "Org search analytics"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-searches"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-usage-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/usage",
+    "purpose": "Org generic usage metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/usage", "expected_output": "Usage", "scenario": "Org usage dashboard"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-usage"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-metrics-usage-org-v3",
+    "command": "GET /v3/organizations/{org_id}/metrics/usage-org",
+    "purpose": "Org-level usage metrics (alternate slice).",
+    "flags": [],
+    "examples": [{"invocation": "curl .../metrics/usage-org", "expected_output": "Org usage", "scenario": "Alt usage view"}],
+    "source_ids": ["devin-docs-api-v3-metrics-organizations-metrics-usage-org"]
+  },
+  {
+    "id": "devin.api.cmd.list-organizations-v3",
+    "command": "GET /v3/enterprise/organizations (alt: /organizations)",
+    "purpose": "List organizations under the enterprise. Permission: ManageOrganizations or ViewAccountSessions.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/organizations", "expected_output": "Org list", "scenario": "Cross-org enumeration"}],
+    "source_ids": ["devin-docs-api-v3-organizations-organizations"]
+  },
+  {
+    "id": "devin.api.cmd.create-organization-v3",
+    "command": "POST /v3/enterprise/organizations",
+    "purpose": "Create a new organization under the enterprise.",
+    "flags": [{"name": "name", "value": "<string>", "doc": "Org name."}],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/organizations -d '{\"name\":\"...\"}'", "expected_output": "Created org", "scenario": "Programmatic org provisioning"}],
+    "source_ids": ["devin-docs-api-v3-organizations-post-organizations"]
+  },
+  {
+    "id": "devin.api.cmd.get-organization-v3",
+    "command": "GET /v3/enterprise/organizations/{org_id}",
+    "purpose": "Get organization details.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/organizations/$ORG_ID", "expected_output": "Org record", "scenario": "Org detail page"}],
+    "source_ids": ["devin-docs-api-v3-organizations-get-enterprise-organization"]
+  },
+  {
+    "id": "devin.api.cmd.update-organization-v3",
+    "command": "PATCH /v3/enterprise/organizations/{org_id}",
+    "purpose": "Update an organization's settings.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH /v3/enterprise/organizations/$ORG_ID -d '{...}'", "expected_output": "Updated", "scenario": "Adjust org config"}],
+    "source_ids": ["devin-docs-api-v3-organizations-patch-organizations"]
+  },
+  {
+    "id": "devin.api.cmd.delete-organization-v3",
+    "command": "DELETE /v3/enterprise/organizations/{org_id}",
+    "purpose": "Delete an organization. Destructive — careful.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/organizations/$ORG_ID", "expected_output": "Deleted", "scenario": "Org sunset"}],
+    "source_ids": ["devin-docs-api-v3-organizations-delete-organizations"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-group-limits-v3",
+    "command": "GET /v3/enterprise/organizations/{org_id}/group-limits",
+    "purpose": "Get an organization's per-group limits.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../group-limits", "expected_output": "Limits record", "scenario": "Quota inspection"}],
+    "source_ids": ["devin-docs-api-v3-org-group-limits-get-org-group-limits"]
+  },
+  {
+    "id": "devin.api.cmd.update-org-group-limits-v3",
+    "command": "PUT /v3/enterprise/organizations/{org_id}/group-limits",
+    "purpose": "Update an organization's group limits.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT .../group-limits -d '{...}'", "expected_output": "Updated", "scenario": "Quota adjustment"}],
+    "source_ids": ["devin-docs-api-v3-org-group-limits-update-org-group-limits"]
+  },
+  {
+    "id": "devin.api.cmd.list-hypervisors-v3",
+    "command": "GET /v3/enterprise/hypervisors",
+    "purpose": "List enterprise hypervisors. Permission: ViewEnterpriseInfraDetails.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/hypervisors", "expected_output": "Hypervisor list", "scenario": "Infra inventory"}],
+    "source_ids": ["devin-docs-api-v3-hypervisors-hypervisors"]
+  },
+  {
+    "id": "devin.api.cmd.get-queue-v3",
+    "command": "GET /v3/enterprise/queue",
+    "purpose": "Inspect the session queue (queueing pressure / wait stats). Permission: ViewAccountMetrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/queue", "expected_output": "Queue stats", "scenario": "Capacity dashboard"}],
+    "source_ids": ["devin-docs-api-v3-queue-enterprise-queue"]
+  },
+  {
+    "id": "devin.api.cmd.get-ip-access-list-v3",
+    "command": "GET /v3/enterprise/ip-access-list",
+    "purpose": "Get the enterprise IP allowlist.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/ip-access-list", "expected_output": "{\"items\":[...]}", "scenario": "Audit allowed IPs"}],
+    "source_ids": ["devin-docs-api-v3-ip-access-list-get-ip-access-list"]
+  },
+  {
+    "id": "devin.api.cmd.replace-ip-access-list-v3",
+    "command": "PUT /v3/enterprise/ip-access-list",
+    "purpose": "Replace the enterprise IP allowlist with a new set.",
+    "flags": [{"name": "items", "value": "<list[CIDR]>", "doc": "Full new allowlist."}],
+    "examples": [{"invocation": "curl -X PUT /v3/enterprise/ip-access-list -d '{\"items\":[\"10.0.0.0/8\"]}'", "expected_output": "Replaced", "scenario": "Bulk IP allowlist update"}],
+    "source_ids": ["devin-docs-api-v3-ip-access-list-replace-ip-access-list"]
+  },
+  {
+    "id": "devin.api.cmd.clear-ip-access-list-v3",
+    "command": "DELETE /v3/enterprise/ip-access-list",
+    "purpose": "Clear the enterprise IP allowlist.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/ip-access-list", "expected_output": "Cleared", "scenario": "Disable IP gating temporarily"}],
+    "source_ids": ["devin-docs-api-v3-ip-access-list-clear-ip-access-list"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-allowed-tags-v3",
+    "command": "GET /v3/organizations/{org_id}/tags",
+    "purpose": "Get the org's allowed-tags list.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../tags", "expected_output": "Allowed tags", "scenario": "Tag governance"}],
+    "source_ids": ["devin-docs-api-v3-tags-organizations-tags"]
+  },
+  {
+    "id": "devin.api.cmd.append-org-allowed-tags-v3",
+    "command": "POST /v3/organizations/{org_id}/tags",
+    "purpose": "Append tags to the org's allowed list.",
+    "flags": [{"name": "tags", "value": "<list[string]>", "doc": "Tags to add."}],
+    "examples": [{"invocation": "curl -X POST .../tags -d '{\"tags\":[\"prod\"]}'", "expected_output": "Updated allowed tags", "scenario": "Add new tag for use"}],
+    "source_ids": ["devin-docs-api-v3-tags-post-organizations-tags"]
+  },
+  {
+    "id": "devin.api.cmd.replace-org-allowed-tags-v3",
+    "command": "PUT /v3/organizations/{org_id}/tags",
+    "purpose": "Replace the org's full allowed-tags list.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT .../tags -d '{\"tags\":[\"prod\",\"staging\"]}'", "expected_output": "Replaced", "scenario": "Reset tag governance"}],
+    "source_ids": ["devin-docs-api-v3-tags-put-organizations-tags"]
+  },
+  {
+    "id": "devin.api.cmd.clear-org-allowed-tags-v3",
+    "command": "DELETE /v3/organizations/{org_id}/tags",
+    "purpose": "Clear the org's allowed-tags list.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../tags", "expected_output": "Cleared", "scenario": "Drop tag governance"}],
+    "source_ids": ["devin-docs-api-v3-tags-delete-organizations-tags"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-tag-v3",
+    "command": "DELETE /v3/organizations/{org_id}/tags/{tag}",
+    "purpose": "Remove a single tag from the org's allowed list.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../tags/staging", "expected_output": "Removed", "scenario": "Retire individual tag"}],
+    "source_ids": ["devin-docs-api-v3-tags-delete-organizations-tags-tag"]
+  },
+  {
+    "id": "devin.api.cmd.get-default-tag-v3",
+    "command": "GET /v3/enterprise/organizations/{org_id}/default-tag",
+    "purpose": "Get the org's default tag.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/organizations/$ORG_ID/default-tag", "expected_output": "Default tag", "scenario": "Inspect default"}],
+    "source_ids": ["devin-docs-api-v3-tags-get-enterprise-organizations-default-tag"]
+  },
+  {
+    "id": "devin.api.cmd.set-default-tag-v3",
+    "command": "PUT /v3/enterprise/organizations/{org_id}/default-tag",
+    "purpose": "Set the org's default tag.",
+    "flags": [{"name": "tag", "value": "<string>", "doc": "Default tag."}],
+    "examples": [{"invocation": "curl -X PUT /v3/enterprise/organizations/$ORG_ID/default-tag -d '{\"tag\":\"prod\"}'", "expected_output": "Set", "scenario": "Default tag policy"}],
+    "source_ids": ["devin-docs-api-v3-tags-put-enterprise-organizations-default-tag"]
+  },
+  {
+    "id": "devin.api.cmd.clear-default-tag-v3",
+    "command": "DELETE /v3/enterprise/organizations/{org_id}/default-tag",
+    "purpose": "Clear the org's default tag.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/organizations/$ORG_ID/default-tag", "expected_output": "Cleared", "scenario": "Drop default tag"}],
+    "source_ids": ["devin-docs-api-v3-tags-delete-enterprise-organizations-default-tag"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-guardrail-violations-v3",
+    "command": "GET /v3/enterprise/guardrail-violations",
+    "purpose": "List enterprise guardrail-policy violations.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/guardrail-violations", "expected_output": "Violations", "scenario": "Compliance review"}],
+    "source_ids": ["devin-docs-api-v3-guardrail-violations-enterprise-guardrail-violations"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-guardrail-violations-v3",
+    "command": "GET /v3/organizations/{org_id}/guardrail-violations",
+    "purpose": "List org-scoped guardrail violations.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../guardrail-violations", "expected_output": "Violations", "scenario": "Org compliance"}],
+    "source_ids": ["devin-docs-api-v3-guardrail-violations-organizations-guardrail-violations"]
+  },
+  {
+    "id": "devin.api.cmd.list-git-connections-v3",
+    "command": "GET /v3/organizations/{org_id}/git-providers/connections",
+    "purpose": "List Git connections for an org.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../git-providers/connections", "expected_output": "Connections", "scenario": "Inventory connected SCMs"}],
+    "source_ids": ["devin-docs-api-v3-git-connections-git-providers-connections"]
+  },
+  {
+    "id": "devin.api.cmd.list-git-permissions-v3",
+    "command": "GET /v3/organizations/{org_id}/git-providers/permissions",
+    "purpose": "List per-repo Git permissions.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../git-providers/permissions", "expected_output": "Permissions list", "scenario": "Audit per-repo grants"}],
+    "source_ids": ["devin-docs-api-v3-git-permissions-organizations-git-providers-permissions"]
+  },
+  {
+    "id": "devin.api.cmd.create-git-permission-v3",
+    "command": "POST /v3/organizations/{org_id}/git-providers/permissions",
+    "purpose": "Create a Git permission for a repo.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../git-providers/permissions -d '{...}'", "expected_output": "Created", "scenario": "Grant repo access"}],
+    "source_ids": ["devin-docs-api-v3-git-permissions-post-organizations-git-providers-permissions"]
+  },
+  {
+    "id": "devin.api.cmd.replace-git-permissions-v3",
+    "command": "PUT /v3/organizations/{org_id}/git-providers/permissions",
+    "purpose": "Replace the full Git permissions set.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT .../git-providers/permissions -d '{...}'", "expected_output": "Replaced", "scenario": "Bulk reset of grants"}],
+    "source_ids": ["devin-docs-api-v3-git-permissions-put-organizations-git-providers-permissions"]
+  },
+  {
+    "id": "devin.api.cmd.delete-git-permission-v3",
+    "command": "DELETE /v3/organizations/{org_id}/git-providers/permissions/{perm_id}",
+    "purpose": "Delete a single Git permission.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../git-providers/permissions/$PID", "expected_output": "Deleted", "scenario": "Revoke repo access"}],
+    "source_ids": ["devin-docs-api-v3-git-permissions-delete-organizations-git-providers-permissions"]
+  },
+  {
+    "id": "devin.api.cmd.clear-git-permissions-v3",
+    "command": "DELETE /v3/organizations/{org_id}/git-providers/permissions",
+    "purpose": "Clear all Git permissions for the org.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../git-providers/permissions", "expected_output": "Cleared", "scenario": "Hard reset of permissions"}],
+    "source_ids": ["devin-docs-api-v3-git-permissions-clear-organizations-git-providers-permissions"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-idp-groups-v3",
+    "command": "GET /v3/enterprise/members/idp-groups",
+    "purpose": "List enterprise IdP groups (account-level).",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/members/idp-groups", "expected_output": "Groups", "scenario": "SSO group discovery"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-enterprise-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.register-enterprise-idp-groups-v3",
+    "command": "POST /v3/enterprise/members/idp-groups",
+    "purpose": "Register account IdP groups for SSO.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/members/idp-groups -d '{...}'", "expected_output": "Registered", "scenario": "SSO group provisioning"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-post-enterprise-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.delete-enterprise-idp-group-v3",
+    "command": "DELETE /v3/enterprise/members/idp-groups/{group_id}",
+    "purpose": "Delete an enterprise IdP group.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/members/idp-groups/$GID", "expected_output": "Deleted", "scenario": "Decommission SSO group"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-delete-enterprise-idp-group"]
+  },
+  {
+    "id": "devin.api.cmd.list-member-idp-groups-v3",
+    "command": "GET /v3/enterprise/members/{user_id}/idp-groups",
+    "purpose": "List the IdP groups a user belongs to.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/members/$UID/idp-groups", "expected_output": "Groups", "scenario": "User membership inspection"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.get-member-idp-group-v3",
+    "command": "GET /v3/enterprise/members/{user_id}/idp-groups/{group_id}",
+    "purpose": "Check whether a user is in a specific IdP group.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../members/$UID/idp-groups/$GID", "expected_output": "Membership detail", "scenario": "Membership lookup"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-get-members-idp-group"]
+  },
+  {
+    "id": "devin.api.cmd.assign-member-idp-group-v3",
+    "command": "POST /v3/enterprise/members/{user_id}/idp-groups",
+    "purpose": "Assign a user to an IdP group.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/members/$UID/idp-groups -d '{...}'", "expected_output": "Assigned", "scenario": "Manual SSO group sync"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-post-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.update-member-idp-group-v3",
+    "command": "PATCH /v3/enterprise/members/{user_id}/idp-groups/{group_id}",
+    "purpose": "Update a user's IdP group membership.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH .../members/$UID/idp-groups/$GID -d '{...}'", "expected_output": "Updated", "scenario": "Membership maintenance"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-patch-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.delete-member-idp-group-v3",
+    "command": "DELETE /v3/enterprise/members/{user_id}/idp-groups/{group_id}",
+    "purpose": "Remove a user from an IdP group.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../members/$UID/idp-groups/$GID", "expected_output": "Removed", "scenario": "Membership revocation"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-delete-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-member-idp-groups-v3",
+    "command": "GET /v3/organizations/{org_id}/members/{user_id}/idp-groups",
+    "purpose": "Org-scoped: list a user's IdP groups within the org.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../organizations/$ORG/members/$UID/idp-groups", "expected_output": "Groups", "scenario": "Org membership inspection"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-list-organizations-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.get-org-member-idp-group-v3",
+    "command": "GET /v3/organizations/{org_id}/members/{user_id}/idp-groups/{group_id}",
+    "purpose": "Org-scoped: check user's group membership.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../organizations/$ORG/members/$UID/idp-groups/$GID", "expected_output": "Membership", "scenario": "Org SSO check"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-organizations-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.assign-org-member-idp-group-v3",
+    "command": "POST /v3/organizations/{org_id}/members/{user_id}/idp-groups",
+    "purpose": "Org-scoped: assign a user to an IdP group.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../organizations/$ORG/members/$UID/idp-groups -d '{...}'", "expected_output": "Assigned", "scenario": "Org SSO group sync"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-post-organizations-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.update-org-member-idp-group-v3",
+    "command": "PATCH /v3/organizations/{org_id}/members/{user_id}/idp-groups/{group_id}",
+    "purpose": "Org-scoped: update IdP group membership.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH .../organizations/$ORG/members/$UID/idp-groups/$GID -d '{...}'", "expected_output": "Updated", "scenario": "Org membership change"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-patch-organizations-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-member-idp-group-v3",
+    "command": "DELETE /v3/organizations/{org_id}/members/{user_id}/idp-groups/{group_id}",
+    "purpose": "Org-scoped: remove user from group.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../organizations/$ORG/members/$UID/idp-groups/$GID", "expected_output": "Removed", "scenario": "Org SSO revocation"}],
+    "source_ids": ["devin-docs-api-v3-idp-groups-delete-organizations-members-idp-groups"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-users-v3",
+    "command": "GET /v3/enterprise/members/users",
+    "purpose": "List enterprise users.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/members/users", "expected_output": "Users", "scenario": "Enterprise user inventory"}],
+    "source_ids": ["devin-docs-api-v3-users-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-user-v3",
+    "command": "GET /v3/enterprise/members/{user_id}",
+    "purpose": "Get a specific enterprise user.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/members/$UID", "expected_output": "User", "scenario": "User detail page"}],
+    "source_ids": ["devin-docs-api-v3-users-get-members-user"]
+  },
+  {
+    "id": "devin.api.cmd.invite-enterprise-users-v3",
+    "command": "POST /v3/enterprise/members/users",
+    "purpose": "Invite users to the enterprise.",
+    "flags": [{"name": "emails", "value": "<list[email]>", "doc": "User emails to invite."}],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/members/users -d '{\"emails\":[...]}'", "expected_output": "Invitations sent", "scenario": "Bulk user onboarding"}],
+    "source_ids": ["devin-docs-api-v3-users-post-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.update-enterprise-user-v3",
+    "command": "PATCH /v3/enterprise/members/{user_id}",
+    "purpose": "Update an enterprise user's roles or attributes.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH /v3/enterprise/members/$UID -d '{...}'", "expected_output": "Updated", "scenario": "Role change"}],
+    "source_ids": ["devin-docs-api-v3-users-patch-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.delete-enterprise-user-v3",
+    "command": "DELETE /v3/enterprise/members/{user_id}",
+    "purpose": "Delete an enterprise user.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/members/$UID", "expected_output": "Deleted", "scenario": "User deprovisioning"}],
+    "source_ids": ["devin-docs-api-v3-users-delete-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.list-idp-group-users-v3",
+    "command": "GET /v3/enterprise/members/idp-users",
+    "purpose": "List users in IdP groups (enterprise-wide).",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/members/idp-users", "expected_output": "IdP users", "scenario": "SSO user inventory"}],
+    "source_ids": ["devin-docs-api-v3-users-members-idp-users"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-users-v3",
+    "command": "GET /v3/organizations/{org_id}/members/users",
+    "purpose": "List org members.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../members/users", "expected_output": "Org members", "scenario": "Org user list"}],
+    "source_ids": ["devin-docs-api-v3-users-organizations-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.assign-org-user-v3",
+    "command": "POST /v3/organizations/{org_id}/members/users",
+    "purpose": "Add an existing enterprise user to an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../members/users -d '{...}'", "expected_output": "Added", "scenario": "Org membership add"}],
+    "source_ids": ["devin-docs-api-v3-users-post-organizations-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.update-org-user-v3",
+    "command": "PATCH /v3/organizations/{org_id}/members/users/{user_id}",
+    "purpose": "Update a user's role within an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH .../members/users/$UID -d '{...}'", "expected_output": "Updated", "scenario": "Org-level role change"}],
+    "source_ids": ["devin-docs-api-v3-users-patch-organizations-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-user-v3",
+    "command": "DELETE /v3/organizations/{org_id}/members/users/{user_id}",
+    "purpose": "Remove a user from an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../members/users/$UID", "expected_output": "Removed", "scenario": "Org membership remove"}],
+    "source_ids": ["devin-docs-api-v3-users-delete-organizations-members-users"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-idp-users-v3",
+    "command": "GET /v3/organizations/{org_id}/members/idp-users",
+    "purpose": "Org-scoped: list users via IdP groups.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../members/idp-users", "expected_output": "IdP-sourced users", "scenario": "Org SSO user view"}],
+    "source_ids": ["devin-docs-api-v3-users-organizations-members-idp-users"]
+  },
+  {
+    "id": "devin.api.cmd.list-enterprise-service-users-v3",
+    "command": "GET /v3/enterprise/members/service-users",
+    "purpose": "List enterprise service users.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/members/service-users", "expected_output": "Service users", "scenario": "Audit automation accounts"}],
+    "source_ids": ["devin-docs-api-v3-service-users-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.create-enterprise-service-user-v3",
+    "command": "POST /v3/enterprise/members/service-users",
+    "purpose": "Create an enterprise service user.",
+    "flags": [{"name": "name", "value": "<string>", "doc": "Service user name."}, {"name": "role", "value": "<role_id>", "doc": "RBAC role to assign."}],
+    "examples": [{"invocation": "curl -X POST /v3/enterprise/members/service-users -d '{...}'", "expected_output": "Created", "scenario": "Provision automation account"}],
+    "source_ids": ["devin-docs-api-v3-service-users-post-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.get-enterprise-service-user-v3",
+    "command": "GET /v3/enterprise/members/service-users/{service_user_id}",
+    "purpose": "Get an enterprise service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v3/enterprise/members/service-users/$SUID", "expected_output": "SU record", "scenario": "Detail page"}],
+    "source_ids": ["devin-docs-api-v3-service-users-get-members-service-user"]
+  },
+  {
+    "id": "devin.api.cmd.update-enterprise-service-user-v3",
+    "command": "PATCH /v3/enterprise/members/service-users/{service_user_id}",
+    "purpose": "Update an enterprise service user's role/attributes.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH /v3/enterprise/members/service-users/$SUID -d '{...}'", "expected_output": "Updated", "scenario": "Role change"}],
+    "source_ids": ["devin-docs-api-v3-service-users-patch-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.delete-enterprise-service-user-v3",
+    "command": "DELETE /v3/enterprise/members/service-users/{service_user_id}",
+    "purpose": "Delete an enterprise service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v3/enterprise/members/service-users/$SUID", "expected_output": "Deleted", "scenario": "Decommission automation"}],
+    "source_ids": ["devin-docs-api-v3-service-users-delete-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.list-org-service-users-v3",
+    "command": "GET /v3/organizations/{org_id}/members/service-users",
+    "purpose": "List org-scoped service users.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../members/service-users", "expected_output": "Service users", "scenario": "Org-level automation audit"}],
+    "source_ids": ["devin-docs-api-v3-service-users-organizations-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.create-org-service-user-v3",
+    "command": "POST /v3/organizations/{org_id}/members/service-users",
+    "purpose": "Create an org-scoped service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../members/service-users -d '{...}'", "expected_output": "Created", "scenario": "Org-level automation provisioning"}],
+    "source_ids": ["devin-docs-api-v3-service-users-post-organizations-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.update-org-service-user-v3",
+    "command": "PATCH /v3/organizations/{org_id}/members/service-users/{service_user_id}",
+    "purpose": "Update an org-scoped service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH .../members/service-users/$SUID -d '{...}'", "expected_output": "Updated", "scenario": "Adjust org automation"}],
+    "source_ids": ["devin-docs-api-v3-service-users-patch-organizations-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.delete-org-service-user-v3",
+    "command": "DELETE /v3/organizations/{org_id}/members/service-users/{service_user_id}",
+    "purpose": "Delete an org-scoped service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../members/service-users/$SUID", "expected_output": "Deleted", "scenario": "Decommission org automation"}],
+    "source_ids": ["devin-docs-api-v3-service-users-delete-organizations-members-service-users"]
+  },
+  {
+    "id": "devin.api.cmd.list-service-user-api-keys-v3",
+    "command": "GET /v3/enterprise/members/service-users/{service_user_id}/api-keys",
+    "purpose": "List API keys for a specific service user.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../service-users/$SUID/api-keys", "expected_output": "Keys metadata", "scenario": "Audit key inventory"}],
+    "source_ids": ["devin-docs-api-v3-service-users-get-enterprise-service-user-api-keys"]
+  },
+  {
+    "id": "devin.api.cmd.create-service-user-api-key-v3",
+    "command": "POST /v3/enterprise/members/service-users/{service_user_id}/api-keys",
+    "purpose": "Create a new API key for a service user. Returned ONCE; store immediately.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../service-users/$SUID/api-keys -d '{...}'", "expected_output": "{\"key\":\"cog_...\"}", "scenario": "Provision new automation key"}],
+    "source_ids": ["devin-docs-api-v3-service-users-post-enterprise-service-user-api-keys"]
+  },
+  {
+    "id": "devin.api.cmd.rotate-service-user-api-key-v3",
+    "command": "POST /v3/enterprise/members/service-users/{service_user_id}/api-keys/rotate",
+    "purpose": "Rotate (replace) a service user's API key.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../service-users/$SUID/api-keys/rotate", "expected_output": "New key", "scenario": "Periodic rotation"}],
+    "source_ids": ["devin-docs-api-v3-service-users-rotate-enterprise-service-user-api-key"]
+  },
+  {
+    "id": "devin.api.cmd.delete-service-user-api-key-v3",
+    "command": "DELETE /v3/enterprise/members/service-users/{service_user_id}/api-keys/{key_id}",
+    "purpose": "Revoke a service user's API key.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../service-users/$SUID/api-keys/$KID", "expected_output": "Revoked", "scenario": "Compromised-key revocation"}],
+    "source_ids": ["devin-docs-api-v3-service-users-delete-enterprise-service-user-api-key"]
+  },
+  {
+    "id": "devin.api.cmd.v1-create-session",
+    "command": "POST /v1/sessions (legacy)",
+    "purpose": "Legacy v1: create a new session. Deprecated — use v3.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST https://api.devin.ai/v1/sessions -d '{...}'", "expected_output": "Session", "scenario": "Legacy v1 client"}],
+    "source_ids": ["devin-docs-api-v1-sessions-create-a-new-devin-session"]
+  },
+  {
+    "id": "devin.api.cmd.v1-list-sessions",
+    "command": "GET /v1/sessions (legacy)",
+    "purpose": "Legacy v1: list sessions for the org.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v1/sessions", "expected_output": "Sessions", "scenario": "Legacy"}],
+    "source_ids": ["devin-docs-api-v1-sessions-list-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.v1-get-session",
+    "command": "GET /v1/session/{session_id} (legacy)",
+    "purpose": "Legacy v1: get session details.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v1/session/$SID", "expected_output": "Session", "scenario": "Legacy poll"}],
+    "source_ids": ["devin-docs-api-v1-sessions-retrieve-details-about-an-existing-session"]
+  },
+  {
+    "id": "devin.api.cmd.v1-send-message",
+    "command": "POST /v1/session/{session_id}/message (legacy)",
+    "purpose": "Legacy v1: send a message to a session.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v1/session/$SID/message -d '{...}'", "expected_output": "Accepted", "scenario": "Legacy follow-up"}],
+    "source_ids": ["devin-docs-api-v1-sessions-send-a-message-to-an-existing-devin-session"]
+  },
+  {
+    "id": "devin.api.cmd.v1-terminate-session",
+    "command": "POST /v1/session/{session_id}/terminate (legacy)",
+    "purpose": "Legacy v1: terminate a session.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v1/session/$SID/terminate", "expected_output": "Terminated", "scenario": "Legacy abort"}],
+    "source_ids": ["devin-docs-api-v1-sessions-terminate-a-session"]
+  },
+  {
+    "id": "devin.api.cmd.v1-update-session-tags",
+    "command": "PUT /v1/session/{session_id}/tags (legacy)",
+    "purpose": "Legacy v1: update session tags.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v1/session/$SID/tags -d '{...}'", "expected_output": "Updated", "scenario": "Legacy tag update"}],
+    "source_ids": ["devin-docs-api-v1-sessions-update-session-tags"]
+  },
+  {
+    "id": "devin.api.cmd.v1-upload-attachment",
+    "command": "POST /v1/attachments (legacy)",
+    "purpose": "Legacy v1: upload a file as an attachment.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v1/attachments -F file=@./file.bin", "expected_output": "{\"attachment_id\":\"...\"}", "scenario": "Legacy upload"}],
+    "source_ids": ["devin-docs-api-v1-attachments-upload-files-for-devin-to-work-with"]
+  },
+  {
+    "id": "devin.api.cmd.v1-download-attachment",
+    "command": "GET /v1/attachments/{attachment_id} (legacy)",
+    "purpose": "Legacy v1: download an attachment.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v1/attachments/$AID -o file.bin", "expected_output": "Bytes", "scenario": "Legacy download"}],
+    "source_ids": ["devin-docs-api-v1-attachments-download-attachment-files"]
+  },
+  {
+    "id": "devin.api.cmd.v1-list-knowledge",
+    "command": "GET /v1/knowledge (legacy)",
+    "purpose": "Legacy v1: list knowledge entries.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v1/knowledge", "expected_output": "Knowledge list", "scenario": "Legacy knowledge inventory"}],
+    "source_ids": ["devin-docs-api-v1-knowledge-list-knowledge"]
+  },
+  {
+    "id": "devin.api.cmd.v1-create-knowledge",
+    "command": "POST /v1/knowledge (legacy)",
+    "purpose": "Legacy v1: create a knowledge entry.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v1/knowledge -d '{...}'", "expected_output": "Created", "scenario": "Legacy knowledge add"}],
+    "source_ids": ["devin-docs-api-v1-knowledge-create-knowledge"]
+  },
+  {
+    "id": "devin.api.cmd.v1-update-knowledge",
+    "command": "PUT /v1/knowledge/{note_id} (legacy)",
+    "purpose": "Legacy v1: update a knowledge entry.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v1/knowledge/$NID -d '{...}'", "expected_output": "Updated", "scenario": "Legacy knowledge update"}],
+    "source_ids": ["devin-docs-api-v1-knowledge-update-knowledge"]
+  },
+  {
+    "id": "devin.api.cmd.v1-delete-knowledge",
+    "command": "DELETE /v1/knowledge/{note_id} (legacy)",
+    "purpose": "Legacy v1: delete a knowledge entry.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v1/knowledge/$NID", "expected_output": "Deleted", "scenario": "Legacy knowledge remove"}],
+    "source_ids": ["devin-docs-api-v1-knowledge-delete-knowledge"]
+  },
+  {
+    "id": "devin.api.cmd.v1-list-playbooks",
+    "command": "GET /v1/playbooks (legacy)",
+    "purpose": "Legacy v1: list playbooks.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v1/playbooks", "expected_output": "Playbooks", "scenario": "Legacy playbook list"}],
+    "source_ids": ["devin-docs-api-v1-playbooks-list-playbooks"]
+  },
+  {
+    "id": "devin.api.cmd.v1-create-playbook",
+    "command": "POST /v1/playbooks (legacy)",
+    "purpose": "Legacy v1: create a playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v1/playbooks -d '{...}'", "expected_output": "Created", "scenario": "Legacy playbook create"}],
+    "source_ids": ["devin-docs-api-v1-playbooks-create-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v1-get-playbook",
+    "command": "GET /v1/playbooks/{playbook_id} (legacy)",
+    "purpose": "Legacy v1: get playbook details.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v1/playbooks/$PID", "expected_output": "Playbook", "scenario": "Legacy detail"}],
+    "source_ids": ["devin-docs-api-v1-playbooks-get-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v1-update-playbook",
+    "command": "PUT /v1/playbooks/{playbook_id} (legacy)",
+    "purpose": "Legacy v1: update a playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v1/playbooks/$PID -d '{...}'", "expected_output": "Updated", "scenario": "Legacy playbook update"}],
+    "source_ids": ["devin-docs-api-v1-playbooks-update-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v1-delete-playbook",
+    "command": "DELETE /v1/playbooks/{playbook_id} (legacy)",
+    "purpose": "Legacy v1: delete a playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v1/playbooks/$PID", "expected_output": "Deleted", "scenario": "Legacy playbook delete"}],
+    "source_ids": ["devin-docs-api-v1-playbooks-delete-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v1-list-secrets",
+    "command": "GET /v1/secrets (legacy)",
+    "purpose": "Legacy v1: list secret metadata.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v1/secrets", "expected_output": "Secrets metadata", "scenario": "Legacy audit"}],
+    "source_ids": ["devin-docs-api-v1-secrets-list-secrets"]
+  },
+  {
+    "id": "devin.api.cmd.v1-create-secret",
+    "command": "POST /v1/secrets (legacy)",
+    "purpose": "Legacy v1: create a secret.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v1/secrets -d '{...}'", "expected_output": "Created", "scenario": "Legacy secret provision"}],
+    "source_ids": ["devin-docs-api-v1-secrets-create-secret"]
+  },
+  {
+    "id": "devin.api.cmd.v1-delete-secret",
+    "command": "DELETE /v1/secrets/{secret_id} (legacy)",
+    "purpose": "Legacy v1: delete a secret.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v1/secrets/$SID", "expected_output": "Deleted", "scenario": "Legacy secret delete"}],
+    "source_ids": ["devin-docs-api-v1-secrets-delete-secret"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-self",
+    "command": "GET /v2/enterprise/self (legacy)",
+    "purpose": "Legacy v2: enterprise self/credential check.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/self", "expected_output": "Self info", "scenario": "Legacy enterprise auth check"}],
+    "source_ids": ["devin-docs-api-v2-self-get-self"]
+  },
+  {
+    "id": "devin.api.cmd.v2-provision-service-key",
+    "command": "POST /v2/enterprise/api-keys (legacy)",
+    "purpose": "Legacy v2: create a service API key for the enterprise.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/api-keys -d '{...}'", "expected_output": "Created legacy key", "scenario": "Legacy provisioning"}],
+    "source_ids": ["devin-docs-api-v2-api-keys-provision-service-key"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-api-keys",
+    "command": "GET /v2/enterprise/api-keys (legacy)",
+    "purpose": "Legacy v2: list enterprise API keys.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/api-keys", "expected_output": "Keys", "scenario": "Legacy audit"}],
+    "source_ids": ["devin-docs-api-v2-api-keys-list-enterprise-api-keys"]
+  },
+  {
+    "id": "devin.api.cmd.v2-revoke-api-key",
+    "command": "DELETE /v2/enterprise/api-keys/{key_id} (legacy)",
+    "purpose": "Legacy v2: revoke a specific API key.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v2/enterprise/api-keys/$KID", "expected_output": "Revoked", "scenario": "Legacy revocation"}],
+    "source_ids": ["devin-docs-api-v2-api-keys-revoke-enterprise-api-key"]
+  },
+  {
+    "id": "devin.api.cmd.v2-revoke-all-api-keys",
+    "command": "DELETE /v2/enterprise/api-keys (legacy)",
+    "purpose": "Legacy v2: revoke all API keys for a user.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v2/enterprise/api-keys", "expected_output": "All revoked", "scenario": "Bulk legacy revocation"}],
+    "source_ids": ["devin-docs-api-v2-api-keys-revoke-all-enterprise-api-keys"]
+  },
+  {
+    "id": "devin.api.cmd.v2-audit-logs",
+    "command": "GET /v2/enterprise/audit-logs (legacy)",
+    "purpose": "Legacy v2: enterprise-wide audit log retrieval.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/audit-logs", "expected_output": "Audit entries", "scenario": "Legacy compliance"}],
+    "source_ids": ["devin-docs-api-v2-misc-audit-logs"]
+  },
+  {
+    "id": "devin.api.cmd.v2-consumption-cycles",
+    "command": "GET /v2/enterprise/consumption/cycles (legacy)",
+    "purpose": "Legacy v2: consumption cycle summaries.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/consumption/cycles", "expected_output": "Cycles", "scenario": "Legacy billing"}],
+    "source_ids": ["devin-docs-api-v2-consumption-consumption-cycles"]
+  },
+  {
+    "id": "devin.api.cmd.v2-daily-consumption",
+    "command": "GET /v2/enterprise/consumption/daily (legacy)",
+    "purpose": "Legacy v2: daily consumption breakdown.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/consumption/daily", "expected_output": "Daily series", "scenario": "Legacy billing chart"}],
+    "source_ids": ["devin-docs-api-v2-consumption-daily-consumption"]
+  },
+  {
+    "id": "devin.api.cmd.v2-user-daily-consumption",
+    "command": "GET /v2/enterprise/consumption/users/{user_id}/daily (legacy)",
+    "purpose": "Legacy v2: per-user daily consumption.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/consumption/users/$UID/daily", "expected_output": "Per-user series", "scenario": "Legacy user billing"}],
+    "source_ids": ["devin-docs-api-v2-consumption-user-daily-consumption"]
+  },
+  {
+    "id": "devin.api.cmd.v2-pr-metrics",
+    "command": "GET /v2/enterprise/metrics/prs (legacy)",
+    "purpose": "Legacy v2: PR metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/metrics/prs", "expected_output": "PR metrics", "scenario": "Legacy PR analytics"}],
+    "source_ids": ["devin-docs-api-v2-consumption-pr-metrics"]
+  },
+  {
+    "id": "devin.api.cmd.v2-session-metrics",
+    "command": "GET /v2/enterprise/metrics/sessions (legacy)",
+    "purpose": "Legacy v2: session metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/metrics/sessions", "expected_output": "Sessions metrics", "scenario": "Legacy session analytics"}],
+    "source_ids": ["devin-docs-api-v2-consumption-sessions-metrics"]
+  },
+  {
+    "id": "devin.api.cmd.v2-search-metrics",
+    "command": "GET /v2/enterprise/metrics/searches (legacy)",
+    "purpose": "Legacy v2: search metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/metrics/searches", "expected_output": "Searches metrics", "scenario": "Legacy search analytics"}],
+    "source_ids": ["devin-docs-api-v2-consumption-searches-metrics"]
+  },
+  {
+    "id": "devin.api.cmd.v2-usage-metrics",
+    "command": "GET /v2/enterprise/metrics/usage (legacy)",
+    "purpose": "Legacy v2: generic usage metrics.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/metrics/usage", "expected_output": "Usage", "scenario": "Legacy usage dashboard"}],
+    "source_ids": ["devin-docs-api-v2-consumption-usage-metrics"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-groups",
+    "command": "GET /v2/enterprise/groups (legacy)",
+    "purpose": "Legacy v2: list IdP groups.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/groups", "expected_output": "Groups", "scenario": "Legacy SSO"}],
+    "source_ids": ["devin-docs-api-v2-groups-list-enterprise-groups"]
+  },
+  {
+    "id": "devin.api.cmd.v2-add-groups",
+    "command": "POST /v2/enterprise/groups (legacy)",
+    "purpose": "Legacy v2: add IdP groups.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/groups -d '{...}'", "expected_output": "Added", "scenario": "Legacy SSO provisioning"}],
+    "source_ids": ["devin-docs-api-v2-groups-add-enterprise-groups"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-group-details",
+    "command": "GET /v2/enterprise/groups/{group_id} (legacy)",
+    "purpose": "Legacy v2: get group details.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/groups/$GID", "expected_output": "Group", "scenario": "Legacy SSO inspection"}],
+    "source_ids": ["devin-docs-api-v2-groups-get-group-details"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-hypervisors",
+    "command": "GET /v2/enterprise/hypervisors (legacy)",
+    "purpose": "Legacy v2: list hypervisors.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/hypervisors", "expected_output": "Hypervisors", "scenario": "Legacy infra inventory"}],
+    "source_ids": ["devin-docs-api-v2-infrastructure-list-enterprise-hypervisors"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-members",
+    "command": "GET /v2/enterprise/members (legacy)",
+    "purpose": "Legacy v2: list enterprise members.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/members", "expected_output": "Members", "scenario": "Legacy member list"}],
+    "source_ids": ["devin-docs-api-v2-members-list-enterprise-members"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-member-details",
+    "command": "GET /v2/enterprise/members/{user_id} (legacy)",
+    "purpose": "Legacy v2: get member details.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/members/$UID", "expected_output": "Member", "scenario": "Legacy member detail"}],
+    "source_ids": ["devin-docs-api-v2-members-get-member-details"]
+  },
+  {
+    "id": "devin.api.cmd.v2-invite-members",
+    "command": "POST /v2/enterprise/members (legacy)",
+    "purpose": "Legacy v2: invite enterprise members.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/members -d '{...}'", "expected_output": "Invited", "scenario": "Legacy invite"}],
+    "source_ids": ["devin-docs-api-v2-members-invite-enterprise-members"]
+  },
+  {
+    "id": "devin.api.cmd.v2-update-member-roles",
+    "command": "PUT /v2/enterprise/members/{user_id}/roles (legacy)",
+    "purpose": "Legacy v2: update member roles.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v2/enterprise/members/$UID/roles -d '{...}'", "expected_output": "Updated", "scenario": "Legacy role change"}],
+    "source_ids": ["devin-docs-api-v2-members-update-member-roles"]
+  },
+  {
+    "id": "devin.api.cmd.v2-migrate-member-roles",
+    "command": "POST /v2/enterprise/members/migrate-roles (legacy)",
+    "purpose": "Legacy v2: migrate member roles in bulk.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/members/migrate-roles -d '{...}'", "expected_output": "Migrated", "scenario": "Legacy role migration"}],
+    "source_ids": ["devin-docs-api-v2-members-migrate-member-roles"]
+  },
+  {
+    "id": "devin.api.cmd.v2-delete-member",
+    "command": "DELETE /v2/enterprise/members/{user_id} (legacy)",
+    "purpose": "Legacy v2: remove a member.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v2/enterprise/members/$UID", "expected_output": "Removed", "scenario": "Legacy deprovisioning"}],
+    "source_ids": ["devin-docs-api-v2-members-delete-enterprise-member"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-roles",
+    "command": "GET /v2/enterprise/roles (legacy)",
+    "purpose": "Legacy v2: list available roles.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/roles", "expected_output": "Roles", "scenario": "Legacy role lookup"}],
+    "source_ids": ["devin-docs-api-v2-members-list-roles"]
+  },
+  {
+    "id": "devin.api.cmd.v2-user-organizations",
+    "command": "GET /v2/enterprise/users/{user_id}/organizations (legacy)",
+    "purpose": "Legacy v2: list orgs a user belongs to.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/users/$UID/organizations", "expected_output": "Orgs", "scenario": "Legacy user-org map"}],
+    "source_ids": ["devin-docs-api-v2-members-user-organizations"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-organizations",
+    "command": "GET /v2/enterprise/organizations (legacy)",
+    "purpose": "Legacy v2: list orgs.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/organizations", "expected_output": "Orgs", "scenario": "Legacy org list"}],
+    "source_ids": ["devin-docs-api-v2-organizations-list-organizations"]
+  },
+  {
+    "id": "devin.api.cmd.v2-create-organization",
+    "command": "POST /v2/enterprise/organizations (legacy)",
+    "purpose": "Legacy v2: create an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/organizations -d '{...}'", "expected_output": "Created", "scenario": "Legacy org provision"}],
+    "source_ids": ["devin-docs-api-v2-organizations-create-organization"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-organization",
+    "command": "GET /v2/enterprise/organizations/{org_id} (legacy)",
+    "purpose": "Legacy v2: get organization details.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/organizations/$ORG_ID", "expected_output": "Org", "scenario": "Legacy org detail"}],
+    "source_ids": ["devin-docs-api-v2-organizations-get-organization-details"]
+  },
+  {
+    "id": "devin.api.cmd.v2-update-organization",
+    "command": "PATCH /v2/enterprise/organizations/{org_id} (legacy)",
+    "purpose": "Legacy v2: update organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PATCH /v2/enterprise/organizations/$ORG_ID -d '{...}'", "expected_output": "Updated", "scenario": "Legacy org config"}],
+    "source_ids": ["devin-docs-api-v2-organizations-update-organization"]
+  },
+  {
+    "id": "devin.api.cmd.v2-delete-organization",
+    "command": "DELETE /v2/enterprise/organizations/{org_id} (legacy)",
+    "purpose": "Legacy v2: delete organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v2/enterprise/organizations/$ORG_ID", "expected_output": "Deleted", "scenario": "Legacy org sunset"}],
+    "source_ids": ["devin-docs-api-v2-organizations-delete-organization"]
+  },
+  {
+    "id": "devin.api.cmd.v2-add-organization-members",
+    "command": "POST /v2/enterprise/organizations/{org_id}/members (legacy)",
+    "purpose": "Legacy v2: add members to an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/organizations/$ORG_ID/members -d '{...}'", "expected_output": "Added", "scenario": "Legacy org-member add"}],
+    "source_ids": ["devin-docs-api-v2-organizations-add-organization-members"]
+  },
+  {
+    "id": "devin.api.cmd.v2-organization-members",
+    "command": "GET /v2/enterprise/organizations/{org_id}/members (legacy)",
+    "purpose": "Legacy v2: list organization members.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/organizations/$ORG_ID/members", "expected_output": "Members", "scenario": "Legacy org member list"}],
+    "source_ids": ["devin-docs-api-v2-organizations-organization-members"]
+  },
+  {
+    "id": "devin.api.cmd.v2-update-organization-member-roles",
+    "command": "PUT /v2/enterprise/organizations/{org_id}/members/{user_id}/roles (legacy)",
+    "purpose": "Legacy v2: update an org member's roles.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT .../members/$UID/roles -d '{...}'", "expected_output": "Updated", "scenario": "Legacy org role change"}],
+    "source_ids": ["devin-docs-api-v2-organizations-update-organization-member-roles"]
+  },
+  {
+    "id": "devin.api.cmd.v2-migrate-org-member-roles",
+    "command": "POST /v2/enterprise/organizations/{org_id}/migrate-member-roles (legacy)",
+    "purpose": "Legacy v2: bulk-migrate org member roles.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../migrate-member-roles -d '{...}'", "expected_output": "Migrated", "scenario": "Legacy org role migration"}],
+    "source_ids": ["devin-docs-api-v2-organizations-migrate-organization-member-roles"]
+  },
+  {
+    "id": "devin.api.cmd.v2-remove-user-from-organization",
+    "command": "DELETE /v2/enterprise/organizations/{org_id}/members/{user_id} (legacy)",
+    "purpose": "Legacy v2: remove a user from an org.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../members/$UID", "expected_output": "Removed", "scenario": "Legacy org deprovision"}],
+    "source_ids": ["devin-docs-api-v2-organizations-remove-user-from-organization"]
+  },
+  {
+    "id": "devin.api.cmd.v2-add-organization-permissions",
+    "command": "POST /v2/enterprise/organizations/{org_id}/permissions (legacy)",
+    "purpose": "Legacy v2: add organization permissions.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../permissions -d '{...}'", "expected_output": "Added", "scenario": "Legacy permission grant"}],
+    "source_ids": ["devin-docs-api-v2-organizations-add-organization-permissions"]
+  },
+  {
+    "id": "devin.api.cmd.v2-organization-permissions",
+    "command": "GET /v2/enterprise/organizations/{org_id}/permissions (legacy)",
+    "purpose": "Legacy v2: list organization permissions.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../permissions", "expected_output": "Permissions list", "scenario": "Legacy permission audit"}],
+    "source_ids": ["devin-docs-api-v2-organizations-organization-permissions"]
+  },
+  {
+    "id": "devin.api.cmd.v2-delete-organization-permission",
+    "command": "DELETE /v2/enterprise/organizations/{org_id}/permissions/{perm_id} (legacy)",
+    "purpose": "Legacy v2: revoke organization permission.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../permissions/$PID", "expected_output": "Revoked", "scenario": "Legacy revocation"}],
+    "source_ids": ["devin-docs-api-v2-organizations-delete-organization-permission"]
+  },
+  {
+    "id": "devin.api.cmd.v2-add-group-to-organization",
+    "command": "POST /v2/enterprise/organizations/{org_id}/groups (legacy)",
+    "purpose": "Legacy v2: add an IdP group to an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../groups -d '{...}'", "expected_output": "Added", "scenario": "Legacy SSO scoping"}],
+    "source_ids": ["devin-docs-api-v2-organizations-add-group-to-organization"]
+  },
+  {
+    "id": "devin.api.cmd.v2-organization-groups",
+    "command": "GET /v2/enterprise/organizations/{org_id}/groups (legacy)",
+    "purpose": "Legacy v2: list groups in an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../groups", "expected_output": "Groups", "scenario": "Legacy SSO scope inspection"}],
+    "source_ids": ["devin-docs-api-v2-organizations-organization-groups"]
+  },
+  {
+    "id": "devin.api.cmd.v2-remove-group-from-organization",
+    "command": "DELETE /v2/enterprise/organizations/{org_id}/groups/{group_id} (legacy)",
+    "purpose": "Legacy v2: remove a group from an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE .../groups/$GID", "expected_output": "Removed", "scenario": "Legacy SSO scope cut"}],
+    "source_ids": ["devin-docs-api-v2-organizations-remove-group-from-organization"]
+  },
+  {
+    "id": "devin.api.cmd.v2-organization-connections",
+    "command": "GET /v2/enterprise/organizations/{org_id}/connections (legacy)",
+    "purpose": "Legacy v2: list organization connections.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../connections", "expected_output": "Connections", "scenario": "Legacy connection audit"}],
+    "source_ids": ["devin-docs-api-v2-organizations-organization-connections"]
+  },
+  {
+    "id": "devin.api.cmd.v2-clone-repository",
+    "command": "POST /v2/enterprise/organizations/{org_id}/clone-repository (legacy)",
+    "purpose": "Legacy v2: clone a repository into an organization.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST .../clone-repository -d '{...}'", "expected_output": "Cloned", "scenario": "Legacy repo onboarding"}],
+    "source_ids": ["devin-docs-api-v2-organizations-clone-repository"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-org-group-limits",
+    "command": "GET /v2/enterprise/organizations/{org_id}/group-limits (legacy)",
+    "purpose": "Legacy v2: get org group limits.",
+    "flags": [],
+    "examples": [{"invocation": "curl .../group-limits", "expected_output": "Limits", "scenario": "Legacy quota inspection"}],
+    "source_ids": ["devin-docs-api-v2-org-group-limits-get-org-group-limits"]
+  },
+  {
+    "id": "devin.api.cmd.v2-update-org-group-limits",
+    "command": "PUT /v2/enterprise/organizations/{org_id}/group-limits (legacy)",
+    "purpose": "Legacy v2: update org group limits.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT .../group-limits -d '{...}'", "expected_output": "Updated", "scenario": "Legacy quota change"}],
+    "source_ids": ["devin-docs-api-v2-org-group-limits-update-org-group-limits"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-playbooks",
+    "command": "GET /v2/enterprise/playbooks (legacy)",
+    "purpose": "Legacy v2: list enterprise playbooks.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/playbooks", "expected_output": "Playbooks", "scenario": "Legacy enterprise playbook list"}],
+    "source_ids": ["devin-docs-api-v2-playbooks-list-playbooks"]
+  },
+  {
+    "id": "devin.api.cmd.v2-create-playbook",
+    "command": "POST /v2/enterprise/playbooks (legacy)",
+    "purpose": "Legacy v2: create an enterprise playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/playbooks -d '{...}'", "expected_output": "Created", "scenario": "Legacy enterprise playbook create"}],
+    "source_ids": ["devin-docs-api-v2-playbooks-create-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-playbook",
+    "command": "GET /v2/enterprise/playbooks/{playbook_id} (legacy)",
+    "purpose": "Legacy v2: get an enterprise playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/playbooks/$PID", "expected_output": "Playbook", "scenario": "Legacy detail"}],
+    "source_ids": ["devin-docs-api-v2-playbooks-get-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v2-update-playbook",
+    "command": "PUT /v2/enterprise/playbooks/{playbook_id} (legacy)",
+    "purpose": "Legacy v2: update an enterprise playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT /v2/enterprise/playbooks/$PID -d '{...}'", "expected_output": "Updated", "scenario": "Legacy update"}],
+    "source_ids": ["devin-docs-api-v2-playbooks-update-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v2-delete-playbook",
+    "command": "DELETE /v2/enterprise/playbooks/{playbook_id} (legacy)",
+    "purpose": "Legacy v2: delete an enterprise playbook.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X DELETE /v2/enterprise/playbooks/$PID", "expected_output": "Deleted", "scenario": "Legacy delete"}],
+    "source_ids": ["devin-docs-api-v2-playbooks-delete-playbook"]
+  },
+  {
+    "id": "devin.api.cmd.v2-bulk-index-repositories",
+    "command": "POST /v2/enterprise/repositories/bulk-index (legacy)",
+    "purpose": "Legacy v2: bulk-trigger repository indexing.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X POST /v2/enterprise/repositories/bulk-index -d '{...}'", "expected_output": "Indexing started", "scenario": "Legacy bulk index"}],
+    "source_ids": ["devin-docs-api-v2-repositories-bulk-index-repositories"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-repository-status",
+    "command": "GET /v2/enterprise/repositories/{repo_id}/status (legacy)",
+    "purpose": "Legacy v2: get repository indexing status.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/repositories/$REPO_ID/status", "expected_output": "Indexing status", "scenario": "Legacy status poll"}],
+    "source_ids": ["devin-docs-api-v2-repositories-get-repository-status"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-enterprise-session",
+    "command": "GET /v2/enterprise/sessions/{session_id} (legacy)",
+    "purpose": "Legacy v2: get an enterprise session.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/sessions/$SID", "expected_output": "Session", "scenario": "Legacy enterprise session detail"}],
+    "source_ids": ["devin-docs-api-v2-sessions-get-enterprise-session"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-enterprise-sessions",
+    "command": "GET /v2/enterprise/sessions (legacy)",
+    "purpose": "Legacy v2: list enterprise sessions.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/sessions", "expected_output": "Sessions", "scenario": "Legacy enterprise session list"}],
+    "source_ids": ["devin-docs-api-v2-sessions-list-enterprise-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-enterprise-sessions-insights",
+    "command": "GET /v2/enterprise/sessions/insights (legacy)",
+    "purpose": "Legacy v2: list enterprise sessions with insights.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/sessions/insights", "expected_output": "Sessions+insights", "scenario": "Legacy retrospective"}],
+    "source_ids": ["devin-docs-api-v2-sessions-list-enterprise-sessions-insights"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-organization-sessions",
+    "command": "GET /v2/enterprise/organizations/{org_id}/sessions (legacy)",
+    "purpose": "Legacy v2: list organization sessions.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/organizations/$ORG_ID/sessions", "expected_output": "Sessions", "scenario": "Legacy org session list"}],
+    "source_ids": ["devin-docs-api-v2-sessions-list-organization-sessions"]
+  },
+  {
+    "id": "devin.api.cmd.v2-list-organization-sessions-insights",
+    "command": "GET /v2/enterprise/organizations/{org_id}/sessions/insights (legacy)",
+    "purpose": "Legacy v2: list organization sessions with insights.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/organizations/$ORG_ID/sessions/insights", "expected_output": "Sessions+insights", "scenario": "Legacy org retrospective"}],
+    "source_ids": ["devin-docs-api-v2-sessions-list-organization-sessions-insights"]
+  },
+  {
+    "id": "devin.api.cmd.v2-get-enterprise-snapshot",
+    "command": "GET /v2/enterprise/snapshots/{snapshot_id} (legacy)",
+    "purpose": "Legacy v2: get enterprise snapshot details.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/snapshots/$SID", "expected_output": "Snapshot", "scenario": "Legacy snapshot detail"}],
+    "source_ids": ["devin-docs-api-v2-snapshots-get-enterprise-snapshot"]
+  },
+  {
+    "id": "devin.api.cmd.v2-user-usage-analysis",
+    "command": "GET /v2/enterprise/user-usage/{user_id} (beta, legacy)",
+    "purpose": "Legacy v2 beta: get user usage analysis.",
+    "flags": [],
+    "examples": [{"invocation": "curl /v2/enterprise/user-usage/$UID", "expected_output": "Usage analysis", "scenario": "Legacy per-user analytics"}],
+    "source_ids": ["devin-docs-api-v2-user-usage-get-user-usage-analysis-beta"]
+  }
+]

@@ -1,0 +1,131 @@
+[
+  {
+    "id": "devin.enterprise.cmd.ui-rollout-mode",
+    "command": "[UI] Enterprise Settings > Rollout > Rollout mode dropdown",
+    "purpose": "Set the enterprise-wide rollout mode for declarative environments (Not enabled / Testing / Available / Enabled by default). Switches between Testing and Available are reversible; Enabled-by-default is permanent (requires Cognition admin to undo).",
+    "flags": [],
+    "examples": [
+      {"invocation": "Set dropdown to 'Available'", "expected_output": "Org admins on classic now see migration callout; can self-service migrate", "scenario": "Phase 2 of migration playbook"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-rollout"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-per-org-override-in",
+    "command": "[UI] Enterprise Settings > Rollout > per-org table > opt org IN to blueprints",
+    "purpose": "Switch a specific organization to declarative blueprints (Testing/Available mode). Overrides the enterprise default for that org.",
+    "flags": [],
+    "examples": [
+      {"invocation": "On Rollout page, find test-org, click opt-in", "expected_output": "Org switches to blueprints immediately", "scenario": "Pilot a single org during Testing mode"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-rollout"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-per-org-override-out",
+    "command": "[UI] Enterprise Settings > Rollout > per-org table > opt org OUT (back to classic)",
+    "purpose": "Roll an org back to classic setup from blueprints. Configurations are preserved; takes effect on next session. Active sessions unaffected.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Click 'switch to classic' on a specific org row", "expected_output": "Org reverts to classic snapshot", "scenario": "Emergency rollback after blueprint regression"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-rollout"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-base-environment-edit",
+    "command": "[UI] Settings > Devin's base environment > edit blueprint",
+    "purpose": "Edit the enterprise-tier blueprint (initialize/maintenance/knowledge sections). Saved changes trigger an enterprise-wide rebuild across all orgs.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > Devin's base environment > edit > add Python 3.12 install > save", "expected_output": "Enterprise-wide rebuild kicks off", "scenario": "Standardize on Python 3.12 across all orgs"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-overview"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-base-environment-secrets",
+    "command": "[UI] Settings > Devin's base environment > Secrets tab",
+    "purpose": "Manage enterprise-wide secrets. Available across all orgs/sessions. Requires ManageAccountResources permission.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Settings > Devin's base environment > Secrets > Add 'CORP_PROXY_TOKEN'", "expected_output": "Secret available enterprise-wide on next build", "scenario": "Provision shared corp-proxy auth"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-overview"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-create-custom-role",
+    "command": "[UI] Enterprise Settings > Roles > Create a custom role",
+    "purpose": "Create a custom org-level or account-level role with selected permissions. Requires Manage Account Membership permission. Both Organization-level and Enterprise-level role types supported.",
+    "flags": [
+      {"name": "scope", "value": "Organization|Enterprise", "doc": "Role scope tier."},
+      {"name": "name", "value": "<descriptive name>", "doc": "Role name."},
+      {"name": "permissions", "value": "<list>", "doc": "Permissions to grant."}
+    ],
+    "examples": [
+      {"invocation": "Enterprise Settings > Roles > Create a custom role > scope=Org > name='ReadOnlyAuditor' > permissions=[ViewSessions,ViewMetrics]", "expected_output": "Role created and assignable", "scenario": "Auditor role with view-only access"}
+    ],
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-assign-account-role",
+    "command": "[UI] Enterprise Settings > Enterprise members > Assign account-level role",
+    "purpose": "Assign an account-level (enterprise-wide) role to a user. Account-level roles inherit corresponding org-level permissions in every org. Requires Manage Account Membership.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Enterprise Settings > Enterprise members > <user> > set role=Admin", "expected_output": "User has full enterprise admin access", "scenario": "Promote enterprise admin"}
+    ],
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-assign-org-role",
+    "command": "[UI] Org Settings > Organization members > Assign organization-level role",
+    "purpose": "Assign an org-level role within a specific organization. Requires Manage Organization Membership permission.",
+    "flags": [],
+    "examples": [
+      {"invocation": "Org Settings > Organization members > <user> > set role=Admin", "expected_output": "User is org admin", "scenario": "Org-level promotion"}
+    ],
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-idp-group-mapping",
+    "command": "[UI] Enterprise Settings > Members > Configure IdP group mappings",
+    "purpose": "Map IdP group names to Devin roles for SSO auto-assignment. SSO provider must send `groups` array in the assertion.",
+    "flags": [
+      {"name": "idp-group", "value": "<group name>", "doc": "IdP group name from SSO assertion."},
+      {"name": "role", "value": "<role>", "doc": "Devin role to auto-assign."}
+    ],
+    "examples": [
+      {"invocation": "Enterprise Settings > Members > IdP groups > map 'eng-leadership' → Admin", "expected_output": "All members of that group get Admin on next SSO login", "scenario": "Automate role assignment via SSO"}
+    ],
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-rollout-filter",
+    "command": "[UI] Enterprise Settings > Rollout > per-org table > filter dropdown",
+    "purpose": "Filter the per-org table by All / Blueprints / Classic / Overrides. Used to find unmigrated orgs during phased rollout.",
+    "flags": [
+      {"name": "filter", "value": "All|Blueprints|Classic|Overrides", "doc": "Filter scope."}
+    ],
+    "examples": [
+      {"invocation": "Filter by 'Classic'", "expected_output": "Only orgs still on classic setup", "scenario": "Identify migration stragglers"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-rollout"]
+  },
+  {
+    "id": "devin.enterprise.cmd.ui-trigger-enterprise-rebuild",
+    "command": "[UI] Settings > Devin's base environment > trigger enterprise-wide rebuild",
+    "purpose": "Cascade a fresh build across ALL organizations. Used after enterprise-blueprint update or enterprise-secret rotation.",
+    "flags": [],
+    "examples": [
+      {"invocation": "After updating enterprise blueprint, click 'Rebuild all'", "expected_output": "All orgs rebuild in their queue order", "scenario": "Roll out updated enterprise tooling"}
+    ],
+    "source_ids": ["devin-docs-enterprise-environment-overview"]
+  },
+  {
+    "id": "devin.enterprise.cmd.email-enterprise-sales",
+    "command": "Email enterprise@cognition.ai for Customer Dedicated Deployment setup",
+    "purpose": "Initiate Customer Dedicated Deployment setup. Cognition Enterprise Sales handles networking discussion (PrivateLink vs IPSec, customer VPC topology).",
+    "flags": [],
+    "examples": [
+      {"invocation": "Email enterprise@cognition.ai with intended VPC topology and SCM/artifact endpoints", "expected_output": "Cognition responds with setup steps", "scenario": "Self-hosted SCM org ready to start dedicated deployment"}
+    ],
+    "source_ids": ["devin-docs-enterprise-deployment"]
+  }
+]

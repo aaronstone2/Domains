@@ -1,0 +1,282 @@
+[
+  {
+    "id": "devin.enterprise.deployment-cloud",
+    "name": "Enterprise Cloud deployment",
+    "kind": "deployment",
+    "description": "Default enterprise deployment model. Brain + DevBox both run in Cognition Cloud. Public network or IP-allowlist for customer resource access. Fastest setup (minutes). Works when SCM (GitHub.com / GitLab.com / Azure DevOps Cloud) and artifact stores are public or IP-whitelistable. Does NOT support MFA VPN access to customer resources.",
+    "source_ids": ["devin-docs-enterprise-deployment", "devin-docs-enterprise-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.deployment-dedicated",
+    "name": "Customer Dedicated Deployment",
+    "kind": "deployment",
+    "description": "Single-tenant Cognition-managed VPC for customers with private networks that cannot support IP allowlisting. Brain stays in Cognition Cloud; DevBox runs in customer-isolated VPC. Connects via AWS PrivateLink (preferred) or IPSec tunnel. Supports MFA VPN access to internal resources and OpenVPN.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": ["customer-dedicated", "single-tenant VPC"]
+  },
+  {
+    "id": "devin.enterprise.brain",
+    "name": "Devin Brain (Cognition Cloud)",
+    "kind": "subsystem",
+    "description": "Stateless cloud-based service powering Devin's intelligence. ALWAYS resides in Cognition Cloud (similar to GitHub Copilot's architecture). Pairs with the DevBox (which can be in customer-dedicated VPC under that deployment model).",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.aws-privatelink",
+    "name": "AWS PrivateLink (Customer Dedicated networking)",
+    "kind": "feature",
+    "description": "Preferred secure-tunnel option between customer VPC and Cognition's single-tenant VPC for Customer Dedicated deployments. Alternative: IPSec tunnel.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.devinapps-domain",
+    "name": "*.devinapps.com end-user domain",
+    "kind": "network",
+    "description": "Domain serving Devin's interactive session tools (IDE / VSCode frontend, Desktop / browser viewer) loaded via iframes in the user's browser. End-user workstations must be able to reach `*.devinapps.com` over HTTPS/443 — corporate proxies/firewalls must allowlist it.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.cross-tenant-websocket",
+    "name": "Cross-tenant WebSocket startup",
+    "kind": "subsystem",
+    "description": "On startup, Devin establishes a secure WebSocket connection from the customer DevBox to an isolated container in Cognition's tenant. All subsequent operations occur over this secure channel. Backend session isolation enforced.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.compound-ai-system",
+    "name": "Compound AI system (no third-party LLM keys)",
+    "kind": "feature",
+    "description": "Devin is described in the FAQ as a compound AI system. Does NOT currently support customer-supplied third-party LLM API keys. The Brain owns model selection.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.rollout-mode-not-enabled",
+    "name": "Rollout mode — Not enabled",
+    "kind": "feature",
+    "description": "Initial state for declarative environment configuration before enterprise activation. No orgs see environment pages; all use classic setup. Activation requires Cognition admin contact.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.rollout-mode-testing",
+    "name": "Rollout mode — Testing",
+    "kind": "feature",
+    "description": "Baseline rollout state after activation. Only manually opted-in orgs use blueprints. All other orgs remain on classic setup with no UI changes. Enterprise admin opts orgs in from the Rollout page. Used for piloting blueprint configuration in isolation.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.rollout-mode-available",
+    "name": "Rollout mode — Available",
+    "kind": "feature",
+    "description": "Self-service rollout state. Org admins on classic setup see a migration callout on their Machine Configuration page and can self-service migrate. No automatic switch — opt-in only. Useful for awareness + paced migration.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.rollout-mode-enabled-by-default",
+    "name": "Rollout mode — Enabled by default",
+    "kind": "feature",
+    "description": "Final rollout state. New orgs default to declarative blueprints. Existing orgs that were on classic with repos receive automatic classic overrides as a safety mechanism. PERMANENT action — cannot be undone without a Cognition administrator.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.per-org-override",
+    "name": "Per-org rollout override",
+    "kind": "feature",
+    "description": "Enterprise admin can opt individual orgs in (Testing/Available mode) or out (Enabled by default mode) from the Rollout page's per-org table. Switches an org between blueprints and classic setup. Both blueprint and classic configs are preserved during switches.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.automatic-classic-override",
+    "name": "Automatic classic override",
+    "kind": "feature",
+    "description": "Safety mechanism activated when switching to Enabled-by-default mode. Any org currently on classic setup AND with repositories configured automatically receives an explicit classic override — nothing changes for them. Orgs without repos (or already on blueprints) are unaffected.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.migration-assistant",
+    "name": "Migration assistant (classic → declarative)",
+    "kind": "feature",
+    "description": "Devin-driven assistant that inspects an org's existing snapshot and generates equivalent blueprint configuration. Lowers the per-org migration burden. Documented at /onboard-devin/environment/migration.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.rollout-kpi-dashboard",
+    "name": "Rollout KPI dashboard",
+    "kind": "feature",
+    "description": "Top-of-Rollout-page summary metrics: Blueprint orgs (count), Rollout percentage (% on blueprints), Build health (aggregate status across blueprint orgs).",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.per-org-rollout-table",
+    "name": "Per-org rollout table",
+    "kind": "feature",
+    "description": "Detailed table on the Rollout page showing every org with: Organization, State (Blueprints|Classic), Override (yes/no), Classic repos (count), Blueprint repos (count), Latest build status. Filterable by All / Blueprints / Classic / Overrides.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.three-tier-blueprint-hierarchy",
+    "name": "Three-tier blueprint hierarchy (additive)",
+    "kind": "feature",
+    "description": "Enterprise → Organization → Repository. Additive (lower tiers don't replace upper). Enterprise blueprint runs first (baseline), then org, then repo. Knowledge items from all tiers are collected; multiple tiers can define same-named knowledge item without overwriting.",
+    "source_ids": ["devin-docs-enterprise-environment-overview", "devin-docs-enterprise-environment-best-practices"],
+    "aliases": ["additive blueprint hierarchy"]
+  },
+  {
+    "id": "devin.enterprise.enterprise-blueprint",
+    "name": "Enterprise blueprint",
+    "kind": "feature",
+    "description": "Enterprise-tier blueprint at Settings > Devin's base environment. Default home for: standard language runtimes, security tools, corporate certificates, internal CLIs, proxy settings, registry auth. Recommended pattern: put it here unless a specific reason to scope narrower.",
+    "source_ids": ["devin-docs-enterprise-environment-overview", "devin-docs-enterprise-environment-best-practices"],
+    "aliases": ["base environment"]
+  },
+  {
+    "id": "devin.enterprise.enterprise-secret",
+    "name": "Enterprise secret",
+    "kind": "credential",
+    "description": "Secret defined at the enterprise tier. Available in EVERY build and EVERY session across ALL organizations, in enterprise/org/repo blueprint steps alike. Managed in Settings > Devin's base environment > Secrets. Requires ManageAccountResources permission.",
+    "source_ids": ["devin-docs-enterprise-environment-overview", "devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.enterprise-wide-rebuild",
+    "name": "Enterprise-wide rebuild",
+    "kind": "feature",
+    "description": "Cascading rebuild from the enterprise tier across ALL organizations. Triggered by enterprise-blueprint update, secret rotation, or post-security-patch refresh. Each org's build runs with updated enterprise blueprint + own org/repo blueprints. Respects per-org build queue (queues behind in-progress; cancels-and-replaces queued).",
+    "source_ids": ["devin-docs-enterprise-environment-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.cascading-secret-precedence",
+    "name": "Cascading secret precedence",
+    "kind": "feature",
+    "description": "Secrets cascade through enterprise → org → repo with more specific tiers winning on name collision. Use to override enterprise-wide credentials with team-specific tokens that have different permissions.",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.role-organization-level",
+    "name": "Organization-level role (RBAC)",
+    "kind": "role",
+    "description": "Org-by-org assigned RBAC role. Built-in roles: Admin (full org access), Member (standard), DeepWiki Only (DeepWiki + AskDevin + index repos only). Assignment via Org Settings > Organization Members. Custom org roles created from Enterprise Settings > Roles by users with Manage Account Membership permission.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.role-account-level",
+    "name": "Account-level (enterprise) role (RBAC)",
+    "kind": "role",
+    "description": "Enterprise-wide role applying across all organizations. Users with account-level roles automatically inherit corresponding org-level permissions in every org they belong to. Built-in: Admin, Member.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.idp-group-auto-assign",
+    "name": "IdP group → role auto-assignment",
+    "kind": "feature",
+    "description": "Enterprise feature mapping IdP groups to Devin roles. When users authenticate via SSO, they automatically receive the role assigned to their IdP group. Configured in Enterprise Settings > Members. Requires SSO provider to send the `groups` array in the SSO assertion.",
+    "source_ids": ["devin-docs-enterprise-security-custom-roles"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.sso-okta",
+    "name": "SSO via Okta (OpenID Connect)",
+    "kind": "provider",
+    "description": "Enterprise SSO option configured against an Okta tenant via OIDC.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.sso-azure-ad",
+    "name": "SSO via Azure AD",
+    "kind": "provider",
+    "description": "Enterprise SSO option for Azure AD / Entra ID.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.sso-saml",
+    "name": "SSO via generic SAML 2.0",
+    "kind": "provider",
+    "description": "Enterprise SSO option for any generic SAML 2.0 identity provider.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.sso-oidc-generic",
+    "name": "SSO via generic OIDC",
+    "kind": "provider",
+    "description": "Enterprise SSO option for any generic OpenID Connect provider.",
+    "source_ids": ["devin-docs-enterprise-deployment"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.trust-center",
+    "name": "Trust Center (trust.cognition.ai)",
+    "kind": "feature",
+    "description": "Public security-posture surface at https://trust.cognition.ai. Documents SOC 2 Type II findings, security policies, and certifications.",
+    "source_ids": ["devin-docs-enterprise-overview", "devin-docs-enterprise-security-trust-center"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.soc2-type-ii-sept-2024",
+    "name": "SOC 2 Type II (September 2024)",
+    "kind": "feature",
+    "description": "Cognition's SOC 2 Type II certification obtained in September 2024 (the enterprise-overview cites this date; the admin-security page cites March 2024 — likely Type I → Type II progression). Covers data security, privacy, processing integrity, confidentiality, availability.",
+    "source_ids": ["devin-docs-enterprise-overview", "devin-docs-admin-security"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.dedicated-deployment-data-residency",
+    "name": "Dedicated/on-prem data residency",
+    "kind": "feature",
+    "description": "For Enterprise customers using dedicated or on-prem deployments, ALL customer data is stored within the customer's own tenant. Cognition does not train on this data regardless of opt-in.",
+    "source_ids": ["devin-docs-enterprise-overview"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.build-health-review-cadence",
+    "name": "Weekly build-health review cadence",
+    "kind": "feature",
+    "description": "Recommended best-practice cadence: check build health weekly across all orgs. Look for: Failed builds (critical, blocks all repos), Partial builds (some repos failing — usually dependency/blueprint drift), Stale builds (unusually old latest-build — possibly stuck queue).",
+    "source_ids": ["devin-docs-enterprise-environment-best-practices"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.template-library",
+    "name": "Blueprint template library",
+    "kind": "feature",
+    "description": "Curated copy-paste blueprint templates for Python, Node.js, Go, Java, Ruby, Rust, advanced patterns. Located at /onboard-devin/environment/templates. Used internally by enterprise admins to share standard configs across teams.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.audit-log-rollout",
+    "name": "Audit-logged rollout transitions",
+    "kind": "feature",
+    "description": "All rollout state transitions are recorded in audit logs. Captures: enterprise mode changes (Testing → Available, Enabled-by-default activation), per-org override changes (opt-in / opt-out / removal), the admin who made each change, and timestamp.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  },
+  {
+    "id": "devin.enterprise.concurrency-conflict-rejection",
+    "name": "Concurrency-protected state transitions",
+    "kind": "feature",
+    "description": "If another admin changes enterprise rollout state between page-load and submit, the request is rejected with a conflict error. Prevents accidental overwrites in multi-admin environments.",
+    "source_ids": ["devin-docs-enterprise-environment-rollout"],
+    "aliases": []
+  }
+]
