@@ -644,3 +644,21 @@ Pattern: each fm now has 3-4 specific diagnostic commands with concrete `expecte
 | ecs | 47 | 50 | low (less-likely interview surface) |
 | devin | 36 | 37 | high (Cognition product) |
 | methodology | 0 | 28 | ✓ done in P13 |
+
+## Phase 14 — Quality pass on top 25 docker failure_modes
+
+### Session P14 — 2026-05-03 — DONE
+
+Of 65 thin docker fms, deepened the **top 25 most-interview-relevant** to 3+ diag / 2+ fix steps. Output: `domains/docker/extract/failure_modes_p14_quality.json` (1 file, 25 fms).
+
+**Coverage by category:**
+
+| Group | Count | fm-ids |
+|---|---:|---|
+| Engine / runtime / signals / storage | 10 | docker-stop-hangs-10s, zombie-processes-leaking, runc-exit-128-plus-signum, runc-state-stuck-creating, runc-rootless-newuidmap-missing, runc-bundle-mount-permission-denied, cgroup-driver-mismatch, bind-mount-source-missing, bind-mount-windows-line-ending, live-restore-misordered-restart |
+| Networking + DNS | 8 | iptables-docker-chain-flushed, iptables-docker-chain-missing, no-masquerade-bridge, no-icc-blocked, ipv6-not-enabled, bridge-ip-pool-exhausted, userland-proxy-cant-bind-low-port, network-overlay-mtu-mismatch |
+| Compose + security + build | 7 | cap-not-actually-dropped, compose-depends-on-wrong, compose-env-file-precedence, compose-secrets-vs-configs, buildkit-secret-not-mounted, image-pull-rate-limit, dockerd-tls-cert-expired |
+
+**Domain-wide impact:** thin count **65 → 40** (38% reduction). Each P14 fm now has 3-4 specific diagnostic commands with concrete `expected:` outcomes plus 2-3 fix steps with copy-pasteable commands and explicit `validate:` / `rollback:` paths.
+
+**Phase 15+ scope:** remaining 40 thin docker fms + linux (80 thin) + k8s (52) + devin (36).
