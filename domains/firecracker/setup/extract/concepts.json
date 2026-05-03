@@ -1,0 +1,114 @@
+[
+  {
+    "id": "firecracker.setup.production-checklist",
+    "name": "Production deployment checklist (high-level)",
+    "kind": "policy",
+    "description": "Per fc-docs-prod-host-setup, defense-in-depth requires: regularly patched host+guest kernels and microcode (per ALAS or distro security advisories); jailer (always); seccomp default filters (never --no-seccomp in prod); SMT off; KSM off; swap off; Rowhammer-mitigated memory (DDR4 TRR + ECC); per-tenant Firecracker process isolation (one tenant per process).",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.unprivileged-uid-per-microvm",
+    "name": "Per-microVM unique uid/gid pattern",
+    "kind": "design-pattern",
+    "description": "Recommended: each Firecracker microVM runs as its OWN uid/gid (not a shared 'firecracker' user). Adds a layer of cross-microVM filesystem-permission isolation in case one jail is broken out of. Orchestrator allocates uid/gid pool.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.serial-device-prod-anti-pattern",
+    "name": "Serial device in production (anti-pattern)",
+    "kind": "anti-pattern",
+    "description": "8250 serial device is tied to Firecracker stdout (or non-daemonized jailer stdout). Guest controls writes — unbounded data can fill host storage. Recommendations: (a) use serial rate-limiter + bounded storage (logrotate, journald); (b) redirect to /dev/null; (c) DISABLE in guest kernel via `8250.nr_uarts=0` boot arg. Caveat: guest can re-enable the device at runtime even if disabled at boot.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.signal-handler-deadlock-risk",
+    "name": "Custom signal handler deadlock (logging/metrics race)",
+    "kind": "constraint",
+    "description": "Firecracker's SIGSEGV/SIGSYS/etc. handlers log + flush metrics — these are NOT async-signal-safe (use locks). Rare race: handler intercepts signal on a thread already holding the log/metrics lock → deadlock → unresponsive thread. NO security impact. Mitigation: run an overwatcher process that periodically SIGKILLs unresponsive Firecracker processes.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.kvm-pit-cpu-overhead",
+    "name": "kvm-pit kernel-thread CPU overhead (x86)",
+    "kind": "performance-issue",
+    "description": "x86 KVM-PIT (Programmable Interval Timer) kernel thread services guest timer interrupts. Spawned by KVM after guest start — is in the ROOT cgroup by default, so its CPU usage isn't accounted to the microVM. Mitigations: (1) external agent moves `kvm-pit/<fc-pid>` thread into the microVM's cgroup; (2) raise modprobe kvm min_timer_period_us to reduce timer event rate (also affects APIC timer — workload-test before deploying).",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.smt-off-side-channel",
+    "name": "Disable SMT for tenant separation",
+    "kind": "security-recommendation",
+    "description": "Simultaneous Multi-Threading (Hyperthreading) is a precondition for many speculation-class side channels (Spectre variants, MDS). For tenant-separation scenarios, disable SMT host-side via BIOS/UEFI or `nosmt` boot arg. Trades performance for isolation.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": ["nosmt", "no-hyperthreading"]
+  },
+  {
+    "id": "firecracker.setup.ksm-off-side-channel",
+    "name": "Disable Kernel Samepage Merging (KSM)",
+    "kind": "security-recommendation",
+    "description": "KSM dedupes identical memory pages across processes — known precondition for memory-deduplication side channels. Disable via /sys/kernel/mm/ksm/run=0. Mandatory for multi-tenant Firecracker hosts.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.swap-off-data-remanence",
+    "name": "Disable swap (data remanence)",
+    "kind": "security-recommendation",
+    "description": "Memory pressure → swap-out → guest memory contents written to host disk → data remanence risk on disk reuse. Recommendation: disable swap entirely OR use secure (encrypted) swap. Verify with `grep -q /dev /proc/swaps && echo bad || echo OK`.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.rowhammer-trr-ecc-memory",
+    "name": "Use Rowhammer-mitigated memory",
+    "kind": "security-recommendation",
+    "description": "Rowhammer is a DRAM side channel. Recommended hardware: DDR4 with Target Row Refresh (TRR) AND error-correcting code (ECC). Pseudo-TRR for DDR3 is partial mitigation (perf cost). Hardware procurement decision — not configurable at runtime.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.spectre-meltdown-checker",
+    "name": "spectre-meltdown-checker verification",
+    "kind": "tool",
+    "description": "Open-source script (github.com/speed47/spectre-meltdown-checker) that audits the host's protections against speculation side channels. Run as part of deployment validation; recheck after kernel/microcode updates.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.arm-cntpct-counter-reset",
+    "name": "ARM CNTPCT counter reset on VM boot",
+    "kind": "security-mechanism",
+    "description": "ARM only. Firecracker resets the guest's physical timer counter on VM boot (prevents leaking host time). Requires KVM_CAP_COUNTER_OFFSET (kernel ≥6.4). Older kernels: counter passes through from host — minor info leak.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.host-kernel-quiet-loglevel",
+    "name": "Host kernel: `quiet loglevel=1` recommendation",
+    "kind": "performance-recommendation",
+    "description": "Recommended host kernel cmdline addition: `quiet loglevel=1`. Reduces messages to serial console — concrete example from docs: adding `console=ttyAMA0` to host kernel cmdline degraded snapshot restore time from 3ms → 8.5ms on aarch64 because TAP-creation generated host kernel logs that were slow to write.",
+    "source_ids": ["fc-docs-prod-host-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.rootfs-build-pattern",
+    "name": "Rootfs build pattern (ext4 image)",
+    "kind": "design-pattern",
+    "description": "Firecracker rootfs is a host file (typically ext4) presented to the guest as /dev/vda via VirtIO/block. Build steps (per fc-docs-rootfs-kernel): (1) dd a sparse ext4 image; (2) mkfs.ext4; (3) loopmount; (4) populate with debootstrap or alpine-make-rootfs or similar; (5) install init scripts; (6) umount. The image is the host's view; the guest sees a regular block device.",
+    "source_ids": ["fc-docs-rootfs-kernel"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.setup.kernel-build-vmlinux",
+    "name": "Guest kernel build (vmlinux/vmlinuz)",
+    "kind": "design-pattern",
+    "description": "Guest kernel is built from upstream Linux (or Amazon Linux microvm-kernel) with Firecracker-relevant Kconfig set. Output: uncompressed ELF (x86_64) or PE (aarch64). Firecracker loads this directly — no bootloader. Reference Kconfigs at resources/guest_configs/ in the FC repo.",
+    "source_ids": ["fc-docs-rootfs-kernel", "fc-docs-kernel-policy"],
+    "aliases": []
+  }
+]

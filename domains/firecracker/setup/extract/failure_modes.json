@@ -1,0 +1,411 @@
+[
+  {
+    "id": "firecracker.setup.fm.kvm-pit-cpu-overhead-untracked",
+    "symptom": "Host CPU usage spikes from kvm-pit kernel threads but the cost isn't accounted to any microVM cgroup. Schedulers undercount per-tenant CPU; noisy-neighbor effects.",
+    "error_patterns": ["high CPU on kvm-pit/<pid> threads", "cpu accounting drift"],
+    "root_cause_class": "kernel-thread-not-in-microvm-cgroup",
+    "affected_concepts": ["firecracker.setup.kvm-pit-cpu-overhead", "firecracker.kvm.in-kernel-irqchip"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Identify kvm-pit threads", "command": "ps -eLo pid,comm | grep kvm-pit", "expected": "kvm-pit/<fc-pid> entries", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Check which cgroup they're in", "command": "for tid in $(ps -L -o tid= -p <fc-pid>); do cat /proc/$tid/cgroup; done", "expected": "kvm-pit threads in root cgroup, not microVM cgroup", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Run an external agent that moves kvm-pit threads into the microVM's cgroup post-start", "command": "After Firecracker starts, find kvm-pit/<fc-pid> tids and write them to <microvm-cgroup>/cgroup.procs (v2) or tasks (v1)", "validation": "kvm-pit CPU now accounted to the microVM", "rollback": "Move them back to root cgroup", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Or raise the kvm timer-period limit to reduce kvm-pit work", "command": "sudo modprobe -r kvm_intel kvm; sudo modprobe kvm min_timer_period_us=1000; sudo modprobe kvm_intel; persist via /etc/modprobe.d/kvm.conf", "validation": "kvm-pit CPU drops; APIC granularity coarsens (workload-test)", "rollback": "Reset min_timer_period_us to default", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.host-kernel-logs-slow-snapshot-restore",
+    "symptom": "Snapshot restore time degrades inexplicably (e.g., 3ms → 8.5ms on aarch64) after host kernel cmdline change. Host kernel logging hot during TAP create — synchronous console writes hold up the FC main thread.",
+    "error_patterns": ["snapshot restore slow", "host kernel log spam"],
+    "root_cause_class": "host-console-blocking-fc-syscalls",
+    "affected_concepts": ["firecracker.setup.host-kernel-quiet-loglevel", "firecracker.api.cmd.load-snapshot"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect host kernel cmdline", "command": "cat /proc/cmdline", "expected": "Should contain `quiet loglevel=1`; any console=ttyAMA0 / console=ttyS0 is suspect", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Check dmesg log volume during restore", "command": "dmesg -c; trigger restore; dmesg | wc -l", "expected": "Few lines if quiet loglevel=1 is set", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add quiet loglevel=1 to host kernel cmdline; remove any console= entries", "command": "Edit /etc/default/grub GRUB_CMDLINE_LINUX; update-grub; reboot", "validation": "Restore time returns to baseline", "rollback": "Revert grub config", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.smt-enabled-side-channel-risk",
+    "symptom": "Multi-tenant Firecracker host has SMT (Hyperthreading) enabled. Speculation-class side channels (Spectre, MDS) become exploitable across tenants.",
+    "error_patterns": ["SMT enabled in /sys", "tenant separation violated"],
+    "root_cause_class": "host-hardening-missing",
+    "affected_concepts": ["firecracker.setup.smt-off-side-channel", "firecracker.api.cfg.machine-config.smt"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check host SMT status", "command": "cat /sys/devices/system/cpu/smt/control; lscpu | grep 'Thread(s) per core'", "expected": "off; 1", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Disable SMT at runtime", "command": "echo off | sudo tee /sys/devices/system/cpu/smt/control", "validation": "smt/control shows off; lscpu Thread(s) per core = 1", "rollback": "echo on > /sys/devices/system/cpu/smt/control", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Make persistent: add nosmt to host kernel cmdline", "command": "Edit /etc/default/grub GRUB_CMDLINE_LINUX; update-grub; reboot", "validation": "SMT off after reboot", "rollback": "Remove nosmt", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.ksm-enabled-side-channel-risk",
+    "symptom": "Multi-tenant host has KSM (Kernel Samepage Merging) enabled. Page-deduplication side channels exploitable — one tenant can detect another's memory contents.",
+    "error_patterns": ["/sys/kernel/mm/ksm/run = 1", "KSM merging active"],
+    "root_cause_class": "host-hardening-missing",
+    "affected_concepts": ["firecracker.setup.ksm-off-side-channel"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check KSM state", "command": "cat /sys/kernel/mm/ksm/run /sys/kernel/mm/ksm/pages_shared", "expected": "run=0; pages_shared=0", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Disable KSM and unmerge", "command": "echo 0 | sudo tee /sys/kernel/mm/ksm/run", "validation": "run=0; pages_shared decreases over time", "rollback": "echo 1 > /sys/kernel/mm/ksm/run", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Make persistent via systemd unit", "command": "Add a systemd unit that sets ksm/run=0 at boot; or set kernel.ksm_run=0 sysctl if your distro maps it", "validation": "Survives reboot", "rollback": null, "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.swap-enabled-data-remanence",
+    "symptom": "Host has swap enabled. Under memory pressure, guest memory contents get written to disk → data remanence on disk reuse.",
+    "error_patterns": ["swap partitions present", "guest memory in /swap"],
+    "root_cause_class": "host-hardening-missing",
+    "affected_concepts": ["firecracker.setup.swap-off-data-remanence"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check swap status", "command": "grep -q /dev /proc/swaps && echo 'swap present' || echo 'no swap'", "expected": "no swap", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Disable all swap", "command": "sudo swapoff -a; remove swap entries from /etc/fstab", "validation": "Verification command returns 'no swap'", "rollback": "sudo swapon -a (re-enables)", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "If swap is required, use encrypted swap (LUKS over swap partition)", "command": "Configure dm-crypt-managed swap", "validation": "Swap pages are encrypted at rest", "rollback": null, "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.fd-ulimit-too-low",
+    "symptom": "Firecracker fails with EMFILE (Too many open files) when starting many devices or under vsock-heavy workload. Each microVM uses 20+ FDs baseline.",
+    "error_patterns": ["EMFILE", "Too many open files", "open(): bad file descriptor"],
+    "root_cause_class": "fd-limit-exhaustion",
+    "affected_concepts": ["firecracker.vmm.eventfd-heavy-fd-usage", "firecracker.jailer.cfg.cli.resource-limit-no-file"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check current ulimit", "command": "cat /proc/<fc-pid>/limits | grep 'Max open files'", "expected": "Soft limit ≥ 4096 for moderate workloads, much higher for vsock-heavy", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Count current FDs", "command": "ls /proc/<fc-pid>/fd | wc -l", "expected": "≤ soft limit; 20+ baseline", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise via jailer --resource-limit", "command": "jailer ... --resource-limit no-file=8192 ...", "validation": "Limits file shows new limit; Firecracker doesn't hit EMFILE", "rollback": "Drop --resource-limit; use default 2048", "source_id": "fc-docs-jailer"},
+      {"step": 2, "action": "Or systemd unit LimitNOFILE", "command": "Set [Service] LimitNOFILE=8192 in unit file; systemctl daemon-reload; restart", "validation": "/proc/<pid>/limits updated", "rollback": "Remove LimitNOFILE", "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq", "fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.setup.fm.no-seccomp-in-production",
+    "symptom": "Production Firecracker is started with --no-seccomp (or with a custom filter that whitelists too many syscalls). Defense-in-depth boundary disabled.",
+    "error_patterns": ["--no-seccomp in process args", "default seccomp not loaded"],
+    "root_cause_class": "operator-error-security-disabled",
+    "affected_concepts": ["firecracker.security.no-seccomp-flag", "firecracker.security.seccomp-boundary"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect Firecracker process args", "command": "ps -p <fc-pid> -o args=", "expected": "Should NOT include --no-seccomp; --seccomp-filter only when needed", "source_id": "fc-docs-seccomp"},
+      {"step": 2, "action": "Verify seccomp is active", "command": "grep Seccomp /proc/<fc-pid>/status", "expected": "Seccomp: 2 (filter mode)", "source_id": "fc-docs-seccomp"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Remove --no-seccomp from launch script", "command": "Update orchestrator/systemd unit to drop the flag", "validation": "Seccomp: 2 in /proc/<pid>/status", "rollback": null, "source_id": "fc-docs-seccomp"},
+      {"step": 2, "action": "If a custom filter is needed, audit it; only whitelist what's strictly required", "command": "Review the JSON; remove unnecessary syscall allowances; recompile via seccompiler-bin", "validation": "Filter audit clean", "rollback": "Revert to default embedded filter", "source_id": "fc-docs-seccompiler"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-seccomp", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.debug-binary-in-production",
+    "symptom": "Production deployment is using a debug-built Firecracker binary. Default seccomp filters are not embedded in debug builds — process runs unsandboxed at the syscall layer.",
+    "error_patterns": ["debug build in prod", "no seccomp loaded despite no --no-seccomp"],
+    "root_cause_class": "wrong-build-artifact",
+    "affected_concepts": ["firecracker.security.seccomp-debug-binary-gap"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check Firecracker version/build flavor", "command": "firecracker --version", "expected": "Release; not debug or experimental-gnu", "source_id": "fc-docs-seccomp"},
+      {"step": 2, "action": "Check Seccomp status as a confirmation", "command": "grep Seccomp /proc/<fc-pid>/status", "expected": "Seccomp: 2; if 0 with no --no-seccomp → likely debug build", "source_id": "fc-docs-seccomp"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Replace with release build (musl static)", "command": "Pull official release tarball or rebuild with --release", "validation": "Seccomp: 2; --version shows release identifier", "rollback": "Revert to prior debug build (insecure)", "source_id": "fc-docs-seccomp"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-seccomp"]
+  },
+  {
+    "id": "firecracker.setup.fm.drive-unsafe-cache-data-loss",
+    "symptom": "Host crashes; on reboot, guest filesystem is corrupted or 'recently committed' data is missing. Drive was attached with cache_type=Unsafe — guest fsync()s were dropped.",
+    "error_patterns": ["fsck errors after host crash", "data missing after crash"],
+    "root_cause_class": "drive-cache-misconfiguration",
+    "affected_concepts": ["firecracker.api.drive-resource", "firecracker.api.cfg.drive.cache-type"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check drive cache_type", "command": "GET /vm/config | jq '.drives[].cache_type'", "expected": "'Writeback' for any drive holding non-ephemeral data", "source_id": "fc-swagger-spec"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Restart microVM with cache_type=Writeback for persistent drives", "command": "Pre-boot: PUT /drives/<id> {..., cache_type: 'Writeback'}", "validation": "fsync calls propagate to host", "rollback": "cache_type=Unsafe (faster, unsafe)", "source_id": "fc-swagger-spec"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.setup.fm.drive-backing-file-missing",
+    "symptom": "PUT /drives returns 400 with 'Block device backing file does not exist' or InstanceStart fails reading the disk.",
+    "error_patterns": ["backing file does not exist", "ENOENT", "block device error"],
+    "root_cause_class": "missing-host-file",
+    "affected_concepts": ["firecracker.api.drive-resource"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check the configured path_on_host (resolved relative to chroot if jailed)", "command": "ls -la <chroot>/<path_on_host>", "expected": "File exists and is readable by the FC uid", "source_id": "fc-docs-jailer"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Copy/bind-mount the backing file into the chroot before PUT /drives", "command": "Inside jail setup: cp <host-path> <chroot>/<inside-path>; chown <fc-uid>", "validation": "Drive attaches", "rollback": null, "source_id": "fc-docs-jailer"},
+      {"step": 2, "action": "Or pass the file via --bind-mount in your jailer setup script", "command": "Use a wrapper that mounts the host path into the chroot read-only or read-write", "validation": "FC sees file at the configured chroot-relative path", "rollback": null, "source_id": "fc-docs-jailer"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-swagger-spec", "fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.setup.fm.pre-boot-only-call-after-boot",
+    "symptom": "API call returns 400 with 'cannot be modified after machine startup' or similar. Trying to PUT a pre-boot-only resource (drive, network-interface, vsock, machine-config, boot-source, mmds-config) after InstanceStart.",
+    "error_patterns": ["cannot be modified after machine startup", "pre-boot only"],
+    "root_cause_class": "lifecycle-misuse",
+    "affected_concepts": ["firecracker.api.pre-boot-vs-runtime"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check VM state", "command": "GET / | jq '.state'", "expected": "If 'Running' or 'Paused' → pre-boot resources are immutable", "source_id": "fc-swagger-spec"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Snapshot, destroy, restart fresh microVM with the new pre-boot config", "command": "PATCH /vm{Paused}; PUT /snapshot/create; SIGKILL; new FC process; load snapshot OR fresh boot with new config", "validation": "Resource takes effect on the new microVM", "rollback": null, "source_id": "fc-docs-snapshot-support"},
+      {"step": 2, "action": "If only the rate limiter or drive backing file needs changing, use PATCH (those ARE runtime-mutable)", "command": "PATCH /drives/<id> {path_on_host: <new>} OR PATCH /network-interfaces/<id> {tx_rate_limiter: <new>}", "validation": "Runtime change applied without restart", "rollback": null, "source_id": "fc-swagger-spec"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.setup.fm.jailer-cgroup-v2-subtree-control-trap",
+    "symptom": "Jailer fails with 'no internal process constraint' when launched with --cgroup-version=2 + --parent-cgroup pointing at an existing cgroup that has domain controllers in subtree_control.",
+    "error_patterns": ["no internal process constraint", "cgroup v2 move failed"],
+    "root_cause_class": "cgroup-v2-subtree-control-misconfiguration",
+    "affected_concepts": ["firecracker.jailer.cgroup-v2-subtree-control-trap", "firecracker.jailer.cgroup-setup"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check the parent cgroup's subtree_control", "command": "cat /sys/fs/cgroup/<parent>/cgroup.subtree_control", "expected": "If non-empty (e.g. 'memory cpu') → root cause", "source_id": "fc-docs-jailer"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Move the jailer to a leaf cgroup (no subtree_control set)", "command": "Use a different --parent-cgroup that's a leaf, or pass --cgroup args so jailer creates its own subdir", "validation": "Jailer launches without error", "rollback": null, "source_id": "fc-docs-jailer"},
+      {"step": 2, "action": "Or remove domain controllers from subtree_control", "command": "echo '-memory -cpu' | sudo tee /sys/fs/cgroup/<parent>/cgroup.subtree_control", "validation": "Parent now empty; jailer move succeeds", "rollback": "Re-add the controllers", "source_id": "fc-docs-jailer"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.setup.fm.jailer-chroot-base-permission-denied",
+    "symptom": "Jailer exits with EACCES creating <chroot_base>/<exec>/<id>/root. The chroot base directory or its parents have wrong permissions.",
+    "error_patterns": ["EACCES", "permission denied", "cannot create chroot"],
+    "root_cause_class": "filesystem-permissions",
+    "affected_concepts": ["firecracker.jailer.chroot-jail", "firecracker.jailer.cfg.cli.chroot-base-dir"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check chroot-base-dir permissions all the way down", "command": "namei -l /srv/jailer", "expected": "Path is writable by the user invoking jailer (typically root)", "source_id": "fc-docs-jailer"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Pre-create with correct perms", "command": "sudo mkdir -p /srv/jailer; sudo chmod 755 /srv/jailer", "validation": "Jailer creates the chroot tree successfully", "rollback": null, "source_id": "fc-docs-jailer"},
+      {"step": 2, "action": "Ensure paths aren't writable by unprivileged users (per the prod-host-setup recommendation)", "command": "sudo chmod 700 /srv/jailer; sudo chown root:root /srv/jailer", "validation": "Path-traversal attack surface minimized", "rollback": null, "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-jailer", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.balloon-overcommit-thrashing",
+    "symptom": "MicroVM with VirtIO balloon overcommitted memory thrashes — guest's effective RAM drops to a tiny fraction (e.g., 8 GiB → 1.4 GiB) causing massive page churn.",
+    "error_patterns": ["guest swapping heavily", "balloon inflated past safe level"],
+    "root_cause_class": "balloon-overcommit",
+    "affected_concepts": ["firecracker.api.balloon-resource", "firecracker.api.cmd.patch-balloon"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check balloon size vs guest available memory", "command": "GET /balloon; guest$ free -m", "expected": "amount_mib should leave guest enough free memory for working set", "source_id": "https://community.fly.io/t/virtio-balloon-overcommit-causing-severe-memory-thrashing-on-8-cpu-8gb-firecracker-vms/27124"},
+      {"step": 2, "action": "Check balloon stats over time", "command": "GET /balloon/statistics (multiple polls)", "expected": "swap_in / swap_out trending up indicates pressure", "source_id": "fc-swagger-spec"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Deflate the balloon to give the guest memory back", "command": "PATCH /balloon {amount_mib: <smaller>}", "validation": "Guest free memory recovers; swap rate drops", "rollback": null, "source_id": "fc-swagger-spec"},
+      {"step": 2, "action": "Set deflate_on_oom=true so balloon auto-deflates under guest OOM pressure", "command": "PUT /balloon {amount_mib: 0, deflate_on_oom: true, stats_polling_interval_s: 5} (pre-boot only, requires VM restart)", "validation": "Future inflate-too-aggressive scenarios self-correct", "rollback": "deflate_on_oom=false (no auto-recover)", "source_id": "fc-swagger-spec"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://community.fly.io/t/virtio-balloon-overcommit-causing-severe-memory-thrashing-on-8-cpu-8gb-firecracker-vms/27124", "fc-docs-ballooning"]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-uffd-firecracker-process-killing-race",
+    "symptom": "Orchestrator (e2b-style) tries to kill a Firecracker process while UFFD handler is mid-fault-service. Process kill races with handler cleanup → orphaned UFFD state, leaked fds, hung handlers.",
+    "error_patterns": ["UFFD handler leaked", "Firecracker zombie", "kill -9 race"],
+    "root_cause_class": "lifecycle-race-uffd",
+    "affected_concepts": ["firecracker.snapshots.uffd-backend", "firecracker.vmm.uffd-snapshot-backend"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect orphaned UFFD handlers", "command": "ps aux | grep uffd-handler; lsof | grep userfaultfd", "expected": "Zero handlers without a paired Firecracker", "source_id": "https://github.com/e2b-dev/infra/pull/148"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Sequence kills: SIGTERM Firecracker first, wait for vCPU thread exit, then signal UFFD handler", "command": "kill -TERM <fc-pid>; wait $fc; kill -TERM <uffd-pid>", "validation": "No orphaned handlers", "rollback": "Use SIGKILL on both (current racy behavior)", "source_id": "https://github.com/e2b-dev/infra/pull/148"},
+      {"step": 2, "action": "Track e2b-dev/infra PR #148 for the canonical lifecycle fix", "command": "Monitor github.com/e2b-dev/infra/pull/148", "validation": null, "rollback": null, "source_id": "https://github.com/e2b-dev/infra/pull/148"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/e2b-dev/infra/pull/148"]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-client-restart-cascades-to-sandboxes",
+    "symptom": "Orchestrator (e2b-style) client process restarts → all live Firecracker sandboxes crash. UFFD handler closure on client exit cascades to FCs that depend on it.",
+    "error_patterns": ["sandbox crashed on client restart", "UFFD handler closed"],
+    "root_cause_class": "orchestrator-lifecycle-coupling",
+    "affected_concepts": ["firecracker.snapshots.uffd-backend", "firecracker.comparable-systems.e2b-firecracker-substrate"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Trace the failure chain — which process closure killed which sandboxes", "command": "Add audit logging on UFFD handler exit → FC death", "expected": "1:N relationship visible", "source_id": "https://github.com/e2b-dev/infra/issues/127"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Decouple UFFD handler lifecycle from client process — run it as a separate long-lived service", "command": "Architectural: standalone uffd-server process, client only registers FCs with it", "validation": "Client restarts don't crash sandboxes", "rollback": null, "source_id": "https://github.com/e2b-dev/infra/issues/127"},
+      {"step": 2, "action": "Or implement UFFD handler reattachment on restart", "command": "Persist per-FC UFFD state to disk; new handler instance reads on startup", "validation": "Handler crash + restart leaves FCs running", "rollback": null, "source_id": "https://github.com/e2b-dev/infra/issues/127"}
+    ],
+    "confidence": 0.75,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/e2b-dev/infra/issues/127"]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-guest-clock-drift-on-startup",
+    "symptom": "Guest clock drifts by ~100-500ms on startup. KVM PTP not configured in guest; guest relies on its initial RTC read which lags.",
+    "error_patterns": ["clock skew", "ntp not synced", "drift on boot"],
+    "root_cause_class": "guest-time-source",
+    "affected_concepts": ["firecracker.vmm.kvm-clock", "firecracker.security.cfg.guest-kernel.config-virtio-vsockets"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check guest /dev/ptp0 availability", "command": "guest$ ls /dev/ptp0", "expected": "Should exist if CONFIG_PTP_1588_CLOCK_KVM=y", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Build guest kernel with CONFIG_PTP_1588_CLOCK=y and CONFIG_PTP_1588_CLOCK_KVM=y; configure chrony to use /dev/ptp0", "command": "Edit kernel config; rebuild; in guest: add 'refclock PHC /dev/ptp0 poll 3 dpoll -2 offset 0' to /etc/chrony/chrony.conf; restart chrony", "validation": "guest$ chronyc tracking shows /dev/ptp0 source; drift <1ms", "rollback": "Remove refclock; rebuild without CONFIG_PTP", "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/e2b-dev/infra/issues/89", "fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-orchestrator-cascade-restart",
+    "symptom": "Orchestrator-level health-check failure (Nomad/Consul) triggers a cascade of Firecracker process restarts. The actual fault wasn't with FC.",
+    "error_patterns": ["mass FC restart", "orchestrator health-check failed"],
+    "root_cause_class": "orchestrator-health-check-misconfig",
+    "affected_concepts": ["firecracker.comparable-systems.e2b-firecracker-substrate"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Identify trigger — orchestrator log around the cascade time", "command": "journalctl -u nomad --since 'X minutes ago'", "expected": "Health-check failure entries", "source_id": "https://github.com/e2b-dev/infra/issues/130"},
+      {"step": 2, "action": "Differentiate FC fault vs orchestrator fault", "command": "Per-FC log inspection during the same window", "expected": "FCs were healthy when orchestrator killed them", "source_id": "https://github.com/e2b-dev/infra/issues/130"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Tune orchestrator health-check thresholds — allow brief blips", "command": "Raise Nomad check_restart.limit; widen health-check interval", "validation": "Transient blips don't kill FCs", "rollback": "Tighten back", "source_id": "https://github.com/e2b-dev/infra/issues/130"},
+      {"step": 2, "action": "Decouple FC lifecycle from orchestrator restart", "command": "Use a separate FC supervisor that doesn't restart on orchestrator-level events", "validation": "Orchestrator can restart independently of FC fleet", "rollback": null, "source_id": "https://github.com/e2b-dev/infra/issues/130"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/e2b-dev/infra/issues/130"]
+  },
+  {
+    "id": "firecracker.setup.fm.virtio-net-tx-scatter-gather-perf",
+    "symptom": "VirtIO/net TX throughput is lower than expected. Packets get copied twice — descriptor → intermediate buffer → kernel — instead of using scatter-gather.",
+    "error_patterns": ["TX throughput plateau", "extra packet copy"],
+    "root_cause_class": "design-perf-issue-fixed",
+    "affected_concepts": ["firecracker.networking.tap-backend", "firecracker.networking.network-perf-considerations"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Compare against Firecracker version where scatter-gather was added (PR #2958)", "command": "firecracker --version; check CHANGELOG for scatter-gather mention", "expected": "Modern versions include the optimization", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/420"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Upgrade Firecracker to a version >= the PR #2958 release", "command": "Update binary", "validation": "TX throughput improves", "rollback": "Pin prior", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/420"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/420"]
+  },
+  {
+    "id": "firecracker.setup.fm.dirty-page-tracking-overhead",
+    "symptom": "VM with track_dirty_pages=true sees noticeable per-write overhead (small but measurable on write-heavy workloads). KVM page-walk for dirty bits adds cost.",
+    "error_patterns": ["write throughput drop", "dirty tracking overhead"],
+    "root_cause_class": "intentional-tradeoff",
+    "affected_concepts": ["firecracker.snapshots.dirty-page-protocol", "firecracker.api.cfg.machine-config.track-dirty-pages", "firecracker.kvm.dirty-log"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm track_dirty_pages is on", "command": "GET /machine-config | jq '.track_dirty_pages'", "expected": "true", "source_id": "fc-swagger-spec"},
+      {"step": 2, "action": "Benchmark write throughput with and without", "command": "Run fio random-write workload pre and post", "expected": "Slight degradation when on", "source_id": "fc-docs-snapshot-support"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "If diff snapshots aren't needed, disable track_dirty_pages", "command": "Pre-boot: PUT /machine-config {..., track_dirty_pages: false}; restart VM", "validation": "Write throughput recovers", "rollback": "Re-enable; lose diff capability", "source_id": "fc-swagger-spec"},
+      {"step": 2, "action": "If keeping diff snapshots, accept the trade-off — it's by design", "command": null, "validation": null, "rollback": null, "source_id": "fc-docs-snapshot-support"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.setup.fm.hugepages-not-reserved",
+    "symptom": "PUT /machine-config with huge_pages='2M' fails or microVM creates fail under load. Host hasn't reserved enough hugepages.",
+    "error_patterns": ["hugepage allocation failed", "no hugepages available"],
+    "root_cause_class": "host-resource-not-reserved",
+    "affected_concepts": ["firecracker.api.cfg.machine-config.huge-pages", "firecracker.vmm.cfg.host-sysctl.vm-nr-hugepages"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check current hugepage reservation", "command": "cat /proc/sys/vm/nr_hugepages; cat /proc/meminfo | grep -i huge", "expected": "Reserved >= sum of expected microVM RAM in 2M units", "source_id": "fc-swagger-spec"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Reserve hugepages before starting microVMs", "command": "echo <N> | sudo tee /proc/sys/vm/nr_hugepages", "validation": "/proc/meminfo HugePages_Free >= demand", "rollback": "Lower nr_hugepages", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Persist via sysctl", "command": "echo 'vm.nr_hugepages=<N>' | sudo tee /etc/sysctl.d/hugepages.conf", "validation": "Survives reboot", "rollback": "Remove the file", "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.setup.fm.hyperthreading-exposed-via-machine-config-smt-true",
+    "symptom": "machine-config.smt is true on a multi-tenant host. Guest sees hyperthreaded siblings via CPUID — speculation side-channel attack surface increases.",
+    "error_patterns": ["smt: true", "guest sees SMT siblings"],
+    "root_cause_class": "config-misuse-multi-tenant",
+    "affected_concepts": ["firecracker.api.cfg.machine-config.smt", "firecracker.setup.smt-off-side-channel"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check machine-config.smt", "command": "GET /machine-config | jq '.smt'", "expected": "false on multi-tenant hosts", "source_id": "fc-swagger-spec"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Set smt=false (pre-boot only, requires VM restart)", "command": "PUT /machine-config {..., smt: false}; restart VM", "validation": "guest$ lscpu shows Thread(s) per core: 1", "rollback": "smt=true (insecure for multi-tenant)", "source_id": "fc-swagger-spec"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-swagger-spec", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.fm.api-on-tcp-not-uds-attempt",
+    "symptom": "Operator attempts to bind the Firecracker API to a TCP port. Firecracker only accepts UDS transport.",
+    "error_patterns": ["TCP bind attempted", "API socket type wrong"],
+    "root_cause_class": "fundamental-design-misunderstanding",
+    "affected_concepts": ["firecracker.api.unix-domain-socket-transport"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check firecracker --help and CLI args", "command": "firecracker --help | grep -i sock", "expected": "Only --api-sock <path> exists; no TCP option", "source_id": "fc-docs-getting-started"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Use UDS; bridge to TCP via socat or similar if remote access needed", "command": "socat TCP-LISTEN:8080,fork UNIX-CONNECT:/tmp/firecracker.socket", "validation": "TCP clients can reach the API; security: protect with firewall + auth proxy", "rollback": "Kill the socat bridge", "source_id": "fc-docs-getting-started"},
+      {"step": 2, "action": "For multi-host orchestration, use a per-host control plane that holds UDS local and exposes its own auth'd API", "command": "Architectural — orchestrator owns the UDS, exposes a tenant-isolated REST/gRPC", "validation": null, "rollback": null, "source_id": "fc-docs-getting-started"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-getting-started"]
+  },
+  {
+    "id": "firecracker.setup.fm.action-without-prerequisites",
+    "symptom": "PUT /actions {action_type: InstanceStart} returns 400. Required pre-boot resources aren't all configured.",
+    "error_patterns": ["InstanceStart 400", "boot source not configured", "machine config not set"],
+    "root_cause_class": "missing-pre-boot-config",
+    "affected_concepts": ["firecracker.api.actions-resource", "firecracker.api.boot-source", "firecracker.api.machine-config"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect what's been configured", "command": "GET /vm/config | jq '.\"boot-source\", .\"machine-config\", .drives'", "expected": "boot-source non-null; machine-config non-null; ≥1 drive", "source_id": "fc-swagger-spec"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Configure each missing resource before InstanceStart", "command": "PUT /boot-source; PUT /machine-config; PUT /drives/<id> with is_root_device=true; (optional: /network-interfaces, /vsock, etc.); THEN PUT /actions", "validation": "InstanceStart returns 204", "rollback": null, "source_id": "fc-swagger-spec"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-swagger-spec"]
+  }
+]

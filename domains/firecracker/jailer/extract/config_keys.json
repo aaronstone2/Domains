@@ -1,0 +1,110 @@
+[
+  {
+    "id": "firecracker.jailer.cfg.cli.id",
+    "scope": "jailer-cli",
+    "key": "--id",
+    "type": "string (alphanumeric+hyphen, max 64)",
+    "default_value": null,
+    "description": "Unique microVM identifier. Used as the cgroup leaf name and chroot subdirectory. Must be unique per host since the chroot path collides on duplicates.",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.uid",
+    "scope": "jailer-cli",
+    "key": "--uid",
+    "type": "uid",
+    "default_value": null,
+    "description": "Non-privileged uid the Firecracker process runs as. Must have read+write access to /dev/kvm (typically via the kvm group). Production: per-microVM unique uid for additional isolation.",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.gid",
+    "scope": "jailer-cli",
+    "key": "--gid",
+    "type": "gid",
+    "default_value": null,
+    "description": "Non-privileged gid. Common pattern: gid in the kvm group for /dev/kvm access.",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.cgroup-version",
+    "scope": "jailer-cli",
+    "key": "--cgroup-version",
+    "type": "1|2",
+    "default_value": "1",
+    "description": "Cgroup hierarchy version. v2 recommended for production (snapshot restore is significantly slower under v1 — see snapshots leaf).",
+    "source_ids": ["fc-docs-jailer", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.cgroup",
+    "scope": "jailer-cli",
+    "key": "--cgroup",
+    "type": "<file>=<value> (repeatable)",
+    "default_value": null,
+    "description": "Cgroup setting written by jailer when creating the leaf cgroup. Examples: cpuset.cpus=0, cpu.shares=512 (v1), cpu.max='100000 100000' (v2 — 100ms quota per 100ms period), memory.max=536870912 (v2 — 512 MiB cap).",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.parent-cgroup",
+    "scope": "jailer-cli",
+    "key": "--parent-cgroup",
+    "type": "string (relative path)",
+    "default_value": "<exec_file_name> (e.g. 'firecracker')",
+    "description": "Relative parent cgroup path. Lets orchestrators nest microVM cgroups (e.g., 'fleet/tenant_A'). On v2 + no --cgroup, jailer MOVES the process to this existing cgroup — exits with error if it has subtree-controllers enabled.",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.chroot-base-dir",
+    "scope": "jailer-cli",
+    "key": "--chroot-base-dir",
+    "type": "string (path)",
+    "default_value": "/srv/jailer",
+    "description": "Base directory for chroot trees. Final chroot path: <base>/<exec_file_name>/<id>/root. Set to a fast disk (NVMe) for snapshot-heavy workloads.",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.netns",
+    "scope": "jailer-cli",
+    "key": "--netns",
+    "type": "string (path to netns handle)",
+    "default_value": null,
+    "description": "Path to a network namespace handle (e.g., /var/run/netns/myvm or /proc/<pid>/ns/net). Jailer setns()s into it before exec. If omitted, Firecracker shares the host's netns — much weaker isolation.",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.resource-limit-fsize",
+    "scope": "jailer-cli",
+    "key": "--resource-limit fsize",
+    "type": "int (bytes)",
+    "default_value": null,
+    "description": "Max file size (bytes) the Firecracker process can create. Use to bound runaway snapshot-mem files. Applied via setrlimit(RLIMIT_FSIZE).",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.resource-limit-no-file",
+    "scope": "jailer-cli",
+    "key": "--resource-limit no-file",
+    "type": "int",
+    "default_value": "2048",
+    "description": "Max FD count for the Firecracker process. setrlimit(RLIMIT_NOFILE). 2048 is sufficient for moderate device counts; raise for vsock-heavy or VirtIO-MMIO-dense guests (Firecracker uses 20+ FDs by baseline).",
+    "source_ids": ["fc-docs-jailer", "fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.daemonize",
+    "scope": "jailer-cli",
+    "key": "--daemonize",
+    "type": "bool",
+    "default_value": "false",
+    "description": "setsid() + redirect stdin/stdout/stderr to /dev/null. Useful when launching from a non-systemd orchestrator. Do NOT combine with structured logging that expects the original tty.",
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cfg.cli.new-pid-ns",
+    "scope": "jailer-cli",
+    "key": "--new-pid-ns",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Spawn Firecracker into a new PID namespace via clone(CLONE_NEWPID). Firecracker appears as PID 1 inside the namespace; host-side PID is recorded in <chroot_dir>/<exec_file_name>.pid.",
+    "source_ids": ["fc-docs-jailer"]
+  }
+]

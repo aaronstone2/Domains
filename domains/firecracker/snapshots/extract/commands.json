@@ -1,0 +1,83 @@
+[
+  {
+    "id": "firecracker.snapshots.cmd.create-snapshot-full",
+    "command": "PUT /snapshot/create (snapshot_type=Full)",
+    "purpose": "Persist full microVM state to host files. VM must be Paused first.",
+    "flags": [
+      {"name": "snapshot_type", "value": "Full", "doc": "Captures all guest memory."},
+      {"name": "snapshot_path", "value": "string", "doc": "Output path for VM-state file."},
+      {"name": "mem_file_path", "value": "string", "doc": "Output path for memory file. Size = guest RAM."}
+    ],
+    "examples": [{"invocation": "PATCH /vm {\"state\":\"Paused\"} && PUT /snapshot/create {\"snapshot_type\":\"Full\",\"snapshot_path\":\"/var/snap.bin\",\"mem_file_path\":\"/var/snap.mem\"}", "expected_output": "204 on success", "scenario": "Save complete microVM state"}],
+    "source_ids": ["fc-docs-snapshot-support", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cmd.create-snapshot-diff",
+    "command": "PUT /snapshot/create (snapshot_type=Diff)",
+    "purpose": "Persist only pages dirtied since the last snapshot. Requires machine-config.track_dirty_pages=true.",
+    "flags": [
+      {"name": "snapshot_type", "value": "Diff", "doc": "Captures only dirty pages."},
+      {"name": "snapshot_path", "value": "string", "doc": "Output path for VM-state file."},
+      {"name": "mem_file_path", "value": "string", "doc": "Output path for diff memory file (smaller than full)."}
+    ],
+    "examples": [{"invocation": "PUT /snapshot/create {\"snapshot_type\":\"Diff\",\"snapshot_path\":\"/var/snap-diff.bin\",\"mem_file_path\":\"/var/snap-diff.mem\"}", "expected_output": "204; 400 if track_dirty_pages was not set pre-boot", "scenario": "Incremental snapshot"}],
+    "source_ids": ["fc-docs-snapshot-support", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cmd.load-snapshot-file-backend",
+    "command": "PUT /snapshot/load (mem_backend=File)",
+    "purpose": "Restore from snapshot using MAP_PRIVATE on the memory file. Must be the FIRST API call in the restoring Firecracker process.",
+    "flags": [
+      {"name": "snapshot_path", "value": "string", "doc": "Path to VM-state file."},
+      {"name": "mem_backend.backend_type", "value": "File", "doc": "Use mmap of memory file."},
+      {"name": "mem_backend.backend_path", "value": "string", "doc": "Path to memory file."},
+      {"name": "enable_diff_snapshots", "value": "bool", "doc": "Re-enable dirty tracking after restore for further diff snapshots."},
+      {"name": "resume_vm", "value": "bool", "doc": "Auto-resume after restore."}
+    ],
+    "examples": [{"invocation": "PUT /snapshot/load {\"snapshot_path\":\"/var/snap.bin\",\"mem_backend\":{\"backend_type\":\"File\",\"backend_path\":\"/var/snap.mem\"},\"resume_vm\":true}", "expected_output": "204; restore in <100 ms typically", "scenario": "Standard restore"}],
+    "source_ids": ["fc-docs-snapshot-support", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cmd.load-snapshot-uffd-backend",
+    "command": "PUT /snapshot/load (mem_backend=Uffd)",
+    "purpose": "Restore using userfaultfd — orchestrator-supplied page-fault handler services memory access. Useful for remote-memory or compressed-memory backends.",
+    "flags": [
+      {"name": "mem_backend.backend_type", "value": "Uffd", "doc": "Use userfaultfd."},
+      {"name": "mem_backend.backend_path", "value": "string (UDS path)", "doc": "Unix socket where Firecracker sends the UFFD fd to the handler."}
+    ],
+    "examples": [{"invocation": "PUT /snapshot/load {\"snapshot_path\":\"/var/snap.bin\",\"mem_backend\":{\"backend_type\":\"Uffd\",\"backend_path\":\"/run/uffd-handler.sock\"},\"resume_vm\":true}", "expected_output": "204; restore returns immediately, pages faulted on demand", "scenario": "Remote-memory or compressed-memory restore"}],
+    "source_ids": ["fc-docs-snapshot-support", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cmd.patch-vm-pause",
+    "command": "PATCH /vm {\"state\":\"Paused\"}",
+    "purpose": "Pause the microVM (vCPU threads exit KVM_RUN; no I/O). Required before snapshot create.",
+    "flags": [{"name": "state", "value": "Paused", "doc": "Target state."}],
+    "examples": [{"invocation": "PATCH /vm {\"state\":\"Paused\"}", "expected_output": "204; idempotent — second call is a no-op", "scenario": "Pre-snapshot pause"}],
+    "source_ids": ["fc-docs-snapshot-support", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cmd.patch-vm-resume",
+    "command": "PATCH /vm {\"state\":\"Resumed\"}",
+    "purpose": "Resume the microVM after pause or after a restore that didn't auto-resume.",
+    "flags": [{"name": "state", "value": "Resumed", "doc": "Target state."}],
+    "examples": [{"invocation": "PATCH /vm {\"state\":\"Resumed\"}", "expected_output": "204", "scenario": "Post-snapshot or post-restore resume"}],
+    "source_ids": ["fc-docs-snapshot-support", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cmd.fallocate-mem-file",
+    "command": "fallocate -l <size> <mem_file_path>",
+    "purpose": "Pre-allocate the snapshot memory file space on the host before snapshot create. Avoids ENOSPC mid-snapshot.",
+    "flags": [{"name": "-l", "value": "<bytes>", "doc": "Size to allocate (typically equal to guest RAM)."}],
+    "examples": [{"invocation": "fallocate -l 1G /var/snap.mem", "expected_output": "1 GiB sparse-allocated", "scenario": "Pre-snapshot disk reservation"}],
+    "source_ids": ["fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.snapshots.cmd.cgroup-v2-check",
+    "command": "stat -fc %T /sys/fs/cgroup",
+    "purpose": "Confirm the host is using cgroups v2 (cgroup2fs filesystem). cgroups v1 imposes high restore-latency tax; v2 recommended for production snapshots.",
+    "flags": [],
+    "examples": [{"invocation": "stat -fc %T /sys/fs/cgroup", "expected_output": "cgroup2fs (v2) or tmpfs (v1)", "scenario": "Pre-flight check before deploying snapshot-heavy Firecracker workloads"}],
+    "source_ids": ["fc-docs-snapshot-support"]
+  }
+]

@@ -23,4 +23,4 @@ STAGING_DIR: Path = DB_DIR / "staging"
 
 # Schemas applied to the DuckDB file (excluding `meta`, which is views-only and
 # created by queries/cross_domain.sql).
-DOMAIN_SCHEMAS: tuple[str, ...] = ("devin", "docker", "linux", "k8s", "methodology")
+DOMAIN_SCHEMAS: tuple[str, ...] = ("devin", "docker", "linux", "k8s", "methodology", "firecracker", "ecs")

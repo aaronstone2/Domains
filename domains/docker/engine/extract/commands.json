@@ -1,0 +1,396 @@
+[
+  {
+    "id":"docker.engine.cmd.container-run",
+    "command":"docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]",
+    "purpose":"Create and run a new container from an image. Pulls the image if missing (controlled by --pull). Aliases: `docker run`. The most commonly invoked Docker subcommand; surface area is enormous (~115 flags). Failure paths: image not found, port conflict, mount source missing, OOM-kill, exit-code 125 (daemon error before runtime), 126 (entrypoint not executable), 127 (not found).",
+    "flags":[
+      {"name":"-d, --detach","value":null,"doc":"Run container in background and print container ID."},
+      {"name":"--name","value":"<string>","doc":"Assign a name to the container; used as DNS name on user-defined networks."},
+      {"name":"--rm","value":null,"doc":"Automatically remove the container and its anonymous volumes when it exits."},
+      {"name":"-i, --interactive","value":null,"doc":"Keep STDIN open even if not attached."},
+      {"name":"-t, --tty","value":null,"doc":"Allocate a pseudo-TTY (often combined with -i for an interactive shell)."},
+      {"name":"-p, --publish","value":"<host:container[/proto]>","doc":"Publish a container's port(s) to the host. Multiple times allowed. Without --publish-all, ports are not externally reachable."},
+      {"name":"-P, --publish-all","value":null,"doc":"Publish all EXPOSE'd ports to random ephemeral host ports."},
+      {"name":"-e, --env","value":"<KEY=VAL>","doc":"Set an environment variable. Multiple times allowed."},
+      {"name":"--env-file","value":"<path>","doc":"Read env vars from a file (one KEY=VAL per line)."},
+      {"name":"-v, --volume","value":"[host:]container[:opts]","doc":"Bind-mount a host path or volume into the container. Short form."},
+      {"name":"--mount","value":"type=bind|volume|tmpfs,src=…,dst=…[,opts]","doc":"Attach a filesystem mount. Verbose, explicit alternative to -v; required for volume-driver options."},
+      {"name":"--tmpfs","value":"<container-path>","doc":"Mount a tmpfs into the container at the given path."},
+      {"name":"--volumes-from","value":"<container-id-or-name>[:ro|rw]","doc":"Mount volumes from another container."},
+      {"name":"--volume-driver","value":"<driver>","doc":"Optional volume driver for the container."},
+      {"name":"--restart","value":"no|on-failure[:N]|always|unless-stopped","doc":"Restart policy on container exit (daemon-managed)."},
+      {"name":"--stop-signal","value":"<SIGNAL>","doc":"Signal sent on `docker stop` (default SIGTERM, or image's STOPSIGNAL)."},
+      {"name":"--stop-timeout","value":"<seconds>","doc":"Grace period before SIGKILL on `docker stop`. -1 for unbounded."},
+      {"name":"--init","value":null,"doc":"Run docker-init/tini as pid 1 to forward signals and reap zombies."},
+      {"name":"--health-cmd","value":"<shell-cmd>","doc":"Command run periodically to test container health."},
+      {"name":"--health-interval","value":"<duration>","doc":"Time between health-check runs."},
+      {"name":"--health-retries","value":"<int>","doc":"Consecutive failures before container is marked unhealthy."},
+      {"name":"--health-timeout","value":"<duration>","doc":"Max time for one health-check command to run."},
+      {"name":"--health-start-period","value":"<duration>","doc":"Initial wait before health-retries countdown begins."},
+      {"name":"--health-start-interval","value":"<duration>","doc":"Health-check cadence during the start period."},
+      {"name":"--no-healthcheck","value":null,"doc":"Disable any HEALTHCHECK baked into the image."},
+      {"name":"--memory, -m","value":"<bytes>","doc":"Hard memory limit. Hitting it triggers OOM-killer (exit 137)."},
+      {"name":"--memory-reservation","value":"<bytes>","doc":"Soft memory limit (kernel attempts to keep usage below)."},
+      {"name":"--memory-swap","value":"<bytes>","doc":"Memory + swap. -1 = unlimited swap."},
+      {"name":"--memory-swappiness","value":"0..100","doc":"Tune kernel swappiness for the container."},
+      {"name":"--oom-kill-disable","value":null,"doc":"Disable OOM-killer (use with care; can wedge the host)."},
+      {"name":"--oom-score-adj","value":"-1000..1000","doc":"Tune host OOM preference for the container."},
+      {"name":"--cpus","value":"<decimal>","doc":"Number of CPUs (computed in CFS quota/period)."},
+      {"name":"--cpu-shares, -c","value":"<int>","doc":"CPU shares (relative weight)."},
+      {"name":"--cpuset-cpus","value":"<list>","doc":"CPUs to allow execution on (e.g. 0-3, 0,1)."},
+      {"name":"--cpuset-mems","value":"<list>","doc":"NUMA memory nodes to allow."},
+      {"name":"--cpu-period","value":"<int>","doc":"CFS period (microseconds)."},
+      {"name":"--cpu-quota","value":"<int>","doc":"CFS quota (microseconds)."},
+      {"name":"--pids-limit","value":"<int>","doc":"Tune container pids cgroup limit. -1 = unlimited."},
+      {"name":"--blkio-weight","value":"10..1000","doc":"Block-IO relative weight."},
+      {"name":"--device","value":"<host-dev>[:<container-dev>][:rwm]","doc":"Pass a host device through to the container."},
+      {"name":"--device-cgroup-rule","value":"<rule>","doc":"Add a rule to the cgroup devices allowlist."},
+      {"name":"--ulimit","value":"<name>=<soft>[:<hard>]","doc":"Set a ulimit (nofile, nproc, …)."},
+      {"name":"--shm-size","value":"<bytes>","doc":"Size of /dev/shm (default 64MiB)."},
+      {"name":"--cap-add","value":"<CAP>","doc":"Add a Linux capability (e.g. NET_ADMIN, SYS_PTRACE)."},
+      {"name":"--cap-drop","value":"<CAP>|ALL","doc":"Drop a Linux capability; combine with selective --cap-add for least-privilege."},
+      {"name":"--privileged","value":null,"doc":"All capabilities + host device access; disables AppArmor/seccomp. Equivalent to root on host (avoid)."},
+      {"name":"--security-opt","value":"<key>=<val>","doc":"Security option: seccomp=<file>, apparmor=<profile>, label=…, no-new-privileges:true."},
+      {"name":"--read-only","value":null,"doc":"Mount root filesystem read-only (writes to /tmp etc require explicit --tmpfs)."},
+      {"name":"--user, -u","value":"<uid|name>[:<gid|group>]","doc":"User/uid to run as inside the container."},
+      {"name":"--group-add","value":"<group>","doc":"Add additional groups."},
+      {"name":"--workdir, -w","value":"<path>","doc":"Working directory inside the container."},
+      {"name":"--entrypoint","value":"<binary>","doc":"Override image ENTRYPOINT. `--entrypoint=sh` is the canonical 'shell-out into a broken container' move."},
+      {"name":"--hostname, -h","value":"<name>","doc":"Container hostname (UTS namespace)."},
+      {"name":"--label, -l","value":"<key>=<val>","doc":"Set metadata label on the container."},
+      {"name":"--label-file","value":"<path>","doc":"Read labels from a file (one per line)."},
+      {"name":"--network","value":"<name>|host|none|container:<id>|bridge","doc":"Connect to a network. `host` uses the host's network namespace (no isolation)."},
+      {"name":"--network-alias","value":"<alias>","doc":"DNS alias on user-defined networks."},
+      {"name":"--ip","value":"<ipv4>","doc":"Static IPv4 (only on user-defined networks with --subnet)."},
+      {"name":"--ip6","value":"<ipv6>","doc":"Static IPv6."},
+      {"name":"--mac-address","value":"<mac>","doc":"Container MAC address."},
+      {"name":"--add-host","value":"<host>:<ip>","doc":"Add an entry to /etc/hosts. `host-gateway` resolves to the host (Linux)."},
+      {"name":"--dns","value":"<ip>","doc":"Per-container DNS server."},
+      {"name":"--dns-search","value":"<domain>","doc":"DNS search domain."},
+      {"name":"--dns-option","value":"<opt>","doc":"resolv.conf option."},
+      {"name":"--pid","value":"host|container:<id>|<empty>","doc":"PID namespace mode. `host` shares the host's pid ns (debugging only)."},
+      {"name":"--ipc","value":"host|container:<id>|private|shareable|none","doc":"IPC namespace mode."},
+      {"name":"--userns","value":"host","doc":"Disable user-namespace remap for this container (`host` is the only valid value)."},
+      {"name":"--cgroupns","value":"host|private","doc":"Cgroup namespace mode (default per daemon's `default-cgroupns-mode`)."},
+      {"name":"--uts","value":"host","doc":"UTS namespace (only `host` allowed)."},
+      {"name":"--gpus","value":"all|<gpu-spec>","doc":"GPU devices to add (requires NVIDIA Container Toolkit)."},
+      {"name":"--runtime","value":"<runtime>","doc":"OCI runtime to use (runc, crun, io.containerd.kata.v2, etc.)."},
+      {"name":"--platform","value":"<os/arch>","doc":"Force platform when image is multi-arch (e.g. `linux/amd64`)."},
+      {"name":"--pull","value":"always|missing|never","doc":"When to pull the image. Default `missing`."},
+      {"name":"--log-driver","value":"<driver>","doc":"Per-container logging driver."},
+      {"name":"--log-opt","value":"<key>=<val>","doc":"Per-container log driver option."},
+      {"name":"--storage-opt","value":"<key>=<val>","doc":"Per-container storage driver option (e.g. size on devicemapper)."},
+      {"name":"--sysctl","value":"<key>=<val>","doc":"Set a sysctl in the container's namespaces."},
+      {"name":"--cidfile","value":"<path>","doc":"Write the container ID to this file (PID-file pattern)."},
+      {"name":"--detach-keys","value":"<sequence>","doc":"Override the key sequence for detaching from an attached container."},
+      {"name":"-a, --attach","value":"STDIN|STDOUT|STDERR","doc":"Attach to specified streams."},
+      {"name":"-q, --quiet","value":null,"doc":"Suppress pull output."}
+    ],
+    "examples":[
+      {"invocation":"docker run --rm -it alpine sh","expected_output":"interactive shell in an alpine container; container removed on exit","scenario":"quick exploratory shell"},
+      {"invocation":"docker run -d --name web --restart unless-stopped -p 8080:80 nginx:alpine","expected_output":"backgrounded nginx, restarts unless explicitly stopped, host:8080 → container:80","scenario":"long-running web service"},
+      {"invocation":"docker run --rm -it --pid=container:my-app --network=container:my-app --cap-add=SYS_PTRACE nicolaka/netshoot bash","expected_output":"netshoot shell sharing pid+network ns of my-app for tcpdump/strace","scenario":"debug-sidecar pattern against a slim/distroless container"}
+    ],
+    "source_ids":["docker-cli-container-run","docker-docs-cli-dockerd","wsargent-docker-cheat-sheet","iximiuz-debugger-images"]
+  },
+  {
+    "id":"docker.engine.cmd.container-ls",
+    "command":"docker container ls [OPTIONS]",
+    "purpose":"List containers. Aliases: `docker ps`, `docker container list`, `docker container ps`. By default shows running only. Filter expressions are the meat — `--filter status=exited`, `--filter health=unhealthy`, `--filter exited=137` are interview-day staples.",
+    "flags":[
+      {"name":"-a, --all","value":null,"doc":"Show all containers (default: only running)."},
+      {"name":"-f, --filter","value":"<key>=<val>","doc":"Filter output. Keys: id, name, label, exited, status, ancestor, before, since, volume, network, publish, expose, health, isolation, is-task."},
+      {"name":"--format","value":"table|json|<go-template>","doc":"Custom output format. `--format json` for machine consumption."},
+      {"name":"-n, --last","value":"<int>","doc":"Show n last-created containers (any state)."},
+      {"name":"-l, --latest","value":null,"doc":"Show only the latest-created container."},
+      {"name":"--no-trunc","value":null,"doc":"Don't truncate IDs / commands."},
+      {"name":"-q, --quiet","value":null,"doc":"Only display container IDs (good for piping into `xargs docker rm`)."},
+      {"name":"-s, --size","value":null,"doc":"Display total file sizes (writable layer + virtual)."}
+    ],
+    "examples":[
+      {"invocation":"docker ps -a --filter status=exited --filter exited=137","expected_output":"all containers OOM-killed (signal 9 = exit 137)","scenario":"finding what got OOM-killed since last reboot"},
+      {"invocation":"docker ps --filter health=unhealthy --format 'table {{.Names}}\\t{{.Status}}'","expected_output":"running but unhealthy containers, name + status only","scenario":"on-call triage during incident"},
+      {"invocation":"docker ps -aq | xargs docker rm -f","expected_output":"force-removes every container","scenario":"reset to clean state on a dev box"}
+    ],
+    "source_ids":["docker-cli-container-ls","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.engine.cmd.container-exec",
+    "command":"docker container exec [OPTIONS] CONTAINER COMMAND [ARG...]",
+    "purpose":"Execute a command in a RUNNING container. Aliases: `docker exec`. Fails on paused/stopped containers. The command isn't restarted with the container; chained commands need explicit `sh -c`.",
+    "flags":[
+      {"name":"-d, --detach","value":null,"doc":"Detached mode: run in background."},
+      {"name":"--detach-keys","value":"<sequence>","doc":"Override detach key sequence."},
+      {"name":"-e, --env","value":"<KEY=VAL>","doc":"Set env vars for the exec process (overrides container env)."},
+      {"name":"--env-file","value":"<path>","doc":"Read env vars from file."},
+      {"name":"-i, --interactive","value":null,"doc":"Keep STDIN open."},
+      {"name":"--privileged","value":null,"doc":"Extended privileges for the exec command (separate from --privileged on run)."},
+      {"name":"-t, --tty","value":null,"doc":"Allocate a pseudo-TTY."},
+      {"name":"-u, --user","value":"<uid|name>[:<gid|group>]","doc":"Run as specific user/uid."},
+      {"name":"-w, --workdir","value":"<path>","doc":"Working directory inside the container."}
+    ],
+    "examples":[
+      {"invocation":"docker exec -it my_container sh","expected_output":"interactive shell inside the container","scenario":"poke around a running service"},
+      {"invocation":"docker exec my_container sh -c 'echo a && echo b'","expected_output":"a\\nb","scenario":"chained commands require sh -c (a chained string alone doesn't work)"},
+      {"invocation":"docker exec my_container sh","expected_output":"Error response from daemon: Container my_container is paused, unpause the container before exec","scenario":"exec on a paused container fails — unpause first"}
+    ],
+    "source_ids":["docker-cli-container-exec"]
+  },
+  {
+    "id":"docker.engine.cmd.container-logs",
+    "command":"docker container logs [OPTIONS] CONTAINER",
+    "purpose":"Fetch logs from a container. Aliases: `docker logs`. Works only with `json-file`, `local`, and `journald` log drivers; with `fluentd`/`syslog`/etc., the daemon doesn't keep a local cache and `docker logs` returns nothing.",
+    "flags":[
+      {"name":"--details","value":null,"doc":"Show extra details (env, labels) provided to --log-opt."},
+      {"name":"-f, --follow","value":null,"doc":"Stream new output (tail -f equivalent)."},
+      {"name":"--since","value":"<timestamp|duration>","doc":"Show logs since RFC3339 / Unix timestamp / Go duration (e.g. 42m)."},
+      {"name":"-n, --tail","value":"<n>|all","doc":"Lines from the end of the log (default: all)."},
+      {"name":"-t, --timestamps","value":null,"doc":"Prepend RFC3339Nano timestamps."},
+      {"name":"--until","value":"<timestamp|duration>","doc":"Show logs before timestamp (paired with --since for slicing)."}
+    ],
+    "examples":[
+      {"invocation":"docker logs -f --tail 100 my-app","expected_output":"last 100 log lines + new ones streaming","scenario":"watching during deploy"},
+      {"invocation":"docker logs --since 10m my-app | grep ERROR","expected_output":"errors in the last 10 minutes","scenario":"recent error triage"},
+      {"invocation":"docker logs --since 2026-05-02T14:00:00 --until 2026-05-02T14:05:00 my-app","expected_output":"logs in a 5-minute window","scenario":"slice for a known incident time"}
+    ],
+    "source_ids":["docker-cli-container-logs","docker-docs-logging-configure"]
+  },
+  {
+    "id":"docker.engine.cmd.container-stop",
+    "command":"docker container stop [OPTIONS] CONTAINER [CONTAINER...]",
+    "purpose":"Send SIGTERM (or configured stop-signal), wait for grace period, then SIGKILL. Aliases: `docker stop`. Exit semantics: clean if app handles signal; otherwise 137 (128+9). The 10-second-then-SIGKILL pattern is responsible for many 'docker stop hangs' tickets.",
+    "flags":[
+      {"name":"-s, --signal","value":"<SIG>","doc":"Override stop signal (e.g. SIGINT). Image's STOPSIGNAL or `--stop-signal` is used otherwise."},
+      {"name":"-t, --timeout","value":"<seconds>","doc":"Grace period before SIGKILL. Default 10s (Linux) / 30s (Windows). -1 = unlimited."}
+    ],
+    "examples":[
+      {"invocation":"docker stop my_container","expected_output":"container exits cleanly within grace period","scenario":"normal shutdown"},
+      {"invocation":"docker stop -t 30 my_container","expected_output":"30s grace before SIGKILL","scenario":"long-draining service (DB flush, in-flight requests)"},
+      {"invocation":"docker stop -s SIGINT my_container","expected_output":"sends SIGINT instead of SIGTERM","scenario":"app responds to Ctrl-C semantics rather than SIGTERM"}
+    ],
+    "source_ids":["docker-cli-container-stop","docker-cli-container-run"]
+  },
+  {
+    "id":"docker.engine.cmd.container-kill",
+    "command":"docker container kill [OPTIONS] CONTAINER [CONTAINER...]",
+    "purpose":"Send a signal (default SIGKILL) to the container's pid 1. Aliases: `docker kill`. With shell-form ENTRYPOINT/CMD, signals go to /bin/sh -c not the real binary — root cause of 'docker kill -s SIGUSR1 doesn't reach my app'. Fix: exec-form or `--init`.",
+    "flags":[
+      {"name":"-s, --signal","value":"<SIG>","doc":"Signal to send (name, e.g. SIGHUP, or number, e.g. 1). Default SIGKILL."}
+    ],
+    "examples":[
+      {"invocation":"docker kill my_container","expected_output":"container terminated immediately (SIGKILL)","scenario":"unresponsive container"},
+      {"invocation":"docker kill --signal=SIGHUP nginx","expected_output":"nginx reloads config","scenario":"signal-driven config reload (no container restart)"},
+      {"invocation":"docker kill -s SIGUSR1 my-go-app","expected_output":"go runtime dumps stack traces","scenario":"trigger a stack-trace dump from a Go app"}
+    ],
+    "source_ids":["docker-cli-container-kill"]
+  },
+  {
+    "id":"docker.engine.cmd.container-inspect",
+    "command":"docker container inspect [OPTIONS] CONTAINER [CONTAINER...]",
+    "purpose":"Display detailed JSON for one or more containers (config, state, mounts, networks, log config, restart-policy). The single most useful debugging command: every field of `docker inspect` is queryable via `--format`.",
+    "flags":[
+      {"name":"-f, --format","value":"<go-template>|json","doc":"Format output. `--format '{{.State.Health.Status}}'` extracts health status; `--format json` for full JSON."},
+      {"name":"-s, --size","value":null,"doc":"Include total file sizes (writable layer + virtual)."}
+    ],
+    "examples":[
+      {"invocation":"docker inspect --format '{{.State.ExitCode}}' my_container","expected_output":"137","scenario":"check exit code of last run (137 = OOM, 139 = SEGV, 143 = SIGTERM)"},
+      {"invocation":"docker inspect --format '{{.State.Health.Status}}' my-app","expected_output":"healthy / unhealthy / starting","scenario":"healthcheck status"},
+      {"invocation":"docker inspect --format '{{json .NetworkSettings.Networks}}' my_container","expected_output":"JSON of attached networks with IP addresses","scenario":"verify network attachment / IP"}
+    ],
+    "source_ids":["docker-cli-container-inspect"]
+  },
+  {
+    "id":"docker.engine.cmd.container-start",
+    "command":"docker container start [OPTIONS] CONTAINER [CONTAINER...]",
+    "purpose":"Start one or more stopped containers. Aliases: `docker start`. Reuses the previous run-config (env, mounts, port publish) — no re-spec. Useful after `docker stop` and after host reboot if `--restart` policy isn't set.",
+    "flags":[
+      {"name":"-a, --attach","value":null,"doc":"Attach STDOUT/STDERR to the started container."},
+      {"name":"-i, --interactive","value":null,"doc":"Attach STDIN."},
+      {"name":"--detach-keys","value":"<sequence>","doc":"Override detach key sequence."}
+    ],
+    "examples":[
+      {"invocation":"docker start my_container","expected_output":"my_container","scenario":"restart a stopped container with prior config"},
+      {"invocation":"docker start -ai my_container","expected_output":"interactive attach to the started container","scenario":"resume a one-shot interactive container"}
+    ],
+    "source_ids":["docker-cli-container-run","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.engine.cmd.container-rm",
+    "command":"docker container rm [OPTIONS] CONTAINER [CONTAINER...]",
+    "purpose":"Remove one or more containers. Aliases: `docker rm`. Fails on running containers unless `-f`. Removing frees the writable layer; named volumes attached are NOT removed (use `-v` for anonymous volumes).",
+    "flags":[
+      {"name":"-f, --force","value":null,"doc":"Force-remove a running container (sends SIGKILL first)."},
+      {"name":"-l, --link","value":null,"doc":"Remove the specified link (legacy)."},
+      {"name":"-v, --volumes","value":null,"doc":"Also remove any anonymous volumes attached to the container."}
+    ],
+    "examples":[
+      {"invocation":"docker rm my_container","expected_output":"my_container","scenario":"remove a stopped container"},
+      {"invocation":"docker rm -fv $(docker ps -aq --filter status=exited)","expected_output":"removes all exited containers + their anonymous volumes","scenario":"sweep stale containers"}
+    ],
+    "source_ids":["docker-cli-container-run","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.engine.cmd.system-df",
+    "command":"docker system df [OPTIONS]",
+    "purpose":"Show Docker disk usage broken down by Images, Containers, Local Volumes, Build Cache. Active vs reclaimable. Resource-intensive — traverses every image/container/volume filesystem; avoid in latency-critical contexts. Drives the 'where did my disk go' diagnosis.",
+    "flags":[
+      {"name":"--format","value":"table|json|<go-template>","doc":"Custom output format."},
+      {"name":"-v, --verbose","value":null,"doc":"Detailed per-image / per-container / per-volume breakdown (slower)."}
+    ],
+    "examples":[
+      {"invocation":"docker system df","expected_output":"summary table: Images/Containers/Local Volumes/Build Cache with TOTAL, ACTIVE, SIZE, RECLAIMABLE","scenario":"first triage of 'docker is using all my disk'"},
+      {"invocation":"docker system df -v","expected_output":"per-image / per-container / per-volume sizes with shared vs unique","scenario":"find specific image bloating /var/lib/docker"}
+    ],
+    "source_ids":["docker-cli-system-df"]
+  },
+  {
+    "id":"docker.engine.cmd.dockerd",
+    "command":"dockerd [OPTIONS]",
+    "purpose":"The Docker daemon process itself. Self-sufficient runtime for containers; reads /etc/docker/daemon.json by default. Most flags map 1:1 to daemon.json keys (catalogued in docker.engine.cfg.daemon.json). Failure-modes: 'unable to configure the Docker daemon with file /etc/docker/daemon.json: invalid character …' on bad JSON; 'the following directives are specified both as a flag and in the configuration file' on dual-spec.",
+    "flags":[
+      {"name":"--config-file","value":"<path>","doc":"Daemon config file (default /etc/docker/daemon.json)."},
+      {"name":"-D, --debug","value":null,"doc":"Enable debug mode (or daemon.json `debug: true`)."},
+      {"name":"-H, --host","value":"<unix://…|tcp://…|fd://…>","doc":"Daemon socket(s) to listen on. Multiple times allowed."},
+      {"name":"--data-root","value":"<path>","doc":"Root directory of persistent state (default /var/lib/docker)."},
+      {"name":"--exec-root","value":"<path>","doc":"Runtime exec state (default /var/run/docker)."},
+      {"name":"--pidfile, -p","value":"<path>","doc":"PID file path (default /var/run/docker.pid)."},
+      {"name":"-G, --group","value":"<group>","doc":"Group for the unix socket (default `docker`)."},
+      {"name":"-s, --storage-driver","value":"<driver>","doc":"Storage driver (overlay2|btrfs|zfs|vfs|fuse-overlayfs|windowsfilter)."},
+      {"name":"--storage-opt","value":"<key>=<val>","doc":"Storage driver option."},
+      {"name":"--log-driver","value":"<driver>","doc":"Default container log driver."},
+      {"name":"--log-opt","value":"<key>=<val>","doc":"Default log driver option."},
+      {"name":"-l, --log-level","value":"debug|info|warn|error|fatal","doc":"Daemon log verbosity."},
+      {"name":"--log-format","value":"text|json","doc":"Daemon log output format."},
+      {"name":"--default-runtime","value":"<runtime>","doc":"Default OCI runtime (default `runc`)."},
+      {"name":"--add-runtime","value":"<name>=<path>","doc":"Register an additional OCI-compatible runtime."},
+      {"name":"--containerd","value":"<grpc-address>","doc":"containerd socket address (when using external containerd)."},
+      {"name":"--containerd-namespace","value":"<ns>","doc":"containerd namespace (default moby)."},
+      {"name":"--live-restore","value":null,"doc":"Keep containers running across daemon restart/upgrade."},
+      {"name":"--userns-remap","value":"<user>|default","doc":"User namespace remap config; requires /etc/subuid + /etc/subgid."},
+      {"name":"--seccomp-profile","value":"<path>|unconfined|builtin","doc":"Default seccomp profile path (default builtin)."},
+      {"name":"--selinux-enabled","value":null,"doc":"Enable SELinux support."},
+      {"name":"--no-new-privileges","value":null,"doc":"Set no-new-privileges by default for new containers."},
+      {"name":"--default-cgroupns-mode","value":"host|private","doc":"Default cgroup-ns mode for new containers."},
+      {"name":"--default-ipc-mode","value":"private|shareable","doc":"Default IPC mode."},
+      {"name":"--default-shm-size","value":"<bytes>","doc":"Default /dev/shm size (default 64MiB)."},
+      {"name":"--default-ulimit","value":"<name>=<soft>:<hard>","doc":"Default ulimits for all containers."},
+      {"name":"--cgroup-parent","value":"<path>","doc":"Parent cgroup for all containers."},
+      {"name":"--shutdown-timeout","value":"<seconds>","doc":"Default shutdown timeout (default 15s)."},
+      {"name":"--init","value":null,"doc":"Inject docker-init as pid 1 by default."},
+      {"name":"--init-path","value":"<path>","doc":"Path to docker-init binary."},
+      {"name":"--icc","value":null,"doc":"Inter-container communication on default bridge (default true)."},
+      {"name":"--iptables","value":null,"doc":"Daemon-managed iptables rules (default true)."},
+      {"name":"--ip6tables","value":null,"doc":"Daemon-managed ip6tables rules (default true)."},
+      {"name":"--ipv6","value":null,"doc":"IPv6 on default bridge."},
+      {"name":"--ip-forward","value":null,"doc":"Enable kernel ip_forward (default true)."},
+      {"name":"--ip-masq","value":null,"doc":"IP masquerading on default bridge (default true)."},
+      {"name":"--bip","value":"<ipv4>","doc":"IPv4 for the default bridge."},
+      {"name":"--fixed-cidr","value":"<cidr>","doc":"IPv4 subnet for default bridge."},
+      {"name":"--fixed-cidr-v6","value":"<cidr>","doc":"IPv6 subnet for default bridge."},
+      {"name":"--default-address-pool","value":"base=<cidr>,size=<n>","doc":"Default address pool for user-defined networks."},
+      {"name":"--mtu","value":"<n>","doc":"MTU for default bridge (default 1500)."},
+      {"name":"--userland-proxy","value":null,"doc":"Use userland-proxy for loopback traffic (default true)."},
+      {"name":"--userland-proxy-path","value":"<path>","doc":"Path to userland-proxy binary."},
+      {"name":"--firewall-backend","value":"iptables|nftables","doc":"Firewall backend."},
+      {"name":"--registry-mirror","value":"<url>","doc":"Preferred registry mirror."},
+      {"name":"--insecure-registry","value":"<host>","doc":"Allow insecure (HTTP / self-signed) communication with this registry."},
+      {"name":"--max-concurrent-downloads","value":"<n>","doc":"Max parallel layer downloads (default 3)."},
+      {"name":"--max-concurrent-uploads","value":"<n>","doc":"Max parallel layer uploads (default 5)."},
+      {"name":"--max-download-attempts","value":"<n>","doc":"Max pull retries per layer (default 5)."},
+      {"name":"--metrics-addr","value":"<host:port>","doc":"Prometheus metrics endpoint (e.g. 127.0.0.1:9323)."},
+      {"name":"--experimental","value":null,"doc":"Enable experimental features."},
+      {"name":"--rootless","value":null,"doc":"Enable rootless mode (typically used via RootlessKit)."},
+      {"name":"--http-proxy","value":"<url>","doc":"HTTP proxy URL for daemon outgoing traffic."},
+      {"name":"--https-proxy","value":"<url>","doc":"HTTPS proxy URL."},
+      {"name":"--no-proxy","value":"<list>","doc":"Comma-separated NO_PROXY hosts."},
+      {"name":"--tls","value":null,"doc":"Use TLS (implied by --tlsverify)."},
+      {"name":"--tlsverify","value":null,"doc":"Use TLS and verify the remote (mTLS)."},
+      {"name":"--tlscacert","value":"<path>","doc":"Trust certs signed only by this CA."},
+      {"name":"--tlscert","value":"<path>","doc":"TLS cert file."},
+      {"name":"--tlskey","value":"<path>","doc":"TLS key file."},
+      {"name":"--label","value":"<key>=<val>","doc":"Set daemon-level labels (surfaced in docker info)."},
+      {"name":"--validate","value":null,"doc":"Validate daemon configuration and exit (no daemon start)."},
+      {"name":"--allow-direct-routing","value":null,"doc":"Allow remote access to published ports on container IP addresses."},
+      {"name":"--authorization-plugin","value":"<plugin>","doc":"Authorization plugin to load."},
+      {"name":"--feature","value":"<key>=<val>","doc":"Enable named daemon feature (e.g. containerd-snapshotter=true)."},
+      {"name":"--cri-containerd","value":null,"doc":"Start containerd with CRI plugin."}
+    ],
+    "examples":[
+      {"invocation":"sudo dockerd --debug","expected_output":"daemon starts with verbose logging to stderr","scenario":"manual debug start; prefer `\\\"debug\\\": true` in daemon.json"},
+      {"invocation":"sudo dockerd --validate","expected_output":"exit 0 if daemon.json + flags are consistent","scenario":"validate config without restarting the daemon"},
+      {"invocation":"sudo dockerd -H fd:// -H tcp://127.0.0.1:2375","expected_output":"daemon listens on systemd socket + tcp loopback","scenario":"manual remote-access enable for testing (use TLS in production)"}
+    ],
+    "source_ids":["docker-docs-cli-dockerd","docker-docs-engine-daemon","docker-docs-daemon-remote-access","docker-docs-daemon-live-restore","docker-docs-daemon-prometheus","docker-docs-daemon-proxy"]
+  },
+  {
+    "id":"docker.engine.cmd.system-prune",
+    "command":"docker system prune [OPTIONS]",
+    "purpose":"Remove unused data: stopped containers, unused networks, dangling images, unused build cache. Volumes NOT pruned by default — must add --volumes. Reclaims disk fast; prompts before deleting.",
+    "flags":[
+      {"name":"-a, --all","value":null,"doc":"Remove all unused images, not just dangling ones."},
+      {"name":"-f, --force","value":null,"doc":"Skip the confirmation prompt."},
+      {"name":"--filter","value":"<key>=<val>","doc":"Limit scope (e.g. `until=24h`, `label=keep`)."},
+      {"name":"--volumes","value":null,"doc":"Also prune unused local volumes."}
+    ],
+    "examples":[
+      {"invocation":"docker system prune","expected_output":"removes stopped containers, unused networks, dangling images, build cache","scenario":"reclaim disk on a dev box"},
+      {"invocation":"docker system prune -af --volumes --filter 'until=72h'","expected_output":"non-interactive sweep of all unused data older than 72h","scenario":"scheduled cleanup cron"}
+    ],
+    "source_ids":["docker-docs-manage-pruning"]
+  },
+  {
+    "id":"docker.engine.cmd.container-prune",
+    "command":"docker container prune [OPTIONS]",
+    "purpose":"Remove all stopped containers. Their writable layers are freed; named volumes preserved.",
+    "flags":[
+      {"name":"-f, --force","value":null,"doc":"Skip prompt."},
+      {"name":"--filter","value":"<key>=<val>","doc":"Filter scope. e.g. `until=24h`, `label=…`, `label!=keep`."}
+    ],
+    "examples":[
+      {"invocation":"docker container prune --filter 'until=24h'","expected_output":"prunes only stopped containers older than 24h","scenario":"keep recent for forensics, prune older"}
+    ],
+    "source_ids":["docker-docs-manage-pruning"]
+  },
+  {
+    "id":"docker.engine.cmd.image-prune",
+    "command":"docker image prune [OPTIONS]",
+    "purpose":"Remove dangling (no tag, not referenced) images by default; with -a, remove all images not used by an existing container. Most aggressive disk-reclaim.",
+    "flags":[
+      {"name":"-a, --all","value":null,"doc":"Remove all images not used by existing containers (not just dangling)."},
+      {"name":"-f, --force","value":null,"doc":"Skip prompt."},
+      {"name":"--filter","value":"<key>=<val>","doc":"Filter (e.g. `until=24h`, `label=…`)."}
+    ],
+    "examples":[
+      {"invocation":"docker image prune -a -f --filter 'until=72h'","expected_output":"removes all 72h+ images not used by any container","scenario":"weekly disk reclaim"},
+      {"invocation":"docker image prune","expected_output":"removes only dangling (no tag) images","scenario":"safer cleanup"}
+    ],
+    "source_ids":["docker-docs-manage-pruning"]
+  },
+  {
+    "id":"docker.engine.cmd.volume-prune",
+    "command":"docker volume prune [OPTIONS]",
+    "purpose":"Remove all volumes not used by at least one container. Volumes are NEVER auto-removed (could destroy data); explicit prune required.",
+    "flags":[
+      {"name":"-a, --all","value":null,"doc":"Remove all unused volumes (not just anonymous)."},
+      {"name":"-f, --force","value":null,"doc":"Skip prompt."},
+      {"name":"--filter","value":"<key>=<val>","doc":"Filter (e.g. `label!=keep`)."}
+    ],
+    "examples":[
+      {"invocation":"docker volume prune --filter 'label!=keep'","expected_output":"removes unused volumes except those labeled `keep`","scenario":"protect a curated set of volumes from sweeps"}
+    ],
+    "source_ids":["docker-docs-manage-pruning","docker-docs-storage-volumes"]
+  },
+  {
+    "id":"docker.engine.cmd.network-prune",
+    "command":"docker network prune [OPTIONS]",
+    "purpose":"Remove networks not used by any containers. Cleans up iptables/bridge/route entries left behind.",
+    "flags":[
+      {"name":"-f, --force","value":null,"doc":"Skip prompt."},
+      {"name":"--filter","value":"<key>=<val>","doc":"Filter (e.g. `until=24h`)."}
+    ],
+    "examples":[
+      {"invocation":"docker network prune --filter 'until=24h'","expected_output":"removes networks idle > 24h","scenario":"after a Compose-heavy dev session leaves stale per-project networks"}
+    ],
+    "source_ids":["docker-docs-manage-pruning"]
+  }
+]

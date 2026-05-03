@@ -1,0 +1,110 @@
+[
+  {
+    "id": "firecracker.networking.cfg.network-interface.iface-id",
+    "scope": "network-interface",
+    "key": "iface_id",
+    "type": "string",
+    "default_value": null,
+    "description": "Firecracker-internal identifier. Used in URLs (PUT /network-interfaces/{iface_id}) and MMDS network_interfaces[] lists. NOT visible inside the guest — guest names its own interfaces (typically eth0, eth1...).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cfg.network-interface.host-dev-name",
+    "scope": "network-interface",
+    "key": "host_dev_name",
+    "type": "string",
+    "default_value": null,
+    "description": "Host TAP interface name (must already exist). Firecracker opens /dev/net/tun and binds via TUNSETIFF. Permission: requires the running uid to have access to the TAP (typically by being in the netdev group or via uid match on tap-creation).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cfg.network-interface.guest-mac",
+    "scope": "network-interface",
+    "key": "guest_mac",
+    "type": "string|null",
+    "default_value": "null (random)",
+    "description": "Guest-side MAC address. If null, randomly generated. Convention with default rootfs: encode the guest IP in the last 4 bytes (06:00:AC:10:00:02 ↔ 172.16.0.2).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cfg.rate-limiter.bandwidth.size",
+    "scope": "rate-limiter.bandwidth",
+    "key": "size",
+    "type": "u64 (bytes)",
+    "default_value": null,
+    "description": "Token-bucket capacity in bytes. Bucket fills at refill_time interval to this maximum.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.networking.cfg.rate-limiter.bandwidth.refill-time",
+    "scope": "rate-limiter.bandwidth",
+    "key": "refill_time",
+    "type": "u64 (ms)",
+    "default_value": null,
+    "description": "Time in milliseconds to refill the bucket from empty to full. Throughput = size / (refill_time/1000) bytes/sec at sustained rate.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.networking.cfg.rate-limiter.bandwidth.one-time-burst",
+    "scope": "rate-limiter.bandwidth",
+    "key": "one_time_burst",
+    "type": "u64 (bytes)",
+    "default_value": "0",
+    "description": "Optional one-shot extra capacity available at startup. Lets a guest burst once above the steady-state limit (e.g., for initial download). Once consumed, never refills.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.networking.cfg.rate-limiter.ops.size",
+    "scope": "rate-limiter.ops",
+    "key": "size",
+    "type": "u64 (operations)",
+    "default_value": null,
+    "description": "Operations-per-period bucket capacity. For network: operations = packets. Independent of bandwidth bucket — both must permit the action.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.networking.cfg.mmds-config.network-interfaces",
+    "scope": "mmds-config",
+    "key": "network_interfaces",
+    "type": "array of iface_id",
+    "default_value": null,
+    "description": "List of network interface iface_ids on which MMDS-destined packets are intercepted. At least one required — without it, MMDS returns 400 on any request.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.networking.cfg.mmds-config.imds-compat",
+    "scope": "mmds-config",
+    "key": "imds_compat",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Forces all MMDS responses to use AWS IMDS plain-text format regardless of Accept header. Lets EC2-IMDS-targeted guest tooling (cloud-init, AWS SDK metadata libs) work unmodified against Firecracker.",
+    "source_ids": ["fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.networking.cfg.host-sysctl.ip-forward",
+    "scope": "host-sysctl",
+    "key": "net.ipv4.ip_forward",
+    "type": "bool (0/1)",
+    "default_value": "0",
+    "description": "Required to be 1 on host for any NAT-based or bridge-based microVM routing. Without it, packets from TAP to physical NIC are dropped at the FORWARD chain.",
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cfg.host-tap.txqueuelen",
+    "scope": "host-tap",
+    "key": "txqueuelen",
+    "type": "int",
+    "default_value": "kernel default (often 500)",
+    "description": "TAP send queue length on the host. Tunable for high-throughput workloads — too small drops packets; too large adds latency. Set via `ip link set <tap> txqueuelen <N>`.",
+    "source_ids": ["fc-docs-network-perf"]
+  },
+  {
+    "id": "firecracker.networking.cfg.mmds-config-version",
+    "scope": "mmds-config",
+    "key": "version",
+    "type": "enum",
+    "default_value": "V1 (deprecated)",
+    "description": "MMDS protocol version. V1 = simple GET (deprecated, removed in next major); V2 = session-token-required (mimics IMDSv2). Always use V2 for multi-tenant or untrusted guest workloads.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-mmds-user-guide"]
+  }
+]

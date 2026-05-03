@@ -1,0 +1,122 @@
+[
+  {
+    "id": "firecracker.networking.tap-backend",
+    "name": "TAP-device backend",
+    "kind": "transport",
+    "description": "Firecracker's only network backend is a Linux TUN/TAP device — no multi-queue support. Each VirtIO/net device requires a corresponding TAP on the host (created by orchestrator before PUT /network-interfaces). Firecracker reads/writes ethernet frames directly on the TAP fd. The TAP IP and the guest IP must NOT be in the same subnet as the host.",
+    "source_ids": ["fc-docs-network-setup"],
+    "aliases": ["TUN/TAP backend"]
+  },
+  {
+    "id": "firecracker.networking.no-multi-queue",
+    "name": "No TAP multi-queue support",
+    "kind": "constraint",
+    "description": "Firecracker uses single-queue TAP only. For high-throughput workloads, this is a per-microVM bottleneck — multi-queue (IFF_MULTI_QUEUE) is not implemented. Workaround for fan-out: more microVMs vs more queues per microVM.",
+    "source_ids": ["fc-docs-network-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.nat-routing-pattern",
+    "name": "NAT-based routing pattern",
+    "kind": "design-pattern",
+    "description": "Default network setup: host masquerades guest packets via nftables/iptables-nft. Simple, but the microVM is invisible to the LAN. Required: ip_forward=1 on host, masquerade rule on POSTROUTING chain (oifname eth0 ip saddr <guest-IP>), forward-accept rule from tap0 to eth0. Suitable for outbound-only workloads.",
+    "source_ids": ["fc-docs-network-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.bridge-routing-pattern",
+    "name": "Bridge-based routing pattern",
+    "kind": "design-pattern",
+    "description": "Alternative: attach TAPs to a Linux bridge that's slaved to the physical NIC. MicroVMs become visible on the LAN with their own IPs. Higher overhead than NAT but allows inbound connections without DNAT rules. Documented in fc-docs-network-setup 'Advanced: Bridge-based routing'.",
+    "source_ids": ["fc-docs-network-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.namespaced-nat-clones",
+    "name": "Namespaced NAT for clones",
+    "kind": "design-pattern",
+    "description": "Each microVM (typically a snapshot clone) lives in its own network namespace with its own TAP and its own NAT rules. Sacrifices some performance vs flat NAT but lets multiple clones of the SAME snapshot run simultaneously without IP/MAC collision. Documented in fc-docs-snapshot-network-clones.",
+    "source_ids": ["fc-docs-network-setup", "fc-docs-snapshot-network-clones"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.iface-id-internal",
+    "name": "iface_id is Firecracker-internal",
+    "kind": "convention",
+    "description": "The iface_id used in PUT /network-interfaces is for Firecracker management only. The guest names the interface itself (typically eth0, eth1...). Init order across multiple interfaces is not guaranteed by Firecracker, though most kernels/distros respect API-call order in practice.",
+    "source_ids": ["fc-docs-network-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.guest-mac-deterministic-pattern",
+    "name": "Deterministic guest MAC pattern (06:00:AC:10:00:02)",
+    "kind": "convention",
+    "description": "If using the default-rootfs getting-started flow, the last 4 bytes of guest_mac encode the guest IP — `06:00:AC:10:00:02` ↔ 172.16.0.2 (AC.10 = 172.16). Lets simple init scripts derive their IP from the assigned MAC. Optional convention; Firecracker generates a random MAC if guest_mac is omitted.",
+    "source_ids": ["fc-docs-network-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.mmds-tightly-coupled-to-iface",
+    "name": "MMDS coupling to network interface(s)",
+    "kind": "design",
+    "description": "MMDS isn't a separate network device — it intercepts packets destined for its IP on a specific configured network interface. PUT /mmds/config requires a network_interfaces[] list naming the interfaces that may forward MMDS-destined packets. Without at least one configured interface, MMDS returns 400.",
+    "source_ids": ["fc-docs-mmds-user-guide"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.mmds-default-ip",
+    "name": "Default MMDS IPv4 (169.254.169.254)",
+    "kind": "convention",
+    "description": "MMDS defaults to 169.254.169.254 — link-local — matching EC2 IMDS for cloud-init compatibility. Custom IPs supported via /mmds/config.ipv4_address. Guest must have a route: `ip route add 169.254.169.254 dev eth0`.",
+    "source_ids": ["fc-docs-mmds-user-guide"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.mmds-v1-vs-v2",
+    "name": "MMDS V1 (deprecated) vs V2",
+    "kind": "feature",
+    "description": "V1: simple GET; deprecated, will be removed in next major version. V2: session-token-required (PUT /latest/api/token to mint, then GET with X-metadata-token header). V2 mimics IMDSv2 — defends against SSRF where a guest workload proxies an attacker URL to MMDS. V1 still answers without token (with mmds.rx_invalid_token / mmds.rx_no_token metrics tracking migration readiness).",
+    "source_ids": ["fc-docs-mmds-user-guide"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.mmds-token-ttl",
+    "name": "MMDS V2 token TTL",
+    "kind": "constraint",
+    "description": "V2 token TTL is set via X-metadata-token-ttl-seconds (or X-aws-ec2-metadata-token-ttl-seconds) header. Range: 1..21600 (1 second to 6 hours). Token expires after the TTL — guest must mint a new one. PUT requests minting tokens cannot include X-Forwarded-For (defends against header-injection attacks).",
+    "source_ids": ["fc-docs-mmds-user-guide"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.mmds-snapshot-non-persist",
+    "name": "MMDS data store NOT persisted across snapshots",
+    "kind": "design-decision",
+    "description": "Intentional: the MMDS payload often contains VM-specific identifiers (instance-id, public keys) that should NOT cross to clones. Snapshot persists MMDS *configuration* (version, network_interfaces, ipv4_address) but not *data*. Orchestrator must reseed metadata after snapshot restore.",
+    "source_ids": ["fc-docs-mmds-user-guide"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.mmds-imds-compat-mode",
+    "name": "imds_compat output format",
+    "kind": "feature",
+    "description": "PUT /mmds/config with imds_compat=true forces all responses to use AWS IMDS plain-text format regardless of Accept header. Lets EC2-IMDS-targeted guest code (cloud-init, instance-metadata library) work unmodified against Firecracker MMDS. Without imds_compat, MMDS uses Accept header negotiation: application/json → JSON, plain/text or none → IMDS format.",
+    "source_ids": ["fc-docs-mmds-user-guide"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.token-bucket-rate-limit",
+    "name": "Per-direction token-bucket rate limiting",
+    "kind": "feature",
+    "description": "Each network interface supports independent rx_rate_limiter and tx_rate_limiter. Each is a token bucket: bandwidth bucket (bytes) + ops bucket (packets), each with size + refill_time + optional one_time_burst. PATCH at runtime updates limiters on a live interface. Defense against noisy-neighbor microVMs in shared-host deployments.",
+    "source_ids": ["fc-docs-network-perf"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.networking.network-perf-considerations",
+    "name": "Network performance considerations",
+    "kind": "performance-tradeoff",
+    "description": "Per fc-docs-network-perf: VirtIO/net throughput limited by single-queue TAP, userspace packet copy from TAP fd to guest ring buffer (and vice versa), no zero-copy / no offload pass-through. Hot path: TAP read → epoll → VMM thread copy → VirtIO ring → KVM_IRQFD wakeup. Tunables: rate-limiter sizing, host TAP send queue length (txqueuelen), and choice of NAT vs bridge.",
+    "source_ids": ["fc-docs-network-perf"],
+    "aliases": []
+  }
+]

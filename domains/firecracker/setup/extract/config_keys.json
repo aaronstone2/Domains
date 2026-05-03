@@ -1,0 +1,110 @@
+[
+  {
+    "id": "firecracker.setup.cfg.host-kernel-cmdline.quiet",
+    "scope": "host-kernel-cmdline",
+    "key": "quiet",
+    "type": "kernel-cmdline-flag",
+    "default_value": "not set (recommended to set)",
+    "description": "Suppresses non-critical kernel messages on the host console. Recommended for Firecracker production hosts to avoid console-write latency degrading snapshot restore times.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.host-kernel-cmdline.loglevel",
+    "scope": "host-kernel-cmdline",
+    "key": "loglevel=1",
+    "type": "kernel-cmdline-flag",
+    "default_value": "kernel default (often 4)",
+    "description": "Reduce kernel log verbosity to KERN_ALERT only. Pairs with `quiet` for minimal serial-console writes. Recommended for Firecracker hosts.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.host-kernel-cmdline.nosmt",
+    "scope": "host-kernel-cmdline",
+    "key": "nosmt",
+    "type": "kernel-cmdline-flag",
+    "default_value": "not set",
+    "description": "Disable SMT (Hyperthreading) at boot. Required for tenant-separation hosts to mitigate speculation side channels (Spectre, MDS).",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.modprobe.kvm.min-timer-period-us",
+    "scope": "modprobe-kvm",
+    "key": "min_timer_period_us",
+    "type": "u32",
+    "default_value": "kernel default (often 500)",
+    "description": "Minimum interval between KVM-injected timer interrupts. Higher values reduce kvm-pit kthread CPU overhead but also coarsen APIC timer granularity. Workload-test before raising.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.cgroup-v1.cpu-shares",
+    "scope": "cgroup-v1.cpu",
+    "key": "cpu.shares",
+    "type": "int",
+    "default_value": "1024",
+    "description": "Relative CPU-time weight when CPUs are contended. Per-microVM share calculation: this_share / sum(all_shares_at_this_level). v1; in v2 use cpu.weight.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.cgroup-v1.cpu-cfs-period-us",
+    "scope": "cgroup-v1.cpu",
+    "key": "cpu.cfs_period_us",
+    "type": "int (μs)",
+    "default_value": "100000 (100ms)",
+    "description": "CFS scheduler period. Combined with cfs_quota_us yields a hard CPU bandwidth cap. v2 equivalent: cpu.max (period/quota pair).",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.cgroup-v1.cpu-cfs-quota-us",
+    "scope": "cgroup-v1.cpu",
+    "key": "cpu.cfs_quota_us",
+    "type": "int (μs)",
+    "default_value": "-1 (unlimited)",
+    "description": "Max CPU time in μs allowed per cfs_period_us window. quota=50000, period=100000 → 50% of one CPU. Hard cap (vs cpu.shares which is a weight).",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.cgroup-v1.memory-limit-in-bytes",
+    "scope": "cgroup-v1.memory",
+    "key": "memory.limit_in_bytes",
+    "type": "int (bytes)",
+    "default_value": "-1 (unlimited)",
+    "description": "Hard memory cap. OOM-kills the cgroup if exceeded. v2 equivalent: memory.max.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.cgroup-v1.memory-memsw-limit-in-bytes",
+    "scope": "cgroup-v1.memory",
+    "key": "memory.memsw.limit_in_bytes",
+    "type": "int (bytes)",
+    "default_value": "-1 (unlimited)",
+    "description": "Memory + swap cap. Required to prevent the OOM killer from being bypassed via swap. v2 equivalent: memory.swap.max + memory.max combined.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.cgroup-v1.memory-soft-limit",
+    "scope": "cgroup-v1.memory",
+    "key": "memory.soft_limit_in_bytes",
+    "type": "int (bytes)",
+    "default_value": "-1 (unlimited)",
+    "description": "Soft cap — only enforced under host memory contention. Lets cgroups use surplus memory normally but reclaims down to the soft limit when other workloads need it. v2 equivalent: memory.high.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.sysfs.ksm-run",
+    "scope": "sysfs",
+    "key": "/sys/kernel/mm/ksm/run",
+    "type": "int (0/1/2)",
+    "default_value": "varies",
+    "description": "0 = stop KSM and unmerge all pages; 1 = run KSM; 2 = stop KSM but keep merged pages. Set to 0 on Firecracker hosts to mitigate page-dedup side channels.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.setup.cfg.cgroup-v1.blkio-throttle-io-serviced",
+    "scope": "cgroup-v1.blkio",
+    "key": "blkio.throttle.io_serviced",
+    "type": "io-policy",
+    "default_value": "no limit",
+    "description": "Bound the number of disk I/Os issued by the cgroup. Format: '<major>:<minor> <read_iops> <write_iops>'. v2 equivalent: io.max.",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  }
+]

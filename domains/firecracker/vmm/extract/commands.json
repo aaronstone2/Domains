@@ -1,0 +1,118 @@
+[
+  {
+    "id": "firecracker.vmm.cmd.firecracker",
+    "command": "firecracker",
+    "purpose": "The Firecracker VMM binary. Started by orchestrator (typically via the jailer). Reads API requests from a Unix socket and runs one microVM per process.",
+    "flags": [
+      {"name": "--api-sock", "value": "<path>", "doc": "Unix Domain Socket path for the API server. Default: /tmp/firecracker.socket."},
+      {"name": "--id", "value": "<vmm-id>", "doc": "Microvm identifier (alphanumeric + hyphen). Reflected in metrics and logs."},
+      {"name": "--config-file", "value": "<json-path>", "doc": "Pre-load full VM config from a JSON file; auto-starts the VM. Skip API calls entirely."},
+      {"name": "--log-path", "value": "<fifo-path>", "doc": "Bootstrap logger to a FIFO before the API would normally configure it."},
+      {"name": "--level", "value": "Error|Warn|Info|Debug|Trace", "doc": "Bootstrap log level. Pairs with --log-path."},
+      {"name": "--show-level", "value": null, "doc": "Bootstrap logger: prepend log level."},
+      {"name": "--show-log-origin", "value": null, "doc": "Bootstrap logger: prepend file:line."},
+      {"name": "--metrics-path", "value": "<fifo-path>", "doc": "Bootstrap metrics sink (FIFO)."},
+      {"name": "--boot-timer", "value": null, "doc": "Emit a boot-timer metric on first guest jiffy."},
+      {"name": "--no-api", "value": null, "doc": "Disable the API server (only meaningful with --config-file)."},
+      {"name": "--no-seccomp", "value": null, "doc": "Disable seccomp filtering — DEVELOPMENT ONLY. Insecure."},
+      {"name": "--seccomp-filter", "value": "<bpf-path>", "doc": "Override default seccomp filters with a custom seccompiler-bpf-compiled file."},
+      {"name": "--http-api-max-payload-size", "value": "<bytes>", "doc": "Max API request body size."},
+      {"name": "--mmds-size-limit", "value": "<bytes>", "doc": "Max MMDS payload size."},
+      {"name": "--gdb-socket", "value": "<uds-path>", "doc": "Enable in-guest GDB stub on a Unix socket. Pairs with --no-seccomp typically."}
+    ],
+    "examples": [
+      {"invocation": "firecracker --api-sock /tmp/fc.sock --id myvm", "expected_output": "Process runs; awaits API requests on /tmp/fc.sock", "scenario": "Standard orchestrator-launched microVM"},
+      {"invocation": "firecracker --config-file /var/vm.json --no-api", "expected_output": "VM auto-boots from JSON config; no API server", "scenario": "Headless one-shot VM"},
+      {"invocation": "jailer --id myvm --uid 1000 --gid 1000 --exec-file /usr/bin/firecracker -- --api-sock /run/firecracker/api.sock", "expected_output": "Sandboxed launch via jailer wrapper", "scenario": "Production deployment"}
+    ],
+    "source_ids": ["fc-docs-getting-started", "fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.curl-api-status",
+    "command": "curl --unix-socket <path> http://localhost/",
+    "purpose": "Probe a running Firecracker via its API socket. Returns instance state (Not started|Running|Paused) and version.",
+    "flags": [{"name": "--unix-socket", "value": "<sock-path>", "doc": "Required — API uses UDS, not TCP."}],
+    "examples": [{"invocation": "curl --unix-socket /tmp/fc.sock http://localhost/", "expected_output": "200 with InstanceInfo JSON", "scenario": "Health probe"}],
+    "source_ids": ["fc-docs-getting-started", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.dmesg-check-page-alloc-failure",
+    "command": "dmesg | grep 'page allocation failure'",
+    "purpose": "Diagnose host-side OOM during Firecracker startup. fc_vmm: page allocation failure messages indicate the host can't satisfy a high-order allocation (KVM needs contiguous pages for the guest).",
+    "flags": [],
+    "examples": [{"invocation": "sudo dmesg | grep 'page allocation failure'", "expected_output": "Lines like 'fc_vmm: page allocation failure: order:6, mode:...' if memory-fragmented host", "scenario": "Firecracker won't start; OOM exit code 12"}],
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.tune-vm-min-free-kbytes",
+    "command": "sysctl -w vm.min_free_kbytes=<value>",
+    "purpose": "Raise the kernel's minimum-free-memory watermark to combat memory fragmentation that causes Firecracker page allocation failures.",
+    "flags": [],
+    "examples": [{"invocation": "sysctl -w vm.min_free_kbytes=262144", "expected_output": "Persists until reboot; persist via /etc/sysctl.conf", "scenario": "Mitigate fragmentation-driven Firecracker OOM"}],
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.modprobe-r-vboxdrv",
+    "command": "modprobe -r vboxdrv",
+    "purpose": "Unload VirtualBox kernel module that holds /dev/kvm exclusively, freeing it for Firecracker. Needed when Firecracker fails with 'Resource busy'.",
+    "flags": [],
+    "examples": [{"invocation": "sudo modprobe -r vboxdrv", "expected_output": "/dev/kvm released; Firecracker can now acquire it", "scenario": "Conflict with VirtualBox on dev workstation"}],
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.lsmod-check-kvm",
+    "command": "lsmod | grep kvm",
+    "purpose": "Verify the KVM kernel modules are loaded (kvm + kvm_intel or kvm_amd). Without these, Firecracker can't open /dev/kvm.",
+    "flags": [],
+    "examples": [{"invocation": "lsmod | grep -E 'kvm|kvm_(intel|amd)'", "expected_output": "Lines for kvm + kvm_intel or kvm_amd if loaded", "scenario": "Pre-flight check before starting Firecracker"}],
+    "source_ids": ["fc-docs-getting-started"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.access-dev-kvm",
+    "command": "[ -r /dev/kvm ] && [ -w /dev/kvm ]",
+    "purpose": "Verify the calling user has read+write access to /dev/kvm. Typically requires being in the 'kvm' group; jailer drops to a lower uid that must also have access.",
+    "flags": [],
+    "examples": [{"invocation": "ls -l /dev/kvm; getent group kvm", "expected_output": "crw-rw---- 1 root kvm 10, 232 ... ; users in kvm group", "scenario": "Diagnose 'permission denied' on /dev/kvm"}],
+    "source_ids": ["fc-docs-getting-started", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.curl-put-machine-config",
+    "command": "curl -X PUT --unix-socket <sock> http://localhost/machine-config -d '<json>'",
+    "purpose": "Configure vCPU + memory for the microVM. Pre-boot only.",
+    "flags": [{"name": "-X PUT", "value": null, "doc": "HTTP method."}, {"name": "-H 'Content-Type: application/json'", "value": null, "doc": "Required content-type."}],
+    "examples": [{"invocation": "curl -X PUT --unix-socket /tmp/fc.sock -H 'Content-Type: application/json' http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024,\"smt\":false}'", "expected_output": "204 No Content on success", "scenario": "Pre-boot machine sizing"}],
+    "source_ids": ["fc-docs-getting-started", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.curl-put-instance-start",
+    "command": "curl -X PUT --unix-socket <sock> http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+    "purpose": "Boot the configured microVM. Synchronous: returns 204 once vCPUs are running.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT --unix-socket /tmp/fc.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'", "expected_output": "204; if missing pre-boot config (boot-source / machine-config), returns 400 with fault_message", "scenario": "Boot the configured microVM"}],
+    "source_ids": ["fc-docs-getting-started", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.send-ctrl-alt-del",
+    "command": "curl -X PUT --unix-socket <sock> http://localhost/actions -d '{\"action_type\":\"SendCtrlAltDel\"}'",
+    "purpose": "Inject Ctrl+Alt+Del into the guest. With reboot=k in boot_args, terminates the Firecracker process gracefully (x86 only).",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT --unix-socket /tmp/fc.sock http://localhost/actions -d '{\"action_type\":\"SendCtrlAltDel\"}'", "expected_output": "204; Firecracker process exits within ~seconds", "scenario": "Graceful guest shutdown"}],
+    "source_ids": ["fc-repo-faq", "fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.curl-put-flush-metrics",
+    "command": "curl -X PUT --unix-socket <sock> http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}'",
+    "purpose": "Force an immediate metrics emission to the configured /metrics FIFO without waiting for the 60-second cadence.",
+    "flags": [],
+    "examples": [{"invocation": "curl -X PUT --unix-socket /tmp/fc.sock http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}'", "expected_output": "204; metrics blob written to FIFO", "scenario": "Capture metrics on demand for an investigation"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-metrics"]
+  },
+  {
+    "id": "firecracker.vmm.cmd.mkfifo-log-pipe",
+    "command": "mkfifo <path>",
+    "purpose": "Create the named pipe Firecracker requires for /logger and /metrics endpoints. Must exist before PUT /logger or PUT /metrics.",
+    "flags": [],
+    "examples": [{"invocation": "mkfifo /tmp/fc.log /tmp/fc.metrics", "expected_output": "FIFOs created; reader process should attach before Firecracker fills the buffer", "scenario": "Pre-arm logging/metrics sinks"}],
+    "source_ids": ["fc-docs-logger", "fc-docs-metrics"]
+  }
+]

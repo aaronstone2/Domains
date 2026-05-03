@@ -1,0 +1,202 @@
+[
+  {
+    "id": "firecracker.vmm.firecracker-vmm",
+    "name": "Firecracker VMM",
+    "kind": "subsystem",
+    "description": "Open-source Virtual Machine Monitor (VMM) written in Rust. Built by AWS for Lambda + Fargate. Forked from Google's crosvm; today crosvm and Firecracker have diverged. Provides minimal-overhead microVMs (≈125 ms boot, ≈5 MiB memory footprint) targeting serverless and container isolation.",
+    "source_ids": ["fc-repo-faq", "fc-docs-design", "fc-nsdi20-paper"],
+    "aliases": ["fc", "firecracker"]
+  },
+  {
+    "id": "firecracker.vmm.process-model",
+    "name": "Process model (3-thread)",
+    "kind": "architecture",
+    "description": "Each Firecracker process owns exactly one microVM and runs three thread classes: (1) API thread — HTTP control plane, never on the fast path; (2) VMM thread — device emulation (VirtIO net/block/vsock/balloon, MMDS, serial, i8042) and rate-limiting; (3) vCPU threads — one per guest core, running the KVM_RUN main loop. Fault domains: VMM crash kills the microVM; API thread loss only loses control plane.",
+    "source_ids": ["fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.minimal-device-model",
+    "name": "Minimal device model (6 devices)",
+    "kind": "architecture",
+    "description": "Firecracker exposes only 6 emulated devices to the guest: virtio-net, virtio-block, virtio-vsock, virtio-balloon, serial console (ttyS0), and a partial i8042 keyboard controller (used only to signal microVM reset). No PCI bus, no USB, no graphics, no sound. Reduces attack surface and boot time vs QEMU's hundreds of device models.",
+    "source_ids": ["fc-repo-faq", "fc-docs-design", "fc-nsdi20-paper"],
+    "aliases": ["6-device model"]
+  },
+  {
+    "id": "firecracker.vmm.threat-containment",
+    "name": "Threat containment trust zones",
+    "kind": "security-model",
+    "description": "Concentric trust zones from least-trusted to most-trusted: (1) guest vCPU threads (assumed running malicious code); (2) Firecracker VMM thread (handles device emulation and copies guest data to host fds); (3) jailer (chroot/cgroup/uid sandbox); (4) host kernel. Each barrier enforces specific security properties — e.g., I/O rate limiting is applied at the VMM-thread/host-fd boundary.",
+    "source_ids": ["fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.token-bucket-rate-limiter",
+    "name": "Token-bucket rate limiter",
+    "kind": "feature",
+    "description": "Two-bucket implementation: one for ops/sec, one for bandwidth (bytes/sec). Each bucket: size (capacity), refill_time (ms), one_time_burst (optional one-shot extra). Applied per VirtIO/net interface and per VirtIO/block drive — both directions where applicable. Allows tunable burst behavior.",
+    "source_ids": ["fc-docs-design"],
+    "aliases": ["rate-limiter"]
+  },
+  {
+    "id": "firecracker.vmm.startup-budget",
+    "name": "Startup budget (≈125ms / ≈5 MiB)",
+    "kind": "performance-spec",
+    "description": "Design-target startup characteristics: ≈125 ms from process start to guest jiffies (with serial console DISABLED — turning it on adds significant time), ≈5 MiB memory overhead per microVM. Per-host steady-state mutation rate: ≈5 microVMs per host core per second (e.g., 180 microVMs/s on 36 cores).",
+    "source_ids": ["fc-repo-faq", "fc-docs-design", "fc-nsdi20-paper"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.kvm-clock",
+    "name": "Guest clocksources",
+    "kind": "feature",
+    "description": "Firecracker exposes the following clocksources: x86_64 — kvm-clock (paravirt) and tsc (Linux ≥5.10 picks tsc by default if stable); aarch64 — arch_sys_counter. KVM PTP (CONFIG_PTP_1588_CLOCK_KVM=y in guest) is the recommended NTP source at scale to avoid network NTP traffic.",
+    "source_ids": ["fc-docs-design", "fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.cpu-template-mechanism",
+    "name": "CPU template mechanism",
+    "kind": "feature",
+    "description": "Per-vCPU CPUID + MSR + (Aarch64) register modifiers applied via KVM_SET_CPUID2 / KVM_SET_MSRS / KVM_SET_ONE_REG. Static templates: T2, T2A, T2CL, T2S, V1N1, C3 (Intel/AMD-specific). Custom templates: PUT /cpu-config supplies a JSON manifest. Snapshot portability requires identical templates between save and restore hosts.",
+    "source_ids": ["fc-docs-cpu-templates", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.architecture-support",
+    "name": "Architecture support",
+    "kind": "compatibility",
+    "description": "Intel x86_64 (VMX), AMD x86_64 (SVM), 64-bit ARM (EL2). Firecracker is processor-agnostic at the VMM layer but guests must be built for the same arch as the host — no cross-arch emulation.",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.kernel-support-policy",
+    "name": "Host kernel support policy",
+    "kind": "policy",
+    "description": "Firecracker pins host-kernel and guest-kernel version requirements per release. See docs/kernel-policy.md for the current matrix. Running outside the policy may work but is unsupported. Mismatched policies are a frequent cause of boot failures (e.g., GH issue #4881 kernel 6.1 panic).",
+    "source_ids": ["fc-docs-kernel-policy", "fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.ctrl-alt-del-shutdown",
+    "name": "SendCtrlAltDel guest shutdown",
+    "kind": "operation",
+    "description": "Firecracker doesn't support guest reboot. Graceful guest shutdown on x86: PUT /actions{action_type=SendCtrlAltDel} injects a Ctrl+Alt+Del keyboard sequence; with `reboot=k` in boot_args, the i8042 reset line terminates the Firecracker process. ARM: `poweroff` inside the guest works directly via KVM PSCI emulation.",
+    "source_ids": ["fc-repo-faq", "fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.eventfd-heavy-fd-usage",
+    "name": "Heavy eventfd usage (~20 FDs per microVM)",
+    "kind": "design-pattern",
+    "description": "Each Firecracker process holds 20+ file descriptors as a normal-state property — not a leak. eventfd backs every doorbell-to-device-thread wakeup (KVM_IOEVENTFD) and every VirtIO ring-event-to-IRQ delivery (KVM_IRQFD). Orchestrators must size host fd ulimits accordingly: 100 microVMs ≈ 2000 fds.",
+    "source_ids": ["fc-repo-faq", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.config-file-mode",
+    "name": "--config-file startup mode",
+    "kind": "feature",
+    "description": "Alternative to API-driven configuration: pass a JSON file via `firecracker --config-file <path>`. The file contains the same shape as the resources you'd PUT (boot-source, drives, machine-config, network-interfaces, vsock, mmds-config, etc.). The microVM auto-starts after parsing. Useful for orchestrators that want zero round-trips to start a VM.",
+    "source_ids": ["fc-repo-faq", "fc-swagger-spec"],
+    "aliases": ["--config-file"]
+  },
+  {
+    "id": "firecracker.vmm.host-integration-tap-files",
+    "name": "Host integration: TAP + files",
+    "kind": "design-pattern",
+    "description": "Firecracker delegates persistent state to the host: emulated network is backed by TAP devices (orchestrator creates), block devices are backed by host files (orchestrator pre-formats). This keeps Firecracker stateless beyond the microVM lifecycle and lets orchestrators decouple storage/networking from the VMM.",
+    "source_ids": ["fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.mmds-imdsv2",
+    "name": "MMDS — V1 vs V2",
+    "kind": "feature",
+    "description": "MMDS V1: unauthenticated GET — guest reads metadata via simple HTTP. Vulnerable to SSRF (any guest workload that proxies arbitrary URLs can leak metadata). V2: PUT to obtain a session token, then GET with the X-aws-ec2-metadata-token header — same model as EC2 IMDSv2. Always use V2 for multi-tenant workloads.",
+    "source_ids": ["fc-docs-mmds-user-guide"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.serial-console-overhead",
+    "name": "Serial console overhead",
+    "kind": "performance-tradeoff",
+    "description": "Default Firecracker behavior leaves serial console DISABLED in boot args for performance — booting with the console enabled adds significant time (every kernel printk causes a VM exit). Enable only for debugging via `console=ttyS0` in boot_args. Production: leave off; capture logs via PUT /serial to a host file or rely on guest-side logging.",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.crosvm-lineage",
+    "name": "Lineage from crosvm",
+    "kind": "history",
+    "description": "Firecracker forked from Chromium OS's crosvm (Rust VMM for ChromeOS Crostini). The two have since diverged — crosvm targets Chromebook desktop-VM use cases; Firecracker targets serverless. Shared Rust virtualization components live in the rust-vmm community (github.com/rust-vmm).",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.no-arch-emulation",
+    "name": "No cross-arch emulation",
+    "kind": "constraint",
+    "description": "Firecracker does NOT emulate a different guest CPU architecture than the host. Running an x86_64 guest on an aarch64 host (or vice versa) is unsupported. Use QEMU-TCG for cross-arch.",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.no-guest-reboot",
+    "name": "No guest reboot — termination model",
+    "kind": "constraint",
+    "description": "Firecracker has no concept of guest reboot. A guest reset terminates the Firecracker process. Reboot, in orchestrator terms, means: capture state (snapshot or scratch), tear down the process, start a fresh process, restore state (or boot fresh). This decision keeps the device model minimal.",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.metrics-emission-cadence",
+    "name": "Metrics emission cadence",
+    "kind": "observability",
+    "description": "Firecracker emits a JSON metrics blob to the configured /metrics FIFO at three points: (1) instance start, (2) every 60 seconds while running, (3) on panic. PUT /metrics a second time at runtime forces an immediate flush. Counters cover device events, KVM exits, API errors, snapshot timing, etc.",
+    "source_ids": ["fc-docs-metrics", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.log-named-pipe-fifo",
+    "name": "Logger writes to FIFO (line-flushed)",
+    "kind": "observability",
+    "description": "Logger backend is a host-side named pipe (FIFO) — orchestrators must create it before PUT /logger. Logs are flushed line-by-line, so a downstream reader sees lines as Firecracker emits them. If the FIFO has no reader, Firecracker blocks on write — common cause of mysterious VMM hangs.",
+    "source_ids": ["fc-docs-logger"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.no-acpi-pm",
+    "name": "No ACPI power management",
+    "kind": "constraint",
+    "description": "x86 Firecracker does not virtualize ACPI PM. Consequence: a guest `poweroff` will halt the OS but leave the Firecracker process alive. Use `reboot` (with reboot=k) or SendCtrlAltDel to terminate the process.",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.uffd-snapshot-backend",
+    "name": "userfaultfd (UFFD) snapshot backend",
+    "kind": "feature",
+    "description": "On snapshot load, mem_backend.backend_type=Uffd uses Linux userfaultfd to lazy-load guest pages from the snapshot mem file on first access. Reduces RSS spike on restore vs File-backend (which pre-faults all pages). Requires a host process to handle the UFFD events — orchestrator implements this.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": ["userfaultfd"]
+  },
+  {
+    "id": "firecracker.vmm.dev-kvm-exclusive",
+    "name": "Exclusive /dev/kvm acquisition",
+    "kind": "constraint",
+    "description": "Other hypervisors (VMware Workstation, VirtualBox) lock /dev/kvm exclusively. Firecracker fails to start with 'Resource busy' (EBUSY) when another hypervisor is loaded. Workaround: unload the conflicting kernel module (`modprobe -r vboxdrv`) before starting Firecracker.",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vmm.minimum-microvm-memory",
+    "name": "Minimum microVM memory (128 MiB default)",
+    "kind": "constraint",
+    "description": "If machine-config doesn't specify mem_size_mib, Firecracker defaults to 128 MiB. Process exits with code 12 ('Out of memory') if the host can't allocate that. Always set explicitly to avoid surprise.",
+    "source_ids": ["fc-repo-faq"],
+    "aliases": []
+  }
+]

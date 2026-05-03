@@ -1,0 +1,154 @@
+[
+  {
+    "id": "firecracker.snapshots.snapshotting",
+    "name": "MicroVM snapshotting",
+    "kind": "feature",
+    "description": "Mechanism to serialize a running microVM (guest memory + emulated HW state including KVM state) to host files and later restore it in a different Firecracker process. The Cognition-cited 'hypervisor-level snapshotting' pattern that Devin sessions plausibly use. Original guest sees only the latency of the create operation; resumed guest may see network/vsock packet loss.",
+    "source_ids": ["fc-docs-snapshot-support", "devin-cognition-cloud-agents"],
+    "aliases": ["snapshot/restore", "VM checkpointing"]
+  },
+  {
+    "id": "firecracker.snapshots.full-snapshot",
+    "name": "Full snapshot",
+    "kind": "snapshot-type",
+    "description": "Captures the complete microVM state — all guest memory, all device state, all vCPU state. mem_file_path is the size of guest RAM. Slower to create than diff but self-contained — restore needs only this snapshot, no chain.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.diff-snapshot",
+    "name": "Diff snapshot",
+    "kind": "snapshot-type",
+    "description": "Captures only memory pages dirtied since the last snapshot (full or diff). Requires machine-config.track_dirty_pages=true on the original boot (enables KVM_MEM_LOG_DIRTY_PAGES). mem_file_path holds only changed pages; restore needs the full chain. Currently in developer-preview while guest_memfd integration is being designed.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.snapshot-files",
+    "name": "Snapshot file set",
+    "kind": "data-structure",
+    "description": "A snapshot is composed of multiple files: (1) microVM state file (KVM + emulated-HW state + 64-bit CRC), (2) memory file (guest RAM contents), (3) zero or more disk files (managed by the user — not produced by Firecracker). Restore needs all three sets. The state file CRC is the only integrity check Firecracker does — corruption beyond CRC scope is the user's problem.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.map-private-on-restore",
+    "name": "MAP_PRIVATE memory restore strategy (File backend)",
+    "kind": "implementation",
+    "description": "On snapshot load with mem_backend=File, Firecracker mmaps the memory file as MAP_PRIVATE. Pages are demand-loaded into anonymous memory on first access; writes go to copy-on-write anonymous pages. Result: very fast restore but the memory file must remain on the host for the lifetime of the resumed microVM (it's the page-fault backing store).",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.uffd-backend",
+    "name": "Userfaultfd (UFFD) memory restore backend",
+    "kind": "implementation",
+    "description": "Alternative to File backend. Firecracker registers guest memory with userfaultfd; an orchestrator-supplied UFFD handler process services page faults (e.g., fetch from a remote page server, decompress, etc.). Enables creative restore strategies — remote memory, deduplicated memory, just-in-time decompression. Higher first-fault latency than File backend.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": ["userfaultfd backend"]
+  },
+  {
+    "id": "firecracker.snapshots.snapshot-versioning",
+    "name": "Snapshot versioning",
+    "kind": "compatibility",
+    "description": "Snapshot files are versioned. Cross-version restore is supported within a stability window. The `version` field in PUT /snapshot/create lets orchestrators target an older format for backward compat with older Firecracker readers.",
+    "source_ids": ["fc-docs-snapshot-versioning"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.pause-resume-cycle",
+    "name": "Pause → snapshot → resume cycle",
+    "kind": "operation-sequence",
+    "description": "Snapshot creation requires the VM to be Paused first: PATCH /vm{state=Paused} → PUT /snapshot/create → PATCH /vm{state=Resumed}. The pause is a clean stopping point — vCPU threads exit KVM_RUN, no devices are mid-transaction. Skipping the pause leads to inconsistent device state.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.network-disruption-on-restore",
+    "name": "Network disruption on resume",
+    "kind": "constraint",
+    "description": "Open TCP connections, in-flight packets, and ARP-cache state of the guest are not guaranteed to survive resume. Workaround patterns documented in fc-docs-snapshot-network-clones: re-IP the guest after resume, clear ARP cache, use connection-resilient protocols. For 'clones' (multiple resumes from one snapshot) the host TAP must be re-uniqued per clone.",
+    "source_ids": ["fc-docs-snapshot-network-clones"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.vsock-reset-on-restore",
+    "name": "Vsock device reset on resume",
+    "kind": "constraint",
+    "description": "Open vsock connections are CLOSED across snapshot/restore. Listen sockets in the guest remain active and can accept new connections after resume. Orchestrators must design their host↔guest control plane to tolerate connection resets at restore time.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.dirty-page-protocol",
+    "name": "Dirty-page tracking protocol",
+    "kind": "implementation",
+    "description": "Two-phase protocol: (1) PATCH /vm{state=Paused} freezes vCPUs; (2) Firecracker calls KVM_GET_DIRTY_LOG (or KVM_CLEAR_DIRTY_LOG with KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2) per memory region; (3) only the marked pages are written to the diff mem file. Background: KVM marks pages dirty on every guest write via the page-fault path with KVM_MEM_LOG_DIRTY_PAGES set on the region.",
+    "source_ids": ["fc-docs-snapshot-support", "fc-docs-snapshot-pagefaults"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.snapshot-clone",
+    "name": "Snapshot clone",
+    "kind": "use-case",
+    "description": "Multiple Firecracker processes restore from the SAME snapshot file set, producing N independent microVMs (clones). Standard pattern for AI-agent sandboxes (one snapshot = warm template; each user session is a clone). Requires per-clone host configuration: unique TAP, unique vsock socket, unique mmds payload, regenerated VMGenID.",
+    "source_ids": ["fc-docs-snapshot-network-clones", "fc-docs-snapshot-support"],
+    "aliases": ["snapshot fan-out"]
+  },
+  {
+    "id": "firecracker.snapshots.vmgenid-device",
+    "name": "VMGenID device",
+    "kind": "feature",
+    "description": "Virtual Machine Generation ID — a 16-byte value the guest reads to detect 'I have been cloned/restored'. Crypto and DRBG state inside the guest should be re-seeded when VMGenID changes. Firecracker emits a NEW VMGenID on every restore. Caveat: snapshots taken before the guest kernel finishes booting may not have a stable VMGenID device — restore from very early boot can crash the guest.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": ["vm-generation-id"]
+  },
+  {
+    "id": "firecracker.snapshots.snapshot-trust-model",
+    "name": "Snapshot trust model",
+    "kind": "security-model",
+    "description": "Firecracker's threat model trusts the host, the host↔API channel, and snapshot files. Firecracker only verifies the state file's CRC — disk files and memory file are NOT cryptographically verified. Orchestrators must implement their own authentication + encryption when storing/transporting snapshots across trust boundaries.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.snapshot-portability",
+    "name": "Snapshot portability across hosts",
+    "kind": "constraint",
+    "description": "Snapshot save and restore hosts must agree on: same CPU architecture (no x86↔ARM); same KVM capabilities; same CPU template (KVM_SET_CPUID2 + MSRs must match); on ARM, same GIC version (v2 vs v3 cannot cross). Without a CPU template, MSR_IA32_TSX_CTRL overwrites are NOT preserved across restore.",
+    "source_ids": ["fc-docs-snapshot-support", "fc-docs-cpu-templates"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.cgroupv1-restore-latency",
+    "name": "cgroups v1 restore-latency tax",
+    "kind": "performance-tradeoff",
+    "description": "Snapshot restore is significantly slower under cgroups v1 vs v2 — see GH issue firecracker-microvm/firecracker#2129. Production deployments should use cgroups v2 (default on most modern distros).",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.userspace-restore-notify",
+    "name": "Userspace notifications of snapshot load",
+    "kind": "design-pattern",
+    "description": "After restore, Firecracker can notify orchestrator/userspace processes that a snapshot was loaded — useful for refreshing crypto state, reseeding RNGs, re-establishing connections. Pattern: orchestrator passes a control fd or vsock channel that fires post-restore.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.network-for-clones",
+    "name": "Network setup for clones (TAP per clone)",
+    "kind": "design-pattern",
+    "description": "Each restored clone needs its own host TAP device with a unique IP/MAC — the snapshot encodes the original guest's IP/MAC, but multiple guests sharing the same MAC on the same bridge causes connectivity loss. Workflow: pre-create N TAPs, restore N clones each pointing at a different TAP, optionally re-IP the guest post-restore via init script.",
+    "source_ids": ["fc-docs-snapshot-network-clones"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.snapshots.snapshot-where-can-resume",
+    "name": "Restore-host eligibility matrix",
+    "kind": "policy",
+    "description": "Eligibility constraints summarized: same arch; KVM_CAP_TSC_CONTROL must be available if TSC frequency differs; CPU template intersection must be non-empty; same GIC version on ARM. The fc-docs-snapshot-support 'Where can I resume my snapshots?' section is the canonical reference.",
+    "source_ids": ["fc-docs-snapshot-support"],
+    "aliases": []
+  }
+]

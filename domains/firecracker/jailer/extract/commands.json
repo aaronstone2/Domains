@@ -1,0 +1,60 @@
+[
+  {
+    "id": "firecracker.jailer.cmd.jailer",
+    "command": "jailer",
+    "purpose": "Privileged setup wrapper. Sets up cgroups, chroot, network namespace, resource limits, drops privileges, and exec()s the statically-linked Firecracker binary.",
+    "flags": [
+      {"name": "--id", "value": "<vm-id>", "doc": "Required. Unique microVM identifier. Alphanumeric+hyphen, max 64 chars."},
+      {"name": "--exec-file", "value": "<path>", "doc": "Required. Path to the Firecracker binary (statically linked, same version as jailer)."},
+      {"name": "--uid", "value": "<uid>", "doc": "Required. Non-privileged uid to drop to."},
+      {"name": "--gid", "value": "<gid>", "doc": "Required. Non-privileged gid to drop to."},
+      {"name": "--cgroup-version", "value": "1|2", "doc": "Cgroup hierarchy. Default 1; use 2 on cgroup-v2 hosts."},
+      {"name": "--cgroup", "value": "<file>=<value>", "doc": "Repeatable. Cgroup setting (e.g., cpuset.cpus=0). Avoids needing root on the orchestrator side."},
+      {"name": "--parent-cgroup", "value": "<relative path>", "doc": "Place microVM cgroup under this parent. Default: <exec_file_name>."},
+      {"name": "--chroot-base-dir", "value": "<path>", "doc": "Base for chroot tree. Default /srv/jailer."},
+      {"name": "--netns", "value": "<path>", "doc": "Path to network namespace handle (e.g., /var/run/netns/myvm). Jailer setns()s into it."},
+      {"name": "--resource-limit", "value": "fsize=<N>|no-file=<N>", "doc": "Repeatable. setrlimit-applied bounds."},
+      {"name": "--daemonize", "value": null, "doc": "setsid + redirect 0/1/2 to /dev/null."},
+      {"name": "--new-pid-ns", "value": null, "doc": "Spawn Firecracker into a new PID namespace (clone(CLONE_NEWPID))."},
+      {"name": "-- <firecracker args>", "value": "...", "doc": "End-of-options marker; everything after is forwarded to Firecracker. Note jailer always passes --id."}
+    ],
+    "examples": [
+      {"invocation": "jailer --id myvm --exec-file /usr/bin/firecracker --uid 1000 --gid 1000 --chroot-base-dir /srv/jailer", "expected_output": "Firecracker running inside /srv/jailer/firecracker/myvm/root as uid 1000", "scenario": "Standard production launch"},
+      {"invocation": "jailer --id myvm --exec-file /usr/bin/firecracker --uid 1000 --gid 1000 --cgroup-version 2 --cgroup cpu.max='100000 100000' --cgroup memory.max=536870912 --new-pid-ns --netns /var/run/netns/myvm --resource-limit no-file=4096 -- --config-file /var/myvm.json", "expected_output": "Sandboxed Firecracker w/ 100ms CPU per 100ms quota, 512 MiB memory cap, fresh PID/net namespaces, fd limit 4096, auto-loading config", "scenario": "Production deployment with full isolation"},
+      {"invocation": "jailer --id testvm --exec-file /usr/bin/firecracker --uid 1000 --gid 1000 --daemonize -- --api-sock /run/firecracker/api.sock", "expected_output": "Daemonized Firecracker; jailer returns immediately; PID stored in <chroot>/firecracker.pid if --new-pid-ns also set", "scenario": "Background launch from orchestrator"}
+    ],
+    "source_ids": ["fc-docs-jailer", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.jailer.cmd.ip-netns-add",
+    "command": "ip netns add <name>",
+    "purpose": "Create a network namespace for the jailer to attach via --netns. Combine with TAP creation inside the netns to give the microVM an isolated network stack.",
+    "flags": [],
+    "examples": [{"invocation": "ip netns add myvm; ip netns exec myvm ip tuntap add tap0 mode tap; ip netns exec myvm ip addr add 172.16.0.1/24 dev tap0; ip netns exec myvm ip link set tap0 up", "expected_output": "Netns 'myvm' with isolated TAP", "scenario": "Pre-jailer network setup"}],
+    "source_ids": ["fc-docs-jailer", "fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.jailer.cmd.cgcreate-prep",
+    "command": "cgcreate -g <controllers>:<group>",
+    "purpose": "Pre-create a cgroup hierarchy for the jailer to use (alternative to letting jailer create it inline via --cgroup). Useful when the orchestrator is non-privileged.",
+    "flags": [{"name": "-g", "value": "<controllers>:<group>", "doc": "e.g. 'cpu,memory:fc/myvm'"}],
+    "examples": [{"invocation": "cgcreate -g cpu,memory:fc/myvm", "expected_output": "Cgroup hierarchy created", "scenario": "Pre-arming for a non-privileged jailer launch"}],
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cmd.find-jail-pid",
+    "command": "cat <chroot_dir>/<exec_file_name>.pid",
+    "purpose": "Read the host-side PID of the jailed Firecracker process. Recorded by jailer when --new-pid-ns is used (since the jail-internal PID is meaningless to the host).",
+    "flags": [],
+    "examples": [{"invocation": "cat /srv/jailer/firecracker/myvm/root/firecracker.pid", "expected_output": "Host-side PID, e.g. 12345", "scenario": "Orchestrator tracking jailed VMM lifecycle"}],
+    "source_ids": ["fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.jailer.cmd.curl-via-jailed-socket",
+    "command": "curl --unix-socket <chroot>/run/firecracker/api.sock http://localhost/...",
+    "purpose": "Communicate with a jailed Firecracker — the API socket lives INSIDE the chroot tree. Orchestrator must use the absolute host path to the socket.",
+    "flags": [],
+    "examples": [{"invocation": "curl --unix-socket /srv/jailer/firecracker/myvm/root/run/firecracker/api.sock http://localhost/", "expected_output": "200 InstanceInfo", "scenario": "Health-check a jailed microVM"}],
+    "source_ids": ["fc-docs-jailer", "fc-swagger-spec"]
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.user-memory",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_USER_MEMORY",
+    "type": "bool",
+    "default_value": "1",
+    "description": "Userspace can supply guest memory regions via KVM_SET_USER_MEMORY_REGION. Always present on modern kernels. Firecracker hard-requires this — without it there's no way to map guest RAM.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.user-memory2",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_USER_MEMORY2",
+    "type": "bool",
+    "default_value": "0",
+    "description": "Extended memory-region API supporting guest_memfd-backed regions for confidential VMs. Optional; Firecracker uses standard KVM_SET_USER_MEMORY_REGION today.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.irqchip",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_IRQCHIP",
+    "type": "bool",
+    "default_value": "1",
+    "description": "In-kernel IRQ controller (PIC/IOAPIC on x86). Firecracker hard-requires this — userspace irqchip would push irq emulation cost back into VM exits.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.ioeventfd",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_IOEVENTFD",
+    "type": "bool",
+    "default_value": "1",
+    "description": "Bind eventfd to MMIO/PIO write — short-circuits VirtIO doorbell exits. Required for low-overhead VirtIO.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.irqfd",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_IRQFD",
+    "type": "bool",
+    "default_value": "1",
+    "description": "Bind eventfd to GSI for in-kernel IRQ raise. Required for low-overhead VirtIO interrupt delivery.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.signal-msi",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_SIGNAL_MSI",
+    "type": "bool",
+    "default_value": "1",
+    "description": "Enables KVM_SIGNAL_MSI for direct MSI injection bypassing the routing table. Used by Firecracker for one-shot interrupts.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.tsc-control",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_TSC_CONTROL",
+    "type": "bool",
+    "default_value": "varies",
+    "description": "Lets userspace set the guest TSC frequency. Required for portable snapshots across hosts with different TSC frequencies. Snapshot restore on a host without this fails if the recorded TSC differs.",
+    "source_ids": ["kvm-api", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.xsave2",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_XSAVE2",
+    "type": "u32",
+    "default_value": "size of xsave area",
+    "description": "Returns the size (bytes) of the dynamic XSAVE buffer for KVM_GET_XSAVE2 / KVM_SET_XSAVE2. Required for AVX-512 / AMX state. Firecracker queries this once at vCPU init.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.nr-vcpus",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_NR_VCPUS",
+    "type": "u32",
+    "default_value": "varies (typically 288 on modern x86)",
+    "description": "Recommended max vCPUs per VM. Firecracker caps user-requested vcpu_count at this value. (KVM_CAP_MAX_VCPUS is the hard limit.)",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.max-vcpus",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_MAX_VCPUS",
+    "type": "u32",
+    "default_value": "varies (typically 1024)",
+    "description": "Hard maximum vCPUs per VM. Firecracker's machine_config caps vcpu_count at min(this, 32) per its design constraints.",
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.set-tss-addr",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_SET_TSS_ADDR",
+    "type": "bool",
+    "default_value": "1 (Intel x86)",
+    "description": "Required by Intel VT-x for its TSS area. Firecracker calls KVM_SET_TSS_ADDR(0xfffbd000) at VM init. Absent on AMD-only kernels (AMD doesn't need TSS area).",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.guest-debug-hw-bps",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_GUEST_DEBUG_HW_BPS",
+    "type": "u32",
+    "default_value": "4 (x86)",
+    "description": "Number of hardware breakpoints supported via KVM_SET_GUEST_DEBUG. The GDB stub queries this to know the breakpoint budget.",
+    "source_ids": ["kvm-api", "fc-docs-getting-started"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.dirty-log-ring",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_DIRTY_LOG_RING",
+    "type": "u32",
+    "default_value": "ring size",
+    "description": "Per-vCPU ring buffer of dirtied page indices — alternative to KVM_GET_DIRTY_LOG bitmap. Lower latency for sparse-write workloads. Optional; Firecracker uses the bitmap path by default.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.manual-dirty-log-protect2",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2",
+    "type": "bool",
+    "default_value": "1",
+    "description": "Decouples dirty-log read from write-protect (no auto-clear on KVM_GET_DIRTY_LOG). Required for the two-phase dirty tracking pattern (read, persist, then KVM_CLEAR_DIRTY_LOG).",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.x86-disable-exits",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_X86_DISABLE_EXITS",
+    "type": "bitmask",
+    "default_value": "0",
+    "description": "x86-only. Lets userspace ask KVM not to take exits for HLT/MWAIT/PAUSE/CSTATE — the guest's wait instructions are passed to the host CPU directly. Used for latency-sensitive workloads. Firecracker can opt in via the cpu-template configuration.",
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cfg.kvm-cap.arm-vm-ipa-size",
+    "scope": "kvm-capability",
+    "key": "KVM_CAP_ARM_VM_IPA_SIZE",
+    "type": "u32 (bits)",
+    "default_value": "40",
+    "description": "ARM-only. Max guest physical address space size in bits. Firecracker encodes this into the VM type when calling KVM_CREATE_VM on aarch64.",
+    "source_ids": ["kvm-api"]
+  }
+]

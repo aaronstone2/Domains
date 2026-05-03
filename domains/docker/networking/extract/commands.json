@@ -1,0 +1,163 @@
+[
+  {
+    "id":"docker.networking.cmd.network-create",
+    "command":"docker network create [OPTIONS] NETWORK",
+    "purpose":"Create a Docker network. Default driver is `bridge`. For multi-host: `--driver overlay` (Swarm required). Driver-specific options via `--opt key=val` (repeatable).",
+    "flags":[
+      {"name":"-d, --driver","value":"<driver>","doc":"Network driver: bridge|host|overlay|ipvlan|macvlan|none|<plugin>. Default `bridge`."},
+      {"name":"--subnet","value":"<CIDR>","doc":"IPv4 or IPv6 subnet (repeatable, max one of each family per network)."},
+      {"name":"--ip-range","value":"<CIDR>","doc":"Sub-range of --subnet from which to auto-assign container IPs."},
+      {"name":"--gateway","value":"<IP>","doc":"Gateway IP (default: first usable in subnet)."},
+      {"name":"--aux-address","value":"<key>=<IP>","doc":"Reserve specific IPs (won't be auto-assigned). Repeatable."},
+      {"name":"--ipv6","value":null,"doc":"Enable IPv6 on this network."},
+      {"name":"--ipv4","value":"true|false","doc":"Enable/disable IPv4 (default true). Set false for IPv6-only network."},
+      {"name":"--ipam-driver","value":"<driver>","doc":"IP-address-management driver (default `default`)."},
+      {"name":"--ipam-opt","value":"<key>=<val>","doc":"IPAM driver-specific option. Repeatable."},
+      {"name":"-o, --opt","value":"<key>=<val>","doc":"Driver-specific option. Repeatable. e.g. `-o com.docker.network.bridge.name=mybr0` for bridge driver."},
+      {"name":"--scope","value":"local|swarm","doc":"Control network scope (default per-driver: bridge=local, overlay=swarm)."},
+      {"name":"--attachable","value":null,"doc":"Allow standalone containers to attach (overlay-specific). Without this, only Swarm services can attach."},
+      {"name":"--internal","value":null,"doc":"Restrict external access — no NAT/MASQUERADE; isolated cluster-internal network."},
+      {"name":"--ingress","value":null,"doc":"Create the swarm routing-mesh ingress network."},
+      {"name":"--config-from","value":"<network>","doc":"Copy IPAM/options from this config-only network."},
+      {"name":"--config-only","value":null,"doc":"Create a config-only network (template; not directly usable)."},
+      {"name":"--label","value":"<key>=<val>","doc":"Set metadata. Repeatable."}
+    ],
+    "examples":[
+      {"invocation":"docker network create my-net","expected_output":"<network id>","scenario":"create a default user-defined bridge network with auto-picked subnet"},
+      {"invocation":"docker network create -d bridge --subnet 10.20.0.0/24 --gateway 10.20.0.1 -o com.docker.network.driver.mtu=1450 corp-net","expected_output":"<network id>","scenario":"pin subnet + lower MTU for VPN-tunneled host"},
+      {"invocation":"docker network create -d overlay --attachable my-overlay","expected_output":"<network id>","scenario":"multi-host network attachable by both Swarm services and standalone containers"},
+      {"invocation":"docker network create -d ipvlan --subnet=192.168.1.0/24 --gateway=192.168.1.1 -o ipvlan_mode=l2 -o parent=eth0 db_net","expected_output":"<network id>","scenario":"ipvlan L2 network on parent NIC eth0"}
+    ],
+    "source_ids":["docker-cli-network-create","docker-docs-network-bridge","docker-docs-network-overlay","docker-docs-network-ipvlan","docker-docs-network-macvlan"]
+  },
+  {
+    "id":"docker.networking.cmd.network-inspect",
+    "command":"docker network inspect [OPTIONS] NETWORK [NETWORK...]",
+    "purpose":"JSON dump of network metadata: driver, scope, IPAM config, attached containers (with their endpoints, IPs, MACs), driver-specific options, swarm Peers (overlay), Services (overlay+swarm verbose).",
+    "flags":[
+      {"name":"-f, --format","value":"json|<go-template>","doc":"Custom output format. `--format json` for machine consumption."},
+      {"name":"-v, --verbose","value":null,"doc":"Verbose output for diagnostics. Overlay+swarm: shows service VIPs, port mappings, task IPs, host IPs."}
+    ],
+    "examples":[
+      {"invocation":"docker network inspect bridge","expected_output":"JSON of default bridge network with attached containers + their IPs/MACs","scenario":"see who's on the default bridge"},
+      {"invocation":"docker network inspect my-net --format '{{json .IPAM.Config}}'","expected_output":"[{\"Subnet\":\"172.18.0.0/16\",\"Gateway\":\"172.18.0.1\"}]","scenario":"extract subnet+gateway for scripting"},
+      {"invocation":"docker network inspect --verbose ingress","expected_output":"swarm ingress overlay with Peers[] + Services[] + per-task IPs","scenario":"debug routing-mesh on a swarm node"}
+    ],
+    "source_ids":["docker-cli-network-inspect","docker-docs-network-bridge","docker-docs-network-overlay"]
+  },
+  {
+    "id":"docker.networking.cmd.network-ls",
+    "command":"docker network ls [OPTIONS]",
+    "purpose":"List Docker networks. Aliases: `docker network list`. Default columns: NETWORK ID, NAME, DRIVER, SCOPE.",
+    "flags":[
+      {"name":"-f, --filter","value":"<key>=<val>","doc":"Filter. Keys: dangling=true, driver=<name>, id=<id>, label=<key>[=<val>], name=<name>, scope=swarm|local, type=custom|builtin."},
+      {"name":"--format","value":"table|json|<go-template>","doc":"Output format."},
+      {"name":"--no-trunc","value":null,"doc":"Don't truncate IDs."},
+      {"name":"-q, --quiet","value":null,"doc":"Only show network IDs (good for `docker network rm $(docker network ls -q --filter dangling=true)`)."}
+    ],
+    "examples":[
+      {"invocation":"docker network ls","expected_output":"NETWORK ID  NAME      DRIVER  SCOPE  / bridge / host / none + user-defined","scenario":"survey what's defined"},
+      {"invocation":"docker network ls --filter driver=overlay --filter scope=swarm","expected_output":"only overlay swarm networks","scenario":"on a swarm node, see overlay networks"},
+      {"invocation":"docker network ls -q --filter dangling=true","expected_output":"network ids with no attached containers","scenario":"find networks safe to prune"}
+    ],
+    "source_ids":["docker-cli-network-create","docker-docs-network-bridge","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.networking.cmd.network-connect",
+    "command":"docker network connect [OPTIONS] NETWORK CONTAINER",
+    "purpose":"Attach a running container to an additional network. Adds a new endpoint with its own IP+MAC. The container can have static IP/alias on the new network.",
+    "flags":[
+      {"name":"--alias","value":"<name>","doc":"Network-scoped alias (DNS name). Repeatable."},
+      {"name":"--ip","value":"<ipv4>","doc":"Static IPv4 (network must have --subnet)."},
+      {"name":"--ip6","value":"<ipv6>","doc":"Static IPv6."},
+      {"name":"--link","value":"<container>:<alias>","doc":"Add a legacy link (default-bridge only). Repeatable."},
+      {"name":"--driver-opt","value":"<key>=<val>","doc":"Driver-specific endpoint option."}
+    ],
+    "examples":[
+      {"invocation":"docker network connect my-net my-app","expected_output":"(no output on success)","scenario":"add a running container to a second network on the fly"},
+      {"invocation":"docker network connect --ip 172.20.0.42 --alias api my-net my-app","expected_output":"","scenario":"pin IP and add DNS alias when joining"}
+    ],
+    "source_ids":["docker-docs-network-bridge","docker-cli-network-create","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.networking.cmd.network-disconnect",
+    "command":"docker network disconnect [OPTIONS] NETWORK CONTAINER",
+    "purpose":"Detach a container from a network. Removes its endpoint, frees the IP.",
+    "flags":[
+      {"name":"-f, --force","value":null,"doc":"Force-disconnect even if container is running and uses the network as default."}
+    ],
+    "examples":[
+      {"invocation":"docker network disconnect my-net my-app","expected_output":"","scenario":"remove a running container from a network without restarting"},
+      {"invocation":"docker network disconnect -f bridge my-app","expected_output":"","scenario":"force-detach from default bridge to enforce network isolation"}
+    ],
+    "source_ids":["docker-docs-network-bridge","docker-cli-network-create","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.networking.cmd.network-rm",
+    "command":"docker network rm NETWORK [NETWORK...]",
+    "purpose":"Remove one or more networks. Network must have no attached containers; disconnect them first.",
+    "flags":[
+      {"name":"-f, --force","value":null,"doc":"Don't error on non-existent networks. Doesn't force-disconnect attached containers — that still errors."}
+    ],
+    "examples":[
+      {"invocation":"docker network rm my-net","expected_output":"my-net","scenario":"remove an idle user-defined network"},
+      {"invocation":"docker network rm $(docker network ls -q --filter dangling=true)","expected_output":"<list of removed network ids>","scenario":"sweep stale dangling networks"}
+    ],
+    "source_ids":["docker-docs-network-bridge","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.networking.cmd.image-pull",
+    "command":"docker image pull [OPTIONS] NAME[:TAG|@DIGEST]",
+    "purpose":"Download an image from a registry. Aliases: `docker pull`. Default tag = `latest`. Pulling by digest pins to immutable bytes; pulling by tag may yield different bytes over time. Daemon-level concurrency from `max-concurrent-downloads`.",
+    "flags":[
+      {"name":"-a, --all-tags","value":null,"doc":"Download all tagged images in the repository."},
+      {"name":"--platform","value":"<os/arch[/variant]>","doc":"Pick a specific platform from a multi-arch index."},
+      {"name":"-q, --quiet","value":null,"doc":"Suppress progress output."}
+    ],
+    "examples":[
+      {"invocation":"docker pull nginx:1.27","expected_output":"layers downloaded; final 'Status: Downloaded newer image for nginx:1.27'","scenario":"normal tag-based pull"},
+      {"invocation":"docker pull --platform linux/arm64 nginx:1.27","expected_output":"pulls the arm64 manifest from the multi-arch index","scenario":"force ARM64 image on an x86_64 host"},
+      {"invocation":"docker pull ubuntu@sha256:2e863c44b718727c860746568e1d54afd13b2fa71b160f5cd9058fc436217b30","expected_output":"pulls exactly those bytes; output ends with the digest","scenario":"reproducible deploys via digest pin"}
+    ],
+    "source_ids":["docker-cli-image-pull","docker-docs-cli-dockerd"]
+  },
+  {
+    "id":"docker.networking.cmd.image-push",
+    "command":"docker image push [OPTIONS] NAME[:TAG]",
+    "purpose":"Upload an image to a registry. Aliases: `docker push`. Daemon-level concurrency from `max-concurrent-uploads`. Compresses layers before upload (progress bar shows uncompressed size). Killing the CLI terminates the push cleanly.",
+    "flags":[
+      {"name":"-a, --all-tags","value":null,"doc":"Push every tag of this repo."},
+      {"name":"--platform","value":"<os/arch[/variant]>","doc":"Push only this platform from the local image index. WARNING: image index won't be pushed; other manifests + attestations are dropped."},
+      {"name":"-q, --quiet","value":null,"doc":"Suppress progress output."}
+    ],
+    "examples":[
+      {"invocation":"docker push myreg.local:5000/myapp:1.0","expected_output":"layer-by-layer push; final '1.0: digest: sha256:... size: NNNN'","scenario":"normal push to private registry"},
+      {"invocation":"docker push --all-tags myreg.local:5000/myname/myimage","expected_output":"each tag pushed in turn; subsequent tags say 'Layer already exists'","scenario":"push every tag of an image after retagging"}
+    ],
+    "source_ids":["docker-cli-image-push","docker-docs-cli-dockerd"]
+  },
+  {
+    "id":"docker.networking.cmd.port",
+    "command":"docker port CONTAINER [PRIVATE_PORT[/PROTO]]",
+    "purpose":"Show port bindings for a container — `<container-port>/<proto> -> <host-ip>:<host-port>`. Especially useful with `-P` (random ephemeral host port) where you don't know the binding ahead of time.",
+    "flags":[],
+    "examples":[
+      {"invocation":"docker port my-app","expected_output":"80/tcp -> 0.0.0.0:8080\\n80/tcp -> [::]:8080","scenario":"see all bindings for a container"},
+      {"invocation":"docker port my-app 5000","expected_output":"127.0.0.1:49155","scenario":"resolve a -P-bound ephemeral host port for a specific container port"}
+    ],
+    "source_ids":["docker-docs-network-port-publishing","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.networking.cmd.network-prune",
+    "command":"docker network prune [OPTIONS]",
+    "purpose":"Remove networks not used by any containers. Cleans up iptables/bridge/route entries left behind by stale networks. (Domain-level prune is also catalogued under `docker.engine.cmd.network-prune`; networking-leaf row gives the network-debugging context.)",
+    "flags":[
+      {"name":"-f, --force","value":null,"doc":"Skip the confirmation prompt."},
+      {"name":"--filter","value":"<key>=<val>","doc":"Limit scope (e.g. `until=24h`, `label=<…>`)."}
+    ],
+    "examples":[
+      {"invocation":"docker network prune --filter until=24h -f","expected_output":"removes networks idle > 24h, no prompt","scenario":"after a Compose-heavy dev session leaves stale per-project networks"}
+    ],
+    "source_ids":["docker-docs-network-bridge","docker-docs-network-firewall","wsargent-docker-cheat-sheet"]
+  }
+]

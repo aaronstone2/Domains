@@ -1,0 +1,242 @@
+[
+  {
+    "id": "firecracker.kvm.kvm-subsystem",
+    "name": "KVM (Kernel-based Virtual Machine)",
+    "kind": "subsystem",
+    "description": "Linux kernel module exposing /dev/kvm; provides the hardware-virtualization primitives (VMX on Intel, SVM on AMD, EL2 on ARM) that Firecracker uses as its VMM substrate. Firecracker is a userspace VMM that talks to KVM via ioctls — KVM handles the heavy CPU/MMU virt; Firecracker handles devices, scheduling, and the API.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": ["kvm", "/dev/kvm"]
+  },
+  {
+    "id": "firecracker.kvm.system-fd",
+    "name": "KVM System fd",
+    "kind": "fd-class",
+    "description": "Handle obtained from open('/dev/kvm'). Used to issue system-level ioctls that affect the whole KVM subsystem (KVM_GET_API_VERSION, KVM_CHECK_EXTENSION, KVM_CREATE_VM, KVM_GET_VCPU_MMAP_SIZE, KVM_GET_MSR_INDEX_LIST). The first thing Firecracker opens at VMM init.",
+    "source_ids": ["kvm-api"],
+    "aliases": ["kvm fd"]
+  },
+  {
+    "id": "firecracker.kvm.vm-fd",
+    "name": "KVM VM fd",
+    "kind": "fd-class",
+    "description": "Handle returned by KVM_CREATE_VM on the system fd. Scopes ioctls to one virtual machine — memory layout, irqchip, MSI/IRQ routing, vCPU creation. VM ioctls must be issued from the same process (address space) that created the VM.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.vcpu-fd",
+    "name": "KVM vCPU fd",
+    "kind": "fd-class",
+    "description": "Handle returned by KVM_CREATE_VCPU on the VM fd. Scopes ioctls to a single virtual CPU — register state (regs/sregs/MSRs/CPUID/FPU/XSAVE), the KVM_RUN entry, LAPIC, MP state. vcpu ioctls should be issued from the thread that will run KVM_RUN; otherwise a thread-local cache may be flushed unnecessarily.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.device-fd",
+    "name": "KVM Device fd",
+    "kind": "fd-class",
+    "description": "Handle returned by KVM_CREATE_DEVICE. Scopes ioctls to in-kernel emulated devices (e.g. ARM GIC, PMU, vfio). Firecracker uses few in-kernel devices on x86 (most are VirtIO in userspace); on aarch64 the GIC is created via this path.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.kvm-run",
+    "name": "KVM_RUN main loop",
+    "kind": "feature",
+    "description": "The vCPU ioctl that enters the guest. Returns when the guest exits — to userspace via shared `kvm_run` mmap struct that carries the exit reason and any per-exit data (MMIO/PIO request, IRQ window, etc.). Firecracker runs one KVM_RUN main loop per vCPU thread; userspace handles the exit, resolves the I/O, and loops back into KVM_RUN.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": ["vcpu run loop"]
+  },
+  {
+    "id": "firecracker.kvm.kvm-run-mmap",
+    "name": "kvm_run shared structure",
+    "kind": "data-structure",
+    "description": "Memory-mapped region (size obtained via KVM_GET_VCPU_MMAP_SIZE) shared between userspace and the kernel for one vCPU. Carries `exit_reason`, per-exit unions (mmio, io, internal, fail_entry, hyperv, system_event), and request flags. Userspace mmaps it once at vCPU init; the kernel writes to it on every KVM_RUN return.",
+    "source_ids": ["kvm-api"],
+    "aliases": ["kvm_run struct"]
+  },
+  {
+    "id": "firecracker.kvm.exit-mmio",
+    "name": "KVM_EXIT_MMIO",
+    "kind": "vm-exit",
+    "description": "Guest accessed a memory range that wasn't backed by KVM_SET_USER_MEMORY_REGION. kvm_run.mmio carries phys_addr, len (1/2/4/8), data[8], is_write. Firecracker uses this to dispatch to its VirtIO device emulators (on aarch64 this is the primary device-MMIO transport; on x86 too for VirtIO-MMIO).",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.exit-io",
+    "name": "KVM_EXIT_IO",
+    "kind": "vm-exit",
+    "description": "Guest issued an I/O port instruction (in/out) on x86. kvm_run.io carries direction, size (1/2/4), port, count. Firecracker handles this for legacy serial (port 0x3f8), i8042 keyboard controller (0x60/0x64), and PIT/PIC ports — the minimal legacy device set.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": ["KVM_EXIT_PIO"]
+  },
+  {
+    "id": "firecracker.kvm.exit-shutdown",
+    "name": "KVM_EXIT_SHUTDOWN",
+    "kind": "vm-exit",
+    "description": "Guest issued an architectural reset (triple-fault on x86, PSCI SYSTEM_OFF on ARM). Firecracker treats this as terminal — emits InstanceShutdown via state machine and tears down the microVM.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.exit-fail-entry",
+    "name": "KVM_EXIT_FAIL_ENTRY",
+    "kind": "vm-exit",
+    "description": "VMX/SVM entry into the guest failed at the hardware-virt level. kvm_run.fail_entry carries hardware_entry_failure_reason and cpu (vCPU number). Common on nested-virt setups (firecracker-microvm/firecracker#668), corrupted vmcs state after botched snapshot restore, or unsupported CPU features.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.exit-internal-error",
+    "name": "KVM_EXIT_INTERNAL_ERROR",
+    "kind": "vm-exit",
+    "description": "KVM detected an unrecoverable internal inconsistency — emulation impossible, simul exception delivery, unexpected delivery_event. kvm_run.internal carries suberror code and ndata extra registers. Should never happen; if it does, the microVM is unsalvageable.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.exit-hlt",
+    "name": "KVM_EXIT_HLT",
+    "kind": "vm-exit",
+    "description": "Guest executed HLT in a state where it would block. KVM returns to userspace so it can decide what to do (typically Firecracker's vCPU thread blocks on a futex waiting for an interrupt).",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.exit-irq-window-open",
+    "name": "KVM_EXIT_IRQ_WINDOW_OPEN",
+    "kind": "vm-exit",
+    "description": "Guest interrupt-window is open and userspace had previously requested notification (kvm_run.request_interrupt_window=1). Firecracker uses this to deliver pending IRQs that couldn't be injected synchronously.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.exit-system-event",
+    "name": "KVM_EXIT_SYSTEM_EVENT",
+    "kind": "vm-exit",
+    "description": "Guest requested a system-level event — SHUTDOWN, RESET, CRASH, S2RAM, SEV_TERM, WAKEUP. kvm_run.system_event.type identifies which. Firecracker handles RESET (warm reset) and SHUTDOWN (terminal).",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.exit-debug",
+    "name": "KVM_EXIT_DEBUG",
+    "kind": "vm-exit",
+    "description": "Guest hit a debug exception — single-step or hardware breakpoint set via KVM_SET_GUEST_DEBUG. Used by `firecracker --gdb-socket` flow for in-guest debugging (see fc-docs-gdb-debugging).",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.user-memory-region",
+    "name": "User Memory Region",
+    "kind": "feature",
+    "description": "KVM's mechanism for mapping host userspace memory into guest physical address space. Each region: slot ID (max KVM_USER_MEM_SLOTS), guest_phys_addr, memory_size, userspace_addr, flags (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY | KVM_MEM_GUEST_MEMFD). Set via KVM_SET_USER_MEMORY_REGION (or _REGION2 for guest_memfd). Firecracker registers one large region for guest RAM at boot; snapshots replay the same regions on restore.",
+    "source_ids": ["kvm-api", "fc-docs-snapshot-support"],
+    "aliases": ["memory slot"]
+  },
+  {
+    "id": "firecracker.kvm.dirty-log",
+    "name": "Dirty Page Logging",
+    "kind": "feature",
+    "description": "Per-region bitmap of pages written by the guest since last query. Enabled by KVM_MEM_LOG_DIRTY_PAGES on a memory region; queried via KVM_GET_DIRTY_LOG. Backbone of incremental snapshots — Firecracker enables this when taking a diff snapshot to capture only modified pages since the last full.",
+    "source_ids": ["kvm-api", "fc-docs-snapshot-support"],
+    "aliases": ["dirty bitmap"]
+  },
+  {
+    "id": "firecracker.kvm.in-kernel-irqchip",
+    "name": "In-kernel IRQchip",
+    "kind": "feature",
+    "description": "KVM emulates the IRQ controllers (PIC/IOAPIC on x86, GIC on ARM) inside the kernel rather than in userspace. Created via KVM_CREATE_IRQCHIP (x86) or KVM_CREATE_DEVICE with KVM_DEV_TYPE_ARM_VGIC_V3 (ARM). Firecracker requires this for low-latency interrupt delivery; switching to userspace irqchip would dramatically increase VM-exit count.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": ["KVM_CAP_IRQCHIP"]
+  },
+  {
+    "id": "firecracker.kvm.gsi-routing",
+    "name": "GSI Routing Table",
+    "kind": "feature",
+    "description": "Maps Global System Interrupts (GSIs) to in-kernel IRQ-line / MSI / hypercall destinations. Set via KVM_SET_GSI_ROUTING; entries are KVM_IRQ_ROUTING_IRQCHIP / _MSI / _HV_SINT. Firecracker programs MSI routes for VirtIO devices to deliver interrupts directly to vCPUs without userspace involvement.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.irqfd",
+    "name": "irqfd",
+    "kind": "feature",
+    "description": "eventfd registered with KVM_IRQFD that, when written, raises a guest IRQ on a configured GSI. Lets userspace devices signal interrupts without the cost of a vCPU ioctl per event. Firecracker uses irqfd extensively for VirtIO ring-event-to-IRQ delivery.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.ioeventfd",
+    "name": "ioeventfd",
+    "kind": "feature",
+    "description": "eventfd registered with KVM_IOEVENTFD that signals when the guest writes a specific value to a specific I/O port or MMIO address. Lets KVM short-circuit notification of VirtIO doorbell writes — the guest write is consumed in-kernel and the eventfd is signaled, bypassing userspace until the device thread is ready.",
+    "source_ids": ["kvm-api", "fc-docs-design"],
+    "aliases": ["doorbell"]
+  },
+  {
+    "id": "firecracker.kvm.cpuid-control",
+    "name": "Guest CPUID control",
+    "kind": "feature",
+    "description": "KVM_SET_CPUID2 lets userspace specify the CPUID leaves the guest sees. Firecracker uses CPU templates (T2, T2A, T2CL, T2S, etc.) to mask features for live-migration-safety across host CPU generations. Mismatched CPUID between snapshot-source and -target hosts causes restore to fail.",
+    "source_ids": ["kvm-api", "fc-docs-cpu-templates"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.msr-control",
+    "name": "Guest MSR control",
+    "kind": "feature",
+    "description": "KVM_GET_MSRS / KVM_SET_MSRS save and restore the guest's Model-Specific Registers. Snapshot/restore uses these to checkpoint per-vCPU state. KVM_GET_MSR_INDEX_LIST enumerates which MSRs the host KVM supports — Firecracker filters out unsupported MSRs to make CPU-template snapshots portable.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.xsave-state",
+    "name": "XSAVE state",
+    "kind": "feature",
+    "description": "Extended state (FPU, SSE, AVX, AVX-512, etc.) saved via KVM_GET_XSAVE2 (or KVM_GET_XSAVE for legacy fixed-size). Per-vCPU; included in snapshots. Size depends on enabled XCRs and supported features — KVM_CHECK_EXTENSION(KVM_CAP_XSAVE2) returns the dynamic size.",
+    "source_ids": ["kvm-api"],
+    "aliases": ["FPU state"]
+  },
+  {
+    "id": "firecracker.kvm.lapic-state",
+    "name": "LAPIC state",
+    "kind": "feature",
+    "description": "Per-vCPU Local APIC register file (1 KiB), saved via KVM_GET_LAPIC and restored via KVM_SET_LAPIC. Required for snapshot consistency — pending interrupts and timer state live here.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.mp-state",
+    "name": "vCPU MP State",
+    "kind": "feature",
+    "description": "Multiprocessing state of a vCPU: RUNNABLE, UNINITIALIZED, INIT_RECEIVED, HALTED, SIPI_RECEIVED, STOPPED, CHECK_STOP, OPERATING, LOAD. Set/get via KVM_SET_MP_STATE / KVM_GET_MP_STATE. Snapshots restore this so a halted vCPU stays halted on resume.",
+    "source_ids": ["kvm-api"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.kvm-clock",
+    "name": "kvm-clock",
+    "kind": "clock-source",
+    "description": "Paravirtualized clock source the guest sees as kvm-clock. Backed by host monotonic clock; survives vCPU migration between host CPUs. Default for Linux guests <5.10; ≥5.10 prefers TSC if stable.",
+    "source_ids": ["fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.tsc-control",
+    "name": "TSC control + KVM_CAP_TSC_CONTROL",
+    "kind": "feature",
+    "description": "Lets userspace set the guest's TSC frequency and offset. Required for snapshot restore on a host with a different TSC frequency. KVM_CAP_TSC_CONTROL must be present; KVM_SET_TSC_KHZ and KVM_GET_TSC_KHZ are the ioctls.",
+    "source_ids": ["kvm-api", "fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.kvm.virtio-mmio",
+    "name": "VirtIO over MMIO",
+    "kind": "feature",
+    "description": "VirtIO transport that uses memory-mapped I/O (vs PCI). Firecracker uses VirtIO-MMIO for all its emulated devices (block, net, vsock, balloon) — keeps the device model minimal vs the PCI alternative. Each device occupies a 4KiB MMIO region; doorbell writes trigger ioeventfds; interrupts via configured GSI/MSI.",
+    "source_ids": ["virtio-driver-api", "fc-docs-design"],
+    "aliases": []
+  }
+]

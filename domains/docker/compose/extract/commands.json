@@ -1,0 +1,182 @@
+[
+  {
+    "id":"docker.compose.cmd.up",
+    "command":"docker compose up [SERVICE...]",
+    "purpose":"Build, (re)create, start, and attach to containers for the project's services. The most-used compose subcommand. Builds images for services with a `build` block (unless `--pull always`). Brings up `depends_on` graph in topological order; honors `condition: service_healthy`. By default streams logs to stdout; `-d` for detached.",
+    "flags":[
+      {"name":"-d, --detach","value":null,"doc":"Detached mode. Returns immediately; check logs with `docker compose logs -f`."},
+      {"name":"--build","value":null,"doc":"Build images before starting (overrides cached images)."},
+      {"name":"--no-build","value":null,"doc":"Don't build, even if image is missing (errors out)."},
+      {"name":"--pull","value":"missing|always|never","doc":"When to pull images. Default `missing`."},
+      {"name":"--force-recreate","value":null,"doc":"Recreate containers even if config + image unchanged."},
+      {"name":"--no-recreate","value":null,"doc":"If containers exist, don't recreate them."},
+      {"name":"--remove-orphans","value":null,"doc":"Remove containers for services no longer in compose file."},
+      {"name":"-V, --renew-anon-volumes","value":null,"doc":"Recreate anonymous volumes (default reuses)."},
+      {"name":"--scale","value":"<service>=<n>","doc":"Override deploy.replicas for one service. Repeatable."},
+      {"name":"--abort-on-container-exit","value":null,"doc":"Stop ALL containers when any one exits. Useful for run-once test stacks."},
+      {"name":"--abort-on-container-failure","value":null,"doc":"Stop on non-zero exit only."},
+      {"name":"--exit-code-from","value":"<service>","doc":"Return the exit code of the named service. Implies --abort-on-container-exit."},
+      {"name":"--attach","value":"<service>","doc":"Restrict log streaming to listed services. Repeatable."},
+      {"name":"--no-attach","value":"<service>","doc":"Don't stream logs from these services. Repeatable."},
+      {"name":"-t, --timeout","value":"<seconds>","doc":"Stop timeout in seconds before SIGKILL."},
+      {"name":"--wait","value":null,"doc":"Block until services are healthy/exited. Pairs with `--wait-timeout`."},
+      {"name":"--wait-timeout","value":"<seconds>","doc":"Max wait when --wait is set."},
+      {"name":"-w, --watch","value":null,"doc":"Run develop.watch rules — file watcher for sync/rebuild on change."},
+      {"name":"--menu","value":null,"doc":"Interactive controls (Compose v2.26+)."},
+      {"name":"--quiet-pull","value":null,"doc":"Pull silently."},
+      {"name":"--no-color","value":null,"doc":"No color in output."},
+      {"name":"--no-log-prefix","value":null,"doc":"Don't prefix log lines with the service name."},
+      {"name":"--no-deps","value":null,"doc":"Don't start linked services."},
+      {"name":"--profile","value":"<name>","doc":"Activate a profile. Repeatable."},
+      {"name":"--dry-run","value":null,"doc":"Print what would happen, change nothing."}
+    ],
+    "examples":[
+      {"invocation":"docker compose up","expected_output":"streams interleaved logs from all services with prefix `<service> | `","scenario":"foreground dev workflow"},
+      {"invocation":"docker compose up -d --build","expected_output":"builds, starts, returns","scenario":"deploy / rebuild + restart"},
+      {"invocation":"docker compose up --wait --wait-timeout 60","expected_output":"blocks until all services become healthy or exit 0; exit non-zero on timeout","scenario":"CI smoke-test where you need to know when the stack is ready"},
+      {"invocation":"docker compose up --watch","expected_output":"runs services + file-watcher; on file change, syncs/rebuilds per develop.watch[]","scenario":"hot-reload dev"}
+    ],
+    "source_ids":["docker-docs-compose-startup-order","compose-spec-05-services","compose-spec-develop","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.compose.cmd.down",
+    "command":"docker compose down [SERVICE...]",
+    "purpose":"Stop and remove containers, networks. Volumes preserved by default (use `-v` to also remove). Reverse-order shutdown of `depends_on` graph.",
+    "flags":[
+      {"name":"-v, --volumes","value":null,"doc":"Also remove named volumes declared in volumes section AND anonymous volumes attached to containers."},
+      {"name":"--rmi","value":"all|local","doc":"Remove images. `local` removes only images without a custom tag."},
+      {"name":"--remove-orphans","value":null,"doc":"Also remove containers for services not in the compose file."},
+      {"name":"-t, --timeout","value":"<seconds>","doc":"Grace period before SIGKILL."},
+      {"name":"--dry-run","value":null,"doc":"Print actions, change nothing."},
+      {"name":"--profile","value":"<name>","doc":"Activate a profile."}
+    ],
+    "examples":[
+      {"invocation":"docker compose down","expected_output":"containers stopped + removed; networks removed; named volumes preserved","scenario":"end of dev session"},
+      {"invocation":"docker compose down -v --rmi local","expected_output":"also removes named volumes + locally-built images","scenario":"full cleanup of a project's resources"},
+      {"invocation":"docker compose down --remove-orphans","expected_output":"sweeps containers from services that were removed from the compose file","scenario":"after refactoring services out"}
+    ],
+    "source_ids":["docker-docs-compose-startup-order","compose-spec-02-model","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.compose.cmd.ps",
+    "command":"docker compose ps [SERVICE...]",
+    "purpose":"List containers in the project. Default columns: NAME, IMAGE, COMMAND, SERVICE, CREATED, STATUS, PORTS. Filterable by service name.",
+    "flags":[
+      {"name":"-a, --all","value":null,"doc":"Show stopped containers too (default: only running)."},
+      {"name":"--services","value":null,"doc":"Print service names only (one per line)."},
+      {"name":"--filter","value":"<key>=<val>","doc":"Filter (status=running|exited|paused, source=...)."},
+      {"name":"--format","value":"table|json|<go-template>","doc":"Output format. `--format json` for tooling."},
+      {"name":"-q, --quiet","value":null,"doc":"Only container IDs."},
+      {"name":"--orphans","value":"true|false","doc":"Include orphan containers (services no longer in compose file)."},
+      {"name":"--status","value":"<state>","doc":"Filter by status: paused|restarting|removing|running|dead|created|exited."}
+    ],
+    "examples":[
+      {"invocation":"docker compose ps","expected_output":"table of running services","scenario":"quick status check"},
+      {"invocation":"docker compose ps --status exited --format json","expected_output":"JSON array of exited services in this project","scenario":"feed into a watchdog script"}
+    ],
+    "source_ids":["compose-spec-05-services","docker-docs-compose-startup-order","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.compose.cmd.logs",
+    "command":"docker compose logs [SERVICE...]",
+    "purpose":"Fetch + stream logs from project services. Multi-service streams are interleaved with a `<service> | ` prefix. Subset of services via positional args.",
+    "flags":[
+      {"name":"-f, --follow","value":null,"doc":"Stream new output."},
+      {"name":"--no-color","value":null,"doc":"No color in output."},
+      {"name":"--no-log-prefix","value":null,"doc":"Don't prefix lines with service name."},
+      {"name":"--since","value":"<timestamp|duration>","doc":"Show logs since RFC3339 / Unix / Go duration (`42m`)."},
+      {"name":"--until","value":"<timestamp|duration>","doc":"Show logs before."},
+      {"name":"-t, --timestamps","value":null,"doc":"Prepend RFC3339Nano timestamps."},
+      {"name":"--tail","value":"<n>|all","doc":"Lines from end of log."},
+      {"name":"-i, --index","value":"<n>","doc":"For replicated services, pick a specific replica's logs."}
+    ],
+    "examples":[
+      {"invocation":"docker compose logs -f web","expected_output":"streaming logs of `web` service only","scenario":"focused tail during deploy"},
+      {"invocation":"docker compose logs --since 5m | grep ERROR","expected_output":"errors in the last 5 minutes across all services","scenario":"recent error triage"}
+    ],
+    "source_ids":["compose-spec-05-services","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.compose.cmd.exec",
+    "command":"docker compose exec [OPTIONS] SERVICE COMMAND [ARG...]",
+    "purpose":"Execute a command in a RUNNING service container. Mirrors `docker exec`. Picks the first replica if multiple.",
+    "flags":[
+      {"name":"-d, --detach","value":null,"doc":"Detached mode."},
+      {"name":"-e, --env","value":"<KEY=VAL>","doc":"Set env. Repeatable."},
+      {"name":"-i, --interactive","value":"true|false","doc":"Keep STDIN open. Default true."},
+      {"name":"-T, --no-TTY","value":"true|false","doc":"Disable pseudo-TTY (default false). Set true in CI."},
+      {"name":"--privileged","value":null,"doc":"Extended privileges for the exec'd command."},
+      {"name":"-u, --user","value":"<uid|name>[:<gid|group>]","doc":"User to run as."},
+      {"name":"-w, --workdir","value":"<path>","doc":"Working dir."},
+      {"name":"--index","value":"<n>","doc":"Pick a specific replica by index."}
+    ],
+    "examples":[
+      {"invocation":"docker compose exec web sh","expected_output":"interactive shell in the web container","scenario":"poke at a running service"},
+      {"invocation":"docker compose exec -T db psql -U postgres","expected_output":"non-tty psql session — usable from a CI script","scenario":"piped psql query in CI"}
+    ],
+    "source_ids":["compose-spec-05-services","docker-docs-compose-startup-order","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.compose.cmd.run",
+    "command":"docker compose run [OPTIONS] SERVICE [COMMAND] [ARG...]",
+    "purpose":"Run a one-off container against a service definition. Doesn't reuse the service's running container — creates a new one each time. By default, also brings up its `depends_on` graph (so DB is up before the migration runs).",
+    "flags":[
+      {"name":"-d, --detach","value":null,"doc":"Detached."},
+      {"name":"--rm","value":null,"doc":"Remove the container after exit. Foot-gun: NOT default — `compose run` containers leak by default."},
+      {"name":"-e, --env","value":"<KEY=VAL>","doc":"Set env."},
+      {"name":"-i, --interactive","value":"true|false","doc":"Keep STDIN open."},
+      {"name":"-T, --no-TTY","value":"true|false","doc":"Disable TTY."},
+      {"name":"--name","value":"<name>","doc":"Override container name (default: `<project>-<service>-run-<random>`)."},
+      {"name":"-p, --publish","value":"<spec>","doc":"Override published ports (replaces service's `ports:`)."},
+      {"name":"--service-ports","value":null,"doc":"Use the service's defined ports (default: don't, to avoid conflicts with the running service)."},
+      {"name":"--use-aliases","value":null,"doc":"Use the service's network aliases (default: don't, since aliases would collide with the running service)."},
+      {"name":"--no-deps","value":null,"doc":"Don't start the depends_on graph."},
+      {"name":"--build","value":null,"doc":"Build the image before running."},
+      {"name":"-v, --volume","value":"<spec>","doc":"Add an extra volume mount."},
+      {"name":"-w, --workdir","value":"<path>","doc":"Working dir."},
+      {"name":"--entrypoint","value":"<cmd>","doc":"Override the service's entrypoint."},
+      {"name":"-u, --user","value":"<uid|name>[:<gid|group>]","doc":"User to run as."}
+    ],
+    "examples":[
+      {"invocation":"docker compose run --rm migrate","expected_output":"runs the `migrate` service one-shot, removes the container after","scenario":"DB migration job"},
+      {"invocation":"docker compose run --rm --entrypoint=sh web","expected_output":"shell inside a fresh web container — service's running container untouched","scenario":"debug a build / image issue without disturbing the live service"}
+    ],
+    "source_ids":["compose-spec-05-services","docker-docs-compose-startup-order","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.compose.cmd.build",
+    "command":"docker compose build [SERVICE...]",
+    "purpose":"Build images for services that have a `build` block. Reuses BuildKit. Subset by service name(s).",
+    "flags":[
+      {"name":"--no-cache","value":null,"doc":"Don't use cached layers."},
+      {"name":"--pull","value":null,"doc":"Always pull base images."},
+      {"name":"--push","value":null,"doc":"Push images after build."},
+      {"name":"--build-arg","value":"<key=val>","doc":"Override build args. Repeatable."},
+      {"name":"-q, --quiet","value":null,"doc":"Suppress build output."},
+      {"name":"--ssh","value":"<id>=<sock>","doc":"SSH agent socket / keys for build."},
+      {"name":"--memory, -m","value":"<bytes>","doc":"RAM limit for build."},
+      {"name":"--parallel","value":null,"doc":"Build images in parallel (default in modern Compose)."},
+      {"name":"--progress","value":"auto|tty|plain","doc":"Progress output mode."},
+      {"name":"--builder","value":"<name>","doc":"buildx builder to use."}
+    ],
+    "examples":[
+      {"invocation":"docker compose build","expected_output":"builds every service with a build block","scenario":"after Dockerfile changes"},
+      {"invocation":"docker compose build --no-cache --pull web","expected_output":"clean rebuild of `web` from latest base","scenario":"force-fresh build for a flaky cache"}
+    ],
+    "source_ids":["compose-spec-build","wsargent-docker-cheat-sheet"]
+  },
+  {
+    "id":"docker.compose.cmd.restart",
+    "command":"docker compose restart [SERVICE...]",
+    "purpose":"Restart service containers. Doesn't recreate — same container, just stop+start. For config changes that took effect on restart, use `up` instead (or with `--force-recreate`).",
+    "flags":[
+      {"name":"-t, --timeout","value":"<seconds>","doc":"Stop timeout before SIGKILL."},
+      {"name":"--no-deps","value":null,"doc":"Don't restart linked dependencies (default DOES restart on `depends_on.<svc>.restart: true`)."}
+    ],
+    "examples":[
+      {"invocation":"docker compose restart","expected_output":"stop + start every service","scenario":"recover from a brief problem without recreating containers"},
+      {"invocation":"docker compose restart db","expected_output":"`db` restarts; if `web` has `depends_on.db.restart: true`, web also restarts","scenario":"DB-config-change cascade"}
+    ],
+    "source_ids":["docker-docs-compose-startup-order","compose-spec-05-services","wsargent-docker-cheat-sheet"]
+  }
+]

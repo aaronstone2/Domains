@@ -1,0 +1,173 @@
+[
+  {
+    "id": "firecracker.vmm.cfg.cli.api-sock",
+    "scope": "firecracker-cli",
+    "key": "--api-sock",
+    "type": "string",
+    "default_value": "/tmp/firecracker.socket",
+    "description": "Path to the Unix Domain Socket for the API server. Under jailer, automatically remapped into the chroot.",
+    "source_ids": ["fc-docs-getting-started"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.id",
+    "scope": "firecracker-cli",
+    "key": "--id",
+    "type": "string (alphanumeric+hyphen)",
+    "default_value": "anonymous-instance",
+    "description": "MicroVM identifier. Surfaced in metrics and logs for orchestrator correlation.",
+    "source_ids": ["fc-docs-getting-started"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.config-file",
+    "scope": "firecracker-cli",
+    "key": "--config-file",
+    "type": "string (path)",
+    "default_value": null,
+    "description": "Pre-load a full VM config JSON. The microVM auto-starts after parsing — no API calls needed. Useful for headless / one-shot orchestrators.",
+    "source_ids": ["fc-repo-faq", "fc-docs-getting-started"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.no-api",
+    "scope": "firecracker-cli",
+    "key": "--no-api",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Disable the API server entirely. Only meaningful with --config-file. Saves resources and removes the API attack surface.",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.no-seccomp",
+    "scope": "firecracker-cli",
+    "key": "--no-seccomp",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Disable seccomp filters. DEVELOPMENT ONLY — production deployments MUST keep seccomp enabled. Pairs with --gdb-socket since GDB syscalls are blocked by default filter.",
+    "source_ids": ["fc-docs-seccomp"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.seccomp-filter",
+    "scope": "firecracker-cli",
+    "key": "--seccomp-filter",
+    "type": "string (path)",
+    "default_value": "embedded default",
+    "description": "Override the embedded seccomp filter with a custom seccompiler-bpf-compiled file. Use to permit additional syscalls (e.g., for custom build/debug; never for prod).",
+    "source_ids": ["fc-docs-seccomp", "fc-docs-seccompiler"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.boot-timer",
+    "scope": "firecracker-cli",
+    "key": "--boot-timer",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Emit a boot-timer metric on first guest jiffy. Useful for measuring the boot-time budget (target: ≤125 ms with serial console disabled).",
+    "source_ids": ["fc-docs-metrics"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.gdb-socket",
+    "scope": "firecracker-cli",
+    "key": "--gdb-socket",
+    "type": "string (path)",
+    "default_value": null,
+    "description": "Enable in-guest GDB stub on a Unix socket. Must be paired with KVM_SET_GUEST_DEBUG support. Typically requires --no-seccomp because the default filter blocks GDB-required syscalls.",
+    "source_ids": ["fc-docs-getting-started"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.http-api-max-payload-size",
+    "scope": "firecracker-cli",
+    "key": "--http-api-max-payload-size",
+    "type": "u32 (bytes)",
+    "default_value": "51200 (50 KiB)",
+    "description": "Maximum API request body size. Raise for orchestrators that PUT large CPU templates or MMDS payloads.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.cli.mmds-size-limit",
+    "scope": "firecracker-cli",
+    "key": "--mmds-size-limit",
+    "type": "u32 (bytes)",
+    "default_value": "51200 (50 KiB)",
+    "description": "Maximum MMDS payload size. Distinct from --http-api-max-payload-size; this caps how large the MMDS data store can grow.",
+    "source_ids": ["fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.kernel.config-ptp-1588-clock-kvm",
+    "scope": "guest-kernel",
+    "key": "CONFIG_PTP_1588_CLOCK_KVM",
+    "type": "bool",
+    "default_value": "y (recommended)",
+    "description": "Enables KVM PTP support in the guest kernel — exposes /dev/ptp0 driven by host clock via cheap paravirt calls. Recommended NTP source at scale (avoids per-guest network NTP traffic).",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.kernel.boot-arg-reboot-k",
+    "scope": "boot-args",
+    "key": "reboot=k",
+    "type": "kernel-cmdline-flag",
+    "default_value": "set in default boot_args",
+    "description": "Tells Linux to reset CPUs via the i8042 keyboard controller reset line on reboot. Firecracker emulates i8042 just enough to detect this and terminate the process. Required for `reboot` inside x86 guests to cleanly tear down the microVM.",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.kernel.boot-arg-panic-1",
+    "scope": "boot-args",
+    "key": "panic=1",
+    "type": "kernel-cmdline-flag",
+    "default_value": "set in default boot_args",
+    "description": "On panic, immediately reboot (and thus, via reboot=k, terminate Firecracker). Avoids zombie microVMs after guest kernel panic.",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.kernel.boot-arg-pci-off",
+    "scope": "boot-args",
+    "key": "pci=off",
+    "type": "kernel-cmdline-flag",
+    "default_value": "set in default boot_args",
+    "description": "Skip PCI bus probing — Firecracker has no PCI bus, so this saves boot time. Default in Firecracker's recommended boot_args.",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.kernel.boot-arg-console-ttyS0",
+    "scope": "boot-args",
+    "key": "console=ttyS0",
+    "type": "kernel-cmdline-flag",
+    "default_value": "NOT set by default (perf)",
+    "description": "Routes guest kernel printks to the serial console. NOT in default boot_args because console output adds significant boot time. Add for debugging — production should leave off.",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.host-sysctl.vm-min-free-kbytes",
+    "scope": "host-sysctl",
+    "key": "vm.min_free_kbytes",
+    "type": "int (KiB)",
+    "default_value": "kernel-default (often ~64-128 MiB)",
+    "description": "Min free memory the kernel keeps reserved. Raise (e.g., 256 MiB) on Firecracker hosts to combat memory fragmentation that causes 'fc_vmm: page allocation failure' errors during high-rate microVM creation.",
+    "source_ids": ["fc-repo-faq", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.host-sysctl.vm-nr-hugepages",
+    "scope": "host-sysctl",
+    "key": "vm.nr_hugepages",
+    "type": "int",
+    "default_value": "0",
+    "description": "Number of 2MiB hugepages to reserve. Required if any microVM uses machine-config.huge_pages=2M. Reserve ahead of microVM scheduling to avoid mid-boot allocation failures.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.host-fd-ulimit.nofile",
+    "scope": "host-ulimit",
+    "key": "nofile",
+    "type": "int",
+    "default_value": "1024 (typical)",
+    "description": "Per-process FD limit. Each Firecracker holds 20+ FDs (eventfd-heavy). For dense hosts running many microVMs in one process tree, raise via /etc/security/limits.conf or systemd LimitNOFILE.",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.cfg.machine-config.cpu-template-static",
+    "scope": "machine-config",
+    "key": "cpu_template (static enum)",
+    "type": "enum",
+    "default_value": "None",
+    "description": "Static CPU template options: T2, T2A, T2CL, T2S, V1N1, C3. T2 is Intel-broad; T2A AMD-broad; T2CL Cascade Lake-baseline; T2S Skylake-baseline; V1N1 Graviton2-class; C3 Cascade Lake conservative. DEPRECATED in favor of PUT /cpu-config custom templates.",
+    "source_ids": ["fc-docs-cpu-templates"]
+  }
+]

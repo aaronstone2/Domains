@@ -1,0 +1,58 @@
+[
+  {
+    "id": "firecracker.networking.cmd.ip-tuntap-add-tap",
+    "command": "ip tuntap add <name> mode tap",
+    "purpose": "Create a Linux TAP device for Firecracker to attach to. The TAP must exist on the host before PUT /network-interfaces references it.",
+    "flags": [{"name": "<name>", "value": "string", "doc": "Interface name (e.g. tap0)."}, {"name": "mode tap", "value": null, "doc": "Required — Firecracker uses TAP, not TUN."}],
+    "examples": [{"invocation": "sudo ip tuntap add tap0 mode tap; sudo ip addr add 172.16.0.1/30 dev tap0; sudo ip link set tap0 up", "expected_output": "tap0 created, IP-assigned, up", "scenario": "Pre-microVM TAP setup"}],
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cmd.enable-ip-forward",
+    "command": "echo 1 > /proc/sys/net/ipv4/ip_forward",
+    "purpose": "Enable IPv4 forwarding on the host. Required for any NAT-based or bridge-based microVM routing.",
+    "flags": [],
+    "examples": [{"invocation": "echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward", "expected_output": "1", "scenario": "Pre-microVM host networking init"}],
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cmd.nft-masquerade-rule",
+    "command": "nft add rule <table> postrouting ip saddr <guest-ip> oifname <host-iface> counter masquerade",
+    "purpose": "Create the NAT masquerade rule that rewrites guest packets' source IP to the host's egress interface IP. The kernel's outbound side of the NAT-routing pattern.",
+    "flags": [],
+    "examples": [{"invocation": "sudo nft add table firecracker; sudo nft 'add chain firecracker postrouting { type nat hook postrouting priority srcnat; policy accept; }'; sudo nft add rule firecracker postrouting ip saddr 172.16.0.2 oifname eth0 counter masquerade", "expected_output": "Rule installed; outbound guest traffic gets host's source IP", "scenario": "NAT-based microVM internet access"}],
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cmd.iptables-nft-masquerade",
+    "command": "iptables-nft -t nat -A POSTROUTING -o <host-iface> -s <guest-ip> -j MASQUERADE",
+    "purpose": "Equivalent to the nft masquerade rule via the iptables-nft compat layer. Use only if your tooling/familiarity prefers iptables syntax (nft is recommended for production).",
+    "flags": [],
+    "examples": [{"invocation": "sudo iptables-nft -t nat -A POSTROUTING -o eth0 -s 172.16.0.2 -j MASQUERADE; sudo iptables-nft -A FORWARD -i tap0 -o eth0 -j ACCEPT", "expected_output": "NAT + forward-accept rules installed", "scenario": "NAT setup via iptables-nft"}],
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cmd.guest-ip-route-add-default",
+    "command": "ip route add default via <tap-ip> dev eth0 (in guest)",
+    "purpose": "Inside the guest, configure the default route through the TAP IP. Combined with `ip addr add <guest-ip>/30 dev eth0` and `ip link set eth0 up`, gives the guest egress.",
+    "flags": [],
+    "examples": [{"invocation": "ip addr add 172.16.0.2/30 dev eth0; ip link set eth0 up; ip route add default via 172.16.0.1 dev eth0", "expected_output": "Guest can route to internet (assuming host has it)", "scenario": "Guest-side networking init (typically in init script)"}],
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.cmd.curl-mmds-token-mint",
+    "command": "curl -X PUT http://<mmds-ip>/latest/api/token -H 'X-metadata-token-ttl-seconds: <N>'",
+    "purpose": "From INSIDE the guest, mint an MMDS V2 session token. TTL between 1 and 21600 seconds. Returns the token as plaintext body.",
+    "flags": [{"name": "X-metadata-token-ttl-seconds", "value": "1..21600", "doc": "Token lifetime in seconds. Required."}, {"name": "X-aws-ec2-metadata-token-ttl-seconds", "value": "1..21600", "doc": "Alternative header name (EC2 IMDSv2 alias)."}],
+    "examples": [{"invocation": "TOKEN=$(curl -X PUT http://169.254.169.254/latest/api/token -H 'X-metadata-token-ttl-seconds: 21600')", "expected_output": "Plaintext token; subsequent GETs use X-metadata-token: $TOKEN", "scenario": "Guest agent reading MMDS V2"}],
+    "source_ids": ["fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.networking.cmd.curl-mmds-get",
+    "command": "curl -H 'X-metadata-token: <token>' http://<mmds-ip>/<path>",
+    "purpose": "From INSIDE the guest, fetch an MMDS resource. Path is a JSON Pointer into the MMDS data store.",
+    "flags": [{"name": "Accept", "value": "application/json | plain/text", "doc": "Output format selector. plain/text returns AWS IMDS format."}, {"name": "X-metadata-token", "value": "<token>", "doc": "Required for V2; ignored for V1."}],
+    "examples": [{"invocation": "curl -H 'X-metadata-token: $TOKEN' -H 'Accept: application/json' http://169.254.169.254/latest/meta-data", "expected_output": "JSON object with metadata", "scenario": "Guest reads instance metadata"}],
+    "source_ids": ["fc-docs-mmds-user-guide"]
+  }
+]

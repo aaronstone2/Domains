@@ -1,0 +1,370 @@
+[
+  {
+    "id": "firecracker.api.cmd.describe-instance",
+    "command": "GET /",
+    "purpose": "Returns instance information: id, state (Not started|Running|Paused), vmm_version, app_name. The minimum-impact health check.",
+    "flags": [],
+    "examples": [{"invocation": "curl --unix-socket /tmp/firecracker.socket http://localhost/", "expected_output": "200 with InstanceInfo JSON", "scenario": "Health probe"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.create-sync-action",
+    "command": "PUT /actions",
+    "purpose": "Trigger a synchronous action: InstanceStart (boot the configured machine), SendCtrlAltDel (graceful guest shutdown via keyboard reset).",
+    "flags": [{"name": "action_type", "value": "InstanceStart|SendCtrlAltDel|FlushMetrics", "doc": "Required. The action to perform."}],
+    "examples": [{"invocation": "curl -X PUT --unix-socket /tmp/fc.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'", "expected_output": "204 on success; 400 if pre-conditions unmet (e.g. no boot-source set)", "scenario": "Boot the configured microVM"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-guest-boot-source",
+    "command": "PUT /boot-source",
+    "purpose": "Set kernel image, boot args, and (optional) initrd path. Pre-boot only.",
+    "flags": [
+      {"name": "kernel_image_path", "value": "string (host path)", "doc": "Uncompressed Linux ELF/PE kernel."},
+      {"name": "boot_args", "value": "string", "doc": "Kernel command line. Default: 'reboot=k panic=1 pci=off nomodule'."},
+      {"name": "initrd_path", "value": "string|null", "doc": "Optional initrd."}
+    ],
+    "examples": [{"invocation": "PUT /boot-source {\"kernel_image_path\":\"/var/vmlinux\", \"boot_args\":\"console=ttyS0 reboot=k panic=1 pci=off\"}", "expected_output": "204", "scenario": "Configure kernel pre-boot"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-rootfs-kernel"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-machine-config",
+    "command": "PUT /machine-config",
+    "purpose": "Set vCPU count, memory size, hyperthreading, dirty-page tracking. Pre-boot only.",
+    "flags": [
+      {"name": "vcpu_count", "value": "u8 (1..32)", "doc": "Number of vCPU threads."},
+      {"name": "mem_size_mib", "value": "u64", "doc": "Guest RAM in MiB."},
+      {"name": "smt", "value": "bool", "doc": "Intel hyperthreading exposure (x86 only)."},
+      {"name": "track_dirty_pages", "value": "bool", "doc": "Enable KVM_MEM_LOG_DIRTY_PAGES on the guest RAM region; required for diff snapshots."},
+      {"name": "huge_pages", "value": "None|2M", "doc": "Back guest RAM with hugepages."}
+    ],
+    "examples": [{"invocation": "PUT /machine-config {\"vcpu_count\":2, \"mem_size_mib\":1024, \"smt\":false, \"track_dirty_pages\":true}", "expected_output": "204", "scenario": "Pre-boot machine sizing"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-machine-config",
+    "command": "PATCH /machine-config",
+    "purpose": "Update a subset of machine-config fields. Pre-boot only.",
+    "flags": [{"name": "any field of /machine-config", "value": "subset", "doc": "Only included fields are updated."}],
+    "examples": [{"invocation": "PATCH /machine-config {\"mem_size_mib\":2048}", "expected_output": "204", "scenario": "Resize RAM before boot"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.get-machine-config",
+    "command": "GET /machine-config",
+    "purpose": "Return the current machine configuration.",
+    "flags": [],
+    "examples": [{"invocation": "GET /machine-config", "expected_output": "200 with MachineConfiguration JSON", "scenario": "Pre-boot config check"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-cpu-configuration",
+    "command": "PUT /cpu-config",
+    "purpose": "Apply a custom CPU template — explicit CPUID/MSR/Aarch64-register modifiers. Replaces the legacy machine_config.cpu_template enum. Pre-boot only.",
+    "flags": [
+      {"name": "cpuid_modifiers", "value": "array of leaves", "doc": "x86: each entry has leaf, subleaf, register modifiers."},
+      {"name": "msr_modifiers", "value": "array", "doc": "x86: MSR addr + bitmap modifiers."},
+      {"name": "reg_modifiers", "value": "array", "doc": "Aarch64: register modifiers."}
+    ],
+    "examples": [{"invocation": "PUT /cpu-config @t2-template.json", "expected_output": "204; 400 if template is incompatible with host", "scenario": "Apply T2 CPU template for snapshot portability"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-cpu-templates"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-guest-drive-by-id",
+    "command": "PUT /drives/{drive_id}",
+    "purpose": "Attach or replace a block device. Pre-boot for full PUT; runtime PATCH only updates a subset.",
+    "flags": [
+      {"name": "drive_id", "value": "string", "doc": "Path parameter."},
+      {"name": "path_on_host", "value": "string", "doc": "Backing file."},
+      {"name": "is_root_device", "value": "bool", "doc": "Mark as the boot disk."},
+      {"name": "is_read_only", "value": "bool", "doc": "Block writes from the guest."},
+      {"name": "cache_type", "value": "Unsafe|Writeback", "doc": "Unsafe = no flush; Writeback = honor flush. Writeback recommended for data integrity."},
+      {"name": "io_engine", "value": "Sync|Async", "doc": "Async uses io_uring (kernel 5.10+)."},
+      {"name": "rate_limiter", "value": "RateLimiter object", "doc": "Token-bucket bandwidth + ops limits."},
+      {"name": "socket", "value": "string|null", "doc": "vhost-user socket path; conflicts with path_on_host."}
+    ],
+    "examples": [{"invocation": "PUT /drives/rootfs {\"drive_id\":\"rootfs\",\"path_on_host\":\"/var/rootfs.ext4\",\"is_root_device\":true,\"is_read_only\":false,\"cache_type\":\"Writeback\"}", "expected_output": "204; 400 if file missing", "scenario": "Attach root filesystem"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-guest-drive-by-id",
+    "command": "PATCH /drives/{drive_id}",
+    "purpose": "Update a drive at runtime — swap backing file (path_on_host) or change rate limiters. Other fields are immutable post-boot.",
+    "flags": [
+      {"name": "path_on_host", "value": "string", "doc": "Hot-swap the backing file. Guest sees this on next I/O."},
+      {"name": "rate_limiter", "value": "RateLimiter|null", "doc": "Replace or remove rate limit. null clears."}
+    ],
+    "examples": [{"invocation": "PATCH /drives/rootfs {\"drive_id\":\"rootfs\",\"rate_limiter\":{\"bandwidth\":{\"size\":10485760,\"refill_time\":1000}}}", "expected_output": "204", "scenario": "Throttle a runaway guest at runtime"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-guest-network-interface-by-id",
+    "command": "PUT /network-interfaces/{iface_id}",
+    "purpose": "Attach a VirtIO/net device backed by a host TAP. Pre-boot only.",
+    "flags": [
+      {"name": "iface_id", "value": "string", "doc": "Path parameter."},
+      {"name": "host_dev_name", "value": "string", "doc": "Host TAP interface name (must exist)."},
+      {"name": "guest_mac", "value": "string|null", "doc": "Guest MAC; if null, generated."},
+      {"name": "rx_rate_limiter", "value": "RateLimiter", "doc": "Inbound throttling."},
+      {"name": "tx_rate_limiter", "value": "RateLimiter", "doc": "Outbound throttling."}
+    ],
+    "examples": [{"invocation": "PUT /network-interfaces/eth0 {\"iface_id\":\"eth0\",\"host_dev_name\":\"tap0\",\"guest_mac\":\"AA:FC:00:00:00:01\"}", "expected_output": "204; 400 if TAP not found or wrong permissions", "scenario": "Attach primary NIC pre-boot"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-guest-network-interface-by-id",
+    "command": "PATCH /network-interfaces/{iface_id}",
+    "purpose": "Update RX/TX rate limiters at runtime. Other fields immutable post-boot.",
+    "flags": [{"name": "rx_rate_limiter / tx_rate_limiter", "value": "RateLimiter|null", "doc": "Replace or remove."}],
+    "examples": [{"invocation": "PATCH /network-interfaces/eth0 {\"iface_id\":\"eth0\",\"tx_rate_limiter\":null}", "expected_output": "204", "scenario": "Lift outbound rate limit"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-guest-vsock",
+    "command": "PUT /vsock",
+    "purpose": "Attach the (single) VirtIO/vsock device. Pre-boot only.",
+    "flags": [
+      {"name": "vsock_id", "value": "string", "doc": "Identifier."},
+      {"name": "guest_cid", "value": "u32 (>=3)", "doc": "Vsock CID seen by the guest. CIDs 0, 1, 2 are reserved."},
+      {"name": "uds_path", "value": "string", "doc": "Host-side Unix socket path. Firecracker creates it; guest connections multiplex over it."}
+    ],
+    "examples": [{"invocation": "PUT /vsock {\"vsock_id\":\"vsock1\",\"guest_cid\":3,\"uds_path\":\"/tmp/vm.vsock\"}", "expected_output": "204", "scenario": "Set up vsock for control-plane host↔guest comms"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-vsock"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-balloon",
+    "command": "PUT /balloon",
+    "purpose": "Attach the VirtIO/balloon device. Pre-boot only.",
+    "flags": [
+      {"name": "amount_mib", "value": "u32", "doc": "Initial balloon size in MiB (memory taken from the guest)."},
+      {"name": "deflate_on_oom", "value": "bool", "doc": "Auto-deflate when guest OOMs (recommended: true)."},
+      {"name": "stats_polling_interval_s", "value": "u16", "doc": "Statistics polling cadence; 0 disables stats."}
+    ],
+    "examples": [{"invocation": "PUT /balloon {\"amount_mib\":0,\"deflate_on_oom\":true,\"stats_polling_interval_s\":1}", "expected_output": "204", "scenario": "Attach balloon pre-boot for later runtime resize"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-ballooning"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-balloon",
+    "command": "PATCH /balloon",
+    "purpose": "Inflate or deflate the balloon at runtime.",
+    "flags": [{"name": "amount_mib", "value": "u32", "doc": "New balloon size in MiB."}],
+    "examples": [{"invocation": "PATCH /balloon {\"amount_mib\":256}", "expected_output": "204", "scenario": "Reclaim 256 MiB from the guest"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.describe-balloon-config",
+    "command": "GET /balloon",
+    "purpose": "Return the current balloon device configuration.",
+    "flags": [],
+    "examples": [{"invocation": "GET /balloon", "expected_output": "200 with Balloon JSON; 400 if no balloon", "scenario": "Verify balloon state"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.describe-balloon-stats",
+    "command": "GET /balloon/statistics",
+    "purpose": "Return latest balloon stats — only available if stats_polling_interval_s > 0 was set pre-boot.",
+    "flags": [],
+    "examples": [{"invocation": "GET /balloon/statistics", "expected_output": "200 with BalloonStats; 400 if stats disabled", "scenario": "Memory pressure observation"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-balloon-stats-interval",
+    "command": "PATCH /balloon/statistics",
+    "purpose": "Update the balloon-stats polling interval at runtime.",
+    "flags": [{"name": "stats_polling_interval_s", "value": "u16", "doc": "Seconds between polls."}],
+    "examples": [{"invocation": "PATCH /balloon/statistics {\"stats_polling_interval_s\":5}", "expected_output": "204", "scenario": "Reduce stats overhead"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-entropy-device",
+    "command": "PUT /entropy",
+    "purpose": "Attach VirtIO/rng (entropy device). Pre-boot only. Strongly recommended for crypto workloads.",
+    "flags": [{"name": "rate_limiter", "value": "RateLimiter|null", "doc": "Optional throttle on entropy rate."}],
+    "examples": [{"invocation": "PUT /entropy {\"rate_limiter\":null}", "expected_output": "204", "scenario": "Avoid guest entropy starvation"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-logger",
+    "command": "PUT /logger",
+    "purpose": "Configure logging to a named pipe (FIFO).",
+    "flags": [
+      {"name": "log_path", "value": "string (FIFO path)", "doc": "Must be a FIFO created on the host."},
+      {"name": "level", "value": "Error|Warn|Info|Debug|Trace", "doc": "Verbosity."},
+      {"name": "show_level", "value": "bool", "doc": "Prefix each line with the level."},
+      {"name": "show_log_origin", "value": "bool", "doc": "Include source-file:line origin."},
+      {"name": "module", "value": "string|null", "doc": "Filter to a specific module."}
+    ],
+    "examples": [{"invocation": "PUT /logger {\"log_path\":\"/tmp/fc.log\",\"level\":\"Info\",\"show_level\":true,\"show_log_origin\":true}", "expected_output": "204", "scenario": "Wire up structured logging"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-logger"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-metrics",
+    "command": "PUT /metrics",
+    "purpose": "Configure metrics-emission FIFO. Re-PUT at runtime to flush metrics on demand.",
+    "flags": [{"name": "metrics_path", "value": "string (FIFO path)", "doc": "Host-side named pipe."}],
+    "examples": [{"invocation": "PUT /metrics {\"metrics_path\":\"/tmp/fc.metrics\"}", "expected_output": "204", "scenario": "Wire up metrics; second PUT triggers flush"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-metrics"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-mmds",
+    "command": "PUT /mmds",
+    "purpose": "Replace the entire MMDS payload with a new JSON object.",
+    "flags": [{"name": "<JSON object>", "value": "any", "doc": "User-defined metadata; will be served to guest verbatim."}],
+    "examples": [{"invocation": "PUT /mmds {\"latest\":{\"meta-data\":{\"instance-id\":\"i-1234\"}}}", "expected_output": "204", "scenario": "Set instance metadata"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-mmds",
+    "command": "PATCH /mmds",
+    "purpose": "Apply a JSON-merge-patch to the MMDS payload.",
+    "flags": [{"name": "<JSON object>", "value": "merge-patch", "doc": "Fields are merged; null deletes."}],
+    "examples": [{"invocation": "PATCH /mmds {\"latest\":{\"meta-data\":{\"new-field\":\"v\"}}}", "expected_output": "204", "scenario": "Update one MMDS field"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.get-mmds",
+    "command": "GET /mmds",
+    "purpose": "Return the current MMDS payload.",
+    "flags": [],
+    "examples": [{"invocation": "GET /mmds", "expected_output": "200 with MMDS JSON", "scenario": "Verify metadata before boot"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-mmds-config",
+    "command": "PUT /mmds/config",
+    "purpose": "Configure MMDS network exposure: which network interface(s) to attach to, IPv4 address, version (V1|V2). Pre-boot only.",
+    "flags": [
+      {"name": "network_interfaces", "value": "array of iface_id", "doc": "Interfaces on which guest can reach MMDS."},
+      {"name": "ipv4_address", "value": "string", "doc": "Guest-side IP for MMDS. Default 169.254.169.254."},
+      {"name": "version", "value": "V1|V2", "doc": "V2 requires a session token — recommended for security."}
+    ],
+    "examples": [{"invocation": "PUT /mmds/config {\"network_interfaces\":[\"eth0\"],\"ipv4_address\":\"169.254.169.254\",\"version\":\"V2\"}", "expected_output": "204", "scenario": "Enable IMDSv2-style metadata"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-serial-device",
+    "command": "PUT /serial",
+    "purpose": "Configure a custom serial device backend (e.g., write console output to a host file).",
+    "flags": [{"name": "serial_id", "value": "string", "doc": "Identifier."}, {"name": "out_path", "value": "string", "doc": "Host-side file path for guest serial output."}],
+    "examples": [{"invocation": "PUT /serial {\"out_path\":\"/tmp/console.log\"}", "expected_output": "204", "scenario": "Capture guest serial console for debugging"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.create-snapshot",
+    "command": "PUT /snapshot/create",
+    "purpose": "Persist VM state to disk. VM must be Paused (PATCH /vm{state=Paused}) first.",
+    "flags": [
+      {"name": "snapshot_type", "value": "Full|Diff", "doc": "Diff requires track_dirty_pages=true on the original boot."},
+      {"name": "snapshot_path", "value": "string", "doc": "Output path for VM-state metadata file."},
+      {"name": "mem_file_path", "value": "string", "doc": "Output path for guest RAM contents."},
+      {"name": "version", "value": "string|null", "doc": "Optional snapshot format version (for backward compat)."}
+    ],
+    "examples": [{"invocation": "PUT /snapshot/create {\"snapshot_type\":\"Full\",\"snapshot_path\":\"/var/snap.bin\",\"mem_file_path\":\"/var/snap.mem\"}", "expected_output": "204; 400 if VM not Paused", "scenario": "Save microVM state"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.api.cmd.load-snapshot",
+    "command": "PUT /snapshot/load",
+    "purpose": "Restore VM state into a fresh Firecracker process. Must be the first API call after process start (no prior PUT /machine-config etc.).",
+    "flags": [
+      {"name": "snapshot_path", "value": "string", "doc": "Path to VM-state metadata file."},
+      {"name": "mem_backend", "value": "{backend_type: File|Uffd, backend_path: string}", "doc": "File = read RAM into anon memory; Uffd = userfaultfd-driven lazy load."},
+      {"name": "enable_diff_snapshots", "value": "bool", "doc": "Re-enable dirty-page tracking after restore for further diff snapshots."},
+      {"name": "resume_vm", "value": "bool", "doc": "Auto-resume after load; otherwise VM stays Paused."}
+    ],
+    "examples": [{"invocation": "PUT /snapshot/load {\"snapshot_path\":\"/var/snap.bin\",\"mem_backend\":{\"backend_type\":\"File\",\"backend_path\":\"/var/snap.mem\"},\"resume_vm\":true}", "expected_output": "204; 400 if API was already touched", "scenario": "Restore microVM"}],
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-vm",
+    "command": "PATCH /vm",
+    "purpose": "Set VM state — Paused or Resumed.",
+    "flags": [{"name": "state", "value": "Paused|Resumed", "doc": "Target state."}],
+    "examples": [{"invocation": "PATCH /vm {\"state\":\"Paused\"}", "expected_output": "204", "scenario": "Pre-snapshot pause"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.get-firecracker-version",
+    "command": "GET /version",
+    "purpose": "Return the running Firecracker version (semver).",
+    "flags": [],
+    "examples": [{"invocation": "GET /version", "expected_output": "200 with FirecrackerVersion JSON", "scenario": "Orchestrator version-detection"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.get-export-vm-config",
+    "command": "GET /vm/config",
+    "purpose": "Export the full current VM configuration as a JSON document — useful for snapshotting the configuration alongside the VM-state binary.",
+    "flags": [],
+    "examples": [{"invocation": "GET /vm/config", "expected_output": "200 with full FullVmConfig JSON", "scenario": "Dump configuration for replay"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.start-balloon-hinting",
+    "command": "PATCH /balloon/hinting/start",
+    "purpose": "Trigger a free-page-hinting run on the balloon device — the guest reports unused pages so the host can drop them.",
+    "flags": [{"name": "auto_ack", "value": "bool", "doc": "Whether to auto-acknowledge the hinting completion."}],
+    "examples": [{"invocation": "PATCH /balloon/hinting/start {\"auto_ack\":true}", "expected_output": "200", "scenario": "Reclaim free pages from idle guest"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.describe-balloon-hinting",
+    "command": "GET /balloon/hinting/status",
+    "purpose": "Return the current free-page-hinting statistics.",
+    "flags": [],
+    "examples": [{"invocation": "GET /balloon/hinting/status", "expected_output": "200 with BalloonHintingStatus", "scenario": "Track hinting progress"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.stop-balloon-hinting",
+    "command": "PATCH /balloon/hinting/stop",
+    "purpose": "Stop an in-progress free-page-hinting run.",
+    "flags": [],
+    "examples": [{"invocation": "PATCH /balloon/hinting/stop", "expected_output": "200", "scenario": "Cancel hinting"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-guest-pmem-by-id",
+    "command": "PUT /pmem/{pmem_id}",
+    "purpose": "Attach a virtio-pmem device backed by a host file. Persistent-memory semantics in the guest. Pre-boot only.",
+    "flags": [
+      {"name": "pmem_id", "value": "string", "doc": "Path parameter."},
+      {"name": "path_on_host", "value": "string", "doc": "Backing file."},
+      {"name": "is_read_only", "value": "bool", "doc": "Block writes."}
+    ],
+    "examples": [{"invocation": "PUT /pmem/p0 {\"pmem_id\":\"p0\",\"path_on_host\":\"/var/pmem.img\",\"is_read_only\":false}", "expected_output": "204", "scenario": "Attach virtio-pmem"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-guest-pmem-by-id",
+    "command": "PATCH /pmem/{pmem_id}",
+    "purpose": "Update a pmem device at runtime — limited fields.",
+    "flags": [{"name": "pmem_id", "value": "string", "doc": "Path parameter."}],
+    "examples": [{"invocation": "PATCH /pmem/p0 {\"pmem_id\":\"p0\"}", "expected_output": "204", "scenario": "Runtime pmem update"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.put-memory-hotplug",
+    "command": "PUT /memory-hotplug",
+    "purpose": "Configure virtio-mem for runtime memory resizing. Pre-boot only.",
+    "flags": [{"name": "size_mib", "value": "u64", "doc": "Initial hot-pluggable region size."}],
+    "examples": [{"invocation": "PUT /memory-hotplug {\"size_mib\":2048}", "expected_output": "204", "scenario": "Pre-arm memory hotplug capability"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.patch-memory-hotplug",
+    "command": "PATCH /memory-hotplug",
+    "purpose": "Hot-plug or hot-unplug memory at runtime via virtio-mem.",
+    "flags": [{"name": "size_mib", "value": "u64", "doc": "Target online size in MiB."}],
+    "examples": [{"invocation": "PATCH /memory-hotplug {\"size_mib\":4096}", "expected_output": "204", "scenario": "Add 2 GiB at runtime"}],
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cmd.get-memory-hotplug",
+    "command": "GET /memory-hotplug",
+    "purpose": "Return the current memory-hotplug configuration.",
+    "flags": [],
+    "examples": [{"invocation": "GET /memory-hotplug", "expected_output": "200 with MemoryHotplug JSON", "scenario": "Verify hotplug state"}],
+    "source_ids": ["fc-swagger-spec"]
+  }
+]

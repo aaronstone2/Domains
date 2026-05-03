@@ -1,0 +1,98 @@
+[
+  {
+    "id": "firecracker.jailer.jailer",
+    "name": "Firecracker Jailer",
+    "kind": "subsystem",
+    "description": "Privileged setup binary that wraps Firecracker. Sets up cgroups, chroot, network namespace, and resource limits, drops privileges to a low uid/gid, then exec()s into the Firecracker binary. Production-deployment-mandatory wrapper — design.md states 'Firecracker should only run constrained at the process level' achieved via the jailer.",
+    "source_ids": ["fc-docs-jailer", "fc-docs-design"],
+    "aliases": ["jailer"]
+  },
+  {
+    "id": "firecracker.jailer.statically-linked-pairing",
+    "name": "Statically linked Firecracker pairing",
+    "kind": "constraint",
+    "description": "Each jailer binary must be paired with a STATICALLY linked Firecracker (default musl toolchain) of the SAME version. Mixing dynamically-linked Firecracker (experimental gnu builds) is unsupported — symbol resolution inside the chroot may fail because libraries aren't copied in.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.chroot-jail",
+    "name": "Chroot jail layout",
+    "kind": "design",
+    "description": "Jailer creates `<chroot_base>/<exec_file_name>/<id>/root` (default chroot_base=/srv/jailer). Copies the Firecracker binary into the chroot (so each microVM has its own non-shared mapping). Switches mount namespace via unshare() + pivot_root() + chroot(). The microVM's API socket, log/metrics FIFOs, and snapshot files all live INSIDE this chroot.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.uid-gid-drop",
+    "name": "Privilege drop (uid/gid)",
+    "kind": "security-mechanism",
+    "description": "Jailer setuid/setgid to a non-privileged uid/gid before exec()ing Firecracker. Once dropped, Firecracker can only access resources granted to that uid (e.g., chroot tree, /dev/kvm if kvm-group has access). Critical defense-in-depth: KVM compromise is constrained to the jailed uid's reach.",
+    "source_ids": ["fc-docs-jailer", "fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.cgroup-setup",
+    "name": "Cgroup setup (v1 + v2)",
+    "kind": "isolation-mechanism",
+    "description": "Jailer creates a cgroup `<cgroup_base>/<parent_cgroup>/<id>` and writes the Firecracker pid to its tasks file. Supports both cgroup-v1 (--cgroup-version=1, default) and v2. Caller specifies cgroup values via repeated --cgroup flag (e.g. cpuset.cpus=0,cpu.shares=512). Lets orchestrators bound CPU/memory/IO without separate root operations.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.cgroup-v2-subtree-control-trap",
+    "name": "cgroup-v2 subtree-control trap",
+    "kind": "constraint",
+    "description": "If using --cgroup-version=2 with --parent-cgroup pointing at an existing cgroup, the jailer attempts to MOVE the process there. If that cgroup has domain controllers (e.g., memory) enabled in cgroup.subtree_control, the move fails with 'no internal process constraint' — exit error. Workaround: leave subtree_control empty or move to a leaf cgroup.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.netns-handling",
+    "name": "Network namespace join (--netns)",
+    "kind": "isolation-mechanism",
+    "description": "When --netns <path> is given, jailer setns()s into the network namespace at that path before exec()ing Firecracker. Combined with TAP devices created INSIDE that netns, this gives each microVM its own network stack — no leakage between sandboxes.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.resource-limits",
+    "name": "Resource limits (setrlimit)",
+    "kind": "isolation-mechanism",
+    "description": "--resource-limit fsize=<N> or no-file=<N> applies setrlimit() on the Firecracker process before exec. fsize bounds max file size (use to prevent runaway snapshot files); no-file bounds max FD count. Default no-file is 2048 if unspecified — sufficient for moderate microVM device counts but may need raising for vsock-heavy or VirtIO-MMIO-heavy guests.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.daemonize-flag",
+    "name": "--daemonize flag",
+    "kind": "operational-mode",
+    "description": "Jailer calls setsid() and redirects stdin/stdout/stderr to /dev/null. Detaches from controlling terminal. Useful when launching Firecracker from a non-systemd orchestrator that doesn't handle daemonization itself.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.new-pid-ns-flag",
+    "name": "--new-pid-ns flag (PID namespace)",
+    "kind": "isolation-mechanism",
+    "description": "Spawns Firecracker into a fresh PID namespace via clone(CLONE_NEWPID). Inside the jail, the Firecracker process appears as PID 1 with no visibility into other host processes. The host-side PID is recorded in `<chroot_dir>/<exec_file_name>.pid` for the orchestrator to track.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": ["CLONE_NEWPID"]
+  },
+  {
+    "id": "firecracker.jailer.fd-cleanup",
+    "name": "FD + env cleanup before exec",
+    "kind": "security-mechanism",
+    "description": "Jailer closes ALL open fds except 0/1/2 (per /proc/<jailer-pid>/fd) and clears all environment variables before pivoting to the chroot and exec()ing Firecracker. Prevents leaking parent-process state — orchestrator-side fds, secrets in env vars, etc. — into the sandbox.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.jailer.dev-mknod-passthrough",
+    "name": "/dev passthrough via mknod",
+    "kind": "design",
+    "description": "Inside the chroot, jailer mknod()s `/dev/net/tun` and `/dev/kvm` so Firecracker can open them. These are the ONLY two devices the jail exposes — minimum surface for VirtIO-net (TAP) and KVM (the hypervisor itself). No other /dev entries.",
+    "source_ids": ["fc-docs-jailer"],
+    "aliases": []
+  }
+]

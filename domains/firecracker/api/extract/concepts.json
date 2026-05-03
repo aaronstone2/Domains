@@ -1,0 +1,202 @@
+[
+  {
+    "id": "firecracker.api.firecracker-api",
+    "name": "Firecracker REST API",
+    "kind": "subsystem",
+    "description": "RESTful HTTP API exposed by the Firecracker process. Transport is a Unix Domain Socket (default `/tmp/firecracker.socket`); requests carry JSON. Used for all VMM control plane: configuring devices, vCPU count, memory, then triggering InstanceStart, then runtime management (snapshot, balloon update, network rate-limit changes).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-getting-started", "fc-docs-design"],
+    "aliases": ["fc API", "firecracker REST"]
+  },
+  {
+    "id": "firecracker.api.unix-domain-socket-transport",
+    "name": "API Unix Domain Socket transport",
+    "kind": "transport",
+    "description": "Firecracker accepts API requests only over a UDS, never TCP. The socket path is given via `firecracker --api-sock <path>` or auto-named under the jailer chroot. Per-VM isolation: each Firecracker process owns one socket; orchestrators talk to N sockets for N microVMs.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-getting-started"],
+    "aliases": ["api-sock"]
+  },
+  {
+    "id": "firecracker.api.api-thread",
+    "name": "API thread",
+    "kind": "subsystem",
+    "description": "One of three Firecracker threads (API + VMM + vCPU). Owns the HTTP server and routes incoming requests to the VMM thread via a channel. Never on the fast path of guest execution. Failure of this thread is non-fatal to running guests but loses control-plane access.",
+    "source_ids": ["fc-docs-design"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.pre-boot-vs-runtime",
+    "name": "Pre-boot vs runtime API states",
+    "kind": "state-machine",
+    "description": "Most resource-creation endpoints (drives, network interfaces, vsock, machine-config, boot-source, cpu-config) only accept PUT before InstanceStart. After boot, only a small set are mutable: PATCH machine-config (pre-boot only — only PATCH on drive/network for rate-limiter at runtime), balloon, mmds, metrics target, snapshot create/load. Calling a pre-boot-only endpoint after boot returns 400.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.put-vs-patch-semantics",
+    "name": "PUT vs PATCH idempotency",
+    "kind": "convention",
+    "description": "PUT replaces the entire resource (e.g., putBalloon overwrites all fields). PATCH applies partial updates (patchBalloon updates only the fields supplied). PATCH is the only legal mutation path post-boot for most resources.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.boot-source",
+    "name": "Boot source",
+    "kind": "config-resource",
+    "description": "The kernel image + boot args + (optional) initrd path that the microVM boots. Set via PUT /boot-source pre-boot. Firecracker does not provide a kernel — user must supply an uncompressed ELF/PE Linux kernel built per fc-docs-rootfs-kernel.md.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-rootfs-kernel"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.machine-config",
+    "name": "Machine configuration",
+    "kind": "config-resource",
+    "description": "Aggregate compute config: vcpu_count, mem_size_mib, smt (Intel hyperthreading), track_dirty_pages, huge_pages, cpu_template (deprecated — use /cpu-config). PUT replaces; PATCH applies a delta. Required before InstanceStart.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.cpu-config-resource",
+    "name": "CPU configuration (custom CPU templates)",
+    "kind": "config-resource",
+    "description": "PUT /cpu-config supplies a custom CPU template — JSON list of CPUID modifiers + MSR modifiers + Aarch64 register modifiers. Replaces the deprecated machine_config.cpu_template static templates. Pre-boot only.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-cpu-templates"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.drive-resource",
+    "name": "Drive (block device)",
+    "kind": "config-resource",
+    "description": "VirtIO/block device backed by a host file. PUT /drives/{id} attaches; supports is_root_device, is_read_only, cache_type (Unsafe/Writeback), io_engine (Sync/Async), rate_limiter, socket (vhost-user). PATCH at runtime can only update path_on_host (drive swap) and rate limiters.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.network-interface-resource",
+    "name": "Network interface",
+    "kind": "config-resource",
+    "description": "VirtIO/net device backed by a host TAP. PUT /network-interfaces/{id} attaches; required: iface_id, host_dev_name. Optional: guest_mac, rx_rate_limiter, tx_rate_limiter. PATCH at runtime updates rate limiters only.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-network-setup"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.vsock-resource",
+    "name": "Vsock device",
+    "kind": "config-resource",
+    "description": "Single-instance VirtIO/vsock device. PUT /vsock; required: vsock_id, guest_cid, uds_path (host-side Unix socket). Pre-boot only. Removing a vsock requires VM destroy/recreate.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-vsock"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.balloon-resource",
+    "name": "Balloon device",
+    "kind": "config-resource",
+    "description": "VirtIO/balloon for guest-cooperative memory reclaim. PUT pre-boot to attach; amount_mib, deflate_on_oom, stats_polling_interval_s. PATCH at runtime to inflate/deflate.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-ballooning"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.entropy-device-resource",
+    "name": "Entropy device",
+    "kind": "config-resource",
+    "description": "VirtIO/rng exposing /dev/urandom from host to guest. PUT /entropy pre-boot; optional rate_limiter. Highly recommended for cryptographic workloads — without it, guest startup may stall on entropy.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.mmds-microvm-metadata-service",
+    "name": "MMDS (MicroVM Metadata Service)",
+    "kind": "feature",
+    "description": "In-process metadata store accessible from the guest via a configurable IP/MAC on a network interface. PUT /mmds-config sets ipv4_address + version (V1|V2) + network_interfaces; PUT/PATCH /mmds writes the metadata; the guest reads via 169.254.169.254 by default (mimics EC2 IMDS).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-mmds-user-guide"],
+    "aliases": ["microvm metadata service"]
+  },
+  {
+    "id": "firecracker.api.logger-resource",
+    "name": "Logger",
+    "kind": "config-resource",
+    "description": "PUT /logger configures a named-pipe (FIFO) logging sink. Required before any meaningful logging. Fields: log_path, level (Error|Warn|Info|Debug|Trace), show_level, show_log_origin, module (filter).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-logger"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.metrics-resource",
+    "name": "Metrics",
+    "kind": "config-resource",
+    "description": "PUT /metrics configures a named-pipe metrics sink. Firecracker emits a JSON metrics blob on instance start, every 60s while running, and on panic. Use PUT a second time at runtime to flush metrics on demand.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-metrics"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.snapshot-create",
+    "name": "Snapshot create",
+    "kind": "operation",
+    "description": "PUT /snapshot/create — write VM state (memory + device state + vCPU state) to host files. Body specifies snapshot_type (Full|Diff), snapshot_path, mem_file_path, version. VM must be paused first via PATCH /vm{state=Paused}.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.snapshot-load",
+    "name": "Snapshot load",
+    "kind": "operation",
+    "description": "PUT /snapshot/load — restore VM state into a fresh Firecracker process. Body: snapshot_path, mem_backend (File|Uffd), enable_diff_snapshots, resume_vm. After load, VM is Paused unless resume_vm=true; otherwise PATCH /vm{state=Resumed}.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.vm-state-resource",
+    "name": "VM state (Paused/Resumed)",
+    "kind": "operation",
+    "description": "PATCH /vm sets state — Paused (stop vCPU threads, no I/O) or Resumed. Required transition before snapshot create. Independent of InstanceStart action.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.actions-resource",
+    "name": "InstanceActions",
+    "kind": "operation",
+    "description": "PUT /actions triggers synchronous actions: InstanceStart (boot the configured machine), SendCtrlAltDel (graceful guest shutdown via PS/2 keyboard reset signal). Body is {\"action_type\": <enum>}.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.error-response-shape",
+    "name": "Error response shape",
+    "kind": "convention",
+    "description": "All non-2xx responses return JSON `{\"fault_message\": \"<reason>\"}` with HTTP 400 (bad input) or default (Internal Server Error). The fault_message is human-readable; orchestrators often regex it to classify failures (`vCPU count must be greater than 0`, `Block device backing file ... does not exist`, etc.).",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.idempotent-204",
+    "name": "204 No Content on success",
+    "kind": "convention",
+    "description": "Most mutation endpoints return 204 with empty body on success — orchestrators must check status code, not body. Only GET endpoints return 200 with payload. Confusing 204 vs 200 is a common integration bug.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.api-version-deprecation-policy",
+    "name": "API versioning policy",
+    "kind": "policy",
+    "description": "Firecracker maintains backward compatibility on a best-effort basis within a minor-version line. Breaking changes between minor versions are rare but documented in CHANGELOG. The /version GET returns the running Firecracker semver — orchestrators should check before issuing version-sensitive calls.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.swagger-spec-canonical-source",
+    "name": "Swagger spec is the canonical contract",
+    "kind": "convention",
+    "description": "src/firecracker/swagger/firecracker.yaml in the upstream repo is the single source of truth for the API. The Rust API server is generated from it. Orchestrators should pin to a specific version of the spec, not the docs site.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.api.serial-device-resource",
+    "name": "Serial device (custom)",
+    "kind": "config-resource",
+    "description": "PUT /serial — attach a non-default serial device backend. Default behavior writes serial output to stdout (development) or discards it (production). Custom backend lets orchestrators capture guest console output.",
+    "source_ids": ["fc-swagger-spec"],
+    "aliases": []
+  }
+]

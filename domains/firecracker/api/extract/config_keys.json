@@ -1,0 +1,164 @@
+[
+  {
+    "id": "firecracker.api.cfg.machine-config.vcpu-count",
+    "scope": "machine-config",
+    "key": "vcpu_count",
+    "type": "u8",
+    "default_value": null,
+    "description": "Number of vCPUs to expose to the guest. Range 1..32 (Firecracker design cap). Each vCPU runs in its own KVM_RUN-loop thread.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.api.cfg.machine-config.mem-size-mib",
+    "scope": "machine-config",
+    "key": "mem_size_mib",
+    "type": "u64",
+    "default_value": null,
+    "description": "Guest RAM size in mebibytes. Backed by anonymous host memory (or hugepages, see huge_pages). Snapshot mem_file_path is this size.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.machine-config.smt",
+    "scope": "machine-config",
+    "key": "smt",
+    "type": "bool",
+    "default_value": "false",
+    "description": "x86-only. Whether to expose Intel hyperthreading siblings to the guest's CPUID. Default false to avoid side-channel concerns; production deployments typically keep this off.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.api.cfg.machine-config.track-dirty-pages",
+    "scope": "machine-config",
+    "key": "track_dirty_pages",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Enable KVM_MEM_LOG_DIRTY_PAGES on the guest RAM region. REQUIRED for diff snapshots — without it, only Full snapshots are possible. Slight runtime overhead from dirty-bit page-walk on KVM exit.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.api.cfg.machine-config.huge-pages",
+    "scope": "machine-config",
+    "key": "huge_pages",
+    "type": "enum",
+    "default_value": "None",
+    "description": "Back guest RAM with hugepages — None (4KiB) or 2M (2MiB hugepages). 2M reduces TLB pressure for large guests but requires reserved hugepages on the host (vm.nr_hugepages sysctl).",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.machine-config.cpu-template",
+    "scope": "machine-config",
+    "key": "cpu_template",
+    "type": "enum",
+    "default_value": "None",
+    "description": "DEPRECATED. Static CPU template (None|T2|T2A|T2CL|T2S|C3|V1N1). Use PUT /cpu-config for custom templates instead. Affects CPUID + MSR exposure for snapshot portability.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-cpu-templates"]
+  },
+  {
+    "id": "firecracker.api.cfg.boot-source.kernel-image-path",
+    "scope": "boot-source",
+    "key": "kernel_image_path",
+    "type": "string",
+    "default_value": null,
+    "description": "Host filesystem path to an uncompressed Linux kernel (ELF on x86, PE on aarch64). Firecracker does not provide a kernel; user supplies one built per fc-docs-rootfs-kernel.md.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-rootfs-kernel"]
+  },
+  {
+    "id": "firecracker.api.cfg.boot-source.boot-args",
+    "scope": "boot-source",
+    "key": "boot_args",
+    "type": "string",
+    "default_value": "reboot=k panic=1 pci=off nomodule",
+    "description": "Linux command line passed to the guest kernel. Common additions: console=ttyS0 (serial console output), root=/dev/vda (boot disk), ip=... (static IP). Firecracker validates basic syntax but doesn't constrain content.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.boot-source.initrd-path",
+    "scope": "boot-source",
+    "key": "initrd_path",
+    "type": "string|null",
+    "default_value": "null",
+    "description": "Optional initramfs file. Loaded into guest memory before kernel boot.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.drive.cache-type",
+    "scope": "drive",
+    "key": "cache_type",
+    "type": "enum",
+    "default_value": "Unsafe",
+    "description": "Block-device cache mode. Unsafe = drop guest flush requests (faster, but data loss on crash). Writeback = honor flush (correct, slightly slower). Use Writeback for any non-ephemeral data.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.drive.io-engine",
+    "scope": "drive",
+    "key": "io_engine",
+    "type": "enum",
+    "default_value": "Sync",
+    "description": "Block I/O backend. Sync = read/write syscalls. Async = io_uring (kernel >=5.10) for better throughput on high IOPS workloads.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.rate-limiter.bandwidth",
+    "scope": "rate-limiter",
+    "key": "bandwidth",
+    "type": "TokenBucket",
+    "default_value": null,
+    "description": "Token bucket controlling bandwidth (bytes). size = bucket capacity, refill_time = ms to refill, one_time_burst = optional one-shot extra capacity.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.api.cfg.rate-limiter.ops",
+    "scope": "rate-limiter",
+    "key": "ops",
+    "type": "TokenBucket",
+    "default_value": null,
+    "description": "Token bucket controlling I/O operations per second. Independent of bandwidth bucket.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.api.cfg.logger.level",
+    "scope": "logger",
+    "key": "level",
+    "type": "enum",
+    "default_value": "Warn",
+    "description": "Log verbosity: Error, Warn, Info, Debug, Trace. Trace adds significant overhead; Debug is the practical-max for production.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-logger"]
+  },
+  {
+    "id": "firecracker.api.cfg.logger.show-log-origin",
+    "scope": "logger",
+    "key": "show_log_origin",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Prepend each log line with source-file:line. Useful for debugging Firecracker itself; usually off in production for log volume.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.mmds-config.version",
+    "scope": "mmds-config",
+    "key": "version",
+    "type": "enum",
+    "default_value": "V1",
+    "description": "MMDS protocol version. V1 = unauthenticated GET (legacy). V2 = session-token-required (PUT to get token, then GET with token header). V2 mimics EC2 IMDSv2 and is recommended for SSRF protection.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.api.cfg.mmds-config.ipv4-address",
+    "scope": "mmds-config",
+    "key": "ipv4_address",
+    "type": "string",
+    "default_value": "169.254.169.254",
+    "description": "Guest-side IPv4 address that resolves to MMDS. Default matches EC2 IMDS for compatibility with cloud-init and other guest tooling.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.api.cfg.snapshot-load.mem-backend.backend-type",
+    "scope": "snapshot-load",
+    "key": "mem_backend.backend_type",
+    "type": "enum",
+    "default_value": null,
+    "description": "How guest RAM is materialized during restore. File = read snapshot mem file into anonymous memory (eager load). Uffd = userfaultfd-backed lazy load — pages copied on first guest access (lower memory footprint, slightly higher first-access latency).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  }
+]

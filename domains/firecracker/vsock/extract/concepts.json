@@ -1,0 +1,58 @@
+[
+  {
+    "id": "firecracker.vsock.virtio-vsock-device",
+    "name": "VirtIO/vsock device",
+    "kind": "feature",
+    "description": "Firecracker's emulated VirtIO-vsock device. Single-instance per microVM. Mediates between AF_UNIX sockets on the host and AF_VSOCK sockets in the guest. Bypasses vhost-vsock kernel code on the host (vhost-style I/O is implemented in the Firecracker userspace VMM, not the kernel) — but still requires vhost-vsock as a host kernel module (CONFIG_VHOST_VSOCK=m).",
+    "source_ids": ["fc-docs-vsock", "fc-docs-design"],
+    "aliases": ["vsock"]
+  },
+  {
+    "id": "firecracker.vsock.cid-port-addressing",
+    "name": "CID/port addressing",
+    "kind": "convention",
+    "description": "AF_VSOCK addresses guest endpoints by (CID, port). Reserved CIDs: 0=Hypervisor, 1=Local, 2=Host. Guest CID is configurable via PUT /vsock.guest_cid (must be ≥3). Ports are 32-bit; same conventions as TCP/UDP. Inside the guest, /dev/vsock exposes the standard Linux vsock API.",
+    "source_ids": ["fc-docs-vsock"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vsock.uds-multiplexing",
+    "name": "UDS multiplexing pattern",
+    "kind": "design-pattern",
+    "description": "All vsock traffic for a microVM funnels through a single host-side AF_UNIX socket (the configured uds_path). Per-port channels are multiplexed: host-initiated uses an in-band 'CONNECT <port>\\n' command; guest-initiated maps to per-port AF_UNIX sockets at <uds_path>_<port>. Lets one Firecracker process expose unbounded vsock channels via a single socket.",
+    "source_ids": ["fc-docs-vsock"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vsock.host-initiated-handshake",
+    "name": "Host-initiated CONNECT/OK handshake",
+    "kind": "protocol",
+    "description": "Sequence: host connects to UDS at uds_path → sends 'CONNECT <port>\\n' (port is decimal, \\n is ASCII 0x0A) → Firecracker forwards to the guest-side listener → on success replies 'OK <hostside-port>\\n'. If no guest listener, Firecracker terminates the host connection.",
+    "source_ids": ["fc-docs-vsock"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vsock.guest-initiated-per-port-uds",
+    "name": "Guest-initiated per-port UDS pattern",
+    "kind": "protocol",
+    "description": "Sequence: guest connects to (CID=2 host, port=N) → Firecracker tries to forward to a host-side AF_UNIX socket listening at <uds_path>_<N> → if exists, channel established; if not, VIRTIO_VSOCK_OP_RST sent back to guest (connection refused). Convention: host pre-creates listeners for each port the guest is expected to call.",
+    "source_ids": ["fc-docs-vsock"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vsock.snapshot-reset",
+    "name": "Vsock connection reset on snapshot restore",
+    "kind": "constraint",
+    "description": "All open vsock connections are closed across snapshot/restore. Listening sockets in the guest survive — they accept fresh connections post-resume. Orchestrators must design control-plane protocols to tolerate this (idempotent operations + reconnect logic).",
+    "source_ids": ["fc-docs-vsock", "fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.vsock.uds-path-override-on-restore",
+    "name": "vsock_override on snapshot restore",
+    "kind": "feature",
+    "description": "PUT /snapshot/load supports a vsock_override.uds_path field to remap the host UDS path on restore. Critical when running multiple clones of the same snapshot in environments without the jailer (where chroots would otherwise isolate paths) — avoids UDS-path collision between simultaneous clones.",
+    "source_ids": ["fc-docs-vsock"],
+    "aliases": []
+  }
+]

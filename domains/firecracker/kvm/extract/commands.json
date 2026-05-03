@@ -1,0 +1,471 @@
+[
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-api-version",
+    "command": "ioctl(kvm_fd, KVM_GET_API_VERSION)",
+    "purpose": "Returns the stable KVM API version (always 12 since the API stabilized). Firecracker calls this at init and aborts if the value differs — earlier (2.6.20/2.6.21) versions are unsupported.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(kvm_fd, KVM_GET_API_VERSION)", "expected_output": "12 (KVM_API_VERSION)", "scenario": "Init handshake"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-check-extension",
+    "command": "ioctl(kvm_fd_or_vm_fd, KVM_CHECK_EXTENSION, capability)",
+    "purpose": "Probe whether the host KVM supports a given KVM_CAP_*. System-fd form returns the global default; VM-fd form may return a per-VM value (e.g. KVM_CAP_NR_VCPUS). Firecracker probes capabilities at init and refuses to start if a required one is missing.",
+    "flags": [{"name": "capability", "value": "KVM_CAP_*", "doc": "Numeric capability identifier."}],
+    "examples": [{"invocation": "ioctl(kvm_fd, KVM_CHECK_EXTENSION, KVM_CAP_USER_MEMORY)", "expected_output": "1 if supported, 0 if not", "scenario": "Verify userspace memory regions are supported (always true on modern kernels)"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-create-vm",
+    "command": "ioctl(kvm_fd, KVM_CREATE_VM, machine_type)",
+    "purpose": "Create a new VM. Returns a VM fd. machine_type identifier is 0 for default; on aarch64 encodes IPA size with KVM_VM_TYPE_ARM_IPA_SIZE().",
+    "flags": [{"name": "machine_type", "value": "0 or KVM_VM_TYPE_*", "doc": "Architecture-specific VM-type bitmask."}],
+    "examples": [{"invocation": "vm_fd = ioctl(kvm_fd, KVM_CREATE_VM, 0)", "expected_output": "Non-negative fd on success; -EINVAL/-ENOMEM on failure", "scenario": "Standard Firecracker VMM init"}],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-create-vcpu",
+    "command": "ioctl(vm_fd, KVM_CREATE_VCPU, vcpu_id)",
+    "purpose": "Create a vCPU. Returns a vCPU fd. vcpu_id starts at 0 and must be < KVM_CAP_MAX_VCPUS. Firecracker creates one vCPU thread per ID; each thread runs KVM_RUN in a loop.",
+    "flags": [{"name": "vcpu_id", "value": "0..MAX_VCPUS-1", "doc": "Sequential vCPU index."}],
+    "examples": [{"invocation": "vcpu_fd = ioctl(vm_fd, KVM_CREATE_VCPU, 0)", "expected_output": "Non-negative fd; -EINVAL on duplicate id, -E2BIG on exceeding limit", "scenario": "Per-vCPU init in Firecracker's vmm thread"}],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-vcpu-mmap-size",
+    "command": "ioctl(kvm_fd, KVM_GET_VCPU_MMAP_SIZE)",
+    "purpose": "Returns the size (in bytes) of the kvm_run struct that userspace must mmap on each vCPU fd. Firecracker calls this once and reuses the size for every vCPU.",
+    "flags": [],
+    "examples": [{"invocation": "size = ioctl(kvm_fd, KVM_GET_VCPU_MMAP_SIZE); mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_SHARED, vcpu_fd, 0)", "expected_output": "Typically 4096 or 8192 bytes", "scenario": "vCPU init — get the kvm_run shared region"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-user-memory-region",
+    "command": "ioctl(vm_fd, KVM_SET_USER_MEMORY_REGION, &region)",
+    "purpose": "Map a host userspace memory range into the guest physical address space. Slot ID identifies the region; size 0 deletes a slot. Firecracker registers one large region for guest RAM; snapshot restore replays the same regions.",
+    "flags": [
+      {"name": "slot", "value": "0..KVM_USER_MEM_SLOTS-1", "doc": "Region slot ID. Reuse to overwrite."},
+      {"name": "flags", "value": "KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY", "doc": "Bitmask. Set LOG_DIRTY_PAGES for snapshot diffing."},
+      {"name": "guest_phys_addr", "value": "u64", "doc": "Guest physical base address."},
+      {"name": "memory_size", "value": "u64 (page-aligned)", "doc": "Size in bytes; 0 to delete the slot."},
+      {"name": "userspace_addr", "value": "u64", "doc": "Host VA backing the region."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_SET_USER_MEMORY_REGION, &(struct kvm_userspace_memory_region){.slot=0, .guest_phys_addr=0, .memory_size=mem_size, .userspace_addr=(u64)host_addr})", "expected_output": "0 on success; -EINVAL on bad alignment; -EFAULT on bad userspace_addr", "scenario": "Register guest RAM at boot"}],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-user-memory-region2",
+    "command": "ioctl(vm_fd, KVM_SET_USER_MEMORY_REGION2, &region)",
+    "purpose": "Like KVM_SET_USER_MEMORY_REGION but supports guest_memfd-backed regions (KVM_MEM_GUEST_MEMFD flag) for confidential-VM cases. Available when KVM_CAP_USER_MEMORY2 is supported.",
+    "flags": [{"name": "guest_memfd", "value": "fd", "doc": "Optional guest_memfd file descriptor when KVM_MEM_GUEST_MEMFD is set."}],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_SET_USER_MEMORY_REGION2, &region2)", "expected_output": "0 on success; -ENOTTY if KVM_CAP_USER_MEMORY2 absent", "scenario": "Confidential-VM memory setup"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-dirty-log",
+    "command": "ioctl(vm_fd, KVM_GET_DIRTY_LOG, &log)",
+    "purpose": "Atomically copy + clear the dirty-page bitmap for a memory region. Backbone of incremental snapshots — Firecracker calls this per region during a diff snapshot.",
+    "flags": [
+      {"name": "slot", "value": "u32", "doc": "Memory slot ID."},
+      {"name": "dirty_bitmap", "value": "u64 ptr", "doc": "Userspace buffer; one bit per 4 KiB page."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_GET_DIRTY_LOG, &(struct kvm_dirty_log){.slot=0, .dirty_bitmap=bitmap})", "expected_output": "0 on success; bitmap populated with one bit per page", "scenario": "Capture pages dirtied since last snapshot"}],
+    "source_ids": ["kvm-api", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-clear-dirty-log",
+    "command": "ioctl(vm_fd, KVM_CLEAR_DIRTY_LOG, &log)",
+    "purpose": "Clear specific bits of the dirty bitmap without copying. Used with KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE / KVM_DIRTY_LOG_INITIALLY_SET to decouple read and clear (lets userspace read first, then selectively clear after persisting).",
+    "flags": [
+      {"name": "slot", "value": "u32", "doc": "Memory slot ID."},
+      {"name": "first_page", "value": "u64", "doc": "Starting page index."},
+      {"name": "num_pages", "value": "u32", "doc": "Number of pages to clear."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_CLEAR_DIRTY_LOG, &(struct kvm_clear_dirty_log){.slot=0, .first_page=0, .num_pages=N, .dirty_bitmap=mask})", "expected_output": "0 on success", "scenario": "Two-phase dirty tracking"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-run",
+    "command": "ioctl(vcpu_fd, KVM_RUN)",
+    "purpose": "Enter the guest. Returns when the vCPU exits; userspace inspects kvm_run.exit_reason, handles the exit (MMIO/PIO/SHUTDOWN/etc.), and re-enters. The entire CPU-virt fast path. ALL guest execution happens between calls to this ioctl.",
+    "flags": [],
+    "examples": [
+      {"invocation": "while(true) { ret = ioctl(vcpu_fd, KVM_RUN); switch(kvm_run->exit_reason) {...} }", "expected_output": "0 on normal exit; -EINTR if signal pending; -EFAULT/-ENOMEM on hard error", "scenario": "Firecracker vCPU thread main loop"}
+    ],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-interrupt",
+    "command": "ioctl(vcpu_fd, KVM_INTERRUPT, &irq)",
+    "purpose": "Inject a synchronous interrupt vector into the guest. Used when Firecracker has a userspace-emulated PIC (rarely — Firecracker prefers in-kernel irqchip). Asserting an in-kernel-PIC IRQ uses KVM_IRQ_LINE instead.",
+    "flags": [{"name": "irq", "value": "u32 (vector 0..255)", "doc": "Interrupt vector to inject."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_INTERRUPT, &(struct kvm_interrupt){.irq=33})", "expected_output": "0 on success; -EEXIST if already pending; -EINVAL on bad vector", "scenario": "Userspace PIC injection (legacy path)"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-irq-line",
+    "command": "ioctl(vm_fd, KVM_IRQ_LINE, &irq_level)",
+    "purpose": "Assert or deassert an in-kernel-irqchip IRQ. Faster than KVM_INTERRUPT because it doesn't context-switch the vCPU. Firecracker uses this for serial-console TX-ready and other userspace-driven IRQs.",
+    "flags": [
+      {"name": "irq", "value": "u32 (GSI)", "doc": "Global System Interrupt number."},
+      {"name": "level", "value": "u32 (0=deassert, 1=assert)", "doc": "Edge or level setting."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_IRQ_LINE, &(struct kvm_irq_level){.irq=4, .level=1})", "expected_output": "0 on success", "scenario": "Serial UART RX-data-available interrupt"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-create-irqchip",
+    "command": "ioctl(vm_fd, KVM_CREATE_IRQCHIP)",
+    "purpose": "Instantiate the in-kernel PIC + IOAPIC + LAPIC (x86) or pre-bind preparation for ARM GIC creation via KVM_CREATE_DEVICE. Must be called BEFORE creating any vCPU. Firecracker always creates the in-kernel irqchip — userspace-irqchip mode is too slow.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_CREATE_IRQCHIP)", "expected_output": "0 on success; -EEXIST if already created; -ENOTTY if KVM_CAP_IRQCHIP missing", "scenario": "Firecracker VM init, before vCPU creation"}],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-gsi-routing",
+    "command": "ioctl(vm_fd, KVM_SET_GSI_ROUTING, &routing)",
+    "purpose": "Install or replace the GSI routing table — maps GSIs to in-kernel IRQchip pin / MSI / HV SINT. Firecracker programs this so MSIs from VirtIO devices land directly on the right vCPU.",
+    "flags": [
+      {"name": "nr", "value": "u32", "doc": "Number of entries."},
+      {"name": "entries", "value": "kvm_irq_routing_entry[]", "doc": "Variable-length array; each entry has gsi + type + (irqchip|msi|hv_sint) union."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_SET_GSI_ROUTING, routing)", "expected_output": "0 on success; -EINVAL on overlapping GSI; -ENOMEM if too many entries", "scenario": "Set up MSI routes for VirtIO interrupts"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-signal-msi",
+    "command": "ioctl(vm_fd, KVM_SIGNAL_MSI, &msi)",
+    "purpose": "Inject an MSI directly without going through the routing table. Useful for one-shot interrupts (e.g. VirtIO config-change) that don't have a stable GSI binding.",
+    "flags": [
+      {"name": "address_lo", "value": "u32", "doc": "MSI address low 32 bits."},
+      {"name": "address_hi", "value": "u32", "doc": "MSI address high 32 bits."},
+      {"name": "data", "value": "u32", "doc": "MSI data (vector + delivery mode)."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_SIGNAL_MSI, &msi)", "expected_output": "0 on success; -ENOTTY if KVM_CAP_SIGNAL_MSI absent", "scenario": "VirtIO config-change interrupt"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-irqfd",
+    "command": "ioctl(vm_fd, KVM_IRQFD, &irqfd)",
+    "purpose": "Bind an eventfd to a GSI. When userspace writes to the eventfd, KVM raises the IRQ on the configured GSI without involving the writing thread further. Backbone of low-latency device-event IRQ delivery.",
+    "flags": [
+      {"name": "fd", "value": "eventfd", "doc": "The eventfd to associate."},
+      {"name": "gsi", "value": "u32", "doc": "GSI to raise on event."},
+      {"name": "flags", "value": "KVM_IRQFD_FLAG_DEASSIGN | _RESAMPLE", "doc": "DEASSIGN to remove; RESAMPLE for level-triggered with explicit rearm fd."},
+      {"name": "resamplefd", "value": "fd (only with _RESAMPLE)", "doc": "eventfd that signals when the IRQ has been EOI'd."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_IRQFD, &(struct kvm_irqfd){.fd=evfd, .gsi=24})", "expected_output": "0 on success", "scenario": "Wire VirtIO ring-event eventfd to its IRQ"}],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-ioeventfd",
+    "command": "ioctl(vm_fd, KVM_IOEVENTFD, &ioev)",
+    "purpose": "Bind an eventfd to be signaled when the guest writes a specific value (or any value) to a specific MMIO/PIO address. Lets the kernel short-circuit doorbell writes — no exit to userspace, just signal the device thread.",
+    "flags": [
+      {"name": "addr", "value": "u64", "doc": "MMIO address or I/O port."},
+      {"name": "len", "value": "u32 (1/2/4/8)", "doc": "Access width to match."},
+      {"name": "datamatch", "value": "u64 (only with KVM_IOEVENTFD_FLAG_DATAMATCH)", "doc": "Required value; if absent, any write triggers."},
+      {"name": "fd", "value": "eventfd", "doc": "Signaled on match."},
+      {"name": "flags", "value": "KVM_IOEVENTFD_FLAG_PIO | _DATAMATCH | _DEASSIGN | _VIRTIO_CCW_NOTIFY", "doc": "Bitmask."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_IOEVENTFD, &(struct kvm_ioeventfd){.addr=0xd0000000+0x50, .len=4, .fd=evfd, .flags=KVM_IOEVENTFD_FLAG_DATAMATCH, .datamatch=0})", "expected_output": "0 on success", "scenario": "Wire VirtIO-MMIO doorbell write (queue notify) to a device-thread wakeup eventfd"}],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-regs",
+    "command": "ioctl(vcpu_fd, KVM_SET_REGS, &regs)",
+    "purpose": "Set the general-purpose register file (RAX..R15, RIP, RFLAGS) for the vCPU. Used at boot to set up the entry point and during snapshot restore.",
+    "flags": [{"name": "regs", "value": "struct kvm_regs", "doc": "Architecture-specific GPR struct."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_REGS, &(struct kvm_regs){.rip=kernel_entry, .rsp=stack_top, .rflags=0x2})", "expected_output": "0 on success", "scenario": "Set guest entry point at boot or restore"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-regs",
+    "command": "ioctl(vcpu_fd, KVM_GET_REGS, &regs)",
+    "purpose": "Read the GPR register file. Used by snapshots to checkpoint vCPU state and by the GDB debug stub.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_REGS, &regs)", "expected_output": "0 on success; regs populated", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-sregs",
+    "command": "ioctl(vcpu_fd, KVM_SET_SREGS, &sregs)",
+    "purpose": "Set special registers — segment selectors, control registers (CR0..CR4, CR8), GDTR/IDTR, EFER, APIC base. Used at boot to set up protected/long mode and during snapshot restore.",
+    "flags": [{"name": "sregs", "value": "struct kvm_sregs", "doc": "Special-register struct including segment descriptors."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_SREGS, &sregs)", "expected_output": "0 on success", "scenario": "Set up long mode at boot"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-sregs",
+    "command": "ioctl(vcpu_fd, KVM_GET_SREGS, &sregs)",
+    "purpose": "Read special registers. Pairs with KVM_SET_SREGS for snapshot save.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_SREGS, &sregs)", "expected_output": "0 on success", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-msrs",
+    "command": "ioctl(vcpu_fd, KVM_SET_MSRS, &msrs)",
+    "purpose": "Bulk-write MSRs. Variable-length kvm_msrs struct: nmsrs followed by entries[]. Returns the count actually written; entries past the failure point are skipped.",
+    "flags": [{"name": "nmsrs", "value": "u32", "doc": "Number of MSR entries."}, {"name": "entries", "value": "kvm_msr_entry[]", "doc": "Each: index + reserved + data (u64)."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_MSRS, msrs_buf)", "expected_output": "Number of MSRs successfully written; -EFAULT on bad pointer", "scenario": "Restore MSRs from snapshot"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-msrs",
+    "command": "ioctl(vcpu_fd, KVM_GET_MSRS, &msrs)",
+    "purpose": "Bulk-read MSRs. Pre-fill entries with the MSR indices to read; KVM populates the .data fields.",
+    "flags": [{"name": "nmsrs", "value": "u32", "doc": "Number of entries to read."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_MSRS, msrs_buf)", "expected_output": "Number of MSRs read", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-msr-index-list",
+    "command": "ioctl(kvm_fd, KVM_GET_MSR_INDEX_LIST, &list)",
+    "purpose": "Enumerate MSRs the host KVM knows about. Variable-length result. Firecracker uses this to build the snapshot MSR set, intersected with CPU-template-allowed MSRs.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(kvm_fd, KVM_GET_MSR_INDEX_LIST, list)", "expected_output": "Number of MSRs in nmsrs; indices in entries[]", "scenario": "Compute snapshot-portable MSR set"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-cpuid2",
+    "command": "ioctl(vcpu_fd, KVM_SET_CPUID2, &cpuid)",
+    "purpose": "Define the CPUID leaves the guest sees. Variable-length: nent + entries[] (function/index/flags/eax/ebx/ecx/edx). Firecracker computes this from the chosen CPU template and the host's KVM_GET_SUPPORTED_CPUID intersection.",
+    "flags": [{"name": "nent", "value": "u32", "doc": "Number of CPUID entries."}, {"name": "entries", "value": "kvm_cpuid_entry2[]", "doc": "Each: function, index, flags, eax/ebx/ecx/edx."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_CPUID2, cpuid_buf)", "expected_output": "0 on success; -E2BIG if too many entries", "scenario": "Apply CPU template at vCPU init"}],
+    "source_ids": ["kvm-api", "fc-docs-cpu-templates"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-supported-cpuid",
+    "command": "ioctl(kvm_fd, KVM_GET_SUPPORTED_CPUID, &cpuid)",
+    "purpose": "Enumerate CPUID features KVM knows it can virtualize on this host. Firecracker uses the result as the universe from which CPU templates pick.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(kvm_fd, KVM_GET_SUPPORTED_CPUID, cpuid_buf)", "expected_output": "0 on success; nent populated", "scenario": "CPU template baseline computation"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-fpu",
+    "command": "ioctl(vcpu_fd, KVM_SET_FPU, &fpu)",
+    "purpose": "Set legacy FPU/SSE state (fxsave-format). Snapshots use this on hosts without XSAVE2 support.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_FPU, &fpu)", "expected_output": "0 on success", "scenario": "Snapshot restore on legacy host"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-fpu",
+    "command": "ioctl(vcpu_fd, KVM_GET_FPU, &fpu)",
+    "purpose": "Read legacy FPU/SSE state.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_FPU, &fpu)", "expected_output": "0 on success", "scenario": "Snapshot save (legacy)"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-xsave2",
+    "command": "ioctl(vcpu_fd, KVM_SET_XSAVE2, &xsave)",
+    "purpose": "Set extended-state (XSAVE) area. Variable-size — query KVM_CHECK_EXTENSION(KVM_CAP_XSAVE2) for the size on this host. Required for AVX/AVX-512 state.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_XSAVE2, xsave_buf)", "expected_output": "0 on success", "scenario": "Snapshot restore"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-xsave2",
+    "command": "ioctl(vcpu_fd, KVM_GET_XSAVE2, &xsave)",
+    "purpose": "Read extended-state area. Buffer size from KVM_CAP_XSAVE2 query.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_XSAVE2, xsave_buf)", "expected_output": "0 on success", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-xcrs",
+    "command": "ioctl(vcpu_fd, KVM_SET_XCRS, &xcrs)",
+    "purpose": "Set the extended control registers (XCR0). Determines which XSAVE features are enabled. Restored as part of snapshot.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_XCRS, &xcrs)", "expected_output": "0 on success; -EINVAL on bad XCR0 mask", "scenario": "Snapshot restore"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-xcrs",
+    "command": "ioctl(vcpu_fd, KVM_GET_XCRS, &xcrs)",
+    "purpose": "Read extended control registers.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_XCRS, &xcrs)", "expected_output": "0 on success", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-lapic",
+    "command": "ioctl(vcpu_fd, KVM_SET_LAPIC, &state)",
+    "purpose": "Restore Local APIC register file (1 KiB). Required for snapshot consistency — preserves pending interrupts and timer state.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_LAPIC, &lapic_state)", "expected_output": "0 on success", "scenario": "Snapshot restore"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-lapic",
+    "command": "ioctl(vcpu_fd, KVM_GET_LAPIC, &state)",
+    "purpose": "Read Local APIC register file.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_LAPIC, &lapic_state)", "expected_output": "0 on success", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-mp-state",
+    "command": "ioctl(vcpu_fd, KVM_SET_MP_STATE, &mp_state)",
+    "purpose": "Set vCPU MP state (RUNNABLE / HALTED / etc.). Snapshot restore uses this so a halted vCPU stays halted on resume.",
+    "flags": [{"name": "mp_state", "value": "KVM_MP_STATE_*", "doc": "Enum: RUNNABLE, UNINITIALIZED, INIT_RECEIVED, HALTED, SIPI_RECEIVED, STOPPED, CHECK_STOP, OPERATING, LOAD."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_MP_STATE, &(struct kvm_mp_state){.mp_state=KVM_MP_STATE_RUNNABLE})", "expected_output": "0 on success", "scenario": "vCPU init or snapshot restore"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-mp-state",
+    "command": "ioctl(vcpu_fd, KVM_GET_MP_STATE, &mp_state)",
+    "purpose": "Read vCPU MP state.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_MP_STATE, &mp_state)", "expected_output": "0 on success", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-vcpu-events",
+    "command": "ioctl(vcpu_fd, KVM_SET_VCPU_EVENTS, &events)",
+    "purpose": "Restore pending exceptions, interrupts, NMIs, and SMI state. Critical for snapshot consistency — without this, an in-flight exception is lost on resume.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_VCPU_EVENTS, &events)", "expected_output": "0 on success", "scenario": "Snapshot restore"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-vcpu-events",
+    "command": "ioctl(vcpu_fd, KVM_GET_VCPU_EVENTS, &events)",
+    "purpose": "Read pending exception/interrupt/NMI/SMI state.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_VCPU_EVENTS, &events)", "expected_output": "0 on success", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-debugregs",
+    "command": "ioctl(vcpu_fd, KVM_SET_DEBUGREGS, &dregs)",
+    "purpose": "Set debug registers DR0..DR7. Used by snapshot restore and by the GDB stub for hardware breakpoints.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_DEBUGREGS, &dregs)", "expected_output": "0 on success", "scenario": "Snapshot restore or GDB hw-breakpoint set"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-debugregs",
+    "command": "ioctl(vcpu_fd, KVM_GET_DEBUGREGS, &dregs)",
+    "purpose": "Read debug registers.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_GET_DEBUGREGS, &dregs)", "expected_output": "0 on success", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-guest-debug",
+    "command": "ioctl(vcpu_fd, KVM_SET_GUEST_DEBUG, &dbg)",
+    "purpose": "Configure guest debug — single-step, software breakpoints, hardware breakpoints. When set, the vCPU returns KVM_EXIT_DEBUG to userspace on debug events. Powers `firecracker --gdb-socket` mode.",
+    "flags": [
+      {"name": "control", "value": "bitmask", "doc": "KVM_GUESTDBG_ENABLE | _SINGLESTEP | _USE_SW_BP | _USE_HW_BP | _INJECT_DB | _INJECT_BP."},
+      {"name": "arch.debugreg", "value": "u64[8]", "doc": "DR0..DR7 hardware-breakpoint setup."}
+    ],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_GUEST_DEBUG, &(struct kvm_guest_debug){.control=KVM_GUESTDBG_ENABLE|KVM_GUESTDBG_SINGLESTEP})", "expected_output": "0 on success", "scenario": "GDB single-step"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-tsc-khz",
+    "command": "ioctl(vcpu_fd, KVM_SET_TSC_KHZ, khz)",
+    "purpose": "Set the guest's TSC frequency. Required for snapshot restore on a host with a different TSC frequency. KVM_CAP_TSC_CONTROL must be supported.",
+    "flags": [{"name": "khz", "value": "u32", "doc": "TSC frequency in kilohertz."}],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_SET_TSC_KHZ, 2400000)", "expected_output": "0 on success; -ENOTTY if KVM_CAP_TSC_CONTROL absent", "scenario": "Snapshot restore on host with different TSC"}],
+    "source_ids": ["kvm-api", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-tsc-khz",
+    "command": "ioctl(vcpu_fd, KVM_GET_TSC_KHZ)",
+    "purpose": "Read the guest's TSC frequency in kHz.",
+    "flags": [],
+    "examples": [{"invocation": "khz = ioctl(vcpu_fd, KVM_GET_TSC_KHZ)", "expected_output": "Frequency in kHz, or 0 if unset; -ENOTTY if unsupported", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-arm-vcpu-init",
+    "command": "ioctl(vcpu_fd, KVM_ARM_VCPU_INIT, &init)",
+    "purpose": "ARM-only. Configure the vCPU's target processor and feature flags before first KVM_RUN. Firecracker calls this for each ARM vCPU during init.",
+    "flags": [
+      {"name": "target", "value": "KVM_ARM_TARGET_*", "doc": "Target processor (often KVM_ARM_TARGET_GENERIC_V8)."},
+      {"name": "features", "value": "u32[7] bitmask", "doc": "KVM_ARM_VCPU_PSCI_0_2, KVM_ARM_VCPU_PMU_V3, etc."}
+    ],
+    "examples": [{"invocation": "ioctl(vcpu_fd, KVM_ARM_VCPU_INIT, &(struct kvm_vcpu_init){.target=KVM_ARM_TARGET_GENERIC_V8, .features={1<<KVM_ARM_VCPU_PSCI_0_2}})", "expected_output": "0 on success; -EINVAL on unsupported target", "scenario": "ARM vCPU init"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-arm-preferred-target",
+    "command": "ioctl(vm_fd, KVM_ARM_PREFERRED_TARGET, &init)",
+    "purpose": "ARM-only. Returns the preferred CPU target for this host (used as input to KVM_ARM_VCPU_INIT).",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_ARM_PREFERRED_TARGET, &init)", "expected_output": "0 on success; init.target populated", "scenario": "ARM init handshake"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-create-device",
+    "command": "ioctl(vm_fd, KVM_CREATE_DEVICE, &dev)",
+    "purpose": "Create an in-kernel device. On ARM, used for the GIC (KVM_DEV_TYPE_ARM_VGIC_V3) and PMU. Firecracker uses this only on ARM.",
+    "flags": [
+      {"name": "type", "value": "KVM_DEV_TYPE_*", "doc": "Device type."},
+      {"name": "fd", "value": "out", "doc": "Returned device fd."},
+      {"name": "flags", "value": "u32", "doc": "KVM_CREATE_DEVICE_TEST to probe support without creating."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_CREATE_DEVICE, &(struct kvm_create_device){.type=KVM_DEV_TYPE_ARM_VGIC_V3})", "expected_output": "0 on success; dev.fd usable for KVM_SET_DEVICE_ATTR", "scenario": "ARM GIC creation"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-device-attr",
+    "command": "ioctl(dev_fd, KVM_SET_DEVICE_ATTR, &attr)",
+    "purpose": "Configure an in-kernel device. ARM GIC distributor base address, redistributor regions, etc., are set this way.",
+    "flags": [
+      {"name": "group", "value": "u32", "doc": "Attribute group (device-specific)."},
+      {"name": "attr", "value": "u64", "doc": "Attribute identifier."},
+      {"name": "addr", "value": "u64 ptr", "doc": "Pointer to attribute value."}
+    ],
+    "examples": [{"invocation": "ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &attr)", "expected_output": "0 on success", "scenario": "Set GIC distributor base"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-tss-addr",
+    "command": "ioctl(vm_fd, KVM_SET_TSS_ADDR, addr)",
+    "purpose": "x86 Intel-only. Set the address of a 3-page region used by Intel VT-x for guest-state save (TSS area). Must be set before first KVM_RUN. Firecracker hardcodes this to 0xfffbd000 (matches QEMU convention).",
+    "flags": [{"name": "addr", "value": "u64 (3 contiguous pages)", "doc": "Guest physical address."}],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_SET_TSS_ADDR, 0xfffbd000)", "expected_output": "0 on success", "scenario": "Intel x86 init prerequisite"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-identity-map-addr",
+    "command": "ioctl(vm_fd, KVM_SET_IDENTITY_MAP_ADDR, &addr)",
+    "purpose": "x86 Intel-only. Set the address of a 1-page identity map for guest paging during early boot. Firecracker sets this to 0xfffbc000 (page below TSS area).",
+    "flags": [{"name": "addr", "value": "u64", "doc": "Guest physical address."}],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_SET_IDENTITY_MAP_ADDR, &(__u64){0xfffbc000})", "expected_output": "0 on success", "scenario": "Intel x86 init"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-pit-enable",
+    "command": "ioctl(vm_fd, KVM_CREATE_PIT2, &cfg)",
+    "purpose": "Create the in-kernel Programmable Interval Timer (8254). Firecracker uses this for legacy timer interrupts; the alternative (userspace PIT) would generate excessive vCPU exits.",
+    "flags": [{"name": "flags", "value": "0 or KVM_PIT_SPEAKER_DUMMY", "doc": "Bitmask."}],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_CREATE_PIT2, &(struct kvm_pit_config){.flags=0})", "expected_output": "0 on success", "scenario": "Legacy timer setup"}],
+    "source_ids": ["kvm-api", "fc-docs-design"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-set-clock",
+    "command": "ioctl(vm_fd, KVM_SET_CLOCK, &clock)",
+    "purpose": "Set the kvmclock value. Used during snapshot restore to maintain monotonic guest time across pause/resume.",
+    "flags": [
+      {"name": "clock", "value": "u64 ns", "doc": "Wall-clock value (nanoseconds since epoch)."},
+      {"name": "flags", "value": "KVM_CLOCK_TSC_STABLE | _REALTIME | _HOST_TSC", "doc": "Bitmask."}
+    ],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_SET_CLOCK, &(struct kvm_clock_data){.clock=ns})", "expected_output": "0 on success", "scenario": "Snapshot restore — adjust guest's view of wall time"}],
+    "source_ids": ["kvm-api"]
+  },
+  {
+    "id": "firecracker.kvm.cmd.kvm-get-clock",
+    "command": "ioctl(vm_fd, KVM_GET_CLOCK, &clock)",
+    "purpose": "Read the current kvmclock value. Snapshot save records this.",
+    "flags": [],
+    "examples": [{"invocation": "ioctl(vm_fd, KVM_GET_CLOCK, &clock)", "expected_output": "0 on success; clock.clock populated", "scenario": "Snapshot save"}],
+    "source_ids": ["kvm-api"]
+  }
+]

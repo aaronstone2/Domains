@@ -1,0 +1,110 @@
+[
+  {
+    "id": "firecracker.snapshots.cfg.create.snapshot-type",
+    "scope": "snapshot-create",
+    "key": "snapshot_type",
+    "type": "enum",
+    "default_value": "Full",
+    "description": "Full = capture all guest memory; Diff = capture only pages dirtied since last snapshot. Diff requires track_dirty_pages=true on the original boot.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.create.snapshot-path",
+    "scope": "snapshot-create",
+    "key": "snapshot_path",
+    "type": "string (host path)",
+    "default_value": null,
+    "description": "Output path for the VM-state metadata file. Contains KVM state, device state, vCPU registers, MSRs, CPUID, and a 64-bit CRC of the file contents.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.create.mem-file-path",
+    "scope": "snapshot-create",
+    "key": "mem_file_path",
+    "type": "string (host path)",
+    "default_value": null,
+    "description": "Output path for the guest memory file. Size = guest RAM for Full; smaller for Diff. Must remain on host for the lifetime of resumed microVMs that point at it.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.create.version",
+    "scope": "snapshot-create",
+    "key": "version",
+    "type": "string|null",
+    "default_value": "current Firecracker version",
+    "description": "Optional snapshot format version — emit an older format for backward compatibility with older Firecracker readers.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-versioning"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.load.snapshot-path",
+    "scope": "snapshot-load",
+    "key": "snapshot_path",
+    "type": "string (host path)",
+    "default_value": null,
+    "description": "Path to the VM-state file to restore from. Firecracker validates the embedded CRC before proceeding.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.load.mem-backend.backend-type",
+    "scope": "snapshot-load",
+    "key": "mem_backend.backend_type",
+    "type": "enum",
+    "default_value": null,
+    "description": "File = MAP_PRIVATE the memory file (fast restore, file pinned for VM lifetime). Uffd = userfaultfd-driven on-demand load (orchestrator-supplied page handler).",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.load.mem-backend.backend-path",
+    "scope": "snapshot-load",
+    "key": "mem_backend.backend_path",
+    "type": "string",
+    "default_value": null,
+    "description": "For File backend: path to the memory file. For Uffd backend: path to a Unix socket where Firecracker sends the userfaultfd file descriptor to the handler process.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.load.enable-diff-snapshots",
+    "scope": "snapshot-load",
+    "key": "enable_diff_snapshots",
+    "type": "bool",
+    "default_value": "false",
+    "description": "After restore, re-enable KVM_MEM_LOG_DIRTY_PAGES so the resumed microVM can produce further diff snapshots. Required if you plan to take diff snapshots from the restored VM.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.load.resume-vm",
+    "scope": "snapshot-load",
+    "key": "resume_vm",
+    "type": "bool",
+    "default_value": "false",
+    "description": "When true, automatically transition VM to Resumed after restore. When false (default), VM stays Paused — call PATCH /vm{state=Resumed} when ready.",
+    "source_ids": ["fc-swagger-spec"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.machine-config.track-dirty-pages",
+    "scope": "machine-config",
+    "key": "track_dirty_pages",
+    "type": "bool",
+    "default_value": "false",
+    "description": "Sets KVM_MEM_LOG_DIRTY_PAGES on the guest RAM region. REQUIRED for taking diff snapshots later. Slight per-write overhead from KVM dirty-bit page-walk.",
+    "source_ids": ["fc-swagger-spec", "fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.host.cgroup-v2",
+    "scope": "host-prerequisite",
+    "key": "cgroup-v2",
+    "type": "bool",
+    "default_value": "true (modern distros)",
+    "description": "Snapshots restore much faster on cgroups v2 hosts. v1 imposes a significant latency tax (firecracker-microvm/firecracker#2129). Production deployments must use v2.",
+    "source_ids": ["fc-docs-snapshot-support"]
+  },
+  {
+    "id": "firecracker.snapshots.cfg.host.kvm-cap-tsc-control",
+    "scope": "host-prerequisite",
+    "key": "KVM_CAP_TSC_CONTROL",
+    "type": "bool",
+    "default_value": "varies by host kernel",
+    "description": "Required on the RESTORE host if the original snapshot was taken on a host with a different TSC frequency. Without it, restore fails with a TSC mismatch error.",
+    "source_ids": ["fc-docs-snapshot-support"]
+  }
+]

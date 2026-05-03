@@ -1,0 +1,260 @@
+[
+  {
+    "id": "firecracker.networking.fm.virtio-net-no-nack-lro",
+    "symptom": "FreeBSD (or other guest) disables Large Receive Offload (LRO), but Firecracker keeps sending 1536+ byte segments anyway. Guest virtio-net device hangs.",
+    "error_patterns": ["LRO not honored", "guest network hung", "virtio-net oversized frame"],
+    "root_cause_class": "virtio-feature-negotiation-bug",
+    "affected_concepts": ["firecracker.networking.tap-backend", "firecracker.networking.no-multi-queue"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm LRO is being NACKed by the guest driver", "command": "guest$ ethtool -k eth0 | grep large-receive-offload", "expected": "off [fixed] when guest doesn't support LRO", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"},
+      {"step": 2, "action": "Capture frame sizes Firecracker is sending", "command": "host$ tcpdump -i tap0 -nn -e -vvv | head -100", "expected": "Frames >1500 bytes (LRO-aggregated) when guest expects MTU-sized only", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Track upstream issue #3905; upgrade to a Firecracker version with the LRO-respect fix", "command": "Monitor github.com/firecracker-microvm/firecracker/issues/3905; update binary when fixed", "validation": "Frames respect guest's NACK", "rollback": "Pin to prior version", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"},
+      {"step": 2, "action": "Workaround: switch guest OS to Linux which advertises LRO support", "command": "Replace FreeBSD guest image with Linux", "validation": "Network functional", "rollback": null, "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/3905"]
+  },
+  {
+    "id": "firecracker.networking.fm.tap-cap-net-admin-required",
+    "symptom": "Firecracker fails to attach a TAP device with EPERM. Running uid lacks CAP_NET_ADMIN.",
+    "error_patterns": ["TUNSETIFF EPERM", "permission denied", "CAP_NET_ADMIN"],
+    "root_cause_class": "missing-capability",
+    "affected_concepts": ["firecracker.networking.tap-backend", "firecracker.networking.cfg.network-interface.host-dev-name"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check uid capabilities", "command": "getpcaps <fc-pid>; capsh --print", "expected": "CAP_NET_ADMIN should be present (or TAP must be pre-created by privileged user)", "source_id": "fc-docs-network-setup"},
+      {"step": 2, "action": "Verify TAP exists and is accessible", "command": "ip link show <tap-name>; ls -la /dev/net/tun", "expected": "TAP exists; /dev/net/tun rw for uid", "source_id": "fc-docs-jailer"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Pre-create TAP under privileged user; Firecracker only opens, doesn't create", "command": "sudo ip tuntap add <tap> mode tap user <fc-uid>; sudo ip link set <tap> up", "validation": "Firecracker attaches without CAP_NET_ADMIN", "rollback": null, "source_id": "fc-docs-network-setup"},
+      {"step": 2, "action": "Or grant CAP_NET_ADMIN to the binary (less secure)", "command": "sudo setcap cap_net_admin+ep /usr/bin/firecracker", "validation": "Firecracker can create TAPs itself", "rollback": "sudo setcap -r /usr/bin/firecracker", "source_id": "fc-docs-network-setup"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-network-setup", "fc-docs-jailer"]
+  },
+  {
+    "id": "firecracker.networking.fm.ip-forward-disabled",
+    "symptom": "Guest can't reach the internet through the host. Packets from the TAP never make it to the egress interface. Host has IPv4 forwarding disabled.",
+    "error_patterns": ["no route to host", "100% packet loss to internet"],
+    "root_cause_class": "host-routing-disabled",
+    "affected_concepts": ["firecracker.networking.cfg.host-sysctl.ip-forward", "firecracker.networking.nat-routing-pattern"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check host ip_forward sysctl", "command": "sysctl net.ipv4.ip_forward", "expected": "Should be 1; if 0 → root cause", "source_id": "fc-docs-network-setup"},
+      {"step": 2, "action": "Trace whether packets reach the TAP", "command": "host$ tcpdump -i tap0 -nn", "expected": "Outbound packets visible from guest", "source_id": "fc-docs-network-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Enable IPv4 forwarding (runtime + persistent)", "command": "echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward; echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf", "validation": "Guest reaches internet", "rollback": "echo 0 > /proc/sys/net/ipv4/ip_forward", "source_id": "fc-docs-network-setup"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.fm.nat-masquerade-rule-missing",
+    "symptom": "Guest packets reach the host's egress interface but have non-routable source IPs. NAT masquerade rule isn't installed.",
+    "error_patterns": ["packets dropped at upstream router", "source IP unrouteable"],
+    "root_cause_class": "missing-nat-rule",
+    "affected_concepts": ["firecracker.networking.nat-routing-pattern", "firecracker.networking.cmd.nft-masquerade-rule"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect nftables/iptables NAT rules", "command": "sudo nft list ruleset; OR sudo iptables-nft -t nat -S POSTROUTING", "expected": "MASQUERADE rule for guest IP/subnet → egress iface", "source_id": "fc-docs-network-setup"},
+      {"step": 2, "action": "Trace upstream packet src", "command": "host$ tcpdump -i eth0 -nn 'src host <guest-ip>'", "expected": "Without MASQUERADE: packets visible with raw guest IP (172.16.x.x — non-routable)", "source_id": "fc-docs-network-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Install MASQUERADE rule", "command": "sudo nft add table firecracker; sudo nft 'add chain firecracker postrouting { type nat hook postrouting priority srcnat; policy accept; }'; sudo nft add rule firecracker postrouting ip saddr <guest-ip> oifname <egress> counter masquerade; sudo nft add rule firecracker filter iifname <tap> oifname <egress> accept", "validation": "Guest reaches internet", "rollback": "sudo nft delete table firecracker", "source_id": "fc-docs-network-setup"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-network-setup"]
+  },
+  {
+    "id": "firecracker.networking.fm.mmds-unreachable-no-route",
+    "symptom": "Guest gets connection-refused or no-route when trying to fetch from MMDS at 169.254.169.254 (or configured IP). Guest hasn't added a route for the MMDS IP.",
+    "error_patterns": ["connection refused 169.254.169.254", "no route to host"],
+    "root_cause_class": "guest-routing-missing",
+    "affected_concepts": ["firecracker.networking.mmds-tightly-coupled-to-iface", "firecracker.networking.mmds-default-ip"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check guest routes", "command": "guest$ ip route get <mmds-ip>", "expected": "Should resolve to a network interface", "source_id": "fc-docs-mmds-user-guide"},
+      {"step": 2, "action": "Verify MMDS network interface configuration", "command": "GET /mmds/config", "expected": "network_interfaces[] non-empty", "source_id": "fc-swagger-spec"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add route in guest", "command": "guest$ ip route add <mmds-ip> dev <iface>", "validation": "MMDS reachable", "rollback": "guest$ ip route del <mmds-ip>", "source_id": "fc-docs-mmds-user-guide"},
+      {"step": 2, "action": "Make persistent via init script", "command": "Add the route command to /etc/network/if-up.d or systemd-networkd config", "validation": "Survives reboot", "rollback": null, "source_id": "fc-docs-mmds-user-guide"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.networking.fm.mmds-v1-ssrf-vulnerability",
+    "symptom": "Untrusted guest workload (e.g., AI agent fetching arbitrary URLs) reads sensitive metadata from MMDS via SSRF. MMDS V1 has no token requirement.",
+    "error_patterns": ["unauthorized metadata exfiltration", "SSRF to MMDS"],
+    "root_cause_class": "mmds-v1-deprecated-no-auth",
+    "affected_concepts": ["firecracker.networking.mmds-v1-vs-v2", "firecracker.vmm.mmds-imdsv2"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check MMDS version", "command": "GET /mmds/config | jq '.version'", "expected": "If 'V1' (or absent → defaults to V1) → vulnerability confirmed", "source_id": "fc-docs-mmds-user-guide"},
+      {"step": 2, "action": "Check Firecracker metrics for evidence of token abuse", "command": "Inspect mmds.rx_no_token + mmds.rx_invalid_token counters in metrics output", "expected": "Non-zero → workloads accessing without tokens", "source_id": "fc-docs-mmds-user-guide"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Migrate MMDS to V2 (session-token-required)", "command": "PUT /mmds/config {network_interfaces: [...], version: 'V2', ipv4_address: '169.254.169.254'}", "validation": "MMDS rejects unauthenticated GETs; rx_no_token metric stops growing for new workloads", "rollback": "Revert to V1 (insecure)", "source_id": "fc-docs-mmds-user-guide"},
+      {"step": 2, "action": "Audit guest workloads to use the V2 PUT-token-then-GET pattern", "command": "Update guest tooling to issue PUT /latest/api/token first", "validation": "Guest reads succeed via tokenized path", "rollback": null, "source_id": "fc-docs-mmds-user-guide"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.networking.fm.mmds-data-lost-on-snapshot",
+    "symptom": "After snapshot restore, MMDS GETs return empty/old data. The MMDS data store is intentionally not persisted across snapshots.",
+    "error_patterns": ["MMDS data missing after restore", "metadata empty"],
+    "root_cause_class": "intentional-non-persistence",
+    "affected_concepts": ["firecracker.networking.mmds-snapshot-non-persist", "firecracker.snapshots.snapshot-files"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm MMDS configuration survived (only data is dropped)", "command": "GET /mmds/config", "expected": "version, network_interfaces, ipv4_address all preserved; data store empty", "source_id": "fc-docs-mmds-user-guide"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Orchestrator must reseed MMDS after every restore", "command": "PUT /mmds <fresh-payload> right after PUT /snapshot/load", "validation": "MMDS GET returns expected data", "rollback": null, "source_id": "fc-docs-mmds-user-guide"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-mmds-user-guide"]
+  },
+  {
+    "id": "firecracker.networking.fm.single-queue-tap-throughput-cap",
+    "symptom": "VirtIO/net throughput per microVM caps at ~10-15 Gbps despite faster host NIC. TAP backend is single-queue; no IFF_MULTI_QUEUE.",
+    "error_patterns": ["network throughput plateau", "single-queue bottleneck"],
+    "root_cause_class": "design-constraint",
+    "affected_concepts": ["firecracker.networking.no-multi-queue", "firecracker.networking.network-perf-considerations"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm TAP queue count", "command": "ip -d link show <tap>; ethtool -l <tap>", "expected": "Combined: 1 (single-queue)", "source_id": "fc-docs-network-setup"},
+      {"step": 2, "action": "Measure with iperf3", "command": "iperf3 -c <peer> -t 60 -P 4", "expected": "Plateau around single-queue limit", "source_id": "fc-docs-network-perf"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Scale by adding more microVMs (each with its own TAP)", "command": "Run N microVMs, distribute load across them", "validation": "Aggregate throughput scales linearly", "rollback": null, "source_id": "fc-docs-design"},
+      {"step": 2, "action": "Tune host TAP txqueuelen for burst absorption", "command": "ip link set <tap> txqueuelen 10000", "validation": "Bursts handled; sustained throughput unchanged", "rollback": "ip link set <tap> txqueuelen <prior>", "source_id": "fc-docs-network-perf"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-network-setup", "fc-docs-network-perf"]
+  },
+  {
+    "id": "firecracker.networking.fm.rate-limit-req-size-exceeds-bucket",
+    "symptom": "Network requests larger than the rate-limiter bucket size are silently never permitted — bucket can't accumulate enough tokens for one request.",
+    "error_patterns": ["request stalled", "rate limit starvation"],
+    "root_cause_class": "rate-limiter-misconfiguration",
+    "affected_concepts": ["firecracker.networking.token-bucket-rate-limit", "firecracker.networking.cfg.rate-limiter.bandwidth.size"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check rate-limiter sizing", "command": "GET /vm/config | jq '.\"network-interfaces\"[].rx_rate_limiter, .tx_rate_limiter'", "expected": "size should be ≥ max single request size (typically MTU * burst factor)", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/259"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Increase rate limiter bucket size to exceed any single legitimate request", "command": "PATCH /network-interfaces/<id> {tx_rate_limiter: {bandwidth: {size: <larger>, refill_time: <ms>}}}", "validation": "Requests succeed", "rollback": "Restore prior limiter", "source_id": "fc-swagger-spec"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/259"]
+  },
+  {
+    "id": "firecracker.networking.fm.vsock-connect-before-guest-init",
+    "symptom": "Host initiates vsock CONNECT immediately after InstanceStart but Firecracker closes the host-side socket before the guest agent finishes booting and starts listening.",
+    "error_patterns": ["vsock connection refused", "Firecracker closed UDS prematurely"],
+    "root_cause_class": "lifecycle-race",
+    "affected_concepts": ["firecracker.vsock.host-initiated-handshake", "firecracker.vsock.virtio-vsock-device"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Trace timing — when did guest agent listen vs when did host CONNECT", "command": "Add timestamp logging on both sides; correlate with FC log", "expected": "Host CONNECT precedes guest listen by N ms", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1253"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Host should wait for a guest-readiness signal before CONNECT", "command": "Have guest write a sentinel file or send a vsock packet from a known-listening port; host polls before CONNECT", "validation": "No more premature closes", "rollback": null, "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1253"},
+      {"step": 2, "action": "Or implement retry-with-backoff on the host CONNECT side", "command": "Wrap CONNECT in a 100ms-interval retry loop with max 30s timeout", "validation": "Resilient to early-init races", "rollback": null, "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1253"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/1253"]
+  },
+  {
+    "id": "firecracker.networking.fm.vsock-stream-read-error-mid-flight",
+    "symptom": "Active vsock connection terminates mid-flight with a stream read error — Firecracker fails to read from the backing AF_UNIX stream, possibly because the host peer closed it abruptly.",
+    "error_patterns": ["error reading from backing stream", "vsock connection dropped"],
+    "root_cause_class": "stream-cleanup-race",
+    "affected_concepts": ["firecracker.vsock.uds-multiplexing", "firecracker.vsock.virtio-vsock-device"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check FC log for backing-stream errors", "command": "grep -i 'backing stream' <fc-log>", "expected": "Error message identifying the failing channel", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"},
+      {"step": 2, "action": "Inspect host peer process state at the time", "command": "ps -p <host-peer-pid>; check for crashes/restarts", "expected": "Peer may have died", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Make host peers fault-tolerant — close UDS gracefully on shutdown", "command": "Wrap UDS use in try/finally; explicit close()", "validation": "Connections close cleanly on peer exit", "rollback": null, "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"},
+      {"step": 2, "action": "Implement guest-side reconnect logic", "command": "Guest agent retries vsock connect on EPIPE / ECONNRESET", "validation": "Transient stream errors recover", "rollback": null, "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"}
+    ],
+    "confidence": 0.6,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/1751"]
+  },
+  {
+    "id": "firecracker.networking.fm.uds-path-collision-clones",
+    "symptom": "Two restored clones of the same snapshot collide on the same vsock UDS path. Second restore fails (or worse: succeeds and steps on the first clone's UDS).",
+    "error_patterns": ["UDS path in use", "address already in use", "vsock collision"],
+    "root_cause_class": "snapshot-clone-uds-collision",
+    "affected_concepts": ["firecracker.snapshots.snapshot-clone", "firecracker.vsock.uds-path-override-on-restore"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect both clones' configured UDS paths", "command": "GET /vm/config (on each)", "expected": "Same uds_path → collision", "source_id": "fc-docs-vsock"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Use vsock_override on snapshot/load to give each clone a unique UDS path", "command": "PUT /snapshot/load {..., vsock_override: {uds_path: '/clones/v.sock.<id>'}}", "validation": "Each clone has its own UDS", "rollback": null, "source_id": "fc-docs-vsock"},
+      {"step": 2, "action": "Use jailer per clone — each gets its own chroot, paths are naturally isolated", "command": "Wrap each FC in jailer with unique --id (which becomes the chroot leaf)", "validation": "Per-chroot UDS paths can't collide", "rollback": null, "source_id": "fc-docs-jailer"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-vsock"]
+  },
+  {
+    "id": "firecracker.networking.fm.missing-virtio-vsockets-config",
+    "symptom": "Guest doesn't see /dev/vsock. PUT /vsock attached the device on Firecracker side but guest kernel lacks CONFIG_VIRTIO_VSOCKETS.",
+    "error_patterns": ["/dev/vsock missing", "no virtio-vsock driver"],
+    "root_cause_class": "guest-kernel-config-missing",
+    "affected_concepts": ["firecracker.security.cfg.guest-kernel.config-virtio-vsockets", "firecracker.vsock.virtio-vsock-device"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check guest kernel config", "command": "guest$ zcat /proc/config.gz | grep CONFIG_VIRTIO_VSOCKETS", "expected": "=y or =m", "source_id": "fc-docs-vsock"},
+      {"step": 2, "action": "Verify /dev/vsock", "command": "guest$ ls -la /dev/vsock", "expected": "Char device should exist", "source_id": "fc-docs-vsock"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Rebuild guest kernel with CONFIG_VIRTIO_VSOCKETS=y", "command": "Edit .config; make olddefconfig; make -j", "validation": "/dev/vsock appears", "rollback": "Revert kernel", "source_id": "fc-docs-vsock"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-vsock", "fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.networking.fm.vhost-vsock-host-module-missing",
+    "symptom": "PUT /vsock fails with ENOENT or ENODEV. Host kernel lacks CONFIG_VHOST_VSOCK module — even though Firecracker bypasses vhost code, the module needs to be loaded.",
+    "error_patterns": ["vhost-vsock module not loaded", "ENODEV"],
+    "root_cause_class": "host-kernel-module-missing",
+    "affected_concepts": ["firecracker.vsock.virtio-vsock-device"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check host module", "command": "lsmod | grep vhost; modinfo vhost_vsock", "expected": "vhost_vsock available", "source_id": "fc-docs-vsock"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Load the module", "command": "sudo modprobe vhost_vsock; echo 'vhost_vsock' | sudo tee /etc/modules-load.d/vhost-vsock.conf", "validation": "PUT /vsock succeeds", "rollback": "sudo modprobe -r vhost_vsock", "source_id": "fc-docs-vsock"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-vsock"]
+  },
+  {
+    "id": "firecracker.networking.fm.guest-initiated-vsock-no-host-listener",
+    "symptom": "Guest tries to vsock-connect to host CID=2 port N but receives VIRTIO_VSOCK_OP_RST. No process is listening on the host UDS at <uds_path>_<N>.",
+    "error_patterns": ["vsock RST", "ECONNREFUSED", "no listener at v.sock_<port>"],
+    "root_cause_class": "missing-host-listener",
+    "affected_concepts": ["firecracker.vsock.guest-initiated-per-port-uds", "firecracker.vsock.uds-multiplexing"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check whether host listener exists", "command": "ss -lx | grep <uds_path>_<port>", "expected": "Listener present (LISTEN state on the UDS)", "source_id": "fc-docs-vsock"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Pre-create the host-side AF_UNIX listener BEFORE guest connects", "command": "host$ socat - UNIX-LISTEN:<uds_path>_<port>,fork", "validation": "Guest connect succeeds", "rollback": null, "source_id": "fc-docs-vsock"},
+      {"step": 2, "action": "Build a generic per-port spawner on the host (e.g. systemd socket activation on UDS paths)", "command": "Configure systemd .socket unit for each expected port", "validation": "Listeners on demand", "rollback": null, "source_id": "fc-docs-vsock"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-vsock"]
+  }
+]

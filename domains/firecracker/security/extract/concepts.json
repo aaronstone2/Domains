@@ -1,0 +1,138 @@
+[
+  {
+    "id": "firecracker.security.seccomp-boundary",
+    "name": "Seccomp boundary",
+    "kind": "security-mechanism",
+    "description": "Seccomp BPF filters limit the host syscalls Firecracker can issue. Loaded per-thread immediately before that thread runs guest code (VMM thread before vCPU dispatch; vCPU threads before KVM_RUN; API thread before HTTP server start). The primary defense-in-depth between guest-controlled code and the host kernel — assumes the guest has rooted the VMM and tries to expand to the host.",
+    "source_ids": ["fc-docs-seccomp", "fc-docs-design"],
+    "aliases": ["seccomp-bpf"]
+  },
+  {
+    "id": "firecracker.security.default-seccomp-filter",
+    "name": "Default seccomp filter (embedded)",
+    "kind": "policy",
+    "description": "Firecracker embeds compiled seccomp BPF filters at build time. Source JSON lives at resources/seccomp/<arch>_musl.json in the repo. The build step uses seccompiler-bin to compile JSON → bitcode → embed in the binary. Production deployments use these defaults — overriding is for experimental targets or quick mitigations only.",
+    "source_ids": ["fc-docs-seccomp"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.custom-seccomp-filter",
+    "name": "Custom seccomp filter (--seccomp-filter)",
+    "kind": "feature",
+    "description": "Override the embedded default with a custom seccompiler-bin-compiled file via --seccomp-filter <path>. Use cases: GNU libc experimental builds, debug builds that need extra syscalls (fcntl F_GETFD), emergency mitigation of an unallowed syscall in production. CAUTION: misconfiguration can disable the boundary entirely.",
+    "source_ids": ["fc-docs-seccomp"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.no-seccomp-flag",
+    "name": "--no-seccomp (development only)",
+    "kind": "anti-pattern",
+    "description": "Disables ALL seccomp filtering. Marked NOT FOR PRODUCTION. Useful for quickly prototyping Firecracker changes that use new syscalls. Often paired with --gdb-socket since GDB-required syscalls are blocked by default filter.",
+    "source_ids": ["fc-docs-seccomp"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.seccomp-debug-binary-gap",
+    "name": "Debug-binary seccomp gap",
+    "kind": "constraint",
+    "description": "Debug binaries and experimental GNU targets ship WITHOUT default seccomp filters installed — the build process skips embedding them since they're not for production. Implication: never run debug builds in untrusted environments. Verify with `firecracker --version` (release vs debug suffix).",
+    "source_ids": ["fc-docs-seccomp"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.seccompiler-bin",
+    "name": "Seccompiler-bin",
+    "kind": "tool",
+    "description": "Compiles seccomp filter JSON into serialized BPF bitcode consumed by Firecracker. CLI: `seccompiler-bin --target-arch <arch> --input-file <json> --output-file <bin>`. Library API also exposed for in-process compilation. Filters use a custom JSON schema with thread-name-keyed objects, each containing default-action + filter rules (syscall-name + arg conditions).",
+    "source_ids": ["fc-docs-seccompiler"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.seccomp-thread-key",
+    "name": "Thread-keyed seccomp filter structure",
+    "kind": "convention",
+    "description": "JSON filter file is keyed by thread-name string (vmm, api, vcpu) — Firecracker installs the matching policy per thread before that thread starts running. Lets the API thread allow HTTP-server syscalls (accept, recvfrom) that vCPU threads must NOT have.",
+    "source_ids": ["fc-docs-seccompiler"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.bpf-filter-bitcode-format",
+    "name": "BPF bitcode serialization format",
+    "kind": "data-structure",
+    "description": "Compiled filters are stored as bitcode (not raw BPF instructions). Firecracker deserializes the bitcode at startup and installs via prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, ...). Bitcode format isolates the BPF compiler from runtime — Firecracker doesn't need a BPF assembler embedded.",
+    "source_ids": ["fc-docs-seccompiler"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.kernel-support-policy",
+    "name": "Kernel support policy",
+    "kind": "policy",
+    "description": "Each Firecracker release commits to supporting specific HOST and GUEST kernel versions for a minimum of 2 years. ≥2 major versions of each kept simultaneously. New version added → oldest deprecated and removed in the next release after its end-of-support date. Going outside the matrix may work but is not validated by CI — frequent source of obscure boot/runtime failures.",
+    "source_ids": ["fc-docs-kernel-policy"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.host-kernel-matrix",
+    "name": "Host kernel matrix",
+    "kind": "compatibility",
+    "description": "Currently supported host kernels: v5.10 (since v1.0.0, end-of-support 2024-01-31) and v6.1 (since v1.5.0, end-of-support 2025-10-12). 4K page size only. Other kernels may run but are unvalidated.",
+    "source_ids": ["fc-docs-kernel-policy"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.guest-kernel-matrix",
+    "name": "Guest kernel matrix",
+    "kind": "compatibility",
+    "description": "Currently supported guest kernels: v5.10 (since v1.0.0, EOS 2024-01-31) and v6.1 (since v1.9.0, EOS 2026-09-02). Validation guest configs at resources/guest_configs/ in the repo. Microvm-specific kernels are vended by Amazon Linux at github.com/amazonlinux/linux under microvm-kernel-* tags.",
+    "source_ids": ["fc-docs-kernel-policy"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.minimal-boot-config",
+    "name": "Minimal guest boot Kconfig set",
+    "kind": "configuration",
+    "description": "Smallest guest-kernel CONFIG flags needed to boot. Initrd boot: CONFIG_BLK_DEV_INITRD=y + (aarch64 CONFIG_VIRTIO_MMIO=y | x86_64 CONFIG_KVM_GUEST=y). Block-device boot: CONFIG_VIRTIO_BLK=y + (x86_64: CONFIG_ACPI=y, CONFIG_PCI=y, CONFIG_KVM_GUEST=y). Optional console: CONFIG_SERIAL_8250_CONSOLE=y + CONFIG_PRINTK=y.",
+    "source_ids": ["fc-docs-kernel-policy"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.acpi-vs-mptable-boot",
+    "name": "ACPI vs MPTable boot transition",
+    "kind": "transition",
+    "description": "x86_64 only. Firecracker historically used MPTable + virtio-mmio.cmdline kernel-param hack to enumerate devices. Modern path: ACPI (CONFIG_ACPI=y, CONFIG_PCI=y in guest) supersedes both. Firecracker still supports legacy mode for back-compat — but if the guest kernel has BOTH enabled, devices are enumerated TWICE and the second init fails (harmless dmesg warnings; devices still work).",
+    "source_ids": ["fc-docs-kernel-policy"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.pci-transport-option",
+    "name": "VirtIO over PCI (--enable-pci)",
+    "kind": "feature",
+    "description": "x86_64 optional. --enable-pci flag at firecracker startup switches all VirtIO devices to PCI transport (vs default MMIO). Higher throughput + lower latency per device. Requires PCI-enabled guest kernel + REMOVING `pci=off` from boot_args (Firecracker auto-adds it when PCI is disabled).",
+    "source_ids": ["fc-docs-kernel-policy"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.default-boot-args",
+    "name": "Default kernel boot args",
+    "kind": "configuration",
+    "description": "Default boot_args: `reboot=k panic=1 nomodule 8250.nr_uarts=0 i8042.noaux i8042.nomux i8042.dumbkbd swiotlb=noforce`. Each flag tuned for fast boot or for the i8042-driven shutdown path. + `pci=off` appended unless --enable-pci. User can override entirely via /boot-source.boot_args.",
+    "source_ids": ["fc-docs-kernel-policy"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.snapshot-cross-kernel",
+    "name": "Snapshot compatibility across kernel versions",
+    "kind": "constraint",
+    "description": "Snapshot save and restore hosts must agree on enough kernel features for the snapshot's encoded device/CPU state to be replayable. Cross-kernel-version restore is best-effort — see fc-docs-snapshot-support 'Snapshot compatibility across kernel versions' section. Plan production deployments to use the same host kernel.",
+    "source_ids": ["fc-docs-kernel-policy", "fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.security.security-md-disclosure",
+    "name": "SECURITY.md disclosure policy",
+    "kind": "policy",
+    "description": "Firecracker's responsible-disclosure policy. Vulnerability reports go to firecracker-security@amazon.com (NOT public GitHub issues). Disclosure timeline aligns with AWS-wide policy. Reproducers and CVE assignment handled by the maintainer team.",
+    "source_ids": ["fc-repo-security"],
+    "aliases": []
+  }
+]

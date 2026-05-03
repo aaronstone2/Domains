@@ -1,0 +1,164 @@
+[
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-virtio-mmio",
+    "scope": "guest-kernel",
+    "key": "CONFIG_VIRTIO_MMIO",
+    "type": "bool",
+    "default_value": "y (in microvm-kernel)",
+    "description": "Required for VirtIO-MMIO transport — Firecracker's default device transport. All VirtIO devices (block, net, vsock, balloon, entropy) need this on aarch64 always; on x86_64 either this or PCI VirtIO.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-virtio-blk",
+    "scope": "guest-kernel",
+    "key": "CONFIG_VIRTIO_BLK",
+    "type": "bool",
+    "default_value": "y",
+    "description": "Guest VirtIO block driver. Required to mount any /dev/vd* disk attached via PUT /drives.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-virtio-net",
+    "scope": "guest-kernel",
+    "key": "CONFIG_VIRTIO_NET",
+    "type": "bool",
+    "default_value": "y",
+    "description": "Guest VirtIO network driver. Required for any network interface attached via PUT /network-interfaces.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-virtio-vsockets",
+    "scope": "guest-kernel",
+    "key": "CONFIG_VIRTIO_VSOCKETS",
+    "type": "bool",
+    "default_value": "y (if vsock used)",
+    "description": "Guest vsock driver. Required for any host↔guest vsock comms via PUT /vsock.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-virtio-balloon",
+    "scope": "guest-kernel",
+    "key": "CONFIG_VIRTIO_BALLOON",
+    "type": "bool",
+    "default_value": "y (if balloon used)",
+    "description": "Guest balloon device driver. Required for memory reclaim via PATCH /balloon. Pairs with CONFIG_MEMORY_BALLOON.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-hw-random-virtio",
+    "scope": "guest-kernel",
+    "key": "CONFIG_HW_RANDOM_VIRTIO",
+    "type": "bool",
+    "default_value": "y (if entropy used)",
+    "description": "Guest VirtIO entropy/RNG driver. Required for the entropy device attached via PUT /entropy. Without it, guest may stall at boot waiting for entropy.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-random-trust-cpu",
+    "scope": "guest-kernel",
+    "key": "CONFIG_RANDOM_TRUST_CPU",
+    "type": "bool",
+    "default_value": "y (kernel >=5.10)",
+    "description": "Guest uses CPU RNG instructions (RDRAND etc.) to initialize the kernel RNG. Available kernel ≥5.10. Reduces boot-time entropy starvation even without virtio-rng.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-acpi",
+    "scope": "guest-kernel",
+    "key": "CONFIG_ACPI",
+    "type": "bool",
+    "default_value": "y (x86_64 modern)",
+    "description": "x86_64. Required for the ACPI boot path. Supersedes the legacy MPTable/cmdline-virtio mechanism. CONFIG_PCI must also be enabled (ACPI initialization relies on it even when no PCI devices are exposed).",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-pci",
+    "scope": "guest-kernel",
+    "key": "CONFIG_PCI",
+    "type": "bool",
+    "default_value": "y (x86_64 modern)",
+    "description": "x86_64. Required for ACPI boot AND for --enable-pci VirtIO transport. Counter-intuitive: needed even when no PCI devices exist (ACPI init dependency).",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-virtio-pci",
+    "scope": "guest-kernel",
+    "key": "CONFIG_VIRTIO_PCI",
+    "type": "bool",
+    "default_value": "y (when --enable-pci)",
+    "description": "Guest VirtIO over PCI driver. Required only when Firecracker is started with --enable-pci.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-kvm-guest",
+    "scope": "guest-kernel",
+    "key": "CONFIG_KVM_GUEST",
+    "type": "bool",
+    "default_value": "y (x86_64)",
+    "description": "x86_64. Enables KVM paravirt features in the guest including CONFIG_KVM_CLOCK (kvm-clock timekeeping). Effectively required for any modern x86_64 guest.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-x86-mpparse-deprecated",
+    "scope": "guest-kernel",
+    "key": "CONFIG_X86_MPPARSE",
+    "type": "bool",
+    "default_value": "n (recommended for new ACPI-only guests)",
+    "description": "x86_64 LEGACY. Enables MPTable parsing — the pre-ACPI device-enumeration mechanism. Disabling it (CONFIG_X86_MPPARSE=n) avoids the double-init warnings when the guest also has CONFIG_ACPI=y. Recommended off for ACPI-only guests.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.guest-kernel.config-virtio-mmio-cmdline-devices-deprecated",
+    "scope": "guest-kernel",
+    "key": "CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES",
+    "type": "bool",
+    "default_value": "n (recommended for new ACPI-only guests)",
+    "description": "x86_64 LEGACY. Enables device enumeration via virtio_mmio.device= kernel cmdline params. Disable when using ACPI to avoid double-init.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.kernel-cmdline.nomodule",
+    "scope": "boot-args",
+    "key": "nomodule",
+    "type": "kernel-cmdline-flag",
+    "default_value": "set in default boot_args",
+    "description": "Disables loadable kernel module support. Smaller attack surface; faster boot. Default in Firecracker's boot_args.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.kernel-cmdline.8250-nr-uarts-0",
+    "scope": "boot-args",
+    "key": "8250.nr_uarts=0",
+    "type": "kernel-cmdline-flag",
+    "default_value": "set in default boot_args",
+    "description": "Disables 8250 UART probing. Combined with `console=ttyS0` being absent from defaults, makes serial-console output a deliberate opt-in for debugging.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.kernel-cmdline.i8042-flags",
+    "scope": "boot-args",
+    "key": "i8042.noaux i8042.nomux i8042.dumbkbd",
+    "type": "kernel-cmdline-flag",
+    "default_value": "set in default boot_args",
+    "description": "Skips probing the i8042 keyboard controller for an auxiliary mouse, multiplexing, and state control. Saves boot time. Firecracker emulates i8042 only enough to detect the reset-line write that terminates the process.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.kernel-cmdline.swiotlb-noforce",
+    "scope": "boot-args",
+    "key": "swiotlb=noforce",
+    "type": "kernel-cmdline-flag",
+    "default_value": "set in default boot_args",
+    "description": "Disables forced software bounce-buffer (SWIOTLB) usage. Faster I/O when not needed for high memory or DMA constraints.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.security.cfg.cli.enable-pci",
+    "scope": "firecracker-cli",
+    "key": "--enable-pci",
+    "type": "bool",
+    "default_value": "false",
+    "description": "x86_64 only. Switch all VirtIO devices to PCI transport instead of MMIO. Higher throughput + lower latency. Requires PCI-enabled guest kernel and removing pci=off from boot_args.",
+    "source_ids": ["fc-docs-kernel-policy"]
+  }
+]

@@ -5,9 +5,17 @@
 
 
 
-  Read domains/_shared/sessions/phase-3-deep-extraction.md and follow its instructions. We are continuing the devin vertical slice — Phase 1 was just completed in the prior
-   session (326 sources indexed in devin.documents, FTS index built); devin.concepts/commands/config_keys are empty and need extracting. Per PREAMBLE's
+  Read domains/_shared/sessions/phase-3-deep-extraction.md and follow its instructions. We are continuing the docker vertical slice — Phase 1 was just completed in the prior
+   session (many sources indexed in docker.documents, FTS index built); docker.concepts/commands/config_keys are empty and need extracting. Per PREAMBLE's
   revised sequencing, we do P1+P3 per domain before moving to the next
 
 
-modify instead of k8s do 
+
+
+
+  1. ~~`docker/engine`~~ ✓ done
+  2. docker/runtime ← starting now (target 75 / 12 / 120)
+  3. docker/networking (55 / 10 / 100)
+  4. docker/compose (60 / 8 / 180)
+  5. docker/security (50 / 4 / 80)
+  6. docker/build-buildkit (65 / 8 / 140)

@@ -1,0 +1,355 @@
+[
+  {
+    "id": "firecracker.vmm.fm.kernel-6-1-vfs-cannot-open-root",
+    "symptom": "Guest kernel panic on boot with 'VFS: Cannot open root device vda or unknown-block(0,0)'. vmlinux size jumped from ~29MB to ~38MB after upgrading to a 6.1 build.",
+    "error_patterns": ["VFS: Cannot open root device 'vda'", "Kernel panic - not syncing: VFS: Unable to mount root fs", "vmlinux"],
+    "root_cause_class": "host-kernel-config",
+    "affected_concepts": ["firecracker.vmm.firecracker-vmm", "firecracker.security.kernel-support-policy", "firecracker.vmm.architecture-support"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Capture guest kernel panic via serial console", "command": "Add console=ttyS0 to boot_args; PUT /serial; reproduce", "expected": "VFS panic message in console output", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Verify guest kernel build size and configs", "command": "ls -la <vmlinux>; grep -E 'CONFIG_VIRTIO_BLK|CONFIG_KVM_GUEST|CONFIG_ACPI' <kernel-config>", "expected": "All required configs =y; size sane vs prior build", "source_id": "fc-docs-kernel-policy"},
+      {"step": 3, "action": "Compare against Firecracker reference guest configs", "command": "diff <kernel-config> firecracker/resources/guest_configs/<arch>.config", "expected": "Spot the missing CONFIG entries", "source_id": "fc-docs-kernel-policy"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Rebuild guest kernel with the Firecracker reference config from resources/guest_configs/", "command": "cp firecracker/resources/guest_configs/<arch>.config .config; make olddefconfig; make -j", "validation": "VM boots; /dev/vda mounts as root", "rollback": "Revert to prior known-good vmlinux", "source_id": "fc-docs-kernel-policy"},
+      {"step": 2, "action": "If using Amazon Linux microvm-kernel, pin to a tagged release", "command": "git clone -b microvm-kernel-6.1.X github.com/amazonlinux/linux", "validation": "Tagged build matches Firecracker support matrix", "rollback": null, "source_id": "fc-docs-kernel-policy"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/4881", "fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.vmm.fm.kvm-exit-fail-entry-nested-virt",
+    "symptom": "MicroVM crashes immediately on InstanceStart with KVM_EXIT_FAIL_ENTRY when running Firecracker inside another VM (Azure VM, GCP VM, nested KVM).",
+    "error_patterns": ["KVM_EXIT_FAIL_ENTRY", "hardware_entry_failure_reason", "KVM_RUN failed"],
+    "root_cause_class": "nested-virt-unsupported",
+    "affected_concepts": ["firecracker.kvm.exit-fail-entry", "firecracker.kvm.kvm-run", "firecracker.vmm.firecracker-vmm"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm host is itself virtualized", "command": "systemd-detect-virt; cat /proc/cpuinfo | grep -E 'vmx|svm'", "expected": "If 'kvm' or 'microsoft' or 'amazon' returned → nested env", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/668"},
+      {"step": 2, "action": "Check KVM exit reason in Firecracker logs", "command": "PUT /logger {level: Debug}; reproduce; grep KVM_EXIT_FAIL_ENTRY <log>", "expected": "Exit reason logged with cpu and hardware_entry_failure_reason", "source_id": "fc-docs-logger"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Move Firecracker to a bare-metal host (or .metal EC2 instance type)", "command": "Provision i3.metal / m5.metal / similar", "validation": "InstanceStart succeeds; vCPU enters guest", "rollback": null, "source_id": "fc-docs-design"},
+      {"step": 2, "action": "If bare metal not available, use AWS C8i/M8i/R8i which support nested KVM (~10% perf tax)", "command": "Provision a Nitro instance with nested-virt support", "validation": "InstanceStart succeeds, accept perf overhead", "rollback": null, "source_id": "ecs-ec2-nested-virt"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/668"]
+  },
+  {
+    "id": "firecracker.vmm.fm.amd-zen-msr-freeze",
+    "symptom": "VM hangs after 'random: crng init done' with no exception or message on AMD Zen processors (Zen, Zen+, Zen 2).",
+    "error_patterns": ["random: crng init done", "MSR 0x10a", "no further output"],
+    "root_cause_class": "host-cpu-msr-quirk",
+    "affected_concepts": ["firecracker.kvm.msr-control", "firecracker.vmm.architecture-support"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Identify host CPU vendor and family", "command": "lscpu | grep -E 'Vendor|Model name|Family'", "expected": "AuthenticAMD with Zen family", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/815"},
+      {"step": 2, "action": "Capture serial console past 'crng init done'", "command": "Add console=ttyS0 to boot_args; capture full boot log", "expected": "Output stops with no kernel oops", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Apply CPU template that masks the problematic MSR exposure", "command": "PUT /cpu-config with template that filters MSR 0x10a (AMD platform-specific)", "validation": "VM boots past the freeze point", "rollback": "Boot without template — accept the freeze", "source_id": "fc-docs-cpu-templates"},
+      {"step": 2, "action": "Move workload to non-Zen AMD or Intel host", "command": "Re-host to EPYC Milan+ or Intel Ice Lake+", "validation": "VM boots normally", "rollback": null, "source_id": "fc-docs-cpu-templates"}
+    ],
+    "confidence": 0.6,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/815"]
+  },
+  {
+    "id": "firecracker.vmm.fm.error-creating-kvm-object-13",
+    "symptom": "Firecracker exits at startup with 'Error creating Kvm object: Error(13)' (errno 13 = EACCES, permission denied).",
+    "error_patterns": ["Error creating Kvm object", "Error(13)", "EACCES"],
+    "root_cause_class": "permission-denied-dev-kvm",
+    "affected_concepts": ["firecracker.kvm.system-fd", "firecracker.kvm.kvm-subsystem"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check /dev/kvm permissions and group", "command": "ls -l /dev/kvm; getent group kvm", "expected": "crw-rw---- root:kvm; running uid should be in kvm group", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Confirm calling uid has access", "command": "sudo -u <uid> test -r /dev/kvm && test -w /dev/kvm && echo OK || echo NO_ACCESS", "expected": "OK", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 3, "action": "Verify KVM kernel modules loaded", "command": "lsmod | grep kvm", "expected": "kvm and kvm_intel/kvm_amd present", "source_id": "fc-docs-getting-started"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add the running uid to the kvm group", "command": "sudo usermod -aG kvm <user>; logout/login or newgrp kvm", "validation": "Re-run Firecracker; KVM object creates successfully", "rollback": "sudo gpasswd -d <user> kvm", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "If running under jailer, ensure --uid/--gid maps to kvm-group-membered identity", "command": "jailer --uid <kvm-uid> --gid <kvm-gid> ...", "validation": "Firecracker starts cleanly inside chroot", "rollback": null, "source_id": "fc-docs-jailer"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/2268", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.vmm.fm.dev-kvm-busy-vbox-vmware",
+    "symptom": "Firecracker fails to start with 'Resource busy' on /dev/kvm. Another hypervisor (VMware Workstation, VirtualBox) is loaded and holds /dev/kvm exclusively.",
+    "error_patterns": ["Resource busy", "EBUSY", "/dev/kvm"],
+    "root_cause_class": "exclusive-dev-kvm-contention",
+    "affected_concepts": ["firecracker.vmm.dev-kvm-exclusive", "firecracker.kvm.kvm-subsystem"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "List loaded virt kernel modules", "command": "lsmod | grep -E 'vbox|vmware|kvm'", "expected": "vboxdrv or vmmon present alongside kvm", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Check who has /dev/kvm open", "command": "sudo lsof /dev/kvm", "expected": "VMware/VirtualBox process holds the fd", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Unload conflicting hypervisor module", "command": "sudo modprobe -r vboxdrv vmmon", "validation": "lsof /dev/kvm shows no holder; Firecracker starts", "rollback": "sudo modprobe vboxdrv (re-enables VirtualBox)", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Disable VirtualBox/VMware autostart", "command": "sudo systemctl disable vboxdrv vboxautostart-service", "validation": "Persists across reboot", "rollback": "systemctl enable vboxdrv", "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.fm.page-allocation-failure-fragmentation",
+    "symptom": "Host dmesg shows 'fc_vmm: page allocation failure: order:6, mode:0x140c0c0' during high-rate microVM creation. KVM cannot allocate large contiguous pages because host memory is fragmented.",
+    "error_patterns": ["fc_vmm: page allocation failure", "order:6", "GFP_KERNEL", "mems_allowed"],
+    "root_cause_class": "host-memory-fragmentation",
+    "affected_concepts": ["firecracker.kvm.user-memory-region", "firecracker.vmm.firecracker-vmm"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm fragmentation state", "command": "cat /proc/buddyinfo; cat /proc/pagetypeinfo", "expected": "Few or zero high-order free pages", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Check current vm.min_free_kbytes", "command": "sysctl vm.min_free_kbytes", "expected": "If <128 MiB on a busy host, likely too low", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise vm.min_free_kbytes to keep more reserve", "command": "sudo sysctl -w vm.min_free_kbytes=262144; echo 'vm.min_free_kbytes=262144' | sudo tee -a /etc/sysctl.conf", "validation": "Subsequent microVM creates succeed; buddyinfo shows higher-order pages", "rollback": "sysctl -w vm.min_free_kbytes=<prior-value>", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Trigger explicit memory compaction", "command": "echo 1 | sudo tee /proc/sys/vm/compact_memory", "validation": "buddyinfo shows higher-order pages restored", "rollback": null, "source_id": "fc-repo-faq"},
+      {"step": 3, "action": "If chronic, switch to hugepages-backed RAM (vm.nr_hugepages reserved + machine-config.huge_pages=2M)", "command": "sudo sysctl -w vm.nr_hugepages=<N>; PUT /machine-config {huge_pages: '2M'}", "validation": "fc_vmm allocates from pre-reserved hugepages — no fragmentation", "rollback": "sysctl -w vm.nr_hugepages=0; remove huge_pages from machine-config", "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.vmm.fm.exit-code-12-oom",
+    "symptom": "Firecracker process exits immediately with exit code 12 (Out of memory). Host cannot satisfy the requested guest memory size (default 128 MiB if /machine-config not set).",
+    "error_patterns": ["exit code 12", "Out of memory"],
+    "root_cause_class": "host-oom",
+    "affected_concepts": ["firecracker.api.machine-config", "firecracker.vmm.minimum-microvm-memory"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check exit code and /proc/meminfo at time of failure", "command": "echo $?; cat /proc/meminfo | head -5", "expected": "Exit 12; MemFree very low", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Check for related dmesg page allocation failures", "command": "sudo dmesg | grep -E 'page allocation|Out of memory|oom-killer'", "expected": "Either page-alloc failures or OOM-killer events", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Reduce machine-config.mem_size_mib or free host memory", "command": "PUT /machine-config {mem_size_mib: <smaller>}; or kill unrelated host processes", "validation": "Firecracker boots", "rollback": null, "source_id": "fc-swagger-spec"},
+      {"step": 2, "action": "If chronic, raise vm.min_free_kbytes (see page-allocation-failure-fragmentation)", "command": "see fc.vmm.fm.page-allocation-failure-fragmentation", "validation": null, "rollback": null, "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.fm.oom-despite-available-memory",
+    "symptom": "Guest with 16 GiB allocation OOM-killed despite host showing 9 GiB RSS / 64 GiB total. Memory accounting or page cache accumulation during heavy compilation workloads.",
+    "error_patterns": ["killed by OOM-killer", "Memory cgroup out of memory", "oom_score_adj"],
+    "root_cause_class": "memory-accounting-or-page-cache-pressure",
+    "affected_concepts": ["firecracker.api.machine-config", "firecracker.api.balloon-resource", "firecracker.setup.unprivileged-uid-per-microvm"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect cgroup memory accounting at OOM time", "command": "cat /sys/fs/cgroup/<path>/memory.current /sys/fs/cgroup/<path>/memory.max /sys/fs/cgroup/<path>/memory.events", "expected": "current near max; events.oom > 0", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1573"},
+      {"step": 2, "action": "Check guest page-cache pressure", "command": "guest$ cat /proc/meminfo | grep -E 'Cached|Buffers|MemAvailable'", "expected": "Cached very high relative to MemFree", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1573"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Attach a balloon device with deflate_on_oom for safety", "command": "PUT /balloon {amount_mib: 0, deflate_on_oom: true, stats_polling_interval_s: 5}", "validation": "Future OOMs auto-deflate balloon (only helps if balloon was inflated)", "rollback": null, "source_id": "fc-swagger-spec"},
+      {"step": 2, "action": "Raise cgroup memory.max above mem_size_mib + overhead headroom", "command": "echo <bytes> > /sys/fs/cgroup/<path>/memory.max", "validation": "Guest no longer OOM-killed at workload peak", "rollback": "Restore prior memory.max", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 3, "action": "Drop guest page cache periodically if unavoidable", "command": "guest$ echo 3 > /proc/sys/vm/drop_caches", "validation": "Cached drops; MemAvailable rises", "rollback": null, "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1573"}
+    ],
+    "confidence": 0.6,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/1573"]
+  },
+  {
+    "id": "firecracker.vmm.fm.kvm-exit-shutdown-seccomp-shutdown",
+    "symptom": "Occasional KVM_EXIT_SHUTDOWN with 'bad system call (14)' (rt_sigprocmask) during VM shutdown — ~0-3 failures per 100 VMs.",
+    "error_patterns": ["KVM_EXIT_SHUTDOWN", "bad system call", "rt_sigprocmask", "seccomp"],
+    "root_cause_class": "seccomp-policy-gap",
+    "affected_concepts": ["firecracker.security.seccomp-boundary", "firecracker.security.default-seccomp-filter", "firecracker.kvm.exit-shutdown"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Capture audit log of seccomp violations", "command": "sudo auditctl -a always,exit -F arch=b64 -S all -F key=fc-seccomp; reproduce; ausearch -k fc-seccomp", "expected": "audit lines with syscall=14 (rt_sigprocmask)", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1456"},
+      {"step": 2, "action": "Confirm Firecracker version (was fixed in PR #1603)", "command": "firecracker --version", "expected": "Version that includes the fix", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1456"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Upgrade to a Firecracker release that includes PR #1603", "command": "Update package or rebuild from main", "validation": "Shutdown succeeds without seccomp violations", "rollback": "Pin to prior version", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1456"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/1456"]
+  },
+  {
+    "id": "firecracker.vmm.fm.signal-handler-seccomp-sigaction",
+    "symptom": "Firecracker process exits with seccomp violation when receiving SIGSEGV/SIGBUS — Rust signal handler calls unwhitelisted sigaction syscall.",
+    "error_patterns": ["seccomp violation", "SIGSEGV", "SIGBUS", "sigaction"],
+    "root_cause_class": "seccomp-policy-gap",
+    "affected_concepts": ["firecracker.security.seccomp-boundary", "firecracker.security.default-seccomp-filter", "firecracker.setup.signal-handler-deadlock-risk"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Capture seccomp audit log around the crash", "command": "sudo ausearch -k fc-seccomp --start recent", "expected": "syscall=sigaction (or rt_sigaction) blocked", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1064"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Upgrade to Firecracker version where sigaction is whitelisted in default filter", "command": "Update binary", "validation": "SIGSEGV produces clean abort with handler output", "rollback": "Pin to prior version", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1064"},
+      {"step": 2, "action": "Workaround: provide a custom seccomp filter that whitelists rt_sigaction", "command": "seccompiler-bin --target-arch x86_64 --input-file <custom>.json --output-file <out>; firecracker --seccomp-filter <out>", "validation": "SIGSEGV no longer triggers seccomp", "rollback": "Revert to default filter (no --seccomp-filter)", "source_id": "fc-docs-seccompiler"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/1064"]
+  },
+  {
+    "id": "firecracker.vmm.fm.panic-handler-seccomp-mremap",
+    "symptom": "Firecracker panic produces a secondary seccomp violation — the panic handler calls mremap (Rust unwinding) which isn't in the default filter. Original panic info is lost.",
+    "error_patterns": ["seccomp violation", "mremap", "panicked at"],
+    "root_cause_class": "seccomp-policy-gap-during-panic",
+    "affected_concepts": ["firecracker.security.seccomp-boundary", "firecracker.security.default-seccomp-filter"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Locate the panic in logs (panic message comes BEFORE the seccomp kill)", "command": "grep -B5 'seccomp' <fc-log>", "expected": "Original panic message visible above the seccomp line", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1088"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Upgrade Firecracker to version with mremap in default seccomp filter", "command": "Update binary", "validation": "Panic produces full backtrace before exit", "rollback": "Pin prior version", "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1088"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["https://github.com/firecracker-microvm/firecracker/issues/1088"]
+  },
+  {
+    "id": "firecracker.vmm.fm.signal-handler-deadlock-on-log-lock",
+    "symptom": "Firecracker thread becomes unresponsive after receiving a signal (SIGSEGV/SIGSYS). Custom signal handlers write logs and flush metrics — these use locks for synchronization but are NOT async-signal-safe. Handler intercepts signal on a thread already holding the lock → deadlock.",
+    "error_patterns": ["thread unresponsive", "no further log output after signal"],
+    "root_cause_class": "signal-handler-not-async-signal-safe",
+    "affected_concepts": ["firecracker.setup.signal-handler-deadlock-risk", "firecracker.api.logger-resource", "firecracker.api.metrics-resource"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Detect unresponsive Firecracker via API ping", "command": "timeout 5 curl --unix-socket <sock> http://localhost/ || echo HUNG", "expected": "Timeout / no response", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "Inspect thread state to confirm deadlock", "command": "sudo gdb -p <pid> -ex 'thread apply all bt' -batch", "expected": "Thread blocked on log/metrics mutex inside signal handler", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Run an overwatcher that SIGKILLs unresponsive Firecracker processes", "command": "Periodic loop: ping API; if no response within timeout → kill -9 <pid>", "validation": "Hung processes cleaned up automatically", "rollback": "Disable overwatcher (accept the deadlock risk)", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.vmm.fm.x86-poweroff-leaves-process-alive",
+    "symptom": "Guest `poweroff` shuts down the OS but the Firecracker process stays alive — no ACPI PM means there's no way for the guest to signal poweroff to the VMM.",
+    "error_patterns": ["guest powered off but firecracker process still running"],
+    "root_cause_class": "no-acpi-pm",
+    "affected_concepts": ["firecracker.vmm.no-acpi-pm", "firecracker.vmm.no-guest-reboot"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm guest is x86_64 (ARM has PSCI and works correctly)", "command": "guest$ uname -m", "expected": "x86_64 → expected behavior; aarch64 → file separate issue", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Verify Firecracker process state", "command": "ps -p <fc-pid>; cat /proc/<fc-pid>/status", "expected": "Process running, vCPU thread idle in KVM_RUN", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Use SendCtrlAltDel API action instead of guest poweroff", "command": "PUT /actions {action_type: SendCtrlAltDel}", "validation": "Firecracker process exits within seconds", "rollback": "Use SIGKILL on the FC pid", "source_id": "fc-swagger-spec"},
+      {"step": 2, "action": "Or use guest `reboot` with reboot=k boot_args (i8042 reset triggers FC exit)", "command": "Ensure boot_args contains reboot=k; guest$ reboot", "validation": "Firecracker exits cleanly", "rollback": null, "source_id": "fc-repo-faq"},
+      {"step": 3, "action": "Or just SIGKILL from orchestrator", "command": "kill -9 <fc-pid>", "validation": "Process exits", "rollback": null, "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.fm.reboot-without-reboot-k-hangs",
+    "symptom": "Guest `reboot` doesn't terminate the Firecracker process. Guest enters reboot loop — kernel restarts but Firecracker keeps running because i8042 reset signal isn't issued.",
+    "error_patterns": ["guest rebooting in loop", "Firecracker not exiting"],
+    "root_cause_class": "missing-reboot-k-bootarg",
+    "affected_concepts": ["firecracker.vmm.ctrl-alt-del-shutdown", "firecracker.vmm.no-guest-reboot"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect current boot_args", "command": "GET /vm/config | jq '.\"boot-source\".boot_args'", "expected": "Should contain 'reboot=k'", "source_id": "fc-swagger-spec"},
+      {"step": 2, "action": "Confirm guest sees i8042 keyboard controller", "command": "guest$ dmesg | grep i8042", "expected": "i8042 init message present", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Pre-boot: add reboot=k to boot_args", "command": "PUT /boot-source {boot_args: 'reboot=k panic=1 pci=off ...'}", "validation": "Guest reboot terminates FC process", "rollback": "Remove reboot=k (reboot loops back to silent stuck state)", "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.fm.serial-console-enabled-slow-boot",
+    "symptom": "MicroVM boot takes 500+ ms instead of expected ≤125 ms. Serial console is enabled — every kernel printk causes a VM exit.",
+    "error_patterns": ["slow boot", "boot time exceeded budget"],
+    "root_cause_class": "perf-misconfiguration-serial-console",
+    "affected_concepts": ["firecracker.vmm.serial-console-overhead", "firecracker.vmm.startup-budget"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check boot_args for console=ttyS0", "command": "GET /vm/config | jq '.\"boot-source\".boot_args'", "expected": "If contains console=ttyS0 → root cause confirmed", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Measure boot time via boot-timer metric", "command": "firecracker --boot-timer ...; PUT /metrics; FlushMetrics; grep boot_time <metrics>", "expected": "≤125 ms when console disabled, multiple-x when enabled", "source_id": "fc-docs-metrics"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Remove console=ttyS0 from boot_args (prod default)", "command": "PUT /boot-source {boot_args: 'reboot=k panic=1 pci=off nomodule 8250.nr_uarts=0 ...'}", "validation": "Boot time returns to ≤125 ms", "rollback": "Re-add console=ttyS0 if debugging", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "If serial output needed in prod, capture to file via PUT /serial instead of console=ttyS0", "command": "PUT /serial {out_path: '/tmp/console.log'}", "validation": "Serial output captured without VM-exit overhead", "rollback": null, "source_id": "fc-swagger-spec"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq", "fc-docs-prod-host-setup"]
+  },
+  {
+    "id": "firecracker.vmm.fm.missing-virtio-blk-cannot-mount-root",
+    "symptom": "Guest panics at boot with 'Cannot open root device vda' even though /drives is configured correctly. Guest kernel lacks CONFIG_VIRTIO_BLK.",
+    "error_patterns": ["VFS: Cannot open root device", "vda", "unknown-block(0,0)"],
+    "root_cause_class": "guest-kernel-config-missing",
+    "affected_concepts": ["firecracker.security.minimal-boot-config", "firecracker.api.drive-resource"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check guest kernel config for VIRTIO_BLK", "command": "zcat /proc/config.gz | grep CONFIG_VIRTIO_BLK", "expected": "CONFIG_VIRTIO_BLK=y", "source_id": "fc-docs-kernel-policy"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Rebuild guest kernel with CONFIG_VIRTIO_BLK=y (and CONFIG_VIRTIO_MMIO=y on aarch64; CONFIG_VIRTIO_PCI=y if --enable-pci)", "command": "Edit .config; make olddefconfig; make -j", "validation": "Boot succeeds; /dev/vda visible", "rollback": "Revert to prior kernel build", "source_id": "fc-docs-kernel-policy"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.vmm.fm.missing-acpi-on-x86-acpi-boot",
+    "symptom": "x86_64 guest kernel built with CONFIG_ACPI=n fails to enumerate VirtIO devices when Firecracker uses ACPI boot path. Devices appear missing in dmesg.",
+    "error_patterns": ["no virtio devices", "ACPI not initialized"],
+    "root_cause_class": "guest-kernel-config-missing",
+    "affected_concepts": ["firecracker.security.acpi-vs-mptable-boot", "firecracker.security.minimal-boot-config"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check guest config", "command": "zcat /proc/config.gz | grep -E 'CONFIG_ACPI|CONFIG_PCI'", "expected": "Both =y for ACPI boot path on x86_64", "source_id": "fc-docs-kernel-policy"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Rebuild with CONFIG_ACPI=y and CONFIG_PCI=y", "command": "Edit .config; make olddefconfig; make -j", "validation": "Devices enumerate; mounts succeed", "rollback": "Revert", "source_id": "fc-docs-kernel-policy"},
+      {"step": 2, "action": "Or fall back to legacy boot: enable CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y and CONFIG_X86_MPPARSE=y (note: deprecated)", "command": "Edit .config; rebuild", "validation": "Devices enumerate via legacy path", "rollback": null, "source_id": "fc-docs-kernel-policy"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.vmm.fm.cross-arch-guest-on-host",
+    "symptom": "Firecracker fails to boot when guest kernel is built for a different architecture than the host (e.g., aarch64 guest on x86_64 host).",
+    "error_patterns": ["KVM_EXIT_FAIL_ENTRY", "invalid kernel image", "boot hang"],
+    "root_cause_class": "arch-mismatch",
+    "affected_concepts": ["firecracker.vmm.no-arch-emulation", "firecracker.vmm.architecture-support"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check guest kernel vs host arch", "command": "file <vmlinux>; uname -m", "expected": "Both should be the same (x86-64 or aarch64)", "source_id": "fc-repo-faq"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Rebuild guest kernel for the host arch", "command": "make ARCH=<host-arch> CROSS_COMPILE=<...> -j", "validation": "uname -m inside booted guest matches host", "rollback": "Original mismatched kernel", "source_id": "fc-repo-faq"},
+      {"step": 2, "action": "Or run on a host of the matching arch", "command": "Migrate workload to correct-arch host", "validation": null, "rollback": null, "source_id": "fc-repo-faq"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-repo-faq"]
+  },
+  {
+    "id": "firecracker.vmm.fm.pci-off-when-pci-enabled",
+    "symptom": "Started Firecracker with --enable-pci but boot_args still contains pci=off. Guest disables PCI scanning and never sees the VirtIO/PCI devices Firecracker exposes.",
+    "error_patterns": ["pci=off", "no virtio devices found", "PCI: disabled"],
+    "root_cause_class": "config-mismatch-pci",
+    "affected_concepts": ["firecracker.security.pci-transport-option", "firecracker.security.cfg.kernel-cmdline.swiotlb-noforce", "firecracker.api.boot-source"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect boot_args and CLI flags", "command": "GET /vm/config | jq; ps -p <fc-pid> -o args=", "expected": "Either remove --enable-pci or remove pci=off — must be consistent", "source_id": "fc-docs-kernel-policy"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Remove pci=off from boot_args when --enable-pci is used", "command": "PUT /boot-source {boot_args: 'reboot=k panic=1 nomodule ...' (no pci=off)}", "validation": "Guest dmesg shows VirtIO PCI devices enumerated", "rollback": "Drop --enable-pci AND keep pci=off (revert to MMIO transport)", "source_id": "fc-docs-kernel-policy"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["fc-docs-kernel-policy"]
+  },
+  {
+    "id": "firecracker.vmm.fm.kvm-internal-error-unsalvageable",
+    "symptom": "vCPU thread returns KVM_EXIT_INTERNAL_ERROR. KVM detected an unrecoverable inconsistency (emulation impossible, simul exception delivery, unexpected delivery_event). MicroVM is unsalvageable.",
+    "error_patterns": ["KVM_EXIT_INTERNAL_ERROR", "internal.suberror"],
+    "root_cause_class": "kvm-bug-or-unrecoverable-state",
+    "affected_concepts": ["firecracker.kvm.exit-internal-error", "firecracker.kvm.kvm-run"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Capture suberror code and ndata registers", "command": "Enable Debug logging; reproduce; grep KVM_EXIT_INTERNAL_ERROR <log>", "expected": "Suberror enum value (KVM_INTERNAL_ERROR_EMULATION etc.)", "source_id": "kvm-api"},
+      {"step": 2, "action": "Check host KVM/microcode versions", "command": "modinfo kvm | grep version; ucode --version", "expected": "Up-to-date per distro security advisories", "source_id": "fc-docs-prod-host-setup"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Update host KVM module + CPU microcode + Firecracker version", "command": "yum/apt update kvm-related packages; load latest microcode; restart hosts", "validation": "Issue does not recur", "rollback": "Pin prior versions", "source_id": "fc-docs-prod-host-setup"},
+      {"step": 2, "action": "If reproducible, file an upstream KVM/Firecracker bug", "command": "github.com/firecracker-microvm/firecracker/issues with reproducer", "validation": null, "rollback": null, "source_id": "fc-repo-security"}
+    ],
+    "confidence": 0.5,
+    "last_verified": "2026-05-03",
+    "source_ids": ["kvm-api"]
+  }
+]

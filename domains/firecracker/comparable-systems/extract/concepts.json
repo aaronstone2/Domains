@@ -1,0 +1,66 @@
+[
+  {
+    "id": "firecracker.comparable-systems.e2b",
+    "name": "e2b (E2B Dev)",
+    "kind": "comparable-product",
+    "description": "Open-source infrastructure for AI code interpreting and agent sandboxes. Provides SDKs (Python, JavaScript) + CLI for starting/managing sandbox environments. Hundreds of millions of sandboxes launched in production. Architecturally adjacent to Devin DevBox: per-session isolated execution environments with secure file/process APIs from a thin orchestration layer over a low-level VMM.",
+    "source_ids": ["e2b-repo-readme", "e2b-docs-overview", "e2b-infra-readme", "e2b-blog-architecture"],
+    "aliases": ["E2B"]
+  },
+  {
+    "id": "firecracker.comparable-systems.e2b-firecracker-substrate",
+    "name": "e2b's Firecracker substrate (e2b-dev/infra)",
+    "kind": "architecture",
+    "description": "github.com/e2b-dev/infra is the Firecracker-based execution engine that powers E2B. Self-hostable via Terraform. Cloud-provider matrix: GCP (available), AWS (Beta), Azure (not yet), generic Linux (not yet). The closest public proxy to Devin DevBox internals, by reasoned analogy from Cognition's microVM-pattern blog post.",
+    "source_ids": ["e2b-infra-readme"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.comparable-systems.e2b-sandbox-primitive",
+    "name": "Sandbox primitive (E2B's atomic unit)",
+    "kind": "design-pattern",
+    "description": "E2B's core abstraction is a 'Sandbox': start a fresh isolated environment, execute code/commands inside, read/write files, then dispose. Lifetime measured in seconds-to-minutes. Per-session isolation is the security boundary. Pattern: SDK call → orchestrator allocates a Firecracker microVM → guest workload runs → snapshot or destroy on completion.",
+    "source_ids": ["e2b-docs-overview", "e2b-repo-readme"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.comparable-systems.e2b-llms-txt-pattern",
+    "name": "llms.txt index pattern",
+    "kind": "convention",
+    "description": "E2B publishes a complete documentation index at https://e2b.mintlify.app/llms.txt for LLM-driven documentation discovery. Mirrors Devin's own docs.devin.ai/llms.txt convention — both target AI-agent consumers as first-class doc readers. Adoption signal: Mintlify-rendered docs sites are converging on this pattern.",
+    "source_ids": ["e2b-docs-overview"],
+    "aliases": ["llms.txt"]
+  },
+  {
+    "id": "firecracker.comparable-systems.devin-devbox-likely-pattern",
+    "name": "Devin DevBox likely architectural pattern (inferred)",
+    "kind": "inferred-architecture",
+    "description": "By reasoned analogy from (1) Cognition's blog explicitly describing 'microVM isolation' and 'hypervisor-level snapshotting' for Devin sessions and (2) E2B's published Firecracker-based architecture serving the same problem domain, Devin DevBox plausibly runs each session in a Firecracker microVM with snapshot-based fast-start. STRONG-HINT, NOT DEFINITIVE — Cognition has not publicly named Firecracker. Useful as an interview-prep reasoning anchor: 'if the substrate is Firecracker-class, then the failure modes you'd debug are X, Y, Z.'",
+    "source_ids": ["devin-cognition-cloud-agents", "e2b-infra-readme", "fc-docs-snapshot-support"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.comparable-systems.sandbox-fan-out-pattern",
+    "name": "Snapshot fan-out (warm-template) pattern",
+    "kind": "design-pattern",
+    "description": "Pattern shared across AI-agent sandbox systems (E2B, Devin-likely, Modal, etc.): take a snapshot of a fully-booted, dependencies-installed microVM, then fan out N clones from it for incoming user sessions. Each clone gets unique TAP/vsock/MMDS but shares the warm template's memory image (MAP_PRIVATE COW). Achieves <100ms session start vs cold-boot's ~125ms+kernel+app init.",
+    "source_ids": ["fc-docs-snapshot-support", "fc-docs-snapshot-network-clones", "e2b-infra-readme"],
+    "aliases": ["warm-pool", "snapshot template"]
+  },
+  {
+    "id": "firecracker.comparable-systems.sdk-over-sandbox-api",
+    "name": "SDK-over-sandbox-API abstraction layer",
+    "kind": "design-pattern",
+    "description": "User-facing SDK (Python/JS for E2B) abstracts away the underlying VMM control plane. SDK call sandbox.run('ls /') translates to: orchestrator picks a warm clone → opens vsock channel → dispatches command → returns stdout. Devin's tool API is plausibly the same shape — the user/agent doesn't see Firecracker, they see Sandbox.method().",
+    "source_ids": ["e2b-repo-readme", "e2b-docs-overview"],
+    "aliases": []
+  },
+  {
+    "id": "firecracker.comparable-systems.cve-2026-31431-copy-fail",
+    "name": "CVE-2026-31431 (Copy Fail) — case study in why microVM isolation matters",
+    "kind": "case-study",
+    "description": "Recent (Apr 2026) CVE that affected container-isolated sandboxes. E2B published a blog post explaining their Firecracker-based sandboxes weren't affected — direct evidence that microVM isolation provides defense-in-depth that container runtimes don't. Useful interview-prep talking point: 'why does Devin run in a microVM and not just a Docker container?'",
+    "source_ids": ["e2b-blog-architecture"],
+    "aliases": ["Copy Fail CVE"]
+  }
+]

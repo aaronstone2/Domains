@@ -1,0 +1,26 @@
+[
+  {
+    "id": "firecracker.vsock.cmd.socat-host-connect",
+    "command": "socat - UNIX-CONNECT:<uds_path>",
+    "purpose": "From the host, connect to the vsock UDS. After connection, send 'CONNECT <port>\\n' to forward to a guest-side listener. The first 'OK <hostside-port>\\n' line is Firecracker's acknowledgement.",
+    "flags": [],
+    "examples": [{"invocation": "socat - UNIX-CONNECT:./v.sock\nCONNECT 52", "expected_output": "OK 1073741824 (then bidirectional channel)", "scenario": "Host-side debugging — open a vsock channel to guest port 52"}],
+    "source_ids": ["fc-docs-vsock"]
+  },
+  {
+    "id": "firecracker.vsock.cmd.socat-guest-listen",
+    "command": "socat VSOCK-LISTEN:<port>,fork - (in guest)",
+    "purpose": "Inside the guest, listen on a vsock port for incoming host-initiated connections. ,fork forks per-connection.",
+    "flags": [{"name": "VSOCK-LISTEN", "value": "<port>", "doc": "Port to bind on guest CID."}, {"name": ",fork", "value": null, "doc": "Fork a child per connection."}],
+    "examples": [{"invocation": "socat VSOCK-LISTEN:52,fork -", "expected_output": "Per-connection echo to stdin/stdout", "scenario": "Guest-side echo server for host CONNECT 52"}],
+    "source_ids": ["fc-docs-vsock"]
+  },
+  {
+    "id": "firecracker.vsock.cmd.socat-guest-connect-host",
+    "command": "socat - VSOCK-CONNECT:2:<port> (in guest)",
+    "purpose": "From inside the guest, open an AF_VSOCK connection to the host (CID=2) on <port>. Firecracker forwards to <uds_path>_<port> on the host.",
+    "flags": [],
+    "examples": [{"invocation": "socat - VSOCK-CONNECT:2:52", "expected_output": "Forwarded to host UDS at ./v.sock_52 if listening; ECONNREFUSED otherwise", "scenario": "Guest agent calling out to host control plane"}],
+    "source_ids": ["fc-docs-vsock"]
+  }
+]

@@ -1,0 +1,216 @@
+[
+  {
+    "id":"docker.runtime.cmd.runc-create",
+    "command":"runc create [options] <container-id>",
+    "purpose":"Create an instance of a container from an OCI bundle (config.json + rootfs). All config.json properties EXCEPT process.args are applied; user process is not started until `runc start`. Container appears in `runc list` with state `created`.",
+    "flags":[
+      {"name":"--bundle, -b","value":"<path>","doc":"Path to bundle dir (default: cwd)."},
+      {"name":"--console-socket","value":"<path>","doc":"AF_UNIX socket to receive the pty master fd via SCM_RIGHTS. Required if config.json's process.terminal=true."},
+      {"name":"--pid-file","value":"<path>","doc":"Write the initial container process pid to this file."},
+      {"name":"--no-pivot","value":null,"doc":"Don't use pivot_root; chroot+chdir instead. Discouraged: 'may be unsafe from a security standpoint'."},
+      {"name":"--no-new-keyring","value":null,"doc":"Don't create a new session keyring; container inherits the caller's."},
+      {"name":"--preserve-fds","value":"<N>","doc":"Pass N additional fds beyond stdio + $LISTEN_FDS."}
+    ],
+    "examples":[
+      {"invocation":"runc create --bundle /containers/c1 c1","expected_output":"creates resources; `runc state c1` returns status=created","scenario":"two-step create+start lifecycle (e.g. for hooks)"},
+      {"invocation":"runc create --console-socket /tmp/console.sock --pid-file /var/run/c1.pid c1","expected_output":"creates and writes pid to file; pty master delivered to console-socket","scenario":"interactive container with explicit terminal handling"}
+    ],
+    "source_ids":["runc-create-8","oci-runtime-spec-runtime"]
+  },
+  {
+    "id":"docker.runtime.cmd.runc-run",
+    "command":"runc run [options] <container-id>",
+    "purpose":"Shortcut for `create` + `start` — creates and starts a container in one go. Most common for one-off / interactive use. Default attached; `--detach` for backgrounded.",
+    "flags":[
+      {"name":"--bundle, -b","value":"<path>","doc":"Bundle dir (default: cwd)."},
+      {"name":"--console-socket","value":"<path>","doc":"AF_UNIX socket for pty master fd."},
+      {"name":"--detach, -d","value":null,"doc":"Detach from container's process."},
+      {"name":"--pid-file","value":"<path>","doc":"Write pid to file."},
+      {"name":"--no-subreaper","value":null,"doc":"Don't use PR_SET_CHILD_SUBREAPER. Reaping then falls to whoever wraps runc."},
+      {"name":"--no-pivot","value":null,"doc":"chroot instead of pivot_root."},
+      {"name":"--no-new-keyring","value":null,"doc":"Inherit caller's session keyring."},
+      {"name":"--preserve-fds","value":"<N>","doc":"Additional fds to inherit."},
+      {"name":"--keep","value":null,"doc":"Keep state directory and cgroup after exit (manual `runc delete` required after). Useful for inspecting cgroup state of an exited container."}
+    ],
+    "examples":[
+      {"invocation":"runc run c1","expected_output":"runs config.json's process.args attached to caller's stdio","scenario":"quick test of an OCI bundle"},
+      {"invocation":"runc run --bundle /containers/redis -d --pid-file /var/run/redis.pid redis","expected_output":"redis backgrounded; pid in file","scenario":"running a service via standalone runc (no containerd)"},
+      {"invocation":"runc run --keep c1","expected_output":"after exit, state dir + cgroup remain for inspection","scenario":"post-mortem debug of a crashed container's cgroup metrics"}
+    ],
+    "source_ids":["runc-run-8","runc-create-8","oci-runtime-spec-runtime"]
+  },
+  {
+    "id":"docker.runtime.cmd.runc-exec",
+    "command":"runc exec [options] <container-id> [--] <command> [args...]   |   runc exec -p <process.json> <container-id>",
+    "purpose":"Execute a new process inside a running container. Two forms: command-line + flags, or full process spec from a JSON file. Exits with the command's exit status (255 on internal error).",
+    "flags":[
+      {"name":"--console-socket","value":"<path>","doc":"AF_UNIX for pty master fd."},
+      {"name":"--cwd","value":"<path>","doc":"Working dir inside container before exec."},
+      {"name":"--env, -e","value":"<KEY=VAL>","doc":"Env var. Multiple times allowed."},
+      {"name":"--tty, -t","value":null,"doc":"Allocate a pseudo-TTY."},
+      {"name":"--user, -u","value":"<uid>[:<gid>]","doc":"Run as user/uid (and optional group/gid)."},
+      {"name":"--additional-gids, -g","value":"<gid>","doc":"Add additional group IDs. Repeatable."},
+      {"name":"--process, -p","value":"<process.json>","doc":"Use a process spec JSON file (full OCI process spec) instead of CLI flags."},
+      {"name":"--detach, -d","value":null,"doc":"Detach from process."},
+      {"name":"--pid-file","value":"<path>","doc":"Write process pid to file."},
+      {"name":"--process-label","value":"<label>","doc":"SELinux label for the process."},
+      {"name":"--apparmor","value":"<profile>","doc":"AppArmor profile for the process."},
+      {"name":"--no-new-privs","value":null,"doc":"Set the no-new-privileges bit."},
+      {"name":"--cap","value":"<CAP>","doc":"Add capability to the bounding set. Repeatable."},
+      {"name":"--preserve-fds","value":"<N>","doc":"Additional fds to inherit."},
+      {"name":"--ignore-paused","value":null,"doc":"Allow exec in a paused container (default errors out)."},
+      {"name":"--cgroup","value":"<path> | <controller>[,<ctrl>...]:<path>","doc":"Run in a sub-cgroup. v1: per-controller mappings; v2: single path."}
+    ],
+    "examples":[
+      {"invocation":"runc exec c1 ps","expected_output":"process list inside c1","scenario":"quick introspection"},
+      {"invocation":"runc exec -t -u 0 c1 sh","expected_output":"interactive root shell","scenario":"poke around as root inside the container"},
+      {"invocation":"runc exec -p /tmp/exec-spec.json c1","expected_output":"runs with full OCI process spec from file","scenario":"reproduce a specific exec config from a recorded spec"}
+    ],
+    "source_ids":["runc-exec-8","oci-runtime-spec-config-linux"]
+  },
+  {
+    "id":"docker.runtime.cmd.runc-kill",
+    "command":"runc kill <container-id> [signal]",
+    "purpose":"Send signal to container's pid 1. Default SIGTERM. No grace period at this layer — that's containerd / dockerd. Errors if state is not `created` or `running`.",
+    "flags":[
+      {"name":"<signal>","value":"<SIG|num>","doc":"Signal name (with or without SIG prefix) or numeric value. Default SIGTERM."}
+    ],
+    "examples":[
+      {"invocation":"runc kill c1 KILL","expected_output":"SIGKILL sent; container exits","scenario":"force-kill a stuck container"},
+      {"invocation":"runc kill c1 HUP","expected_output":"SIGHUP sent","scenario":"trigger config-reload in a daemon inside the container"},
+      {"invocation":"runc kill c1 9","expected_output":"signal 9 (SIGKILL)","scenario":"signal by number"}
+    ],
+    "source_ids":["runc-kill-8"]
+  },
+  {
+    "id":"docker.runtime.cmd.runc-delete",
+    "command":"runc delete [--force] <container-id>",
+    "purpose":"Delete resources held by a container. Container must be in `stopped` state unless `--force`. Deletes only what runc created — pre-existing resources are left alone.",
+    "flags":[
+      {"name":"--force, -f","value":null,"doc":"SIGKILL the running container first, then delete."}
+    ],
+    "examples":[
+      {"invocation":"runc delete c1","expected_output":"removes c1 from `runc list`","scenario":"normal cleanup of a stopped container"},
+      {"invocation":"runc delete -f c1","expected_output":"SIGKILL + delete in one step","scenario":"force-cleanup of a wedged container"}
+    ],
+    "source_ids":["runc-delete-8"]
+  },
+  {
+    "id":"docker.runtime.cmd.runc-state",
+    "command":"runc state <container-id>",
+    "purpose":"Output current state of a container as JSON: ociVersion, id, status (creating|created|running|stopped), pid, bundle, annotations.",
+    "flags":[],
+    "examples":[
+      {"invocation":"runc state c1","expected_output":"{\"ociVersion\":\"1.0.0\",\"id\":\"c1\",\"status\":\"running\",\"pid\":4422,\"bundle\":\"/containers/c1\"}","scenario":"verify a container is running"},
+      {"invocation":"runc state c1 | jq -r .pid","expected_output":"4422","scenario":"extract pid for ptrace / strace from outside"}
+    ],
+    "source_ids":["runc-state-8","oci-runtime-spec-runtime"]
+  },
+  {
+    "id":"docker.runtime.cmd.runc-spec",
+    "command":"runc spec [options]",
+    "purpose":"Generate a starter `config.json` in the bundle dir. ALWAYS needs editing afterwards (default sets process.args=[\"sh\"], which fails on most images). Pair with `jq` to mutate.",
+    "flags":[
+      {"name":"--bundle, -b","value":"<path>","doc":"Bundle dir to drop config.json into (default: cwd)."},
+      {"name":"--rootless","value":null,"doc":"Generate a rootless-friendly spec (no setgroups, user namespace, mapped uids). Distinct from runc's global --rootless."}
+    ],
+    "examples":[
+      {"invocation":"runc spec","expected_output":"writes ./config.json with default process.args=[\"sh\"]","scenario":"start an OCI bundle from scratch"},
+      {"invocation":"runc spec && jq '.process.args |= [\"/hello\"]' config.json > new.json && mv new.json config.json","expected_output":"config.json now runs /hello","scenario":"the canonical hello-world standalone bundle workflow"},
+      {"invocation":"runc spec --rootless","expected_output":"config.json with userns + uid mappings ready for rootless runc","scenario":"rootless container experimentation"}
+    ],
+    "source_ids":["runc-spec-8"]
+  },
+  {
+    "id":"docker.runtime.cmd.containerd",
+    "command":"containerd [global-flags]",
+    "purpose":"The containerd daemon. Default config at /etc/containerd/config.toml. State at /var/lib/containerd; runtime sockets under /run/containerd. Built-in CRI plugin lets kubelet talk to it directly.",
+    "flags":[
+      {"name":"-c, --config","value":"<path>","doc":"Path to config.toml (default: /etc/containerd/config.toml)."},
+      {"name":"-l, --log-level","value":"trace|debug|info|warn|error|fatal|panic","doc":"Log verbosity."},
+      {"name":"-a, --address","value":"<path>","doc":"GRPC socket address (overrides config.toml grpc.address)."},
+      {"name":"--state","value":"<path>","doc":"Runtime state dir (default /run/containerd)."},
+      {"name":"--root","value":"<path>","doc":"Persistent state dir (default /var/lib/containerd)."},
+      {"name":"--metrics-address","value":"<host:port>","doc":"Prometheus metrics endpoint."},
+      {"name":"-v, --version","value":null,"doc":"Print version + commit, exit."}
+    ],
+    "examples":[
+      {"invocation":"sudo containerd","expected_output":"containerd starts in foreground; logs to stderr","scenario":"manual debug start"},
+      {"invocation":"containerd config default > /etc/containerd/config.toml","expected_output":"writes a default config.toml that you then edit","scenario":"first-time setup on a new host"},
+      {"invocation":"sudo containerd -c /etc/containerd/config.toml -l debug","expected_output":"debug-level logs","scenario":"verbose troubleshooting"}
+    ],
+    "source_ids":["containerd-getting-started","containerd-ops","containerd-cri-config","containerd-docs-root"]
+  },
+  {
+    "id":"docker.runtime.cmd.ctr",
+    "command":"ctr [global-flags] <subcommand> [subcommand-flags]",
+    "purpose":"containerd's bundled debug CLI. Native API (NOT CRI). Subcommands grouped by service: images (pull/push/ls/rm/import/export), containers (create/ls/info/rm), tasks (start/ls/kill/exec/pause/resume), namespaces, content, snapshots, events, version, plugins. 'For debugging only' per the official docs — use nerdctl for general purpose.",
+    "flags":[
+      {"name":"-a, --address","value":"<sock>","doc":"containerd socket (default /run/containerd/containerd.sock)."},
+      {"name":"-n, --namespace","value":"<ns>","doc":"containerd namespace (default `default`; moby-shipped containerd uses `moby`; CRI uses `k8s.io`)."},
+      {"name":"--debug","value":null,"doc":"Verbose grpc + client debug logs."},
+      {"name":"--connect-timeout","value":"<duration>","doc":"Timeout for the initial grpc dial."}
+    ],
+    "examples":[
+      {"invocation":"ctr -n moby c ls","expected_output":"lists containers in dockerd's namespace","scenario":"see what dockerd has running, without going through dockerd"},
+      {"invocation":"ctr i pull docker.io/library/redis:alpine","expected_output":"pulls the image into the default namespace's content store","scenario":"smoke-test containerd registry path bypassing dockerd"},
+      {"invocation":"ctr run --rm -t docker.io/library/alpine:latest c1 sh","expected_output":"starts an alpine container with TTY","scenario":"standalone containerd container run (no dockerd)"},
+      {"invocation":"ctr -n k8s.io c ls","expected_output":"containers in the kubelet namespace","scenario":"on a k8s node, see what kubelet's running"}
+    ],
+    "source_ids":["containerd-getting-started","containerd-ops"]
+  },
+  {
+    "id":"docker.runtime.cmd.crictl-pods",
+    "command":"crictl pods [flags]",
+    "purpose":"List pod sandboxes via the CRI grpc API. Connects to `unix:///run/containerd/containerd.sock` (or kubelet-configured socket). Used to debug k8s nodes when kubectl can't reach the node.",
+    "flags":[
+      {"name":"--id","value":"<id>","doc":"Filter by sandbox id."},
+      {"name":"--label, -l","value":"<key=val>","doc":"Filter by label. Repeatable."},
+      {"name":"--name","value":"<name>","doc":"Regex match on pod name."},
+      {"name":"--namespace","value":"<ns>","doc":"Filter by k8s namespace."},
+      {"name":"--state, -s","value":"ready|notready","doc":"Filter by sandbox state."},
+      {"name":"-o, --output","value":"json|yaml|table","doc":"Output format (table default)."}
+    ],
+    "examples":[
+      {"invocation":"sudo crictl pods","expected_output":"table of all pods on the node with their sandbox status","scenario":"kubelet appears unhealthy; check what's running directly via the CRI"},
+      {"invocation":"sudo crictl pods --state notready","expected_output":"pods whose sandbox failed to come up","scenario":"finding pods stuck in ContainerCreating"}
+    ],
+    "source_ids":["containerd-cri-config","containerd-getting-started"]
+  },
+  {
+    "id":"docker.runtime.cmd.crictl-ps",
+    "command":"crictl ps [flags]",
+    "purpose":"List containers via the CRI grpc API (the in-pod containers, distinct from the pod sandbox listed by `crictl pods`).",
+    "flags":[
+      {"name":"-a, --all","value":null,"doc":"Show all containers (default: only running)."},
+      {"name":"--id","value":"<id>","doc":"Filter by container id."},
+      {"name":"--name","value":"<name>","doc":"Regex match on name."},
+      {"name":"-p, --pod","value":"<sandbox-id>","doc":"Show containers in this pod sandbox."},
+      {"name":"--state, -s","value":"created|running|exited|unknown","doc":"Filter by container state."},
+      {"name":"--latest","value":null,"doc":"Show the most recently created container only."},
+      {"name":"-o, --output","value":"json|yaml|table","doc":"Output format."}
+    ],
+    "examples":[
+      {"invocation":"sudo crictl ps -a","expected_output":"all containers (including exited) on the node","scenario":"why did this pod's container exit?"},
+      {"invocation":"sudo crictl ps -p <sandbox-id>","expected_output":"containers inside one pod sandbox","scenario":"isolate a single failing pod's container set"},
+      {"invocation":"sudo crictl ps -s exited -o json","expected_output":"JSON list of exited containers","scenario":"feed into a forensics script"}
+    ],
+    "source_ids":["containerd-cri-config","containerd-getting-started"]
+  },
+  {
+    "id":"docker.runtime.cmd.crictl-exec",
+    "command":"crictl exec [flags] <container-id> <command> [args...]",
+    "purpose":"Run a command inside a running container via the CRI. Useful for debugging from a node when `kubectl exec` can't reach the API server. Mirrors `kubectl exec` but at the kubelet/CRI level.",
+    "flags":[
+      {"name":"-i, --interactive","value":null,"doc":"Keep STDIN open."},
+      {"name":"-t, --tty","value":null,"doc":"Allocate a pseudo-TTY."},
+      {"name":"-s, --sync","value":null,"doc":"Run synchronously and wait for exit."},
+      {"name":"--timeout","value":"<duration>","doc":"Exec timeout."}
+    ],
+    "examples":[
+      {"invocation":"sudo crictl exec -it <container-id> sh","expected_output":"interactive shell inside the container","scenario":"debug from the node when kubectl exec is unavailable (API server unreachable, or networking debug)"},
+      {"invocation":"sudo crictl exec --sync <container-id> cat /etc/resolv.conf","expected_output":"resolv.conf contents","scenario":"verify DNS config inside a misbehaving pod"}
+    ],
+    "source_ids":["containerd-cri-config"]
+  }
+]

@@ -2710,7 +2710,7 @@ sources:
     parser: github-md
 
   # ============================================================
-  # DOCKER — engine, daemon, CLI
+  # DOCKER — engine (daemon, CLI, logging, storage)
   # ============================================================
   - id: docker-docs-root
     url: https://docs.docker.com/
@@ -2745,30 +2745,337 @@ sources:
     tier: T1
     license_note: reference-only
     parser: trafilatura
-  - id: docker-docs-engine-security
-    url: https://docs.docker.com/engine/security/
-    title: Docker Engine — Security
+  - id: docker-docs-daemon-ipv6
+    url: https://docs.docker.com/engine/daemon/ipv6/
+    title: Docker Engine — IPv6
     domain: docker
-    subdomain: security
+    subdomain: engine
     tier: T1
     license_note: reference-only
     parser: trafilatura
-  - id: docker-docs-network-bridge
-    url: https://docs.docker.com/engine/network/drivers/bridge/
-    title: Docker Engine — Bridge Network Driver
+  - id: docker-docs-daemon-logs
+    url: https://docs.docker.com/engine/daemon/logs/
+    title: Docker Engine — Daemon Logs
     domain: docker
-    subdomain: networking
+    subdomain: engine
     tier: T1
     license_note: reference-only
     parser: trafilatura
-  - id: docker-compose-spec-gh
-    url: https://github.com/compose-spec/compose-spec/blob/main/spec.md
-    title: Compose Specification (markdown)
+  - id: docker-docs-daemon-proxy
+    url: https://docs.docker.com/engine/daemon/proxy/
+    title: Docker Engine — Daemon Proxy
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-daemon-live-restore
+    url: https://docs.docker.com/engine/daemon/live-restore/
+    title: Docker Engine — Live Restore
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-daemon-alternative-runtimes
+    url: https://docs.docker.com/engine/daemon/alternative-runtimes/
+    title: Docker Engine — Alternative Runtimes
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-daemon-remote-access
+    url: https://docs.docker.com/engine/daemon/remote-access/
+    title: Docker Engine — Daemon Remote Access
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-daemon-prometheus
+    url: https://docs.docker.com/engine/daemon/prometheus/
+    title: Docker Engine — Prometheus Metrics
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-logging-configure
+    url: https://docs.docker.com/engine/logging/configure/
+    title: Docker Engine — Configure Logging Drivers
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-logging-json-file
+    url: https://docs.docker.com/engine/logging/drivers/json-file/
+    title: Docker Logging — json-file Driver (default)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-logging-journald
+    url: https://docs.docker.com/engine/logging/drivers/journald/
+    title: Docker Logging — journald Driver
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-logging-fluentd
+    url: https://docs.docker.com/engine/logging/drivers/fluentd/
+    title: Docker Logging — Fluentd Driver
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-storage-select-driver
+    url: https://docs.docker.com/engine/storage/drivers/select-storage-driver/
+    title: Docker Storage — Select a Storage Driver
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-storage-overlay2
+    url: https://docs.docker.com/engine/storage/drivers/overlayfs-driver/
+    title: Docker Storage — overlay2 / OverlayFS Driver
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-storage-volumes
+    url: https://docs.docker.com/engine/storage/volumes/
+    title: Docker Storage — Volumes
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-storage-bind-mounts
+    url: https://docs.docker.com/engine/storage/bind-mounts/
+    title: Docker Storage — Bind Mounts
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-manage-pruning
+    url: https://docs.docker.com/engine/manage-resources/pruning/
+    title: Docker Engine — Pruning Resources (system prune)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-cli-container-run
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/container_run.md
+    title: docker container run (CLI man source)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-container-exec
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/container_exec.md
+    title: docker container exec (CLI man source)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-container-logs
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/container_logs.md
+    title: docker container logs (CLI man source)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-container-inspect
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/container_inspect.md
+    title: docker container inspect (CLI man source)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-container-ls
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/container_ls.md
+    title: docker container ls (CLI man source)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: wsargent-docker-cheat-sheet
+    url: https://raw.githubusercontent.com/wsargent/docker-cheat-sheet/master/README.md
+    title: Docker Cheat Sheet (wsargent)
+    domain: docker
+    subdomain: engine
+    tier: T2
+    license_note: redistribute-ok
+    parser: github-md
+    notes: CC-BY-4.0; 22.5k stars; dense practical command reference
+  - id: iximiuz-tag-docker
+    url: https://iximiuz.com/en/tags/?tag=docker
+    title: iximiuz.com — Docker tag index
+    domain: docker
+    subdomain: engine
+    tier: T3
+    license_note: unknown
+    parser: trafilatura
+    notes: license unverified — private corpus only
+  - id: iximiuz-debugger-images
+    url: https://iximiuz.com/en/posts/docker-debug-slim-containers/
+    title: iximiuz — Debugging slim/distroless containers
+    domain: docker
+    subdomain: engine
+    tier: T3
+    license_note: unknown
+    parser: trafilatura
+    notes: license unverified — private corpus only
+
+  # ============================================================
+  # DOCKER — compose (modular spec from compose-spec/compose-spec)
+  # ============================================================
+  - id: compose-spec-00-overview
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/00-overview.md
+    title: Compose Spec — Overview
     domain: docker
     subdomain: compose
     tier: T1
     license_note: redistribute-ok
     parser: github-md
+  - id: compose-spec-02-model
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/02-model.md
+    title: Compose Spec — Model (services, networks, volumes)
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-05-services
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/05-services.md
+    title: Compose Spec — Services (depends_on, healthcheck, restart)
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-06-networks
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/06-networks.md
+    title: Compose Spec — Networks
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-07-volumes
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/07-volumes.md
+    title: Compose Spec — Volumes
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-08-configs
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/08-configs.md
+    title: Compose Spec — Configs
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-09-secrets
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/09-secrets.md
+    title: Compose Spec — Secrets
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-11-extension
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/11-extension.md
+    title: Compose Spec — Extension fields
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-12-interpolation
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/12-interpolation.md
+    title: Compose Spec — Variable Interpolation
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-13-merge
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/13-merge.md
+    title: Compose Spec — File Merging
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-14-include
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/14-include.md
+    title: Compose Spec — Include
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-15-profiles
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/15-profiles.md
+    title: Compose Spec — Profiles
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-build
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/build.md
+    title: Compose Spec — Build section
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-deploy
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/deploy.md
+    title: Compose Spec — Deploy section
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: compose-spec-develop
+    url: https://raw.githubusercontent.com/compose-spec/compose-spec/main/develop.md
+    title: Compose Spec — Develop (watch / file-sync)
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-docs-compose-startup-order
+    url: https://docs.docker.com/compose/how-tos/startup-order/
+    title: Docker Compose — Startup Order (depends_on healthcheck)
+    domain: docker
+    subdomain: compose
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # ============================================================
+  # DOCKER — build / BuildKit / Dockerfile
+  # ============================================================
   - id: docker-docs-build-buildkit
     url: https://docs.docker.com/build/buildkit/
     title: Docker Build — BuildKit
@@ -2777,22 +3084,499 @@ sources:
     tier: T1
     license_note: reference-only
     parser: trafilatura
+  - id: docker-docs-buildkit-configure
+    url: https://docs.docker.com/build/buildkit/configure/
+    title: Docker Build — Configure BuildKit
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-dockerfile-best-practices
+    url: https://docs.docker.com/build/building/best-practices/
+    title: Docker Build — Dockerfile Best Practices
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-multi-stage
+    url: https://docs.docker.com/build/building/multi-stage/
+    title: Docker Build — Multi-Stage Builds
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-build-secrets
+    url: https://docs.docker.com/build/building/secrets/
+    title: Docker Build — Build Secrets
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-build-cache
+    url: https://docs.docker.com/build/cache/
+    title: Docker Build — Build Cache
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-build-bake
+    url: https://docs.docker.com/build/bake/
+    title: Docker Build — Bake
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: moby-buildkit-readme
+    url: https://raw.githubusercontent.com/moby/buildkit/master/README.md
+    title: moby/buildkit — README
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: moby-buildkit-buildkitd-toml
+    url: https://raw.githubusercontent.com/moby/buildkit/master/docs/buildkitd.toml.md
+    title: moby/buildkit — buildkitd.toml reference
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: moby-buildkit-multi-platform
+    url: https://raw.githubusercontent.com/moby/buildkit/master/docs/multi-platform.md
+    title: moby/buildkit — Multi-Platform Builds
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: moby-buildkit-rootless
+    url: https://raw.githubusercontent.com/moby/buildkit/master/docs/rootless.md
+    title: moby/buildkit — Rootless
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: moby-buildkit-dockerfile-reference
+    url: https://raw.githubusercontent.com/moby/buildkit/master/frontend/dockerfile/docs/reference.md
+    title: moby/buildkit — Dockerfile Reference (canonical, ships with parser)
+    domain: docker
+    subdomain: build-buildkit
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+
+  # ============================================================
+  # DOCKER — runtime (OCI specs, runc, containerd)
+  # ============================================================
   - id: oci-runtime-spec-gh
-    url: https://github.com/opencontainers/runtime-spec/blob/main/spec.md
+    url: https://raw.githubusercontent.com/opencontainers/runtime-spec/main/spec.md
     title: OCI Runtime Specification
     domain: docker
     subdomain: runtime
     tier: T1
     license_note: redistribute-ok
     parser: github-md
+    notes: URL fixed 2026-05-02 from /blob/main/ to raw.githubusercontent.com/.../main/ for github-md passthrough
   - id: containerd-docs-root
     url: https://containerd.io/docs/
-    title: containerd Documentation
+    title: containerd Documentation (root)
     domain: docker
     subdomain: runtime
     tier: T1
     license_note: redistribute-ok
     parser: trafilatura
+  - id: oci-runtime-spec-runtime
+    url: https://raw.githubusercontent.com/opencontainers/runtime-spec/main/runtime.md
+    title: OCI Runtime Spec — Runtime contract (lifecycle, exit codes)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-runtime-spec-runtime-linux
+    url: https://raw.githubusercontent.com/opencontainers/runtime-spec/main/runtime-linux.md
+    title: OCI Runtime Spec — Runtime (Linux)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-runtime-spec-config-linux
+    url: https://raw.githubusercontent.com/opencontainers/runtime-spec/main/config-linux.md
+    title: OCI Runtime Spec — Config (Linux — namespaces, capabilities, cgroups, mounts)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-image-spec-config
+    url: https://raw.githubusercontent.com/opencontainers/image-spec/main/config.md
+    title: OCI Image Spec — Image Config (entrypoint, env, signals)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-image-spec-manifest
+    url: https://raw.githubusercontent.com/opencontainers/image-spec/main/manifest.md
+    title: OCI Image Spec — Manifest (layer ordering, multi-arch)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-image-spec-descriptor
+    url: https://raw.githubusercontent.com/opencontainers/image-spec/main/descriptor.md
+    title: OCI Image Spec — Descriptor (digest, mediatype)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-distribution-spec
+    url: https://raw.githubusercontent.com/opencontainers/distribution-spec/main/spec.md
+    title: OCI Distribution Spec — Registry HTTP API
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: containerd-getting-started
+    url: https://raw.githubusercontent.com/containerd/containerd/main/docs/getting-started.md
+    title: containerd — Getting Started
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: containerd-ops
+    url: https://raw.githubusercontent.com/containerd/containerd/main/docs/ops.md
+    title: containerd — Ops Guide
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: containerd-cri-config
+    url: https://raw.githubusercontent.com/containerd/containerd/main/docs/cri/config.md
+    title: containerd — CRI Plugin Config
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: runc-run-8
+    url: https://raw.githubusercontent.com/opencontainers/runc/main/man/runc-run.8.md
+    title: runc(8) — runc run
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: runc-exec-8
+    url: https://raw.githubusercontent.com/opencontainers/runc/main/man/runc-exec.8.md
+    title: runc(8) — runc exec
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: runc-create-8
+    url: https://raw.githubusercontent.com/opencontainers/runc/main/man/runc-create.8.md
+    title: runc(8) — runc create
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: runc-spec-8
+    url: https://raw.githubusercontent.com/opencontainers/runc/main/man/runc-spec.8.md
+    title: runc(8) — runc spec (config.json schema)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: iximiuz-image-layers
+    url: https://iximiuz.com/en/posts/oci-containers/
+    title: iximiuz — OCI containers without an image
+    domain: docker
+    subdomain: runtime
+    tier: T3
+    license_note: unknown
+    parser: trafilatura
+    notes: license unverified — private corpus only
+
+  # ============================================================
+  # DOCKER — networking (drivers, firewall, port publishing)
+  # ============================================================
+  - id: docker-docs-network-bridge
+    url: https://docs.docker.com/engine/network/drivers/bridge/
+    title: Docker Engine — Bridge Network Driver
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-overlay
+    url: https://docs.docker.com/engine/network/drivers/overlay/
+    title: Docker Engine — Overlay Network Driver
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-host
+    url: https://docs.docker.com/engine/network/drivers/host/
+    title: Docker Engine — Host Network Driver
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-macvlan
+    url: https://docs.docker.com/engine/network/drivers/macvlan/
+    title: Docker Engine — Macvlan Network Driver
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-firewall
+    url: https://docs.docker.com/engine/network/packet-filtering-firewalls/
+    title: Docker Engine — Packet Filtering and Firewalls (iptables/nftables)
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-port-publishing
+    url: https://docs.docker.com/engine/network/links/
+    title: Docker Engine — Network Links / Port Publishing
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-cli-network-create
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/network_create.md
+    title: docker network create (CLI man source)
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-network-inspect
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/network_inspect.md
+    title: docker network inspect (CLI man source)
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-image-pull
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/image_pull.md
+    title: docker image pull (CLI man source)
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: image-pull placed in networking subdomain — registry/network failure modes dominate
+
+  # ============================================================
+  # DOCKER — security (rootless, userns, AppArmor, seccomp, TLS)
+  # ============================================================
+  - id: docker-docs-engine-security
+    url: https://docs.docker.com/engine/security/
+    title: Docker Engine — Security
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-rootless
+    url: https://docs.docker.com/engine/security/rootless/
+    title: Docker Engine — Rootless mode
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-userns-remap
+    url: https://docs.docker.com/engine/security/userns-remap/
+    title: Docker Engine — User Namespace Remapping
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-security-apparmor
+    url: https://docs.docker.com/engine/security/apparmor/
+    title: Docker Engine — AppArmor
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-security-seccomp
+    url: https://docs.docker.com/engine/security/seccomp/
+    title: Docker Engine — Seccomp
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-security-protect-access
+    url: https://docs.docker.com/engine/security/protect-access/
+    title: Docker Engine — Protect the Daemon Socket (TLS)
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-security-certificates
+    url: https://docs.docker.com/engine/security/certificates/
+    title: Docker Engine — Certificates for Repositories
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-security-trust
+    url: https://docs.docker.com/engine/security/trust/
+    title: Docker Engine — Content Trust
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # ============================================================
+  # DOCKER — Phase-1.5 follow-ups (added 2026-05-02; gap-fillers from session 1.1 PROGRESS.md)
+  # ============================================================
+  - id: docker-docs-rootless-troubleshoot
+    url: https://docs.docker.com/engine/security/rootless/troubleshoot/
+    title: Docker Engine — Rootless Mode Troubleshooting
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: Q1 BM25 corpus gap from session 1.1 — "permission denied" content lives here, not in /rootless/
+  - id: docker-docs-security-trust-automation
+    url: https://docs.docker.com/engine/security/trust/trust_automation/
+    title: Docker Engine — Content Trust Automation
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-security-antivirus
+    url: https://docs.docker.com/engine/security/antivirus/
+    title: Docker Engine — Antivirus Compatibility
+    domain: docker
+    subdomain: security
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-ipvlan
+    url: https://docs.docker.com/engine/network/drivers/ipvlan/
+    title: Docker Engine — IPvlan Network Driver
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-docs-network-none
+    url: https://docs.docker.com/engine/network/drivers/none/
+    title: Docker Engine — None Network Driver (no networking)
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: docker-cli-image-push
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/image_push.md
+    title: docker image push (CLI man source)
+    domain: docker
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: image-push paired with image-pull in networking — registry/network failure modes dominate
+  - id: docker-cli-container-kill
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/container_kill.md
+    title: docker container kill (CLI man source)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-container-stop
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/container_stop.md
+    title: docker container stop (CLI man source)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: docker-cli-system-df
+    url: https://raw.githubusercontent.com/docker/cli/master/docs/reference/commandline/system_df.md
+    title: docker system df (CLI man source — disk usage debugging)
+    domain: docker
+    subdomain: engine
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: runc-kill-8
+    url: https://raw.githubusercontent.com/opencontainers/runc/main/man/runc-kill.8.md
+    title: runc(8) — runc kill
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: runc-state-8
+    url: https://raw.githubusercontent.com/opencontainers/runc/main/man/runc-state.8.md
+    title: runc(8) — runc state
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: runc-delete-8
+    url: https://raw.githubusercontent.com/opencontainers/runc/main/man/runc-delete.8.md
+    title: runc(8) — runc delete
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-image-spec-image-layout
+    url: https://raw.githubusercontent.com/opencontainers/image-spec/main/image-layout.md
+    title: OCI Image Spec — Image Layout (filesystem layout for blobs/index/refs)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: oci-image-spec-media-types
+    url: https://raw.githubusercontent.com/opencontainers/image-spec/main/media-types.md
+    title: OCI Image Spec — Media Types (image, layer, config, bundle)
+    domain: docker
+    subdomain: runtime
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
 
   # ============================================================
   # LINUX — primitives (namespaces, cgroups, capabilities, seccomp)
@@ -2945,6 +3729,1282 @@ sources:
     tier: T1
     license_note: redistribute-ok
     parser: manpage
+
+  # ============================================================
+  # LINUX — primitives (additions, session 1.1, 2026-05-03)
+  # ============================================================
+  - id: man7-clone-2
+    url: https://man7.org/linux/man-pages/man2/clone.2.html
+    title: clone(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-fork-2
+    url: https://man7.org/linux/man-pages/man2/fork.2.html
+    title: fork(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-execve-2
+    url: https://man7.org/linux/man-pages/man2/execve.2.html
+    title: execve(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-unshare-1
+    url: https://man7.org/linux/man-pages/man1/unshare.1.html
+    title: unshare(1)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-unshare-2
+    url: https://man7.org/linux/man-pages/man2/unshare.2.html
+    title: unshare(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-setns-2
+    url: https://man7.org/linux/man-pages/man2/setns.2.html
+    title: setns(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-pivot-root-8
+    url: https://man7.org/linux/man-pages/man8/pivot_root.8.html
+    title: pivot_root(8)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-mount-namespaces-7
+    url: https://man7.org/linux/man-pages/man7/mount_namespaces.7.html
+    title: mount_namespaces(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-pid-namespaces-7
+    url: https://man7.org/linux/man-pages/man7/pid_namespaces.7.html
+    title: pid_namespaces(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-user-namespaces-7
+    url: https://man7.org/linux/man-pages/man7/user_namespaces.7.html
+    title: user_namespaces(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-network-namespaces-7
+    url: https://man7.org/linux/man-pages/man7/network_namespaces.7.html
+    title: network_namespaces(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-uts-namespaces-7
+    url: https://man7.org/linux/man-pages/man7/uts_namespaces.7.html
+    title: uts_namespaces(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-prctl-2
+    url: https://man7.org/linux/man-pages/man2/prctl.2.html
+    title: prctl(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-credentials-7
+    url: https://man7.org/linux/man-pages/man7/credentials.7.html
+    title: credentials(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-seccomp-unotify-2
+    url: https://man7.org/linux/man-pages/man2/seccomp_unotify.2.html
+    title: seccomp_unotify(2)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-keyrings-7
+    url: https://man7.org/linux/man-pages/man7/keyrings.7.html
+    title: keyrings(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-signal-7
+    url: https://man7.org/linux/man-pages/man7/signal.7.html
+    title: signal(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-signal-safety-7
+    url: https://man7.org/linux/man-pages/man7/signal-safety.7.html
+    title: signal-safety(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-pthreads-7
+    url: https://man7.org/linux/man-pages/man7/pthreads.7.html
+    title: pthreads(7)
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: kernel-docs-lsm-index
+    url: https://docs.kernel.org/admin-guide/LSM/index.html
+    title: Linux Kernel — LSM (Linux Security Modules) index
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-lsm-selinux
+    url: https://docs.kernel.org/admin-guide/LSM/SELinux.html
+    title: Linux Kernel — SELinux LSM
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-lsm-apparmor
+    url: https://docs.kernel.org/admin-guide/LSM/apparmor.html
+    title: Linux Kernel — AppArmor LSM
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-mm-concepts
+    url: https://docs.kernel.org/admin-guide/mm/concepts.html
+    title: Linux Kernel — Memory Management Concepts
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-iostats
+    url: https://docs.kernel.org/admin-guide/iostats.html
+    title: Linux Kernel — I/O Statistics Fields
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-kernel-parameters
+    url: https://docs.kernel.org/admin-guide/kernel-parameters.html
+    title: Linux Kernel — Command-Line Parameters Reference
+    domain: linux
+    subdomain: primitives
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: ~500 KB largest doc this session; ingest in last wave
+  - id: ubuntu-wiki-apparmor
+    url: https://wiki.ubuntu.com/AppArmor
+    title: Ubuntu Wiki — AppArmor
+    domain: linux
+    subdomain: primitives
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Ubuntu Help wiki free license (CC-derived per project)
+
+  # ============================================================
+  # LINUX — networking (additions, session 1.1, 2026-05-03)
+  # ============================================================
+  - id: man7-socket-2
+    url: https://man7.org/linux/man-pages/man2/socket.2.html
+    title: socket(2)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-socket-7
+    url: https://man7.org/linux/man-pages/man7/socket.7.html
+    title: socket(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-connect-2
+    url: https://man7.org/linux/man-pages/man2/connect.2.html
+    title: connect(2)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-bind-2
+    url: https://man7.org/linux/man-pages/man2/bind.2.html
+    title: bind(2)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-accept-2
+    url: https://man7.org/linux/man-pages/man2/accept.2.html
+    title: accept(2)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-getsockopt-2
+    url: https://man7.org/linux/man-pages/man2/getsockopt.2.html
+    title: getsockopt(2)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-tcp-7
+    url: https://man7.org/linux/man-pages/man7/tcp.7.html
+    title: tcp(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-udp-7
+    url: https://man7.org/linux/man-pages/man7/udp.7.html
+    title: udp(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-unix-7
+    url: https://man7.org/linux/man-pages/man7/unix.7.html
+    title: unix(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-netlink-7
+    url: https://man7.org/linux/man-pages/man7/netlink.7.html
+    title: netlink(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-packet-7
+    url: https://man7.org/linux/man-pages/man7/packet.7.html
+    title: packet(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ip-7
+    url: https://man7.org/linux/man-pages/man7/ip.7.html
+    title: ip(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ipv6-7
+    url: https://man7.org/linux/man-pages/man7/ipv6.7.html
+    title: ipv6(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-epoll-7
+    url: https://man7.org/linux/man-pages/man7/epoll.7.html
+    title: epoll(7)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ip-route-8
+    url: https://man7.org/linux/man-pages/man8/ip-route.8.html
+    title: ip-route(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ip-link-8
+    url: https://man7.org/linux/man-pages/man8/ip-link.8.html
+    title: ip-link(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ip-address-8
+    url: https://man7.org/linux/man-pages/man8/ip-address.8.html
+    title: ip-address(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ip-neighbour-8
+    url: https://man7.org/linux/man-pages/man8/ip-neighbour.8.html
+    title: ip-neighbour(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-bridge-8
+    url: https://man7.org/linux/man-pages/man8/bridge.8.html
+    title: bridge(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-iptables-extensions-8
+    url: https://man7.org/linux/man-pages/man8/iptables-extensions.8.html
+    title: iptables-extensions(8)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: debian-nft-8
+    url: https://manpages.debian.org/bookworm/nftables/nft.8.en.html
+    title: nft(8) — Debian
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+    notes: man7.org has no nft.8; Debian mirror is canonical-equivalent (GPL nftables docs)
+  - id: debian-conntrack-8
+    url: https://manpages.debian.org/bookworm/conntrack/conntrack.8.en.html
+    title: conntrack(8) — Debian
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: nftables-wiki
+    url: https://wiki.nftables.org/wiki-nftables/index.php/Main_Page
+    title: nftables wiki — index/HOWTO
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: GFDL 1.3 per footer
+  - id: man7-resolv-conf-5
+    url: https://man7.org/linux/man-pages/man5/resolv.conf.5.html
+    title: resolv.conf(5)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-nsswitch-conf-5
+    url: https://man7.org/linux/man-pages/man5/nsswitch.conf.5.html
+    title: nsswitch.conf(5)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-hosts-5
+    url: https://man7.org/linux/man-pages/man5/hosts.5.html
+    title: hosts(5)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-getent-1
+    url: https://man7.org/linux/man-pages/man1/getent.1.html
+    title: getent(1)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: debian-dig-1
+    url: https://manpages.debian.org/bookworm/bind9-dnsutils/dig.1.en.html
+    title: dig(1) — Debian
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: nmap-book-man
+    url: https://nmap.org/book/man.html
+    title: Nmap Reference Guide (Chapter 15 of Nmap Network Scanning)
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: canonical Nmap man content; project-licensed
+  - id: kernel-docs-networking-index
+    url: https://docs.kernel.org/networking/index.html
+    title: Linux Kernel — Networking Documentation index
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-net-sysctl
+    url: https://docs.kernel.org/admin-guide/sysctl/net.html
+    title: Linux Kernel — /proc/sys/net sysctls
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-conntrack-sysctl
+    url: https://docs.kernel.org/networking/nf_conntrack-sysctl.html
+    title: Linux Kernel — netfilter conntrack sysfs variables
+    domain: linux
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+
+  # ============================================================
+  # LINUX — debugging (additions, session 1.1, 2026-05-03)
+  # ============================================================
+  - id: man7-ltrace-1
+    url: https://man7.org/linux/man-pages/man1/ltrace.1.html
+    title: ltrace(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-stat-1
+    url: https://man7.org/linux/man-pages/man1/perf-stat.1.html
+    title: perf-stat(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-record-1
+    url: https://man7.org/linux/man-pages/man1/perf-record.1.html
+    title: perf-record(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-report-1
+    url: https://man7.org/linux/man-pages/man1/perf-report.1.html
+    title: perf-report(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-top-1
+    url: https://man7.org/linux/man-pages/man1/perf-top.1.html
+    title: perf-top(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-trace-1
+    url: https://man7.org/linux/man-pages/man1/perf-trace.1.html
+    title: perf-trace(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-script-1
+    url: https://man7.org/linux/man-pages/man1/perf-script.1.html
+    title: perf-script(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-perf-sched-1
+    url: https://man7.org/linux/man-pages/man1/perf-sched.1.html
+    title: perf-sched(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-trace-cmd-1
+    url: https://man7.org/linux/man-pages/man1/trace-cmd.1.html
+    title: trace-cmd(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-bpf-2
+    url: https://man7.org/linux/man-pages/man2/bpf.2.html
+    title: bpf(2)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-bpf-helpers-7
+    url: https://man7.org/linux/man-pages/man7/bpf-helpers.7.html
+    title: bpf-helpers(7)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: ebpf-io-what-is-ebpf
+    url: https://ebpf.io/what-is-ebpf/
+    title: ebpf.io — What is eBPF?
+    domain: linux
+    subdomain: debugging
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: site footer confirms CC BY 4.0
+  - id: kernel-docs-bpf-index
+    url: https://docs.kernel.org/bpf/index.html
+    title: Linux Kernel — BPF Documentation index
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: man7-htop-1
+    url: https://man7.org/linux/man-pages/man1/htop.1.html
+    title: htop(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-pidstat-1
+    url: https://man7.org/linux/man-pages/man1/pidstat.1.html
+    title: pidstat(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: debian-vmstat-8
+    url: https://manpages.debian.org/bookworm/procps/vmstat.8.en.html
+    title: vmstat(8) — Debian
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+    notes: man7 doesn't host vmstat (procps-ng package, section 8); Debian mirror is canonical
+  - id: man7-iostat-1
+    url: https://man7.org/linux/man-pages/man1/iostat.1.html
+    title: iostat(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-lsof-8
+    url: https://man7.org/linux/man-pages/man8/lsof.8.html
+    title: lsof(8)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: debian-iotop-8
+    url: https://manpages.debian.org/bookworm/iotop/iotop.8.en.html
+    title: iotop(8) — Debian
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-blktrace-8
+    url: https://man7.org/linux/man-pages/man8/blktrace.8.html
+    title: blktrace(8)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-gdb-1
+    url: https://man7.org/linux/man-pages/man1/gdb.1.html
+    title: gdb(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: sourceware-gdb-manual
+    url: https://sourceware.org/gdb/current/onlinedocs/gdb.html/
+    title: GDB Manual (online edition)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: GFDL 1.3 with invariant sections — private corpus only, do not republish; cite by URL
+  - id: valgrind-manual
+    url: https://valgrind.org/docs/manual/manual.html
+    title: Valgrind Manual
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: license unverified; treat as reference-only
+  - id: kernel-docs-ftrace
+    url: https://docs.kernel.org/trace/ftrace.html
+    title: Linux Kernel — ftrace
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-kprobes
+    url: https://docs.kernel.org/trace/kprobes.html
+    title: Linux Kernel — Kprobes
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-uprobetracer
+    url: https://docs.kernel.org/trace/uprobetracer.html
+    title: Linux Kernel — Uprobe-tracer
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-trace-events
+    url: https://docs.kernel.org/trace/events.html
+    title: Linux Kernel — Event Tracing
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-kdump
+    url: https://docs.kernel.org/admin-guide/kdump/kdump.html
+    title: Linux Kernel — kdump
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: man7-kexec-8
+    url: https://man7.org/linux/man-pages/man8/kexec.8.html
+    title: kexec(8)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-crash-8
+    url: https://man7.org/linux/man-pages/man8/crash.8.html
+    title: crash(8)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: debian-makedumpfile-8
+    url: https://manpages.debian.org/bookworm/makedumpfile/makedumpfile.8.en.html
+    title: makedumpfile(8) — Debian
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-auditctl-8
+    url: https://man7.org/linux/man-pages/man8/auditctl.8.html
+    title: auditctl(8)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-ausearch-8
+    url: https://man7.org/linux/man-pages/man8/ausearch.8.html
+    title: ausearch(8)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: debian-nc-1
+    url: https://manpages.debian.org/bookworm/netcat-openbsd/nc.1.en.html
+    title: nc(1) — Debian (netcat-openbsd)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+    notes: man7 doesn't host nc (netcat-openbsd package); Debian mirror is canonical
+  - id: man7-socat-1
+    url: https://man7.org/linux/man-pages/man1/socat.1.html
+    title: socat(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-dmesg-1
+    url: https://man7.org/linux/man-pages/man1/dmesg.1.html
+    title: dmesg(1)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-numastat-8
+    url: https://man7.org/linux/man-pages/man8/numastat.8.html
+    title: numastat(8)
+    domain: linux
+    subdomain: debugging
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: lttng-docs
+    url: https://lttng.org/docs/
+    title: LTTng Documentation
+    domain: linux
+    subdomain: debugging
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: docs are CC BY 4.0 per project licensing page
+
+  # ============================================================
+  # LINUX — systemd (additions, session 1.1, 2026-05-03)
+  # ============================================================
+  - id: systemd-systemctl-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemctl.html
+    title: systemctl(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.html
+    title: systemd(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-service-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+    title: systemd.service(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-unit-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html
+    title: systemd.unit(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-exec-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html
+    title: systemd.exec(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-resource-control-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
+    title: systemd.resource-control(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-slice-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.slice.html
+    title: systemd.slice(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-scope-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.scope.html
+    title: systemd.scope(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-socket-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.socket.html
+    title: systemd.socket(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-timer-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html
+    title: systemd.timer(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-mount-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.mount.html
+    title: systemd.mount(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-path-5
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd.path.html
+    title: systemd.path(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-analyze-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd-analyze.html
+    title: systemd-analyze(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-cgls-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd-cgls.html
+    title: systemd-cgls(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-cgtop-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd-cgtop.html
+    title: systemd-cgtop(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-loginctl-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/loginctl.html
+    title: loginctl(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-journald-conf-5
+    url: https://man7.org/linux/man-pages/man5/journald.conf.5.html
+    title: journald.conf(5)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+    notes: man7 mirror works (verified)
+  - id: systemd-coredumpctl-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/coredumpctl.html
+    title: coredumpctl(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-coredump-8
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd-coredump.html
+    title: systemd-coredump(8)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-tmpfiles-8
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd-tmpfiles.html
+    title: systemd-tmpfiles(8)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: systemd-systemd-run-1
+    url: https://www.freedesktop.org/software/systemd/man/latest/systemd-run.html
+    title: systemd-run(1)
+    domain: linux
+    subdomain: systemd
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+
+  # ============================================================
+  # LINUX — filesystem (additions, session 1.1, 2026-05-03) — was empty
+  # ============================================================
+  - id: man7-proc-5
+    url: https://man7.org/linux/man-pages/man5/proc.5.html
+    title: proc(5)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+    notes: complements existing kernel-docs-proc-fs (FS spec); covers /proc/<pid>/* field semantics
+  - id: man7-sysfs-5
+    url: https://man7.org/linux/man-pages/man5/sysfs.5.html
+    title: sysfs(5)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-tmpfs-5
+    url: https://man7.org/linux/man-pages/man5/tmpfs.5.html
+    title: tmpfs(5)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-fstab-5
+    url: https://man7.org/linux/man-pages/man5/fstab.5.html
+    title: fstab(5)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-mount-2
+    url: https://man7.org/linux/man-pages/man2/mount.2.html
+    title: mount(2)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-umount2-2
+    url: https://man7.org/linux/man-pages/man2/umount2.2.html
+    title: umount2(2)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-mount-8
+    url: https://man7.org/linux/man-pages/man8/mount.8.html
+    title: mount(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-umount-8
+    url: https://man7.org/linux/man-pages/man8/umount.8.html
+    title: umount(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-open-2
+    url: https://man7.org/linux/man-pages/man2/open.2.html
+    title: open(2)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-openat2-2
+    url: https://man7.org/linux/man-pages/man2/openat2.2.html
+    title: openat2(2)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+    notes: openat(2) is on the same page as open(2); openat2(2) has its own page
+  - id: man7-stat-2
+    url: https://man7.org/linux/man-pages/man2/stat.2.html
+    title: stat(2)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-statfs-2
+    url: https://man7.org/linux/man-pages/man2/statfs.2.html
+    title: statfs(2)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-fsync-2
+    url: https://man7.org/linux/man-pages/man2/fsync.2.html
+    title: fsync(2)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-inode-7
+    url: https://man7.org/linux/man-pages/man7/inode.7.html
+    title: inode(7)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-path-resolution-7
+    url: https://man7.org/linux/man-pages/man7/path_resolution.7.html
+    title: path_resolution(7)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-symlink-7
+    url: https://man7.org/linux/man-pages/man7/symlink.7.html
+    title: symlink(7)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-xattr-7
+    url: https://man7.org/linux/man-pages/man7/xattr.7.html
+    title: xattr(7)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-acl-5
+    url: https://man7.org/linux/man-pages/man5/acl.5.html
+    title: acl(5)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-inotify-7
+    url: https://man7.org/linux/man-pages/man7/inotify.7.html
+    title: inotify(7)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-fanotify-7
+    url: https://man7.org/linux/man-pages/man7/fanotify.7.html
+    title: fanotify(7)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-io-uring-7
+    url: https://man7.org/linux/man-pages/man7/io_uring.7.html
+    title: io_uring(7)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: debian-mkfs-ext4-8
+    url: https://manpages.debian.org/bookworm/e2fsprogs/mkfs.ext4.8.en.html
+    title: mkfs.ext4(8) — Debian (e2fsprogs)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+    notes: man7 doesn't host mkfs.ext4 (e2fsprogs package); Debian mirror is canonical
+  - id: man7-tune2fs-8
+    url: https://man7.org/linux/man-pages/man8/tune2fs.8.html
+    title: tune2fs(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-mkfs-xfs-8
+    url: https://man7.org/linux/man-pages/man8/mkfs.xfs.8.html
+    title: mkfs.xfs(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-mkfs-btrfs-8
+    url: https://man7.org/linux/man-pages/man8/mkfs.btrfs.8.html
+    title: mkfs.btrfs(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-lvm-8
+    url: https://man7.org/linux/man-pages/man8/lvm.8.html
+    title: lvm(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-pvcreate-8
+    url: https://man7.org/linux/man-pages/man8/pvcreate.8.html
+    title: pvcreate(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-vgcreate-8
+    url: https://man7.org/linux/man-pages/man8/vgcreate.8.html
+    title: vgcreate(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-lvcreate-8
+    url: https://man7.org/linux/man-pages/man8/lvcreate.8.html
+    title: lvcreate(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-cryptsetup-8
+    url: https://man7.org/linux/man-pages/man8/cryptsetup.8.html
+    title: cryptsetup(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-losetup-8
+    url: https://man7.org/linux/man-pages/man8/losetup.8.html
+    title: losetup(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-blkid-8
+    url: https://man7.org/linux/man-pages/man8/blkid.8.html
+    title: blkid(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: man7-lsblk-8
+    url: https://man7.org/linux/man-pages/man8/lsblk.8.html
+    title: lsblk(8)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: manpage
+  - id: kernel-docs-filesystems-index
+    url: https://docs.kernel.org/filesystems/index.html
+    title: Linux Kernel — Filesystems index
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-overlayfs
+    url: https://docs.kernel.org/filesystems/overlayfs.html
+    title: Linux Kernel — overlayfs
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-tmpfs
+    url: https://docs.kernel.org/filesystems/tmpfs.html
+    title: Linux Kernel — tmpfs
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-vfs
+    url: https://docs.kernel.org/filesystems/vfs.html
+    title: Linux Kernel — Virtual Filesystem (VFS)
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: kernel-docs-ramfs-rootfs-initramfs
+    url: https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html
+    title: Linux Kernel — ramfs, rootfs, initramfs
+    domain: linux
+    subdomain: filesystem
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: directly relevant to container rootfs setup
 
   # ============================================================
   # K8S
@@ -3382,3 +5442,575 @@ sources:
     license_note: unknown
     parser: trafilatura
     notes: Single-fetch index; harvest individual comic URLs from extracted markdown in a Phase 1.5 follow-up.
+
+  # ============================================================
+  # DEVIN — devbox (microVM-isolation hint, 2026-05-02 add — Session 1.2)
+  # ============================================================
+  - id: devin-cognition-cloud-agents
+    url: https://cognition.ai/blog/what-we-learned-building-cloud-agents
+    title: Cognition — What we learned building cloud agents (microVM/snapshot pattern)
+    domain: devin
+    subdomain: devbox
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: STRONG-HINT not definitive — Cognition describes microVM isolation + hypervisor snapshots for Devin sessions; pattern matches Firecracker but FC is not named. Drives the Devin↔microVM relationship row.
+
+  # ============================================================
+  # FIRECRACKER — VMM internals (Apache 2.0 → redistribute-ok for raw md)
+  # Session 1.2 — 2026-05-02
+  # ============================================================
+
+  # vmm + api + metrics + logger + cpu templates
+  - id: fc-docs-design
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/design.md
+    title: Firecracker — Design
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-getting-started
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/getting-started.md
+    title: Firecracker — Getting Started
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-device-api
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/device-api.md
+    title: Firecracker — Device API
+    domain: firecracker
+    subdomain: api
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-api-actions
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/api_requests/actions.md
+    title: Firecracker — API actions
+    domain: firecracker
+    subdomain: api
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-swagger-spec
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/src/firecracker/swagger/firecracker.yaml
+    title: Firecracker — OpenAPI/Swagger spec
+    domain: firecracker
+    subdomain: api
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: YAML, ~59KB; passthrough preserves it as text — BM25 indexes endpoint names + descriptions
+  - id: fc-docs-metrics
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/metrics.md
+    title: Firecracker — Metrics
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-logger
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/logger.md
+    title: Firecracker — Logger
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-cpu-templates
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/cpu_templates/cpu-templates.md
+    title: Firecracker — CPU Templates
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+
+  # jailer + security
+  - id: fc-docs-jailer
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/jailer.md
+    title: Firecracker — Jailer
+    domain: firecracker
+    subdomain: jailer
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-seccomp
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/seccomp.md
+    title: Firecracker — Seccomp
+    domain: firecracker
+    subdomain: security
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-seccompiler
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/seccompiler.md
+    title: Firecracker — Seccompiler
+    domain: firecracker
+    subdomain: security
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-prod-host-setup
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/prod-host-setup.md
+    title: Firecracker — Production Host Setup
+    domain: firecracker
+    subdomain: setup
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-kernel-policy
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/kernel-policy.md
+    title: Firecracker — Kernel Policy
+    domain: firecracker
+    subdomain: security
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-repo-security
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/SECURITY.md
+    title: Firecracker — SECURITY.md
+    domain: firecracker
+    subdomain: security
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+
+  # snapshots
+  - id: fc-docs-snapshot-support
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/snapshotting/snapshot-support.md
+    title: Firecracker — Snapshot Support
+    domain: firecracker
+    subdomain: snapshots
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-snapshot-pagefaults
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/snapshotting/handling-page-faults-on-snapshot-resume.md
+    title: Firecracker — Handling Page Faults on Snapshot Resume
+    domain: firecracker
+    subdomain: snapshots
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-snapshot-network-clones
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/snapshotting/network-for-clones.md
+    title: Firecracker — Network for Clones
+    domain: firecracker
+    subdomain: snapshots
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-snapshot-versioning
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/snapshotting/versioning.md
+    title: Firecracker — Snapshot Versioning
+    domain: firecracker
+    subdomain: snapshots
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+
+  # networking + vsock
+  - id: fc-docs-network-setup
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/network-setup.md
+    title: Firecracker — Network Setup
+    domain: firecracker
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-network-perf
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/network-performance.md
+    title: Firecracker — Network Performance
+    domain: firecracker
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-vsock
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/vsock.md
+    title: Firecracker — vsock
+    domain: firecracker
+    subdomain: vsock
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: fc-docs-mmds-user-guide
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/mmds/mmds-user-guide.md
+    title: Firecracker — MMDS User Guide
+    domain: firecracker
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+
+  # guest setup
+  - id: fc-docs-rootfs-kernel
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/rootfs-and-kernel-setup.md
+    title: Firecracker — rootfs and Kernel Setup
+    domain: firecracker
+    subdomain: setup
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+
+  # KVM kernel docs (GPL → redistribute-ok)
+  - id: kvm-api
+    url: https://docs.kernel.org/virt/kvm/api.html
+    title: Linux KVM — API documentation
+    domain: firecracker
+    subdomain: kvm
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: KVM_RUN, KVM_SET_USER_MEMORY_REGION, vCPU exits — the ioctl surface FC uses
+  - id: kvm-index
+    url: https://docs.kernel.org/virt/kvm/index.html
+    title: Linux KVM — index
+    domain: firecracker
+    subdomain: kvm
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+  - id: virtio-driver-api
+    url: https://docs.kernel.org/driver-api/virtio/virtio.html
+    title: Linux virtio — driver API
+    domain: firecracker
+    subdomain: kvm
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+
+  # NSDI 2020 paper (USENIX free PDF)
+  - id: fc-nsdi20-paper
+    url: https://www.usenix.org/system/files/nsdi20-paper-agache.pdf
+    title: Firecracker — Lightweight Virtualization for Serverless Applications (NSDI '20)
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: pdf
+    notes: Agache et al.; pymupdf text extraction handles it cleanly
+
+  # AWS official (reference-only)
+  - id: fc-aws-announce-2018
+    url: https://aws.amazon.com/blogs/aws/firecracker-lightweight-virtualization-for-serverless-computing/
+    title: AWS — Firecracker Lightweight Virtualization (Jeff Barr announce)
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: fc-aws-fargate-dataplane
+    url: https://aws.amazon.com/blogs/containers/under-the-hood-fargate-data-plane/
+    title: AWS — Under the hood, Fargate data plane (Firecracker confirmation)
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # T2/T3 production writeups
+  - id: fc-brooker-2025
+    url: https://brooker.co.za/blog/2025/09/18/firecracker.html
+    title: Marc Brooker — Firecracker (maintainer perspective, 2025)
+    domain: firecracker
+    subdomain: vmm
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Brooker is a Firecracker maintainer; T2 not T3
+  - id: fc-flyio-machines
+    url: https://fly.io/blog/fly-machines/
+    title: Fly.io — Fly Machines (Firecracker in production)
+    domain: firecracker
+    subdomain: vmm
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+
+  # ============================================================
+  # E2B — open-source AI-agent sandbox (Firecracker-based)
+  # Filed under firecracker.comparable-systems for Phase-3 cross-extraction
+  # against Devin DevBox (likely-similar architecture).
+  # ============================================================
+  - id: e2b-repo-readme
+    url: https://raw.githubusercontent.com/e2b-dev/E2B/main/README.md
+    title: e2b — repo README
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: e2b-infra-readme
+    url: https://raw.githubusercontent.com/e2b-dev/infra/main/README.md
+    title: e2b — infra repo README (Firecracker orchestration layer)
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: This is the Firecracker-based execution engine; closest public proxy to Devin DevBox internals
+  - id: e2b-docs-overview
+    url: https://e2b.dev/docs
+    title: e2b — docs landing
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: e2b-docs-sandbox-overview
+    url: https://e2b.dev/docs/sandbox/overview
+    title: e2b — sandbox overview
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: TODO verify URL; if 404 try /docs/quickstart or /docs/sandbox
+  - id: e2b-docs-sandbox-lifecycle
+    url: https://e2b.dev/docs/sandbox/lifecycle
+    title: e2b — sandbox lifecycle (start/pause/snapshot)
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: TODO verify URL
+  - id: e2b-docs-filesystem
+    url: https://e2b.dev/docs/filesystem/overview
+    title: e2b — filesystem in sandbox
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: TODO verify URL
+  - id: e2b-docs-commands
+    url: https://e2b.dev/docs/commands/overview
+    title: e2b — commands and process execution
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: TODO verify URL
+  - id: e2b-blog-architecture
+    url: https://e2b.dev/blog
+    title: e2b — engineering blog index
+    domain: firecracker
+    subdomain: comparable-systems
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: blog index; will surface architecture writeups for Phase-3 follow-up
+
+  # ============================================================
+  # ECS — bare-metal EC2 launch type, agent, task defs, networking
+  # Session 1.2 — 2026-05-02
+  # ============================================================
+
+  # launch-types + capacity
+  - id: ecs-dg-launch-types
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_types.html
+    title: ECS — Launch types (Fargate / EC2 / external)
+    domain: ecs
+    subdomain: launch-types
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-dg-capacity-providers
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/capacity_providers.html
+    title: ECS — Capacity providers
+    domain: ecs
+    subdomain: launch-types
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-dg-optimized-ami
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+    title: ECS — ECS-optimized AMI
+    domain: ecs
+    subdomain: launch-types
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # task-defs
+  - id: ecs-dg-task-defs-params
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html
+    title: ECS — Task definition parameters
+    domain: ecs
+    subdomain: task-defs
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-dg-service-defs-params
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service_definition_parameters.html
+    title: ECS — Service definition parameters
+    domain: ecs
+    subdomain: task-defs
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # agent
+  - id: ecs-dg-agent
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent.html
+    title: ECS — Container agent (overview)
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-dg-agent-config
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html
+    title: ECS — Agent configuration
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-dg-agent-introspection
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-introspection.html
+    title: ECS — Agent introspection API
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-dg-agent-update
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_agent_update.html
+    title: ECS — Updating the container agent
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-dg-instance-draining
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/container-instance-draining.html
+    title: ECS — Container instance draining
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-agent-readme
+    url: https://raw.githubusercontent.com/aws/amazon-ecs-agent/master/README.md
+    title: amazon-ecs-agent — README
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: ecs-agent-changelog
+    url: https://raw.githubusercontent.com/aws/amazon-ecs-agent/master/CHANGELOG.md
+    title: amazon-ecs-agent — CHANGELOG
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: ecs-agent-proposal-eni
+    url: https://raw.githubusercontent.com/aws/amazon-ecs-agent/master/proposals/eni.md
+    title: amazon-ecs-agent — ENI proposal (awsvpc design)
+    domain: ecs
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: ecs-agent-proposal-awsvpc-metadata
+    url: https://raw.githubusercontent.com/aws/amazon-ecs-agent/master/proposals/awsvpc-task-metadata.md
+    title: amazon-ecs-agent — awsvpc task metadata proposal
+    domain: ecs
+    subdomain: networking
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+  - id: ecs-init-readme
+    url: https://raw.githubusercontent.com/aws/amazon-ecs-init/master/README.md
+    title: amazon-ecs-init — README (systemd integration on EC2)
+    domain: ecs
+    subdomain: agent
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+
+  # networking
+  - id: ecs-dg-task-networking
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking.html
+    title: ECS — Task networking
+    domain: ecs
+    subdomain: networking
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # nitro-baremetal
+  - id: ecs-ec2-instance-types
+    url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html
+    title: EC2 — Instance types overview
+    domain: ecs
+    subdomain: nitro-baremetal
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-ec2-nitro
+    url: https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-nitro-instances.html
+    title: EC2 — Nitro instances
+    domain: ecs
+    subdomain: nitro-baremetal
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-aws-baremetal-announce
+    url: https://aws.amazon.com/blogs/aws/new-amazon-ec2-bare-metal-instances-with-direct-access-to-hardware/
+    title: AWS — EC2 Bare Metal Instances announcement
+    domain: ecs
+    subdomain: nitro-baremetal
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+  - id: ecs-ec2-nested-virt
+    url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-nested-virtualization.html
+    title: EC2 — Nested virtualization on bare-metal
+    domain: ecs
+    subdomain: nitro-baremetal
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # troubleshooting
+  - id: ecs-dg-troubleshooting
+    url: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/troubleshooting.html
+    title: ECS — Troubleshooting
+    domain: ecs
+    subdomain: troubleshooting
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+
+  # ============================================================
+  # FIRECRACKER — Phase-1.5 patch (Session 3.2 prep, 2026-05-02)
+  # FAQ.md was missed in P1; surfaced by P3 plan-mode meta-research.
+  # ============================================================
+  - id: fc-repo-faq
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/FAQ.md
+    title: Firecracker — FAQ.md
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: Phase-1.5 add 2026-05-02 (Session 3.2 prep). Often contains common-error scenarios useful for failure-mode mining.
+  - id: fc-docs-ballooning
+    url: https://raw.githubusercontent.com/firecracker-microvm/firecracker/main/docs/ballooning.md
+    title: Firecracker — VirtIO/balloon device
+    domain: firecracker
+    subdomain: vmm
+    tier: T1
+    license_note: redistribute-ok
+    parser: github-md
+    notes: Phase-1.5 add (Session 3.2 mid-extraction) — referenced by api/balloon-resource concepts, was missed in P1.
