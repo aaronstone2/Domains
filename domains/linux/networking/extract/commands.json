@@ -1,0 +1,400 @@
+[
+  {
+    "id":"linux.networking.cmd.ip",
+    "command":"ip [OPTIONS] OBJECT { COMMAND | help }",
+    "purpose":"The Swiss-army knife for Linux networking config — replaces ifconfig, route, arp, netstat link table. Talks to kernel via NETLINK_ROUTE. OBJECT is one of: address, link, route, neighbour, rule, netns, tunnel, addrlabel, l2tp, fou, macsec, monitor, mptcp, mroute, mrule, sr, vrf, xfrm. Most subcommands have their own man page (ip-address, ip-link, ip-route, ip-neighbour, etc). For the JSON-friendly machine-readable output, add `-j` (often `-j -p` for pretty-printed).",
+    "flags":[
+      {"name":"-V, --Version","value":null,"doc":"Print iproute2 version."},
+      {"name":"-h, --human, --human-readable","value":null,"doc":"Output stats in human units (KB/MB)."},
+      {"name":"-s, --stats, --statistics","value":null,"doc":"Output more statistics (e.g. ip -s link shows rx/tx counters)."},
+      {"name":"-d, --details","value":null,"doc":"Output more details (e.g. ip -d link shows driver info)."},
+      {"name":"-r, --resolve","value":null,"doc":"Use system resolver to print DNS names."},
+      {"name":"-f, --family","value":"<inet|inet6|link|bridge|mpls|...>","doc":"Restrict to a single address family."},
+      {"name":"-4","value":null,"doc":"Shorthand for -f inet."},
+      {"name":"-6","value":null,"doc":"Shorthand for -f inet6."},
+      {"name":"-o, --oneline","value":null,"doc":"One-record-per-line output (good for grep)."},
+      {"name":"-j, --json","value":null,"doc":"JSON output. Pair with -p for pretty-printing."},
+      {"name":"-p, --pretty","value":null,"doc":"Pretty-print JSON or other formatted output."},
+      {"name":"-N, --Numeric","value":null,"doc":"Print interface/route table indices as numbers (skip name resolution)."},
+      {"name":"-n, --netns","value":"<NAME>","doc":"Run in the network namespace named NAME (under /var/run/netns/)."},
+      {"name":"-a, --all","value":null,"doc":"Operate on all objects (e.g. with `link`, all interfaces)."}
+    ],
+    "examples":[
+      {"invocation":"ip -j addr show eth0","expected_output":"JSON describing eth0's addresses, MAC, MTU, state","scenario":"Machine-readable interface state for scripts."},
+      {"invocation":"ip route get 8.8.8.8","expected_output":"`8.8.8.8 via 192.168.1.1 dev wlan0 src 192.168.1.42 uid 1000`","scenario":"Determine which interface and gateway will be used for a destination."},
+      {"invocation":"ip -n myns link","expected_output":"interfaces inside the netns named 'myns'","scenario":"Inspect a persistent network namespace's interfaces from the host."}
+    ],
+    "source_ids":["man7-ip-7","man7-ip-8"]
+  },
+  {
+    "id":"linux.networking.cmd.ip-link",
+    "command":"ip link { add | delete | set | show | help } [DEV] [TYPE]",
+    "purpose":"Manage L2 network devices — physical NICs, virtual interfaces (veth, bridge, vlan, vxlan, tun, tap, bond, dummy, gre, ipip, sit, geneve, wireguard). Where you bring interfaces up/down, set MAC, MTU, state, attach to bridges, configure namespaces.",
+    "flags":[
+      {"name":"add NAME type TYPE","value":null,"doc":"Create a new virtual interface. TYPE = bridge|veth|vlan|vxlan|bond|tun|tap|dummy|geneve|wireguard|... (each type has its own option set)."},
+      {"name":"delete DEV","value":null,"doc":"Remove an interface."},
+      {"name":"set DEV up","value":null,"doc":"Bring interface up (operationally enabled)."},
+      {"name":"set DEV down","value":null,"doc":"Bring interface down."},
+      {"name":"set DEV mtu N","value":null,"doc":"Set MTU bytes (typical 1500; jumbo 9000; tunnels need lower)."},
+      {"name":"set DEV address MAC","value":null,"doc":"Set MAC address."},
+      {"name":"set DEV name NEW","value":null,"doc":"Rename interface (must be down first)."},
+      {"name":"set DEV master BRIDGE","value":null,"doc":"Attach DEV to a bridge."},
+      {"name":"set DEV nomaster","value":null,"doc":"Detach from bridge."},
+      {"name":"set DEV netns NS","value":null,"doc":"Move interface into network namespace NS."},
+      {"name":"set DEV type bond mode MODE","value":null,"doc":"Bond mode: active-backup|balance-rr|balance-xor|802.3ad|broadcast|balance-tlb|balance-alb."},
+      {"name":"set DEV txqueuelen N","value":null,"doc":"Set transmit queue length."},
+      {"name":"set DEV promisc on","value":null,"doc":"Enable promiscuous mode (receive all frames)."},
+      {"name":"set DEV multicast on/off","value":null,"doc":"Toggle multicast reception."},
+      {"name":"set DEV arp on/off","value":null,"doc":"Toggle ARP."},
+      {"name":"set DEV alias 'string'","value":null,"doc":"Set descriptive alias."},
+      {"name":"show [DEV]","value":null,"doc":"Display interfaces. Without DEV, all of them."},
+      {"name":"add link PARENT name CHILD type vlan id N","value":null,"doc":"Create VLAN subinterface. e.g. `ip link add link eth0 name eth0.10 type vlan id 10`."},
+      {"name":"add type veth peer name OTHER","value":null,"doc":"Create veth pair (one end DEV, other named OTHER)."},
+      {"name":"add NAME type bridge","value":null,"doc":"Create a Linux bridge."},
+      {"name":"add NAME type vxlan id VNI dstport 4789 dev DEV","value":null,"doc":"Create VXLAN tunnel."}
+    ],
+    "examples":[
+      {"invocation":"ip link add veth0 type veth peer name veth1 && ip link set veth1 netns ns1","expected_output":"veth0 in host, veth1 in netns ns1","scenario":"Wire a network namespace to the host with a veth pair (the manual way to do what containers do)."},
+      {"invocation":"ip link set eth0 mtu 1450","expected_output":"silent on success","scenario":"Lower MTU on an interface running over a tunnel that adds overhead."},
+      {"invocation":"ip -d link show docker0","expected_output":"bridge details: stp_state, vlan_filtering, hello_time, etc.","scenario":"Inspect Docker's default bridge config in detail."}
+    ],
+    "source_ids":["man7-ip-link-8"]
+  },
+  {
+    "id":"linux.networking.cmd.ip-address",
+    "command":"ip address { add | del | flush | show } [DEV]",
+    "purpose":"Manage IPv4/IPv6 addresses on interfaces. Add/remove/list addresses, peer addresses, broadcasts, scopes, lifetimes (for DHCP/SLAAC).",
+    "flags":[
+      {"name":"add ADDR/PREFIX dev DEV","value":null,"doc":"Add an address. e.g. `ip addr add 10.0.0.1/24 dev eth0`."},
+      {"name":"del ADDR/PREFIX dev DEV","value":null,"doc":"Remove an address."},
+      {"name":"flush dev DEV","value":null,"doc":"Remove ALL addresses from DEV."},
+      {"name":"show [DEV]","value":null,"doc":"Display addresses. Default shows all interfaces."},
+      {"name":"show up","value":null,"doc":"Filter to up interfaces."},
+      {"name":"show dynamic / permanent","value":null,"doc":"Filter by SLAAC dynamic vs manually configured."},
+      {"name":"add ... peer ADDR","value":null,"doc":"Set peer address (point-to-point)."},
+      {"name":"add ... broadcast ADDR","value":null,"doc":"Override broadcast address."},
+      {"name":"add ... scope SCOPE","value":null,"doc":"global|link|host. Default 'global'. 'host' is loopback-style; 'link' = same L2 only."},
+      {"name":"add ... label LABEL","value":null,"doc":"Address label (visible as eth0:1, etc.)."},
+      {"name":"add ... valid_lft / preferred_lft","value":null,"doc":"Lifetime in seconds (DHCP-style); 'forever' = no expiry."},
+      {"name":"add ... noprefixroute","value":null,"doc":"Don't auto-add a /PREFIX route — useful when you'll add it manually."},
+      {"name":"add ... mngtmpaddr","value":null,"doc":"For SLAAC: managed temporary address (RFC 4941 privacy extensions)."}
+    ],
+    "examples":[
+      {"invocation":"ip addr add 192.168.1.10/24 dev eth0","expected_output":"silent on success; visible in `ip addr show eth0`","scenario":"Statically configure an IPv4 address on an interface."},
+      {"invocation":"ip -6 addr show scope global","expected_output":"global IPv6 addresses on all interfaces","scenario":"Find all routable IPv6 addresses on the host."},
+      {"invocation":"ip addr flush dev eth0","expected_output":"all addresses removed from eth0","scenario":"Wipe interface config before re-applying."}
+    ],
+    "source_ids":["man7-ip-address-8"]
+  },
+  {
+    "id":"linux.networking.cmd.ip-route",
+    "command":"ip route { add | del | replace | get | show | flush } [DEST]",
+    "purpose":"Manage routing-table entries. Add/remove/inspect routes, evaluate which route a packet would take, manipulate the multiple routing tables, set per-route metric/MTU/source.",
+    "flags":[
+      {"name":"add DEST via GW","value":null,"doc":"Add a route. e.g. `ip route add 10.0.0.0/8 via 192.168.1.1`."},
+      {"name":"add default via GW","value":null,"doc":"Add default gateway. (Equivalent to `add 0.0.0.0/0 via GW`.)"},
+      {"name":"del DEST","value":null,"doc":"Delete route to DEST."},
+      {"name":"replace DEST via GW","value":null,"doc":"Atomic add-or-replace."},
+      {"name":"get DEST","value":null,"doc":"Evaluate which route would be used for DEST. Useful for debugging policy routing."},
+      {"name":"show [DEST]","value":null,"doc":"Display routes. Without DEST, all of main table."},
+      {"name":"show table TABLE","value":null,"doc":"From a specific table (named in /etc/iproute2/rt_tables, indexed 0-255). 'main', 'local', 'default' are defaults."},
+      {"name":"flush [DEST] [table TABLE]","value":null,"doc":"Remove matching routes."},
+      {"name":"add ... dev DEV","value":null,"doc":"Force outbound interface."},
+      {"name":"add ... src SRC","value":null,"doc":"Override source address selection for this route."},
+      {"name":"add ... metric N","value":null,"doc":"Per-route metric (lower = preferred)."},
+      {"name":"add ... mtu MTU","value":null,"doc":"Override MTU for this route (PMTUD result)."},
+      {"name":"add ... scope SCOPE","value":null,"doc":"global|link|host."},
+      {"name":"add ... proto PROTO","value":null,"doc":"Which protocol added this route (kernel|boot|static|dhcp|ra|...). Filter with `proto static` to see manual entries."},
+      {"name":"add ... onlink","value":null,"doc":"Pretend gateway is directly attached (skip ARP for it). Useful for VPN setups."},
+      {"name":"add ... nexthop","value":null,"doc":"For ECMP / multipath: `add ... nexthop via GW1 weight 1 nexthop via GW2 weight 1`."}
+    ],
+    "examples":[
+      {"invocation":"ip route get 10.0.0.5","expected_output":"`10.0.0.5 via 192.168.1.1 dev eth0 src 192.168.1.42`","scenario":"Determine egress interface for a destination."},
+      {"invocation":"ip route add 10.0.0.0/8 dev tun0","expected_output":"silent on success","scenario":"Route a subnet through a VPN interface."},
+      {"invocation":"ip route show table 100","expected_output":"routes in custom table 100","scenario":"Inspect a policy-routing table for multi-homed setup."}
+    ],
+    "source_ids":["man7-ip-route-8"]
+  },
+  {
+    "id":"linux.networking.cmd.ip-neighbour",
+    "command":"ip neighbour { add | del | change | replace | show | flush } [ADDR]",
+    "purpose":"Manage the ARP/NDP cache (kernel's IP→MAC mapping). 'ip neigh' = synonym. Replaces the legacy `arp` command.",
+    "flags":[
+      {"name":"add ADDR lladdr MAC dev DEV","value":null,"doc":"Static ARP entry."},
+      {"name":"del ADDR dev DEV","value":null,"doc":"Remove neighbour entry."},
+      {"name":"change ADDR lladdr MAC dev DEV","value":null,"doc":"Modify existing entry."},
+      {"name":"replace ADDR lladdr MAC dev DEV","value":null,"doc":"Atomic add-or-update."},
+      {"name":"show [ADDR] [dev DEV]","value":null,"doc":"Display cache. Without args, all entries on all interfaces."},
+      {"name":"show nud STATE","value":null,"doc":"Filter by state: permanent|noarp|reachable|stale|delay|probe|failed|incomplete."},
+      {"name":"flush dev DEV","value":null,"doc":"Clear cache for an interface."},
+      {"name":"add ... nud STATE","value":null,"doc":"Set NUD (Neighbour Unreachability Detection) state."}
+    ],
+    "examples":[
+      {"invocation":"ip neigh show","expected_output":"`192.168.1.1 dev eth0 lladdr aa:bb:cc:dd:ee:ff REACHABLE`","scenario":"List learned MAC addresses on local network."},
+      {"invocation":"ip neigh flush dev eth0","expected_output":"silent on success","scenario":"Force re-ARP after a host's MAC changed."},
+      {"invocation":"ip -6 neigh show","expected_output":"IPv6 neighbour cache (NDP entries)","scenario":"Debug IPv6 connectivity at the link layer."}
+    ],
+    "source_ids":["man7-ip-neighbour-8"]
+  },
+  {
+    "id":"linux.networking.cmd.bridge",
+    "command":"bridge [OPTIONS] OBJECT { COMMAND | help }",
+    "purpose":"Configure Linux bridges beyond what `ip link` exposes — STP, per-port flags, FDB (forwarding database = MAC table), MDB (multicast), VLAN filtering, group_fwd_mask. The detailed-bridge-config CLI.",
+    "flags":[
+      {"name":"link show","value":null,"doc":"Per-bridge-port detail (state, designated root, port id, etc.)."},
+      {"name":"link set dev DEV mcast_router N","value":null,"doc":"0=disabled, 1=auto, 2=permanent multicast router."},
+      {"name":"link set dev DEV learning on/off","value":null,"doc":"MAC learning per port."},
+      {"name":"link set dev DEV flood on/off","value":null,"doc":"Flood unknown unicast."},
+      {"name":"link set dev DEV hairpin on/off","value":null,"doc":"Allow hairpin (forward back out same port). Required for container-to-self via published port."},
+      {"name":"link set dev DEV root_block on","value":null,"doc":"Drop superior BPDUs (anti-loop protection)."},
+      {"name":"fdb add MAC dev DEV","value":null,"doc":"Add static FDB entry."},
+      {"name":"fdb del MAC dev DEV","value":null,"doc":"Remove FDB entry."},
+      {"name":"fdb show","value":null,"doc":"List the bridge's MAC table."},
+      {"name":"vlan add vid VID dev DEV","value":null,"doc":"VLAN-filtering: tag a port with VID."},
+      {"name":"vlan show","value":null,"doc":"Per-port VLAN config."},
+      {"name":"mdb show","value":null,"doc":"Multicast database (snoop entries)."},
+      {"name":"monitor","value":null,"doc":"Watch FDB/MDB changes in real time."}
+    ],
+    "examples":[
+      {"invocation":"bridge fdb show","expected_output":"MAC | dev | family | state lines","scenario":"See what MACs the bridge has learned (debug L2 forwarding)."},
+      {"invocation":"bridge link set dev veth0 hairpin on","expected_output":"silent","scenario":"Enable hairpin so a container can reach its own published port."},
+      {"invocation":"bridge vlan add vid 10 dev eth1 pvid untagged","expected_output":"silent","scenario":"Configure VLAN-aware bridge port."}
+    ],
+    "source_ids":["man7-bridge-8"]
+  },
+  {
+    "id":"linux.networking.cmd.iptables",
+    "command":"iptables [-t TABLE] {-A|-I|-D|-R|-L|-F|-N|-X|-P|-Z} CHAIN [RULE] [-j TARGET]",
+    "purpose":"Configure netfilter rules (legacy front-end). Tables: filter (default), nat, mangle, raw, security. Chains: INPUT, OUTPUT, FORWARD, PREROUTING, POSTROUTING, plus user-defined. Operates on rules within chains; first match wins (unless target returns).",
+    "flags":[
+      {"name":"-t TABLE","value":"filter|nat|mangle|raw|security","doc":"Select table. Default 'filter'."},
+      {"name":"-A CHAIN ...","value":null,"doc":"Append rule to chain."},
+      {"name":"-I CHAIN [POS] ...","value":null,"doc":"Insert at position (default 1)."},
+      {"name":"-D CHAIN ...","value":null,"doc":"Delete matching rule (or by number)."},
+      {"name":"-R CHAIN POS ...","value":null,"doc":"Replace rule at position POS."},
+      {"name":"-L [CHAIN]","value":null,"doc":"List rules. Combine with -n (no DNS), -v (verbose), --line-numbers, -x (exact counters)."},
+      {"name":"-F [CHAIN]","value":null,"doc":"Flush all rules in chain (or all chains)."},
+      {"name":"-N CHAIN","value":null,"doc":"Create user-defined chain."},
+      {"name":"-X [CHAIN]","value":null,"doc":"Delete empty user-defined chain (or all)."},
+      {"name":"-P CHAIN POLICY","value":null,"doc":"Set default policy for built-in chain (ACCEPT|DROP|REJECT)."},
+      {"name":"-Z [CHAIN]","value":null,"doc":"Zero counters."},
+      {"name":"-p PROTO","value":"tcp|udp|icmp|all|<num>","doc":"Match protocol."},
+      {"name":"-s SRC[/MASK]","value":null,"doc":"Source address."},
+      {"name":"-d DST[/MASK]","value":null,"doc":"Destination address."},
+      {"name":"-i IFACE","value":null,"doc":"Input interface (PREROUTING/INPUT/FORWARD only)."},
+      {"name":"-o IFACE","value":null,"doc":"Output interface (FORWARD/OUTPUT/POSTROUTING only)."},
+      {"name":"--sport / --dport","value":"PORT[:PORT]","doc":"Source/dest port (for tcp/udp). Range with colon."},
+      {"name":"-m MATCH","value":null,"doc":"Load extension match module (state, conntrack, recent, limit, multiport, owner, etc.). See iptables-extensions(8)."},
+      {"name":"-j TARGET","value":"ACCEPT|DROP|REJECT|LOG|RETURN|<chain>|MASQUERADE|SNAT|DNAT|REDIRECT","doc":"Verdict / jump."},
+      {"name":"-g CHAIN","value":null,"doc":"Goto user chain (vs jump — RETURN goes to caller's caller)."},
+      {"name":"-c PKTS BYTES","value":null,"doc":"Set rule counters."},
+      {"name":"--line-numbers","value":null,"doc":"With -L, show rule positions."}
+    ],
+    "examples":[
+      {"invocation":"iptables -L -n -v --line-numbers","expected_output":"rules with packet/byte counters and position numbers","scenario":"Diagnose a firewall — see counters tick to identify the matching rule."},
+      {"invocation":"iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.0.5:8080","expected_output":"silent","scenario":"Set up a port forward (what `docker -p 80:8080` does behind the scenes)."},
+      {"invocation":"iptables -I INPUT 1 -m state --state ESTABLISHED,RELATED -j ACCEPT","expected_output":"silent","scenario":"Allow return traffic (the cornerstone of a stateful firewall — usually first rule)."}
+    ],
+    "source_ids":["man7-iptables-8","man7-iptables-extensions-8"]
+  },
+  {
+    "id":"linux.networking.cmd.nft",
+    "command":"nft [OPTIONS] CMD",
+    "purpose":"Modern netfilter front-end. Single CLI for IPv4/IPv6/ARP/bridge/netdev rules. Atomic ruleset replace, sets/maps, named chains, easier syntax than iptables. Default on RHEL 8+, Debian 11+.",
+    "flags":[
+      {"name":"-a, --handle","value":null,"doc":"Show rule handles in list output (needed for `delete rule ... handle N`)."},
+      {"name":"-f, --file FILE","value":null,"doc":"Load ruleset from file."},
+      {"name":"-i, --interactive","value":null,"doc":"Interactive REPL."},
+      {"name":"-j, --json","value":null,"doc":"JSON output."},
+      {"name":"-n, --numeric","value":null,"doc":"Print addresses/ports as numbers (skip DNS)."},
+      {"name":"add table FAMILY NAME","value":null,"doc":"Create table. FAMILY = ip|ip6|inet|arp|bridge|netdev."},
+      {"name":"add chain FAMILY TABLE NAME { type T hook HOOK priority P; policy P; }","value":null,"doc":"Create chain hooked to netfilter. e.g. `add chain inet filter input { type filter hook input priority 0; policy drop; }`."},
+      {"name":"add rule FAMILY TABLE CHAIN EXPR VERDICT","value":null,"doc":"Append rule. EXPR = match expression (ip/ip6/tcp/udp/ct/meta/...). VERDICT = accept|drop|reject|jump CHAIN|return."},
+      {"name":"insert rule FAMILY TABLE CHAIN ...","value":null,"doc":"Insert at top of chain."},
+      {"name":"delete rule FAMILY TABLE CHAIN handle N","value":null,"doc":"Delete by handle (use `list ruleset -a` to see handles)."},
+      {"name":"list ruleset","value":null,"doc":"Print entire ruleset."},
+      {"name":"list table FAMILY NAME","value":null,"doc":"Print one table."},
+      {"name":"flush ruleset","value":null,"doc":"Wipe everything."},
+      {"name":"add set ... { type T; flags F; ... }","value":null,"doc":"Create a named set. e.g. `add set inet filter blocklist { type ipv4_addr; flags interval; }`."},
+      {"name":"add element FAMILY TABLE SET { ... }","value":null,"doc":"Add element(s) to set."},
+      {"name":"monitor","value":null,"doc":"Stream ruleset / trace events."}
+    ],
+    "examples":[
+      {"invocation":"nft list ruleset","expected_output":"entire current ruleset in nft DSL","scenario":"Show all current netfilter rules (cleaner than iptables -L)."},
+      {"invocation":"nft add rule inet filter input ip saddr 10.0.0.0/8 accept","expected_output":"silent","scenario":"Allow traffic from a CIDR."},
+      {"invocation":"nft -j list ruleset","expected_output":"JSON ruleset","scenario":"Programmatic firewall inspection (e.g. by config-mgmt tools)."}
+    ],
+    "source_ids":["debian-nft-8","nftables-wiki"]
+  },
+  {
+    "id":"linux.networking.cmd.tcpdump",
+    "command":"tcpdump [OPTIONS] [FILTER]",
+    "purpose":"Capture and display packets on an interface using libpcap. The Swiss-army knife for network debugging. FILTER is a libpcap BPF expression. Requires CAP_NET_RAW (or root). Outputs human-readable summary by default; `-w FILE` saves a pcap.",
+    "flags":[
+      {"name":"-i IFACE","value":null,"doc":"Interface (or 'any' for all). `tcpdump -D` lists available."},
+      {"name":"-n","value":null,"doc":"Don't resolve addresses to names (faster, less DNS pollution)."},
+      {"name":"-nn","value":null,"doc":"Also don't resolve port numbers."},
+      {"name":"-v / -vv / -vvv","value":null,"doc":"More verbose."},
+      {"name":"-X","value":null,"doc":"Hex+ASCII dump of packet."},
+      {"name":"-XX","value":null,"doc":"Like -X but include link-layer header."},
+      {"name":"-A","value":null,"doc":"ASCII dump only (good for HTTP debugging)."},
+      {"name":"-w FILE","value":null,"doc":"Write to pcap file (binary format wireshark/tshark can read)."},
+      {"name":"-r FILE","value":null,"doc":"Read from pcap file (offline analysis)."},
+      {"name":"-c COUNT","value":null,"doc":"Stop after COUNT packets."},
+      {"name":"-s SNAPLEN","value":null,"doc":"Bytes per packet to capture (0 = full packet, default in modern tcpdump)."},
+      {"name":"-C MEGABYTES","value":null,"doc":"With -w, rotate file after N MB."},
+      {"name":"-W COUNT","value":null,"doc":"With -C, keep only COUNT files (ring buffer)."},
+      {"name":"-G SECONDS","value":null,"doc":"With -w, rotate every N seconds."},
+      {"name":"-Z USER","value":null,"doc":"Drop privileges to USER after opening interface."},
+      {"name":"-D","value":null,"doc":"List interfaces and exit."},
+      {"name":"-j TIMESTAMP-TYPE","value":null,"doc":"Set timestamp source (host, host_lowprec, adapter, adapter_unsynced)."},
+      {"name":"-K","value":null,"doc":"Skip checksum verification (avoids false 'bad cksum' on TX-offloaded NICs)."},
+      {"name":"-l","value":null,"doc":"Line-buffered output (good for `tcpdump | grep`)."},
+      {"name":"-e","value":null,"doc":"Print link-layer header (MAC addresses)."},
+      {"name":"-Q DIRECTION","value":null,"doc":"in|out|inout (default inout)."}
+    ],
+    "examples":[
+      {"invocation":"tcpdump -i eth0 -nn 'tcp port 80'","expected_output":"HTTP traffic to/from eth0","scenario":"Watch for incoming HTTP connections."},
+      {"invocation":"tcpdump -i any -nn -w /tmp/capture.pcap 'host 10.0.0.5'","expected_output":"silent (writing pcap)","scenario":"Capture all traffic to/from 10.0.0.5 across any interface for offline wireshark analysis."},
+      {"invocation":"tcpdump -i eth0 -nn 'icmp[icmptype]=icmp-echo or tcp[tcpflags] & (tcp-syn|tcp-fin) != 0'","expected_output":"pings + TCP connection-setup/teardown","scenario":"Filter for connection-significant packets only."}
+    ],
+    "source_ids":["tcpdump-manpage"]
+  },
+  {
+    "id":"linux.networking.cmd.ss",
+    "command":"ss [OPTIONS] [FILTER]",
+    "purpose":"Socket statistics. Replaces netstat. Reads /proc/net via NETLINK; faster than netstat at scale. Default lists established TCP. Filters: state, src/dst address+port, owning UID/process, protocol.",
+    "flags":[
+      {"name":"-t","value":null,"doc":"TCP."},
+      {"name":"-u","value":null,"doc":"UDP."},
+      {"name":"-x","value":null,"doc":"Unix domain."},
+      {"name":"-w","value":null,"doc":"Raw."},
+      {"name":"-a","value":null,"doc":"All states (default = ESTABLISHED only for TCP)."},
+      {"name":"-l","value":null,"doc":"LISTEN-state only."},
+      {"name":"-n","value":null,"doc":"Numeric (skip DNS, skip /etc/services)."},
+      {"name":"-p","value":null,"doc":"Show owning process (needs root for non-own sockets)."},
+      {"name":"-e","value":null,"doc":"Extended info (UID, inode, sk fingerprint)."},
+      {"name":"-m","value":null,"doc":"Memory usage per socket (skmem)."},
+      {"name":"-i","value":null,"doc":"TCP info (cwnd, rtt, retransmits — like `tcp_info` from getsockopt)."},
+      {"name":"-o","value":null,"doc":"Timer info (keepalive, persist, fin-wait timer)."},
+      {"name":"-s","value":null,"doc":"Summary stats per protocol/family."},
+      {"name":"-H","value":null,"doc":"Suppress header line."},
+      {"name":"-K","value":null,"doc":"Forcibly close matching sockets (TCP RST). Requires root."},
+      {"name":"-4 / -6","value":null,"doc":"IPv4 / IPv6 only."},
+      {"name":"state STATE","value":null,"doc":"Filter to TCP state (established, syn-sent, time-wait, close-wait, etc.)."},
+      {"name":"sport / dport","value":"OP PORT","doc":"Filter source/dest port. e.g. `ss -t '( dport = :22 )'`."}
+    ],
+    "examples":[
+      {"invocation":"ss -tlnp","expected_output":"all listening TCP sockets with owning process","scenario":"Find what's listening on port X (the universal 'who's running on :8080?' question)."},
+      {"invocation":"ss -ti state established","expected_output":"per-conn TCP info (cwnd, rtt, retrans)","scenario":"Inspect TCP performance per active connection."},
+      {"invocation":"ss -s","expected_output":"summary table per protocol","scenario":"Quick overview of socket counts by family/state."}
+    ],
+    "source_ids":["man7-ss-8"]
+  },
+  {
+    "id":"linux.networking.cmd.dig",
+    "command":"dig [@SERVER] [TYPE] [NAME] [+OPTION...]",
+    "purpose":"DNS lookup tool, the gold-standard debugging interface. Defaults: query default resolver for A record. Verbose output includes question/answer/authority/additional sections, query time, server, flags. Plus-options control behavior (+short, +trace, +dnssec, +tcp, etc.).",
+    "flags":[
+      {"name":"@SERVER","value":null,"doc":"Override resolver (e.g. @8.8.8.8 for Google DNS)."},
+      {"name":"NAME","value":null,"doc":"Domain to query."},
+      {"name":"TYPE","value":null,"doc":"Record type: A | AAAA | CNAME | MX | NS | PTR | SOA | SRV | TXT | ANY | AXFR | etc."},
+      {"name":"-x ADDR","value":null,"doc":"Reverse lookup (PTR). e.g. `dig -x 8.8.8.8`."},
+      {"name":"-p PORT","value":null,"doc":"Use PORT instead of 53."},
+      {"name":"-4 / -6","value":null,"doc":"Force IPv4/IPv6 transport."},
+      {"name":"-t TYPE","value":null,"doc":"Same as positional TYPE."},
+      {"name":"+short","value":null,"doc":"Just the answer values, no envelope. (Best for scripts.)"},
+      {"name":"+trace","value":null,"doc":"Iterative resolution from root (good for diagnosing delegation issues)."},
+      {"name":"+dnssec","value":null,"doc":"Set DO bit and show RRSIG records."},
+      {"name":"+tcp","value":null,"doc":"Force TCP transport (for large responses or testing)."},
+      {"name":"+notcp","value":null,"doc":"Disallow TCP fallback."},
+      {"name":"+norecurse","value":null,"doc":"Don't set RD bit (ask authoritative server directly)."},
+      {"name":"+noall +answer","value":null,"doc":"Show only the ANSWER section (cleaner than +short for multi-record results)."},
+      {"name":"+timeout=N","value":null,"doc":"Per-query timeout (default 5s)."},
+      {"name":"+tries=N / +retry=N","value":null,"doc":"Total query attempts / retry count."},
+      {"name":"+nssearch","value":null,"doc":"Find SOA via NSes for the zone (consistency check across NSes)."},
+      {"name":"+stats","value":null,"doc":"Show query time/server/etc. (default; +nostats to suppress)."},
+      {"name":"+yaml","value":null,"doc":"YAML-structured output."}
+    ],
+    "examples":[
+      {"invocation":"dig +short example.com A","expected_output":"`93.184.216.34`","scenario":"Quick A-record lookup for scripts."},
+      {"invocation":"dig +trace example.com","expected_output":"iterative resolution showing root → .com → example.com NS → answer","scenario":"Debug DNS delegation problems."},
+      {"invocation":"dig -x 8.8.8.8 +short","expected_output":"`dns.google.`","scenario":"Reverse-lookup an IP."}
+    ],
+    "source_ids":["debian-dig-1"]
+  },
+  {
+    "id":"linux.networking.cmd.getent",
+    "command":"getent [OPTIONS] DATABASE [KEY...]",
+    "purpose":"Query system databases via the NSS (name service switch) layer. Goes through nsswitch.conf — exactly the same path getaddrinfo() and friends take. Useful for testing NSS configuration without writing C.",
+    "flags":[
+      {"name":"DATABASE","value":null,"doc":"passwd | group | hosts | networks | services | protocols | rpc | ethers | shadow | gshadow | aliases | initgroups | netgroup."},
+      {"name":"-s SERVICE","value":null,"doc":"Override nsswitch source for this lookup (e.g. `-s files` to skip DNS)."},
+      {"name":"-i","value":null,"doc":"Read NSS-database config and exit (debug NSS module load)."}
+    ],
+    "examples":[
+      {"invocation":"getent hosts example.com","expected_output":"`93.184.216.34 example.com`","scenario":"Test full NSS resolution path (files+dns+resolved+...) — what an app's getaddrinfo would actually return."},
+      {"invocation":"getent passwd $(id -u)","expected_output":"current user's passwd entry","scenario":"Read user info via NSS (works regardless of whether passwd is in files, ldap, sssd, ...)."},
+      {"invocation":"getent services 80","expected_output":"`http 80/tcp`","scenario":"Look up service-name ↔ port from /etc/services."}
+    ],
+    "source_ids":["man7-getent-1"]
+  },
+  {
+    "id":"linux.networking.cmd.conntrack",
+    "command":"conntrack [-L | -G | -D | -I | -U | -E | -F | -C] [OPTIONS]",
+    "purpose":"Inspect/manipulate the kernel connection tracking table. Lists tracked flows, kills entries, watches events in real time, dumps stats. The diagnostic for stateful firewall and NAT issues.",
+    "flags":[
+      {"name":"-L, --dump","value":null,"doc":"Dump conntrack table."},
+      {"name":"-G, --get","value":null,"doc":"Lookup specific entry."},
+      {"name":"-D, --delete","value":null,"doc":"Delete matching entries."},
+      {"name":"-I, --create","value":null,"doc":"Insert entry (rare, mostly for testing)."},
+      {"name":"-U, --update","value":null,"doc":"Update entry."},
+      {"name":"-E, --event","value":null,"doc":"Stream events (NEW, UPDATE, DESTROY)."},
+      {"name":"-F, --flush","value":null,"doc":"Flush entire table."},
+      {"name":"-C, --count","value":null,"doc":"Just print count."},
+      {"name":"-S, --stats","value":null,"doc":"Per-CPU stats."},
+      {"name":"-p PROTO","value":null,"doc":"Filter by protocol."},
+      {"name":"-s SRC","value":null,"doc":"Source IP."},
+      {"name":"-d DST","value":null,"doc":"Destination IP."},
+      {"name":"--sport / --dport","value":null,"doc":"Source/dest port."},
+      {"name":"--state STATE","value":null,"doc":"TCP state filter."},
+      {"name":"-o EXTRA","value":"extended|timestamp|id|userspace|...","doc":"Output format extras."},
+      {"name":"-w","value":null,"doc":"Filter on conntrack 'mark'."}
+    ],
+    "examples":[
+      {"invocation":"conntrack -L -p tcp --dport 80","expected_output":"all tracked TCP connections to port 80","scenario":"See active HTTP connections (via the firewall's view)."},
+      {"invocation":"conntrack -E","expected_output":"streaming NEW/UPDATE/DESTROY events","scenario":"Real-time observation of connection-tracking events — useful for debugging NAT or middlebox behavior."},
+      {"invocation":"conntrack -C","expected_output":"`12345`","scenario":"Quick check of conntrack table size vs nf_conntrack_max sysctl."}
+    ],
+    "source_ids":["debian-conntrack-8"]
+  },
+  {
+    "id":"linux.networking.cmd.nmap",
+    "command":"nmap [SCAN-TYPES] [OPTIONS] TARGETS",
+    "purpose":"Network discovery and security scanner. Port scan, service/version detection, OS fingerprint, scriptable via NSE. Outbound-traffic intensive; use with permission.",
+    "flags":[
+      {"name":"-sS","value":null,"doc":"SYN scan (stealth, default for root). Sends SYN, sees SYN-ACK = open, RST = closed, no response = filtered."},
+      {"name":"-sT","value":null,"doc":"TCP connect scan (no root needed; full handshake)."},
+      {"name":"-sU","value":null,"doc":"UDP scan (slow, ICMP-rate-limited)."},
+      {"name":"-sV","value":null,"doc":"Service+version detection (probes app banner)."},
+      {"name":"-sC","value":null,"doc":"Default NSE script set (--script=default)."},
+      {"name":"-A","value":null,"doc":"Aggressive: -O + -sV + -sC + traceroute."},
+      {"name":"-O","value":null,"doc":"OS fingerprint."},
+      {"name":"-p PORTS","value":null,"doc":"Port range. e.g. -p 22,80,443 or -p 1-1000 or -p- for all 65535."},
+      {"name":"-Pn","value":null,"doc":"Skip ping (assume host is up — useful behind firewalls that drop ICMP)."},
+      {"name":"-n","value":null,"doc":"Skip DNS resolution."},
+      {"name":"-T<0-5>","value":null,"doc":"Timing template (0=paranoid, 5=insane). Higher = more parallelism + shorter timeouts."},
+      {"name":"-oN / -oX / -oG / -oA","value":null,"doc":"Output format: normal | XML | grepable | all three."},
+      {"name":"--script SCRIPT","value":null,"doc":"NSE script(s). Categories: default, safe, intrusive, vuln, brute, discovery, etc."},
+      {"name":"--top-ports N","value":null,"doc":"Scan only the top N most common ports."},
+      {"name":"-iL FILE","value":null,"doc":"Targets from file."},
+      {"name":"--reason","value":null,"doc":"Show why nmap classified each port the way it did."}
+    ],
+    "examples":[
+      {"invocation":"nmap -sV -p 22,80,443 example.com","expected_output":"per-port state + service detection","scenario":"Quick service inventory of a host."},
+      {"invocation":"nmap -sn 192.168.1.0/24","expected_output":"host-discovery only (which IPs respond)","scenario":"Network-wide host enumeration without port scanning."},
+      {"invocation":"nmap -A -T4 -oA scan target","expected_output":"comprehensive scan, output to scan.{nmap,xml,gnmap}","scenario":"Detailed audit of a single target with all output formats saved."}
+    ],
+    "source_ids":["nmap-book-man"]
+  }
+]

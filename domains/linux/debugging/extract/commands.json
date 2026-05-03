@@ -1,0 +1,611 @@
+[
+  {
+    "id":"linux.debugging.cmd.strace",
+    "command":"strace [OPTIONS] COMMAND [ARGS] | strace -p PID",
+    "purpose":"Trace system calls and signals via ptrace(2). Output: each syscall with arg decoding + return value/errno. The 'why is my program failing' tool of last resort. Slows tracee dramatically (5-50x).",
+    "flags":[
+      {"name":"-p PID","value":null,"doc":"Attach to running process. Multiple -p allowed."},
+      {"name":"-f","value":null,"doc":"Follow forks (trace children too)."},
+      {"name":"-ff","value":null,"doc":"With -o FILE, write each PID to FILE.PID."},
+      {"name":"-o FILE","value":null,"doc":"Write trace to FILE instead of stderr."},
+      {"name":"-e EXPR","value":null,"doc":"Filter expression. trace=open,read,write or trace=!futex (exclude); trace=network/file/process/signal/ipc/desc."},
+      {"name":"-c","value":null,"doc":"Summary mode: count syscalls + time, no per-call output."},
+      {"name":"-C","value":null,"doc":"Like -c but ALSO print regular output."},
+      {"name":"-T","value":null,"doc":"Show time spent in each syscall."},
+      {"name":"-t / -tt / -ttt","value":null,"doc":"Timestamp prefix (HH:MM:SS / +usec / unix epoch)."},
+      {"name":"-r","value":null,"doc":"Relative timestamp (delta since previous syscall)."},
+      {"name":"-s SIZE","value":null,"doc":"Max string length (default 32). -s 1024 for full URLs/paths."},
+      {"name":"-y","value":null,"doc":"Decode FDs to file paths in output (way more readable)."},
+      {"name":"-yy","value":null,"doc":"Like -y plus protocol details (TCP addr:port for sockets)."},
+      {"name":"-k","value":null,"doc":"Print stack trace per syscall (libunwind required; very slow)."},
+      {"name":"-w","value":null,"doc":"With -c, summarize wall time (vs syscall CPU time)."},
+      {"name":"-x / -xx","value":null,"doc":"Print non-printable as \\x escapes / always hex."},
+      {"name":"-i","value":null,"doc":"Print instruction pointer at syscall."},
+      {"name":"-q","value":null,"doc":"Quiet — suppress 'attach' / 'detach' messages."},
+      {"name":"-D","value":null,"doc":"Tracer runs as a grandchild (avoids PPID issues)."},
+      {"name":"--seccomp-bpf","value":null,"doc":"Use seccomp filter for ~5x speedup (kernel filters which syscalls notify strace)."}
+    ],
+    "examples":[
+      {"invocation":"strace -p 1234 -e trace=openat,read,write -y","expected_output":"file accesses by PID 1234 with FD names","scenario":"Watch what files a running process is reading/writing."},
+      {"invocation":"strace -c -f curl https://example.com","expected_output":"summary table of syscalls + time spent","scenario":"Profile syscall hot spots in a one-shot command."},
+      {"invocation":"strace -p $(pidof nginx) -k -e trace=openat 2>&1 | head -50","expected_output":"each open() with stack trace","scenario":"Find which code path is opening a problematic file."}
+    ],
+    "source_ids":["man7-strace-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.ltrace",
+    "command":"ltrace [OPTIONS] COMMAND [ARGS] | ltrace -p PID",
+    "purpose":"Library call tracer — like strace but for shared-library function calls (and optionally syscalls with -S). Useful when bug is at the library API layer (malloc, libssl, libc string functions) rather than syscall.",
+    "flags":[
+      {"name":"-p PID","value":null,"doc":"Attach to PID."},
+      {"name":"-f","value":null,"doc":"Follow forks."},
+      {"name":"-c","value":null,"doc":"Summary mode (count + time per function)."},
+      {"name":"-e EXPR","value":null,"doc":"Filter — e.g. -e malloc+free+realloc."},
+      {"name":"-l LIB","value":null,"doc":"Trace only calls into LIB."},
+      {"name":"-o FILE","value":null,"doc":"Output to FILE."},
+      {"name":"-S","value":null,"doc":"Also display syscalls (combine library + syscall trace)."},
+      {"name":"-s SIZE","value":null,"doc":"Max string size."},
+      {"name":"-t / -tt / -ttt","value":null,"doc":"Timestamp."},
+      {"name":"-T","value":null,"doc":"Time per call."},
+      {"name":"-n N","value":null,"doc":"Indent N spaces per nested call."},
+      {"name":"-r","value":null,"doc":"Relative timestamp."}
+    ],
+    "examples":[
+      {"invocation":"ltrace -e malloc+free ./myapp","expected_output":"every malloc/free with size + return","scenario":"Quick heap allocation pattern audit."},
+      {"invocation":"ltrace -c -f /usr/bin/python3 script.py","expected_output":"summary of library call counts","scenario":"Identify hot library functions in a Python script (CPython's libc usage)."}
+    ],
+    "source_ids":["man7-ltrace-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.lsof",
+    "command":"lsof [OPTIONS] [NAMES]",
+    "purpose":"List all open files in the system: regular files, dirs, sockets, pipes, devices, deleted-but-still-open. Reads /proc/<pid>/fd. The 'who has X open' tool. Slow on busy systems.",
+    "flags":[
+      {"name":"-p PID","value":null,"doc":"Filter by PID. Comma-separated multiple."},
+      {"name":"-c COMMAND","value":null,"doc":"Filter by command name (prefix match)."},
+      {"name":"-u USER","value":null,"doc":"Filter by user (or UID)."},
+      {"name":"-i [ADDR][:PORT]","value":null,"doc":"Internet sockets. e.g. -i :80, -i tcp@1.2.3.4:443, -i 6 (IPv6 only), -i UDP."},
+      {"name":"-d FD","value":null,"doc":"Filter by FD number, range, or special (cwd, txt, mem, rtd)."},
+      {"name":"+D DIR","value":null,"doc":"All files under DIR (recursive)."},
+      {"name":"-n","value":null,"doc":"Don't resolve hostnames."},
+      {"name":"-P","value":null,"doc":"Don't resolve port numbers (always numeric)."},
+      {"name":"-l","value":null,"doc":"Show UIDs as numbers (don't lookup)."},
+      {"name":"-a","value":null,"doc":"AND filters together (default is OR)."},
+      {"name":"-t","value":null,"doc":"Terse: PIDs only (good for `kill $(lsof -t ...)`)."},
+      {"name":"-r SECS","value":null,"doc":"Repeat every SECS seconds."},
+      {"name":"-s","value":null,"doc":"Show file size."},
+      {"name":"-N","value":null,"doc":"NFS files only."},
+      {"name":"-U","value":null,"doc":"Unix-domain sockets only."},
+      {"name":"+L1","value":null,"doc":"Files with link count < 1 (deleted-but-open files — common cause of 'disk full but du shows free')."}
+    ],
+    "examples":[
+      {"invocation":"lsof -i :8080","expected_output":"process(es) listening or connected on port 8080","scenario":"Universal 'what's on port X' diagnostic."},
+      {"invocation":"lsof +L1 /var","expected_output":"deleted but still-open files under /var","scenario":"Find why disk usage doesn't match df after deleting big logs (handle held by daemon)."},
+      {"invocation":"lsof -p 1234 -d ^txt,^mem","expected_output":"FDs of PID 1234 excluding text/mmap","scenario":"List actual open file descriptors a process is using."}
+    ],
+    "source_ids":["man7-lsof-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.htop",
+    "command":"htop [OPTIONS]",
+    "purpose":"Interactive curses-based process monitor. Color-coded CPU/mem bars per CPU, tree view, filter, sort, kill, renice — all keyboard-driven. Replaces top for interactive use.",
+    "flags":[
+      {"name":"-d DELAY","value":null,"doc":"Refresh delay in tenths of a second (default 15 = 1.5s)."},
+      {"name":"-u USER","value":null,"doc":"Show only USER's processes."},
+      {"name":"-p PID[,PID...]","value":null,"doc":"Show only specified PIDs."},
+      {"name":"-s COLUMN","value":null,"doc":"Sort by COLUMN (PERCENT_CPU, MEM_PERCENT, etc.)."},
+      {"name":"-t","value":null,"doc":"Tree view (parent-child)."},
+      {"name":"-H","value":null,"doc":"Show threads (not just processes)."},
+      {"name":"-C","value":null,"doc":"Monochrome (no color)."},
+      {"name":"-M","value":null,"doc":"Disable mouse."},
+      {"name":"--no-unicode","value":null,"doc":"Use ASCII for bars/borders."},
+      {"name":"F1-F10 keys","value":null,"doc":"F1=Help, F2=Setup, F3=Search, F4=Filter, F5=Tree, F6=SortBy, F7=Nice-1, F8=Nice+1, F9=Kill, F10=Quit."}
+    ],
+    "examples":[
+      {"invocation":"htop -t","expected_output":"interactive tree view","scenario":"See process hierarchy at a glance — useful for understanding service trees."},
+      {"invocation":"htop -p $(pgrep -d, nginx)","expected_output":"nginx workers + master","scenario":"Watch only nginx processes."}
+    ],
+    "source_ids":["man7-htop-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.pidstat",
+    "command":"pidstat [OPTIONS] [INTERVAL [COUNT]]",
+    "purpose":"Per-process resource statistics. From sysstat. Shows CPU/memory/IO/context-switches/page-faults at INTERVAL.",
+    "flags":[
+      {"name":"-u","value":null,"doc":"CPU usage (default if nothing specified)."},
+      {"name":"-r","value":null,"doc":"Page faults + memory usage."},
+      {"name":"-d","value":null,"doc":"Disk I/O statistics."},
+      {"name":"-w","value":null,"doc":"Context switches (voluntary + nonvoluntary)."},
+      {"name":"-s","value":null,"doc":"Stack utilization."},
+      {"name":"-l","value":null,"doc":"Show full command line."},
+      {"name":"-h","value":null,"doc":"Header on every line (for grepping)."},
+      {"name":"-t","value":null,"doc":"Display per-thread (TID) breakdown."},
+      {"name":"-p PID","value":null,"doc":"Specific PID(s) — comma-separated, or 'ALL', or 'SELF'."},
+      {"name":"-C COMMAND","value":null,"doc":"Filter by command name regex."},
+      {"name":"-U USER","value":null,"doc":"Filter by user."},
+      {"name":"-G NAME","value":null,"doc":"Filter by process group name."},
+      {"name":"-T TASK|CHILD|ALL","value":null,"doc":"With -u: TASK = process only, CHILD = include child accumulated stats."}
+    ],
+    "examples":[
+      {"invocation":"pidstat -urd -p $(pidof java) 1","expected_output":"every 1s: cpu+mem+io for java process","scenario":"Watch a process's resource use across all dimensions in real time."},
+      {"invocation":"pidstat -wt -p ALL 5 6","expected_output":"context switches per thread, every 5s for 30s","scenario":"Identify threads with high context-switch rate (lock contention)."}
+    ],
+    "source_ids":["man7-pidstat-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.vmstat",
+    "command":"vmstat [OPTIONS] [DELAY [COUNT]]",
+    "purpose":"System-wide virtual memory + processes + I/O + CPU stats sampled at interval. Quick triage tool: high si/so = swapping, high wa = IO bound, high cs = context-switch storm.",
+    "flags":[
+      {"name":"-a","value":null,"doc":"Active/inactive memory split (vs default buff/cache)."},
+      {"name":"-d","value":null,"doc":"Disk statistics."},
+      {"name":"-D","value":null,"doc":"Disk total summary."},
+      {"name":"-p PARTITION","value":null,"doc":"Per-partition stats."},
+      {"name":"-s","value":null,"doc":"One-shot system info dump (memory totals, paging summary)."},
+      {"name":"-m","value":null,"doc":"Slabinfo (per-cache slab usage)."},
+      {"name":"-t","value":null,"doc":"Add timestamp column."},
+      {"name":"-S {k|K|m|M}","value":null,"doc":"Display unit (kilobytes lowercase / kibibytes / megabytes / mebibytes)."},
+      {"name":"-w","value":null,"doc":"Wide output (more digits per column)."},
+      {"name":"-n","value":null,"doc":"Print header once (vs every screen-full)."}
+    ],
+    "examples":[
+      {"invocation":"vmstat 1","expected_output":"every 1s: procs/memory/swap/io/system/cpu columns","scenario":"Real-time system overview — first command in any perf triage."},
+      {"invocation":"vmstat -d 1","expected_output":"per-disk total + read/write breakdown","scenario":"Identify which disk is busy."}
+    ],
+    "source_ids":["debian-vmstat-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.iostat",
+    "command":"iostat [OPTIONS] [INTERVAL [COUNT]]",
+    "purpose":"Per-device disk I/O statistics from /proc/diskstats. tps/throughput; -x for await/svctm/%util — the saturation indicator.",
+    "flags":[
+      {"name":"-c","value":null,"doc":"CPU report only."},
+      {"name":"-d","value":null,"doc":"Device report only."},
+      {"name":"-x","value":null,"doc":"Extended stats (await, svctm, %util — the diagnostic version)."},
+      {"name":"-k","value":null,"doc":"Display in kilobytes."},
+      {"name":"-m","value":null,"doc":"Display in megabytes."},
+      {"name":"-h","value":null,"doc":"Human-readable."},
+      {"name":"-p [DEVICE]","value":null,"doc":"Per-partition or specific device only."},
+      {"name":"-N","value":null,"doc":"Display LVM/dm device mapper names."},
+      {"name":"-t","value":null,"doc":"Add timestamp."},
+      {"name":"-z","value":null,"doc":"Suppress idle devices (output cleaner)."},
+      {"name":"-y","value":null,"doc":"Skip first 'since boot' summary line (better for scripting)."}
+    ],
+    "examples":[
+      {"invocation":"iostat -xmz 1","expected_output":"every 1s: extended stats in MB, suppress idle disks","scenario":"Find which disk is busy and how saturated."},
+      {"invocation":"iostat -dN -p sda","expected_output":"per-partition + dm-name resolution for sda","scenario":"Inspect specific device's partitions."}
+    ],
+    "source_ids":["man7-iostat-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.iotop",
+    "command":"iotop [OPTIONS]",
+    "purpose":"Per-process I/O monitor. Like top but showing disk I/O bandwidth per process. Reads /proc/<pid>/io. Requires CAP_NET_ADMIN — typically root.",
+    "flags":[
+      {"name":"-o, --only","value":null,"doc":"Show only processes/threads doing I/O."},
+      {"name":"-b, --batch","value":null,"doc":"Non-interactive batch mode (good for logging)."},
+      {"name":"-n N","value":null,"doc":"Number of iterations (with -b)."},
+      {"name":"-d DELAY","value":null,"doc":"Delay between iterations (seconds)."},
+      {"name":"-p PID","value":null,"doc":"Specific PID."},
+      {"name":"-u USER","value":null,"doc":"Filter by user."},
+      {"name":"-P","value":null,"doc":"Process-only (default = threads)."},
+      {"name":"-a","value":null,"doc":"Accumulated I/O (vs current bandwidth)."},
+      {"name":"-k","value":null,"doc":"Use KB/s (vs auto)."},
+      {"name":"-t","value":null,"doc":"Add timestamp (with -b)."},
+      {"name":"-q","value":null,"doc":"Quieter (fewer header rows)."}
+    ],
+    "examples":[
+      {"invocation":"iotop -oPa","expected_output":"only-IO processes, accumulated bytes since iotop start","scenario":"Identify which process did the most disk I/O during a window."},
+      {"invocation":"iotop -bn 5 -d 2","expected_output":"5 batched samples 2s apart","scenario":"Capture IO snapshots for offline analysis."}
+    ],
+    "source_ids":["debian-iotop-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.blktrace",
+    "command":"blktrace [OPTIONS] DEVICES | blktrace -d DEVICE -o - | blkparse -i -",
+    "purpose":"Trace block-layer events (every IO request: queue, merge, dispatch, complete). Output → blkparse for human-readable, btt for latency analysis. Diagnoses block-layer / IO scheduler / device latency at the kernel level.",
+    "flags":[
+      {"name":"-d DEVICE","value":null,"doc":"Block device to trace (e.g. /dev/sda)."},
+      {"name":"-o BASE","value":null,"doc":"Output basename. '-' = stdout."},
+      {"name":"-D DIR","value":null,"doc":"Output directory."},
+      {"name":"-w SECONDS","value":null,"doc":"Run for SECONDS then stop."},
+      {"name":"-b SIZE","value":null,"doc":"Per-CPU buffer size."},
+      {"name":"-n N","value":null,"doc":"Number of buffers per CPU."},
+      {"name":"-a MASK","value":null,"doc":"Action mask: read, write, queue, complete, requeue, etc. Default = all."},
+      {"name":"-A HEX","value":null,"doc":"Action mask as hex bitmask."},
+      {"name":"-r DIR","value":null,"doc":"Path to debugfs (auto-detected normally)."},
+      {"name":"-V","value":null,"doc":"Print version."},
+      {"name":"-k","value":null,"doc":"Kill running blktrace."}
+    ],
+    "examples":[
+      {"invocation":"blktrace -d /dev/sda -o - -w 10 | blkparse -i -","expected_output":"10s of block IO events, parsed","scenario":"Capture block-layer activity to diagnose IO latency."},
+      {"invocation":"blktrace -d /dev/sda -D /tmp/btrace -w 30 && btt -i /tmp/btrace.blktrace.0","expected_output":"latency histograms by request stage","scenario":"Per-stage IO latency analysis (Q→G→I→D→C times)."}
+    ],
+    "source_ids":["man7-blktrace-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.gdb",
+    "command":"gdb [OPTIONS] [PROGRAM [COREFILE | PID]]",
+    "purpose":"GNU debugger. Source-level debugging for C/C++/Rust/Go (and many others). Breakpoints, watchpoints, single-step, backtrace, register/memory inspection, multi-thread, multi-process, remote via gdbserver, postmortem from core dump. Most useful with -g compiled binaries.",
+    "flags":[
+      {"name":"-p PID","value":null,"doc":"Attach to running PID."},
+      {"name":"-c COREFILE","value":null,"doc":"Postmortem from core dump."},
+      {"name":"-x SCRIPT","value":null,"doc":"Run gdb commands from SCRIPT file."},
+      {"name":"-ex 'CMD'","value":null,"doc":"Run CMD before reading scripts. Multiple -ex chain. e.g. `gdb -ex 'bt' -ex 'q' -p PID`."},
+      {"name":"-batch","value":null,"doc":"Non-interactive mode (combine with -ex)."},
+      {"name":"-q","value":null,"doc":"Quiet (no version banner)."},
+      {"name":"-s SYMFILE","value":null,"doc":"Symbol file (separate from PROGRAM)."},
+      {"name":"--core=COREFILE","value":null,"doc":"Same as -c."},
+      {"name":"--directory=DIR","value":null,"doc":"Add DIR to source search path."},
+      {"name":"--tui","value":null,"doc":"Text UI mode (split source + cmd window)."},
+      {"name":"--readnow","value":null,"doc":"Eager symbol read (slower start, faster operation)."}
+    ],
+    "examples":[
+      {"invocation":"gdb -batch -ex 'thread apply all bt' -p 12345","expected_output":"backtrace of every thread of PID 12345","scenario":"One-shot 'where is this hung process stuck?' check without interactive gdb."},
+      {"invocation":"gdb /usr/bin/myapp /var/lib/systemd/coredump/core.myapp.*","expected_output":"interactive postmortem on a core dump","scenario":"Analyze a crash from a core dump after the fact."},
+      {"invocation":"gdb -ex 'b main' -ex run --args ./myapp arg1 arg2","expected_output":"stopped at main with args set","scenario":"Quick interactive debug start with breakpoint and arguments pre-set."}
+    ],
+    "source_ids":["man7-gdb-1","sourceware-gdb-manual"]
+  },
+  {
+    "id":"linux.debugging.cmd.dmesg",
+    "command":"dmesg [OPTIONS]",
+    "purpose":"Read kernel ring buffer. First place to look on weird kernel symptoms: OOM killer, segfaults, hardware errors, driver messages, USB events, network device flapping.",
+    "flags":[
+      {"name":"-T","value":null,"doc":"Human-readable timestamp (vs default seconds-since-boot)."},
+      {"name":"-w, --follow","value":null,"doc":"Tail new messages (like tail -f)."},
+      {"name":"-W, --follow-new","value":null,"doc":"Wait for new messages without showing existing."},
+      {"name":"-l LEVEL[,LEVEL...]","value":null,"doc":"Filter by level: emerg, alert, crit, err, warn, notice, info, debug."},
+      {"name":"-f FACILITY","value":null,"doc":"Filter by facility: kern, user, mail, daemon, auth, syslog, ..."},
+      {"name":"-k","value":null,"doc":"Kernel messages only."},
+      {"name":"-u","value":null,"doc":"User-space messages only."},
+      {"name":"-c","value":null,"doc":"Read AND clear ring buffer (root)."},
+      {"name":"-C","value":null,"doc":"Clear ring buffer."},
+      {"name":"-n LEVEL","value":null,"doc":"Set console log level."},
+      {"name":"-s SIZE","value":null,"doc":"Buffer size for query (default 16KiB)."},
+      {"name":"-t","value":null,"doc":"Suppress timestamps."},
+      {"name":"-r","value":null,"doc":"Raw output (priorities + facility numbers)."},
+      {"name":"-x","value":null,"doc":"Decode facility + priority human-readable."},
+      {"name":"-H, --human","value":null,"doc":"Pretty-print: timestamps + colors + paging."}
+    ],
+    "examples":[
+      {"invocation":"dmesg -T | tail -50","expected_output":"last 50 messages with human timestamps","scenario":"Quick recent-event check."},
+      {"invocation":"dmesg -T -l err,warn","expected_output":"errors + warnings only","scenario":"Filter to actionable severity."},
+      {"invocation":"dmesg -wT","expected_output":"streaming new messages","scenario":"Watch for kernel events as they happen (e.g. while testing a USB device)."}
+    ],
+    "source_ids":["man7-dmesg-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.kexec",
+    "command":"kexec [OPTIONS] -l KERNEL [-i INITRD] [--command-line='...']",
+    "purpose":"Load a kernel for the next reboot via syscall (no firmware reboot). Used by kdump (capture kernel pre-loaded; on panic, kexec invoked from panic context to switch to it). Also for live kernel updates.",
+    "flags":[
+      {"name":"-l KERNEL","value":null,"doc":"Load KERNEL into reserved memory for next kexec -e."},
+      {"name":"-e","value":null,"doc":"Execute the loaded kernel immediately (replaces current kernel)."},
+      {"name":"-u","value":null,"doc":"Unload the previously loaded kernel."},
+      {"name":"-p, --load-panic","value":null,"doc":"Load as the kdump capture kernel (uses crashkernel reserved memory)."},
+      {"name":"--initrd=INITRD","value":null,"doc":"Initial ramdisk for the kernel."},
+      {"name":"--command-line='...'","value":null,"doc":"Boot params for the loaded kernel."},
+      {"name":"-t TYPE","value":null,"doc":"Kernel image type (auto-detected normally): bzImage, uImage, etc."},
+      {"name":"-d","value":null,"doc":"Debug output."},
+      {"name":"--reuse-cmdline","value":null,"doc":"Reuse currently-running kernel's command line."},
+      {"name":"--mem-min / --mem-max","value":null,"doc":"Constrain where kernel loads in physical memory."}
+    ],
+    "examples":[
+      {"invocation":"kexec -l /boot/vmlinuz-NEW --initrd=/boot/initramfs-NEW --reuse-cmdline && kexec -e","expected_output":"system reboots into NEW kernel without firmware POST","scenario":"Live kernel switch — much faster than reboot for pre-prod / dev hosts."},
+      {"invocation":"kexec -p /boot/vmlinuz-CAPTURE --initrd=/boot/initramfs-CAPTURE --command-line='1 irqpoll maxcpus=1 reset_devices'","expected_output":"capture kernel armed; will run on panic","scenario":"Set up kdump (typically done by kdump-tools service at boot)."}
+    ],
+    "source_ids":["man7-kexec-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.crash",
+    "command":"crash [OPTIONS] [VMLINUX] [VMCORE]",
+    "purpose":"Postmortem kernel debugger. Reads vmcore (kdump output) + vmlinux (debug symbols). Interactive shell with kernel-aware commands: bt, kmem, files, mount, log, irq, runq, rd, sym, dis, ps, sig.",
+    "flags":[
+      {"name":"VMLINUX","value":null,"doc":"Path to debug-symbol-bearing kernel image (e.g. /usr/lib/debug/lib/modules/$(uname -r)/vmlinux)."},
+      {"name":"VMCORE","value":null,"doc":"Path to vmcore file (often /var/crash/<date>/vmcore)."},
+      {"name":"-d N","value":null,"doc":"Debug level."},
+      {"name":"-i CMDFILE","value":null,"doc":"Run commands from file."},
+      {"name":"-S","value":null,"doc":"Use System.map for symbol resolution."},
+      {"name":"--mod DIR","value":null,"doc":"Module directory."},
+      {"name":"--osrelease VMCORE","value":null,"doc":"Print kernel release of vmcore."},
+      {"name":"-h CMD","value":null,"doc":"Print help for crash command CMD."},
+      {"name":"--no_panic","value":null,"doc":"Don't search for the panic task automatically."}
+    ],
+    "examples":[
+      {"invocation":"crash /usr/lib/debug/lib/modules/5.15.0/vmlinux /var/crash/202605030915/vmcore","expected_output":"interactive crash> prompt with bt of panicked task","scenario":"Open a vmcore for analysis."},
+      {"invocation":"crash> bt -a","expected_output":"backtrace of every CPU at panic","scenario":"See what every CPU was doing when panic happened (catches deadlocks)."},
+      {"invocation":"crash> log","expected_output":"kernel ring buffer at time of panic","scenario":"Same data as dmesg but from the crashed kernel's perspective."}
+    ],
+    "source_ids":["man7-crash-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.makedumpfile",
+    "command":"makedumpfile [OPTIONS] VMCORE DUMPFILE",
+    "purpose":"Compress kernel crash dumps by stripping zero/free/cache pages. A 16 GB raw vmcore can shrink to <1 GB. Companion to crash(8); reduces disk footprint of kdump output.",
+    "flags":[
+      {"name":"-c","value":null,"doc":"Compress with zlib."},
+      {"name":"-l","value":null,"doc":"Compress with lzo (faster, slightly larger)."},
+      {"name":"-p","value":null,"doc":"Compress with snappy (fastest)."},
+      {"name":"-x VMLINUX","value":null,"doc":"Path to vmlinux for symbol-aware filtering."},
+      {"name":"-d LEVEL","value":null,"doc":"Dump level: 0=all, 1=free, 4=user, 8=cache (page bitmask). 31 = strip everything possible."},
+      {"name":"-E","value":null,"doc":"Output as ELF (vs makedumpfile compressed format) — works with non-crash analyzers."},
+      {"name":"-D","value":null,"doc":"Daemon-mode (verbose progress)."},
+      {"name":"-F","value":null,"doc":"Output flat dump (for re-stream over network)."},
+      {"name":"--split N","value":null,"doc":"Split into N chunks (parallel processing)."},
+      {"name":"-s","value":null,"doc":"Print page status."},
+      {"name":"--message-level N","value":null,"doc":"Verbosity 0-31."}
+    ],
+    "examples":[
+      {"invocation":"makedumpfile -c -d 31 -x /usr/lib/debug/lib/modules/$(uname -r)/vmlinux /proc/vmcore /var/crash/$(date +%Y%m%d)/vmcore.compressed","expected_output":"silent on success; ratios printed","scenario":"Capture-kernel-side: shrink vmcore before saving (saves disk)."},
+      {"invocation":"makedumpfile -E /var/crash/.../vmcore /tmp/vmcore.elf","expected_output":"ELF-formatted vmcore","scenario":"Convert to ELF for use with non-crash analyzers (gdb)."}
+    ],
+    "source_ids":["debian-makedumpfile-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.auditctl",
+    "command":"auditctl [OPTIONS] [-a|-d|-w] RULE",
+    "purpose":"Configure kernel audit subsystem. Add/delete/list rules; control daemon enabled/locked state; configure failure mode and rate limits.",
+    "flags":[
+      {"name":"-l","value":null,"doc":"List all rules."},
+      {"name":"-a always,exit -F arch=ARCH -S SYSCALL [-F field=val] [-k key]","value":null,"doc":"Append syscall rule. -F = filter; -S = syscall name; -k = audit key (search by ausearch -k)."},
+      {"name":"-w PATH -p PERMS [-k KEY]","value":null,"doc":"Watch PATH for permissions r/w/x/a. e.g. `-w /etc/passwd -p wa -k passwd_changes`."},
+      {"name":"-d ...","value":null,"doc":"Delete rule (same syntax as -a)."},
+      {"name":"-D","value":null,"doc":"Delete ALL rules."},
+      {"name":"-r RATE","value":null,"doc":"Rate limit (messages/sec). 0 = no limit."},
+      {"name":"-b BACKLOG","value":null,"doc":"Backlog buffer size."},
+      {"name":"-e {0|1|2}","value":null,"doc":"0=disabled, 1=enabled, 2=enabled+locked (cannot disable until reboot)."},
+      {"name":"-f {0|1|2}","value":null,"doc":"On overflow: 0=silent, 1=printk, 2=panic."},
+      {"name":"-s","value":null,"doc":"Print status."},
+      {"name":"-q MOUNT,SUBTREE","value":null,"doc":"Make a directory equivalence mapping (for chroot environments)."}
+    ],
+    "examples":[
+      {"invocation":"auditctl -w /etc/passwd -p wa -k passwd_writes","expected_output":"rule added","scenario":"Audit any write/attribute change to /etc/passwd."},
+      {"invocation":"auditctl -a always,exit -F arch=b64 -S execve -F uid=0 -k root_exec","expected_output":"rule added","scenario":"Log every command root runs (for compliance)."},
+      {"invocation":"auditctl -e 2","expected_output":"audit enabled+locked","scenario":"Lock auditing on (typical CIS hardening)."}
+    ],
+    "source_ids":["man7-auditctl-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.ausearch",
+    "command":"ausearch [OPTIONS]",
+    "purpose":"Query audit log. Filters by key, message type, time range, file, syscall, UID, success/failure. Default reads /var/log/audit/audit.log.",
+    "flags":[
+      {"name":"-k KEY","value":null,"doc":"Filter by audit key (set via auditctl -k)."},
+      {"name":"-m TYPE","value":null,"doc":"Message type (SYSCALL, AVC, USER_LOGIN, ...). Comma-separated."},
+      {"name":"-ts START","value":null,"doc":"Start time. 'today', 'yesterday', 'recent', 'this-hour', 'boot', or YYYY-MM-DD HH:MM:SS."},
+      {"name":"-te END","value":null,"doc":"End time."},
+      {"name":"-i","value":null,"doc":"Interpret numeric IDs (UIDs, syscall numbers) to names."},
+      {"name":"-c COMM","value":null,"doc":"Filter by command name."},
+      {"name":"-x EXEC","value":null,"doc":"Filter by exec path."},
+      {"name":"-ui UID","value":null,"doc":"Filter by audit UID."},
+      {"name":"-ua AUID","value":null,"doc":"Filter by login UID (auid — unaffected by su/sudo)."},
+      {"name":"-sc SYSCALL","value":null,"doc":"Filter by syscall name/number."},
+      {"name":"-sv {yes|no}","value":null,"doc":"Filter by success status."},
+      {"name":"-f FILE","value":null,"doc":"Filter by file/dir."},
+      {"name":"-if FILE","value":null,"doc":"Read from log FILE (vs default audit.log)."},
+      {"name":"-format text|raw","value":null,"doc":"Output format."}
+    ],
+    "examples":[
+      {"invocation":"ausearch -k passwd_writes -ts today -i","expected_output":"all events tagged passwd_writes today, with names","scenario":"Audit-trail report: who changed /etc/passwd today."},
+      {"invocation":"ausearch -m AVC -ts recent -i","expected_output":"recent SELinux denials","scenario":"Diagnose 'permission denied' that DAC says should work — likely SELinux."}
+    ],
+    "source_ids":["man7-ausearch-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.numastat",
+    "command":"numastat [OPTIONS] [PID|PATTERN]",
+    "purpose":"Per-NUMA-node memory statistics. Hits, misses, foreign allocations, local allocations. Diagnoses NUMA-affinity issues on multi-socket boxes.",
+    "flags":[
+      {"name":"-m","value":null,"doc":"Memory usage per node + system meminfo."},
+      {"name":"-z","value":null,"doc":"Skip zero rows."},
+      {"name":"-c","value":null,"doc":"Compact display."},
+      {"name":"-p PID|PATTERN","value":null,"doc":"Per-process. PID number or command-name pattern."},
+      {"name":"-s [NODE]","value":null,"doc":"Sort rows by NODE column."},
+      {"name":"-v","value":null,"doc":"Verbose."},
+      {"name":"-n","value":null,"doc":"Show numastat-style classic counters: numa_hit, numa_miss, etc."}
+    ],
+    "examples":[
+      {"invocation":"numastat -m","expected_output":"per-node memory usage with totals","scenario":"Check NUMA balance on a multi-socket host."},
+      {"invocation":"numastat -p $(pidof java)","expected_output":"per-node memory usage of java","scenario":"See if a process is allocating across NUMA nodes (bad for memory-bandwidth-sensitive workloads)."}
+    ],
+    "source_ids":["man7-numastat-8"]
+  },
+  {
+    "id":"linux.debugging.cmd.trace-cmd",
+    "command":"trace-cmd CMD [OPTIONS]",
+    "purpose":"User-friendly ftrace front-end. Manages /sys/kernel/debug/tracing/ for you. Subcommands: record, report, reset, start, stop, extract, list, snapshot, hist.",
+    "flags":[
+      {"name":"record","value":null,"doc":"Capture trace to .dat file. Subflags: -e EVENT, -p PLUGIN, -P PID, -F (follow forks)."},
+      {"name":"-e EVENT","value":null,"doc":"Trace specific tracepoint event. Categories: sched, syscalls, mm, irq, etc. e.g. -e sched:sched_switch."},
+      {"name":"-p TRACER","value":null,"doc":"Plugin tracer: function, function_graph, irqsoff, preemptoff, wakeup, nop."},
+      {"name":"-P PID","value":null,"doc":"Filter by PID."},
+      {"name":"-F","value":null,"doc":"Follow forks."},
+      {"name":"-l FUNC","value":null,"doc":"With function tracer: limit to function regex."},
+      {"name":"-n FUNC","value":null,"doc":"Notrace: exclude function."},
+      {"name":"-o FILE","value":null,"doc":"Output file (default trace.dat)."},
+      {"name":"report","value":null,"doc":"Print captured trace.dat in human form."},
+      {"name":"reset","value":null,"doc":"Reset all ftrace state to defaults."},
+      {"name":"start / stop","value":null,"doc":"Start/stop tracing without recording (live view via /sys/kernel/debug/tracing/trace_pipe)."},
+      {"name":"list","value":null,"doc":"List available events/plugins/options."},
+      {"name":"snapshot","value":null,"doc":"Capture snapshot of running trace."}
+    ],
+    "examples":[
+      {"invocation":"trace-cmd record -e sched:sched_switch -e sched:sched_wakeup -F sleep 5","expected_output":"trace.dat with all sched events during 5s","scenario":"Capture scheduling decisions for short interval."},
+      {"invocation":"trace-cmd record -p function_graph -l 'tcp_*' -P $(pidof nginx) -- sleep 2","expected_output":"function-call graph for tcp_* functions invoked by nginx","scenario":"Profile a specific kernel subsystem from a specific process."},
+      {"invocation":"trace-cmd report -i trace.dat | less","expected_output":"events with timestamps + comm + cpu","scenario":"Read previously captured trace."}
+    ],
+    "source_ids":["man7-trace-cmd-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.bpftrace",
+    "command":"bpftrace [-e PROGRAM | FILE] [OPTIONS]",
+    "purpose":"DTrace-inspired high-level eBPF front-end. Compiles short DSL programs to BPF, attaches probes, prints output. The fastest way to write ad-hoc tracing scripts.",
+    "flags":[
+      {"name":"-e 'PROGRAM'","value":null,"doc":"Inline program. e.g. `-e 'tracepoint:syscalls:sys_enter_open { printf(\"%s\\n\", str(args->filename)); }'`."},
+      {"name":"FILE.bt","value":null,"doc":"Run program from file."},
+      {"name":"-l [PATTERN]","value":null,"doc":"List available probes (matching PATTERN if given). e.g. `bpftrace -l 'tracepoint:syscalls:*'`."},
+      {"name":"-p PID","value":null,"doc":"Trace only PID."},
+      {"name":"-c CMD","value":null,"doc":"Run CMD and trace it."},
+      {"name":"-d / -dd","value":null,"doc":"Debug — print BPF assembly / verifier output."},
+      {"name":"-v","value":null,"doc":"Verbose: print BPF instructions + verifier."},
+      {"name":"-q","value":null,"doc":"Quiet (suppress info lines)."},
+      {"name":"-o FILE","value":null,"doc":"Output to FILE."},
+      {"name":"-B {none|line|full}","value":null,"doc":"Output buffering."},
+      {"name":"-V","value":null,"doc":"Print version."},
+      {"name":"--info","value":null,"doc":"Print bpftrace + kernel + BPF JIT info."}
+    ],
+    "examples":[
+      {"invocation":"bpftrace -e 'tracepoint:syscalls:sys_enter_open* { @[comm] = count(); }'","expected_output":"on Ctrl-C: histogram of which commands called open* most","scenario":"Find which process is opening the most files."},
+      {"invocation":"bpftrace -e 'kprobe:vfs_read /pid==12345/ { @bytes = hist(arg2); }'","expected_output":"power-of-2 histogram of read sizes for PID 12345","scenario":"Profile read-size distribution of a specific process."},
+      {"invocation":"bpftrace -e 'profile:hz:99 { @[ustack] = count(); }'","expected_output":"on Ctrl-C: count of each user-stack sampled at 99 Hz","scenario":"On-CPU userspace flame graph data via bpftrace."}
+    ],
+    "source_ids":["bpftrace-docs"]
+  },
+  {
+    "id":"linux.debugging.cmd.perf-stat",
+    "command":"perf stat [OPTIONS] -- COMMAND [ARGS] | perf stat [OPTIONS] -p PID",
+    "purpose":"Run COMMAND (or attach to PID) and print PMU + software event counter values. Default counters: task-clock, context-switches, page-faults, cycles, instructions, branches, branch-misses. Also CPI (cycles-per-instruction) — branch-misses/inst.",
+    "flags":[
+      {"name":"-e EVENT","value":null,"doc":"Specific event(s). Comma-separated. Use `perf list` to see what's available."},
+      {"name":"-p PID","value":null,"doc":"Attach to PID instead of running a command."},
+      {"name":"-a","value":null,"doc":"System-wide (all CPUs)."},
+      {"name":"-C CPULIST","value":null,"doc":"Specific CPUs only."},
+      {"name":"-r N","value":null,"doc":"Repeat N times, show stddev."},
+      {"name":"-i","value":null,"doc":"Don't track child processes (default does)."},
+      {"name":"-x SEP","value":null,"doc":"Machine-readable output with SEP separator."},
+      {"name":"-d / -dd / -ddd","value":null,"doc":"Detailed event sets (more PMU events). dd = with cache, ddd = with TLB."},
+      {"name":"-A","value":null,"doc":"Per-CPU counters."},
+      {"name":"-I MS","value":null,"doc":"Print interval every MS ms (vs end-only)."},
+      {"name":"-T","value":null,"doc":"Per-thread breakdown."},
+      {"name":"--per-core / --per-socket / --per-thread","value":null,"doc":"Aggregation level."},
+      {"name":"-G CGROUP","value":null,"doc":"Filter by cgroup path."}
+    ],
+    "examples":[
+      {"invocation":"perf stat -- ./mybenchmark","expected_output":"counter values + CPI, time, etc.","scenario":"Quick perf snapshot of a benchmark run."},
+      {"invocation":"perf stat -e cache-references,cache-misses,branch-misses -p $(pidof nginx) sleep 10","expected_output":"cache + branch behavior of nginx for 10s","scenario":"Investigate cache thrashing without the full perf record overhead."},
+      {"invocation":"perf stat -aA -I 1000 sleep 5","expected_output":"per-CPU counters every 1s for 5s","scenario":"Watch per-CPU activity in real time."}
+    ],
+    "source_ids":["man7-perf-stat-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.perf-record",
+    "command":"perf record [OPTIONS] -- COMMAND | perf record [OPTIONS] -p PID",
+    "purpose":"Sample events into a perf.data file for later analysis with perf report/script. Default samples cycles event at ~4000 Hz with kernel+user stacks. The capture half of CPU profiling.",
+    "flags":[
+      {"name":"-e EVENT","value":null,"doc":"Event to sample. Default 'cycles'. e.g. -e cpu-clock for software event (no PMU)."},
+      {"name":"-p PID","value":null,"doc":"Profile PID."},
+      {"name":"-a","value":null,"doc":"System-wide."},
+      {"name":"-C CPULIST","value":null,"doc":"Specific CPUs."},
+      {"name":"-g","value":null,"doc":"Capture stack traces (call graphs). Default unwinder is fp; use --call-graph dwarf for DWARF unwinding."},
+      {"name":"--call-graph TYPE","value":null,"doc":"fp (frame pointers, fast), dwarf (DWARF unwind, slow but accurate), lbr (Last Branch Record, Intel-only)."},
+      {"name":"-F HZ","value":null,"doc":"Sample frequency (default 4000). Lower for less overhead."},
+      {"name":"-c COUNT","value":null,"doc":"Sample every COUNT events (vs frequency)."},
+      {"name":"-o FILE","value":null,"doc":"Output file (default perf.data)."},
+      {"name":"-T","value":null,"doc":"Include timestamps in samples."},
+      {"name":"--all-cpus","value":null,"doc":"Same as -a."},
+      {"name":"--user-callchains","value":null,"doc":"Userspace stack only (skip kernel)."},
+      {"name":"--exclude-perf","value":null,"doc":"Don't profile perf itself."},
+      {"name":"-G CGROUP","value":null,"doc":"Filter by cgroup."}
+    ],
+    "examples":[
+      {"invocation":"perf record -F 99 -ag --call-graph fp sleep 30 && perf report","expected_output":"perf.data captured for 30s; report shows hottest functions","scenario":"System-wide on-CPU profile for 30s — the universal CPU bottleneck triage."},
+      {"invocation":"perf record -p $(pidof java) -g -F 99 sleep 10 && perf script | flamegraph.pl > flame.svg","expected_output":"flame graph SVG","scenario":"Generate a CPU flame graph for a Java process."},
+      {"invocation":"perf record -e syscalls:sys_enter_open* -ag sleep 5","expected_output":"every open() syscall logged with stack","scenario":"Capture all open() invocations system-wide for 5s."}
+    ],
+    "source_ids":["man7-perf-record-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.perf-report",
+    "command":"perf report [OPTIONS]",
+    "purpose":"Read perf.data and display profile (default: TUI tree view). Sort by overhead, sample count, etc. Drill into call graphs.",
+    "flags":[
+      {"name":"-i FILE","value":null,"doc":"Input file (default perf.data)."},
+      {"name":"--stdio","value":null,"doc":"Text output (vs TUI)."},
+      {"name":"--tui","value":null,"doc":"TUI mode (default if interactive)."},
+      {"name":"-n","value":null,"doc":"Show sample counts."},
+      {"name":"--sort SORTKEY[,SORTKEY]","value":null,"doc":"Sort by: comm, dso (binary), symbol, parent, cpu, srcline, etc."},
+      {"name":"-g [TYPE]","value":null,"doc":"Show call graph. graph (default), fractal, flat. With --no-children to flatten."},
+      {"name":"--no-children","value":null,"doc":"Show 'self' time only (vs 'children' = includes callees)."},
+      {"name":"-F PCT","value":null,"doc":"Show only entries above PCT% overhead."},
+      {"name":"--symbol SYM","value":null,"doc":"Filter to symbol SYM."},
+      {"name":"--dso DSO","value":null,"doc":"Filter to specific binary."},
+      {"name":"-c CPULIST","value":null,"doc":"Filter to specific CPUs."},
+      {"name":"--header","value":null,"doc":"Print perf.data file header (date, kernel, command)."}
+    ],
+    "examples":[
+      {"invocation":"perf report --stdio -n -F 5","expected_output":"text tree of functions >5% overhead with sample counts","scenario":"Non-interactive top-N hot functions from a previously recorded session."},
+      {"invocation":"perf report -g graph,0.5,caller","expected_output":"call graph with caller-side aggregation, 0.5% threshold","scenario":"Find which CALLERS of expensive functions account for the cost."}
+    ],
+    "source_ids":["man7-perf-report-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.perf-top",
+    "command":"perf top [OPTIONS]",
+    "purpose":"Real-time top-style profiler. Shows hottest functions live, refreshing per second. Like `top` but sorted by perf samples (vs CPU%).",
+    "flags":[
+      {"name":"-e EVENT","value":null,"doc":"Event to sample (default cycles)."},
+      {"name":"-p PID","value":null,"doc":"Specific PID."},
+      {"name":"-a","value":null,"doc":"All CPUs."},
+      {"name":"-C CPULIST","value":null,"doc":"Specific CPUs."},
+      {"name":"-K","value":null,"doc":"Hide kernel symbols."},
+      {"name":"-U","value":null,"doc":"Hide user symbols."},
+      {"name":"-g","value":null,"doc":"Call graph mode."},
+      {"name":"-F HZ","value":null,"doc":"Sample frequency."},
+      {"name":"-d SECS","value":null,"doc":"Display refresh interval."},
+      {"name":"--stdio","value":null,"doc":"Text output (no TUI)."},
+      {"name":"-z","value":null,"doc":"Zero counters between refreshes (vs cumulative)."}
+    ],
+    "examples":[
+      {"invocation":"perf top","expected_output":"live TUI showing hottest functions across system","scenario":"Real-time CPU bottleneck identification."},
+      {"invocation":"perf top -p $(pidof postgres)","expected_output":"live profile of postgres only","scenario":"Watch what a specific process is doing in real time."}
+    ],
+    "source_ids":["man7-perf-top-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.perf-trace",
+    "command":"perf trace [OPTIONS] -- COMMAND | perf trace [OPTIONS] -p PID",
+    "purpose":"Live syscall tracer (like strace, but uses tracepoints + ring buffer — much faster, much less overhead). Combines well with -e for filtering.",
+    "flags":[
+      {"name":"-p PID","value":null,"doc":"Trace PID."},
+      {"name":"-a","value":null,"doc":"System-wide."},
+      {"name":"-e EVENT","value":null,"doc":"Specific syscall(s)/events. e.g. -e openat or -e 'syscalls:sys_enter_*'."},
+      {"name":"-s","value":null,"doc":"Summary mode (count + time, like strace -c)."},
+      {"name":"-S","value":null,"doc":"With -s: print summary on Ctrl-C without exiting."},
+      {"name":"-F","value":null,"doc":"Show major page faults."},
+      {"name":"-T","value":null,"doc":"Show absolute timestamp."},
+      {"name":"--call-graph TYPE","value":null,"doc":"Capture call graphs at each event."},
+      {"name":"-i FILE","value":null,"doc":"Read events from FILE (vs live)."},
+      {"name":"-o FILE","value":null,"doc":"Output to FILE."},
+      {"name":"--errno-summary","value":null,"doc":"Summarize errnos."},
+      {"name":"--filter-pids LIST","value":null,"doc":"Exclude PIDs."}
+    ],
+    "examples":[
+      {"invocation":"perf trace -p $(pidof nginx)","expected_output":"all syscalls by nginx, low overhead","scenario":"Strace-like view of a busy daemon without the strace slowdown."},
+      {"invocation":"perf trace -s --duration 1 -- ./benchmark","expected_output":"summary of syscalls taking >1ms","scenario":"Find slow syscalls in a benchmark run."}
+    ],
+    "source_ids":["man7-perf-trace-1"]
+  },
+  {
+    "id":"linux.debugging.cmd.perf-script",
+    "command":"perf script [OPTIONS]",
+    "purpose":"Process perf.data records. Default: print every sample as a line (timestamp, comm, pid, event, stack). Pipe to flamegraph.pl, custom analyzers, or built-in scripts (--list-script).",
+    "flags":[
+      {"name":"-i FILE","value":null,"doc":"Input perf.data."},
+      {"name":"-F FIELDS","value":null,"doc":"Output fields. e.g. -F comm,pid,tid,time,event,trace,ip,sym."},
+      {"name":"--header","value":null,"doc":"Print perf.data header."},
+      {"name":"-l, --list-script","value":null,"doc":"List built-in scripts (e.g. event_analyzing_sample, intel-pt-events, syscall-counts)."},
+      {"name":"-s SCRIPT","value":null,"doc":"Run a built-in or custom script."},
+      {"name":"--demangle","value":null,"doc":"Demangle C++ symbols."},
+      {"name":"--call-trace","value":null,"doc":"Use ftrace-style call graph (Intel PT only)."},
+      {"name":"--ns","value":null,"doc":"Nanosecond timestamp precision."},
+      {"name":"-c COMM","value":null,"doc":"Filter by command."},
+      {"name":"-C CPULIST","value":null,"doc":"Filter by CPU."}
+    ],
+    "examples":[
+      {"invocation":"perf script -F comm,pid,time,ip,sym | flamegraph.pl > flame.svg","expected_output":"SVG flame graph","scenario":"Render a flame graph from a perf.data."},
+      {"invocation":"perf script --header | head -30","expected_output":"perf.data metadata + first 30 sample lines","scenario":"Inspect sample format / verify capture parameters."}
+    ],
+    "source_ids":["man7-perf-script-1"]
+  }
+]

@@ -1,0 +1,360 @@
+[
+  {
+    "id":"linux.filesystem.cmd.mount",
+    "command":"mount [-t TYPE] [-o OPTIONS] DEVICE MOUNTPOINT",
+    "purpose":"Attach a filesystem. Without args, lists current mounts (read /proc/mounts). With one arg, mounts per /etc/fstab entry.",
+    "flags":[
+      {"name":"-t TYPE","value":null,"doc":"Filesystem type. auto attempts detection. tmpfs, ext4, xfs, btrfs, nfs, cifs, overlay, etc."},
+      {"name":"-o OPTIONS","value":null,"doc":"Comma-separated mount options. Common: rw/ro, exec/noexec, suid/nosuid, dev/nodev, atime/noatime/relatime, sync/async, defaults. FS-specific: data=ordered (ext4), barrier (ext4/xfs), discard, etc."},
+      {"name":"-a","value":null,"doc":"Mount all in /etc/fstab not noauto."},
+      {"name":"-r","value":null,"doc":"Read-only (= -o ro)."},
+      {"name":"-w","value":null,"doc":"Read-write (= -o rw)."},
+      {"name":"-n","value":null,"doc":"Don't write to /etc/mtab."},
+      {"name":"-l","value":null,"doc":"List with labels."},
+      {"name":"--bind","value":null,"doc":"Bind mount (= -o bind). Same inode visible at second path."},
+      {"name":"--rbind","value":null,"doc":"Recursive bind (sub-mounts also)."},
+      {"name":"--make-shared","value":null,"doc":"Set propagation type to shared."},
+      {"name":"--make-private","value":null,"doc":"Set to private."},
+      {"name":"--make-slave","value":null,"doc":"Set to slave."},
+      {"name":"--make-rshared / --make-rprivate / --make-rslave","value":null,"doc":"Recursive variants."},
+      {"name":"--move","value":null,"doc":"Atomically move a mount to a new location."},
+      {"name":"-O OPTIONS","value":null,"doc":"With -a: only mount fstab entries with matching options."},
+      {"name":"-T FILE","value":null,"doc":"Read fstab from FILE."},
+      {"name":"-v","value":null,"doc":"Verbose."},
+      {"name":"--source DEV","value":null,"doc":"Explicit source (helps when target alone is given)."},
+      {"name":"--target DIR","value":null,"doc":"Explicit target."}
+    ],
+    "examples":[
+      {"invocation":"mount -t tmpfs -o size=1G tmpfs /mnt/scratch","expected_output":"silent","scenario":"Create a 1G in-RAM scratch dir."},
+      {"invocation":"mount -o remount,rw /","expected_output":"silent","scenario":"Remount root RW after rescue boot."},
+      {"invocation":"mount --bind /var/lib/docker /mnt/dockerdata && mount --make-shared /mnt/dockerdata","expected_output":"silent","scenario":"Make docker storage available at second path with shared propagation."}
+    ],
+    "source_ids":["man7-mount-8","man7-mount-2","man7-fstab-5"]
+  },
+  {
+    "id":"linux.filesystem.cmd.umount",
+    "command":"umount [OPTIONS] {DEVICE | MOUNTPOINT}",
+    "purpose":"Detach a filesystem. Returns EBUSY if files open / processes have CWD inside.",
+    "flags":[
+      {"name":"-a","value":null,"doc":"Unmount all (rarely useful — typically excludes /, /proc, /sys)."},
+      {"name":"-f","value":null,"doc":"Force (try harder for NFS hangs). May not actually free resources if processes still hold."},
+      {"name":"-l, --lazy","value":null,"doc":"Lazy unmount: detach immediately, clean up when last user closes. The 'I'll deal with it later' option."},
+      {"name":"-r","value":null,"doc":"On failure, try to remount RO."},
+      {"name":"-R","value":null,"doc":"Recursive — also unmount any sub-mounts under MOUNTPOINT."},
+      {"name":"-t TYPE","value":null,"doc":"Only unmount FS of TYPE (with -a)."},
+      {"name":"-n","value":null,"doc":"Don't write to /etc/mtab."},
+      {"name":"-v","value":null,"doc":"Verbose."},
+      {"name":"-A","value":null,"doc":"All mounts referencing same device (--all-targets)."},
+      {"name":"-c","value":null,"doc":"Don't canonicalize path before unmount."}
+    ],
+    "examples":[
+      {"invocation":"umount /mnt/data || umount -l /mnt/data","expected_output":"normal unmount or lazy fallback","scenario":"Try clean unmount, fall back to lazy if busy."},
+      {"invocation":"umount -R /var/lib/docker","expected_output":"unmounts everything under /var/lib/docker","scenario":"Wipe out docker storage cleanly (recursive)."}
+    ],
+    "source_ids":["man7-umount-8","man7-umount2-2"]
+  },
+  {
+    "id":"linux.filesystem.cmd.lsblk",
+    "command":"lsblk [OPTIONS] [DEVICES]",
+    "purpose":"Tree view of block devices: disks → partitions → LVs → filesystems. Shows MAJ:MIN, SIZE, RO, TYPE, MOUNTPOINTS.",
+    "flags":[
+      {"name":"-f, --fs","value":null,"doc":"Show FSTYPE, FSVER, LABEL, UUID, FSAVAIL, FSUSE%."},
+      {"name":"-a, --all","value":null,"doc":"Include empty/zero-sized devices."},
+      {"name":"-b, --bytes","value":null,"doc":"Sizes in bytes."},
+      {"name":"-p, --paths","value":null,"doc":"Full /dev/ paths."},
+      {"name":"-J, --json","value":null,"doc":"JSON output."},
+      {"name":"-o COLS","value":null,"doc":"Custom columns (NAME, MAJ:MIN, RM, SIZE, RO, TYPE, MOUNTPOINTS, FSTYPE, LABEL, UUID, MODEL, SERIAL, ROTA, ZONED, ...)."},
+      {"name":"-n","value":null,"doc":"No header."},
+      {"name":"-d","value":null,"doc":"Disk-only (skip partitions/LVs)."},
+      {"name":"-i","value":null,"doc":"ASCII-only tree."},
+      {"name":"-e MAJORS","value":null,"doc":"Exclude majors. Default excludes 1,7,1,11,253 (memory/loop/etc.)."},
+      {"name":"-I MAJORS","value":null,"doc":"Include only these majors."},
+      {"name":"-D","value":null,"doc":"Discard info (TRIM support, granularity, max bytes)."},
+      {"name":"-Z","value":null,"doc":"Zoned device info."},
+      {"name":"-S","value":null,"doc":"SCSI/SAS info."},
+      {"name":"-t","value":null,"doc":"Topology info."}
+    ],
+    "examples":[
+      {"invocation":"lsblk -f","expected_output":"tree with FS type/UUID/label/mountpoint","scenario":"Inventory of disks + filesystems on the host."},
+      {"invocation":"lsblk -J | jq '.blockdevices[] | select(.type==\"disk\") | .name'","expected_output":"list of disk names","scenario":"Programmatic disk discovery."}
+    ],
+    "source_ids":["man7-lsblk-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.blkid",
+    "command":"blkid [OPTIONS] [DEVICE...]",
+    "purpose":"Print block device attributes: UUID, LABEL, TYPE. Reads superblock signatures. Used by udev rules and /etc/fstab UUID resolution.",
+    "flags":[
+      {"name":"-c FILE","value":null,"doc":"Cache file (default /etc/blkid.tab; /dev/null = no cache)."},
+      {"name":"-g","value":null,"doc":"Garbage-collect cache."},
+      {"name":"-h","value":null,"doc":"Help."},
+      {"name":"-i","value":null,"doc":"Show I/O limits."},
+      {"name":"-k","value":null,"doc":"List known FS types."},
+      {"name":"-l","value":null,"doc":"Look up first matching device (with -t)."},
+      {"name":"-L LABEL","value":null,"doc":"Find device by label."},
+      {"name":"-U UUID","value":null,"doc":"Find device by UUID."},
+      {"name":"-n LIST","value":null,"doc":"Restrict probing to these FS types."},
+      {"name":"-o FORMAT","value":null,"doc":"Output: full (default), value, list, device, udev, export."},
+      {"name":"-p","value":null,"doc":"Probe (don't use cache)."},
+      {"name":"-s TAG","value":null,"doc":"Show only this tag (TYPE, UUID, LABEL, etc.)."},
+      {"name":"-t TAG=VALUE","value":null,"doc":"Filter by tag."}
+    ],
+    "examples":[
+      {"invocation":"blkid","expected_output":"per-device tag dump","scenario":"List all block-device FS info."},
+      {"invocation":"blkid -U abc123-def456","expected_output":"/dev/sdaN","scenario":"Find which device has a given UUID."}
+    ],
+    "source_ids":["man7-blkid-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.losetup",
+    "command":"losetup [OPTIONS] {-l | -d LOOP | -f [-P] FILE | LOOP FILE}",
+    "purpose":"Manage loop devices. Set up a /dev/loopN backed by a regular file (disk image, encrypted container, etc.).",
+    "flags":[
+      {"name":"-l, --list","value":null,"doc":"List active loop devices."},
+      {"name":"-a","value":null,"doc":"Show all (including unused)."},
+      {"name":"-f, --find","value":null,"doc":"Find first free /dev/loopN. With FILE, attach + return name. With --show, print the picked name."},
+      {"name":"-P, --partscan","value":null,"doc":"Scan for partitions on the loop image."},
+      {"name":"-d LOOP","value":null,"doc":"Detach loop device."},
+      {"name":"-D","value":null,"doc":"Detach all."},
+      {"name":"-r, --read-only","value":null,"doc":"Read-only attach."},
+      {"name":"-o OFFSET","value":null,"doc":"Offset into file."},
+      {"name":"--sizelimit SIZE","value":null,"doc":"Limit size."},
+      {"name":"--sector-size N","value":null,"doc":"Override sector size."},
+      {"name":"-c","value":null,"doc":"Re-read FILE size."},
+      {"name":"--show","value":null,"doc":"With -f, print device name."},
+      {"name":"--direct-io [on|off]","value":null,"doc":"Use O_DIRECT for backing file."}
+    ],
+    "examples":[
+      {"invocation":"losetup -fP --show /tmp/disk.img","expected_output":"`/dev/loop3`","scenario":"Mount a disk image with partition scanning."},
+      {"invocation":"losetup -d /dev/loop3","expected_output":"silent","scenario":"Detach when done."}
+    ],
+    "source_ids":["man7-losetup-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.mkfs-ext4",
+    "command":"mkfs.ext4 [OPTIONS] DEVICE",
+    "purpose":"Create ext4 filesystem.",
+    "flags":[
+      {"name":"-L LABEL","value":null,"doc":"Set FS label."},
+      {"name":"-U UUID","value":null,"doc":"Set UUID."},
+      {"name":"-b SIZE","value":null,"doc":"Block size: 1024, 2048, or 4096."},
+      {"name":"-c","value":null,"doc":"Check device for bad blocks before creating."},
+      {"name":"-cc","value":null,"doc":"Read-write bad block check (slower)."},
+      {"name":"-i BYTES_PER_INODE","value":null,"doc":"Inode density. Default ~16K. Smaller = more inodes (more files allowed)."},
+      {"name":"-N NUM_INODES","value":null,"doc":"Override total inode count."},
+      {"name":"-m PERCENT","value":null,"doc":"Reserved blocks for root (default 5%)."},
+      {"name":"-O FEATURES","value":null,"doc":"Comma-separated FS features. Common: ^has_journal (no journal), ^huge_file, casefold, encrypt, project."},
+      {"name":"-E EXTENDED_OPTS","value":null,"doc":"Extended options. e.g. stride=,stripe-width= for RAID; lazy_itable_init=1 (faster mkfs, slower first use)."},
+      {"name":"-T USAGE_TYPE","value":null,"doc":"Tune defaults for usage: news, largefile, largefile4, hurd, big, default."},
+      {"name":"-F","value":null,"doc":"Force (overwrite existing FS / mounted device)."},
+      {"name":"-n","value":null,"doc":"Show what would be done (don't actually create)."},
+      {"name":"-q","value":null,"doc":"Quiet."},
+      {"name":"-v","value":null,"doc":"Verbose."},
+      {"name":"-d DIR","value":null,"doc":"Pre-populate FS with contents of DIR."}
+    ],
+    "examples":[
+      {"invocation":"mkfs.ext4 -L data -E lazy_itable_init=1 /dev/sdb1","expected_output":"creates ext4 with label, fast init","scenario":"Standard new-disk format."},
+      {"invocation":"mkfs.ext4 -n /dev/sda1","expected_output":"would-be parameters; doesn't write","scenario":"Sanity-check before destroying data."}
+    ],
+    "source_ids":["debian-mkfs-ext4-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.tune2fs",
+    "command":"tune2fs [OPTIONS] DEVICE",
+    "purpose":"Adjust ext2/3/4 filesystem parameters. Most operations require the FS unmounted.",
+    "flags":[
+      {"name":"-l","value":null,"doc":"Show superblock contents (mount-safe)."},
+      {"name":"-L LABEL","value":null,"doc":"Change label."},
+      {"name":"-U UUID","value":null,"doc":"Change UUID. 'random' / 'clear' as special values."},
+      {"name":"-c COUNT","value":null,"doc":"Mount-count between forced fsck. -1 = disable."},
+      {"name":"-C MOUNT_COUNT","value":null,"doc":"Set current mount count."},
+      {"name":"-i INTERVAL","value":null,"doc":"Time between forced fsck. e.g. 30d, 6m. 0 = disable."},
+      {"name":"-e ERROR_BEHAVIOR","value":null,"doc":"continue|remount-ro|panic. What to do on FS error."},
+      {"name":"-m PERCENT","value":null,"doc":"Reserved-block percentage."},
+      {"name":"-r BLOCKS","value":null,"doc":"Reserved-block count."},
+      {"name":"-u USER","value":null,"doc":"User who can use reserved blocks."},
+      {"name":"-g GROUP","value":null,"doc":"Group who can use reserved blocks."},
+      {"name":"-O FEATURES","value":null,"doc":"Enable/disable FS features. Prefix ^ to disable."},
+      {"name":"-E EXTENDED_OPTS","value":null,"doc":"Extended options."},
+      {"name":"-J JOURNAL_OPTS","value":null,"doc":"Journal config."},
+      {"name":"-j","value":null,"doc":"Add journal (convert ext2 → ext3)."},
+      {"name":"-T TIME","value":null,"doc":"Set last-checked time."},
+      {"name":"-Q QUOTA_OPTS","value":null,"doc":"Set quota options."}
+    ],
+    "examples":[
+      {"invocation":"tune2fs -l /dev/sda1","expected_output":"superblock contents","scenario":"Inspect FS state, last fsck, mount count, features."},
+      {"invocation":"tune2fs -c 0 -i 0 /dev/sda1","expected_output":"silent","scenario":"Disable time/mount-based forced fsck (modern systems use journal recovery)."},
+      {"invocation":"tune2fs -O ^has_journal /dev/sda1","expected_output":"silent","scenario":"Convert ext4 to no-journal mode (ext2-like)."}
+    ],
+    "source_ids":["man7-tune2fs-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.mkfs-xfs",
+    "command":"mkfs.xfs [OPTIONS] DEVICE",
+    "purpose":"Create XFS filesystem. Modern XFS is the default for RHEL 7+ rootfs.",
+    "flags":[
+      {"name":"-L LABEL","value":null,"doc":"Filesystem label (max 12 chars for XFS)."},
+      {"name":"-d OPTIONS","value":null,"doc":"Data section: agcount= (allocation groups for parallelism), agsize=, file=, name= (image filename), size=, sunit= (RAID stripe unit), swidth= (RAID stripe width), su=, sw=."},
+      {"name":"-l OPTIONS","value":null,"doc":"Log section: agnum=, internal=, logdev=, size= (default ~64MB), su=, version=, sectsize=."},
+      {"name":"-r OPTIONS","value":null,"doc":"Realtime section: rtdev=, extsize=, size=."},
+      {"name":"-n OPTIONS","value":null,"doc":"Naming options: ftype=1 (default — needed for overlayfs), size=."},
+      {"name":"-i OPTIONS","value":null,"doc":"Inode options: size= (256/512/1024/2048), maxpct=, attr=, projid32bit=."},
+      {"name":"-m OPTIONS","value":null,"doc":"Metadata options: crc=1 (default — checksums), finobt=1, rmapbt=, reflink=1 (default — for cp --reflink)."},
+      {"name":"-s OPTIONS","value":null,"doc":"Sector size: size=512|4096."},
+      {"name":"-N","value":null,"doc":"No-execute mode (show what would happen)."},
+      {"name":"-K","value":null,"doc":"Don't issue discards on mkfs."},
+      {"name":"-f","value":null,"doc":"Force (overwrite existing FS)."},
+      {"name":"-q","value":null,"doc":"Quiet."}
+    ],
+    "examples":[
+      {"invocation":"mkfs.xfs -L data /dev/sdb1","expected_output":"XFS created","scenario":"Standard format with label."},
+      {"invocation":"mkfs.xfs -d agcount=64 -l size=512m /dev/nvme0n1","expected_output":"high-parallelism XFS","scenario":"Tuned for many-CPU host with heavy parallel IO."}
+    ],
+    "source_ids":["man7-mkfs-xfs-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.mkfs-btrfs",
+    "command":"mkfs.btrfs [OPTIONS] DEVICES...",
+    "purpose":"Create Btrfs filesystem. Multi-device aware: pass multiple DEVICES for built-in RAID.",
+    "flags":[
+      {"name":"-L LABEL","value":null,"doc":"Filesystem label."},
+      {"name":"-U UUID","value":null,"doc":"Set UUID."},
+      {"name":"-m PROFILE","value":null,"doc":"Metadata profile: single, raid0, raid1, raid5, raid6, raid10, dup."},
+      {"name":"-d PROFILE","value":null,"doc":"Data profile: same options."},
+      {"name":"-n SECTORSIZE","value":null,"doc":"Nodesize (default 16K)."},
+      {"name":"-s SECTORSIZE","value":null,"doc":"Sector size."},
+      {"name":"-f","value":null,"doc":"Force overwrite."},
+      {"name":"-O FEATURES","value":null,"doc":"Enable features: extref, skinny-metadata, no-holes, raid56, free-space-tree, raid1c34, mixed-bg."},
+      {"name":"-r DIR","value":null,"doc":"Pre-populate from DIR."},
+      {"name":"-K","value":null,"doc":"Don't perform discard."},
+      {"name":"-q","value":null,"doc":"Quiet."},
+      {"name":"-v","value":null,"doc":"Verbose."}
+    ],
+    "examples":[
+      {"invocation":"mkfs.btrfs -L data -d raid1 -m raid1 /dev/sdb /dev/sdc","expected_output":"RAID1 btrfs across two disks","scenario":"Mirrored data + metadata."},
+      {"invocation":"mkfs.btrfs -L root /dev/nvme0n1p2","expected_output":"single-device btrfs","scenario":"Standard single-disk format."}
+    ],
+    "source_ids":["man7-mkfs-btrfs-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.lvm",
+    "command":"lvm [COMMAND]",
+    "purpose":"LVM2 main entry — interactive shell or CLI. In practice, individual binaries (pvcreate, vgcreate, lvcreate, etc.) are invoked. lvm itself rarely run directly.",
+    "flags":[
+      {"name":"version","value":null,"doc":"Show LVM version."},
+      {"name":"help","value":null,"doc":"List available commands."},
+      {"name":"dumpconfig","value":null,"doc":"Print effective LVM config."},
+      {"name":"pvs / vgs / lvs","value":null,"doc":"List PVs / VGs / LVs in tabular form. -o customizes columns."},
+      {"name":"pvdisplay / vgdisplay / lvdisplay","value":null,"doc":"Verbose per-object info."},
+      {"name":"pvscan / vgscan / lvscan","value":null,"doc":"Re-discover (after attaching new disk)."},
+      {"name":"pvchange / vgchange / lvchange","value":null,"doc":"Modify properties (e.g. activate VG)."},
+      {"name":"vgchange -ay","value":null,"doc":"Activate all VGs (mount LVs available)."},
+      {"name":"lvextend -L +SIZE LV","value":null,"doc":"Grow LV (then resize FS via fsadm or resize2fs/xfs_growfs)."}
+    ],
+    "examples":[
+      {"invocation":"lvm version","expected_output":"version info","scenario":"Sanity check."},
+      {"invocation":"vgs -o vg_name,vg_size,vg_free","expected_output":"summary of VGs","scenario":"Quick capacity check."}
+    ],
+    "source_ids":["man7-lvm-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.pvcreate",
+    "command":"pvcreate [OPTIONS] DEVICE...",
+    "purpose":"Initialize disk/partition as LVM Physical Volume.",
+    "flags":[
+      {"name":"-f","value":null,"doc":"Force."},
+      {"name":"-y","value":null,"doc":"Yes to all prompts."},
+      {"name":"-u UUID","value":null,"doc":"Set PV UUID."},
+      {"name":"--norestorefile","value":null,"doc":"Don't restore from backup file."},
+      {"name":"-v","value":null,"doc":"Verbose."},
+      {"name":"--metadatacopies N","value":null,"doc":"Number of metadata copies on this PV."},
+      {"name":"--metadatasize SIZE","value":null,"doc":"Reserved space for metadata."},
+      {"name":"--dataalignment ALIGN","value":null,"doc":"Force data alignment (helps SSDs)."},
+      {"name":"--zero {y|n}","value":null,"doc":"Zero first 4 sectors."}
+    ],
+    "examples":[
+      {"invocation":"pvcreate /dev/sdb /dev/sdc","expected_output":"PVs created","scenario":"Initialize new disks for LVM."},
+      {"invocation":"pvs","expected_output":"PV table","scenario":"Verify PV creation."}
+    ],
+    "source_ids":["man7-pvcreate-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.vgcreate",
+    "command":"vgcreate [OPTIONS] VG_NAME DEVICE...",
+    "purpose":"Create a Volume Group from one or more PVs.",
+    "flags":[
+      {"name":"-s SIZE","value":null,"doc":"Physical extent size (default 4M). Determines max LV size and granularity."},
+      {"name":"-p N","value":null,"doc":"Max PV count (0 = unlimited)."},
+      {"name":"-l N","value":null,"doc":"Max LV count."},
+      {"name":"-A {y|n}","value":null,"doc":"Auto-activate."},
+      {"name":"--clustered {y|n}","value":null,"doc":"Cluster-aware VG."},
+      {"name":"-f","value":null,"doc":"Force."},
+      {"name":"-y","value":null,"doc":"Yes to prompts."},
+      {"name":"--metadatatype TYPE","value":null,"doc":"lvm1 or lvm2 metadata format."}
+    ],
+    "examples":[
+      {"invocation":"vgcreate vg_data /dev/sdb /dev/sdc","expected_output":"VG vg_data created","scenario":"Create VG spanning two PVs."},
+      {"invocation":"vgs","expected_output":"VG table","scenario":"Verify."}
+    ],
+    "source_ids":["man7-vgcreate-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.lvcreate",
+    "command":"lvcreate [OPTIONS] -L SIZE -n LV_NAME VG_NAME",
+    "purpose":"Create a Logical Volume.",
+    "flags":[
+      {"name":"-L SIZE","value":null,"doc":"Size in absolute units (k/m/g/t)."},
+      {"name":"-l EXTENTS","value":null,"doc":"Size in extents (or %VG / %FREE / %PVS / %ORIGIN for snapshots). e.g. -l 100%FREE = use all free space."},
+      {"name":"-n NAME","value":null,"doc":"LV name."},
+      {"name":"-i N","value":null,"doc":"Stripe count (0 = no striping; 2+ = stripe across N PVs)."},
+      {"name":"-I SIZE","value":null,"doc":"Stripe size."},
+      {"name":"-m N","value":null,"doc":"Mirror copies (0 = no mirror; 1 = one mirror = 2 copies total)."},
+      {"name":"-s, --snapshot","value":null,"doc":"Create snapshot. -s LV_TO_SNAPSHOT."},
+      {"name":"--type TYPE","value":null,"doc":"Segment type: linear, striped, raid0/1/5/6/10, mirror, snapshot, thin, thin-pool, cache, cache-pool."},
+      {"name":"--thinpool POOL","value":null,"doc":"Use thin pool for thin provisioning."},
+      {"name":"-T, --thin","value":null,"doc":"Create thin LV."},
+      {"name":"-V SIZE","value":null,"doc":"Virtual size (for thin LVs)."},
+      {"name":"--cachepool POOL","value":null,"doc":"Cache backing."},
+      {"name":"-K","value":null,"doc":"Override skip-activation flag."},
+      {"name":"-p {r|rw}","value":null,"doc":"Permission: read-only or read-write."},
+      {"name":"-Z {y|n}","value":null,"doc":"Zero first KB."}
+    ],
+    "examples":[
+      {"invocation":"lvcreate -L 100G -n lv_data vg_data","expected_output":"LV /dev/vg_data/lv_data created","scenario":"Standard LV creation."},
+      {"invocation":"lvcreate -s -L 10G -n snap1 /dev/vg_data/lv_data","expected_output":"snapshot created","scenario":"Create COW snapshot for backup."},
+      {"invocation":"lvcreate -i 4 -I 64K -l 100%FREE -n lv_stripe vg_data","expected_output":"4-way striped LV using all free space","scenario":"Performance LV across 4 PVs."}
+    ],
+    "source_ids":["man7-lvcreate-8"]
+  },
+  {
+    "id":"linux.filesystem.cmd.cryptsetup",
+    "command":"cryptsetup [OPTIONS] COMMAND",
+    "purpose":"Manage LUKS-encrypted block devices.",
+    "flags":[
+      {"name":"luksFormat DEVICE","value":null,"doc":"Initialize LUKS on device. Prompts for passphrase."},
+      {"name":"luksOpen DEVICE NAME","value":null,"doc":"Open device, create /dev/mapper/NAME. Prompts for passphrase."},
+      {"name":"luksClose NAME","value":null,"doc":"Close /dev/mapper/NAME."},
+      {"name":"luksAddKey DEVICE","value":null,"doc":"Add new passphrase to next slot."},
+      {"name":"luksRemoveKey DEVICE","value":null,"doc":"Remove a passphrase."},
+      {"name":"luksChangeKey DEVICE","value":null,"doc":"Replace a passphrase."},
+      {"name":"luksDump DEVICE","value":null,"doc":"Show LUKS header (cipher, KDF, slot info)."},
+      {"name":"luksUUID DEVICE","value":null,"doc":"Show or set UUID."},
+      {"name":"luksHeaderBackup --header-backup-file F DEVICE","value":null,"doc":"Save LUKS header to file (critical: lose header = lose data even with passphrase)."},
+      {"name":"luksHeaderRestore --header-backup-file F DEVICE","value":null,"doc":"Restore header."},
+      {"name":"luksErase DEVICE","value":null,"doc":"Wipe all keyslots (renders device unrecoverable; use carefully)."},
+      {"name":"-c CIPHER","value":null,"doc":"Cipher (default aes-xts-plain64)."},
+      {"name":"-s BITS","value":null,"doc":"Key size."},
+      {"name":"-h HASH","value":null,"doc":"Hash function for KDF."},
+      {"name":"--pbkdf KDF","value":null,"doc":"argon2i, argon2id, pbkdf2 (LUKS2 default argon2id)."},
+      {"name":"--type TYPE","value":null,"doc":"luks1 or luks2 (default luks2)."},
+      {"name":"--key-file FILE","value":null,"doc":"Read passphrase from file."},
+      {"name":"-q","value":null,"doc":"Quiet (no warning prompts)."},
+      {"name":"-v","value":null,"doc":"Verbose."}
+    ],
+    "examples":[
+      {"invocation":"cryptsetup luksFormat /dev/sdb1 && cryptsetup luksOpen /dev/sdb1 secure && mkfs.ext4 /dev/mapper/secure && mount /dev/mapper/secure /mnt/secure","expected_output":"encrypted volume created, opened, formatted, mounted","scenario":"Standard LUKS setup."},
+      {"invocation":"cryptsetup luksDump /dev/sdb1","expected_output":"version, cipher, KDF, key slot info","scenario":"Inspect LUKS header."}
+    ],
+    "source_ids":["man7-cryptsetup-8"]
+  }
+]

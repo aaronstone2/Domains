@@ -1,0 +1,265 @@
+[
+  {
+    "id":"linux.systemd.cmd.systemctl",
+    "command":"systemctl [OPTIONS] COMMAND [UNIT...]",
+    "purpose":"Control the systemd service manager. The primary interface for managing units (start, stop, enable, disable, status, list) and the system (reboot, poweroff, isolate). Talks to PID 1 via D-Bus.",
+    "flags":[
+      {"name":"start UNIT","value":null,"doc":"Start unit(s)."},
+      {"name":"stop UNIT","value":null,"doc":"Stop unit(s)."},
+      {"name":"restart UNIT","value":null,"doc":"Stop then start."},
+      {"name":"reload UNIT","value":null,"doc":"Send ExecReload= without restart."},
+      {"name":"reload-or-restart UNIT","value":null,"doc":"Reload if supported, else restart."},
+      {"name":"status [UNIT]","value":null,"doc":"Show unit status + recent log lines. Without arg = systemd manager status."},
+      {"name":"is-active UNIT","value":null,"doc":"Exit 0 if active. Scriptable."},
+      {"name":"is-enabled UNIT","value":null,"doc":"Exit 0 if enabled at boot."},
+      {"name":"is-failed UNIT","value":null,"doc":"Exit 0 if failed."},
+      {"name":"enable UNIT","value":null,"doc":"Create symlinks per [Install] section so unit starts at boot."},
+      {"name":"disable UNIT","value":null,"doc":"Remove [Install] symlinks."},
+      {"name":"enable --now UNIT","value":null,"doc":"Enable AND start in one shot."},
+      {"name":"disable --now UNIT","value":null,"doc":"Disable AND stop."},
+      {"name":"mask UNIT","value":null,"doc":"Symlink unit to /dev/null — prevents any start (manual or dep-pulled)."},
+      {"name":"unmask UNIT","value":null,"doc":"Reverse mask."},
+      {"name":"reset-failed [UNIT]","value":null,"doc":"Clear 'failed' state so the unit can restart again."},
+      {"name":"daemon-reload","value":null,"doc":"Re-read unit files after editing on disk."},
+      {"name":"daemon-reexec","value":null,"doc":"Re-execute systemd itself (for upgrade)."},
+      {"name":"list-units [--type=TYPE] [--state=STATE]","value":null,"doc":"List loaded units."},
+      {"name":"list-unit-files [--type=TYPE]","value":null,"doc":"List unit FILES (incl. not loaded)."},
+      {"name":"list-dependencies UNIT","value":null,"doc":"Show dependency tree."},
+      {"name":"list-jobs","value":null,"doc":"Currently-running systemd jobs."},
+      {"name":"list-sockets","value":null,"doc":"List socket units + their listening addrs."},
+      {"name":"list-timers","value":null,"doc":"Active timers + next/last fire."},
+      {"name":"cat UNIT","value":null,"doc":"Show unit file content (incl. drop-ins)."},
+      {"name":"edit UNIT","value":null,"doc":"Open drop-in for unit (creates /etc/systemd/system/UNIT.d/override.conf)."},
+      {"name":"edit --full UNIT","value":null,"doc":"Edit entire unit file (copies vendor unit to /etc/systemd/system/)."},
+      {"name":"show UNIT","value":null,"doc":"Show all properties of unit (machine-readable)."},
+      {"name":"show -p PROP UNIT","value":null,"doc":"Show specific property."},
+      {"name":"set-property UNIT KEY=VAL","value":null,"doc":"Runtime + persistent property update (e.g. systemctl set-property foo.service MemoryMax=2G)."},
+      {"name":"isolate TARGET","value":null,"doc":"Switch active target (like SysV runlevel change). Stops conflicting units."},
+      {"name":"set-default TARGET","value":null,"doc":"Set default boot target."},
+      {"name":"get-default","value":null,"doc":"Show default boot target."},
+      {"name":"reboot / poweroff / halt","value":null,"doc":"System power actions."},
+      {"name":"suspend / hibernate / hybrid-sleep","value":null,"doc":"Power-management actions."},
+      {"name":"--user","value":null,"doc":"Operate on per-user systemd instance instead of system."},
+      {"name":"--no-pager","value":null,"doc":"Disable less."},
+      {"name":"-q, --quiet","value":null,"doc":"Suppress informational messages."},
+      {"name":"--no-block","value":null,"doc":"Don't wait for command to complete (return immediately)."},
+      {"name":"-l, --full","value":null,"doc":"Don't truncate long lines."},
+      {"name":"--lines=N","value":null,"doc":"Number of journal lines in status output (default 10)."}
+    ],
+    "examples":[
+      {"invocation":"systemctl status nginx","expected_output":"unit state, PID, recent journal lines","scenario":"Universal 'how is X doing?' command."},
+      {"invocation":"systemctl --failed","expected_output":"all units in 'failed' state","scenario":"Triage: what broke?"},
+      {"invocation":"systemctl edit --full myapp.service && systemctl daemon-reload && systemctl restart myapp","expected_output":"unit edited, reloaded, restarted","scenario":"Edit-then-reload pattern for changing service config."}
+    ],
+    "source_ids":["systemd-systemctl-1","systemd-systemd-1"]
+  },
+  {
+    "id":"linux.systemd.cmd.journalctl",
+    "command":"journalctl [OPTIONS] [MATCHES...]",
+    "purpose":"Query systemd journal logs. The replacement for grep'ing /var/log/syslog. Filter by unit, priority, time, fields. Tail with -f.",
+    "flags":[
+      {"name":"-u UNIT","value":null,"doc":"Filter by unit. Multiple -u allowed (OR'd)."},
+      {"name":"-p PRIORITY","value":null,"doc":"Max priority (0-7 or name: emerg/alert/crit/err/warning/notice/info/debug). e.g. -p err shows ≤ err."},
+      {"name":"-f, --follow","value":null,"doc":"Tail mode (like tail -f)."},
+      {"name":"-b [BOOT]","value":null,"doc":"Current boot only. -b -1 = previous boot. journalctl --list-boots lists."},
+      {"name":"-S, --since TIME","value":null,"doc":"Since time. Format: 'YYYY-MM-DD HH:MM:SS' or 'yesterday' or '1 hour ago' or '-1h'."},
+      {"name":"-U, --until TIME","value":null,"doc":"Until time."},
+      {"name":"-n N, --lines=N","value":null,"doc":"Last N lines (default 10 with -f, all without)."},
+      {"name":"--no-pager","value":null,"doc":"Disable less."},
+      {"name":"-r, --reverse","value":null,"doc":"Newest first."},
+      {"name":"-o FORMAT","value":null,"doc":"Output format: short (default), short-iso, short-precise, short-monotonic, verbose, export, json, json-pretty, cat (just MESSAGE), with-unit."},
+      {"name":"-x, --catalog","value":null,"doc":"Show extended explanations (the catalog) for known events."},
+      {"name":"-k","value":null,"doc":"Kernel messages only (like dmesg)."},
+      {"name":"--user","value":null,"doc":"User journal only."},
+      {"name":"-D DIR, --directory=DIR","value":null,"doc":"Read from journal dir (vs default)."},
+      {"name":"--file FILE","value":null,"doc":"Read specific .journal file."},
+      {"name":"FIELD=VALUE","value":null,"doc":"Match by field. e.g. _PID=1234, _UID=1000, _SYSTEMD_UNIT=foo.service. Multiple = AND. + separates OR groups."},
+      {"name":"--list-boots","value":null,"doc":"List boots with offset, ID, time range."},
+      {"name":"--vacuum-size=SIZE","value":null,"doc":"Reduce disk to SIZE (delete oldest archived journals)."},
+      {"name":"--vacuum-time=TIME","value":null,"doc":"Delete entries older than."},
+      {"name":"--vacuum-files=N","value":null,"doc":"Keep at most N archive files."},
+      {"name":"--rotate","value":null,"doc":"Rotate active journal."},
+      {"name":"--disk-usage","value":null,"doc":"Show total journal disk usage."},
+      {"name":"--verify","value":null,"doc":"Verify journal integrity (Forward Secure Sealing)."},
+      {"name":"--cursor=CURSOR","value":null,"doc":"Resume from cursor."},
+      {"name":"--show-cursor","value":null,"doc":"Print cursor of last entry shown (for next --cursor)."}
+    ],
+    "examples":[
+      {"invocation":"journalctl -u nginx -f","expected_output":"streaming nginx logs","scenario":"Watch a service's logs in real time."},
+      {"invocation":"journalctl -p err -b","expected_output":"errors+ from current boot","scenario":"Find recent errors after a problem."},
+      {"invocation":"journalctl _SYSTEMD_UNIT=foo.service _PID=1234 -o json-pretty","expected_output":"matching entries as pretty JSON","scenario":"Structured filter for log analysis."}
+    ],
+    "source_ids":["systemd-journalctl-1","systemd-journal-fields-7"]
+  },
+  {
+    "id":"linux.systemd.cmd.systemd-analyze",
+    "command":"systemd-analyze [OPTIONS] COMMAND",
+    "purpose":"Inspect boot performance, unit-file correctness, sandboxing posture. The performance + correctness toolbox.",
+    "flags":[
+      {"name":"time","value":null,"doc":"Total boot time (kernel + initrd + userspace)."},
+      {"name":"blame","value":null,"doc":"Per-unit time-to-active sorted by slowest. The 'who's slowing my boot' query."},
+      {"name":"critical-chain [UNIT]","value":null,"doc":"Tree of units on the critical path."},
+      {"name":"plot > boot.svg","value":null,"doc":"SVG timeline of boot. Visual gold."},
+      {"name":"dump","value":null,"doc":"Full state dump of every unit (huge)."},
+      {"name":"verify UNIT","value":null,"doc":"Lint unit files for syntax + reference errors."},
+      {"name":"security UNIT","value":null,"doc":"Audit a service's sandboxing — assigns a security score (0-10, 0 = best). Lists missing hardening directives."},
+      {"name":"cat-config FILE","value":null,"doc":"Show config + drop-ins for a config file."},
+      {"name":"unit-paths","value":null,"doc":"Show unit search paths."},
+      {"name":"calendar 'EXPR'","value":null,"doc":"Show next firing time for an OnCalendar= expression."},
+      {"name":"timestamp 'EXPR'","value":null,"doc":"Parse a timestamp."},
+      {"name":"timespan 'EXPR'","value":null,"doc":"Parse a duration."},
+      {"name":"exit-status [STATUS]","value":null,"doc":"Decode systemd exit-status names (e.g. 226 = NAMESPACE)."},
+      {"name":"capability","value":null,"doc":"List capabilities + descriptions."},
+      {"name":"condition CONDITION...","value":null,"doc":"Evaluate ConditionX/AssertX expressions."},
+      {"name":"syscall-filter [GROUP]","value":null,"doc":"List syscall filter group members (e.g. @system-service)."}
+    ],
+    "examples":[
+      {"invocation":"systemd-analyze blame | head -10","expected_output":"slowest 10 units to start","scenario":"Diagnose slow boots."},
+      {"invocation":"systemd-analyze security nginx","expected_output":"score + checklist of missing hardening","scenario":"Audit a service's sandbox posture."},
+      {"invocation":"systemd-analyze verify /etc/systemd/system/myapp.service","expected_output":"lint warnings/errors","scenario":"Validate a unit file before applying."}
+    ],
+    "source_ids":["systemd-systemd-analyze-1"]
+  },
+  {
+    "id":"linux.systemd.cmd.systemd-run",
+    "command":"systemd-run [OPTIONS] -- COMMAND [ARGS]",
+    "purpose":"Run a command as a transient unit (service, scope, or timer). Lets you apply systemd resource controls + sandboxing to ad-hoc invocations.",
+    "flags":[
+      {"name":"-u, --unit=NAME","value":null,"doc":"Name for the transient unit. Default = systemd-generated."},
+      {"name":"--scope","value":null,"doc":"Run as scope (vs default service). Useful when calling systemd-run interactively — your shell becomes the scope's process."},
+      {"name":"--slice=SLICE","value":null,"doc":"Place under SLICE (defaults to system.slice or user.slice)."},
+      {"name":"-d, --description=TEXT","value":null,"doc":"Description shown in systemctl status."},
+      {"name":"-p PROP=VAL","value":null,"doc":"Set unit property. e.g. -p MemoryMax=2G -p CPUQuota=50%. Multiple -p allowed."},
+      {"name":"-E VAR=VAL, --setenv=VAR=VAL","value":null,"doc":"Pass environment variable."},
+      {"name":"--working-directory=DIR","value":null,"doc":"Set CWD."},
+      {"name":"--user","value":null,"doc":"Run in user systemd (not system)."},
+      {"name":"--uid=UID, --gid=GID","value":null,"doc":"Run as UID/GID."},
+      {"name":"-t, --pty","value":null,"doc":"Allocate PTY (interactive)."},
+      {"name":"-q, --quiet","value":null,"doc":"Suppress info."},
+      {"name":"-G, --collect","value":null,"doc":"Auto-collect (clean up failed unit) on exit."},
+      {"name":"--wait","value":null,"doc":"Wait for unit completion (vs return immediately)."},
+      {"name":"--on-active=TIME","value":null,"doc":"Create timer that fires TIME after now."},
+      {"name":"--on-boot=TIME","value":null,"doc":"Timer relative to boot."},
+      {"name":"--on-calendar=EXPR","value":null,"doc":"Timer on calendar."},
+      {"name":"--no-block","value":null,"doc":"Don't wait for command start confirmation."},
+      {"name":"--service-type=TYPE","value":null,"doc":"Service Type=. Default: simple."}
+    ],
+    "examples":[
+      {"invocation":"systemd-run --unit=mybackup --scope -p MemoryMax=4G --working-directory=/data /usr/local/bin/backup.sh","expected_output":"transient scope created; backup runs with 4G mem cap","scenario":"Run a one-shot job under resource control."},
+      {"invocation":"systemd-run --on-calendar='daily' --unit=daily-cleanup -- /usr/local/bin/cleanup.sh","expected_output":"transient timer + service installed","scenario":"Schedule an ad-hoc daily job without writing unit files."},
+      {"invocation":"systemd-run -G --pty --uid=nobody bash","expected_output":"interactive bash as nobody, auto-collected","scenario":"Quick 'shell as user X' for testing."}
+    ],
+    "source_ids":["systemd-systemd-run-1"]
+  },
+  {
+    "id":"linux.systemd.cmd.systemd-cgls",
+    "command":"systemd-cgls [OPTIONS] [CGROUP|UNIT|PID]",
+    "purpose":"Tree view of cgroups + processes within. Shows the slice/service hierarchy.",
+    "flags":[
+      {"name":"-a, --all","value":null,"doc":"Show all cgroups (incl. empty)."},
+      {"name":"-l, --full","value":null,"doc":"Don't truncate long lines."},
+      {"name":"-k","value":null,"doc":"Include kernel threads."},
+      {"name":"--no-pager","value":null,"doc":"No less."},
+      {"name":"-M, --machine=NAME","value":null,"doc":"Operate on container."},
+      {"name":"--unit=UNIT","value":null,"doc":"Show specific unit's cgroup."}
+    ],
+    "examples":[
+      {"invocation":"systemd-cgls","expected_output":"slice → service tree with PIDs","scenario":"See the cgroup layout of the running system."},
+      {"invocation":"systemd-cgls /system.slice","expected_output":"system.slice subtree","scenario":"Focus on system services."}
+    ],
+    "source_ids":["systemd-systemd-cgls-1"]
+  },
+  {
+    "id":"linux.systemd.cmd.systemd-cgtop",
+    "command":"systemd-cgtop [OPTIONS]",
+    "purpose":"Top-style live view of cgroup CPU/memory/IO/task counts. Real-time per-unit resource usage.",
+    "flags":[
+      {"name":"-d SECS","value":null,"doc":"Refresh delay."},
+      {"name":"-n N","value":null,"doc":"Number of iterations (then exit)."},
+      {"name":"-b, --batch","value":null,"doc":"Batch (non-interactive) mode."},
+      {"name":"-p, --order=path","value":null,"doc":"Order: path | tasks | cpu | memory | io."},
+      {"name":"--cpu={percentage|time}","value":null,"doc":"CPU display: percentage of all CPUs or absolute time."},
+      {"name":"-m","value":null,"doc":"Sort by memory."},
+      {"name":"-k","value":null,"doc":"Show counts in K/M/G."},
+      {"name":"-t","value":null,"doc":"Sort by tasks."}
+    ],
+    "examples":[
+      {"invocation":"systemd-cgtop","expected_output":"live per-cgroup resource view","scenario":"See which service is consuming what."},
+      {"invocation":"systemd-cgtop -m","expected_output":"sorted by memory","scenario":"Find memory-hungry services."}
+    ],
+    "source_ids":["systemd-systemd-cgtop-1"]
+  },
+  {
+    "id":"linux.systemd.cmd.loginctl",
+    "command":"loginctl [OPTIONS] COMMAND",
+    "purpose":"Inspect + control logind sessions, users, seats. Where session data + suspend inhibitors live.",
+    "flags":[
+      {"name":"list-sessions","value":null,"doc":"All active sessions."},
+      {"name":"list-users","value":null,"doc":"All users with sessions."},
+      {"name":"list-seats","value":null,"doc":"All seats (multi-seat hosts)."},
+      {"name":"show-session [ID]","value":null,"doc":"Properties of a session."},
+      {"name":"show-user [USER]","value":null,"doc":"Properties of a user."},
+      {"name":"show-seat [SEAT]","value":null,"doc":"Properties of a seat."},
+      {"name":"activate [SESSION]","value":null,"doc":"Make session foreground."},
+      {"name":"lock-session [SESSION]","value":null,"doc":"Lock a session (or current with no arg)."},
+      {"name":"unlock-session [SESSION]","value":null,"doc":"Unlock."},
+      {"name":"terminate-session ID","value":null,"doc":"Force-terminate session."},
+      {"name":"terminate-user USER","value":null,"doc":"Terminate ALL sessions of user."},
+      {"name":"kill-session ID -s SIGNAL","value":null,"doc":"Send signal to session."},
+      {"name":"enable-linger USER","value":null,"doc":"Allow user services to keep running after logout."},
+      {"name":"disable-linger USER","value":null,"doc":"Reverse enable-linger."},
+      {"name":"--no-pager","value":null,"doc":"No less."}
+    ],
+    "examples":[
+      {"invocation":"loginctl list-sessions","expected_output":"SESSION UID USER SEAT TTY columns","scenario":"See who's logged in and how."},
+      {"invocation":"loginctl enable-linger 1000","expected_output":"silent","scenario":"Let user 1000's user-systemd services run after logout (e.g. for podman rootless)."}
+    ],
+    "source_ids":["systemd-loginctl-1"]
+  },
+  {
+    "id":"linux.systemd.cmd.coredumpctl",
+    "command":"coredumpctl [OPTIONS] [COMMAND]",
+    "purpose":"Query + extract core dumps captured by systemd-coredump.",
+    "flags":[
+      {"name":"list [PATTERN]","value":null,"doc":"List recent core dumps. PATTERN matches command name."},
+      {"name":"info [MATCH]","value":null,"doc":"Show details of a dump (signal, env, mounts, etc.)."},
+      {"name":"dump [MATCH] [-o FILE]","value":null,"doc":"Extract core to FILE (or stdout)."},
+      {"name":"debug [MATCH]","value":null,"doc":"Open core in gdb. Auto-fetches binary."},
+      {"name":"-S, --since=TIME","value":null,"doc":"Since timestamp."},
+      {"name":"-U, --until=TIME","value":null,"doc":"Until timestamp."},
+      {"name":"-r, --reverse","value":null,"doc":"Newest first."},
+      {"name":"-o FILE","value":null,"doc":"Output file for dump."},
+      {"name":"--no-legend","value":null,"doc":"No header row."},
+      {"name":"-q, --quiet","value":null,"doc":"Suppress info."}
+    ],
+    "examples":[
+      {"invocation":"coredumpctl list","expected_output":"recent dumps: time, pid, uid, gid, sig, corefile-stored, exe","scenario":"See recent crashes."},
+      {"invocation":"coredumpctl debug 12345","expected_output":"gdb session on the dumped core","scenario":"Postmortem analysis."},
+      {"invocation":"coredumpctl dump --since '1 hour ago' -o /tmp/recent.core","expected_output":"core extracted","scenario":"Extract a recent core for offline analysis."}
+    ],
+    "source_ids":["systemd-coredumpctl-1","systemd-systemd-coredump-8"]
+  },
+  {
+    "id":"linux.systemd.cmd.systemd-tmpfiles",
+    "command":"systemd-tmpfiles [OPTIONS] {--create | --clean | --remove} [CONFIG_FILES...]",
+    "purpose":"Apply tmpfiles.d rules: create, clean (delete old per Age field), or remove specific paths.",
+    "flags":[
+      {"name":"--create","value":null,"doc":"Create+set permissions on configured paths."},
+      {"name":"--clean","value":null,"doc":"Delete files older than Age (per-rule)."},
+      {"name":"--remove","value":null,"doc":"Remove files marked R/r (recursive removal)."},
+      {"name":"--boot","value":null,"doc":"Apply 'F' / 'q' / 'Q' boot-only rules. Used by systemd-tmpfiles-setup.service."},
+      {"name":"--prefix=PATH","value":null,"doc":"Only apply rules whose path begins with PATH."},
+      {"name":"--exclude-prefix=PATH","value":null,"doc":"Skip rules whose path begins with PATH."},
+      {"name":"--root=DIR","value":null,"doc":"Use DIR as root (chroot-style)."},
+      {"name":"-E, --no-pager","value":null,"doc":"No pager."},
+      {"name":"--dry-run","value":null,"doc":"Don't actually do anything; just print what would happen."},
+      {"name":"-h, --help","value":null,"doc":"Help."},
+      {"name":"--cat-config","value":null,"doc":"Show effective config (after merging .conf files)."}
+    ],
+    "examples":[
+      {"invocation":"systemd-tmpfiles --create /etc/tmpfiles.d/myapp.conf","expected_output":"creates files per myapp.conf","scenario":"Apply a new tmpfiles rule without rebooting."},
+      {"invocation":"systemd-tmpfiles --clean","expected_output":"old files deleted per Age fields","scenario":"Manual cleanup pass (normally run by timer)."}
+    ],
+    "source_ids":["systemd-systemd-tmpfiles-8"]
+  }
+]

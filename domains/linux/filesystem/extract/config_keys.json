@@ -1,0 +1,2552 @@
+[
+  {
+    "id": "linux.filesystem.cfg.mount-common.rw",
+    "scope": "mount-option-common",
+    "key": "rw",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Read-write (default).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.ro",
+    "scope": "mount-option-common",
+    "key": "ro",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Read-only.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.exec",
+    "scope": "mount-option-common",
+    "key": "exec",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Allow exec of binaries (default).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.noexec",
+    "scope": "mount-option-common",
+    "key": "noexec",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Disallow exec. Common on /tmp, /var, /home for hardening.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.suid",
+    "scope": "mount-option-common",
+    "key": "suid",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Honor setuid/setgid bits (default).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.nosuid",
+    "scope": "mount-option-common",
+    "key": "nosuid",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Ignore setuid/setgid. Hardening for /tmp, /home, container rootfs.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.dev",
+    "scope": "mount-option-common",
+    "key": "dev",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Allow access to device nodes (default).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.nodev",
+    "scope": "mount-option-common",
+    "key": "nodev",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Block device-node access. Container rootfs always nodev.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.atime",
+    "scope": "mount-option-common",
+    "key": "atime",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Update atime on every read (slow).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.noatime",
+    "scope": "mount-option-common",
+    "key": "noatime",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Never update atime.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.relatime",
+    "scope": "mount-option-common",
+    "key": "relatime",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Update atime only if older than mtime/ctime or > 24h. The modern default.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.strictatime",
+    "scope": "mount-option-common",
+    "key": "strictatime",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Strict POSIX atime semantics. Rarely needed.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.lazytime",
+    "scope": "mount-option-common",
+    "key": "lazytime",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Update timestamp in memory; flush only on stat/sync/fdatasync. Reduces metadata writes.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.nodiratime",
+    "scope": "mount-option-common",
+    "key": "nodiratime",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Don't update directory atimes.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.sync",
+    "scope": "mount-option-common",
+    "key": "sync",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "All IO synchronously (huge perf hit; data integrity for removable media).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.async",
+    "scope": "mount-option-common",
+    "key": "async",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Async writes (default; fast).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.dirsync",
+    "scope": "mount-option-common",
+    "key": "dirsync",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Sync metadata dir ops (rename, link, unlink, ...).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.defaults",
+    "scope": "mount-option-common",
+    "key": "defaults",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "= rw,suid,dev,exec,auto,nouser,async.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.user",
+    "scope": "mount-option-common",
+    "key": "user",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Allow non-root users to mount.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.nouser",
+    "scope": "mount-option-common",
+    "key": "nouser",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Only root can mount (default).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.auto",
+    "scope": "mount-option-common",
+    "key": "auto",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Mount with mount -a (default for fstab entries).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-common.noauto",
+    "scope": "mount-option-common",
+    "key": "noauto",
+    "type": "mount opt",
+    "default_value": null,
+    "description": "Skip on mount -a. Mount on demand only.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.data-ordered",
+    "scope": "mount-option-ext4",
+    "key": "data=ordered",
+    "type": "ext4 mount opt",
+    "default_value": "ordered",
+    "description": "Data written before metadata (default). Crash-safe but slower than writeback.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.data-writeback",
+    "scope": "mount-option-ext4",
+    "key": "data=writeback",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Data + metadata async. Fastest; can leak data after crash (stale blocks visible).",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.data-journal",
+    "scope": "mount-option-ext4",
+    "key": "data=journal",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Full data journaling. Strongest crash consistency, slowest.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.barrier",
+    "scope": "mount-option-ext4",
+    "key": "barrier",
+    "type": "ext4 mount opt",
+    "default_value": "barrier",
+    "description": "Use write barriers for ordering (correctness). Default.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.nobarrier",
+    "scope": "mount-option-ext4",
+    "key": "nobarrier",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Disable barriers. Faster but unsafe except on battery-backed cache controllers.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.commit",
+    "scope": "mount-option-ext4",
+    "key": "commit=N",
+    "type": "ext4 mount opt",
+    "default_value": "5 seconds",
+    "description": "Sync interval for delayed writes.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.delalloc",
+    "scope": "mount-option-ext4",
+    "key": "delalloc",
+    "type": "ext4 mount opt",
+    "default_value": "delalloc",
+    "description": "Delayed allocation (default). Reduces fragmentation.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.nodelalloc",
+    "scope": "mount-option-ext4",
+    "key": "nodelalloc",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Disable delayed alloc.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.discard",
+    "scope": "mount-option-ext4",
+    "key": "discard",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Issue TRIM on every delete (vs periodic fstrim).",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.errors",
+    "scope": "mount-option-ext4",
+    "key": "errors=remount-ro|continue|panic",
+    "type": "ext4 mount opt",
+    "default_value": "remount-ro",
+    "description": "Behavior on FS error.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.journal-checksum",
+    "scope": "mount-option-ext4",
+    "key": "journal_checksum",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Add checksums to journal.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.journal-async-commit",
+    "scope": "mount-option-ext4",
+    "key": "journal_async_commit",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Async journal commits. Risky.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.dioread-nolock",
+    "scope": "mount-option-ext4",
+    "key": "dioread_nolock",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Direct IO without inode lock. Helps parallel-DIO workloads (databases).",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.user-xattr",
+    "scope": "mount-option-ext4",
+    "key": "user_xattr",
+    "type": "ext4 mount opt",
+    "default_value": "user_xattr",
+    "description": "Allow user.* xattrs (default).",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.acl",
+    "scope": "mount-option-ext4",
+    "key": "acl",
+    "type": "ext4 mount opt",
+    "default_value": "acl",
+    "description": "POSIX ACL support (default).",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.quota",
+    "scope": "mount-option-ext4",
+    "key": "quota",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Enable quota.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.usrquota",
+    "scope": "mount-option-ext4",
+    "key": "usrquota",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "User quotas.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.grpquota",
+    "scope": "mount-option-ext4",
+    "key": "grpquota",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Group quotas.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.prjquota",
+    "scope": "mount-option-ext4",
+    "key": "prjquota",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "Project quotas.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.stripe",
+    "scope": "mount-option-ext4",
+    "key": "stripe=N",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "RAID stripe alignment hint.",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-ext4.i-version",
+    "scope": "mount-option-ext4",
+    "key": "i_version",
+    "type": "ext4 mount opt",
+    "default_value": null,
+    "description": "64-bit inode version (NFSv4 needs).",
+    "source_ids": [
+      "man7-mount-8",
+      "debian-mkfs-ext4-8",
+      "man7-tune2fs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.allocsize",
+    "scope": "mount-option-xfs",
+    "key": "allocsize=N",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Speculative-prealloc unit (helps reduce fragmentation).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.inode64",
+    "scope": "mount-option-xfs",
+    "key": "inode64",
+    "type": "xfs mount opt",
+    "default_value": "inode64",
+    "description": "Allow inodes anywhere on FS (default \u22653.7). inode32 = first 1TB only (legacy 32-bit compat).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.logbufs",
+    "scope": "mount-option-xfs",
+    "key": "logbufs=N",
+    "type": "xfs mount opt",
+    "default_value": "8",
+    "description": "Number of in-memory log buffers (1-8).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.logbufsize",
+    "scope": "mount-option-xfs",
+    "key": "logbufsize=N",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Log buffer size (16k/32k/64k/128k/256k).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.noquota",
+    "scope": "mount-option-xfs",
+    "key": "noquota",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Disable quotas (XFS is quota-on by default if mkfs.xfs included).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.usrquota",
+    "scope": "mount-option-xfs",
+    "key": "usrquota|uquota",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Enable user quotas.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.grpquota",
+    "scope": "mount-option-xfs",
+    "key": "grpquota|gquota",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Group quotas.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.prjquota",
+    "scope": "mount-option-xfs",
+    "key": "prjquota|pquota",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Project quotas.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.discard",
+    "scope": "mount-option-xfs",
+    "key": "discard",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Online TRIM.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.attr2",
+    "scope": "mount-option-xfs",
+    "key": "attr2",
+    "type": "xfs mount opt",
+    "default_value": "attr2",
+    "description": "Use attr2 inode-format optimization.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-xfs.swalloc",
+    "scope": "mount-option-xfs",
+    "key": "swalloc",
+    "type": "xfs mount opt",
+    "default_value": null,
+    "description": "Stripe-width allocation.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-xfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.lowerdir",
+    "scope": "mount-option-overlayfs",
+    "key": "lowerdir=PATH[:PATH...]",
+    "type": "overlay mount opt",
+    "default_value": null,
+    "description": "Read-only base layer(s). Multiple : separated; first wins.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.upperdir",
+    "scope": "mount-option-overlayfs",
+    "key": "upperdir=PATH",
+    "type": "overlay mount opt",
+    "default_value": null,
+    "description": "Read-write top layer.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.workdir",
+    "scope": "mount-option-overlayfs",
+    "key": "workdir=PATH",
+    "type": "overlay mount opt",
+    "default_value": null,
+    "description": "Empty dir on same FS as upperdir for atomic ops.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.redirect-dir",
+    "scope": "mount-option-overlayfs",
+    "key": "redirect_dir=on|off|follow|nofollow",
+    "type": "overlay mount opt",
+    "default_value": "off",
+    "description": "Allow renaming dirs across overlays via redirect xattr.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.metacopy",
+    "scope": "mount-option-overlayfs",
+    "key": "metacopy=on|off",
+    "type": "overlay mount opt",
+    "default_value": "off",
+    "description": "Copy only metadata on first write (vs full file). Saves space when only chmod/chown.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.xino",
+    "scope": "mount-option-overlayfs",
+    "key": "xino=on|off|auto",
+    "type": "overlay mount opt",
+    "default_value": "off",
+    "description": "Stable inode numbers across overlay layers.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.userxattr",
+    "scope": "mount-option-overlayfs",
+    "key": "userxattr",
+    "type": "overlay mount opt",
+    "default_value": null,
+    "description": "Use user.* xattrs (vs trusted.*) \u2014 required for unprivileged overlay (rootless).",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.volatile",
+    "scope": "mount-option-overlayfs",
+    "key": "volatile",
+    "type": "overlay mount opt",
+    "default_value": null,
+    "description": "No fsync (faster, data lost on crash). Used by ephemeral container layers.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.index",
+    "scope": "mount-option-overlayfs",
+    "key": "index=on|off",
+    "type": "overlay mount opt",
+    "default_value": "off",
+    "description": "Index dir for upper-lower hard-link tracking. Required for metacopy/redirect.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-overlayfs.nfs-export",
+    "scope": "mount-option-overlayfs",
+    "key": "nfs_export=on|off",
+    "type": "overlay mount opt",
+    "default_value": "off",
+    "description": "Allow NFS export of overlay.",
+    "source_ids": [
+      "kernel-docs-overlayfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.size",
+    "scope": "mount-option-tmpfs",
+    "key": "size=N[%]",
+    "type": "tmpfs mount opt",
+    "default_value": "50% of RAM",
+    "description": "Max FS size. Suffix %. e.g. size=1G or size=10%.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.nr-blocks",
+    "scope": "mount-option-tmpfs",
+    "key": "nr_blocks=N",
+    "type": "tmpfs mount opt",
+    "default_value": null,
+    "description": "Like size but in blocks.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.nr-inodes",
+    "scope": "mount-option-tmpfs",
+    "key": "nr_inodes=N",
+    "type": "tmpfs mount opt",
+    "default_value": null,
+    "description": "Max inodes.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.mode",
+    "scope": "mount-option-tmpfs",
+    "key": "mode=OCTAL",
+    "type": "tmpfs mount opt",
+    "default_value": "01777",
+    "description": "Root-dir permissions (default world-write+sticky for /tmp-style).",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.uid",
+    "scope": "mount-option-tmpfs",
+    "key": "uid=N",
+    "type": "tmpfs mount opt",
+    "default_value": null,
+    "description": "Root-dir owner.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.gid",
+    "scope": "mount-option-tmpfs",
+    "key": "gid=N",
+    "type": "tmpfs mount opt",
+    "default_value": null,
+    "description": "Root-dir group.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.huge",
+    "scope": "mount-option-tmpfs",
+    "key": "huge=never|always|within_size|advise",
+    "type": "tmpfs mount opt",
+    "default_value": "never",
+    "description": "Use transparent hugepages.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.mpol",
+    "scope": "mount-option-tmpfs",
+    "key": "mpol=POLICY",
+    "type": "tmpfs mount opt",
+    "default_value": null,
+    "description": "NUMA mempolicy: default, prefer, bind, interleave, local.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-tmpfs.noswap",
+    "scope": "mount-option-tmpfs",
+    "key": "noswap",
+    "type": "tmpfs mount opt",
+    "default_value": null,
+    "description": "Don't swap out tmpfs pages.",
+    "source_ids": [
+      "man7-tmpfs-5",
+      "kernel-docs-tmpfs",
+      "man7-mount-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.subvol",
+    "scope": "mount-option-btrfs",
+    "key": "subvol=PATH",
+    "type": "btrfs mount opt",
+    "default_value": "top-level",
+    "description": "Mount specific subvolume.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.subvolid",
+    "scope": "mount-option-btrfs",
+    "key": "subvolid=N",
+    "type": "btrfs mount opt",
+    "default_value": null,
+    "description": "Mount subvolume by ID.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.compress",
+    "scope": "mount-option-btrfs",
+    "key": "compress=zstd|zlib|lzo[:LEVEL]",
+    "type": "btrfs mount opt",
+    "default_value": null,
+    "description": "Transparent compression.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.compress-force",
+    "scope": "mount-option-btrfs",
+    "key": "compress-force=ALG",
+    "type": "btrfs mount opt",
+    "default_value": null,
+    "description": "Force compression even on incompressible files.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.autodefrag",
+    "scope": "mount-option-btrfs",
+    "key": "autodefrag",
+    "type": "btrfs mount opt",
+    "default_value": null,
+    "description": "Auto-defragment on small random writes.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.discard",
+    "scope": "mount-option-btrfs",
+    "key": "discard[=async]",
+    "type": "btrfs mount opt",
+    "default_value": null,
+    "description": "TRIM. async = batched TRIM (less perf hit).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.space-cache",
+    "scope": "mount-option-btrfs",
+    "key": "space_cache=v1|v2",
+    "type": "btrfs mount opt",
+    "default_value": "v2 (newer)",
+    "description": "Free-space cache version.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.degraded",
+    "scope": "mount-option-btrfs",
+    "key": "degraded",
+    "type": "btrfs mount opt",
+    "default_value": null,
+    "description": "Allow mount with missing devices (RAID degraded).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.nodatacow",
+    "scope": "mount-option-btrfs",
+    "key": "nodatacow",
+    "type": "btrfs mount opt",
+    "default_value": null,
+    "description": "Disable COW for new files (existing unchanged). For databases that don't want btrfs COW interfering.",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.mount-btrfs.commit",
+    "scope": "mount-option-btrfs",
+    "key": "commit=N",
+    "type": "btrfs mount opt",
+    "default_value": "30",
+    "description": "Sync interval (seconds).",
+    "source_ids": [
+      "man7-mount-8",
+      "man7-mkfs-btrfs-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.meminfo",
+    "scope": "proc-control-file",
+    "key": "/proc/meminfo",
+    "type": "text",
+    "default_value": null,
+    "description": "System memory snapshot: MemTotal, MemFree, MemAvailable, Buffers, Cached, SwapTotal, SwapFree, Slab, etc.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.cpuinfo",
+    "scope": "proc-control-file",
+    "key": "/proc/cpuinfo",
+    "type": "text",
+    "default_value": null,
+    "description": "Per-CPU info: model name, MHz, cache, flags.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.loadavg",
+    "scope": "proc-control-file",
+    "key": "/proc/loadavg",
+    "type": "text",
+    "default_value": null,
+    "description": "1/5/15min load avg + running/total tasks + last PID.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.uptime",
+    "scope": "proc-control-file",
+    "key": "/proc/uptime",
+    "type": "text",
+    "default_value": null,
+    "description": "Seconds since boot + idle CPU-seconds.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.stat",
+    "scope": "proc-control-file",
+    "key": "/proc/stat",
+    "type": "text",
+    "default_value": null,
+    "description": "CPU + interrupts + ctxt switches counters.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.diskstats",
+    "scope": "proc-control-file",
+    "key": "/proc/diskstats",
+    "type": "text",
+    "default_value": null,
+    "description": "Per-block-device IO counters.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.partitions",
+    "scope": "proc-control-file",
+    "key": "/proc/partitions",
+    "type": "text",
+    "default_value": null,
+    "description": "Major:Minor + size + name of all partitions.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.filesystems",
+    "scope": "proc-control-file",
+    "key": "/proc/filesystems",
+    "type": "text",
+    "default_value": null,
+    "description": "FS types kernel can mount.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.mounts",
+    "scope": "proc-control-file",
+    "key": "/proc/mounts",
+    "type": "text",
+    "default_value": null,
+    "description": "Active mounts (alias /proc/self/mounts).",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.swaps",
+    "scope": "proc-control-file",
+    "key": "/proc/swaps",
+    "type": "text",
+    "default_value": null,
+    "description": "Active swap devices/files.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.modules",
+    "scope": "proc-control-file",
+    "key": "/proc/modules",
+    "type": "text",
+    "default_value": null,
+    "description": "Loaded kernel modules + ref counts.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.kallsyms",
+    "scope": "proc-control-file",
+    "key": "/proc/kallsyms",
+    "type": "text",
+    "default_value": null,
+    "description": "Kernel symbol table (CAP_SYSLOG to see addresses).",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.cmdline",
+    "scope": "proc-control-file",
+    "key": "/proc/cmdline",
+    "type": "text",
+    "default_value": null,
+    "description": "Kernel boot command line.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.version",
+    "scope": "proc-control-file",
+    "key": "/proc/version",
+    "type": "text",
+    "default_value": null,
+    "description": "Kernel version + build info.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.pid-status",
+    "scope": "proc-control-file",
+    "key": "/proc/<pid>/status",
+    "type": "text",
+    "default_value": null,
+    "description": "Per-process status (state, UIDs, threads, mem, signal masks, caps).",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.pid-io",
+    "scope": "proc-control-file",
+    "key": "/proc/<pid>/io",
+    "type": "text",
+    "default_value": null,
+    "description": "Per-process IO counters (rchar, wchar, syscr, syscw, read_bytes, write_bytes, cancelled_write_bytes).",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.pid-limits",
+    "scope": "proc-control-file",
+    "key": "/proc/<pid>/limits",
+    "type": "text",
+    "default_value": null,
+    "description": "Per-process rlimits.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.proc-control.pid-cgroup",
+    "scope": "proc-control-file",
+    "key": "/proc/<pid>/cgroup",
+    "type": "text",
+    "default_value": null,
+    "description": "Per-process cgroup membership.",
+    "source_ids": [
+      "man7-proc-5",
+      "kernel-docs-proc-fs"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-queue-scheduler",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/queue/scheduler",
+    "type": "text",
+    "default_value": null,
+    "description": "Active IO scheduler. Selectable values in [brackets]: mq-deadline, kyber, bfq, none.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-queue-nr-requests",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/queue/nr_requests",
+    "type": "int",
+    "default_value": "varies",
+    "description": "Per-queue request depth. Higher = more parallelism, higher latency tail.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-queue-read-ahead-kb",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/queue/read_ahead_kb",
+    "type": "int kb",
+    "default_value": "varies",
+    "description": "Read-ahead window. 0 disables; databases often set 0 or low.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-queue-rotational",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/queue/rotational",
+    "type": "0|1",
+    "default_value": null,
+    "description": "1 = rotational (HDD), 0 = SSD.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-size",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/size",
+    "type": "sectors",
+    "default_value": null,
+    "description": "Device size in 512B sectors.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-discard-granularity",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/queue/discard_granularity",
+    "type": "bytes",
+    "default_value": null,
+    "description": "Min TRIM size.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-discard-max-bytes",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/queue/discard_max_bytes",
+    "type": "bytes",
+    "default_value": null,
+    "description": "Max single TRIM.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.block-removable",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/<dev>/removable",
+    "type": "0|1",
+    "default_value": null,
+    "description": "Removable media (USB, CD).",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.fs-ext4-mb-stream-req",
+    "scope": "sysfs-attribute",
+    "key": "/sys/fs/ext4/<dev>/mb_stream_req",
+    "type": "int",
+    "default_value": null,
+    "description": "ext4 mballoc stream request threshold.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.fs-overlay-version",
+    "scope": "sysfs-attribute",
+    "key": "/sys/fs/overlay/features/*",
+    "type": "text",
+    "default_value": null,
+    "description": "Per-feature support indicators.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.sysfs-attr.dm-name",
+    "scope": "sysfs-attribute",
+    "key": "/sys/block/dm-N/dm/name",
+    "type": "text",
+    "default_value": null,
+    "description": "device-mapper friendly name.",
+    "source_ids": [
+      "man7-sysfs-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_RDONLY",
+    "scope": "open-flag",
+    "key": "O_RDONLY",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Read-only.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_WRONLY",
+    "scope": "open-flag",
+    "key": "O_WRONLY",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Write-only.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_RDWR",
+    "scope": "open-flag",
+    "key": "O_RDWR",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Read+write.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_CREAT",
+    "scope": "open-flag",
+    "key": "O_CREAT",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Create if missing. Requires mode arg.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_EXCL",
+    "scope": "open-flag",
+    "key": "O_EXCL",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "With O_CREAT: fail if exists. Atomic 'create-only'.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_NOCTTY",
+    "scope": "open-flag",
+    "key": "O_NOCTTY",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Don't make terminal a controlling tty.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_TRUNC",
+    "scope": "open-flag",
+    "key": "O_TRUNC",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Truncate file to 0 if exists+writable.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_APPEND",
+    "scope": "open-flag",
+    "key": "O_APPEND",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Atomically seek-to-end before each write.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_NONBLOCK",
+    "scope": "open-flag",
+    "key": "O_NONBLOCK",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Non-blocking mode (read returns EAGAIN if no data).",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_SYNC",
+    "scope": "open-flag",
+    "key": "O_SYNC",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Synchronous IO \u2014 write returns only after data on disk.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_DSYNC",
+    "scope": "open-flag",
+    "key": "O_DSYNC",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Sync data only (not all metadata).",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_DIRECT",
+    "scope": "open-flag",
+    "key": "O_DIRECT",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Bypass page cache. Buffer + size alignment required.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_LARGEFILE",
+    "scope": "open-flag",
+    "key": "O_LARGEFILE",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "32-bit-process flag for >2GB files. Implicit on 64-bit.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_NOFOLLOW",
+    "scope": "open-flag",
+    "key": "O_NOFOLLOW",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Fail if path is symlink.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_DIRECTORY",
+    "scope": "open-flag",
+    "key": "O_DIRECTORY",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Fail if not a directory.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_NOATIME",
+    "scope": "open-flag",
+    "key": "O_NOATIME",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Don't update atime on this open.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_CLOEXEC",
+    "scope": "open-flag",
+    "key": "O_CLOEXEC",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Close FD on execve. Always-set when atomicity matters (otherwise race with fork+exec).",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_PATH",
+    "scope": "open-flag",
+    "key": "O_PATH",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Open as 'reference only' \u2014 no read/write, but usable for *at(dirfd, ...) syscalls. Lower-overhead than full open.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.open-flag.O_TMPFILE",
+    "scope": "open-flag",
+    "key": "O_TMPFILE",
+    "type": "open(2) flag",
+    "default_value": null,
+    "description": "Create unnamed temp file. Made permanent via linkat with AT_EMPTY_PATH. Race-free secure-tmp pattern.",
+    "source_ids": [
+      "man7-open-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.openat2-flag.RESOLVE_NO_XDEV",
+    "scope": "openat2-flag",
+    "key": "RESOLVE_NO_XDEV",
+    "type": "openat2(2) resolve flag",
+    "default_value": null,
+    "description": "Forbid crossing mountpoints during resolution.",
+    "source_ids": [
+      "man7-openat2-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.openat2-flag.RESOLVE_NO_MAGICLINKS",
+    "scope": "openat2-flag",
+    "key": "RESOLVE_NO_MAGICLINKS",
+    "type": "openat2(2) resolve flag",
+    "default_value": null,
+    "description": "Forbid following /proc/self/* magic-symlinks.",
+    "source_ids": [
+      "man7-openat2-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.openat2-flag.RESOLVE_NO_SYMLINKS",
+    "scope": "openat2-flag",
+    "key": "RESOLVE_NO_SYMLINKS",
+    "type": "openat2(2) resolve flag",
+    "default_value": null,
+    "description": "Forbid all symlinks.",
+    "source_ids": [
+      "man7-openat2-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.openat2-flag.RESOLVE_BENEATH",
+    "scope": "openat2-flag",
+    "key": "RESOLVE_BENEATH",
+    "type": "openat2(2) resolve flag",
+    "default_value": null,
+    "description": "Forbid escaping below dirfd (no .. traversal above).",
+    "source_ids": [
+      "man7-openat2-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.openat2-flag.RESOLVE_IN_ROOT",
+    "scope": "openat2-flag",
+    "key": "RESOLVE_IN_ROOT",
+    "type": "openat2(2) resolve flag",
+    "default_value": null,
+    "description": "Treat dirfd as root (chroot-like, but per-call). Magic for safe container fs operations.",
+    "source_ids": [
+      "man7-openat2-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.openat2-flag.RESOLVE_CACHED",
+    "scope": "openat2-flag",
+    "key": "RESOLVE_CACHED",
+    "type": "openat2(2) resolve flag",
+    "default_value": null,
+    "description": "Only succeed if all dentries cached (fast-path; for nginx-like 'open file or punt').",
+    "source_ids": [
+      "man7-openat2-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_ACCESS",
+    "scope": "inotify-watch-mask",
+    "key": "IN_ACCESS",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "File accessed (read).",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_MODIFY",
+    "scope": "inotify-watch-mask",
+    "key": "IN_MODIFY",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "File modified.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_ATTRIB",
+    "scope": "inotify-watch-mask",
+    "key": "IN_ATTRIB",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Metadata changed (perms, owner, link count).",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_CLOSE_WRITE",
+    "scope": "inotify-watch-mask",
+    "key": "IN_CLOSE_WRITE",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Writable file closed. The 'edit done' signal.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_CLOSE_NOWRITE",
+    "scope": "inotify-watch-mask",
+    "key": "IN_CLOSE_NOWRITE",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Read-only file closed.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_OPEN",
+    "scope": "inotify-watch-mask",
+    "key": "IN_OPEN",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "File opened.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_MOVED_FROM",
+    "scope": "inotify-watch-mask",
+    "key": "IN_MOVED_FROM",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "File moved out (rename source).",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_MOVED_TO",
+    "scope": "inotify-watch-mask",
+    "key": "IN_MOVED_TO",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "File moved in (rename target).",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_CREATE",
+    "scope": "inotify-watch-mask",
+    "key": "IN_CREATE",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Subdir/file created.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_DELETE",
+    "scope": "inotify-watch-mask",
+    "key": "IN_DELETE",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Subdir/file deleted.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_DELETE_SELF",
+    "scope": "inotify-watch-mask",
+    "key": "IN_DELETE_SELF",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Watched file/dir deleted.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_MOVE_SELF",
+    "scope": "inotify-watch-mask",
+    "key": "IN_MOVE_SELF",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Watched file/dir moved.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_UNMOUNT",
+    "scope": "inotify-watch-mask",
+    "key": "IN_UNMOUNT",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Backing FS unmounted.",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inotify-mask.IN_Q_OVERFLOW",
+    "scope": "inotify-watch-mask",
+    "key": "IN_Q_OVERFLOW",
+    "type": "inotify event mask",
+    "default_value": null,
+    "description": "Event queue overflowed (events lost \u2014 bump fs.inotify.max_queued_events).",
+    "source_ids": [
+      "man7-inotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fanotify.FAN_ACCESS",
+    "scope": "fanotify-event-type",
+    "key": "FAN_ACCESS",
+    "type": "fanotify event mask",
+    "default_value": null,
+    "description": "Read access.",
+    "source_ids": [
+      "man7-fanotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fanotify.FAN_MODIFY",
+    "scope": "fanotify-event-type",
+    "key": "FAN_MODIFY",
+    "type": "fanotify event mask",
+    "default_value": null,
+    "description": "Write.",
+    "source_ids": [
+      "man7-fanotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fanotify.FAN_OPEN",
+    "scope": "fanotify-event-type",
+    "key": "FAN_OPEN",
+    "type": "fanotify event mask",
+    "default_value": null,
+    "description": "Open.",
+    "source_ids": [
+      "man7-fanotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fanotify.FAN_CLOSE_WRITE",
+    "scope": "fanotify-event-type",
+    "key": "FAN_CLOSE_WRITE",
+    "type": "fanotify event mask",
+    "default_value": null,
+    "description": "Writable close.",
+    "source_ids": [
+      "man7-fanotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fanotify.FAN_CLOSE_NOWRITE",
+    "scope": "fanotify-event-type",
+    "key": "FAN_CLOSE_NOWRITE",
+    "type": "fanotify event mask",
+    "default_value": null,
+    "description": "Read-only close.",
+    "source_ids": [
+      "man7-fanotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fanotify.FAN_OPEN_PERM",
+    "scope": "fanotify-event-type",
+    "key": "FAN_OPEN_PERM",
+    "type": "fanotify event mask",
+    "default_value": null,
+    "description": "Permission event for OPEN \u2014 kernel waits for ALLOW/DENY.",
+    "source_ids": [
+      "man7-fanotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fanotify.FAN_ACCESS_PERM",
+    "scope": "fanotify-event-type",
+    "key": "FAN_ACCESS_PERM",
+    "type": "fanotify event mask",
+    "default_value": null,
+    "description": "Permission event for ACCESS.",
+    "source_ids": [
+      "man7-fanotify-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_OP_READV",
+    "scope": "iouring-option",
+    "key": "IORING_OP_READV",
+    "type": "io_uring op",
+    "default_value": null,
+    "description": "readv async.",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_OP_WRITEV",
+    "scope": "iouring-option",
+    "key": "IORING_OP_WRITEV",
+    "type": "io_uring op",
+    "default_value": null,
+    "description": "writev async.",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_OP_FSYNC",
+    "scope": "iouring-option",
+    "key": "IORING_OP_FSYNC",
+    "type": "io_uring op",
+    "default_value": null,
+    "description": "fsync async.",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_OP_ACCEPT",
+    "scope": "iouring-option",
+    "key": "IORING_OP_ACCEPT",
+    "type": "io_uring op",
+    "default_value": null,
+    "description": "accept async.",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_OP_OPENAT",
+    "scope": "iouring-option",
+    "key": "IORING_OP_OPENAT",
+    "type": "io_uring op",
+    "default_value": null,
+    "description": "openat async.",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_OP_READ_FIXED",
+    "scope": "iouring-option",
+    "key": "IORING_OP_READ_FIXED",
+    "type": "io_uring op",
+    "default_value": null,
+    "description": "Read into pre-registered buffers (zero-copy).",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_OP_WRITE_FIXED",
+    "scope": "iouring-option",
+    "key": "IORING_OP_WRITE_FIXED",
+    "type": "io_uring op",
+    "default_value": null,
+    "description": "Write from pre-registered buffer.",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_SETUP_IOPOLL",
+    "scope": "iouring-option",
+    "key": "IORING_SETUP_IOPOLL",
+    "type": "io_uring setup flag",
+    "default_value": null,
+    "description": "Polling-mode IO (low-latency, busy-wait CPU).",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.io-uring.IORING_SETUP_SQPOLL",
+    "scope": "iouring-option",
+    "key": "IORING_SETUP_SQPOLL",
+    "type": "io_uring setup flag",
+    "default_value": null,
+    "description": "Kernel polls SQ \u2014 userspace doesn't need io_uring_enter syscall on submit.",
+    "source_ids": [
+      "man7-io-uring-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fstab.field-fs-spec",
+    "scope": "fstab-field",
+    "key": "<fs_spec>",
+    "type": "field 1",
+    "default_value": null,
+    "description": "Device. UUID=, LABEL=, /dev/<name>, or //server/share for CIFS.",
+    "source_ids": [
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fstab.field-fs-file",
+    "scope": "fstab-field",
+    "key": "<fs_file>",
+    "type": "field 2",
+    "default_value": null,
+    "description": "Mount point.",
+    "source_ids": [
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fstab.field-fs-vfstype",
+    "scope": "fstab-field",
+    "key": "<fs_vfstype>",
+    "type": "field 3",
+    "default_value": null,
+    "description": "FS type. auto for autodetect.",
+    "source_ids": [
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fstab.field-fs-mntops",
+    "scope": "fstab-field",
+    "key": "<fs_mntops>",
+    "type": "field 4",
+    "default_value": "defaults",
+    "description": "Mount options. Comma-separated.",
+    "source_ids": [
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fstab.field-fs-freq",
+    "scope": "fstab-field",
+    "key": "<fs_freq>",
+    "type": "field 5",
+    "default_value": "0",
+    "description": "Dump frequency (almost always 0 these days).",
+    "source_ids": [
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.fstab.field-fs-passno",
+    "scope": "fstab-field",
+    "key": "<fs_passno>",
+    "type": "field 6",
+    "default_value": "0",
+    "description": "fsck pass order. 0 = skip; 1 = root; 2+ = others (parallel within same number).",
+    "source_ids": [
+      "man7-fstab-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.xattr-ns.user",
+    "scope": "xattr-namespace",
+    "key": "user.",
+    "type": "xattr namespace",
+    "default_value": null,
+    "description": "User-controlled xattrs. Anyone with write access.",
+    "source_ids": [
+      "man7-xattr-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.xattr-ns.system",
+    "scope": "xattr-namespace",
+    "key": "system.",
+    "type": "xattr namespace",
+    "default_value": null,
+    "description": "Kernel-managed (POSIX ACLs as system.posix_acl_access).",
+    "source_ids": [
+      "man7-xattr-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.xattr-ns.security",
+    "scope": "xattr-namespace",
+    "key": "security.",
+    "type": "xattr namespace",
+    "default_value": null,
+    "description": "Security modules: SELinux (security.selinux), file capabilities (security.capability), IMA (security.ima).",
+    "source_ids": [
+      "man7-xattr-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.xattr-ns.trusted",
+    "scope": "xattr-namespace",
+    "key": "trusted.",
+    "type": "xattr namespace",
+    "default_value": null,
+    "description": "Root-only. Used by docker/runc for storage driver state.",
+    "source_ids": [
+      "man7-xattr-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.acl.user-entry",
+    "scope": "acl-entry-format",
+    "key": "u:USER:rwx",
+    "type": "ACL entry",
+    "default_value": null,
+    "description": "Per-named-user permission.",
+    "source_ids": [
+      "man7-acl-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.acl.group-entry",
+    "scope": "acl-entry-format",
+    "key": "g:GROUP:rwx",
+    "type": "ACL entry",
+    "default_value": null,
+    "description": "Per-named-group permission.",
+    "source_ids": [
+      "man7-acl-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.acl.other-entry",
+    "scope": "acl-entry-format",
+    "key": "o::rwx",
+    "type": "ACL entry",
+    "default_value": null,
+    "description": "Other (catch-all).",
+    "source_ids": [
+      "man7-acl-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.acl.mask-entry",
+    "scope": "acl-entry-format",
+    "key": "m::rwx",
+    "type": "ACL entry",
+    "default_value": null,
+    "description": "Mask \u2014 caps effective permissions of named entries (named-user/group + non-owner group).",
+    "source_ids": [
+      "man7-acl-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.acl.default-entry",
+    "scope": "acl-entry-format",
+    "key": "default:u:USER:rwx",
+    "type": "ACL entry",
+    "default_value": null,
+    "description": "Default ACL inherited by new files in directory.",
+    "source_ids": [
+      "man7-acl-5"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.cryptsetup-opt.cipher",
+    "scope": "cryptsetup-option",
+    "key": "cipher",
+    "type": "cryptsetup arg",
+    "default_value": "aes-xts-plain64",
+    "description": "Symmetric cipher + mode + IV.",
+    "source_ids": [
+      "man7-cryptsetup-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.cryptsetup-opt.hash",
+    "scope": "cryptsetup-option",
+    "key": "hash",
+    "type": "cryptsetup arg",
+    "default_value": "sha256",
+    "description": "Hash function for KDF.",
+    "source_ids": [
+      "man7-cryptsetup-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.cryptsetup-opt.key-size",
+    "scope": "cryptsetup-option",
+    "key": "key-size",
+    "type": "cryptsetup arg",
+    "default_value": "512 (XTS uses 2x bits)",
+    "description": "Key bits.",
+    "source_ids": [
+      "man7-cryptsetup-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.cryptsetup-opt.pbkdf",
+    "scope": "cryptsetup-option",
+    "key": "pbkdf",
+    "type": "cryptsetup arg",
+    "default_value": "argon2id",
+    "description": "Key derivation: argon2i / argon2id / pbkdf2.",
+    "source_ids": [
+      "man7-cryptsetup-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.cryptsetup-opt.iter-time",
+    "scope": "cryptsetup-option",
+    "key": "iter-time",
+    "type": "cryptsetup arg",
+    "default_value": "2000ms",
+    "description": "Time spent in PBKDF (passphrase-strengthening cost).",
+    "source_ids": [
+      "man7-cryptsetup-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.cryptsetup-opt.allow-discards",
+    "scope": "cryptsetup-option",
+    "key": "--allow-discards",
+    "type": "cryptsetup luksOpen flag",
+    "default_value": null,
+    "description": "Pass TRIM through to underlying device. Information leak vs perf trade-off.",
+    "source_ids": [
+      "man7-cryptsetup-8"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_mode",
+    "scope": "stat-field",
+    "key": "st_mode",
+    "type": "stat field",
+    "default_value": null,
+    "description": "File type + permissions. S_IFMT mask + S_IFREG/DIR/LNK/BLK/CHR/FIFO/SOCK + mode bits.",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_uid",
+    "scope": "stat-field",
+    "key": "st_uid",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Owner UID.",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_gid",
+    "scope": "stat-field",
+    "key": "st_gid",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Owner GID.",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_size",
+    "scope": "stat-field",
+    "key": "st_size",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Logical size in bytes (sparse files: > st_blocks*512).",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_blocks",
+    "scope": "stat-field",
+    "key": "st_blocks",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Disk usage in 512B blocks (real on-disk space).",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_atime",
+    "scope": "stat-field",
+    "key": "st_atime",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Access time.",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_mtime",
+    "scope": "stat-field",
+    "key": "st_mtime",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Modification time (data).",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_ctime",
+    "scope": "stat-field",
+    "key": "st_ctime",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Change time (metadata changes \u2014 chmod/chown/link).",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_nlink",
+    "scope": "stat-field",
+    "key": "st_nlink",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Hard link count. 0 = file deleted (still open via FDs).",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_dev",
+    "scope": "stat-field",
+    "key": "st_dev",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Device containing file.",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.stat-field.st_ino",
+    "scope": "stat-field",
+    "key": "st_ino",
+    "type": "stat field",
+    "default_value": null,
+    "description": "Inode number.",
+    "source_ids": [
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_type",
+    "scope": "statfs-field",
+    "key": "f_type",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "FS magic number (0xEF53 ext4, 0x58465342 XFS, 0x9123683E btrfs, 0x01021994 tmpfs, 0x9P2000 9p, etc.).",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_bsize",
+    "scope": "statfs-field",
+    "key": "f_bsize",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Optimal IO block size.",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_blocks",
+    "scope": "statfs-field",
+    "key": "f_blocks",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Total blocks in FS.",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_bfree",
+    "scope": "statfs-field",
+    "key": "f_bfree",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Free blocks (incl. reserved).",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_bavail",
+    "scope": "statfs-field",
+    "key": "f_bavail",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Free blocks available to non-root (excludes reserved).",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_files",
+    "scope": "statfs-field",
+    "key": "f_files",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Total inodes.",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_ffree",
+    "scope": "statfs-field",
+    "key": "f_ffree",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Free inodes.",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_fsid",
+    "scope": "statfs-field",
+    "key": "f_fsid",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "FS UUID (in stat fsid format).",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_namelen",
+    "scope": "statfs-field",
+    "key": "f_namelen",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Max filename length (255 typically).",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.statfs-field.f_flags",
+    "scope": "statfs-field",
+    "key": "f_flags",
+    "type": "statfs field",
+    "default_value": null,
+    "description": "Mount flag bits (ST_RDONLY, ST_NOSUID, ST_NODEV, ST_NOEXEC, etc.).",
+    "source_ids": [
+      "man7-statfs-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.symlink.MAXSYMLINKS",
+    "scope": "symlink-behavior",
+    "key": "MAXSYMLINKS",
+    "type": "limit",
+    "default_value": "40",
+    "description": "Max symlinks followed in path resolution before ELOOP.",
+    "source_ids": [
+      "man7-symlink-7",
+      "man7-path-resolution-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.symlink.PATH_MAX",
+    "scope": "symlink-behavior",
+    "key": "PATH_MAX",
+    "type": "limit",
+    "default_value": "4096",
+    "description": "Max pathname length on Linux.",
+    "source_ids": [
+      "man7-symlink-7",
+      "man7-path-resolution-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.symlink.NAME_MAX",
+    "scope": "symlink-behavior",
+    "key": "NAME_MAX",
+    "type": "limit",
+    "default_value": "255",
+    "description": "Max single-component filename length.",
+    "source_ids": [
+      "man7-symlink-7",
+      "man7-path-resolution-7"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inode-field.i-mode",
+    "scope": "inode-field",
+    "key": "i_mode",
+    "type": "inode field",
+    "default_value": null,
+    "description": "Type + perms (= st_mode).",
+    "source_ids": [
+      "man7-inode-7",
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inode-field.i-uid",
+    "scope": "inode-field",
+    "key": "i_uid",
+    "type": "inode field",
+    "default_value": null,
+    "description": "Owner UID.",
+    "source_ids": [
+      "man7-inode-7",
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inode-field.i-gid",
+    "scope": "inode-field",
+    "key": "i_gid",
+    "type": "inode field",
+    "default_value": null,
+    "description": "Owner GID.",
+    "source_ids": [
+      "man7-inode-7",
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inode-field.i-size",
+    "scope": "inode-field",
+    "key": "i_size",
+    "type": "inode field",
+    "default_value": null,
+    "description": "Logical size.",
+    "source_ids": [
+      "man7-inode-7",
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inode-field.i-blocks",
+    "scope": "inode-field",
+    "key": "i_blocks",
+    "type": "inode field",
+    "default_value": null,
+    "description": "On-disk blocks (512B units).",
+    "source_ids": [
+      "man7-inode-7",
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inode-field.i-nlink",
+    "scope": "inode-field",
+    "key": "i_nlink",
+    "type": "inode field",
+    "default_value": null,
+    "description": "Hard link count.",
+    "source_ids": [
+      "man7-inode-7",
+      "man7-stat-2"
+    ]
+  },
+  {
+    "id": "linux.filesystem.cfg.inode-field.i-flags",
+    "scope": "inode-field",
+    "key": "i_flags",
+    "type": "inode field",
+    "default_value": null,
+    "description": "chattr flags: immutable, append-only, no-atime, journal-data, compress, etc.",
+    "source_ids": [
+      "man7-inode-7",
+      "man7-stat-2"
+    ]
+  }
+]

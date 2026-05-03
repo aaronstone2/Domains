@@ -124,11 +124,13 @@ Adjacent man7 fetches in the same run succeeded, so these are likely transient r
 | Leaf | concepts | commands | config_keys | total | session log |
 |---|---:|---:|---:|---:|---|
 | `linux/primitives` | 126 | 3 | 224 | 353 | [domains/linux/primitives/PROGRESS.md](primitives/PROGRESS.md) |
-| `linux/networking` | 0 | 0 | 0 | 0 | queued (Session 3.2) |
-| `linux/debugging` | 0 | 0 | 0 | 0 | queued (Session 3.3) |
-| `linux/systemd` | 0 | 0 | 0 | 0 | queued (Session 3.4) |
-| `linux/filesystem` | 0 | 0 | 0 | 0 | queued (Session 3.5) |
-| **total** | **126** | **3** | **224** | **353** | |
+| `linux/networking` | 114 | 14 | 227 | 355 | [domains/linux/networking/PROGRESS.md](networking/PROGRESS.md) |
+| `linux/debugging` | 83 | 25 | 144 | 252 | [domains/linux/debugging/PROGRESS.md](debugging/PROGRESS.md) |
+| `linux/systemd` | 107 | 9 | 311 | 427 | [domains/linux/systemd/PROGRESS.md](systemd/PROGRESS.md) |
+| `linux/filesystem` | 91 | 14 | 219 | 324 | [domains/linux/filesystem/PROGRESS.md](filesystem/PROGRESS.md) |
+| **total** | **521** | **65** | **1125** | **1711** | |
+
+**Linux Phase 3 vertical COMPLETE** (5 sessions, 5 leaves). 1711 rows landed vs plan target 1613 (6% over). All BM25-discoverable via the linux corpus + explicit `id LIKE 'linux.<leaf>.%'` filter.
 
 Phase 3 plan covering all 5 leaves: `~/.claude/plans/read-domains-shared-sessions-phase-3-de-radiant-torvalds.md`. Per-leaf targets remaining (full ambition, not lightly-done):
 
