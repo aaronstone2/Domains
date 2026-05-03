@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ecs.agent.amazon-ecs-agent",
+    "name": "Amazon ECS Container Agent",
+    "kind": "subsystem",
+    "description": "Open-source Go binary that runs on each EC2 container instance. Connects to the ECS service via the ACS (Agent Communication Service) protocol; receives task placement instructions; executes tasks via the local Docker daemon (or containerd); reports task state. Source: github.com/aws/amazon-ecs-agent (Apache 2.0).",
+    "source_ids": ["ecs-agent-readme", "ecs-dg-agent"],
+    "aliases": ["ecs-agent", "container agent"]
+  },
+  {
+    "id": "ecs.agent.amazon-ecs-init",
+    "name": "amazon-ecs-init (RPM/systemd integration)",
+    "kind": "subsystem",
+    "description": "RPM that supervises the ECS agent on Amazon Linux instances. Originally Upstart; now systemd. Reads /etc/ecs/ecs.config and passes its contents as env vars to the agent container. Logs at /var/log/ecs/ecs-init.log; agent logs at /var/log/ecs/ecs-agent.log. Source: github.com/aws/amazon-ecs-init.",
+    "source_ids": ["ecs-init-readme"],
+    "aliases": ["ecs-init"]
+  },
+  {
+    "id": "ecs.agent.acs-protocol",
+    "name": "ACS (Agent Communication Service) protocol",
+    "kind": "protocol",
+    "description": "WebSocket-based bidirectional protocol between the agent and the ECS service control plane. Agent maintains a persistent connection to receive RunTask / StopTask payloads and pushes state-change events (task started, container stopped, task transitioned). Disconnects trigger reconnect with backoff; prolonged disconnect is the most common 'agent disconnected' alert.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": ["ACS"]
+  },
+  {
+    "id": "ecs.agent.introspection-api",
+    "name": "Agent Introspection API (port 51678)",
+    "kind": "api",
+    "description": "HTTP API the agent exposes on localhost:51678 for on-instance debugging. Endpoints: /v1/metadata (container instance ID, cluster, agent version), /v1/tasks (all tasks), /v1/tasks?taskarn=<arn> (specific task), /v1/tasks?dockerid=<id> (task by container ID), /license. Bound to localhost only by default; ecs-init's iptables rule blocks off-host access.",
+    "source_ids": ["ecs-dg-agent-introspection", "ecs-init-readme"],
+    "aliases": ["introspection endpoint"]
+  },
+  {
+    "id": "ecs.agent.task-metadata-endpoint",
+    "name": "Task Metadata Endpoint (v3/v4)",
+    "kind": "api",
+    "description": "Per-container HTTP API at $ECS_CONTAINER_METADATA_URI / $ECS_CONTAINER_METADATA_URI_V4 (env vars injected into each container). Replaces the older /v1 introspection-API for in-container metadata access. v4 adds task tags + container-stats endpoints. Combined with task-iam-role credentials endpoint at 169.254.170.2.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": ["TMDS", "ECS_CONTAINER_METADATA_URI"]
+  },
+  {
+    "id": "ecs.agent.iam-roles-for-tasks",
+    "name": "IAM Roles for Tasks (TaskRoleArn)",
+    "kind": "feature",
+    "description": "Per-task IAM credentials served by the agent on 169.254.170.2/v2/credentials/<credential-id>. Each task gets short-lived AWS credentials scoped to the task's IAM role — separate from the container instance's role. Requires ECS_ENABLE_TASK_IAM_ROLE=true on the agent and a CredentialsId injected into the task via env. Pairs with awsvpc network mode for stronger isolation.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": ["task IAM role"]
+  },
+  {
+    "id": "ecs.agent.container-instance-state-machine",
+    "name": "Container instance state machine (ACTIVE → DRAINING → INACTIVE)",
+    "kind": "state-machine",
+    "description": "ACTIVE: instance accepts new task placements. DRAINING: stops accepting new tasks; replaces service-managed tasks; standalone tasks continue. INACTIVE: deregistered. DRAINING is the safe path for AMI updates / scale-in — combined with deployment-circuit-breaker on services, this gives zero-impact rotation.",
+    "source_ids": ["ecs-dg-instance-draining"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.docker-vs-containerd",
+    "name": "Docker vs containerd backends",
+    "kind": "compatibility",
+    "description": "Agent historically required Docker daemon. Newer agent versions support containerd directly (no Docker shim). Backend selected via ECS_DOCKER_GRAPH_PATH and runtime-detection. ECS-Optimized AMI 2023+ ships containerd-capable agent. DOCKER_HOST env var (Linux: unix:///var/run/docker.sock; Windows: npipe).",
+    "source_ids": ["ecs-agent-readme", "ecs-agent-changelog"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.image-pull-behavior",
+    "name": "Image pull behavior policy",
+    "kind": "feature",
+    "description": "ECS_IMAGE_PULL_BEHAVIOR controls per-task image fetching. default: pull remote, fall back to cache on failure. always: pull remote, fail task if pull fails. once: pull only if not cached. prefer-cached: use cache if present, pull only if absent. The 'always' setting is critical for security but trades startup latency.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.image-cleanup",
+    "name": "Automated image cleanup",
+    "kind": "feature",
+    "description": "Agent reaps unused container images periodically. ECS_DISABLE_IMAGE_CLEANUP toggle; ECS_IMAGE_CLEANUP_INTERVAL period; ECS_IMAGE_MINIMUM_CLEANUP_AGE / NON_ECS_IMAGE_MINIMUM_CLEANUP_AGE thresholds; ECS_NUM_IMAGES_DELETE_PER_CYCLE per-cycle cap. Untracked-image cleanup gated by ECS_ENABLE_UNTRACKED_IMAGE_CLEANUP. Common foot-gun: aggressive cleanup races with task scheduler.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.task-cleanup-wait",
+    "name": "Task cleanup wait (ECS_ENGINE_TASK_CLEANUP_WAIT_DURATION)",
+    "kind": "feature",
+    "description": "After a task stops, agent keeps the Docker containers around for this duration so logs and exit-code can be collected. Default 3h. Lower for high-churn instances; raise for log-collection workflows. JITTER variant adds randomization to avoid thundering-herd cleanup.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.checkpoint-state",
+    "name": "Agent state checkpointing",
+    "kind": "feature",
+    "description": "Agent persists task state to disk (ECS_DATADIR, default /data/) so it survives restarts. ECS_CHECKPOINT toggle. Bind-mounted from $ECS_HOST_DATA_DIR/data on the host into $ECS_DATADIR in the agent container. Loss of this state forces re-discovery of running tasks.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.spot-instance-draining",
+    "name": "Spot Instance draining",
+    "kind": "feature",
+    "description": "When ECS_ENABLE_SPOT_INSTANCE_DRAINING=true and the instance receives a Spot interruption notice (2-minute warning), agent automatically transitions the instance to DRAINING. Service-managed tasks get gracefully replaced on other capacity. Strongly recommended for any Spot-backed ECS cluster.",
+    "source_ids": ["ecs-agent-readme", "ecs-dg-instance-draining"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.task-iam-network-host",
+    "name": "Task IAM with host-mode networking",
+    "kind": "feature",
+    "description": "ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST gates task-IAM-role injection for tasks using `host` network mode (where 169.254.170.2 routing requires special iptables rules). awsvpc-mode tasks get task-IAM by default; host-mode tasks need this opt-in.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.cni-plugins",
+    "name": "ECS CNI plugins",
+    "kind": "subsystem",
+    "description": "Agent invokes CNI plugins (vendored at ECS_CNI_PLUGINS_PATH, default /amazon-ecs-cni-plugins) to set up awsvpc-mode networking — attaches per-task ENI to the instance, configures veth pairs, programs routing. Failures here surface as 'CannotCreateContainerError: failed to setup task network'.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.high-density-eni",
+    "name": "High-density ENI (HDE)",
+    "kind": "feature",
+    "description": "ECS_ENABLE_HIGH_DENSITY_ENI=true (default) lets the agent attach more tasks per instance than the EC2 ENI limit allows by using ENI trunking. Requires Nitro instance + IAM permission. Without HDE, awsvpc task density is capped at the per-instance ENI limit (e.g., 4 on m5.large).",
+    "source_ids": ["ecs-agent-readme", "ecs-agent-proposal-eni"],
+    "aliases": ["ENI trunking"]
+  },
+  {
+    "id": "ecs.agent.awsvpc-block-imds",
+    "name": "Block IMDS from awsvpc tasks",
+    "kind": "security-feature",
+    "description": "ECS_AWSVPC_BLOCK_IMDS=true makes awsvpc-mode tasks unable to reach 169.254.169.254 (instance metadata). Defends against SSRF-leak of the container instance role. Recommended for multi-tenant clusters; not enabled by default.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.container-metadata-file",
+    "name": "Container metadata file",
+    "kind": "feature",
+    "description": "ECS_ENABLE_CONTAINER_METADATA=true makes the agent write a per-container JSON metadata file inside each container; path injected as $ECS_CONTAINER_METADATA_FILE. Older alternative to the Task Metadata Endpoint (TMDS); kept for backward compat.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.task-cpu-mem-limit",
+    "name": "Task-level cgroup CPU+memory limit",
+    "kind": "feature",
+    "description": "ECS_ENABLE_TASK_CPU_MEM_LIMIT=true (default on Linux) creates a per-task cgroup that bounds total CPU+memory across the task's containers. Not just per-container — sum of containers can't exceed task-level cap. ECS_CGROUP_CPU_PERIOD tunes the CFS period.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.localhost-traffic-filter",
+    "name": "Localhost traffic filter (iptables)",
+    "kind": "security-feature",
+    "description": "ecs-init installs an iptables rule that drops non-local packets to 127.0.0.0/8 not part of an existing forwarded connection. Defends against off-instance access to introspection (51678) + task-credentials endpoints. ECS_SKIP_LOCALHOST_TRAFFIC_FILTER=true disables (NOT recommended).",
+    "source_ids": ["ecs-init-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.offhost-introspection-block",
+    "name": "Off-host introspection block",
+    "kind": "security-feature",
+    "description": "ecs-init installs an iptables rule blocking the introspection port (51678) from off-host or from awsvpc-mode containers. Combined with task-credentials endpoint protection. Toggle via ECS_ALLOW_OFFHOST_INTROSPECTION_ACCESS=true (NOT recommended).",
+    "source_ids": ["ecs-init-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.pid-namespace-host",
+    "name": "Agent PID-namespace-host mode (SELinux)",
+    "kind": "feature",
+    "description": "ECS_AGENT_PID_NAMESPACE_HOST=true makes ecs-init start the agent container with --pid=host instead of an isolated PID namespace. Required when SELinux enforcing + Docker SELinux policy enabled. Available in agent ≥1.94.0. Disables ECS Exec, EBS-attach, Service Connect, FireLens — significant feature loss.",
+    "source_ids": ["ecs-dg-agent-config"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.reserved-ports",
+    "name": "Reserved ports list",
+    "kind": "feature",
+    "description": "Ports the agent excludes from task placement. ECS_RESERVED_PORTS default Linux: [22, 2375, 2376, 51678, 51679] (SSH + Docker daemon + ECS introspection); Windows adds RDP + WinRM. ECS_RESERVED_PORTS_UDP for UDP ports (e.g. [53, 123]).",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.metrics-poll-vs-stream",
+    "name": "Metrics poll vs stream",
+    "kind": "performance-tradeoff",
+    "description": "ECS_POLL_METRICS=true switches the agent from streaming docker stats to polling. Reduces dockerd/containerd CPU usage on dense instances at the cost of slightly stale metrics. ECS_POLLING_METRICS_WAIT_DURATION (5-20s, default 10s) tunes interval. Recommended <18s to avoid memory-reservation metric instability.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  },
+  {
+    "id": "ecs.agent.engine-auth",
+    "name": "Engine auth (private registry credentials)",
+    "kind": "feature",
+    "description": "ECS_ENGINE_AUTH_TYPE + ECS_ENGINE_AUTH_DATA store Docker registry credentials on the instance for pulling private images. Two formats: 'docker' (raw username/password) or 'dockercfg' (matches ~/.docker/config.json shape). Cluster-wide alternative: use repositoryCredentials on the task definition with a Secrets Manager ARN.",
+    "source_ids": ["ecs-agent-readme"],
+    "aliases": []
+  }
+]

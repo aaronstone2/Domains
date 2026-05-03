@@ -249,3 +249,78 @@ The harness now has structured runbook coverage for the high-engagement firecrac
 **Infra:** Same orphan-MCP cleanup pattern; 5+ Stop-Process calls during the session. Worth automating.
 
 **Firecracker vertical: COMPLETE.** Next: `ecs` P3 (lower priority, sketched in firecracker-p3-vertical.md §6) OR resume documented order (docker → linux → devin → k8s).
+
+### Session E1 — 2026-05-03 — ecs agent + task-defs Phase C — DONE
+
+Per-domain detail: `domains/ecs/PROGRESS.md`. Plan: `~/.claude/plans/purring-pondering-gosling.md`.
+
+**Outputs (2 high-density ECS leaves):**
+
+| Leaf | Concepts | Commands | Config keys |
+|---|---|---|---|
+| `agent` | 25 | 8 | 61 |
+| `task-defs` | 18 | 2 | 70 |
+| **TOTAL E1** | **43** | **10** | **131** |
+
+Cumulative ECS: 43 / 10 / 131.
+
+**Notable**: agent's ECS_AGENT_* env-var coverage (61 keys) was 2x the plan target — the ecs-agent-readme env-var table is comprehensive. task-defs config_keys (70) cover the full Task Definition + Service Definition JSON schema.
+
+**Acceptance vs plan E1 floors:** ✓ concepts ≥35 (hit 43), ✓ commands ≥8 (hit 10), ✓ config_keys ≥75 (hit 131).
+
+**Next:** Session E2 — Phase C for launch-types + nitro-baremetal + networking + troubleshooting (target +39 concepts +10 commands +23 config_keys).
+
+### Session E2 — 2026-05-03 — ecs fill-out leaves Phase C — DONE
+
+| Leaf | Concepts | Commands | Config keys |
+|---|---|---|---|
+| `launch-types` | 12 | 4 | 8 |
+| `nitro-baremetal` | 10 | 2 | 5 |
+| `networking` | 12 | 4 | 8 |
+| `troubleshooting` | 5 | 0 | 2 |
+| **TOTAL E2** | **39** | **10** | **23** |
+
+Cumulative ECS after E1+E2: **82 / 20 / 154**. All 6 leaves populated. Acceptance vs E2 plan §7: all 3 floors hit.
+
+**Highlights:** launch-types covers 5 launch types (EC2/Fargate/Fargate Spot/External/Managed Instances) + capacity providers (base+weight, managedScaling, managedTerminationProtection) + AMI variants/SSM-parameter pattern; nitro-baremetal covers Nitro v2-v6 cumulative features + bare-metal use cases + nested-virt cross-link to firecracker.kvm; networking covers 4 modes + ENI trunking (HDE) + Service Connect + TMDS v3/v4; troubleshooting captures stoppedReason taxonomy + CannotPullContainerError sub-classes.
+
+### Session P4.ecs + P5.ecs — 2026-05-03 — ecs first slice — DONE
+
+Per the doctrine: failure_modes/relationships = master Phase 4/5; running as "first slice for ecs" given interview-prep deadline + cross-domain refs to firecracker (now feature-complete) are resolvable.
+
+**Outputs:**
+
+| Table | Rows | Cumulative |
+|---|---|---|
+| `ecs.failure_modes` | **50** (target met) | 50 |
+| `ecs.relationships` | **134** (target ~120 — exceeded) | 134 |
+
+Failure_modes split by primary leaf: agent 24 (catch-all incl. storage/exec/SSM/codedeploy), task-defs 11, networking 8, troubleshooting 7.
+
+Sources: amazon-ecs-agent issues + AWS re:Post troubleshooting threads + corpus errors (CannotPullContainerError/ResourceInitializationError sub-classes, placement-failure reasons, OOM, health-check cascades, deployment circuit-breaker, ENI exhaustion, IMDS leaks, ASG scale-in without protection, Spot interruption, Container Insights config, bare-metal boot timeout, AL2 EOL 2026-06-30 migration, ECS Exec SSM perms, EFS mount, awslogs missing log-group, FireLens config syntax, Fargate ephemeral storage, CodeDeploy blue-green, cross-account ECR, ECS Anywhere SSM activation expired, task-stuck-in-STOPPING signal handling, account-setting ARN format, environment-files S3, Fargate platform-version pinning, Fargate restricted syscalls/caps, bare-metal Firecracker hosting tuning).
+
+**4 cross-domain relationships fulfilled** (the deferred P5.fc TODOs):
+- `ecs.launch-types.fargate → firecracker.vmm.firecracker-vmm runs-on` (source: fc-aws-fargate-dataplane)
+- `ecs.nitro-baremetal.bare-metal-instance → firecracker.kvm.kvm-subsystem enables-nested-kvm-on` (source: ecs-ec2-nested-virt)
+- `ecs.nitro-baremetal.nitro-hypervisor → firecracker.vmm.firecracker-vmm adjacent-substrate` (source: ecs-aws-baremetal-announce)
+- `ecs.nitro-baremetal.bare-metal-instance → firecracker.setup.production-checklist recommended-host-config` (source: ecs-aws-baremetal-announce)
+
+Plus 32 hand-curated intra-ecs cross-leaf rels + 98 auto-derived from failure_modes.affected_concepts.
+
+**Verified:** zero orphan IDs across all relationships (after fixing 1 typo: `ecs.agent.cgroup-task-level-limits` → `ecs.agent.task-cpu-mem-limit`). All `affected_concepts` resolve in either ecs.* OR firecracker.* (cross-domain allowed in this slice).
+
+**Final ECS domain state:**
+
+| Table | Total |
+|---|---|
+| sources | 21 |
+| documents | 21 |
+| concepts | 82 |
+| commands | 20 |
+| config_keys | 154 |
+| failure_modes | 50 |
+| relationships | 134 |
+
+**ECS vertical: COMPLETE.** Combined with firecracker (37 sources, 172/130/119 + 71 fms + 231 rels), the AWS-runtime cluster of the corpus is fully built — including the load-bearing Fargate↔Firecracker + Nitro↔Firecracker cross-domain links.
+
+**Next:** resume documented domain order (docker → linux → devin → k8s) OR pivot to harness/synthesis work. Per CLAUDE.md PREAMBLE, after all P1+P3 verticals land, run horizontal P2 (devin devbox capture) + P4 (cross-domain failure-modes) + P5 (cross-domain relationships) + P6+ (harness, polish).

@@ -1,0 +1,199 @@
+[
+  {
+    "id": "ecs.task-defs.fm.cannot-pull-container-error-auth",
+    "symptom": "Task stops with stoppedReason 'CannotPullContainerError: pull access denied for <repo>, repository does not exist or may require authorization'. Image is in private ECR (or Docker Hub private repo) and authn is missing.",
+    "error_patterns": ["CannotPullContainerError", "pull access denied", "401 Unauthorized", "no basic auth credentials"],
+    "root_cause_class": "registry-auth-missing",
+    "affected_concepts": ["ecs.task-defs.cfg.container.image", "ecs.task-defs.cfg.container.repository-credentials", "ecs.agent.cfg.env.ecs-engine-auth-data"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm image is private", "command": "docker pull <image> from a non-authn'd shell", "expected": "Same auth error if private", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "For ECR: check executionRoleArn has ecr:GetAuthorizationToken + ecr:BatchGetImage + ecr:GetDownloadUrlForLayer", "command": "aws iam simulate-principal-policy --policy-source-arn <executionRoleArn> --action-names ecr:GetAuthorizationToken ecr:BatchGetImage", "expected": "Both allowed", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 3, "action": "For non-ECR private: check repositoryCredentials field on task-def", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.containerDefinitions[].repositoryCredentials'", "expected": "Secrets Manager ARN containing {username,password}", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "ECR: attach AmazonEC2ContainerRegistryReadOnly policy (or specific perms) to executionRoleArn", "command": "aws iam attach-role-policy --role-name <execRole> --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly", "validation": "Re-run task; pull succeeds", "rollback": "Detach policy", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Non-ECR: create Secrets Manager secret with {username,password}; reference in repositoryCredentials.credentialsParameter", "command": "aws secretsmanager create-secret --name registry-creds --secret-string '{\"username\":\"u\",\"password\":\"p\"}'; update task def with that ARN; register new revision", "validation": "Pull succeeds", "rollback": "Make repo public OR pre-pull image to ECR", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting", "ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.task-defs.fm.cannot-pull-container-error-network",
+    "symptom": "stoppedReason 'CannotPullContainerError: net/http: TLS handshake timeout' or 'no such host'. Task subnet has no path to the registry.",
+    "error_patterns": ["CannotPullContainerError", "TLS handshake timeout", "no such host", "i/o timeout"],
+    "root_cause_class": "registry-network-unreachable",
+    "affected_concepts": ["ecs.networking.cfg.network-config.awsvpc.assign-public-ip", "ecs.task-defs.cfg.container.image"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Identify task subnet + check internet egress", "command": "aws ec2 describe-route-tables --filters Name=association.subnet-id,Values=<subnet>", "expected": "Route to NAT/IGW for ECR public OR VPC endpoint for ECR", "source_id": "ecs-dg-task-networking"},
+      {"step": 2, "action": "If using VPC endpoints, confirm com.amazonaws.<region>.ecr.api + com.amazonaws.<region>.ecr.dkr + com.amazonaws.<region>.s3 endpoints exist + SG allows", "command": "aws ec2 describe-vpc-endpoints --filters Name=vpc-id,Values=<vpc>", "expected": "All 3 endpoints active", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add NAT for the private subnet OR enable assignPublicIp=ENABLED", "command": "Update subnet route to NAT gateway, OR run-task --network-configuration '...,assignPublicIp=ENABLED'", "validation": "Pull succeeds", "rollback": "Remove NAT (cost reduction)", "source_id": "ecs-dg-task-networking"},
+      {"step": 2, "action": "Or create the ECR + S3 VPC endpoints (private connectivity, no egress cost)", "command": "aws ec2 create-vpc-endpoint --vpc-id <vpc> --service-name com.amazonaws.<region>.ecr.api --vpc-endpoint-type Interface ...; same for ecr.dkr; for S3 use Gateway endpoint type", "validation": "Pull works without internet egress", "rollback": "Delete endpoints", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.task-defs.fm.cannot-pull-container-error-rate-limited",
+    "symptom": "stoppedReason 'CannotPullContainerError: toomanyrequests: You have reached your pull rate limit. You may increase the limit by authenticating'.  Anonymous Docker Hub pull rate limit hit.",
+    "error_patterns": ["toomanyrequests", "pull rate limit", "Docker Hub"],
+    "root_cause_class": "registry-rate-limit",
+    "affected_concepts": ["ecs.task-defs.cfg.container.image", "ecs.agent.cfg.env.ecs-engine-auth-data"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm image is from docker.io anonymously", "command": "echo <image> | grep -E '^(docker.io/|[^/]+/[^/]+:)' (no registry prefix = docker.io)", "expected": "Docker Hub image", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Mirror image to ECR (recommended for production)", "command": "aws ecr create-repository --repository-name mirror/<image>; docker pull <image>; docker tag ... ; docker push <ECR-URI>; update task def to use ECR URI", "validation": "Pulls from ECR; no Docker Hub rate limit", "rollback": "Revert task-def image", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Or authenticate to Docker Hub (raises rate limit)", "command": "Set ECS_ENGINE_AUTH_DATA on instance OR use repositoryCredentials with Secrets Manager", "validation": "Authenticated pulls have higher quota", "rollback": null, "source_id": "ecs-agent-readme"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.task-defs.fm.resource-initialization-secret-fetch-failed",
+    "symptom": "Task fails with stoppedReason 'ResourceInitializationError: unable to pull secrets or registry auth: ... AccessDeniedException'. Execution role can't fetch from Secrets Manager / SSM.",
+    "error_patterns": ["ResourceInitializationError", "unable to pull secrets", "AccessDeniedException", "secretsmanager"],
+    "root_cause_class": "execution-role-missing-secret-perms",
+    "affected_concepts": ["ecs.task-defs.cfg.container.secrets", "ecs.task-defs.cfg.task.execution-role-arn"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Identify failing secret ARN", "command": "Look at task def container 'secrets' field; cross-reference stoppedReason for the specific ARN that failed", "expected": "Specific secret/parameter ARN identified", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Test execution role can fetch", "command": "aws sts assume-role --role-arn <execRole> --role-session-name test; with creds: aws secretsmanager get-secret-value --secret-id <arn>", "expected": "Secret value returned", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add secretsmanager:GetSecretValue (or ssm:GetParameters) + kms:Decrypt (if KMS-encrypted) to executionRoleArn", "command": "aws iam put-role-policy --role-name <execRole> --policy-name fetch-secrets --policy-document '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"],\"Resource\":[\"<secret-arn>\",\"<kms-arn>\"]}]}'", "validation": "Re-run task; secrets resolved", "rollback": "Remove inline policy", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting", "ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.task-defs.fm.resource-initialization-eni-attach-timeout",
+    "symptom": "Task fails with stoppedReason 'ResourceInitializationError: failed to setup task network: ... ENI attach timeout'. Subnet IP exhaustion or ENI quota hit.",
+    "error_patterns": ["ResourceInitializationError", "ENI attach timeout", "InsufficientFreeAddressesInSubnet"],
+    "root_cause_class": "subnet-eni-exhaustion",
+    "affected_concepts": ["ecs.networking.task-eni-attach-detach-flow", "ecs.networking.eni-trunking", "ecs.networking.cfg.network-config.awsvpc.subnets"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check subnet free IPs", "command": "aws ec2 describe-subnets --subnet-ids <subnet> --query 'Subnets[].AvailableIpAddressCount'", "expected": ">N for the planned task density", "source_id": "ecs-dg-task-networking"},
+      {"step": 2, "action": "Check ENI quota", "command": "aws service-quotas get-service-quota --service-code vpc --quota-code L-DF5E4CA3", "expected": "ENIs in use < quota", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 3, "action": "Check awsvpcTrunking opt-in", "command": "aws ecs list-account-settings --name awsvpcTrunking", "expected": "value=enabled if HDE used", "source_id": "ecs-agent-proposal-eni"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add more/larger subnets to networkConfiguration.subnets[]", "command": "Update service definition to spread tasks across more AZs/subnets", "validation": "ENI attach succeeds", "rollback": "Revert to original subnets", "source_id": "ecs-dg-task-networking"},
+      {"step": 2, "action": "Enable ENI trunking (HDE)", "command": "aws ecs put-account-setting --name awsvpcTrunking --value enabled; ECS_ENABLE_HIGH_DENSITY_ENI=true on agent (default true)", "validation": "Per-instance task density 5-20x higher", "rollback": "Disable awsvpcTrunking", "source_id": "ecs-agent-proposal-eni"},
+      {"step": 3, "action": "Request quota increase", "command": "aws service-quotas request-service-quota-increase --service-code vpc --quota-code L-DF5E4CA3 --desired-value <N>", "validation": "Approved within hours", "rollback": null, "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-proposal-eni", "ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.task-defs.fm.placement-failure-resource-cpu-memory",
+    "symptom": "RunTask fails synchronously with failures[].reason 'RESOURCE:CPU' or 'RESOURCE:MEMORY' — no instance has enough free capacity.",
+    "error_patterns": ["RESOURCE:CPU", "RESOURCE:MEMORY", "no container instances were found"],
+    "root_cause_class": "cluster-capacity-exhausted",
+    "affected_concepts": ["ecs.troubleshooting.task-placement-failure", "ecs.task-defs.cfg.task.cpu", "ecs.task-defs.cfg.task.memory"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect cluster capacity", "command": "aws ecs describe-container-instances --cluster <c> --container-instances $(aws ecs list-container-instances --cluster <c> --query 'containerInstanceArns' --output text) --query 'containerInstances[].remainingResources'", "expected": "Sum of CPU/MEMORY across instances should fit the task", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Check task-def resource requests", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.{cpu:cpu,memory:memory}'", "expected": "Should fit on at least one instance", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add capacity (scale ASG up, add instance, or use Fargate)", "command": "Increase ASG desiredCapacity OR run-task --launch-type FARGATE", "validation": "Task placed", "rollback": null, "source_id": "ecs-dg-launch-types"},
+      {"step": 2, "action": "Reduce task resource requests if over-provisioned", "command": "Lower task-level cpu/memory; register new revision", "validation": "Task fits existing capacity", "rollback": "Restore", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.task-defs.fm.placement-failure-attribute",
+    "symptom": "Placement fails with reason 'ATTRIBUTE:ecs.<x>'. No instance matches the task's placementConstraints expression.",
+    "error_patterns": ["ATTRIBUTE:ecs", "placement constraint cannot be matched"],
+    "root_cause_class": "placement-constraint-no-match",
+    "affected_concepts": ["ecs.troubleshooting.task-placement-failure", "ecs.task-defs.cfg.task.placement-constraints"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect the failing constraint", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.placementConstraints'", "expected": "Constraint identified (e.g., attribute:ecs.instance-type =~ m5.*)", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "Check instance attributes", "command": "aws ecs describe-container-instances --cluster <c> --container-instances <list> --query 'containerInstances[].attributes'", "expected": "Confirm the constraint matches at least some instances", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Loosen constraint OR add instances matching it", "command": "Update placement constraint expression; OR launch instances with the right attribute (via PutAttributes API or ECS_INSTANCE_ATTRIBUTES env var)", "validation": "Placement succeeds", "rollback": "Restore strict constraint", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.task-defs.fm.essential-container-exited-app-crash",
+    "symptom": "Task stops with stoppedReason 'Essential container in task exited' and container exitCode != 0. App crashed; ECS terminated the whole task.",
+    "error_patterns": ["Essential container in task exited", "exitCode"],
+    "root_cause_class": "app-crash",
+    "affected_concepts": ["ecs.task-defs.cfg.container.essential", "ecs.task-defs.cfg.container.log-driver"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check container exitCode", "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[0].containers[].{name:name,exitCode:exitCode,reason:reason}'", "expected": "exitCode + reason for the essential container", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Read container logs", "command": "aws logs filter-log-events --log-group-name <group> --filter-pattern '' --start-time <ms-since-task-start>", "expected": "Stack trace / error message", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Fix the app and deploy a new task-def revision", "command": "Build → push → register-task-def → update-service", "validation": "App stays up", "rollback": "Roll back to previous revision via update-service --task-definition <family>:<old-revision>", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "If crash is transient/non-deterministic, set deploymentCircuitBreaker.enable+rollback to auto-rollback failed deployments", "command": "Update service deploymentConfiguration", "validation": "Bad deployments auto-revert", "rollback": null, "source_id": "ecs-dg-service-defs-params"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.task-defs.fm.task-oom-killed",
+    "symptom": "Task stops with stoppedReason 'OutOfMemoryError: Container killed due to memory usage'. Container hit its hard memory limit.",
+    "error_patterns": ["OutOfMemoryError", "memory limit", "OOMKilled"],
+    "root_cause_class": "container-cgroup-oom",
+    "affected_concepts": ["ecs.task-defs.cfg.container.memory", "ecs.task-defs.cfg.container.memory-reservation", "ecs.agent.task-cpu-mem-limit"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check container memory setting", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.containerDefinitions[].{name:name,memory:memory,memoryReservation:memoryReservation}'", "expected": "Compare to actual usage from CloudWatch /aws/ecs/containerinsights/<cluster>/performance", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "Inspect dmesg on container instance for OOM kill", "command": "ssh ec2-user@<instance>; sudo dmesg | grep -i 'killed process'", "expected": "OOM kill of the container's main process", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise container memory hard limit", "command": "Update task-def container.memory; register new revision; update service", "validation": "No more OOM kills under normal load", "rollback": "Restore prior limit", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "Investigate memory leak in app", "command": "Run with profiler / heap dump; fix leaks", "validation": "RSS stable over time", "rollback": null, "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.task-defs.fm.health-check-grace-too-short",
+    "symptom": "ELB-fronted service constantly killing tasks. Service event: 'service X has stopped Y running tasks: Task failed ELB health checks'. Tasks are healthy app-internally but slow to start.",
+    "error_patterns": ["Task failed ELB health checks", "constantly stopping/starting tasks"],
+    "root_cause_class": "health-check-grace-too-short",
+    "affected_concepts": ["ecs.task-defs.cfg.service.health-check-grace-period-seconds", "ecs.task-defs.cfg.container.health-check.start-period"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Measure app startup time", "command": "Look at first-successful-LB-check time post task start in app logs", "expected": "Should be < healthCheckGracePeriodSeconds", "source_id": "ecs-dg-service-defs-params"},
+      {"step": 2, "action": "Check service config", "command": "aws ecs describe-services --cluster <c> --services <s> --query 'services[0].healthCheckGracePeriodSeconds'", "expected": "≥ app startup time + safety margin", "source_id": "ecs-dg-service-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise healthCheckGracePeriodSeconds on the service", "command": "aws ecs update-service --cluster <c> --service <s> --health-check-grace-period-seconds 300", "validation": "Tasks survive past startup", "rollback": "Restore prior value", "source_id": "ecs-dg-service-defs-params"},
+      {"step": 2, "action": "Also set container.healthCheck.startPeriod", "command": "Add startPeriod to the task-def healthCheck", "validation": "Container HC failures during startup don't count", "rollback": null, "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-service-defs-params"]
+  },
+  {
+    "id": "ecs.task-defs.fm.deployment-circuit-breaker-trip",
+    "symptom": "Deployment fails; service event: 'service X is unable to consistently start tasks successfully'. Circuit breaker tripped after multiple task failures; rolled back automatically.",
+    "error_patterns": ["unable to consistently start tasks", "circuit breaker"],
+    "root_cause_class": "deployment-broken",
+    "affected_concepts": ["ecs.task-defs.cfg.service.deployment-circuit-breaker-enable", "ecs.task-defs.cfg.service.deployment-circuit-breaker-rollback"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Find the failing tasks from the failed deployment", "command": "aws ecs list-tasks --cluster <c> --desired-status STOPPED --family <family>; describe each", "expected": "Common stoppedReason across the failures", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Diagnose root cause from common stoppedReason (likely one of the other failure modes here)", "command": "Cross-reference with this catalog by stoppedReason pattern", "validation": "Root cause identified", "rollback": null, "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Once fixed, register new revision + update service; circuit breaker auto-resets", "command": "Standard CI/CD flow", "validation": "Deployment reaches steady state", "rollback": "Service is already on prior good revision (auto-rollback)", "source_id": "ecs-dg-service-defs-params"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-service-defs-params"]
+  }
+]

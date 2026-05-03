@@ -1,0 +1,79 @@
+[
+  {
+    "id":"linux.primitives.cmd.unshare",
+    "command":"unshare [options] [program [arguments]]",
+    "purpose":"Run a program in newly created namespaces. The userspace front-end to the unshare(2) syscall family. The 'create a fresh container-like environment without a runtime' tool — sysadmins use it to debug namespace behavior, mount/unmount inside an isolated mountns, or test a program's response to fresh PID/network namespaces. Without --fork, the new PID namespace's pid 1 is unshare itself; with --fork, unshare clones a child to be pid 1 (almost always what you want for --pid). util-linux package; ships with every modern distro.",
+    "flags":[
+      {"name":"-i, --ipc","value":"[=file]","doc":"Create a new IPC namespace. If file given, persist the namespace via bind-mount on file."},
+      {"name":"-m, --mount","value":"[=file]","doc":"Create a new mount namespace. Auto-sets propagation to private (override with --propagation unchanged). The mount-point hosting the persist-file must NOT be MS_SHARED."},
+      {"name":"-n, --net","value":"[=file]","doc":"Create a new network namespace. Independent IPv4/IPv6 stacks, routes, firewall, /proc/net, /sys/class/net, sockets."},
+      {"name":"-p, --pid","value":"[=file]","doc":"Create a new PID namespace for children. Combine with --fork so unshare itself doesn't become pid 1 of the new namespace."},
+      {"name":"-u, --uts","value":"[=file]","doc":"Create a new UTS namespace. Hostname/domainname changes don't leak to the host."},
+      {"name":"-U, --user","value":"[=file]","doc":"Create a new user namespace. Useful with --map-root-user to get root inside without being root outside."},
+      {"name":"-C, --cgroup","value":"[=file]","doc":"Create a new cgroup namespace. The new process sees its cgroup as root in /proc/self/cgroup."},
+      {"name":"-T, --time","value":"[=file]","doc":"Create a new time namespace. CLOCK_MONOTONIC/CLOCK_BOOTTIME offsets via /proc/self/timens_offsets. Requires kernel 5.6+."},
+      {"name":"-f, --fork","value":null,"doc":"fork() before launching the program — child becomes pid 1 of the new PID namespace, unshare exits when child does."},
+      {"name":"--mount-proc","value":"[=mountpoint]","doc":"Just before running the program, mount procfs at mountpoint (default /proc) inside the new mount namespace. Required when entering a new --pid namespace, otherwise /proc still shows host PIDs."},
+      {"name":"--kill-child","value":"[=signame]","doc":"Send signame (default SIGKILL) to the child if unshare's parent process dies. PR_SET_PDEATHSIG semantics."},
+      {"name":"-r, --map-root-user","value":null,"doc":"Map the calling user/group to 0/0 in the new user namespace. Shorthand for the common rootless-debugging pattern."},
+      {"name":"--map-current-user","value":null,"doc":"Map the calling user/group to themselves (1:1) in the new user namespace. Useful for unprivileged setups that want to keep an unprivileged identity."},
+      {"name":"--map-user","value":"<uid|name>","doc":"Map current user to <uid|name> in new userns. Companion --map-group=<gid|name>."},
+      {"name":"--map-users","value":"inneruid:outeruid:count","doc":"Add a UID-mapping range to /proc/self/uid_map (requires newuidmap if non-root)."},
+      {"name":"--map-groups","value":"innergid:outergid:count","doc":"Add a GID-mapping range to /proc/self/gid_map (requires newgidmap if non-root)."},
+      {"name":"--keep-caps","value":null,"doc":"Set PR_SET_KEEPCAPS so the calling thread retains its capabilities across the upcoming setuid(0) when entering a userns. Otherwise caps reset on UID change."},
+      {"name":"--setgroups","value":"allow|deny","doc":"Permit or deny setgroups(2) inside the new user namespace. Writing 'deny' to /proc/self/setgroups is required before unprivileged GID mapping; 'allow' requires CAP_SETGID in parent userns."},
+      {"name":"--propagation","value":"slave|shared|private|unchanged","doc":"Mount-propagation type for the new mount namespace's root mount. Default 'private' (since v2.27)."},
+      {"name":"-R, --root","value":"<dir>","doc":"chroot to dir before running the program (after namespace setup)."},
+      {"name":"-w, --wd","value":"<dir>","doc":"chdir to dir before running the program."}
+    ],
+    "examples":[
+      {"invocation":"unshare --user --map-root-user --pid --mount-proc --fork bash","expected_output":"a bash where `id` reports uid=0 root and `ps` shows only bash + ps","scenario":"Quick rootless container-like shell for testing — userns + pidns isolation without docker."},
+      {"invocation":"unshare --net ip link","expected_output":"a fresh network namespace with only loopback (and no IP); ip link prints just `lo`","scenario":"Inspect what a brand-new netns looks like (useful for debugging container network setup)."},
+      {"invocation":"sudo unshare --mount --propagation private bash","expected_output":"a bash whose mounts are private to itself; mount/umount don't affect host","scenario":"Test a tricky mount sequence (overlayfs, bind-mount tree) without polluting the host's mount table."}
+    ],
+    "source_ids":["man7-unshare-1","man7-unshare-2","man7-namespaces-7","man7-user-namespaces-7"]
+  },
+  {
+    "id":"linux.primitives.cmd.nsenter",
+    "command":"nsenter [options] [program [arguments]]",
+    "purpose":"Enter one or more namespaces of an existing process and run a command inside. The userspace front-end to setns(2). The fundamental 'attach to a running container's namespaces' tool — `docker exec` and `kubectl exec` are layered atop this primitive (via the runtime). Without --target, can take individual --<ns>=<file> options pointing to /proc/<pid>/ns/* magic links or persisted bind-mounts.",
+    "flags":[
+      {"name":"-t, --target","value":"<pid>","doc":"PID of the process whose namespaces will be entered. Combine with -a or per-namespace flags."},
+      {"name":"-a, --all","value":null,"doc":"Enter ALL namespaces of the target. Convenient shorthand for `-mUipnCu`."},
+      {"name":"-m, --mount","value":"[=file]","doc":"Enter the target's mount namespace (or the namespace identified by file)."},
+      {"name":"-u, --uts","value":"[=file]","doc":"Enter UTS namespace."},
+      {"name":"-i, --ipc","value":"[=file]","doc":"Enter IPC namespace."},
+      {"name":"-n, --net","value":"[=file]","doc":"Enter network namespace."},
+      {"name":"-p, --pid","value":"[=file]","doc":"Enter PID namespace. Note: only affects the new program's children; nsenter itself remains in the original PID namespace until it execs."},
+      {"name":"-C, --cgroup","value":"[=file]","doc":"Enter cgroup namespace."},
+      {"name":"-U, --user","value":"[=file]","doc":"Enter user namespace. Must be done before joining other namespaces if cred change is required."},
+      {"name":"-T, --time","value":"[=file]","doc":"Enter time namespace."},
+      {"name":"-r, --root","value":"[=dir]","doc":"chroot to the target's root (or to dir). Without arg, uses target's /proc/<pid>/root."},
+      {"name":"-w, --wd","value":"[=dir]","doc":"chdir to target's CWD or to the given dir."},
+      {"name":"-F, --no-fork","value":null,"doc":"Do not fork before exec — useful when entering only --user/--mount/--uts (no PID-ns) and you want nsenter's PID to be the entered-program's PID."},
+      {"name":"-S, --setuid","value":"<uid>","doc":"Set UID via setuid(2) in the entered namespaces (after possible --root chroot)."},
+      {"name":"-G, --setgid","value":"<gid>","doc":"Set GID via setgid(2)."},
+      {"name":"--preserve-credentials","value":null,"doc":"Don't change uid/gid when entering the user namespace (the default IS to drop privileges in the joined userns)."}
+    ],
+    "examples":[
+      {"invocation":"nsenter -t 12345 -m -u -i -n -p bash","expected_output":"a bash inside container PID 12345's namespaces — /proc, hostname, net interfaces match the container","scenario":"Debug a running container from the host without docker exec — works even if dockerd is unhealthy."},
+      {"invocation":"nsenter -t 1 -m findmnt","expected_output":"the host's mount table (since pid 1 lives in the host mountns)","scenario":"From inside a privileged container with /proc bind-mounted, peek at the host's mount table."},
+      {"invocation":"nsenter --net=/var/run/netns/myns ip route","expected_output":"routes inside the persisted netns named myns","scenario":"Inspect routing inside a persistent netns set up via `ip netns add myns`."}
+    ],
+    "source_ids":["man7-nsenter-1","man7-setns-2","man7-namespaces-7"]
+  },
+  {
+    "id":"linux.primitives.cmd.pivot-root",
+    "command":"pivot_root new_root put_old",
+    "purpose":"Move the current root filesystem to put_old and make new_root the new root. Userspace front-end to pivot_root(2). The 'switch the rootfs cleanly inside a mount namespace' tool — what container runtimes do during container start (after preparing new_root with the image's rootfs). Safer than chroot because once the old root is unmounted, escape via reusing chroot is impossible.",
+    "flags":[
+      {"name":"-h, --help","value":null,"doc":"Print help."},
+      {"name":"-V, --version","value":null,"doc":"Print version."}
+    ],
+    "examples":[
+      {"invocation":"unshare --mount sh -c 'mkdir /mnt/newroot && mount -t tmpfs none /mnt/newroot && mkdir /mnt/newroot/oldroot && pivot_root /mnt/newroot /mnt/newroot/oldroot'","expected_output":"new root is now the tmpfs; the old root is at /oldroot","scenario":"Demonstrate pivot_root mechanics in a private mount namespace without affecting host."},
+      {"invocation":"# inside a container init: mount image rootfs at /newroot, then\\npivot_root /newroot /newroot/oldroot && umount -l /oldroot","expected_output":"container's pid 1 sees / as the image rootfs; old (host) root is unreachable","scenario":"Standard container-runtime pivot pattern — ensures escape is impossible after the old root is lazy-unmounted."}
+    ],
+    "source_ids":["man7-pivot-root-8","man7-mount-namespaces-7"]
+  }
+]

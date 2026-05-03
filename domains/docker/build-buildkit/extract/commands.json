@@ -1,0 +1,217 @@
+[
+  {
+    "id":"docker.build-buildkit.cmd.build",
+    "command":"docker build [OPTIONS] PATH | URL | -",
+    "purpose":"Build an image from a Dockerfile + context. Since Docker Engine 23.0, `docker build` uses Buildx + BuildKit by default (was the legacy builder). Aliases: `docker image build`. Source PATH (local), URL (git), `-` (stdin Dockerfile).",
+    "flags":[
+      {"name":"-t, --tag","value":"<name>[:<tag>]","doc":"Tag the built image. Repeatable."},
+      {"name":"-f, --file","value":"<path>","doc":"Dockerfile path (default: <context>/Dockerfile)."},
+      {"name":"--build-arg","value":"<KEY>[=<VAL>]","doc":"Set ARG value. Without `=VAL`, inherits from caller's env. Repeatable."},
+      {"name":"--target","value":"<stage>","doc":"Build a specific multi-stage target."},
+      {"name":"--platform","value":"<os/arch[/variant][,...]>","doc":"Target platform(s). Multi-platform requires --output type that supports manifest lists."},
+      {"name":"--no-cache","value":null,"doc":"Disable cache."},
+      {"name":"--pull","value":null,"doc":"Always pull base images."},
+      {"name":"--cache-from","value":"<spec>","doc":"Import cache. Forms: type=registry,ref=<image> | type=local,src=<path> | type=gha | type=s3,...,bucket=... | type=azblob,..."},
+      {"name":"--cache-to","value":"<spec>","doc":"Export cache. Same forms; mode=max captures all layers, mode=min only final."},
+      {"name":"-o, --output","value":"<spec>","doc":"Output destination. type=image (default), type=local,dest=<dir>, type=tar,dest=- , type=registry, type=docker, type=oci."},
+      {"name":"--push","value":null,"doc":"Shorthand for --output=type=registry."},
+      {"name":"--load","value":null,"doc":"Shorthand for --output=type=docker (load into local image store). Mutually exclusive with --push for multi-platform."},
+      {"name":"--secret","value":"id=<id>,src=<path> | id=<id>,env=<env-var>","doc":"Mount a secret for `RUN --mount=type=secret`. Repeatable."},
+      {"name":"--ssh","value":"default | <id>=<path>","doc":"SSH agent for `RUN --mount=type=ssh`. `default` uses host's SSH agent."},
+      {"name":"--add-host","value":"<host>:<ip>","doc":"/etc/hosts entries during build."},
+      {"name":"--network","value":"default|none|host|<name>","doc":"Network for RUN commands."},
+      {"name":"--label","value":"<key>=<val>","doc":"Image labels."},
+      {"name":"--allow","value":"<entitlement>","doc":"Grant build entitlements: network.host, security.insecure."},
+      {"name":"--attest","value":"<spec>","doc":"Attach attestations. e.g. type=provenance,mode=max | type=sbom."},
+      {"name":"--provenance","value":"true|false|<spec>","doc":"Shorthand for --attest type=provenance,..."},
+      {"name":"--sbom","value":"true|false|<spec>","doc":"Shorthand for --attest type=sbom,..."},
+      {"name":"--metadata-file","value":"<path>","doc":"Write build metadata (digest, ref) as JSON."},
+      {"name":"--builder","value":"<name>","doc":"Override the default buildx builder."},
+      {"name":"--progress","value":"auto|tty|plain","doc":"Progress format. plain is the right choice for CI logs."},
+      {"name":"--shm-size","value":"<bytes>","doc":"/dev/shm size during build."},
+      {"name":"--memory, -m","value":"<bytes>","doc":"Memory limit during build."},
+      {"name":"--memory-swap","value":"<bytes>","doc":"Memory + swap during build."},
+      {"name":"--cpu-shares","value":"<int>","doc":"CPU shares during build."},
+      {"name":"--cpu-period","value":"<microseconds>","doc":"CFS period during build."},
+      {"name":"--cpu-quota","value":"<microseconds>","doc":"CFS quota during build."}
+    ],
+    "examples":[
+      {"invocation":"docker build -t myapp:1.0 .","expected_output":"BuildKit builds and tags myapp:1.0 in the local image store","scenario":"normal local build"},
+      {"invocation":"docker build --platform linux/amd64,linux/arm64 -t myreg/myapp:1 --push .","expected_output":"multi-arch manifest list pushed to registry","scenario":"CI multi-arch release"},
+      {"invocation":"docker build --secret id=npm_token,env=NPM_TOKEN -t myapp .","expected_output":"build with NPM_TOKEN available via RUN --mount=type=secret,id=npm_token","scenario":"private-registry npm install without leaking the token in image history"}
+    ],
+    "source_ids":["docker-docs-build-buildkit","moby-buildkit-readme","docker-docs-build-secrets","moby-buildkit-multi-platform","docker-docs-build-cache"]
+  },
+  {
+    "id":"docker.build-buildkit.cmd.buildx-build",
+    "command":"docker buildx build [OPTIONS] PATH | URL | -",
+    "purpose":"Same surface as `docker build` (since 23.0 they're aliases) but explicitly invokes the buildx CLI. Use directly when you want to be sure you're getting the buildx behavior, or when running a non-default builder via `--builder`.",
+    "flags":[
+      {"name":"--builder","value":"<name>","doc":"buildx builder to use (vs default)."},
+      {"name":"-t, --tag","value":"<name>[:<tag>]","doc":"Tag(s) for the built image."},
+      {"name":"-f, --file","value":"<path>","doc":"Dockerfile path."},
+      {"name":"--platform","value":"<os/arch>[,...]","doc":"Target platform(s). With multiple, requires --push or --output type=oci/local — can't --load multi-platform."},
+      {"name":"--push","value":null,"doc":"Push to registry. Required for multi-platform."},
+      {"name":"--load","value":null,"doc":"Load into local image store. Single-platform only."},
+      {"name":"--cache-from","value":"<spec>","doc":"Import cache from a backend."},
+      {"name":"--cache-to","value":"<spec>","doc":"Export cache to a backend."},
+      {"name":"--secret","value":"<spec>","doc":"Mount secret for build."},
+      {"name":"--ssh","value":"<spec>","doc":"SSH agent forwarding."},
+      {"name":"--build-arg","value":"<key>=<val>","doc":"Set ARG."},
+      {"name":"--build-context","value":"<name>=<value>","doc":"Additional named context. e.g. `--build-context shared=../shared` for `COPY --from=shared`."},
+      {"name":"--target","value":"<stage>","doc":"Target stage."},
+      {"name":"--no-cache","value":null,"doc":"Disable cache."},
+      {"name":"--no-cache-filter","value":"<stage>","doc":"Disable cache for specific stages only."},
+      {"name":"--pull","value":null,"doc":"Pull base images."},
+      {"name":"--allow","value":"<entitlement>","doc":"Grant entitlement: network.host | security.insecure."},
+      {"name":"--attest","value":"<spec>","doc":"Build attestations: provenance, sbom."},
+      {"name":"--provenance","value":"<spec>|true|false","doc":"Provenance attestation shorthand."},
+      {"name":"--sbom","value":"<spec>|true|false","doc":"SBOM attestation shorthand."},
+      {"name":"--metadata-file","value":"<path>","doc":"Write build metadata JSON."},
+      {"name":"-o, --output","value":"<spec>","doc":"Output destination. Multi-platform supported types: registry, oci, local."},
+      {"name":"--label","value":"<key>=<val>","doc":"Labels."},
+      {"name":"--add-host","value":"<host>:<ip>","doc":"/etc/hosts entries."},
+      {"name":"--network","value":"<mode>","doc":"Network mode for RUN."},
+      {"name":"--invoke","value":"<cmd>","doc":"Drop into an interactive command after a failed build (debug experimental)."},
+      {"name":"--call","value":"check|outline|targets","doc":"Inspect the build graph: check (validate), outline (list ARG/INSTR), targets (list stages)."},
+      {"name":"--print","value":"check|outline|targets","doc":"Alias for --call (older name)."},
+      {"name":"--shm-size","value":"<bytes>","doc":"/dev/shm during build."},
+      {"name":"--ulimit","value":"<name>=<soft>:<hard>","doc":"ulimits during build."}
+    ],
+    "examples":[
+      {"invocation":"docker buildx build --builder mybuilder --platform linux/amd64,linux/arm64 --push -t myreg/myapp:1 .","expected_output":"multi-arch image pushed; manifest list created","scenario":"explicit builder + multi-arch push"},
+      {"invocation":"docker buildx build --call outline -f Dockerfile .","expected_output":"list of stages, ARGs, ENVs in the Dockerfile","scenario":"introspection without building"}
+    ],
+    "source_ids":["docker-docs-build-buildkit","moby-buildkit-readme","moby-buildkit-multi-platform"]
+  },
+  {
+    "id":"docker.build-buildkit.cmd.buildx-create",
+    "command":"docker buildx create [OPTIONS] [CONTEXT|ENDPOINT]",
+    "purpose":"Create a buildx builder instance. Combined with `--use`, it becomes the active builder for subsequent `docker build` / `docker buildx build` commands.",
+    "flags":[
+      {"name":"--name","value":"<name>","doc":"Builder name. If omitted, auto-generated."},
+      {"name":"--driver","value":"docker|docker-container|kubernetes|remote","doc":"Builder driver."},
+      {"name":"--driver-opt","value":"<key>=<val>","doc":"Driver options. Repeatable. e.g. `--driver-opt image=moby/buildkit:v0.13`."},
+      {"name":"--use","value":null,"doc":"Switch to this builder after creating."},
+      {"name":"--bootstrap","value":null,"doc":"Boot the builder immediately (vs lazy on first build)."},
+      {"name":"--platform","value":"<os/arch>[,...]","doc":"Set declared platforms."},
+      {"name":"--node","value":"<name>","doc":"Node name within a builder (multi-node setups)."},
+      {"name":"--append","value":null,"doc":"Append a node to an existing builder."},
+      {"name":"--config","value":"<path>","doc":"buildkitd config (TOML)."},
+      {"name":"--buildkitd-flags","value":"<args>","doc":"Extra flags to pass to buildkitd in this builder."}
+    ],
+    "examples":[
+      {"invocation":"docker buildx create --name mybuilder --driver docker-container --use","expected_output":"mybuilder","scenario":"set up a docker-container builder for advanced features"},
+      {"invocation":"docker buildx create --driver remote --use tcp://buildkit.example.com:1234","expected_output":"<auto-generated-name>","scenario":"point at a shared remote BuildKit instance"}
+    ],
+    "source_ids":["docker-docs-build-buildkit","moby-buildkit-readme"]
+  },
+  {
+    "id":"docker.build-buildkit.cmd.buildx-use",
+    "command":"docker buildx use [OPTIONS] NAME",
+    "purpose":"Switch the active builder. Persists across shell sessions (per `docker context`).",
+    "flags":[
+      {"name":"--default","value":null,"doc":"Set as default for the current docker context."},
+      {"name":"--global","value":null,"doc":"Set as default across all contexts."}
+    ],
+    "examples":[
+      {"invocation":"docker buildx use mybuilder","expected_output":"(no output on success)","scenario":"swap to a named builder"},
+      {"invocation":"docker buildx use --global mybuilder","expected_output":"","scenario":"set as global default"}
+    ],
+    "source_ids":["docker-docs-build-buildkit"]
+  },
+  {
+    "id":"docker.build-buildkit.cmd.buildx-bake",
+    "command":"docker buildx bake [OPTIONS] [TARGET...]",
+    "purpose":"Build a matrix of targets defined in HCL/JSON/Compose files. Each target is a separate image. Variables, groups, and target overrides supported. The CI driver for monorepo / multi-image builds.",
+    "flags":[
+      {"name":"-f, --file","value":"<path>","doc":"Bake file. Repeatable. Default search: docker-bake.hcl, docker-bake.json, compose.yaml, docker-compose.yml."},
+      {"name":"--print","value":null,"doc":"Show the resolved build matrix without building."},
+      {"name":"--no-cache","value":null,"doc":"Disable cache for all targets."},
+      {"name":"--pull","value":null,"doc":"Pull base images for all targets."},
+      {"name":"--push","value":null,"doc":"Push all built images."},
+      {"name":"--load","value":null,"doc":"Load all built images locally (single-platform per target)."},
+      {"name":"--set","value":"<target>.<key>=<value>","doc":"Override a target's attribute. Repeatable."},
+      {"name":"--metadata-file","value":"<path>","doc":"Write metadata JSON (per-target digest, ref)."},
+      {"name":"--builder","value":"<name>","doc":"Pick a buildx builder."},
+      {"name":"--call","value":"check|outline|targets","doc":"Inspection mode."},
+      {"name":"--list","value":"targets|variables","doc":"List bake-file content."}
+    ],
+    "examples":[
+      {"invocation":"docker buildx bake --print","expected_output":"JSON of the resolved build matrix","scenario":"validate bake file before building"},
+      {"invocation":"docker buildx bake api worker --push","expected_output":"both targets built + pushed","scenario":"build a subset of bake targets"},
+      {"invocation":"docker buildx bake --set api.tags=myreg/api:dev --load api","expected_output":"api built with overridden tag, loaded locally","scenario":"dev workflow with one-off tag override"}
+    ],
+    "source_ids":["docker-docs-build-bake"]
+  },
+  {
+    "id":"docker.build-buildkit.cmd.buildx-imagetools-create",
+    "command":"docker buildx imagetools create [OPTIONS] [SOURCE...]",
+    "purpose":"Create or modify an image manifest list (multi-arch image) on a registry from existing single-arch images. Doesn't rebuild — just stitches. Companion: `imagetools inspect <ref>` to view a manifest list.",
+    "flags":[
+      {"name":"-t, --tag","value":"<name>[:<tag>]","doc":"Tag the resulting manifest list. Repeatable."},
+      {"name":"--append","value":null,"doc":"Append to an existing manifest list."},
+      {"name":"-f, --file","value":"<path>","doc":"Read sources from a file (one ref per line)."},
+      {"name":"--annotation","value":"<key>=<val>","doc":"Add OCI annotations. Repeatable. Forms: `index:<key>=<val>`, `manifest:<key>=<val>`, `manifest-descriptor:<key>=<val>`."},
+      {"name":"--builder","value":"<name>","doc":"Use a specific builder."},
+      {"name":"--dry-run","value":null,"doc":"Print the manifest list without pushing."},
+      {"name":"--prefer-index","value":"true|false","doc":"Prefer creating an OCI image-index even when sources are individual manifests."}
+    ],
+    "examples":[
+      {"invocation":"docker buildx imagetools create -t myreg/myapp:1 myreg/myapp:1-amd64 myreg/myapp:1-arm64","expected_output":"manifest list pushed combining the two single-arch tags","scenario":"build per-arch separately, stitch into one tag at the end"},
+      {"invocation":"docker buildx imagetools inspect myreg/myapp:1","expected_output":"Name, MediaType, Manifests[] with platform info per entry","scenario":"verify multi-arch tag composition"}
+    ],
+    "source_ids":["moby-buildkit-multi-platform","moby-buildkit-readme"]
+  },
+  {
+    "id":"docker.build-buildkit.cmd.buildctl",
+    "command":"buildctl [global-flags] <subcommand> [subcommand-flags]",
+    "purpose":"Native BuildKit CLI. Works against the buildkitd daemon directly via gRPC. For debugging buildkitd, running standalone BuildKit (without docker), or driving builds with non-Dockerfile frontends. Subcommands: build, debug, prune, du.",
+    "flags":[
+      {"name":"--addr","value":"<socket>","doc":"buildkitd gRPC socket. Default `unix:///run/buildkit/buildkitd.sock`."},
+      {"name":"--tlscacert","value":"<path>","doc":"CA cert when buildkitd uses TLS."},
+      {"name":"--tlscert","value":"<path>","doc":"Client TLS cert."},
+      {"name":"--tlskey","value":"<path>","doc":"Client TLS key."},
+      {"name":"--tlsdir","value":"<dir>","doc":"Shortcut: <dir>/{ca.pem,cert.pem,key.pem}."},
+      {"name":"--debug","value":null,"doc":"Verbose gRPC + client debug logs."},
+      {"name":"--timeout","value":"<duration>","doc":"Timeout for gRPC dial."},
+      {"name":"--frontend","value":"<name>","doc":"Frontend to use (subcommand: build). e.g. `--frontend dockerfile.v0`."},
+      {"name":"--local","value":"<name>=<path>","doc":"Local source dir. e.g. `--local context=. --local dockerfile=.`."},
+      {"name":"--opt","value":"<key>=<val>","doc":"Frontend option. e.g. `--opt target=stage --opt build-arg:VERSION=1.2.3`."}
+    ],
+    "examples":[
+      {"invocation":"buildctl build --frontend dockerfile.v0 --local context=. --local dockerfile=. --output type=image,name=myapp:1,push=true","expected_output":"BuildKit builds the Dockerfile and pushes","scenario":"standalone BuildKit build (no docker)"},
+      {"invocation":"buildctl debug du","expected_output":"per-record cache disk usage","scenario":"figure out what's filling the buildkitd cache"},
+      {"invocation":"buildctl prune --keep-duration 168h","expected_output":"prunes cache entries unused for >7 days","scenario":"scheduled cache GC"}
+    ],
+    "source_ids":["moby-buildkit-readme"]
+  },
+  {
+    "id":"docker.build-buildkit.cmd.buildkitd",
+    "command":"buildkitd [global-flags]",
+    "purpose":"BuildKit daemon. gRPC server on `/run/buildkit/buildkitd.sock` by default. Two worker backends: OCI (runc; default) and containerd. Reads `/etc/buildkit/buildkitd.toml`.",
+    "flags":[
+      {"name":"--addr","value":"<spec>[ <spec>...]","doc":"Listen address(es). e.g. `unix:///run/buildkit/buildkitd.sock`, `tcp://0.0.0.0:1234`, `npipe:////./pipe/buildkitd` (Windows). Repeatable."},
+      {"name":"--config","value":"<path>","doc":"Config file (TOML). Default /etc/buildkit/buildkitd.toml."},
+      {"name":"--root","value":"<path>","doc":"Persistent state root."},
+      {"name":"--tlscert","value":"<path>","doc":"TLS server cert."},
+      {"name":"--tlskey","value":"<path>","doc":"TLS server key."},
+      {"name":"--tlscacert","value":"<path>","doc":"CA cert for client mTLS."},
+      {"name":"--oci-worker","value":"true|false","doc":"Enable OCI (runc) worker. Default true."},
+      {"name":"--containerd-worker","value":"true|false","doc":"Enable containerd worker. Default false."},
+      {"name":"--containerd-worker-addr","value":"<sock>","doc":"containerd socket when using containerd worker."},
+      {"name":"--containerd-worker-namespace","value":"<ns>","doc":"containerd namespace (default `buildkit`)."},
+      {"name":"--oci-worker-snapshotter","value":"<name>","doc":"Snapshotter for OCI worker. Default `overlayfs`."},
+      {"name":"--rootless","value":null,"doc":"Run as non-root (with newuidmap/newgidmap)."},
+      {"name":"--debug","value":null,"doc":"Verbose logs."},
+      {"name":"--debugaddr","value":"<host:port>","doc":"Debug HTTP server (pprof + metrics)."},
+      {"name":"--log-format","value":"text|json","doc":"Log output format."}
+    ],
+    "examples":[
+      {"invocation":"sudo buildkitd","expected_output":"buildkitd starts, listens on /run/buildkit/buildkitd.sock","scenario":"manual standalone start (Linux)"},
+      {"invocation":"sudo buildkitd --addr tcp://0.0.0.0:1234 --tlscacert ca.pem --tlscert cert.pem --tlskey key.pem","expected_output":"buildkitd listens on TCP with mTLS","scenario":"shared org-wide builder over TCP"},
+      {"invocation":"buildkitd --rootless","expected_output":"rootless buildkitd starts under unprivileged userns","scenario":"CI runner without root"}
+    ],
+    "source_ids":["moby-buildkit-readme","moby-buildkit-buildkitd-toml","moby-buildkit-rootless"]
+  }
+]

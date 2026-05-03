@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ecs.agent.fm.agent-disconnected-from-ecs-service",
+    "symptom": "Container instance shows status=ACTIVE but agentConnected=false. New tasks aren't placed; running tasks continue but state-changes aren't reported. ECS event log: 'service X has stopped Y running tasks: Task failed ELB health checks'.",
+    "error_patterns": ["agentConnected=false", "ACS connection lost", "Failed to send heartbeat"],
+    "root_cause_class": "acs-protocol-disconnect",
+    "affected_concepts": ["ecs.agent.acs-protocol", "ecs.agent.amazon-ecs-agent"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm agent is running on the instance", "command": "ssh ec2-user@<instance>; sudo systemctl status ecs", "expected": "ecs.service active (running); recent ecs-agent logs", "source_id": "ecs-init-readme"},
+      {"step": 2, "action": "Check agent logs for ACS WebSocket failures", "command": "sudo grep -E 'ACS|WebSocket|Failed to' /var/log/ecs/ecs-agent.log | tail -50", "expected": "ACS reconnect attempts; underlying error (DNS, TLS handshake, throttled)", "source_id": "ecs-agent-readme"},
+      {"step": 3, "action": "Verify NAT/internet egress to ECS service endpoint", "command": "curl -I https://ecs.<region>.amazonaws.com/", "expected": "HTTP 400 (expected for GET) — confirms reachability", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 4, "action": "Check IAM role permissions", "command": "aws sts get-caller-identity; check that role has AmazonEC2ContainerServiceforEC2Role policy", "expected": "Role + ecs:RegisterContainerInstance, ecs:DiscoverPollEndpoint, ecs:Poll, ecs:UpdateContainerInstancesState perms", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Restart agent", "command": "sudo systemctl restart ecs", "validation": "agentConnected=true within 60s", "rollback": null, "source_id": "ecs-init-readme"},
+      {"step": 2, "action": "If chronic, check security group / NACL for egress 443 to ecs.<region>.amazonaws.com", "command": "Inspect SG outbound rules + NACL; add 443 → 0.0.0.0/0 if missing", "validation": "Reconnects without restart", "rollback": "Tighten back", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme", "ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.agent.fm.agent-oom-on-dense-instance",
+    "symptom": "Agent process killed by OOM killer on instance running many high-density tasks. dmesg shows 'Out of memory: Killed process <pid> (agent)'. Tasks orphaned (still running but no agent control).",
+    "error_patterns": ["agent OOM", "Killed process .* (agent)", "ECS_RESERVED_MEMORY too low"],
+    "root_cause_class": "agent-memory-budget-exceeded",
+    "affected_concepts": ["ecs.agent.amazon-ecs-agent", "ecs.agent.cfg.env.ecs-reserved-memory"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm OOM kill of agent specifically", "command": "sudo dmesg | grep -i 'killed process' | grep -i agent", "expected": "OOM-killer line targeting the agent", "source_id": "ecs-agent-readme"},
+      {"step": 2, "action": "Check current ECS_RESERVED_MEMORY", "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | jq '.[] | select(contains(\"ECS_RESERVED_MEMORY\"))'", "expected": "Should be high enough to cover agent + system overhead (typically 256-512 MiB on dense instances)", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise ECS_RESERVED_MEMORY to subtract more from advertised capacity (forces fewer tasks)", "command": "echo 'ECS_RESERVED_MEMORY=512' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs", "validation": "Tasks placed less densely; OOM stops", "rollback": "Restore prior value", "source_id": "ecs-agent-readme"},
+      {"step": 2, "action": "Set agent container memory limit explicitly via systemd", "command": "Add MemoryMax=512M to ecs.service drop-in", "validation": "Agent OOMs gracefully (won't be killed first)", "rollback": null, "source_id": "ecs-init-readme"}
+    ],
+    "confidence": 0.8,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme"]
+  },
+  {
+    "id": "ecs.agent.fm.cgroupv2-task-launch-failure",
+    "symptom": "Tasks fail to launch on cgroup v2 instances; CannotCreateContainerError mentions cgroup-v2 mount or hierarchy issues. Particularly with older agent versions.",
+    "error_patterns": ["cgroup v2", "ResourceInitializationError", "failed to setup cgroup"],
+    "root_cause_class": "agent-cgroup-version-mismatch",
+    "affected_concepts": ["ecs.agent.amazon-ecs-agent", "ecs.agent.cfg.env.ecs-cgroup-cpu-period"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check host cgroup version", "command": "stat -fc %T /sys/fs/cgroup", "expected": "cgroup2fs (v2) or tmpfs (v1)", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Check agent version", "command": "curl -s http://localhost:51678/v1/metadata | jq .Version", "expected": "≥ 1.79.0 for full cgroup-v2 support", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Upgrade agent (in-place or via AMI rotation)", "command": "Trigger ECS-managed update OR use AL2023 ECS-Optimized AMI (ships current agent + cgroup-v2 ready)", "validation": "Agent ≥ 1.79.0; tasks launch", "rollback": "Pin to known-good agent version", "source_id": "ecs-dg-optimized-ami"},
+      {"step": 2, "action": "If can't upgrade, fall back to cgroup v1", "command": "Add systemd.unified_cgroup_hierarchy=0 to host kernel cmdline; reboot", "validation": "/sys/fs/cgroup is tmpfs (v1)", "rollback": "Remove cmdline arg", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-changelog"]
+  },
+  {
+    "id": "ecs.agent.fm.draining-stuck-services-not-replacing",
+    "symptom": "Container instance set to DRAINING but tasks aren't being replaced. Tasks stuck in RUNNING on the draining instance. Service event log shows no new task placements.",
+    "error_patterns": ["DRAINING but tasks not replaced", "no scaling activity"],
+    "root_cause_class": "no-capacity-for-replacement",
+    "affected_concepts": ["ecs.agent.container-instance-state-machine", "ecs.launch-types.cp-strategy-base-weight"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check service deployment + capacity", "command": "aws ecs describe-services --cluster <c> --services <svc> --query 'services[0].{desired:desiredCount,running:runningCount,pending:pendingCount,events:events[0:5]}'", "expected": "Pending count >0 and events show 'unable to place task'", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Check cluster capacity", "command": "aws ecs describe-container-instances --cluster <c> --container-instances <arn-list> --query 'containerInstances[].{status:status,remaining:remainingResources,registered:registeredResources}'", "expected": "Sum of remainingResources should fit a task; if not, no capacity", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add capacity (scale up ASG or add an instance manually)", "command": "Increase ASG desiredCapacity OR run-instances manually", "validation": "New instance ACTIVE; service places replacement tasks", "rollback": "Scale back down once draining completes", "source_id": "ecs-dg-launch-types"},
+      {"step": 2, "action": "If using capacity providers, raise managedScaling targetCapacity / instanceWarmupPeriod", "command": "Update CP managedScaling.targetCapacity to <100 (e.g. 80) so cluster keeps slack", "validation": "Auto-scaling provisions new instance for replacement", "rollback": "Restore prior targetCapacity", "source_id": "ecs-dg-capacity-providers"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-instance-draining"]
+  },
+  {
+    "id": "ecs.agent.fm.dev-kvm-not-needed-but-docker-failing",
+    "symptom": "agent log: 'failed to dial docker: Get \"http://%2Fvar%2Frun%2Fdocker.sock\": EOF'. Docker daemon isn't reachable.",
+    "error_patterns": ["failed to dial docker", "docker.sock", "EOF"],
+    "root_cause_class": "docker-daemon-unhealthy",
+    "affected_concepts": ["ecs.agent.docker-vs-containerd", "ecs.agent.cfg.env.docker-host"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check Docker daemon", "command": "sudo systemctl status docker; sudo journalctl -u docker --since '10min ago' | tail -50", "expected": "docker.service active; recent activity", "source_id": "ecs-agent-readme"},
+      {"step": 2, "action": "Verify socket permissions", "command": "ls -la /var/run/docker.sock", "expected": "srw-rw---- root:docker; agent uid in docker group", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Restart Docker", "command": "sudo systemctl restart docker; sudo systemctl restart ecs", "validation": "agent reconnects within 60s", "rollback": null, "source_id": "ecs-init-readme"},
+      {"step": 2, "action": "If Docker repeatedly fails, check disk space (Docker writes to /var/lib/docker)", "command": "df -h /var/lib/docker; sudo docker system df", "validation": "Adequate free space", "rollback": null, "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme"]
+  },
+  {
+    "id": "ecs.agent.fm.image-cleanup-races-task-launch",
+    "symptom": "Task fails with CannotPullContainerError 'image not found' RIGHT after a previous task using the same image successfully completed and was cleaned up. Image was deleted by agent's cleanup right as the new task tried to use it.",
+    "error_patterns": ["CannotPullContainerError", "image not found", "cleanup race"],
+    "root_cause_class": "image-cleanup-too-aggressive",
+    "affected_concepts": ["ecs.agent.image-cleanup", "ecs.agent.cfg.env.ecs-image-cleanup-interval", "ecs.agent.cfg.env.ecs-image-minimum-cleanup-age"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check current cleanup config", "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | grep -E 'ECS_IMAGE|CLEANUP'", "expected": "Cleanup interval + min age", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise ECS_IMAGE_MINIMUM_CLEANUP_AGE", "command": "echo 'ECS_IMAGE_MINIMUM_CLEANUP_AGE=24h' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs", "validation": "Recently-pulled images survive longer", "rollback": "Restore prior value", "source_id": "ecs-agent-readme"},
+      {"step": 2, "action": "Or set ECS_IMAGE_PULL_BEHAVIOR=always so tasks re-pull regardless of cache state", "command": "echo 'ECS_IMAGE_PULL_BEHAVIOR=always' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs", "validation": "Tasks always pull (slower start, no cache races)", "rollback": "Restore behavior=default", "source_id": "ecs-agent-readme"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme"]
+  },
+  {
+    "id": "ecs.agent.fm.iam-role-propagation-race",
+    "symptom": "Task fails immediately with 'Unable to assume the role' or 'access denied' on first call to AWS API, even though task IAM role exists. Race: task starts before IAM role's trust relationship has propagated.",
+    "error_patterns": ["Unable to assume", "AccessDenied", "AssumeRole failed"],
+    "root_cause_class": "iam-eventual-consistency",
+    "affected_concepts": ["ecs.agent.iam-roles-for-tasks", "ecs.task-defs.task-role-vs-execution-role"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check task execution role + task role exist and are recent", "command": "aws iam get-role --role-name <task-role>; check CreateDate", "expected": "Role created >30s ago for IAM consistency", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Check trust policy", "command": "aws iam get-role --role-name <task-role> --query 'Role.AssumeRolePolicyDocument'", "expected": "Trust policy allows ecs-tasks.amazonaws.com to assume", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add 30-60s delay between IAM role creation and task launch in CI/CD", "command": "Pipeline: create-role → sleep 60 → register-task-def → run-task", "validation": "First task launch succeeds", "rollback": null, "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Or implement retry-with-backoff on the task side", "command": "App code wraps first AWS API call in retry loop", "validation": "Eventually-consistent IAM propagation absorbed", "rollback": null, "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.8,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.agent.fm.spot-interruption-no-draining",
+    "symptom": "Spot-backed instance terminated mid-task. Tasks were running but no draining happened; service has to scramble to replace them. Disrupts in-flight work.",
+    "error_patterns": ["Spot instance interrupted", "instance terminated unexpectedly"],
+    "root_cause_class": "ecs-enable-spot-instance-draining-not-set",
+    "affected_concepts": ["ecs.agent.spot-instance-draining", "ecs.agent.cfg.env.ecs-enable-spot-instance-draining"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check current setting", "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | grep SPOT", "expected": "ECS_ENABLE_SPOT_INSTANCE_DRAINING=true", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Enable spot draining", "command": "echo 'ECS_ENABLE_SPOT_INSTANCE_DRAINING=true' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs", "validation": "Future spot interruptions trigger DRAINING; tasks gracefully replaced", "rollback": "Set to false", "source_id": "ecs-agent-readme"},
+      {"step": 2, "action": "Bake into all AMI images (CloudInit/user-data)", "command": "Add line to user-data so newly launched instances always have it", "validation": "Cluster-wide consistent behavior", "rollback": null, "source_id": "ecs-dg-optimized-ami"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme", "ecs-dg-instance-draining"]
+  },
+  {
+    "id": "ecs.agent.fm.checkpoint-state-loss",
+    "symptom": "Agent restart re-discovers running tasks but takes a long time. agent log: 'state file not found'. Symptom: brief task-status flapping in console.",
+    "error_patterns": ["state file not found", "checkpoint missing", "rediscovering tasks"],
+    "root_cause_class": "agent-data-dir-not-persisted",
+    "affected_concepts": ["ecs.agent.checkpoint-state", "ecs.agent.cfg.env.ecs-datadir", "ecs.agent.cfg.env.ecs-host-data-dir"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm data dir bind mount", "command": "docker inspect ecs-agent --format '{{json .Mounts}}' | jq", "expected": "Bind from $ECS_HOST_DATA_DIR/data into $ECS_DATADIR (/data/)", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Ensure ECS_HOST_DATA_DIR + ECS_DATADIR set + bind mount present", "command": "Verify /etc/ecs/ecs.config has both; restart agent", "validation": "State persists across restarts", "rollback": null, "source_id": "ecs-agent-readme"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme"]
+  }
+]

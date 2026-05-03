@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ecs.troubleshooting.fm.task-stopped-by-asg-scale-in",
+    "symptom": "Tasks stopped without app fault. ASG scaled in and terminated the underlying instance. Service event: 'service X has stopped Y running tasks'.",
+    "error_patterns": ["Scaling activity initiated", "instance terminated by ASG", "TaskStoppedByAsg"],
+    "root_cause_class": "asg-scale-in-without-protection",
+    "affected_concepts": ["ecs.launch-types.cfg.cp.managed-termination-protection"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm scale-in event", "command": "aws autoscaling describe-scaling-activities --auto-scaling-group-name <asg> --max-records 10", "expected": "Recent Successful 'Terminating EC2 instance' activity", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Check capacity provider scale-in protection", "command": "aws ecs describe-capacity-providers --capacity-providers <cp> --query 'capacityProviders[].autoScalingGroupProvider.managedTerminationProtection'", "expected": "ENABLED to prevent ASG terminating busy instances", "source_id": "ecs-dg-capacity-providers"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Enable managedTerminationProtection on capacity provider", "command": "aws ecs update-capacity-provider --name <cp> --auto-scaling-group-provider managedTerminationProtection=ENABLED", "validation": "ASG scale-in won't terminate task-bearing instances", "rollback": "Set DISABLED", "source_id": "ecs-dg-capacity-providers"},
+      {"step": 2, "action": "Manually drain instances before terminating", "command": "aws ecs update-container-instances-state --container-instances <arn> --status DRAINING; wait until tasks replaced; then terminate", "validation": "Zero-impact instance retirement", "rollback": null, "source_id": "ecs-dg-instance-draining"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-instance-draining", "ecs-dg-capacity-providers"]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.fargate-spot-interruption",
+    "symptom": "Fargate Spot tasks stopped with stoppedReason 'Spot capacity not available' or 'TerminationNotice'. AWS reclaimed Spot capacity.",
+    "error_patterns": ["Spot capacity not available", "TerminationNotice", "SpotInterruption"],
+    "root_cause_class": "spot-capacity-reclaimed",
+    "affected_concepts": ["ecs.launch-types.fargate-spot", "ecs.launch-types.cp-strategy-base-weight"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm task was on Fargate Spot", "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[0].capacityProviderName'", "expected": "FARGATE_SPOT", "source_id": "ecs-dg-launch-types"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Mix FARGATE + FARGATE_SPOT via capacityProviderStrategy with base on FARGATE", "command": "Update service: capacityProviderStrategy=[{cp:FARGATE,base:2,weight:1},{cp:FARGATE_SPOT,base:0,weight:9}] — first 2 tasks on guaranteed FARGATE", "validation": "Survives partial Spot interruption", "rollback": "All-FARGATE (more expensive but reliable)", "source_id": "ecs-dg-launch-types"},
+      {"step": 2, "action": "App: handle SIGTERM gracefully (2-min grace period)", "command": "Trap SIGTERM, drain connections, exit cleanly", "validation": "No connection-mid-flight loss on interruption", "rollback": null, "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-launch-types"]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.containerinsights-missing-metrics",
+    "symptom": "CloudWatch Container Insights dashboard shows no data for an ECS cluster. Or partial data missing (e.g., per-container memory).",
+    "error_patterns": ["No metrics in Container Insights", "ECS/ContainerInsights namespace empty"],
+    "root_cause_class": "container-insights-not-enabled",
+    "affected_concepts": ["ecs.launch-types.cfg.cluster.settings.container-insights"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check cluster setting", "command": "aws ecs describe-clusters --clusters <c> --include SETTINGS --query 'clusters[].settings'", "expected": "containerInsights: enabled (or enhanced)", "source_id": "ecs-dg-launch-types"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Enable Container Insights on the cluster", "command": "aws ecs update-cluster-settings --cluster <c> --settings name=containerInsights,value=enabled", "validation": "Metrics flow within 5-15 min", "rollback": "value=disabled", "source_id": "ecs-dg-launch-types"},
+      {"step": 2, "action": "For per-container detail, use 'enhanced' (more cost)", "command": "aws ecs update-cluster-settings --cluster <c> --settings name=containerInsights,value=enhanced", "validation": "Per-container metrics appear", "rollback": "Back to 'enabled' or 'disabled'", "source_id": "ecs-dg-launch-types"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-launch-types"]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.bare-metal-boot-time-exceeded-asg-warmup",
+    "symptom": "Bare-metal instance launched by ASG never becomes available. 20+ minute boot time exceeds ASG instanceWarmupPeriod / managed-scaling expectations.",
+    "error_patterns": ["bare-metal slow boot", "ASG instance health check failed", "exceeded warmup"],
+    "root_cause_class": "warmup-too-short-for-bare-metal",
+    "affected_concepts": ["ecs.nitro-baremetal.bare-metal-boot-time", "ecs.launch-types.cfg.cp.managed-scaling.instance-warmup-period"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Confirm instance type is .metal", "command": "aws ec2 describe-instances --instance-ids <id> --query 'Reservations[].Instances[].InstanceType'", "expected": "Ends in .metal", "source_id": "ecs-ec2-nitro"},
+      {"step": 2, "action": "Check current warmup period", "command": "aws ecs describe-capacity-providers --capacity-providers <cp> --query 'capacityProviders[].autoScalingGroupProvider.managedScaling.instanceWarmupPeriod'", "expected": "≥1500s (25 min) for bare-metal", "source_id": "ecs-dg-capacity-providers"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise instanceWarmupPeriod to >25 minutes", "command": "aws ecs update-capacity-provider --name <cp> --auto-scaling-group-provider managedScaling={instanceWarmupPeriod=1800,...}", "validation": "Bare-metal launches no longer fail health-check during boot", "rollback": "Restore prior", "source_id": "ecs-dg-capacity-providers"},
+      {"step": 2, "action": "Pre-warm instances out-of-band (warm pool) for fast scale-out", "command": "Configure ASG warm pool with N pre-booted instances; ASG promotes from pool first", "validation": "Scale-out completes in seconds vs 20 min", "rollback": null, "source_id": "ecs-dg-launch-types"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-ec2-nitro", "ecs-dg-capacity-providers"]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.containerinsights-on-but-no-data-iam",
+    "symptom": "Container Insights enabled but no data flows. Cluster IAM role missing CloudWatchAgentServerPolicy / metrics:PutMetricData.",
+    "error_patterns": ["Container Insights enabled but empty", "no PutMetricData permission"],
+    "root_cause_class": "iam-missing-cloudwatch-perms",
+    "affected_concepts": ["ecs.launch-types.cfg.cluster.settings.container-insights"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check container instance role policies", "command": "aws iam list-attached-role-policies --role-name <instance-role>", "expected": "AmazonEC2ContainerServiceforEC2Role + CloudWatchAgentServerPolicy", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Attach CloudWatchAgentServerPolicy to the instance role", "command": "aws iam attach-role-policy --role-name <role> --policy-arn arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy", "validation": "Metrics flow", "rollback": "Detach", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.scheduled-task-eventbridge-rule-misfire",
+    "symptom": "Scheduled task (EventBridge rule with ECS target) doesn't fire. Cron expression valid but no tasks launched.",
+    "error_patterns": ["EventBridge rule fired but no task", "FailedInvocations metric > 0"],
+    "root_cause_class": "eventbridge-iam-missing",
+    "affected_concepts": ["ecs.launch-types.cluster"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check EventBridge rule + target IAM", "command": "aws events describe-rule --name <rule>; aws events list-targets-by-rule --rule <rule> --query 'Targets[].{Arn:Arn,RoleArn:RoleArn}'", "expected": "RoleArn allows ecs:RunTask + iam:PassRole on the task-def's executionRole + taskRole", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Check FailedInvocations metric", "command": "aws cloudwatch get-metric-statistics --namespace AWS/Events --metric-name FailedInvocations --dimensions Name=RuleName,Value=<rule> --start-time $(date -d '1 hour ago' --iso-8601=seconds) --end-time $(date --iso-8601=seconds) --period 60 --statistics Sum", "expected": "Sum=0; >0 indicates IAM/dest issue", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Grant the EventBridge rule's role ecs:RunTask + iam:PassRole", "command": "aws iam put-role-policy --role-name <eb-role> --policy-name run-ecs --policy-document '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"ecs:RunTask\",\"Resource\":\"<task-def-arn>\"},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":[\"<execRole>\",\"<taskRole>\"]}]}'", "validation": "Tasks launch on schedule", "rollback": "Remove policy", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.amazon-linux-2-eol-2026-06-30",
+    "symptom": "Cluster running ECS-Optimized AL2 AMI past 2026-06-30. No more security updates from upstream Amazon Linux 2.",
+    "error_patterns": ["AL2 EOL", "AmazonLinux2 unsupported", "deprecated AMI"],
+    "root_cause_class": "ami-eol",
+    "affected_concepts": ["ecs.launch-types.ecs-optimized-ami-family", "ecs.launch-types.ami-deprecation-2yr"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check AMI variant on instances", "command": "aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].{Id:InstanceId,AMI:ImageId}'; cross-reference AMI name", "expected": "Migrate any AL2-based to AL2023", "source_id": "ecs-dg-optimized-ami"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Migrate AMIs to AL2023 ECS-Optimized", "command": "Update launch template / launch config to use SSM parameter /aws/service/ecs/optimized-ami/amazon-linux-2023/recommended/image_id; rotate instances via DRAINING + ASG refresh", "validation": "All instances on AL2023; supported through 2028", "rollback": "Pin to AL2 AMI ID (insecure post-EOL)", "source_id": "ecs-dg-optimized-ami"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-optimized-ami"]
+  }
+]

@@ -132,18 +132,23 @@ By license: redistribute-ok=45, reference-only=42, unknown=3.
 | `docker/networking` | 56 | 10 | 100 | [domains/docker/networking/PROGRESS.md](networking/PROGRESS.md) |
 | `docker/compose` | 61 | 8 | 184 | [domains/docker/compose/PROGRESS.md](compose/PROGRESS.md) |
 | `docker/security` | 50 | 4 | 81 | [domains/docker/security/PROGRESS.md](security/PROGRESS.md) |
-| `docker/build-buildkit` | 0 | 0 | 0 | queued |
-| **total** | **335** | **50** | **720** | |
+| `docker/build-buildkit` | 65 | 8 | 149 | [domains/docker/build-buildkit/PROGRESS.md](build-buildkit/PROGRESS.md) |
+| **total** | **400** | **58** | **869** | |
 
-Phase 3 plan covering all 6 leaves: `~/.claude/plans/read-domains-shared-sessions-phase-3-dee-shimmering-knuth.md`. Sessions are queued one leaf at a time; each gets the same depth as engine. Targets per remaining leaf (full ambition, not lightly-done):
+**Phase 3 docker domain — DONE 2026-05-03.** All 6 leaves landed across 6 sessions (3.1–3.6). 1,327 rows total in concepts + commands + config_keys; commands carry an additional 614 flags + 141 examples in STRUCT arrays. 0 orphan source_ids domain-wide; 0 PK collisions across all 6 leaves. Verified: kind/scope distributions hit plan targets exactly or within tolerance per leaf.
 
-- `runtime`: 75 / 12 / 120
-- `networking`: 55 / 10 / 100
-- `compose`: 60 / 8 / 180
-- `security`: 50 / 4 / 80
-- `build-buildkit`: 65 / 8 / 140
+Plan file: `~/.claude/plans/read-domains-shared-sessions-phase-3-dee-shimmering-knuth.md` (executed end-to-end).
 
-Sum target across full domain: ~395 concepts / ~58 commands / ~837 config_keys.
+Phase 1.5 candidates surfaced during P3 (deferred for a follow-up source patch):
+
+- `docs.docker.com/reference/cli/docker/compose/{up,down,ps,logs,exec,run,build,restart}/` — compose CLI man pages (compose leaf had to source-derive flag detail from spec docs + cheat sheet).
+- `docs.docker.com/reference/cli/docker/trust/*` — DCT CLI man pages (security leaf same).
+
+P4 reservations (failure-mode mining, deferred horizontal pass):
+
+- `docker-docs-engine-daemon-troubleshoot` (engine leaf, 17,549 chars).
+- `docker-docs-rootless-troubleshoot` (security leaf, 16,065 chars).
+- 60+ failure-mode seeds catalogued across the 6 PROGRESS files; ~10–12 per leaf.
 
 ## Cross-references
 

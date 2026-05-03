@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ecs.networking.fm.awsvpc-eni-quota-exhaustion",
+    "symptom": "Tasks fail to launch with 'ENI attach timeout'. Per-instance ENI limit hit (e.g., 4 on m5.large) before HDE/trunking enabled.",
+    "error_patterns": ["ENI attach timeout", "InsufficientFreeAddressesInSubnet", "instance ENI quota"],
+    "root_cause_class": "per-instance-eni-quota",
+    "affected_concepts": ["ecs.networking.eni-trunking", "ecs.networking.network-mode-awsvpc"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check instance ENI usage", "command": "aws ec2 describe-instances --instance-ids <id> --query 'Reservations[].Instances[].NetworkInterfaces | length(@)'", "expected": "Compare to per-instance-type limit (lookup at docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html)", "source_id": "ecs-agent-proposal-eni"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Enable awsvpc trunking (HDE)", "command": "aws ecs put-account-setting --name awsvpcTrunking --value enabled; restart agents (or new instances pick up automatically)", "validation": "Per-instance task density 5-20x higher", "rollback": "Disable awsvpcTrunking", "source_id": "ecs-agent-proposal-eni"},
+      {"step": 2, "action": "Or use larger instances with higher ENI limits", "command": "Switch to instance type with more ENI slots (e.g., m5.4xlarge has 8 vs m5.large's 3)", "validation": "More tasks fit per instance", "rollback": null, "source_id": "ecs-dg-task-networking"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-proposal-eni"]
+  },
+  {
+    "id": "ecs.networking.fm.awsvpc-subnet-ip-exhaustion",
+    "symptom": "Task ENI attach fails with 'InsufficientFreeAddressesInSubnet'. Subnet IP space exhausted by accumulated ENIs.",
+    "error_patterns": ["InsufficientFreeAddressesInSubnet"],
+    "root_cause_class": "subnet-ip-exhaustion",
+    "affected_concepts": ["ecs.networking.cfg.network-config.awsvpc.subnets"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check subnet free IPs", "command": "aws ec2 describe-subnets --subnet-ids <subnet> --query 'Subnets[].{Cidr:CidrBlock,Free:AvailableIpAddressCount}'", "expected": "Free IPs > expected task count + headroom", "source_id": "ecs-dg-task-networking"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add more/larger subnets to the network configuration", "command": "Create new /22 subnets across more AZs; add to networkConfiguration.subnets[]", "validation": "Tasks placed across new subnets", "rollback": null, "source_id": "ecs-dg-task-networking"},
+      {"step": 2, "action": "Reduce stale ENIs if accumulated", "command": "aws ec2 describe-network-interfaces --filters Name=status,Values=available --query 'NetworkInterfaces[].NetworkInterfaceId' | xargs -n1 aws ec2 delete-network-interface --network-interface-id", "validation": "Free IPs increase", "rollback": null, "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-networking"]
+  },
+  {
+    "id": "ecs.networking.fm.security-group-blocks-task-traffic",
+    "symptom": "Task ENI security group denies egress (or ingress). App can't reach RDS, can't be reached by ALB targets, etc.",
+    "error_patterns": ["connection refused", "connection timed out", "no route to host"],
+    "root_cause_class": "security-group-misconfig",
+    "affected_concepts": ["ecs.networking.security-group-per-task", "ecs.networking.cfg.network-config.awsvpc.security-groups"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Identify task ENI", "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[].attachments[].details'", "expected": "eni:eni-... and subnet/networkInterfaceId", "source_id": "ecs-agent-proposal-eni"},
+      {"step": 2, "action": "Inspect SG rules", "command": "aws ec2 describe-security-groups --group-ids <task-sg>", "expected": "Egress rules include the destination; ingress includes the expected source SG/IPs", "source_id": "ecs-dg-task-networking"},
+      {"step": 3, "action": "Use VPC Reachability Analyzer for E2E path", "command": "aws ec2 create-network-insights-path --source <task-eni> --destination <rds-eni> --protocol TCP --destination-port 5432; analyze", "expected": "Path REACHABLE", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add the missing rule to the task SG", "command": "aws ec2 authorize-security-group-egress --group-id <task-sg> --protocol tcp --port 5432 --cidr <rds-cidr>", "validation": "Connection succeeds", "rollback": "Revoke", "source_id": "ecs-dg-task-networking"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-networking"]
+  },
+  {
+    "id": "ecs.networking.fm.host-mode-port-conflict",
+    "symptom": "Second task in host network mode fails to start: 'port already allocated'. Two tasks on same instance try to bind same containerPort.",
+    "error_patterns": ["port already allocated", "bind: address already in use", "RESOURCE:PORTS"],
+    "root_cause_class": "host-network-port-conflict",
+    "affected_concepts": ["ecs.networking.network-mode-host", "ecs.task-defs.cfg.container.port-mappings"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check task-def network mode + port mappings", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.{nm:networkMode,ports:containerDefinitions[].portMappings}'", "expected": "networkMode=host with fixed containerPort = collision risk", "source_id": "ecs-dg-task-networking"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Switch to awsvpc mode (each task gets own IP, ports don't collide)", "command": "Update networkMode=awsvpc; networkConfiguration with subnets+SGs", "validation": "Multiple tasks on one instance", "rollback": "Revert to host", "source_id": "ecs-dg-task-networking"},
+      {"step": 2, "action": "Or use bridge mode with hostPort=0 (ephemeral)", "command": "Update task-def to networkMode=bridge, portMappings.hostPort=0; ALB target group uses dynamic port discovery", "validation": "Multiple tasks coexist via different ephemeral host ports", "rollback": null, "source_id": "ecs-dg-task-networking"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-networking"]
+  },
+  {
+    "id": "ecs.networking.fm.task-iam-not-working-host-mode",
+    "symptom": "App in host-network-mode task gets 'no credentials available'. AWS SDK can't reach 169.254.170.2/credentials.",
+    "error_patterns": ["NoCredentialsError", "169.254.170.2", "credential provider chain failed"],
+    "root_cause_class": "task-iam-host-mode-not-enabled",
+    "affected_concepts": ["ecs.networking.task-credentials-endpoint", "ecs.agent.cfg.env.ecs-enable-task-iam-role-network-host"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check agent env", "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | jq '.[] | select(contains(\"TASK_IAM\"))'", "expected": "ECS_ENABLE_TASK_IAM_ROLE=true AND ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST=true", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Set both flags + restart agent", "command": "echo 'ECS_ENABLE_TASK_IAM_ROLE=true' | sudo tee -a /etc/ecs/ecs.config; echo 'ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST=true' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs", "validation": "Credentials endpoint reachable", "rollback": "Set to false (loses IAM-for-tasks)", "source_id": "ecs-agent-readme"},
+      {"step": 2, "action": "Or migrate to awsvpc mode (task IAM works by default)", "command": "Update networkMode=awsvpc", "validation": "Cleaner — recommended for new workloads", "rollback": null, "source_id": "ecs-dg-task-networking"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme"]
+  },
+  {
+    "id": "ecs.networking.fm.alb-health-check-cascading-failures",
+    "symptom": "ALB target group constantly killing tasks. Cascading failures: tasks killed → service launches replacements → new tasks also fail health check.",
+    "error_patterns": ["Task failed ELB health checks", "deregistering target", "health check failed"],
+    "root_cause_class": "alb-health-check-misconfig",
+    "affected_concepts": ["ecs.task-defs.cfg.service.health-check-grace-period-seconds"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check ALB TG health check", "command": "aws elbv2 describe-target-group-attributes --target-group-arn <tg>; describe-target-health", "expected": "Path/port/HealthCheckIntervalSeconds/HealthyThresholdCount sensible for the app", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Validate manually inside the task", "command": "aws ecs execute-command --cluster <c> --task <arn> --container <name> --command '/bin/sh' --interactive; then curl localhost:<port><path>", "expected": "Endpoint returns expected status", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Fix the health check (path, port, expected status)", "command": "aws elbv2 modify-target-group --target-group-arn <tg> --health-check-path /healthz --health-check-port traffic-port", "validation": "Targets healthy", "rollback": "Restore prior", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Raise service.healthCheckGracePeriodSeconds for slow-starting apps", "command": "aws ecs update-service --cluster <c> --service <s> --health-check-grace-period-seconds 300", "validation": "Tasks survive past startup", "rollback": null, "source_id": "ecs-dg-service-defs-params"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.networking.fm.awsvpc-cant-pull-from-ecr-no-vpce",
+    "symptom": "awsvpc tasks in private subnets can't reach ECR. CannotPullContainerError net-timeout. No VPC endpoints + no NAT.",
+    "error_patterns": ["CannotPullContainerError", "i/o timeout", "ecr"],
+    "root_cause_class": "no-private-egress-to-aws-services",
+    "affected_concepts": ["ecs.task-defs.fm.cannot-pull-container-error-network", "ecs.networking.network-mode-awsvpc"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check VPC endpoints", "command": "aws ec2 describe-vpc-endpoints --filters Name=vpc-id,Values=<vpc> --query 'VpcEndpoints[].ServiceName'", "expected": "Should include com.amazonaws.<region>.{ecr.api,ecr.dkr,s3,logs}", "source_id": "ecs-dg-task-networking"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Create the missing VPC endpoints", "command": "aws ec2 create-vpc-endpoint --vpc-id <vpc> --service-name com.amazonaws.<region>.ecr.api --vpc-endpoint-type Interface --subnet-ids <subnets> --security-group-ids <sg>; same for ecr.dkr; for S3 use Gateway type with route-table assoc", "validation": "Pulls succeed without internet egress", "rollback": "Delete endpoints", "source_id": "ecs-dg-task-networking"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-networking"]
+  },
+  {
+    "id": "ecs.networking.fm.imds-leak-from-task",
+    "symptom": "Untrusted task code accesses 169.254.169.254 (EC2 instance metadata) and exfiltrates the container instance role's credentials. SSRF in app code → metadata leak.",
+    "error_patterns": ["IMDS access from task", "instance role credentials leaked"],
+    "root_cause_class": "missing-awsvpc-imds-block",
+    "affected_concepts": ["ecs.agent.awsvpc-block-imds", "ecs.agent.cfg.env.ecs-awsvpc-block-imds"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check current setting", "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | grep AWSVPC_BLOCK_IMDS", "expected": "ECS_AWSVPC_BLOCK_IMDS=true on multi-tenant clusters", "source_id": "ecs-agent-readme"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Block IMDS from awsvpc tasks", "command": "echo 'ECS_AWSVPC_BLOCK_IMDS=true' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs", "validation": "Tasks can't reach 169.254.169.254", "rollback": "Set to false", "source_id": "ecs-agent-readme"},
+      {"step": 2, "action": "Force IMDSv2 on the EC2 instance metadata", "command": "aws ec2 modify-instance-metadata-options --instance-id <id> --http-tokens required", "validation": "Anonymous IMDS GETs return 401", "rollback": "http-tokens optional", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-agent-readme"]
+  }
+]

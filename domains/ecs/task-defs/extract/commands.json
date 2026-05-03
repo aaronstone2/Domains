@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ecs.task-defs.cmd.aws-ecs-register-task-definition",
+    "command": "aws ecs register-task-definition --cli-input-json file://td.json",
+    "purpose": "Register a new revision of a task definition. Returns the new revision number. Idempotent only if the JSON differs — same content → still creates a new revision (no dedup).",
+    "flags": [{"name": "--cli-input-json", "value": "file://<path>", "doc": "Full task-def JSON."}, {"name": "--family", "value": "<name>", "doc": "Required if not in JSON."}, {"name": "--container-definitions", "value": "<json>", "doc": "Inline alternative."}],
+    "examples": [{"invocation": "aws ecs register-task-definition --cli-input-json file://td.json --query 'taskDefinition.{family:family,revision:revision}'", "expected_output": "{\"family\":\"my-app\",\"revision\":7}", "scenario": "CI/CD task-def update"}],
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.task-defs.cmd.aws-ecs-run-task",
+    "command": "aws ecs run-task --cluster <c> --task-definition <family[:rev]> [...]",
+    "purpose": "Launch a one-shot (non-service-managed) task. Useful for scheduled batch jobs, migrations, ad-hoc debugging. Skip --launch-type if a default capacity-provider strategy is set on the cluster.",
+    "flags": [
+      {"name": "--cluster", "value": "<name>", "doc": "Cluster name."},
+      {"name": "--task-definition", "value": "<family[:rev]>", "doc": "Family or family:revision."},
+      {"name": "--launch-type", "value": "FARGATE|EC2|EXTERNAL", "doc": "Launch type for this task."},
+      {"name": "--network-configuration", "value": "awsvpcConfiguration={subnets=...,securityGroups=...,assignPublicIp=ENABLED|DISABLED}", "doc": "Required for awsvpc-mode tasks."},
+      {"name": "--overrides", "value": "{containerOverrides:[...]}", "doc": "Per-invocation env/command/cpu/memory overrides."}
+    ],
+    "examples": [{"invocation": "aws ecs run-task --cluster prod --task-definition my-batch:latest --launch-type FARGATE --network-configuration awsvpcConfiguration={subnets=[subnet-abc],securityGroups=[sg-xyz],assignPublicIp=DISABLED}", "expected_output": "JSON with task ARN, lastStatus PROVISIONING", "scenario": "One-shot batch run"}],
+    "source_ids": ["ecs-dg-task-defs-params", "ecs-dg-task-networking"]
+  }
+]

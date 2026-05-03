@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ecs.agent.cmd.curl-introspection-metadata",
+    "command": "curl -s http://localhost:51678/v1/metadata",
+    "purpose": "Read container instance metadata via the agent introspection API. Returns Cluster name, ContainerInstanceArn, agent Version. Health-check + identity probe; first command to run when SSH'd into a container instance.",
+    "flags": [],
+    "examples": [{"invocation": "curl -s http://localhost:51678/v1/metadata | python3 -mjson.tool", "expected_output": "{\"Cluster\":\"<name>\", \"ContainerInstanceArn\":\"arn:aws:ecs:...\", \"Version\":\"Amazon ECS Agent - vX.Y.Z (commit)\"}", "scenario": "Confirm cluster registration"}],
+    "source_ids": ["ecs-dg-agent-introspection"]
+  },
+  {
+    "id": "ecs.agent.cmd.curl-introspection-tasks",
+    "command": "curl -s http://localhost:51678/v1/tasks",
+    "purpose": "List all tasks running on this container instance. Shows Arn, DesiredStatus, KnownStatus, Family, Version, Containers[]. Diagnose 'why isn't my task running' from the agent's view.",
+    "flags": [],
+    "examples": [
+      {"invocation": "curl -s http://localhost:51678/v1/tasks | python3 -mjson.tool", "expected_output": "{\"Tasks\":[{\"Arn\":...,\"KnownStatus\":\"RUNNING\",...}]}", "scenario": "Inventory of agent-known tasks"},
+      {"invocation": "curl -s 'http://localhost:51678/v1/tasks?taskarn=arn:aws:ecs:...:task/...'", "expected_output": "Single task object", "scenario": "Inspect specific task"},
+      {"invocation": "curl -s 'http://localhost:51678/v1/tasks?dockerid=<full-docker-id>'", "expected_output": "Task containing the matching container", "scenario": "Map docker container → ECS task"}
+    ],
+    "source_ids": ["ecs-dg-agent-introspection"]
+  },
+  {
+    "id": "ecs.agent.cmd.systemctl-restart-ecs",
+    "command": "sudo systemctl restart ecs",
+    "purpose": "Restart the ECS agent via ecs-init systemd unit. Required after editing /etc/ecs/ecs.config to pick up env-var changes. The agent container is destroyed + recreated; running tasks survive (managed by Docker daemon).",
+    "flags": [],
+    "examples": [{"invocation": "sudo vi /etc/ecs/ecs.config; sudo systemctl restart ecs; sudo systemctl status ecs", "expected_output": "ecs.service active (running)", "scenario": "Apply config change"}],
+    "source_ids": ["ecs-init-readme", "ecs-dg-agent-config"]
+  },
+  {
+    "id": "ecs.agent.cmd.tail-agent-logs",
+    "command": "tail -F /var/log/ecs/ecs-agent.log",
+    "purpose": "Stream live agent logs. Format depends on ECS_LOG_OUTPUT_FORMAT (logfmt or json) and ECS_LOG_ROLLOVER_TYPE (size or hourly). Look for ACS connection state + task-state-change events.",
+    "flags": [],
+    "examples": [{"invocation": "sudo tail -F /var/log/ecs/ecs-agent.log /var/log/ecs/ecs-init.log", "expected_output": "Live log stream from both", "scenario": "Diagnose disconnects / task-launch failures"}],
+    "source_ids": ["ecs-init-readme", "ecs-agent-readme"]
+  },
+  {
+    "id": "ecs.agent.cmd.docker-inspect-agent",
+    "command": "docker inspect ecs-agent",
+    "purpose": "Inspect the running ECS agent container. Shows env vars, mounts, network, restart policy. Most useful field: .Config.Env — confirms which ECS_* vars made it through ecs-init.",
+    "flags": [],
+    "examples": [{"invocation": "docker inspect ecs-agent --format '{{json .Config.Env}}' | python3 -mjson.tool", "expected_output": "Array of KEY=VALUE strings", "scenario": "Confirm env-var injection from /etc/ecs/ecs.config"}],
+    "source_ids": ["ecs-agent-readme"]
+  },
+  {
+    "id": "ecs.agent.cmd.ecs-init-reload-cache",
+    "command": "sudo /usr/libexec/amazon-ecs-init reload-cache",
+    "purpose": "Force ecs-init to reload its cached agent container image. Used during agent-update rollback or when /var/cache/ecs/ecs-agent.tar is stale.",
+    "flags": [],
+    "examples": [{"invocation": "sudo systemctl stop ecs; sudo /usr/libexec/amazon-ecs-init reload-cache; sudo systemctl start ecs", "expected_output": "Agent restarted with cached image", "scenario": "Rollback after failed agent update"}],
+    "source_ids": ["ecs-init-readme"]
+  },
+  {
+    "id": "ecs.agent.cmd.curl-task-credentials",
+    "command": "curl -s http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI",
+    "purpose": "From INSIDE a task container, fetch the task's IAM-role credentials. The agent serves this endpoint; AWS SDKs auto-discover via the AWS_CONTAINER_CREDENTIALS_RELATIVE_URI env var injected into the container.",
+    "flags": [],
+    "examples": [{"invocation": "container$ curl -s http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI | python3 -mjson.tool", "expected_output": "{\"AccessKeyId\":\"ASIA...\", \"SecretAccessKey\":\"...\", \"Token\":\"...\", \"Expiration\":\"...\"}", "scenario": "Debug 'AWS credentials not found' in a task"}],
+    "source_ids": ["ecs-agent-readme"]
+  },
+  {
+    "id": "ecs.agent.cmd.aws-ecs-update-container-instances-state-draining",
+    "command": "aws ecs update-container-instances-state --cluster <name> --container-instances <arn> --status DRAINING",
+    "purpose": "Transition a container instance to DRAINING — stops accepting new task placements; service-managed tasks are gradually replaced on other capacity. Standard pre-AMI-update / pre-scale-in workflow.",
+    "flags": [
+      {"name": "--cluster", "value": "<cluster-name>", "doc": "Cluster the instance belongs to."},
+      {"name": "--container-instances", "value": "<arn>...", "doc": "ARNs to drain (space-separated)."},
+      {"name": "--status", "value": "DRAINING|ACTIVE", "doc": "Target state."}
+    ],
+    "examples": [{"invocation": "aws ecs update-container-instances-state --cluster prod --container-instances arn:aws:ecs:us-east-1:...:container-instance/prod/abc --status DRAINING", "expected_output": "JSON containerInstance with status='DRAINING'", "scenario": "Pre-AMI-rotation drain"}],
+    "source_ids": ["ecs-dg-instance-draining"]
+  }
+]

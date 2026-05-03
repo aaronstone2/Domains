@@ -1,0 +1,4 @@
+[
+  {"id":"ecs.troubleshooting.cfg.events-history-size","scope":"service","key":"events[]","type":"array (last 100)","default_value":"100","description":"DescribeServices returns the last 100 service events. Older events are dropped — capture continuously via EventBridge if you need long-term audit.","source_ids":["ecs-dg-troubleshooting"]},
+  {"id":"ecs.troubleshooting.cfg.task-stopped-reason-max-length","scope":"task","key":"stoppedReason","type":"string (max 255)","default_value":null,"description":"Free-form reason string. 255-char cap means long error messages are truncated. Pair with stopCode (TaskFailedToStart | EssentialContainerExited | UserInitiated | ServiceSchedulerInitiated | SpotInterruption | TerminationNotice) for machine-classifiable signal.","source_ids":["ecs-dg-troubleshooting"]}
+]

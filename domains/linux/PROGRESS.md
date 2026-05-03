@@ -119,8 +119,29 @@ Adjacent man7 fetches in the same run succeeded, so these are likely transient r
 - **Phase 3** (Concepts/Commands/Config-keys): per the vertical-domain doctrine, this same vertical continues into `domains/_shared/sessions/phase-3-deep-extraction.md` for linux. Use the corpus we just built. Per-leaf priority for interview likelihood: `linux/primitives` first (namespaces/cgroups/seccomp = container-failure substrate), then `linux/debugging` (perf/eBPF/strace/lsof — interview-day toolkit), then `linux/systemd` (service lifecycle in containers), `linux/networking` (sockets/iptables for connectivity bugs), `linux/filesystem` (overlayfs/proc/sysfs for mount-related failures).
 - **Phase 4** (Failure-modes) — horizontal across all P3s; deferred until devin and k8s also have P3 extraction.
 
+## Phase 3 — Concepts / Commands / Config-keys (per-leaf rollup)
+
+| Leaf | concepts | commands | config_keys | total | session log |
+|---|---:|---:|---:|---:|---|
+| `linux/primitives` | 126 | 3 | 224 | 353 | [domains/linux/primitives/PROGRESS.md](primitives/PROGRESS.md) |
+| `linux/networking` | 0 | 0 | 0 | 0 | queued (Session 3.2) |
+| `linux/debugging` | 0 | 0 | 0 | 0 | queued (Session 3.3) |
+| `linux/systemd` | 0 | 0 | 0 | 0 | queued (Session 3.4) |
+| `linux/filesystem` | 0 | 0 | 0 | 0 | queued (Session 3.5) |
+| **total** | **126** | **3** | **224** | **353** | |
+
+Phase 3 plan covering all 5 leaves: `~/.claude/plans/read-domains-shared-sessions-phase-3-de-radiant-torvalds.md`. Per-leaf targets remaining (full ambition, not lightly-done):
+
+- networking: 110 / 32 / 220 (~362 rows)
+- debugging: 85 / 23 / 135 (~243 rows)
+- systemd: 92 / 9 / 285 (~386 rows)
+- filesystem: 105 / 15 / 215 (~335 rows)
+
+Sum target across full vertical: ~518 concepts / 82 commands / 1079 config_keys = ~1679 rows. Linux primitives landed 23% over-target (353 vs 287) — config_keys density was higher than the agent estimated.
+
 ## Cross-references
 
+- Plan file (Phase 3): `~/.claude/plans/read-domains-shared-sessions-phase-3-de-radiant-torvalds.md`
 - Plan file (Phase 1): `~/.claude/plans/read-domains-shared-sessions-phase-1-so-sorted-shannon.md`
 - Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`
 - Pipe-able session prompts: `domains/_shared/sessions/phase-1-source-corpus.md`, `phase-3-deep-extraction.md`

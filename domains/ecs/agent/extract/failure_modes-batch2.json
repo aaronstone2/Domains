@@ -1,0 +1,254 @@
+[
+  {
+    "id": "ecs.agent.fm.efs-mount-failed-transit-encryption",
+    "symptom": "Task fails ResourceInitializationError 'failed to mount EFS volume: ... transit encryption mismatch'. Task-def says transitEncryption=ENABLED but EFS mount-target SG doesn't allow port 2049 from task SG, OR EFS access point requires IAM and task lacks perms.",
+    "error_patterns": ["failed to mount EFS", "transit encryption", "mount.nfs"],
+    "root_cause_class": "efs-mount-misconfig",
+    "affected_concepts": ["ecs.task-defs.cfg.volume.efs.transit-encryption", "ecs.task-defs.cfg.volume.efs.iam"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check EFS mount target SG", "command": "aws efs describe-mount-targets --file-system-id <fs>; aws ec2 describe-security-groups --group-ids <mt-sg>", "expected": "Allow port 2049 from task SG", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "If iam=ENABLED on volume, check executionRoleArn has elasticfilesystem:ClientMount + ClientWrite", "command": "aws iam simulate-principal-policy --policy-source-arn <execRole> --action-names elasticfilesystem:ClientMount", "expected": "Allowed", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Open port 2049 in EFS mount target SG from task SG", "command": "aws ec2 authorize-security-group-ingress --group-id <mt-sg> --protocol tcp --port 2049 --source-group <task-sg>", "validation": "Mount succeeds", "rollback": "Revoke", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "Add ClientMount/ClientWrite to executionRole if iam=ENABLED", "command": "Attach policy with elasticfilesystem:ClientMount + ClientWrite scoped to the file-system ARN", "validation": "Mount succeeds with IAM auth", "rollback": null, "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.awslogs-missing-log-group",
+    "symptom": "Task fails ResourceInitializationError 'failed to create container: failed to initialize logging driver: awslogs: log group does not exist'. awslogs-create-group not set + group doesn't exist.",
+    "error_patterns": ["log group does not exist", "ResourceNotFoundException", "awslogs"],
+    "root_cause_class": "awslogs-create-group-not-set",
+    "affected_concepts": ["ecs.task-defs.cfg.container.log-driver", "ecs.task-defs.cfg.container.log-options"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check log options", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.containerDefinitions[].logConfiguration'", "expected": "options.awslogs-create-group=true OR group pre-created", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Pre-create the log group (recommended)", "command": "aws logs create-log-group --log-group-name <group>; aws logs put-retention-policy --log-group-name <group> --retention-in-days 30", "validation": "Tasks launch", "rollback": "Delete group", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "Or set awslogs-create-group=true in log options + grant logs:CreateLogGroup to executionRole", "command": "Update task def options.awslogs-create-group=true; add IAM perm", "validation": "Auto-created on first task", "rollback": "Set to false; pre-create groups", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.firelens-config-fluentbit-syntax-error",
+    "symptom": "FireLens log-router container exits immediately. Task stops with 'essential container exited' for the firelens container; app logs lost. Fluent Bit parsed config-file-value with syntax error.",
+    "error_patterns": ["fluent-bit", "configuration error", "FireLens"],
+    "root_cause_class": "firelens-config-syntax",
+    "affected_concepts": ["ecs.task-defs.firelens-configuration", "ecs.task-defs.cfg.container.firelens-config.options"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Read firelens container logs from prior failed task", "command": "aws logs filter-log-events --log-group-name <fluentbit-group> --filter-pattern ERROR", "expected": "Specific config line + error", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Test config file locally", "command": "docker run --rm -v <config>:/etc/fluent-bit/parsers.conf amazon/aws-for-fluent-bit -c /etc/fluent-bit/parsers.conf --dry-run", "expected": "No syntax errors", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Fix the config file; bump revision (S3 or built-in)", "command": "Validate locally; push to S3 (if config-file-type=s3); register new task-def revision", "validation": "FireLens container stays up", "rollback": "Revert config change", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.8,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.ephemeral-storage-exhausted-fargate",
+    "symptom": "Fargate task fills its scratch disk; container crashes with 'no space left on device'. Default ephemeralStorage is 20 GiB; bigger images / scratch usage exceeds.",
+    "error_patterns": ["no space left on device", "ENOSPC", "disk full"],
+    "root_cause_class": "ephemeral-storage-too-small",
+    "affected_concepts": ["ecs.task-defs.ephemeral-storage", "ecs.task-defs.cfg.task.ephemeral-storage.size-in-gib"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check current ephemeralStorage", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.ephemeralStorage'", "expected": "sizeInGiB ≥ image-size + scratch-budget + buffer", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Raise ephemeralStorage (Fargate platform 1.4.0+, range 21-200)", "command": "Update task-def: ephemeralStorage.sizeInGiB=50; register new revision", "validation": "Tasks no longer hit ENOSPC", "rollback": "Restore prior size", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "For larger needs, attach EBS volume (configuredAtLaunch, Fargate platform 1.4+)", "command": "Add task-def volume with configuredAtLaunch=true; provide volume config at run-task time", "validation": "200+ GiB available", "rollback": null, "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.codedeploy-blue-green-rollback-stuck",
+    "symptom": "CodeDeploy blue/green ECS deployment fails to roll back. Old (blue) target group still receiving 0 traffic; service stuck. Manual ALB intervention needed.",
+    "error_patterns": ["BlueGreenDeploymentFailed", "deployment lifecycle hook failed"],
+    "root_cause_class": "codedeploy-iam-or-hook-failed",
+    "affected_concepts": ["ecs.task-defs.service-definition"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect CodeDeploy deployment", "command": "aws deploy get-deployment --deployment-id <id> --query 'deploymentInfo.{status:status,errorInfo:errorInformation}'", "expected": "Specific error code (HEALTH_CONSTRAINTS, IAM_ROLE_MISSING_PERMISSIONS, SCRIPT_FAILED)", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Stop the failed deployment + manually swap ALB listener back to blue TG", "command": "aws deploy stop-deployment --deployment-id <id> --auto-rollback-enabled; aws elbv2 modify-listener --listener-arn <l> --default-actions Type=forward,TargetGroupArn=<blue-tg>", "validation": "Traffic restored to blue", "rollback": null, "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Diagnose + retry once root cause fixed", "command": "Fix the lifecycle hook script / IAM perm; new CodeDeploy deployment", "validation": "Green TG healthy + cutover succeeds", "rollback": null, "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.agent.fm.cross-account-ecr-pull-denied",
+    "symptom": "Task in account A pulls from ECR in account B; CannotPullContainerError. Cross-account ECR repo policy doesn't allow account A's executionRole.",
+    "error_patterns": ["AccessDenied", "cross-account ECR", "RepositoryPolicyNotFoundException"],
+    "root_cause_class": "ecr-cross-account-policy-missing",
+    "affected_concepts": ["ecs.task-defs.cfg.container.image"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check repo policy", "command": "aws ecr get-repository-policy --registry-id <accountB> --repository-name <repo>", "expected": "Statement allowing account A's executionRole arn principal", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add cross-account permission to ECR repo policy", "command": "aws ecr set-repository-policy --registry-id <accountB> --repository-name <repo> --policy-text '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"CrossAcct\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::<accountA>:role/<execRole>\"},\"Action\":[\"ecr:GetDownloadUrlForLayer\",\"ecr:BatchGetImage\",\"ecr:BatchCheckLayerAvailability\"]}]}'", "validation": "Pull succeeds", "rollback": "Remove statement", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.agent.fm.ecs-anywhere-ssm-activation-expired",
+    "symptom": "External instance fails to register. ecs-init log: 'ssm activation expired or invalid'. SSM activation token has 30-day max TTL.",
+    "error_patterns": ["activation expired", "InvalidActivation", "ssm-init"],
+    "root_cause_class": "ssm-activation-ttl-expired",
+    "affected_concepts": ["ecs.launch-types.external-launch-type"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check activation expiration", "command": "aws ssm describe-activations --filters 'Key=ActivationIds,Values=<id>' --query 'ActivationList[].{ExpirationDate:ExpirationDate,Used:RegistrationsCount}'", "expected": "ExpirationDate in future", "source_id": "ecs-dg-launch-types"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Create new activation + re-run ecs-anywhere-install.sh on the instance", "command": "aws ssm create-activation --iam-role <role> --registration-limit 100 --expiration-date $(date -d '+30 days' --iso-8601=seconds); on instance: curl ... | bash -s -- --activation-id <new> --activation-code <new>", "validation": "Instance registers in cluster", "rollback": null, "source_id": "ecs-dg-launch-types"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-launch-types"]
+  },
+  {
+    "id": "ecs.agent.fm.exec-command-ssm-session-failed",
+    "symptom": "aws ecs execute-command fails: 'The execute command failed because execute command was not enabled when the Task was run'.",
+    "error_patterns": ["execute command was not enabled", "ECS Exec disabled"],
+    "root_cause_class": "exec-command-not-opted-in",
+    "affected_concepts": ["ecs.task-defs.service-definition"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check service has enableExecuteCommand=true", "command": "aws ecs describe-services --cluster <c> --services <s> --query 'services[].enableExecuteCommand'", "expected": "true", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "Check task IAM role has SSM perms", "command": "aws iam simulate-principal-policy --policy-source-arn <taskRole> --action-names ssmmessages:CreateControlChannel ssmmessages:CreateDataChannel ssmmessages:OpenControlChannel ssmmessages:OpenDataChannel", "expected": "All allowed", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Update service to enable Exec + grant taskRole SSM perms", "command": "aws ecs update-service --cluster <c> --service <s> --enable-execute-command; force new deployment; attach AmazonSSMManagedInstanceCore (or specific 4 ssmmessages perms) to taskRole", "validation": "execute-command opens shell", "rollback": "Disable enableExecuteCommand", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-troubleshooting"]
+  },
+  {
+    "id": "ecs.agent.fm.task-def-volume-name-collision",
+    "symptom": "Task fails to start: 'volume name X already exists'. Two task-def volumes with the same name; OR mountPoint references a volume name that doesn't exist in volumes[].",
+    "error_patterns": ["volume name", "duplicate volume", "sourceVolume not found"],
+    "root_cause_class": "task-def-volume-misconfig",
+    "affected_concepts": ["ecs.task-defs.cfg.task.volumes", "ecs.task-defs.cfg.container.mount-points"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Inspect task def volumes + mountPoints", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.{volumes:volumes,mounts:containerDefinitions[].mountPoints}'", "expected": "Volume names unique; every mountPoint.sourceVolume matches a volume name", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Rename duplicates / fix mountPoint.sourceVolume references", "command": "Update task-def JSON; register new revision", "validation": "Tasks launch", "rollback": "Revert revision", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.task-stuck-in-stopping",
+    "symptom": "Task transitions to STOPPING but never reaches STOPPED. Held there for many minutes. Container won't respond to SIGTERM.",
+    "error_patterns": ["Task stuck in STOPPING", "container did not exit"],
+    "root_cause_class": "container-ignoring-sigterm",
+    "affected_concepts": ["ecs.agent.cfg.env.ecs-container-stop-timeout", "ecs.task-defs.cfg.container.stop-timeout"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check task lastStatus + stoppedReason", "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[].{status:lastStatus,reason:stoppedReason,since:stoppingAt}'", "expected": "STOPPING; stoppingAt > 30s ago", "source_id": "ecs-dg-troubleshooting"},
+      {"step": 2, "action": "SSH to instance + force-kill if EC2 launch type", "command": "ssh ...; docker ps; docker kill <container-id>", "expected": "Container dies; task completes STOPPED", "source_id": "ecs-dg-troubleshooting"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "App should handle SIGTERM cleanly within stopTimeout", "command": "Add SIGTERM handler that flushes + exits", "validation": "Tasks stop within stopTimeout", "rollback": null, "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "Set linuxParameters.initProcessEnabled=true to use tini PID 1 (forwards signals correctly)", "command": "Add to task-def container.linuxParameters", "validation": "Signals reach app", "rollback": "Disable initProcessEnabled", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.85,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.account-setting-arn-format-required",
+    "symptom": "API calls return 'enable the new ARN format with account-setting before using this feature'. Tagging-aware features need new ARN format.",
+    "error_patterns": ["new ARN format", "InvalidAccountSetting"],
+    "root_cause_class": "old-arn-format",
+    "affected_concepts": ["ecs.networking.cfg.account-setting.task-long-arn", "ecs.networking.cfg.account-setting.container-instance-long-arn"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check account settings", "command": "aws ecs list-account-settings --effective-settings", "expected": "taskLongArnFormat + containerInstanceLongArnFormat + serviceLongArnFormat all = enabled", "source_id": "ecs-dg-task-networking"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Enable for the calling principal", "command": "aws ecs put-account-setting --name taskLongArnFormat --value enabled; same for containerInstanceLongArnFormat + serviceLongArnFormat", "validation": "Tag-aware operations succeed", "rollback": "value=disabled", "source_id": "ecs-dg-task-networking"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-networking"]
+  },
+  {
+    "id": "ecs.agent.fm.environment-file-s3-not-found",
+    "symptom": "Task fails ResourceInitializationError 'environment file s3://bucket/file not accessible'. Bucket/key missing or executionRole lacks s3:GetObject.",
+    "error_patterns": ["environment file", "s3", "NoSuchKey", "AccessDenied"],
+    "root_cause_class": "environment-file-fetch-failed",
+    "affected_concepts": ["ecs.task-defs.cfg.container.environment-files", "ecs.task-defs.cfg.task.execution-role-arn"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Verify file exists", "command": "aws s3 ls s3://<bucket>/<key>", "expected": "Object present", "source_id": "ecs-dg-task-defs-params"},
+      {"step": 2, "action": "Check executionRole has s3:GetObject + bucket policy allows", "command": "aws iam simulate-principal-policy --policy-source-arn <execRole> --action-names s3:GetObject --resource-arns 'arn:aws:s3:::<bucket>/<key>'", "expected": "Allowed", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Add S3 read perms to executionRole + bucket policy", "command": "aws iam put-role-policy --role-name <execRole> --policy-name read-envs --policy-document '{...s3:GetObject on bucket+key...}'", "validation": "Re-run task; env file loaded", "rollback": "Remove policy", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "confidence": 0.9,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.fargate-platform-version-pin-stale",
+    "symptom": "Fargate service pinned to platformVersion=1.3.0 hits behavior bugs that 1.4+ fixes. Or pin to LATEST and behavior changes broke an integration.",
+    "error_patterns": ["platform version", "Fargate behavior change"],
+    "root_cause_class": "platform-version-mismatch",
+    "affected_concepts": ["ecs.launch-types.cfg.task.platform-version"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check service platformVersion", "command": "aws ecs describe-services --cluster <c> --services <s> --query 'services[].platformVersion'", "expected": "Pinned (e.g., 1.4.0) or LATEST", "source_id": "ecs-dg-launch-types"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Set platformVersion=1.4.0 (or latest stable) for new features", "command": "aws ecs update-service --cluster <c> --service <s> --platform-version 1.4.0; force-new-deployment", "validation": "Tasks land on platform 1.4.0", "rollback": "platform-version 1.3.0 (loses features)", "source_id": "ecs-dg-launch-types"},
+      {"step": 2, "action": "If chasing LATEST broke things, pin a known-good version", "command": "Set platform-version=1.4.0 explicitly", "validation": "Stable behavior", "rollback": null, "source_id": "ecs-dg-launch-types"}
+    ],
+    "confidence": 0.8,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-launch-types"]
+  },
+  {
+    "id": "ecs.agent.fm.fargate-restricted-syscall-or-cap",
+    "symptom": "Fargate task fails to launch: 'unsupported parameter: privileged' or 'sysctl X not allowed'. Fargate restricts privileged + many sysctls + capabilities.",
+    "error_patterns": ["unsupported parameter", "not supported on Fargate", "privileged"],
+    "root_cause_class": "fargate-restriction",
+    "affected_concepts": ["ecs.launch-types.fargate", "ecs.task-defs.cfg.container.privileged", "ecs.task-defs.cfg.container.linux-parameters.capabilities-add"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Check task-def for restricted features", "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.containerDefinitions[].{priv:privileged,caps:linuxParameters.capabilities,sysctls:systemControls,pidMode:pidMode}'", "expected": "None of the Fargate-forbidden features set", "source_id": "ecs-dg-task-defs-params"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Remove the restricted parameter OR migrate to EC2 launch type", "command": "Update task-def to drop privileged/restricted sysctl/capability; OR change launchType=EC2", "validation": "Task launches", "rollback": "Revert", "source_id": "ecs-dg-launch-types"}
+    ],
+    "confidence": 0.95,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-dg-task-defs-params"]
+  },
+  {
+    "id": "ecs.agent.fm.bare-metal-host-misuse-firecracker",
+    "symptom": "Bare-metal EC2 instance hosting Firecracker-based workloads exhibits performance degradation. Investigation shows Firecracker not configured per fc-docs-prod-host-setup recommendations on the host.",
+    "error_patterns": ["firecracker performance", "kvm-pit overhead", "host-config drift"],
+    "root_cause_class": "host-not-firecracker-tuned",
+    "affected_concepts": ["ecs.nitro-baremetal.bare-metal-instance", "ecs.nitro-baremetal.nested-kvm-on-bare-metal"],
+    "diagnostic_steps": [
+      {"step": 1, "action": "Verify host kernel cmdline includes 'quiet loglevel=1 nosmt'", "command": "cat /proc/cmdline", "expected": "Per Firecracker production-host-setup recommendations", "source_id": "ecs-aws-baremetal-announce"},
+      {"step": 2, "action": "Check KSM + swap + SMT", "command": "cat /sys/kernel/mm/ksm/run; grep -q /dev /proc/swaps; cat /sys/devices/system/cpu/smt/control", "expected": "ksm/run=0; no swap; smt=off", "source_id": "ecs-ec2-nitro"}
+    ],
+    "fix_steps": [
+      {"step": 1, "action": "Apply Firecracker production-host hardening to the bare-metal instance", "command": "Cross-reference firecracker.setup.production-checklist concept + per-fix steps in firecracker.setup.fm.* failure_modes", "validation": "Host meets the Firecracker production checklist", "rollback": "Tolerate unhardened host (insecure for multi-tenant)", "source_id": "ecs-aws-baremetal-announce"}
+    ],
+    "confidence": 0.7,
+    "last_verified": "2026-05-03",
+    "source_ids": ["ecs-aws-baremetal-announce", "ecs-ec2-nitro"]
+  }
+]
