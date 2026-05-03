@@ -1,0 +1,49 @@
+{
+  "name": "systemd-unit",
+  "description": "systemd unit failed to start. Captures status, journal, dependencies, and resource state.",
+  "platform_hint": "linux-or-wsl",
+  "commands": [
+    {
+      "description": "List recently-failed units",
+      "command": "systemctl list-units --state=failed --no-pager",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Boot blame (slowest units)",
+      "command": "systemd-analyze blame 2>/dev/null | head -10",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Critical chain to default target",
+      "command": "systemd-analyze critical-chain 2>/dev/null | head -30",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Recent system journal errors",
+      "command": "journalctl -p err -n 30 --no-pager 2>/dev/null",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Coredumps (last 7 days)",
+      "command": "coredumpctl list --since=-7days 2>/dev/null | tail -10 || echo '(no coredumps)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Journal disk usage",
+      "command": "journalctl --disk-usage 2>/dev/null",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Active scopes (e.g. user sessions, container scopes)",
+      "command": "systemctl --type=scope --state=active --no-pager 2>/dev/null | head -15",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    }
+  ]
+}

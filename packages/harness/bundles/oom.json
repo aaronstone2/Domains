@@ -1,0 +1,49 @@
+{
+  "name": "oom",
+  "description": "Memory pressure / OOM kill investigation. Use when a process or container died with code 137, or kernel killed something.",
+  "platform_hint": "linux-or-wsl",
+  "commands": [
+    {
+      "description": "Recent OOM kills from kernel ring buffer",
+      "command": "dmesg -T 2>/dev/null | grep -i 'killed process\\|out of memory' | tail -20",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "System-wide memory state",
+      "command": "free -h",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Per-process RSS (top 15 by memory)",
+      "command": "ps -eo pid,user,rss,vsz,cmd --sort=-rss | head -16",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Memory cgroup events (root cgroup)",
+      "command": "cat /sys/fs/cgroup/memory.events 2>/dev/null || echo '(cgroup v1 or no permission)'",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Top cgroups by memory (cgroup v2)",
+      "command": "find /sys/fs/cgroup -name 'memory.current' -exec sh -c 'echo \"$(cat \"$1\" 2>/dev/null) $(dirname \"$1\")\"' _ {} \\; 2>/dev/null | sort -rn | head -10",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Swap activity (vmstat 1 5)",
+      "command": "vmstat 1 5",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Docker containers state (look for OOMKilled=true)",
+      "command": "docker ps -a --format 'table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.RunningFor}}' 2>/dev/null | head -15",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    }
+  ]
+}

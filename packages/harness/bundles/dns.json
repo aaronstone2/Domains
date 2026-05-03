@@ -1,0 +1,55 @@
+{
+  "name": "dns",
+  "description": "DNS resolution problems (slow/failing/wrong answers). Container or host context.",
+  "platform_hint": "linux-or-wsl",
+  "commands": [
+    {
+      "description": "resolv.conf — what nameservers + search domains + ndots",
+      "command": "cat /etc/resolv.conf 2>/dev/null",
+      "timeout_ms": 2000,
+      "allow_failure": true
+    },
+    {
+      "description": "nsswitch.conf — what name resolution sources are tried",
+      "command": "grep -E '^hosts:' /etc/nsswitch.conf 2>/dev/null",
+      "timeout_ms": 2000,
+      "allow_failure": true
+    },
+    {
+      "description": "Time a no-trailing-dot lookup (search-amplification check)",
+      "command": "time getent hosts api.github.com 2>&1",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Time a trailing-dot lookup (FQDN, skips search expansion)",
+      "command": "time getent hosts api.github.com. 2>&1",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Direct DNS query to first nameserver",
+      "command": "dig +tries=1 +time=2 +short api.github.com 2>/dev/null || nslookup api.github.com",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "k8s CoreDNS pods status",
+      "command": "kubectl get pods -n kube-system -l k8s-app=kube-dns 2>/dev/null || echo '(no kubectl or no kube-dns)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "k8s CoreDNS endpoints",
+      "command": "kubectl get endpoints -n kube-system kube-dns 2>/dev/null",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "systemd-resolved status (if used)",
+      "command": "resolvectl status 2>/dev/null | head -30 || echo '(resolved not in use)'",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    }
+  ]
+}

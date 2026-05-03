@@ -1,0 +1,49 @@
+{
+  "name": "docker-state",
+  "description": "General docker daemon health snapshot. Useful when 'docker is broken' is too vague.",
+  "platform_hint": "docker-only",
+  "commands": [
+    {
+      "description": "Docker version (client + server)",
+      "command": "docker version --format '{{json .}}'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Docker system info (storage driver, runtime, security)",
+      "command": "docker info --format 'StorageDriver={{.Driver}} Runtime={{.DefaultRuntime}} Cgroup={{.CgroupVersion}} Security={{.SecurityOptions}}'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "All containers (running + exited)",
+      "command": "docker ps -a --format 'table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Size}}' | head -25",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Disk usage by component",
+      "command": "docker system df",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Networks (look for collisions, leaked subnets)",
+      "command": "docker network ls && echo '---' && docker network inspect bridge --format '{{json .IPAM.Config}}'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Volumes (look for leaked anonymous)",
+      "command": "docker volume ls | head -20",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Recent daemon events (last 60s)",
+      "command": "docker events --since 60s --until 0s 2>/dev/null | head -20 || echo '(no recent events or docker not running)'",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    }
+  ]
+}

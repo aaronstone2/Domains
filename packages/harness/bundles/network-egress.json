@@ -1,0 +1,61 @@
+{
+  "name": "network-egress",
+  "description": "Container/host can't reach external network. Layer-by-layer egress probe + iptables/route state.",
+  "platform_hint": "linux-or-wsl",
+  "commands": [
+    {
+      "description": "IP forwarding state (must be 1 for container egress)",
+      "command": "sysctl net.ipv4.ip_forward 2>/dev/null",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Default route + interface list",
+      "command": "ip route show && echo '---' && ip -br link show",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Layer probe to public IP (no DNS dependency)",
+      "command": "ping -c 3 -W 2 1.1.1.1 || echo '(ping failed)'",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Layer probe to public DNS resolution",
+      "command": "getent hosts cloudflare.com 2>/dev/null || echo '(DNS resolution failed)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "iptables NAT chains (look for MASQUERADE rule)",
+      "command": "sudo iptables -t nat -L POSTROUTING -n -v 2>/dev/null | head -20 || echo '(iptables requires sudo or root)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "iptables FORWARD chain (look for DROPs)",
+      "command": "sudo iptables -L FORWARD -n -v 2>/dev/null | head -10 || echo '(iptables requires sudo or root)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Docker DOCKER + DOCKER-USER chains",
+      "command": "sudo iptables -t nat -L DOCKER -n -v 2>/dev/null && echo '---' && sudo iptables -L DOCKER-USER -n -v 2>/dev/null || echo '(no docker iptables)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Active firewall services (firewalld/ufw)",
+      "command": "systemctl is-active firewalld 2>/dev/null || echo 'firewalld inactive'; systemctl is-active ufw 2>/dev/null || echo 'ufw inactive'",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Conntrack table fill (UDP DNS replies dropped if full)",
+      "command": "sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max 2>/dev/null || echo '(conntrack module not loaded)'",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    }
+  ]
+}

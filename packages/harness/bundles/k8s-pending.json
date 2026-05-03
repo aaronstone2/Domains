@@ -1,0 +1,55 @@
+{
+  "name": "k8s-pending",
+  "description": "Pod stuck Pending — capture node capacity, taints, events, scheduler state.",
+  "platform_hint": "kubectl-only",
+  "commands": [
+    {
+      "description": "Pending pods cluster-wide",
+      "command": "kubectl get pods -A --field-selector=status.phase=Pending",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Recent FailedScheduling events (last 30)",
+      "command": "kubectl get events -A --field-selector=reason=FailedScheduling --sort-by=.lastTimestamp | tail -30",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Node capacity + allocatable (resource budget)",
+      "command": "kubectl describe nodes | grep -E 'Name:|Capacity:|Allocatable:|Allocated' -A 5",
+      "timeout_ms": 10000,
+      "allow_failure": true
+    },
+    {
+      "description": "Node taints",
+      "command": "kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints,STATUS:.status.conditions[-1:].type",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Unbound PVCs (common Pending cause)",
+      "command": "kubectl get pvc -A --field-selector=status.phase=Pending",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Resource quota usage in default namespace",
+      "command": "kubectl describe quota -A 2>/dev/null | head -30 || echo '(no quotas)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Scheduler pod state",
+      "command": "kubectl get pods -n kube-system -l component=kube-scheduler 2>/dev/null",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Cluster Autoscaler pods (if installed)",
+      "command": "kubectl get pods -n kube-system -l app.kubernetes.io/name=cluster-autoscaler 2>/dev/null || kubectl get pods -A -l app=cluster-autoscaler 2>/dev/null || echo '(no cluster-autoscaler found)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    }
+  ]
+}

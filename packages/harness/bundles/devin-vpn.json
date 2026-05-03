@@ -1,0 +1,61 @@
+{
+  "name": "devin-vpn",
+  "description": "Devin DevBox can't reach internal services. Run from inside the DevBox via the session terminal.",
+  "platform_hint": "linux-or-wsl",
+  "commands": [
+    {
+      "description": "VPN client process",
+      "command": "pgrep -a openvpn; pgrep -a wg-quick; pgrep -a tailscale 2>/dev/null || echo '(no VPN process found)'",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Tunnel interface state",
+      "command": "ip addr show | grep -A2 -E 'tun|tap|wg|tailscale' || echo '(no tunnel interface)'",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Routes (look for routes via tunnel)",
+      "command": "ip route show",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "DNS configuration (look for internal nameserver)",
+      "command": "cat /etc/resolv.conf",
+      "timeout_ms": 2000,
+      "allow_failure": true
+    },
+    {
+      "description": "HTTP proxy environment (if corporate proxy)",
+      "command": "env | grep -iE 'proxy|no_proxy' | sort",
+      "timeout_ms": 2000,
+      "allow_failure": true
+    },
+    {
+      "description": "CA bundle includes corp CA?",
+      "command": "ls /usr/local/share/ca-certificates/ 2>/dev/null && echo '---' && grep -c 'BEGIN CERTIFICATE' /etc/ssl/certs/ca-certificates.crt 2>/dev/null",
+      "timeout_ms": 3000,
+      "allow_failure": true
+    },
+    {
+      "description": "Probe internal service by IP (replace 10.0.0.1 with your service)",
+      "command": "echo '(edit this command for your internal service IP)'; nc -zvw3 10.0.0.1 443 2>&1 | head -5",
+      "timeout_ms": 8000,
+      "allow_failure": true
+    },
+    {
+      "description": "Probe internal service by name (replace with yours)",
+      "command": "echo '(edit this command for your internal service hostname)'; getent hosts staging.internal.example.com 2>&1",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    },
+    {
+      "description": "Recent OpenVPN log (if openvpn-systemd-resolved or systemd unit)",
+      "command": "journalctl -u openvpn* -n 20 --no-pager 2>/dev/null | tail -30 || echo '(no openvpn journal)'",
+      "timeout_ms": 5000,
+      "allow_failure": true
+    }
+  ]
+}
