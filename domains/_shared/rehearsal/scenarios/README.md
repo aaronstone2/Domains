@@ -115,6 +115,22 @@ Default redactions: AWS access keys, GitHub PATs, JWTs, password=/token=/api_key
 
 Cross-platform: on Linux runs via `/bin/sh`; on Windows auto-detects WSL → Git Bash → cmd.exe (in that order).
 
+## Interview-day cheat sheet
+
+`domains/_shared/rehearsal/CHEATSHEET.md` is the single-page reference designed to be open in a side window during the interview screen-share. Sections:
+
+1. Exit code decoder (137=SIGKILL, 139=SIGSEGV, etc.)
+2. Symptom → fm-id (top 40 quick lookups)
+3. Error message taxonomy (verbatim text → fm)
+4. Five-second mental models for top scenarios
+5. Tools by domain (top 20, scannable)
+6. Methodology cheats (USE, RED, blameless framing)
+7. Harness commands quick-reference + "if user says X, run Y" table
+8. Corpus quick-stats
+9. 30-second interview opener checklist
+
+Designed to be scannable while you're typing into a real terminal. Keywords are bolded; commands are pre-formatted.
+
 ## Interactive practice (`harness drill`)
 
 Phase 10 added a `drill` subcommand that plays back any of these 10 scenarios as a turn-by-turn practice REPL. Each turn pauses for your response, then scores it against expected keywords/commands and reveals the canonical SE answer.

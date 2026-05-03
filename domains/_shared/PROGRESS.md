@@ -566,3 +566,29 @@ Makes the 10 rehearsal scenarios actually practice-able rather than just readabl
 **Cross-platform input handling:** detects `process.stdin.isTTY` and falls back to "read all stdin upfront, replay line-by-line" for piped/CI use. This was the tricky part on Windows — `readline.question()` hangs on non-TTY stdin.
 
 **Final harness state — 9 subcommands:** stats, lookup, playbook, concept, cite, related, query, capture, drill.
+
+## Phase 11 — Interview cheat sheet
+
+### Session P11 — 2026-05-03 — DONE
+
+Per user direction (one-phase-at-a-time, complete fully), focused single-section deliverable: **`domains/_shared/rehearsal/CHEATSHEET.md`** — single-page reference optimized to be open in a side window during the live interview screen-share.
+
+**398 lines, 9 sections:**
+
+1. **Exit code decoder** — 128+signum table, common signals (SIGKILL/SIGTERM/SIGSEGV)
+2. **Symptom → fm-id** — top 40 quick lookups across docker / linux / k8s / devin / methodology
+3. **Error message taxonomy** — 18 verbatim error strings mapped to fm-ids
+4. **Five-second mental models** — one-paragraph thinking patterns for top 10 scenarios
+5. **Tools by domain** — 70+ commands organized by Docker / kubectl / Linux perf / /proc-/sys / systemd / networking / container runtime
+6. **Methodology cheats** — USE, RED, Four Golden Signals, off-CPU, blameless-postmortem 4-rule framing
+7. **Harness quick-ref** — every subcommand with example usage + "if user says X, run Y" table
+8. **Corpus quick-stats** — current per-domain counts (so you know what the harness has)
+9. **30-second interview opener** — the 6-step checklist for the first minute of any incident chat
+
+**Data extracted from corpus:**
+
+- Top concepts by inbound-edge count (firecracker.vmm, cgroup-v2, tcp-protocol, controller, blueprint, session, kubelet — these are the load-bearing concepts)
+- Top failure_modes by root_cause_class distribution (networking 30, dns 8, observability 7, storage 7, resource-limit 5, security 5, etc.)
+- All current fm-ids checked against `harness lookup` to verify they resolve
+
+Cross-linked: every fm-id is `pnpm harness playbook <id>`-runnable; every section references the broader rehearsal scenarios + drill mode for deeper practice.
