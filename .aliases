@@ -1,0 +1,55 @@
+# Repo-specific aliases — sourced by ~/.bashrc when in this repo's bootstrap block.
+# Safe to edit; re-source with `source .aliases` or open new shell.
+
+# ----- harness shortcuts -----
+alias h='pnpm harness'
+alias hl='pnpm harness lookup'
+alias hp='pnpm harness playbook'
+alias hc='pnpm harness concept'
+alias hr='pnpm harness related'
+alias hs='pnpm harness stats'
+alias hcap='pnpm harness capture'
+alias hd='pnpm harness drill'
+alias hcite='pnpm harness cite'
+
+# Open the cheat sheet in $PAGER (less by default; bat if installed)
+alias cheat='${PAGER:-less} domains/_shared/rehearsal/CHEATSHEET.md'
+
+# Open the scenarios index
+alias scenarios='${PAGER:-less} domains/_shared/rehearsal/scenarios/README.md'
+
+# ----- common debug shortcuts -----
+alias dps='docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.RunningFor}}"'
+alias di='docker inspect'
+alias dlogs='docker logs --tail 100 -f'
+
+alias k='kubectl'
+alias kgp='kubectl get pods -A -o wide'
+alias kgs='kubectl get svc -A'
+alias kge='kubectl get events -A --sort-by=.lastTimestamp'
+alias kdp='kubectl describe pod'
+alias kdn='kubectl describe node'
+alias kctx='kubectl config current-context'
+alias klogs='kubectl logs --tail 100 -f'
+
+alias jcterr='journalctl -p err -n 50 --no-pager'
+alias jcunit='journalctl -u'
+
+alias dmesgrr='sudo dmesg -T | tail -50'
+alias dmesoom='sudo dmesg -T | grep -i "killed process\|out of memory" | tail -20'
+
+# Memory + CPU snapshots
+alias meminfo='cat /proc/meminfo | head -10 && echo "---" && free -h'
+alias cpustat='cat /proc/loadavg && echo "---" && uptime'
+alias topcpu='ps -eo pid,user,pcpu,pmem,cmd --sort=-pcpu | head -16'
+alias topmem='ps -eo pid,user,rss,vsz,cmd --sort=-rss | head -16'
+
+# Networking
+alias ports='ss -tlnp'
+alias listening='sudo ss -tnlp | column -t'
+alias myroute='ip route show && echo "---" && ip -br link show'
+
+# Git pretty
+alias gs='git status --short'
+alias gl='git log --oneline -20'
+alias gd='git diff --stat'

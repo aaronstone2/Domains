@@ -1,0 +1,102 @@
+# cmd_history.txt — curated commands for atuin to seed your interview-day history.
+# One command per line. Lines starting with # are skipped.
+# Bootstrap.sh appends these to ~/.bash_history (no dups), then runs `atuin import bash`.
+# After this you can Ctrl-R and find them by fuzzy search.
+
+# ===== Harness (the corpus tool) =====
+pnpm harness stats
+pnpm harness lookup "exit 137 OOM"
+pnpm harness lookup "DNS slow ndots"
+pnpm harness lookup "container cannot reach internet"
+pnpm harness lookup "PLEG not healthy"
+pnpm harness playbook docker.fm.exit-137-oomkilled
+pnpm harness playbook k8s.fm.pod-pending-failedscheduling
+pnpm harness playbook k8s.fm.dns-pod-search-too-many
+pnpm harness playbook docker.fm.container-no-egress-umbrella
+pnpm harness playbook linux.fm.process-stuck-d-state
+pnpm harness playbook linux.fm.systemd-unit-restart-loop
+pnpm harness playbook methodology.fm.cpu-utilization-misleading
+pnpm harness playbook methodology.fm.retro-becomes-trial
+pnpm harness related linux.primitives.cgroup-v2 2
+pnpm harness related linux.primitives.oom-killer 2
+pnpm harness concept linux.primitives.cgroup-v2
+pnpm harness capture --list
+pnpm harness capture oom
+pnpm harness capture network-egress
+pnpm harness capture --from-fm docker.fm.exit-137-oomkilled
+pnpm harness drill --list
+pnpm harness drill 01-docker-oom
+pnpm harness drill random
+
+# ===== Docker debugging =====
+docker ps -a
+docker inspect <c> --format '{{.State.OOMKilled}} {{.State.ExitCode}}'
+docker inspect <c> --format '{{.HostConfig.Memory}}'
+docker stats
+docker logs --tail 100 -f <c>
+docker exec -it <c> sh
+docker system df
+docker network ls
+docker network inspect bridge
+docker events --since 5m
+
+# ===== kubectl debugging =====
+kubectl get pods -A -o wide
+kubectl describe pod <p>
+kubectl get events -A --sort-by=.lastTimestamp | tail -30
+kubectl logs <p> --previous --tail 100
+kubectl exec -it <p> -- sh
+kubectl describe node | grep -E 'Name:|Allocated' -A 5
+kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
+kubectl get pods -A --field-selector=status.phase=Pending
+kubectl rollout status deploy/<name>
+kubectl get networkpolicy -A
+kubectl top pods --containers
+kubectl auth can-i get pods --as=system:serviceaccount:default:default
+kubectl config current-context
+
+# ===== Linux debugging =====
+sudo dmesg -T | tail -50
+sudo dmesg -T | grep -i 'killed process\|out of memory'
+ps -o pid,stat,wchan,cmd | awk '$2 ~ /^D/'
+sudo cat /proc/<pid>/stack
+sudo cat /proc/<pid>/wchan
+cat /proc/<pid>/status | grep -E 'State|VmRSS|Cap'
+free -h
+vmstat 1 10
+iostat -xz 1 5
+mpstat -P ALL 1 3
+sar -n DEV 1 5
+ss -tnp
+nstat -az | grep -E 'TcpExt|IpExt'
+sudo perf stat -p $(pgrep -f myapp) -- sleep 10
+sudo perf record -F 99 -g --call-graph dwarf -p $(pgrep -f myapp) -- sleep 30
+sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat { @[comm,args->filename] = count(); }'
+sudo offcputime-bpfcc -p $(pgrep -f myapp) 30
+
+# ===== systemd =====
+systemctl status <unit>
+journalctl -u <unit> -e
+journalctl -u <unit> -f --since '5 min ago'
+sudo systemctl reset-failed <unit>
+systemd-analyze verify <unit>
+systemd-analyze blame
+coredumpctl list
+
+# ===== Networking =====
+sudo iptables -t nat -L POSTROUTING -n -v | grep MASQ
+sudo iptables -L FORWARD -n -v --line-numbers
+sudo iptables -L DOCKER-USER -n -v
+sudo nft list ruleset
+sudo conntrack -L | head
+sysctl net.ipv4.ip_forward
+sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max
+sudo tcpdump -i any -c 50 -nn 'host 1.1.1.1'
+dig +trace example.com
+getent hosts example.com
+
+# ===== cgroup state =====
+cat /sys/fs/cgroup/memory.events
+cat /sys/fs/cgroup/cpu.stat
+cat /sys/fs/cgroup/<cg>/memory.{current,max}
+find /sys/fs/cgroup -name 'memory.current' | head -10
