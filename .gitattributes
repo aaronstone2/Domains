@@ -1,0 +1,14 @@
+# Force LF line endings for shell scripts and JSON/YAML so they work on Linux
+# regardless of which OS committed them.
+*.sh    text eol=lf
+*.bash  text eol=lf
+*.json  text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.md    text
+
+# Treat .aliases as a shell file
+.aliases text eol=lf
+
+# cmd_history.txt is read line-by-line by bash; needs LF
+cmd_history.txt text eol=lf
