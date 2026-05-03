@@ -1,0 +1,116 @@
+[
+  {
+    "id":"k8s.runtime.cmd.kubelet",
+    "command":"kubelet [FLAGS]",
+    "purpose":"Per-node K8s agent. Started by systemd: `systemctl status kubelet`. Most config now in /var/lib/kubelet/config.yaml (KubeletConfiguration); fewer command-line flags.",
+    "flags":[
+      {"name":"--config=PATH","value":null,"doc":"KubeletConfiguration YAML."},
+      {"name":"--kubeconfig=PATH","value":null,"doc":"Connection to API server."},
+      {"name":"--bootstrap-kubeconfig=PATH","value":null,"doc":"For TLS bootstrap."},
+      {"name":"--cert-dir=DIR","value":null,"doc":"Certs/keys location."},
+      {"name":"--container-runtime-endpoint=unix://...","value":null,"doc":"CRI socket."},
+      {"name":"--image-service-endpoint=unix://...","value":null,"doc":"Image service socket (default = same as runtime)."},
+      {"name":"--pod-manifest-path=DIR","value":null,"doc":"Static pod manifest dir."},
+      {"name":"--register-node=true","value":null,"doc":"Auto-register with apiserver."},
+      {"name":"--node-labels=KEY=VAL,...","value":null,"doc":"Initial labels."},
+      {"name":"--register-with-taints=KEY=VAL:EFFECT,...","value":null,"doc":"Initial taints."},
+      {"name":"--cloud-provider=NAME","value":null,"doc":"Deprecated; use external CCM."},
+      {"name":"--v=N","value":null,"doc":"Verbosity 0-6."}
+    ],
+    "examples":[
+      {"invocation":"systemctl status kubelet","expected_output":"systemd unit status","scenario":"Quick health check on node."},
+      {"invocation":"journalctl -u kubelet --since '5 min ago' | grep -i error","expected_output":"recent kubelet errors","scenario":"Diagnose pod-level issues from node side."}
+    ],
+    "source_ids":["k8s-kubelet"]
+  },
+  {
+    "id":"k8s.runtime.cmd.kube-proxy",
+    "command":"kube-proxy [FLAGS]",
+    "purpose":"Per-node networking agent. Programs iptables/IPVS/nftables for Service VIP→pod-IP mapping.",
+    "flags":[
+      {"name":"--config=PATH","value":null,"doc":"KubeProxyConfiguration."},
+      {"name":"--proxy-mode=iptables|ipvs|nftables|kernelspace","value":null,"doc":"Implementation."},
+      {"name":"--cluster-cidr=CIDR","value":null,"doc":"Pod CIDR for SNAT detection."},
+      {"name":"--hostname-override=NAME","value":null,"doc":"Override node name."},
+      {"name":"--kubeconfig=PATH","value":null,"doc":"API connection."},
+      {"name":"--healthz-port=10256","value":null,"doc":"Health check port."},
+      {"name":"--metrics-port=10249","value":null,"doc":"Prometheus metrics."},
+      {"name":"--v=N","value":null,"doc":"Verbosity."}
+    ],
+    "examples":[
+      {"invocation":"curl localhost:10249/metrics | grep sync","expected_output":"sync_proxy_rules_duration_seconds metrics","scenario":"Latency of iptables sync."},
+      {"invocation":"curl localhost:10256/healthz","expected_output":"`ok`","scenario":"Liveness check."}
+    ],
+    "source_ids":["k8s-kube-proxy"]
+  },
+  {
+    "id":"k8s.runtime.cmd.containerd",
+    "command":"containerd [FLAGS] | ctr [FLAGS] SUBCOMMAND",
+    "purpose":"containerd daemon + ctr (low-level CLI for containerd). Note: ctr is for direct containerd ops; for K8s use crictl (which goes through CRI).",
+    "flags":[
+      {"name":"--config=PATH","value":null,"doc":"config.toml location."},
+      {"name":"ctr namespaces ls","value":null,"doc":"Containerd namespaces (k8s.io is the K8s one)."},
+      {"name":"ctr -n k8s.io c ls","value":null,"doc":"List containers in K8s namespace."},
+      {"name":"ctr -n k8s.io i ls","value":null,"doc":"List images."},
+      {"name":"ctr -n k8s.io t ls","value":null,"doc":"List tasks (running)."}
+    ],
+    "examples":[
+      {"invocation":"ctr -n k8s.io containers list","expected_output":"all K8s-managed containers","scenario":"Containerd-direct view (parallel to crictl ps)."}
+    ],
+    "source_ids":["k8s-container-runtimes"]
+  },
+  {
+    "id":"k8s.runtime.cmd.runc",
+    "command":"runc SUBCOMMAND [FLAGS]",
+    "purpose":"OCI runtime CLI. Containerd invokes runc to actually create containers. Direct invocation rare; useful for low-level reproductions.",
+    "flags":[
+      {"name":"list","value":null,"doc":"List containers runc knows about."},
+      {"name":"state CONTAINER","value":null,"doc":"OCI state JSON."},
+      {"name":"--root=DIR","value":null,"doc":"State dir (default /run/runc; containerd uses /run/containerd/runc/...)."}
+    ],
+    "examples":[
+      {"invocation":"runc --root=/run/containerd/runc/k8s.io list","expected_output":"K8s containers from runc's view","scenario":"Bypass containerd to debug runc state."}
+    ],
+    "source_ids":["k8s-container-runtimes"]
+  },
+  {
+    "id":"k8s.runtime.cmd.systemd-cgls-k8s",
+    "command":"systemd-cgls /kubepods.slice","purpose":"Visualize kubelet's cgroup hierarchy. See per-pod, per-QoS-class, per-container slicing.",
+    "flags":[
+      {"name":"-l","value":null,"doc":"Don't truncate."},
+      {"name":"-a","value":null,"doc":"All cgroups."}
+    ],
+    "examples":[
+      {"invocation":"systemd-cgls /kubepods.slice","expected_output":"tree of qos slices → pod slices → container scopes","scenario":"Understand kubelet cgroup layout."},
+      {"invocation":"systemd-cgtop -p","expected_output":"live per-cgroup CPU/mem","scenario":"Real-time cgroup resource view."}
+    ],
+    "source_ids":["k8s-cgroups"]
+  },
+  {
+    "id":"k8s.runtime.cmd.cgroup-inspect-pod",
+    "command":"cat /sys/fs/cgroup/kubepods.slice/.../cri-containerd-CID.scope/{memory.max,cpu.max,memory.current,cpu.stat}","purpose":"Read cgroup v2 control files for a pod's container directly.",
+    "flags":[
+      {"name":"memory.max","value":null,"doc":"Limit (or 'max')."},
+      {"name":"memory.current","value":null,"doc":"Current usage."},
+      {"name":"memory.events","value":null,"doc":"low/high/max/oom counts."},
+      {"name":"cpu.max","value":null,"doc":"quota period."},
+      {"name":"cpu.stat","value":null,"doc":"usage_usec, throttled_usec."},
+      {"name":"pids.current / pids.max","value":null,"doc":"Process count + limit."}
+    ],
+    "examples":[
+      {"invocation":"cat /sys/fs/cgroup/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-pod*UID*.slice/cri-containerd-*.scope/cpu.stat","expected_output":"throttled_usec","scenario":"Verify CPU throttling."}
+    ],
+    "source_ids":["k8s-cgroups"]
+  },
+  {
+    "id":"k8s.runtime.cmd.kubectl-get-runtimeclass",
+    "command":"kubectl get runtimeclass","purpose":"List RuntimeClasses (gvisor, kata, runc, etc.).",
+    "flags":[
+      {"name":"-o yaml","value":null,"doc":"Full spec including handler."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get runtimeclass","expected_output":"NAME HANDLER AGE","scenario":"See available runtimes."}
+    ],
+    "source_ids":["k8s-runtime-class"]
+  }
+]

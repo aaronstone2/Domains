@@ -1,0 +1,43 @@
+[
+  {"from_id":"docker.fm.container-no-egress-umbrella","to_id":"docker.fm.host-firewall-blocks-docker","rel_type":"specific-cause","source_id":null},
+  {"from_id":"docker.fm.container-no-egress-umbrella","to_id":"docker.fm.no-masquerade-bridge","rel_type":"specific-cause","source_id":null},
+  {"from_id":"docker.fm.container-no-egress-umbrella","to_id":"docker.fm.embedded-dns-misroute","rel_type":"specific-cause","source_id":null},
+  {"from_id":"docker.fm.container-no-egress-umbrella","to_id":"docker.fm.container-egress-vpn-conflict","rel_type":"specific-cause","source_id":null},
+  {"from_id":"docker.fm.container-no-egress-umbrella","to_id":"linux.fm.ip-forward-disabled","rel_type":"specific-cause","source_id":null},
+  {"from_id":"docker.fm.container-no-egress-umbrella","to_id":"linux.fm.netfilter-rule-order","rel_type":"specific-cause","source_id":null},
+  {"from_id":"docker.fm.container-no-egress-umbrella","to_id":"docker.fm.iptables-docker-chain-flushed","rel_type":"specific-cause","source_id":null},
+
+  {"from_id":"linux.fm.numa-imbalance","to_id":"linux.primitives.cgroup-v2","rel_type":"interacts-with","source_id":null},
+  {"from_id":"linux.fm.irq-storm-single-cpu","to_id":"linux.fm.ksoftirqd-pegged","rel_type":"causes","source_id":null},
+  {"from_id":"linux.fm.hard-lockup","to_id":"linux.fm.kernel-panic-decoding","rel_type":"escalates-to","source_id":null},
+  {"from_id":"linux.fm.soft-lockup","to_id":"linux.fm.hard-lockup","rel_type":"can-escalate-to","source_id":null},
+  {"from_id":"linux.fm.rcu-stall","to_id":"linux.fm.soft-lockup","rel_type":"related-to","source_id":null},
+  {"from_id":"linux.fm.cpuset-placement-wrong","to_id":"linux.fm.cpu-throttled","rel_type":"can-cause","source_id":null},
+  {"from_id":"linux.fm.slab-leak","to_id":"linux.fm.swap-storm","rel_type":"can-cause","source_id":null},
+
+  {"from_id":"k8s.fm.validating-webhook-policy-rejects","to_id":"k8s.fm.admission-webhook-timeout","rel_type":"sibling-of","source_id":null},
+  {"from_id":"k8s.fm.crd-conversion-webhook-fail","to_id":"k8s.fm.crd-openapi-validation-mismatch","rel_type":"sibling-of","source_id":null},
+  {"from_id":"k8s.fm.controller-stuck-on-crd-finalizer","to_id":"k8s.fm.finalizer-stuck-namespace","rel_type":"is-a","source_id":null},
+  {"from_id":"k8s.fm.pdb-blocks-drain","to_id":"k8s.core.pod","rel_type":"affects-eviction-of","source_id":null},
+  {"from_id":"k8s.fm.cluster-autoscaler-no-fit-pending","to_id":"k8s.fm.pod-pending-failedscheduling","rel_type":"is-special-case-of","source_id":null},
+
+  {"from_id":"devin.fm.vpn-not-engaging","to_id":"devin.fm.session-cant-reach-internal-svc","rel_type":"specific-cause","source_id":null},
+  {"from_id":"devin.fm.corporate-proxy-not-set","to_id":"devin.fm.repo-clone-failed","rel_type":"can-cause","source_id":null},
+  {"from_id":"devin.fm.corporate-proxy-not-set","to_id":"devin.fm.private-pkg-pull-fail","rel_type":"can-cause","source_id":null},
+  {"from_id":"devin.fm.internal-svc-cert-untrusted","to_id":"devin.fm.session-cant-reach-internal-svc","rel_type":"specific-cause","source_id":null},
+  {"from_id":"devin.fm.bash-stale-prompt-state","to_id":"devin.devbox.bashrc","rel_type":"manifests-in","source_id":null},
+
+  {"from_id":"methodology.fm.too-much-data-overwhelm","to_id":"methodology.fm.dashboard-too-many-metrics","rel_type":"is-symptom-of","source_id":null},
+  {"from_id":"methodology.fm.retro-becomes-trial","to_id":"methodology.fm.postmortem-blame","rel_type":"is-the-same","source_id":null},
+  {"from_id":"methodology.fm.pager-thrash-from-flap","to_id":"methodology.fm.alert-fatigue","rel_type":"causes","source_id":null},
+  {"from_id":"methodology.fm.single-source-of-truth-broken","to_id":"methodology.fm.percentile-vs-mean-confusion","rel_type":"is-special-case-of","source_id":null},
+
+  {"from_id":"methodology.fm.too-much-data-overwhelm","to_id":"k8s.debugging.kubectl-describe-events","rel_type":"managed-by-using","source_id":null},
+  {"from_id":"methodology.fm.pager-thrash-from-flap","to_id":"k8s.fm.crashloopbackoff","rel_type":"often-from","source_id":null},
+
+  {"from_id":"docker.fm.compose-secrets-vs-configs","to_id":"docker.fm.compose-secret-mode-bits-wrong","rel_type":"sibling-of","source_id":null},
+  {"from_id":"docker.fm.compose-build-args-not-passed-to-stage","to_id":"docker.fm.copy-from-stage-not-found","rel_type":"sibling-of","source_id":null},
+
+  {"from_id":"linux.fm.numa-imbalance","to_id":"firecracker.vmm.process-model","rel_type":"can-affect","source_id":null},
+  {"from_id":"linux.fm.kernel-panic-decoding","to_id":"linux.debugging.kdump","rel_type":"diagnosed-via","source_id":null}
+]

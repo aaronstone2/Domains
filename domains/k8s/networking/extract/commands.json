@@ -1,0 +1,143 @@
+[
+  {
+    "id":"k8s.networking.cmd.kubectl-expose",
+    "command":"kubectl expose RESOURCE NAME [FLAGS]",
+    "purpose":"Imperatively create a Service exposing a Pod/Deployment/ReplicaSet/Service. Quick way to make a workload reachable.",
+    "flags":[
+      {"name":"--port=N","value":null,"doc":"Service port."},
+      {"name":"--target-port=N|name","value":null,"doc":"Container port. Default = same as port."},
+      {"name":"--type=ClusterIP|NodePort|LoadBalancer|ExternalName","value":null,"doc":"Service type."},
+      {"name":"--name=NAME","value":null,"doc":"Service name. Default = source name."},
+      {"name":"--protocol=TCP|UDP|SCTP","value":null,"doc":"Default TCP."},
+      {"name":"--selector=KEY=VAL","value":null,"doc":"Custom selector. Default = source's labels."},
+      {"name":"--external-ip=IP","value":null,"doc":"Bind to additional external IP."},
+      {"name":"--load-balancer-ip=IP","value":null,"doc":"Request specific LB IP (cloud-dependent)."},
+      {"name":"--cluster-ip=IP|None","value":null,"doc":"None = headless."},
+      {"name":"--session-affinity=ClientIP|None","value":null,"doc":"Sticky sessions."}
+    ],
+    "examples":[
+      {"invocation":"kubectl expose deploy/web --port=80 --target-port=8080 --type=ClusterIP","expected_output":"service/web created","scenario":"Quick service in front of deployment."},
+      {"invocation":"kubectl expose pod/db --port=5432 --cluster-ip=None","expected_output":"headless service","scenario":"DNS for stateful pod."}
+    ],
+    "source_ids":["k8s-services","k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.networking.cmd.kubectl-get-endpoints",
+    "command":"kubectl get endpoints [NAME] | kubectl get endpointslices",
+    "purpose":"List Service backing pods. Empty endpoints = no pods match selector or no pods Ready. EndpointSlices is the modern partitioned version.",
+    "flags":[
+      {"name":"endpoints / ep","value":null,"doc":"Legacy single-object."},
+      {"name":"endpointslices","value":null,"doc":"Modern partitioned."},
+      {"name":"-o wide","value":null,"doc":"Show endpoint addresses (IPs)."},
+      {"name":"-l SELECTOR","value":null,"doc":"Filter by labels."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get ep web","expected_output":"`web   10.0.1.5:8080,10.0.2.7:8080   2m`","scenario":"Confirm Service has backing pods."},
+      {"invocation":"kubectl get endpointslices -l kubernetes.io/service-name=web","expected_output":"slices for service web","scenario":"Inspect modern slice structure."}
+    ],
+    "source_ids":["k8s-endpoints-endpointslice","k8s-debug-services"]
+  },
+  {
+    "id":"k8s.networking.cmd.kubectl-port-forward-svc",
+    "command":"kubectl port-forward svc/NAME LOCAL:REMOTE","purpose":"Tunnel from local to a Service (picks one backing pod). Useful for accessing in-cluster services without exposing externally.",
+    "flags":[
+      {"name":"svc/NAME","value":null,"doc":"Service to forward to."},
+      {"name":"LOCAL:REMOTE","value":null,"doc":"Port mapping."}
+    ],
+    "examples":[
+      {"invocation":"kubectl port-forward svc/postgres 5432:5432","expected_output":"`Forwarding from 127.0.0.1:5432 -> 5432`","scenario":"Local psql to cluster postgres."}
+    ],
+    "source_ids":["k8s-debug-services","k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.networking.cmd.kubectl-create-ingress",
+    "command":"kubectl create ingress NAME --rule=HOST/PATH=SERVICE:PORT","purpose":"Imperatively create an Ingress.",
+    "flags":[
+      {"name":"--rule=HOST/PATH=SERVICE:PORT","value":null,"doc":"Routing rule. Multiple --rule allowed. Add tls=SECRET for HTTPS termination."},
+      {"name":"--annotation=KEY=VAL","value":null,"doc":"Add annotation (e.g. nginx.ingress.kubernetes.io/rewrite-target=/)."},
+      {"name":"--class=CLASS","value":null,"doc":"IngressClass name."}
+    ],
+    "examples":[
+      {"invocation":"kubectl create ingress web --rule='example.com/*=web:80' --class=nginx","expected_output":"ingress/web created","scenario":"Quick HTTP routing."}
+    ],
+    "source_ids":["k8s-ingress"]
+  },
+  {
+    "id":"k8s.networking.cmd.kubectl-get-svc",
+    "command":"kubectl get svc [-o wide]","purpose":"List Services with type, ClusterIP, ExternalIP, Ports, Age.",
+    "flags":[
+      {"name":"-o wide","value":null,"doc":"Add SELECTOR column."},
+      {"name":"--field-selector=spec.type=LoadBalancer","value":null,"doc":"Filter by type."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get svc -A -o wide","expected_output":"all services with selectors","scenario":"Cluster service inventory."},
+      {"invocation":"kubectl get svc --field-selector=spec.type=LoadBalancer","expected_output":"all LB services","scenario":"Find external endpoints."}
+    ],
+    "source_ids":["k8s-services","k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.networking.cmd.kubectl-get-ingress",
+    "command":"kubectl get ingress","purpose":"List Ingress resources with hosts, addresses, ports.",
+    "flags":[
+      {"name":"-A","value":null,"doc":"All namespaces."},
+      {"name":"-o wide","value":null,"doc":"More columns."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get ing -A","expected_output":"all Ingress objects","scenario":"Find what's exposed via Ingress."}
+    ],
+    "source_ids":["k8s-ingress"]
+  },
+  {
+    "id":"k8s.networking.cmd.kubectl-get-netpol",
+    "command":"kubectl get networkpolicy / netpol","purpose":"List NetworkPolicies. Default deny patterns visible here.",
+    "flags":[
+      {"name":"-A","value":null,"doc":"All namespaces."},
+      {"name":"-o yaml","value":null,"doc":"Full spec for review."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get netpol -A -o wide","expected_output":"all NetworkPolicy resources","scenario":"Audit network controls."}
+    ],
+    "source_ids":["k8s-network-policies"]
+  },
+  {
+    "id":"k8s.networking.cmd.dig-cluster-dns",
+    "command":"kubectl run dnsutils --image=tutum/dnsutils --rm -it -- dig SVC.NS.svc.cluster.local","purpose":"Diagnostic: resolve cluster DNS from inside cluster.",
+    "flags":[
+      {"name":"+short","value":null,"doc":"Just the answer."},
+      {"name":"+search","value":null,"doc":"Use search list."},
+      {"name":"any+trace","value":null,"doc":"See full resolution path."}
+    ],
+    "examples":[
+      {"invocation":"kubectl run -it --rm dns --image=busybox -- nslookup web.default","expected_output":"resolved IP","scenario":"Verify cluster DNS works."},
+      {"invocation":"kubectl exec -it nginx -- cat /etc/resolv.conf","expected_output":"nameserver+search+options","scenario":"Inspect pod's DNS config."}
+    ],
+    "source_ids":["k8s-dns","k8s-debug-services"]
+  },
+  {
+    "id":"k8s.networking.cmd.iptables-save-kube-proxy",
+    "command":"iptables-save -t nat | grep KUBE","purpose":"Inspect kube-proxy's iptables rules on a node. The actual DNAT rules implementing Service VIPs.",
+    "flags":[
+      {"name":"-t nat","value":null,"doc":"NAT table."},
+      {"name":"| grep KUBE-SVC","value":null,"doc":"Per-Service jump chains."},
+      {"name":"| grep KUBE-SEP","value":null,"doc":"Per-endpoint chains."},
+      {"name":"| grep KUBE-MARK-MASQ","value":null,"doc":"Mark-for-masquerade rules."}
+    ],
+    "examples":[
+      {"invocation":"iptables-save -t nat | grep KUBE-SVC-","expected_output":"per-service iptables chains","scenario":"Verify kube-proxy programmed Service correctly."},
+      {"invocation":"ipvsadm -L -n -t SVCIP:PORT","expected_output":"IPVS service + endpoints","scenario":"Same in IPVS mode."}
+    ],
+    "source_ids":["k8s-kube-proxy","k8s-debug-services"]
+  },
+  {
+    "id":"k8s.networking.cmd.kubectl-get-eps-watch",
+    "command":"kubectl get endpoints --watch","purpose":"Watch endpoints change as pods become ready/unready. Useful for debugging readiness probes / pod recycling.",
+    "flags":[
+      {"name":"--watch","value":null,"doc":"Stream changes."},
+      {"name":"--watch-only","value":null,"doc":"Skip initial dump."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get ep web -w","expected_output":"streaming endpoint changes","scenario":"Watch pods get added/removed from Service backend."}
+    ],
+    "source_ids":["k8s-endpoints-endpointslice"]
+  }
+]

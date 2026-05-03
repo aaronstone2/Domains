@@ -1,0 +1,305 @@
+[
+  {
+    "id":"k8s.core.cmd.kubectl",
+    "command":"kubectl [COMMAND] [TYPE/NAME] [FLAGS]",
+    "purpose":"The Kubernetes CLI. Talks to API server. Resource-oriented commands (get/describe/edit/apply/delete) + functional (logs/exec/port-forward/cp). Reads ~/.kube/config; --context overrides.",
+    "flags":[
+      {"name":"-n, --namespace=NS","value":null,"doc":"Namespace. Default per-context."},
+      {"name":"-A, --all-namespaces","value":null,"doc":"Operate across all namespaces (with get/describe)."},
+      {"name":"--context=CTX","value":null,"doc":"kubeconfig context."},
+      {"name":"--kubeconfig=PATH","value":null,"doc":"Override default ~/.kube/config."},
+      {"name":"-o FORMAT","value":null,"doc":"Output: yaml, json, wide, name, jsonpath=..., go-template=..., custom-columns=..."},
+      {"name":"-l SELECTOR","value":null,"doc":"Label selector filter. e.g. -l app=nginx,env!=prod."},
+      {"name":"--field-selector=SEL","value":null,"doc":"Field selector. e.g. status.phase=Running."},
+      {"name":"-w, --watch","value":null,"doc":"Watch for changes (continuous output)."},
+      {"name":"--dry-run=client|server|none","value":null,"doc":"Don't actually create. server validates against API."},
+      {"name":"-v=N","value":null,"doc":"Verbosity 0-9. 6+ shows API requests/responses."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get pods -A -o wide","expected_output":"all pods cluster-wide with IP/node columns","scenario":"Quick cluster overview."},
+      {"invocation":"kubectl --context=prod -n web get deploy -o yaml > backup.yaml","expected_output":"silent","scenario":"Backup all deployments in a namespace."}
+    ],
+    "source_ids":["k8s-kubectl-overview","k8s-kubectl-cheatsheet","k8s-kubectl-conventions"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-get",
+    "command":"kubectl get [TYPE[/NAME]] [FLAGS]",
+    "purpose":"List or display resources. Default brief table; -o yaml for full spec; -o jsonpath for scripting.",
+    "flags":[
+      {"name":"TYPE","value":null,"doc":"Resource type or shortname: pods/po, deployments/deploy, services/svc, nodes/no, namespaces/ns, persistentvolumes/pv, persistentvolumeclaims/pvc, configmaps/cm, secrets, endpoints/ep, events/ev, ingress/ing, etc. `kubectl api-resources` lists all."},
+      {"name":"NAME","value":null,"doc":"Specific resource name. Without = list all in namespace."},
+      {"name":"-A","value":null,"doc":"All namespaces."},
+      {"name":"-w","value":null,"doc":"Watch."},
+      {"name":"-o wide","value":null,"doc":"More columns (e.g. node, IP for pods)."},
+      {"name":"-o yaml / -o json","value":null,"doc":"Full spec."},
+      {"name":"-o jsonpath='{...}'","value":null,"doc":"Extract field. e.g. -o jsonpath='{.status.podIP}'."},
+      {"name":"-o name","value":null,"doc":"Just resource names (good for piping)."},
+      {"name":"--show-labels","value":null,"doc":"Add labels column."},
+      {"name":"--sort-by=FIELD","value":null,"doc":"Sort by JSONPath field. e.g. --sort-by=.metadata.creationTimestamp."},
+      {"name":"--ignore-not-found","value":null,"doc":"Don't error if resource missing."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get pods --field-selector=status.phase=Failed -A","expected_output":"failed pods cluster-wide","scenario":"Triage."},
+      {"invocation":"kubectl get pod nginx -o jsonpath='{.status.containerStatuses[0].restartCount}'","expected_output":"e.g. `3`","scenario":"Scriptable check of restart count."},
+      {"invocation":"kubectl get events --sort-by=.lastTimestamp","expected_output":"chronological events","scenario":"See recent cluster activity."}
+    ],
+    "source_ids":["k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-describe",
+    "command":"kubectl describe TYPE/NAME",
+    "purpose":"Human-readable per-resource detail INCLUDING events. The first command for 'why isn't this working?' triage.",
+    "flags":[
+      {"name":"TYPE/NAME","value":null,"doc":"Resource (e.g. pod/nginx, deploy/web)."},
+      {"name":"-l SELECTOR","value":null,"doc":"Label selector (multiple resources)."},
+      {"name":"--show-events=true|false","value":null,"doc":"Include/exclude events (default true)."}
+    ],
+    "examples":[
+      {"invocation":"kubectl describe pod nginx-abc123","expected_output":"spec, status, events for the pod","scenario":"Universal first-step triage — events tell you why pod is Pending/CrashLoopBackOff/etc."},
+      {"invocation":"kubectl describe node worker-1","expected_output":"node capacity, allocated resources, taints, conditions, pods running","scenario":"Diagnose node-level issues."}
+    ],
+    "source_ids":["k8s-kubectl-cheatsheet","k8s-debug-application-cluster"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-logs",
+    "command":"kubectl logs POD [-c CONTAINER] [FLAGS]",
+    "purpose":"Container logs (stdout+stderr). For multi-container pods, -c CONTAINER required (or default). Reads from kubelet, which reads from container runtime, which writes to /var/log/pods/.",
+    "flags":[
+      {"name":"POD","value":null,"doc":"Pod name. With deployment/, statefulset/, etc. picks one pod."},
+      {"name":"-c CONTAINER","value":null,"doc":"Specific container in multi-container pod. Required if multiple."},
+      {"name":"-f, --follow","value":null,"doc":"Tail (like tail -f)."},
+      {"name":"--tail=N","value":null,"doc":"Last N lines. -1 = all (default with --previous)."},
+      {"name":"--since=DURATION","value":null,"doc":"Logs newer than. e.g. --since=1h."},
+      {"name":"--since-time=RFC3339","value":null,"doc":"Logs after timestamp."},
+      {"name":"--previous","value":null,"doc":"Previous container instance (for crashed containers — its logs aren't gone)."},
+      {"name":"--all-containers","value":null,"doc":"All containers in pod."},
+      {"name":"-l SELECTOR","value":null,"doc":"Logs from all matching pods."},
+      {"name":"--max-log-requests=N","value":null,"doc":"With -l, parallelism (default 5)."},
+      {"name":"--prefix","value":null,"doc":"Prepend pod/container name to lines."},
+      {"name":"--timestamps","value":null,"doc":"RFC3339 timestamp prefix."}
+    ],
+    "examples":[
+      {"invocation":"kubectl logs pod/nginx --previous --tail=200","expected_output":"last 200 lines from previously-crashed container","scenario":"Diagnose CrashLoopBackOff — the CURRENT container is restarting; --previous gets the crashed instance's logs."},
+      {"invocation":"kubectl logs -l app=nginx --tail=20 --prefix -f","expected_output":"streaming logs from all nginx pods, prefixed","scenario":"Live follow across replicas."}
+    ],
+    "source_ids":["k8s-kubectl-cheatsheet","k8s-debug-application-cluster"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-exec",
+    "command":"kubectl exec POD [-c CONTAINER] [-it] -- COMMAND",
+    "purpose":"Exec command inside running container. Like docker exec.",
+    "flags":[
+      {"name":"-c CONTAINER","value":null,"doc":"Container in multi-container pod."},
+      {"name":"-i, --stdin","value":null,"doc":"Keep stdin open."},
+      {"name":"-t, --tty","value":null,"doc":"Allocate TTY."},
+      {"name":"--","value":null,"doc":"Command separator (avoid kubectl parsing your command's flags)."}
+    ],
+    "examples":[
+      {"invocation":"kubectl exec -it nginx-abc -- bash","expected_output":"interactive shell in container","scenario":"Quick interactive debug."},
+      {"invocation":"kubectl exec nginx-abc -- nginx -t","expected_output":"nginx config test result","scenario":"One-shot command."}
+    ],
+    "source_ids":["k8s-troubleshoot-application-introspection","k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-debug",
+    "command":"kubectl debug POD [-c CONTAINER] [--image=IMAGE] [--target=CONTAINER] [-it]",
+    "purpose":"Add an ephemeral debug container to a running pod (or copy pod with modifications). For debugging distroless containers without shell, or replicating a pod with debug tools.",
+    "flags":[
+      {"name":"--image=IMAGE","value":null,"doc":"Debug image (e.g. busybox, nicolaka/netshoot)."},
+      {"name":"--target=CONTAINER","value":null,"doc":"Share PID + network namespace with target container — see its processes/sockets."},
+      {"name":"--share-processes","value":null,"doc":"Equivalent shorthand."},
+      {"name":"--copy-to=NAME","value":null,"doc":"Copy pod with modifications instead of attaching to original."},
+      {"name":"--replace","value":null,"doc":"With --copy-to, delete original after."},
+      {"name":"--profile=PROFILE","value":null,"doc":"Predefined profile: legacy, general, baseline, restricted, netadmin, sysadmin."},
+      {"name":"-it","value":null,"doc":"Interactive TTY."}
+    ],
+    "examples":[
+      {"invocation":"kubectl debug -it pod/web --image=nicolaka/netshoot --target=app","expected_output":"ephemeral container with networking tools, PID/net shared with 'app'","scenario":"Inspect networking + processes of running pod."},
+      {"invocation":"kubectl debug node/worker-1 -it --image=busybox","expected_output":"pod scheduled on node with hostPath mounts, chroot to host","scenario":"Node-level debug session."}
+    ],
+    "source_ids":["k8s-kubectl-debug","k8s-ephemeral-containers"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-apply",
+    "command":"kubectl apply -f FILE_OR_DIR [FLAGS]",
+    "purpose":"Declarative create-or-update. Reads manifest(s); diffs against live state via last-applied-configuration annotation; applies changes. The standard deployment command.",
+    "flags":[
+      {"name":"-f FILE","value":null,"doc":"YAML/JSON file or dir or URL or - for stdin. Multiple -f allowed."},
+      {"name":"-k DIR","value":null,"doc":"Apply Kustomize directory."},
+      {"name":"-R, --recursive","value":null,"doc":"Recurse into subdirs."},
+      {"name":"--prune","value":null,"doc":"Delete resources not in input. Use with -l."},
+      {"name":"--prune-allowlist=GVK","value":null,"doc":"Restrict prune to specific GVK."},
+      {"name":"--dry-run=client|server|none","value":null,"doc":"client = render only; server = validate; none = apply."},
+      {"name":"-o yaml","value":null,"doc":"Output applied manifest."},
+      {"name":"--force","value":null,"doc":"Replace if normal patch fails."},
+      {"name":"--force-conflicts","value":null,"doc":"Server-side apply: take ownership of conflicted fields."},
+      {"name":"--server-side","value":null,"doc":"Server-side apply (recommended for ops, vs default client-side which uses last-applied annotation)."},
+      {"name":"--field-manager=NAME","value":null,"doc":"With --server-side, attribution name for ownership."},
+      {"name":"--wait","value":null,"doc":"Wait until resources are reconciled."}
+    ],
+    "examples":[
+      {"invocation":"kubectl apply -f manifests/ -R","expected_output":"all resources in dir tree applied","scenario":"Standard deploy."},
+      {"invocation":"kubectl apply --server-side -f deployment.yaml","expected_output":"applied with server-side managed fields","scenario":"Modern apply pattern; better than client-side for shared ownership."}
+    ],
+    "source_ids":["k8s-kubectl-cheatsheet","k8s-kubectl-conventions"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-delete",
+    "command":"kubectl delete TYPE/NAME [FLAGS]",
+    "purpose":"Delete resources. Triggers finalizers; respects ownerReferences (cascading delete).",
+    "flags":[
+      {"name":"-f FILE","value":null,"doc":"Delete resources defined in file."},
+      {"name":"-l SELECTOR","value":null,"doc":"Delete by label."},
+      {"name":"--all","value":null,"doc":"Delete all of type in namespace."},
+      {"name":"--cascade=background|foreground|orphan","value":null,"doc":"Cascade policy. background (default) = controller deletes children async. foreground = wait for children first. orphan = leave children."},
+      {"name":"--force --grace-period=0","value":null,"doc":"Force immediate (skip grace period). Use sparingly — bypasses preStop hook."},
+      {"name":"--wait","value":null,"doc":"Wait until resources are deleted (default true)."},
+      {"name":"--timeout=DURATION","value":null,"doc":"Max wait time."},
+      {"name":"--ignore-not-found","value":null,"doc":"OK if resource doesn't exist."}
+    ],
+    "examples":[
+      {"invocation":"kubectl delete pod nginx --grace-period=0 --force","expected_output":"pod removed immediately","scenario":"Stuck-terminating pod (Terminating state for >1min). Last resort."},
+      {"invocation":"kubectl delete -l app=temp -A","expected_output":"all temp-labeled resources","scenario":"Cleanup."}
+    ],
+    "source_ids":["k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-rollout",
+    "command":"kubectl rollout SUBCOMMAND DEPLOYMENT/NAME",
+    "purpose":"Manage Deployment/StatefulSet/DaemonSet rollouts.",
+    "flags":[
+      {"name":"status DEPLOY","value":null,"doc":"Watch rollout progress until complete."},
+      {"name":"history DEPLOY","value":null,"doc":"List revisions."},
+      {"name":"history DEPLOY --revision=N","value":null,"doc":"Show specific revision's manifest."},
+      {"name":"undo DEPLOY","value":null,"doc":"Roll back to previous revision."},
+      {"name":"undo DEPLOY --to-revision=N","value":null,"doc":"Roll back to specific revision."},
+      {"name":"pause DEPLOY","value":null,"doc":"Pause — subsequent edits don't trigger rollout."},
+      {"name":"resume DEPLOY","value":null,"doc":"Resume + apply pending changes."},
+      {"name":"restart DEPLOY","value":null,"doc":"Restart all pods (rolling). The 'kick the deployment' command."}
+    ],
+    "examples":[
+      {"invocation":"kubectl rollout status deploy/web","expected_output":"streaming rollout status","scenario":"Watch deploy complete."},
+      {"invocation":"kubectl rollout undo deploy/web","expected_output":"rolled back to previous","scenario":"Bad release rollback."},
+      {"invocation":"kubectl rollout restart deploy/web","expected_output":"silent; new pods rolling","scenario":"Pick up updated configmap/secret without changing manifest."}
+    ],
+    "source_ids":["k8s-deployment","k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-port-forward",
+    "command":"kubectl port-forward TYPE/NAME LOCAL:REMOTE",
+    "purpose":"Tunnel from local machine to pod (or service). Local connections forwarded over kubectl→apiserver→kubelet→container.",
+    "flags":[
+      {"name":"TYPE/NAME","value":null,"doc":"pod/X, service/Y, deployment/Z (picks a pod)."},
+      {"name":"LOCAL:REMOTE","value":null,"doc":"Local port → remote container port. Multiple pairs allowed. :REMOTE = random local."},
+      {"name":"--address=IP","value":null,"doc":"Bind to specific local IP (default 127.0.0.1)."}
+    ],
+    "examples":[
+      {"invocation":"kubectl port-forward svc/postgres 5432:5432","expected_output":"`Forwarding from 127.0.0.1:5432 -> 5432`","scenario":"Connect local psql to in-cluster Postgres."},
+      {"invocation":"kubectl port-forward deploy/web 8080:80","expected_output":"forwarding","scenario":"Test deployment locally without exposing via Service."}
+    ],
+    "source_ids":["k8s-kubectl-cheatsheet","k8s-debug-services"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-cp",
+    "command":"kubectl cp [POD:]SRC [POD:]DST [FLAGS]",
+    "purpose":"Copy files in/out of containers. Implemented via tar piped over exec.",
+    "flags":[
+      {"name":"-c CONTAINER","value":null,"doc":"Container in multi-container pod."},
+      {"name":"--retries=N","value":null,"doc":"Retry on failure."}
+    ],
+    "examples":[
+      {"invocation":"kubectl cp nginx-abc:/etc/nginx/nginx.conf ./nginx.conf","expected_output":"file copied locally","scenario":"Inspect a container's config."},
+      {"invocation":"kubectl cp ./debug.sh nginx-abc:/tmp/","expected_output":"file copied to container","scenario":"Push debug script for in-pod execution."}
+    ],
+    "source_ids":["k8s-kubectl-cheatsheet"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-config",
+    "command":"kubectl config SUBCOMMAND",
+    "purpose":"Manage kubeconfig.",
+    "flags":[
+      {"name":"view","value":null,"doc":"Print merged kubeconfig."},
+      {"name":"current-context","value":null,"doc":"Show active context."},
+      {"name":"use-context CTX","value":null,"doc":"Switch active context."},
+      {"name":"get-contexts","value":null,"doc":"List contexts."},
+      {"name":"set-context CTX [--namespace=NS] [--cluster=CLUSTER] [--user=USER]","value":null,"doc":"Create or modify context."},
+      {"name":"set-credentials USER --token=TOKEN","value":null,"doc":"Set user creds (token / cert / exec plugin)."},
+      {"name":"set-cluster CLUSTER --server=URL --certificate-authority=PATH","value":null,"doc":"Define cluster."},
+      {"name":"delete-context CTX","value":null,"doc":"Remove."},
+      {"name":"unset KEY","value":null,"doc":"Remove a value."}
+    ],
+    "examples":[
+      {"invocation":"kubectl config use-context prod","expected_output":"`Switched to context prod`","scenario":"Multi-cluster admin."},
+      {"invocation":"kubectl config set-context --current --namespace=monitoring","expected_output":"silent","scenario":"Set default namespace for current context (no more -n on every command)."}
+    ],
+    "source_ids":["k8s-kubectl-overview"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-explain",
+    "command":"kubectl explain TYPE[.FIELD]","purpose":"Show field documentation for a resource type. Built from API schema. Indispensable for 'what fields does X have' without leaving terminal.",
+    "flags":[
+      {"name":"TYPE[.FIELD]","value":null,"doc":"e.g. pod, pod.spec, pod.spec.containers, pod.spec.containers.resources."},
+      {"name":"--recursive","value":null,"doc":"Show ALL nested fields (no descriptions)."},
+      {"name":"--api-version=GROUP/VERSION","value":null,"doc":"Specific API version."}
+    ],
+    "examples":[
+      {"invocation":"kubectl explain pod.spec.containers.resources","expected_output":"requests/limits field docs","scenario":"Look up field semantics inline."},
+      {"invocation":"kubectl explain deployment.spec --recursive","expected_output":"full nested field tree","scenario":"Survey what's settable."}
+    ],
+    "source_ids":["k8s-kubectl-overview"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-top",
+    "command":"kubectl top {nodes|pods} [FLAGS]",
+    "purpose":"Resource usage. Requires metrics-server installed in cluster (provides Resource Metrics API).",
+    "flags":[
+      {"name":"nodes","value":null,"doc":"Per-node CPU+memory usage."},
+      {"name":"pods","value":null,"doc":"Per-pod CPU+memory."},
+      {"name":"--containers","value":null,"doc":"Per-container breakdown."},
+      {"name":"-n NS","value":null,"doc":"Namespace."},
+      {"name":"-A","value":null,"doc":"All namespaces."},
+      {"name":"-l SELECTOR","value":null,"doc":"Label selector."},
+      {"name":"--sort-by=cpu|memory","value":null,"doc":"Sort."}
+    ],
+    "examples":[
+      {"invocation":"kubectl top pods -A --sort-by=memory","expected_output":"top memory-consuming pods cluster-wide","scenario":"Find what's eating memory."},
+      {"invocation":"kubectl top nodes","expected_output":"per-node CPU/mem percent","scenario":"Quick node-level resource check."}
+    ],
+    "source_ids":["k8s-resource-metrics-pipeline","k8s-resource-usage-monitoring"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-drain",
+    "command":"kubectl drain NODE [FLAGS]",
+    "purpose":"Cordon node + evict pods. For node maintenance. Respects PDBs.",
+    "flags":[
+      {"name":"--ignore-daemonsets","value":null,"doc":"Don't try to evict DaemonSet pods (they'd just be re-created)."},
+      {"name":"--delete-emptydir-data","value":null,"doc":"OK to lose emptyDir data."},
+      {"name":"--force","value":null,"doc":"Evict pods not managed by a controller (would otherwise be lost)."},
+      {"name":"--grace-period=N","value":null,"doc":"Override pod terminationGracePeriodSeconds."},
+      {"name":"--timeout=DURATION","value":null,"doc":"Max wait for evictions."},
+      {"name":"--disable-eviction","value":null,"doc":"Use delete (bypass PDB) instead of eviction. DON'T usually."}
+    ],
+    "examples":[
+      {"invocation":"kubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data","expected_output":"node cordoned, pods evicted","scenario":"Prepare node for reboot/decommission."},
+      {"invocation":"kubectl uncordon worker-1","expected_output":"silent","scenario":"Re-allow scheduling after maintenance."}
+    ],
+    "source_ids":["k8s-debug-cluster","k8s-debug-cluster"]
+  },
+  {
+    "id":"k8s.core.cmd.kubectl-events",
+    "command":"kubectl events [-n NS] [--for=TYPE/NAME] [--watch]",
+    "purpose":"Cluster events. Modern (1.23+) replacement for `kubectl get events`. Better formatting and filtering.",
+    "flags":[
+      {"name":"-A","value":null,"doc":"All namespaces."},
+      {"name":"--for=TYPE/NAME","value":null,"doc":"Events for specific resource."},
+      {"name":"--watch","value":null,"doc":"Stream new events."},
+      {"name":"--types=Normal,Warning","value":null,"doc":"Filter by event type."},
+      {"name":"-o json|yaml|wide","value":null,"doc":"Output format."}
+    ],
+    "examples":[
+      {"invocation":"kubectl events -A --types=Warning","expected_output":"all warning events cluster-wide","scenario":"Cluster-health overview."},
+      {"invocation":"kubectl events --for=pod/nginx","expected_output":"events scoped to one pod","scenario":"Per-pod history."}
+    ],
+    "source_ids":["k8s-debug-cluster","k8s-events"]
+  }
+]

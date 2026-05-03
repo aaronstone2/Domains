@@ -1,0 +1,178 @@
+[
+  {
+    "id":"k8s.debugging.cmd.crictl",
+    "command":"crictl SUBCOMMAND [FLAGS]",
+    "purpose":"CRI-direct CLI on node. Bypasses kubelet+API. For low-level container/sandbox/image debugging when kubectl isn't usable.",
+    "flags":[
+      {"name":"--runtime-endpoint=unix:///run/containerd/containerd.sock","value":null,"doc":"CRI socket. Default tries common paths."},
+      {"name":"ps [-a]","value":null,"doc":"List containers. -a includes stopped."},
+      {"name":"pods [--state=Ready|NotReady] [--name=NAME]","value":null,"doc":"List pod sandboxes (CRI's view of pods)."},
+      {"name":"images","value":null,"doc":"List cached images on this node."},
+      {"name":"inspect CONTAINER","value":null,"doc":"Detailed container info (mounts, security, etc.)."},
+      {"name":"inspectp POD-SANDBOX","value":null,"doc":"Pod sandbox detail (network, namespaces)."},
+      {"name":"logs CONTAINER","value":null,"doc":"Container logs (kubelet log file)."},
+      {"name":"exec -it CONTAINER -- sh","value":null,"doc":"Exec into container."},
+      {"name":"stats","value":null,"doc":"Per-container resource usage."},
+      {"name":"events","value":null,"doc":"Stream CRI events."},
+      {"name":"info","value":null,"doc":"Runtime + image-service info."},
+      {"name":"rmi IMAGE","value":null,"doc":"Remove image from cache."},
+      {"name":"pull IMAGE","value":null,"doc":"Force pull image."},
+      {"name":"version","value":null,"doc":"CRI + runtime version."}
+    ],
+    "examples":[
+      {"invocation":"crictl ps","expected_output":"running containers on this node","scenario":"Node-level container inventory."},
+      {"invocation":"crictl logs $(crictl ps -q --label io.kubernetes.pod.name=nginx)","expected_output":"logs from nginx pod's container","scenario":"Get logs without kubelet/API."},
+      {"invocation":"crictl stats","expected_output":"per-container CPU+mem","scenario":"Node-level live resource monitor."}
+    ],
+    "source_ids":["k8s-crictl"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-cluster-info",
+    "command":"kubectl cluster-info [dump]",
+    "purpose":"Quick check of cluster reachability; dump for full state collection.",
+    "flags":[
+      {"name":"(no args)","value":null,"doc":"Print control-plane + addon endpoints."},
+      {"name":"dump","value":null,"doc":"Dump everything (events, pods, services, ...) to stdout or dir."},
+      {"name":"--output-directory=DIR","value":null,"doc":"Save to dir (one file per resource type per ns)."},
+      {"name":"-A","value":null,"doc":"All namespaces."},
+      {"name":"--namespaces=N1,N2","value":null,"doc":"Specific namespaces."}
+    ],
+    "examples":[
+      {"invocation":"kubectl cluster-info","expected_output":"`Kubernetes control plane is running at https://...`","scenario":"Confirm reachability."},
+      {"invocation":"kubectl cluster-info dump --output-directory=/tmp/cluster-dump","expected_output":"directory of YAML/JSON","scenario":"Diagnostics bundle for support."}
+    ],
+    "source_ids":["k8s-debug-cluster"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-events-debug",
+    "command":"kubectl events [--for=TYPE/NAME] [--watch]","purpose":"Modern event listing. Better filtering than `kubectl get events`.",
+    "flags":[
+      {"name":"--for=TYPE/NAME","value":null,"doc":"Events for specific resource."},
+      {"name":"--watch","value":null,"doc":"Stream new events."},
+      {"name":"--types=Normal,Warning","value":null,"doc":"Filter by type."},
+      {"name":"-A","value":null,"doc":"All namespaces."}
+    ],
+    "examples":[
+      {"invocation":"kubectl events --types=Warning --watch -A","expected_output":"streaming warning events cluster-wide","scenario":"Live cluster-health watch."}
+    ],
+    "source_ids":["k8s-debug-cluster","k8s-events"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-debug-node",
+    "command":"kubectl debug node/NODE -it --image=IMAGE","purpose":"Schedule privileged debug pod on node with hostPath rootfs. `chroot /host` to act as host root.",
+    "flags":[
+      {"name":"node/NODE","value":null,"doc":"Target node."},
+      {"name":"--image=IMAGE","value":null,"doc":"Debug image (busybox, ubuntu, custom)."},
+      {"name":"--profile=PROFILE","value":null,"doc":"general, baseline, restricted, netadmin, sysadmin."},
+      {"name":"-it","value":null,"doc":"Interactive."}
+    ],
+    "examples":[
+      {"invocation":"kubectl debug node/worker-1 -it --image=ubuntu --profile=sysadmin","expected_output":"pod scheduled, shell with /host mounted","scenario":"Debug a node without SSH access."}
+    ],
+    "source_ids":["k8s-kubectl-debug"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-rollout-status-debug",
+    "command":"kubectl rollout status deploy/NAME --watch","purpose":"Watch a rollout to see if it completes or stalls. Diagnoses progressDeadlineSeconds-style stalls.",
+    "flags":[
+      {"name":"--watch","value":null,"doc":"Default. Stream status."},
+      {"name":"--timeout=DURATION","value":null,"doc":"Max wait."}
+    ],
+    "examples":[
+      {"invocation":"kubectl rollout status deploy/web --timeout=10m","expected_output":"streaming status until success/failure","scenario":"Wait for deploy completion in CI."}
+    ],
+    "source_ids":["k8s-deployment"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-get-pod-yaml-status",
+    "command":"kubectl get pod NAME -o yaml","purpose":"Full pod state including containerStatuses (waiting/running/terminated reasons), conditions, hostIP/podIP, qosClass.",
+    "flags":[
+      {"name":"-o yaml","value":null,"doc":"Full spec+status."},
+      {"name":"-o jsonpath='{.status.containerStatuses[*].state}'","value":null,"doc":"Just states."},
+      {"name":"-o jsonpath='{.status.containerStatuses[?(@.name==\"app\")].lastState.terminated.reason}'","value":null,"doc":"Reason for last termination of specific container."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get pod web-abc -o jsonpath='{.status.containerStatuses[*].lastState.terminated.exitCode}'","expected_output":"e.g. `137`","scenario":"Quick exit-code check."}
+    ],
+    "source_ids":["k8s-debug-application-cluster"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-get-pdb",
+    "command":"kubectl get pdb [NAME]","purpose":"List PodDisruptionBudgets. Required to understand drain blocking.",
+    "flags":[
+      {"name":"-A","value":null,"doc":"All namespaces."},
+      {"name":"-o wide","value":null,"doc":"Show min/max + current."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get pdb -A","expected_output":"all PDBs","scenario":"Plan node maintenance."}
+    ],
+    "source_ids":["k8s-debug-cluster"]
+  },
+  {
+    "id":"k8s.debugging.cmd.journalctl-kubelet",
+    "command":"journalctl -u kubelet -f [-n N]","purpose":"Kubelet logs on the node. Required for: pod admission rejections, mount errors, runtime issues, eviction decisions.",
+    "flags":[
+      {"name":"-u kubelet","value":null,"doc":"Service unit."},
+      {"name":"-f","value":null,"doc":"Follow."},
+      {"name":"-n N","value":null,"doc":"Last N lines."},
+      {"name":"--since='1 hour ago'","value":null,"doc":"Time filter."},
+      {"name":"-p err","value":null,"doc":"Errors+ priority."}
+    ],
+    "examples":[
+      {"invocation":"journalctl -u kubelet --since='10 min ago' | grep -i error","expected_output":"recent kubelet errors","scenario":"Node-level diagnostics."}
+    ],
+    "source_ids":["k8s-debug-cluster"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-api-resources",
+    "command":"kubectl api-resources [-o wide]","purpose":"List all API resources known to cluster. Includes CRDs. Useful for 'what kinds exist'.",
+    "flags":[
+      {"name":"-o wide","value":null,"doc":"Add VERBS column."},
+      {"name":"--namespaced=true|false","value":null,"doc":"Filter by namespace-scoped."},
+      {"name":"--api-group=GROUP","value":null,"doc":"Filter by group."},
+      {"name":"--verbs=list","value":null,"doc":"Resources supporting verb."}
+    ],
+    "examples":[
+      {"invocation":"kubectl api-resources --verbs=list -A -o wide","expected_output":"all listable resources cluster-wide","scenario":"Discover what's installed."},
+      {"invocation":"kubectl api-resources --api-group=apps","expected_output":"apps group: deployments, replicasets, statefulsets, daemonsets, controllerrevisions","scenario":"Find resources in a group."}
+    ],
+    "source_ids":["k8s-architecture"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-api-versions",
+    "command":"kubectl api-versions","purpose":"List enabled API versions in cluster.",
+    "flags":[],
+    "examples":[
+      {"invocation":"kubectl api-versions | grep apps","expected_output":"apps/v1","scenario":"Confirm an API group is enabled."}
+    ],
+    "source_ids":["k8s-architecture"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-get-leases",
+    "command":"kubectl get lease -n kube-node-lease","purpose":"Per-node heartbeat leases. Stale lease = node potentially down.",
+    "flags":[
+      {"name":"-n kube-node-lease","value":null,"doc":"Where node leases live."}
+    ],
+    "examples":[
+      {"invocation":"kubectl get lease -n kube-node-lease -o wide","expected_output":"per-node lease holder + age","scenario":"Quick node-health check (compare vs `kubectl get nodes`)."}
+    ],
+    "source_ids":["k8s-debug-cluster"]
+  },
+  {
+    "id":"k8s.debugging.cmd.kubectl-auth-can-i",
+    "command":"kubectl auth can-i VERB RESOURCE [--as=USER]","purpose":"RBAC permission check. 'Can I create deployments?'",
+    "flags":[
+      {"name":"VERB","value":null,"doc":"get, list, create, update, delete, etc."},
+      {"name":"RESOURCE","value":null,"doc":"e.g. pods, deployments."},
+      {"name":"--as=USER","value":null,"doc":"Impersonate user (admin only)."},
+      {"name":"--as-group=GROUP","value":null,"doc":"Impersonate group."},
+      {"name":"--namespace=NS","value":null,"doc":"Scope check."},
+      {"name":"--list","value":null,"doc":"List ALL permissions current user has."}
+    ],
+    "examples":[
+      {"invocation":"kubectl auth can-i delete pods --as=jane","expected_output":"`yes` or `no`","scenario":"Diagnose RBAC issue."},
+      {"invocation":"kubectl auth can-i --list","expected_output":"all current-user permissions","scenario":"Audit your own access."}
+    ],
+    "source_ids":["k8s-rbac"]
+  }
+]

@@ -324,3 +324,224 @@ Plus 32 hand-curated intra-ecs cross-leaf rels + 98 auto-derived from failure_mo
 **ECS vertical: COMPLETE.** Combined with firecracker (37 sources, 172/130/119 + 71 fms + 231 rels), the AWS-runtime cluster of the corpus is fully built — including the load-bearing Fargate↔Firecracker + Nitro↔Firecracker cross-domain links.
 
 **Next:** resume documented domain order (docker → linux → devin → k8s) OR pivot to harness/synthesis work. Per CLAUDE.md PREAMBLE, after all P1+P3 verticals land, run horizontal P2 (devin devbox capture) + P4 (cross-domain failure-modes) + P5 (cross-domain relationships) + P6+ (harness, polish).
+
+## Phase 5 — Cross-domain relationships (horizontal)
+
+### Session P5.h-pre — 2026-05-03 — SUPERSEDED
+
+Initial Phase 5 pass that I (incorrectly) declared "complete." Per-domain failure_modes were 12-24 each — the original P3-session seed batch — far short of the firecracker (71) / ecs (50) gold standard. User pushed back and demanded the work actually be done thoroughly per domain.
+
+### Session P5.h — 2026-05-03 — DONE
+
+Continuation of an autonomous /loop session through Phase 5 + Phase 6.
+
+**SQL-derived `affects-concept` edges:**
+
+```sql
+INSERT INTO <d>.relationships
+SELECT id AS from_id, unnest(affected_concepts) AS to_id, 'affects-concept' AS rel_type, NULL AS source_id
+FROM <d>.failure_modes WHERE affected_concepts IS NOT NULL;
+```
+
+| Domain | failure_modes | affects-concept edges |
+|---|---:|---:|
+| docker | 24 | 48 |
+| linux | 23 | 35 |
+| k8s | 21 | 27 |
+| devin | 15 | 21 |
+| methodology | 12 | 23 |
+| **Total** | **95** | **154** |
+
+**Hand-curated cross-domain edges** (`domains/_shared/extract/cross_domain_relationships.json`):
+
+104 edges spanning 51 distinct rel_types across these chains:
+- **cgroup-memory chain:** docker.engine.cgroup-v2 → linux.primitives.cgroup-v2 → k8s.runtime.kubelet-pod-cgroup; docker.runtime.oom-killer → linux.primitives.oom-killer ← k8s.core.oom-kill; linux.systemd.cgroup-integration manages linux.primitives.cgroup-v2.
+- **namespace chain:** docker.runtime.namespace-{pid,mount,network,uts,ipc,user,cgroup} → linux.primitives.{pid,mount,network,uts,ipc,user,cgroup}-namespace (7 implements); k8s.runtime.pause-container holds-shared linux.primitives.namespace-subsystem.
+- **iptables/netfilter chain:** docker.engine.iptables-management + k8s.networking.kube-proxy-iptables → linux.networking.iptables-subsystem; docker.networking.iptables-DOCKER-* is-a linux.networking.iptables-{chain,table}; k8s.networking.kube-proxy-nftables → linux.networking.nftables-subsystem.
+- **dns chain:** docker.networking.embedded-dns + k8s.networking.coredns → linux.networking.dns-protocol; k8s.networking.cluster-dns replaces linux.networking.dns-resolver-subsystem.
+- **overlayfs chain:** docker.engine.overlay2-driver + docker.runtime.overlayfs-snapshotter + k8s.runtime.container-rootfs → linux.filesystem.overlayfs.
+- **runc/cri chain:** docker.runtime.runc creates linux.primitives.{namespace-subsystem,cgroup-v2}; k8s.runtime.crun alternative-to docker.runtime.runc; k8s.core.cri satisfied-by docker.runtime.cri-plugin; k8s.runtime.containerd same-implementation docker.runtime.containerd.
+- **security chain:** docker.engine.seccomp-profile configures linux.primitives.seccomp-subsystem; docker.engine.apparmor-profile is-a linux.primitives.apparmor-profile-model; k8s.core.security-context can-configure both; k8s.core.pod-security-standards requires linux.primitives.seccomp-subsystem.
+- **methodology→tools chain:** methodology.bpftrace is-tool linux.debugging.bpftrace-tool; methodology.bcc is-tool linux.debugging.bcc-toolkit; methodology.{cpu,off-cpu}-flame-graph generated-from linux.debugging.perf-subsystem; methodology.ftrace uses linux.debugging.ftrace-subsystem.
+- **devin/microvm chain:** devin.devbox.snapshot snapshots devin.devbox.microvm; devin.devbox.warm-vm-pool hydrates-from devin.devbox.snapshot; devin.devbox.large-performant-vm runs-in linux.primitives.namespace-subsystem.
+
+**Validation:** ran `WHERE from_id NOT IN (concept ids)` + `WHERE to_id NOT IN (concept ids)` checks before INSERT — 7 missing IDs found and fixed (k8s.networking.kube-proxy-iptables-mode → kube-proxy-iptables, linux.networking.unix-socket-protocol → unix-domain-protocol, linux.primitives.ftrace-subsystem → linux.debugging.ftrace-subsystem, linux.debugging.bcc-tool → bcc-toolkit, linux.debugging.perf-tool → perf-subsystem ×2). All edges resolve.
+
+**Final cross-domain relationship totals (per-domain table = `from_id`'s domain):**
+
+| Domain | Relationships | Distinct rel_types |
+|---|---:|---:|
+| docker | 96 | (mix) |
+| linux | 43 | (mix) |
+| k8s | 60 | (mix) |
+| devin | 26 | (mix) |
+| methodology | 33 | (mix) |
+| **Total** | **258** | **51** |
+
+## Phase 6 — Harness CLI (interview-day tool)
+
+### Session P6 — 2026-05-03 — DONE
+
+Per-package detail: `packages/harness/PROGRESS.md`.
+
+Built out 6 new harness subcommands on top of the existing `query` stub: `lookup` (BM25 + LIKE across 5 domains), `playbook` (failure-mode runbook renderer), `concept` (concept + relationships), `related` (graph BFS via DuckDB recursive CTE), `cite` (source detail), `stats` (corpus rollup).
+
+**Verified end-to-end:**
+- `pnpm harness stats` → 709 sources, 1635 concepts, 556 commands, 2746 config_keys, 95 failure_modes, 258 relationships across 5 domains.
+- `pnpm harness lookup "OOM killer cgroup"` → top hits k8s-node-pressure-eviction (6.16), systemd-systemd-scope-5 (5.86), kernel-docs-cgroup-v2 (5.43) — cross-domain BM25 surfaces relevant authoritative sources.
+- `pnpm harness lookup "iptables NAT prerouting"` → man7-iptables-8 (7.92), debian-nft-8 (7.82) → working linux/docker/k8s spread.
+- `pnpm harness playbook linux.fm.cgroup-memory-oom-kill` → 3 diagnostic steps + 1 fix step + 2 source citations rendered correctly.
+- `pnpm harness concept linux.primitives.cgroup-v2` → renders concept + 6 incoming cross-domain relationships.
+- `pnpm harness related linux.primitives.cgroup-v2 2` → reaches 9 nodes across 3 domains via bidirectional BFS.
+- `pnpm harness cite kernel-docs-cgroup-v2` → returns title/URL/tier/license cleanly.
+- `pnpm --filter @domains/harness typecheck` clean (TS4111 strictness, all interface-typed result rows).
+
+**Gotcha:** DuckDB FTS function naming is `fts_<schema>_<table>.match_bm25(<doc-id>, <query>)`, not `fts_main_<schema>_<table>` as some examples suggest. The schema prefix is the actual table's schema.
+
+**Firecracker / ECS not yet wired into harness DOMAINS array** — they have FTS indexes but are excluded from cross-domain queries because Phase 5 cross-domain edges from those slices weren't added in this session. Trivially extensible: add to `packages/harness/src/db.ts:DOMAINS` and the per-domain UNION ALL queries inherit them automatically.
+
+**Next:** Phase 7 rehearsal — feed realistic interview prompts to the harness, measure time-to-citation, surface gaps. OR add firecracker/ecs to the DOMAINS array and re-run lookup queries. OR build `harness capture` for live system snapshots (Linux/WSL).
+
+## Phase 4 — Per-domain failure_modes (thorough horizontal pass)
+
+### Session P4-thorough — 2026-05-03 — DONE
+
+User correctly pointed out that the prior horizontal pass was a shallow seed batch, not a thorough Phase 4. This session brought every "main 5" domain up to the firecracker/ecs gold standard: 24+ fms each, with full diagnostic_steps + fix_steps + citations.
+
+| Domain | Before | Added | After | Notes |
+|---|---:|---:|---:|---|
+| docker | 24 | +42 | **66** | All 6 leaves now have coverage (was just engine). New: build-buildkit, runtime, compose, networking, security, registry, rootless. |
+| linux | 23 | +58 | **81** | All 5 leaves deepened. cgroup edge cases, ns/seccomp/LSM, TCP/conntrack/MTU/ARP/IPv6, overlayfs/ext4/lvm/luks, perf/strace/gdb/ftrace/kprobe, systemd. |
+| k8s | 21 | +36 | **57** | hpa-not-scaling, admission-webhook-timeout, etcd-defrag, kubelet-pleg-unhealthy, cni-mtu-mismatch, finalizer-stuck, pvc-resize-stuck, taint-mismatch, kube-reserved, scheduler-preempt, coredns-loop-detection, NetworkPolicy-default-deny, ingress-tls, kube-proxy-ipvs, ephemeral-container, init-container, etc. |
+| devin | 15 | +18 | **33** | snapshot-cold-boot-slow, IDE-disconnect, MCP-tool-timeout, slack/github stale auth, knowledge-cap, secret-vault-unmounted, port-not-exposed, browser-cookie, chat-truncation, scheduled-session-skipped, repo-clone-https-vs-ssh, private-pkg-pull, devbox-disk-full, linear-mapping, session-stuck-paused, acu-burn-runaway, swe-1-6-regression. |
+| methodology | 12 | +12 | **24** | 5whys-not-finding-root, runbook-stale, oncall-handoff-info-loss, dashboard-too-many-metrics, percentile-vs-mean, capacity-planning-without-baseline, war-room-too-many, action-items-never-done, benchmark-not-realistic, streetlight-anti-pattern, flame-graph-misread, slo-no-burn-rate-alert. |
+
+**Validation discipline:** every JSON loaded was first validated against `concepts UNION ALL config_keys` (for affected_concepts) and `sources` (for source_ids) before INSERT — found 31 missing concept refs in linux, 16 in devin, 4 in k8s and fixed via Python rewrite scripts (one per domain). 7 dup IDs in linux (overlap with seed batch) were dropped. All 144 added fms loaded clean.
+
+### Session P5-thorough — 2026-05-03 — DONE
+
+Per-domain hand-curated intra-domain edges + auto-derived `affects-concept` from new fms + final 89 horizontal cross-domain edges.
+
+| Domain | Before | Added | After |
+|---|---:|---:|---:|
+| docker | 96 | +191 | **305** |
+| linux | 43 | +242 | **285** |
+| k8s | 60 | +164 | **224** |
+| devin | 26 | +109 | **135** |
+| methodology | 33 | +65 | **98** |
+| firecracker | 231 | +5 | **236** (cross-domain only) |
+| ecs | 134 | 0 | **134** (was already done) |
+| **Total** | **623** | **+776** | **1444** |
+
+Hand-curated chains added (per domain JSON in `domains/<d>/extract/relationships_intra_p5.json`):
+- docker: engine-runtime-shim layering, runc state machine, snapshotter implementations, networking driver hierarchy, iptables chain installation, build-buildkit frontend/driver matrix, compose model, security defense-in-depth bundle.
+- linux: cgroup-v2 controller hierarchy, namespace-subsystem includes-7-types, capability set subset relationships, TCP state machine, iptables/netfilter layering, DNS/socket-API, systemd unit-state hierarchy, overlayfs/mount semantics, perf/eBPF/ftrace tool chains.
+- k8s: kubelet→cri→containerd→runc chain, kube-proxy mode tree, controller-event-loop family, dns/coredns/policy chain, cni-plugin lineage, runtime/cgroup-driver alternatives, pod lifecycle (deployment→rs→pod, sts/ds/job/cronjob), probes affect endpoints, taints/tolerations.
+- devin: snapshot/microvm/warm-pool, blueprint hierarchy, api-resource models for session/snapshot/secret/knowledge, product features, integration channels (slack/linear/github/jira), MCP tool transports, enterprise rollout modes.
+- methodology + horizontal cross-domain (89 edges): methodology→tool mappings (use-method→perf, flame-graph→perf, ftrace→linux.debugging, bpftrace→bpftrace-tool); devin.devbox.microvm → firecracker.vmm.firecracker-vmm chain; docker.runtime.runc → linux.primitives.{namespace,cgroup,seccomp,apparmor}; k8s→linux equivalents (kube-proxy→iptables, security-context→seccomp/apparmor/cap-bounding, oom-kill→linux.oom-killer, container-rootfs→overlayfs); k8s→docker.containerd same-implementation; failure-mode equivalences across layers (k8s.fm.oomkilled = docker.fm.exit-137-oomkilled = linux.fm.cgroup-memory-oom-kill).
+
+## Phase 6 — Harness CLI (interview-day tool)
+
+### Session P6 — 2026-05-03 — DONE
+
+Per-package detail: `packages/harness/PROGRESS.md`. 7 subcommands: stats, lookup, playbook, concept, related, cite, query. Wired all 7 domains into DOMAINS array.
+
+## Phase 7 — Interview rehearsal
+
+### Session P7 — 2026-05-03 — DONE
+
+Detail: `domains/_shared/rehearsal/results.md`. 15 realistic prompts simulating Cognition AI Support Engineer scenarios.
+
+**14/15 pass on first try.** Only R15 (vague "container can't reach internet") returns related-not-exact matches — by design, since that symptom space is a tree of more specific root causes.
+
+**Improvement made during rehearsal:** the original `lookup` matched failure_modes via single LIKE on whole query string, which missed multi-word queries. Replaced with per-word OR-match across `symptom + id + root_cause_class + error_patterns` plus a `match_strength` count for ranking. After fix, all 14 retests surface the precise primary fm.
+
+Final corpus state:
+
+```
+domain         sources  documents  concepts  commands  config_keys  failure_modes  relationships
+docker         104      104        400       58        869          66             305
+linux          172      172        521       65        1125         81             285
+k8s            62       62         274       45        359          57             251
+devin          327      327        319       338       357          33             135
+methodology    44       44         121       50        36           24             98
+firecracker    37       37         172       130       119          71             236
+ecs            21       21         82        20        154          50             134
+TOTAL          767      767        1889      706       3019         382            1444
+```
+
+**Per-domain comparison to pre-thorough (Phase 5.h-pre):** failure_modes 95 → 382 (+302%). Relationships 258 → 1444 (+460%). Comparable depth across all 7 domains now; no domain is the "weak link" any longer.
+
+## Phase 4.5 + Phase 7.2 — Rehearsal-driven gap-fill
+
+### Session P4.5 — 2026-05-03 — DONE
+
+User /loop'd to do the gap-fill noted in Phase 7's results. Added 33 fms targeting the 5 surfaced gaps: container-no-egress umbrella (docker, +8), NUMA/IRQ/RCU/lockup deep (linux, +10), admission/CRD/PDB depth (k8s, +7), VPN/proxy/cert/Mariner (devin, +4), pager-thrash/blame-retro/SLI-truth (methodology, +4). Plus 34 hand-curated cross-domain edges: umbrella→specific-cause for container-egress (7 edges), soft→hard→panic escalation chain, fm-family siblings, devin-network-failure dependency tree.
+
+Final state:
+
+```
+domain         sources  documents  concepts  commands  config_keys  failure_modes  relationships
+docker         104      104        400       58        869          74             333
+linux          172      172        521       65        1125         91             315
+k8s            62       62         274       45        359          64             268
+devin          327      327        319       338       357          37             150
+methodology    44       44         121       50        36           28             115
+firecracker    37       37         172       130       119          71             236
+ecs            21       21         82        20        154          50             134
+TOTAL          767      767        1889      706       3019         415            1551
+```
+
+### Session P7.2 — 2026-05-03 — DONE
+
+Re-rehearsal: R15-retest (the only previously-failing prompt) + 5 new gap-targeted prompts (R16-R20: NUMA, webhook denied, VPN, postmortem-blame, PDB-drain). **6/6 pass.** Combined cumulative: **20/21 (95%)** of realistic interview prompts return precise primary fm in top 3 hits.
+
+## Phase 8 — Deep multi-turn interview rehearsal scenarios
+
+### Session P8 — 2026-05-03 — DONE
+
+Per user direction ("do a phase and complete it like all of a section carefully and precisely"), focused single-section deliverable: **10 deep multi-turn scenarios** at `domains/_shared/rehearsal/scenarios/` covering the full conversational arc of an AI Support Engineer interview at Cognition.
+
+Each scenario:
+- Realistic user opening message (1-3 paragraphs)
+- SE mental model (what to think about in 5 seconds)
+- Verified harness queries with actual output (run live against the corpus)
+- SE response with citations
+- 2-4 user follow-up turns
+- Coverage notes
+- Practice notes for interviewer pushback questions
+
+| # | Title | Difficulty | Lines |
+|---|---|---|---:|
+| 01 | Container exited 137 (Docker OOM) | entry | 196 |
+| 02 | Container can't reach the internet | mid | 189 |
+| 03 | Pod stuck in Pending | mid | 245 |
+| 04 | DNS slow inside pods | mid | 198 |
+| 05 | App slow but CPU low | advanced | 190 |
+| 06 | Devin can't reach internal staging | mid | 241 |
+| 07 | systemd unit won't start | entry-mid | 266 |
+| 08 | Process stuck in D state | advanced | 263 |
+| 09 | docker pull "unauthorized" | mid | 265 |
+| 10 | Our postmortem became a trial | soft-skills | 202 |
+
+**Total: 10 scenarios, ~2255 lines of interview-prep material.** Each scenario completed to publish quality before moving to the next; harness output verified at write time.
+
+Coverage matrix at `domains/_shared/rehearsal/scenarios/README.md` shows primary/secondary domain coverage per scenario; every domain except firecracker/ecs has at least one primary-coverage scenario (those two surface in related-walks, but don't get dedicated scenarios — the interview is a Docker/Linux VM screen-share, not Firecracker depth).
+
+## Phase 9 — `harness capture` live system snapshot tool
+
+### Session P9 — 2026-05-03 — DONE
+
+Per user direction (continue one-phase-at-a-time), focused single-section deliverable: **`harness capture` subcommand** for runtime diagnostic-bundle execution. Per-package detail: `packages/harness/PROGRESS.md`.
+
+**Deliverables (each completed in order before moving to next):**
+
+1. **Bundle JSON schema** at `packages/harness/bundles/SCHEMA.md` — describes `{name, description, platform_hint, commands: [{description, command, timeout_ms, allow_failure, redact}]}`
+2. **8 curated bundles** at `packages/harness/bundles/`:
+   - `oom`, `network-egress`, `dns`, `systemd-unit`, `k8s-pending`, `docker-state`, `perf-stalls`, `devin-vpn`
+3. **`capture.ts` command** at `packages/harness/src/commands/capture.ts` — spawns each command with timeout, captures stdout+stderr, applies default redactions (AWS/GHPAT/JWT/password=) plus per-bundle patterns, formats as Markdown blob
+4. **`--from-fm <id>` mode** — synthesizes a bundle on the fly from any failure_mode's `diagnostic_steps`. Filters out comment-placeholder commands so only runnable ones execute.
+5. **Wired into commands index** + `pnpm --filter @domains/harness typecheck` clean
+6. **Cross-platform shell auto-detection** — on Windows tries `wsl.exe bash -c` → `bash.exe -c` (Git Bash) → `cmd.exe /c`; selected shell reported in capture header
+7. **Verified on Windows** (the user's interview-prep environment): `--list` works; `docker-state` captures real Docker Desktop info via WSL; `--from-fm docker.fm.exit-137-oomkilled` runs the playbook's diagnostic steps and `dmesg` returned actual recent OOM kills; `--output` writes file cleanly; redaction confirmed against AWS key + GH PAT + password= + JWT inputs
+8. **Documented** in `packages/harness/PROGRESS.md` (full Phase 9 section), `domains/_shared/rehearsal/scenarios/README.md` (bundle table + usage), and `01-docker-oom.md` scenario (worked-example with verified output)
