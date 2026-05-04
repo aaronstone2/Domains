@@ -314,7 +314,13 @@ For each resource, ask all three. The first one you find with non-zero saturatio
 
 ## §7 Harness commands quick-reference
 
-**Primary one-shot** (use this first 80% of the time):
+**Two paths** to query the corpus during the interview:
+
+1. **Inside `claude` (in the repo root)** — Claude calls the MCP tools natively. Just say "what's likely if I see X?" and Claude invokes the `ask` tool. The tool result appears in Claude's UI; you read its TALK TRACK section aloud. This is the **MCP-as-teleprompter** path. Available tools: `ask`, `lookup`, `playbook`, `concept`, `related`, `cite`, `stats`, `capture`.
+
+2. **In a regular shell** — same commands as `pnpm harness <subcommand>` (or `ha`/`hl`/`hp` aliases). Use this when you're outside Claude or want a quick paste-able output.
+
+**Primary one-shot** (works in both paths):
 
 ```bash
 pnpm harness ask "OOMKilled in pod logs"         # symptom → top fm + talk-track + diag/fix + citations

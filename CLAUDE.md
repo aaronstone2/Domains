@@ -47,6 +47,25 @@ A multi-domain debugging KB lives in this repo: DuckDB at `_db/knowledge.duckdb`
 
 Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`.
 
+## Using the corpus during interviews / live debugging (MCP tools)
+
+**This repo IS an MCP** for the AI Support Engineer interview screen-share. When you're invoked from inside this repo, the project-scoped `.mcp.json` exposes 8 native tools via the `domains-harness` MCP server. Prefer these tools over shelling out to `! pnpm harness ...` — they're faster, structured, and the user is being evaluated on how the MCP "feels" while running.
+
+| Tool | When to call |
+|---|---|
+| `ask` | **PRIMARY.** User describes a symptom or error → call this first. Returns top failure mode + talk-track + diagnostic + fix steps + citations in one shot. |
+| `lookup` | When `ask`'s top match feels off, or to browse all candidates. |
+| `playbook` | When you already know the fm-id (e.g. from a prior `ask`) and want to re-render. |
+| `concept` | Definition + relationship edges for a primitive (cgroups, OOM-killer, iptables NAT). |
+| `related` | Walk the relationship graph from a node to depth N. Cross-domain inference. |
+| `cite` | Get the canonical doc URL for a recommendation. |
+| `stats` | Corpus inventory — what's available before answering. |
+| `capture` | Run a curated diagnostic-bundle on the live system. SIDE EFFECT: actually executes shell. |
+
+**Talk-track is the user's teleprompter.** When `ask` returns, read the TALK TRACK section back to the user verbatim — it's pre-scripted to demonstrate the eval criteria (curiosity → diagnose → trade-off → fix). Then walk DIAGNOSE step-by-step.
+
+If MCP tools aren't available (e.g. running outside the repo), the same commands work as `pnpm harness <subcommand>` shell-outs.
+
 ## CLI internals
 
 The CLI lives in `packages/cli/` (`@domains/cli`). Architecture:
