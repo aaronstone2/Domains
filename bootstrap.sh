@@ -442,7 +442,7 @@ fi
 # 6) Repo deps: pnpm + corpus install (so harness commands work)
 # -----------------------------------------------------------------------------
 if [[ -f "$REPO_DIR/package.json" ]]; then
-  step "installing pnpm + corpus deps (so `pnpm harness …` works)"
+  step "installing pnpm + corpus deps (so 'pnpm harness ...' works)"
   if ! command -v pnpm >/dev/null 2>&1; then
     if command -v npm >/dev/null 2>&1; then
       $SUDO npm install -g pnpm || warn "pnpm npm install failed"
