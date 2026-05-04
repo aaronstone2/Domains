@@ -104,6 +104,18 @@ cheat                                   # open the cheat sheet
 
 Full subcommand reference: `packages/harness/PROGRESS.md`.
 
+### MCP integration (Claude Code calls the harness as native tools)
+
+The repo ships a project-scoped `.mcp.json` that registers `domains-harness` as an MCP server. When you run `claude` from the repo root, Claude Code spawns it automatically and exposes 8 tools (`ask`, `lookup`, `playbook`, `concept`, `related`, `cite`, `stats`, `capture`) directly in the model's tool surface. Inside Claude, you can ask "what's likely if a pod is OOMKilled?" and Claude calls the `ask` tool natively — no `! pnpm harness ask "..."` shell-out needed.
+
+Bootstrap.sh verifies the MCP server boots end-to-end (initialize handshake) before declaring complete. To check manually:
+
+```bash
+echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' | pnpm --filter @domains/harness-mcp --silent start
+```
+
+Source: `packages/harness-mcp/src/index.ts`.
+
 ## Practice material
 
 - **`domains/_shared/rehearsal/CHEATSHEET.md`** — single-page interview reference (exit codes, symptom→fm tables, error-message taxonomy, 5-second mental models, tool quick-ref, methodology cheats, harness commands)
