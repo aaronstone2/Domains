@@ -47,10 +47,26 @@ export async function lookupCmd(args: string[]): Promise<void> {
     console.log("");
     console.log(header("harness lookup", `query: ${text}`));
 
-    const words = text
-      .split(/\s+/)
-      .map((w) => w.replace(/[^a-zA-Z0-9_-]/g, "").toLowerCase())
-      .filter((w) => w.length >= 3);
+    const STOPWORDS = new Set([
+      "the", "and", "but", "for", "are", "you", "this", "that", "with", "have",
+      "has", "had", "what", "when", "why", "how", "got", "get", "its", "from",
+      "was", "were", "been", "into", "out", "all", "any", "can", "not", "one",
+      "two", "his", "her", "she", "him", "they", "them", "our", "your", "their",
+      "just", "yet", "now", "also", "only", "still", "very", "more", "most",
+      "much", "some", "make", "made", "let", "see", "say", "said", "fine", "do",
+      "does", "did", "doing", "doesnt", "thing", "things", "really", "feels",
+      "look", "looks", "seem", "seems", "going", "goes", "went", "should",
+      "would", "could", "may", "might", "must", "ago", "new", "old", "other",
+      "another", "same", "different", "show", "shows", "shown", "tell", "tells",
+      "told", "ask", "asked", "asking", "ive", "weve", "youre", "im", "isnt",
+      "arent",
+    ]);
+    const words = Array.from(new Set(
+      text
+        .split(/\s+/)
+        .map((w) => w.replace(/[^a-zA-Z0-9_-]/g, "").toLowerCase())
+        .filter((w) => w.length >= 3 && !STOPWORDS.has(w)),
+    ));
     const wordClauses = words.length > 0
       ? words
           .map((w) => `regexp_matches(LOWER(symptom), '\\b${w}\\b')
