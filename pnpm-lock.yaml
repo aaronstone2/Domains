@@ -18,6 +18,24 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  packages/bootstrap:
+    devDependencies:
+      '@mark1russell7/cue':
+        specifier: github:mark1russell7/cue
+        version: https://codeload.github.com/mark1russell7/cue/tar.gz/fb96d136d5c451b7ee4f16e50b756b855e7320ab
+      '@types/node':
+        specifier: ^22.10.0
+        version: 22.19.17
+      tsx:
+        specifier: ^4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
   packages/cli:
     dependencies:
       '@clack/prompts':

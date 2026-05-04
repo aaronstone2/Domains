@@ -55,6 +55,14 @@ ehthumbs.db
 secrets.*
 credentials.*
 
+# _secrets/ holds age-encrypted files only — plaintext is gitignored, encrypted is committed.
+# The age ciphertext requires the user's SSH PRIVATE key to decrypt; safe in a public repo.
+# See packages/bootstrap/src/modules/anthropic-key.ts and DEVBOX-INSTALL.md.
+_secrets/*
+!_secrets/.gitkeep
+!_secrets/*.age
+!_secrets/README.md
+
 # Logs
 *.log
 logs/
@@ -76,6 +84,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!packages/*/src/lib/
 lib64/
 parts/
 sdist/
