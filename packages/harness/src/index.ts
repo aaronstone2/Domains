@@ -24,11 +24,20 @@ function printHelp(): void {
   const lines: string[] = [
     "Usage: pnpm harness <subcommand> [args]",
     "",
-    "Subcommands:",
+    "Most-used:",
+    "  ask \"<symptom>\"          one-shot: top failure mode + talk-track + diag/fix",
+    "  lookup <query>            multi-section search across fms/cmds/concepts/docs",
+    "  playbook <fm-id>          render a specific failure-mode runbook",
+    "  drill <drill-id>          interactive practice REPL",
+    "  capture <bundle|--list>   live diagnostic snapshot (or --from-fm <id>)",
+    "",
+    "Reference:",
+    "  concept <id>              show concept + relationships",
+    "  related <id> [depth]      walk the relationship graph (max depth 4)",
+    "  cite <source-id>          show source URL + license + tier",
+    "  stats                     corpus inventory + quality grades",
+    "  query <sql>               raw DuckDB SQL",
   ];
-  for (const name of Object.keys(commands)) {
-    lines.push(`  ${name}`);
-  }
   p.log.info(lines.join("\n"));
 }
 

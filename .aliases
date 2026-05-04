@@ -3,10 +3,11 @@
 
 # ----- harness shortcuts -----
 alias h='pnpm harness'
+alias ha='pnpm harness ask'         # one-shot: symptom → top fm → playbook + talk-track
 alias hl='pnpm harness lookup'
 alias hp='pnpm harness playbook'
 alias hc='pnpm harness concept'
-alias hr='pnpm harness related'
+alias hrel='pnpm harness related'   # `hr` shadows `history -r`; use hrel
 alias hs='pnpm harness stats'
 alias hcap='pnpm harness capture'
 alias hd='pnpm harness drill'

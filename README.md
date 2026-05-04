@@ -88,15 +88,19 @@ _db/knowledge.duckdb                  ← gitignored; built locally from extract
 After bootstrap, from any shell with the repo's `.aliases` sourced:
 
 ```bash
-h stats                                 # corpus stats
-hl "DNS slow ndots"                     # BM25 search
-hp k8s.fm.dns-pod-search-too-many       # render a playbook
-hr linux.primitives.cgroup-v2 2         # walk the relationship graph
+ha "OOMKilled in pod logs"              # one-shot: top fm + talk-track + diag/fix + citations
+ha "kubectl drain hangs on PDB"         # use this 80% of the time during the interview
+h stats                                 # corpus inventory + quality grades
+hl "DNS slow ndots"                     # browse mode — multi-section search
+hp k8s.fm.dns-pod-search-too-many       # re-render a playbook by id
+hrel linux.primitives.cgroup-v2 2       # walk the relationship graph
 hcap oom                                # capture an OOM diagnostic snapshot
 hcap --from-fm docker.fm.exit-137-oomkilled   # synthesize from any fm
 hd 01-docker-oom                        # interactive practice mode
 cheat                                   # open the cheat sheet
 ```
+
+`harness ask` is the **primary entry point**. It picks the top failure mode for the symptom, renders a polished sectioned response (META → TALK TRACK → DIAGNOSE → FIX → CITATIONS → NEXT) with ANSI colors when the terminal supports them, and includes a "talk track" the user can read aloud to demonstrate the eval criteria (curiosity → diagnose → trade-off → fix).
 
 Full subcommand reference: `packages/harness/PROGRESS.md`.
 
@@ -124,6 +128,8 @@ The corpus was built in 11 phases — see `domains/_shared/PROGRESS.md` for the 
 | P10 | `harness drill` — interactive practice REPL |
 | P11 | Single-page cheat sheet |
 | P12 | `bootstrap.sh` — interview-day installer (this) |
+| P13–17 | Quality pass: 145 fms deepened to 3+ diag / 2+ fix steps with concrete commands |
+| P18 | MCP polish — `harness ask` one-shot, talk-track, sectioned ANSI output, aligned tables |
 
 ## Tech notes
 

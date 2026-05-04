@@ -314,9 +314,21 @@ For each resource, ask all three. The first one you find with non-zero saturatio
 
 ## §7 Harness commands quick-reference
 
+**Primary one-shot** (use this first 80% of the time):
+
 ```bash
-# Search the corpus
-pnpm harness lookup "exit 137 OOM"               # BM25 + LIKE across docs/concepts/cmds/fms
+pnpm harness ask "OOMKilled in pod logs"         # symptom → top fm + talk-track + diag/fix + citations
+pnpm harness ask "kubectl drain hangs"           # one structured response with everything you need to say
+pnpm harness ask "container exits 125"
+```
+
+`harness ask` renders a polished sectioned output: top fm with confidence + alternates, a "talk track" you can read aloud (frame → ask first → diagnose → trade-off → fix), the diagnostic and fix steps, citations, and suggested next commands. Use this when the interviewer first describes a symptom — it doubles as a teleprompter.
+
+**Other commands:**
+
+```bash
+# Search the corpus (browse mode — when ask doesn't pick the right top fm)
+pnpm harness lookup "exit 137 OOM"               # word-boundary search across docs/concepts/cmds/fms
 pnpm harness lookup "DNS slow ndots"
 
 # Render a failure-mode runbook
@@ -348,22 +360,34 @@ pnpm harness drill 01-docker-oom
 pnpm harness drill random
 ```
 
-**One-line response patterns** (when user describes X, run Y):
+**One-line response patterns** (when user describes X, run Y — `harness ask` works for all of these too, but `playbook` is faster when you know the exact id):
 
 | User says... | First command |
 |---|---|
-| "container exited 137" | `pnpm harness playbook docker.fm.exit-137-oomkilled` |
-| "pod stuck Pending" | `pnpm harness playbook k8s.fm.pod-pending-failedscheduling` |
-| "DNS slow inside pods" | `pnpm harness playbook k8s.fm.dns-pod-search-too-many` |
-| "container can't reach internet" | `pnpm harness playbook docker.fm.container-no-egress-umbrella` |
-| "process stuck, SIGKILL doesn't work" | `pnpm harness playbook linux.fm.process-stuck-d-state` |
-| "systemd unit won't start" | `pnpm harness playbook linux.fm.systemd-unit-restart-loop` |
-| "kubectl drain hangs on PDB" | `pnpm harness playbook k8s.fm.pdb-blocks-drain` |
-| "admission webhook denied / timed out" | `pnpm harness playbook k8s.fm.validating-webhook-policy-rejects` |
-| "Devin can't reach internal" | `pnpm harness playbook devin.fm.session-cant-reach-internal-svc` |
-| "I'm slow but CPU is low" | `pnpm harness playbook methodology.fm.cpu-utilization-misleading` |
-| "Postmortem became blame" | `pnpm harness playbook methodology.fm.retro-becomes-trial` |
-| (vague symptom) | `pnpm harness lookup "<their words>"` then pick from the failure_modes section |
+| "container exited 137" | `pnpm harness ask "exit 137 OOMKilled"` |
+| "pod stuck Pending" | `pnpm harness ask "pod stuck Pending"` |
+| "DNS slow inside pods" | `pnpm harness ask "DNS slow inside pod"` |
+| "container can't reach internet" | `pnpm harness ask "container no egress"` |
+| "process stuck, SIGKILL doesn't work" | `pnpm harness ask "process stuck D state"` |
+| "systemd unit won't start" | `pnpm harness ask "systemd unit restart loop"` |
+| "kubectl drain hangs on PDB" | `pnpm harness ask "kubectl drain hangs PDB"` |
+| "admission webhook denied / timed out" | `pnpm harness ask "admission webhook denied"` |
+| "Devin can't reach internal" | `pnpm harness ask "Devin session cannot reach internal service"` |
+| "I'm slow but CPU is low" | `pnpm harness ask "slow but CPU is low"` |
+| "Postmortem became blame" | `pnpm harness ask "postmortem became blame"` |
+| (vague symptom) | `pnpm harness ask "<their words>"` — falls back to BM25 doc search if no fm matches |
+
+**Shell aliases** (sourced by bootstrap.sh):
+
+| Alias | Expands to | When |
+|---|---|---|
+| `ha "<symptom>"` | `pnpm harness ask` | the **default** — symptom in, runbook out |
+| `hp <fm-id>` | `pnpm harness playbook` | when ask already named the fm and you want to reread it |
+| `hl "<query>"` | `pnpm harness lookup` | browse mode — see all matches across types |
+| `hd <drill-id>` | `pnpm harness drill` | offline practice |
+| `hcap <bundle>` | `pnpm harness capture` | gather diagnostics into one paste-ready dump |
+| `hs` | `pnpm harness stats` | quick corpus inventory + quality grades |
+| `cheat` | open this file in pager | mid-interview reference |
 
 ---
 
@@ -392,6 +416,12 @@ pnpm harness drill random
 4. **Ask one clarifying question per turn.** Never overload the user with 5 commands at once. One probe → result → one recommendation.
 5. **End each turn with "and how can I check this worked?"** Validation step is what separates a complete fix from "tried something."
 6. **For soft-skills questions** (postmortem, blame, on-call burnout): don't pretend you don't have an opinion. `methodology` domain has playbooks for these too.
+
+**Reading-aloud script when running the harness live:**
+
+> "I'm going to run this through my support harness — it's a corpus I built of every Docker / Linux / k8s / Devin failure mode I've documented. The output gives me a structured runbook: top match, the diagnostic steps with expected outcomes, the fix with rollback, and the source citations. I'll narrate as it renders so you can see my reasoning."
+
+Then run `ha "<their description in your words>"` and read the **TALK TRACK** section out loud first. That's the entire frame. Then walk DIAGNOSE step-by-step, asking before each one whether to actually run it.
 
 ---
 

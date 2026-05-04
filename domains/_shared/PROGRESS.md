@@ -736,3 +736,25 @@ User clarified the operating model for the technical-panel interview (2026-05-03
 - Eval criteria: efficiency, clarity of thought, communication. Must demonstrate: curiosity, clarifying questions BEFORE solutions, trade-off thinking, "why" behind decisions.
 
 Going forward: depth-grinding more fms past P17 has diminishing returns. Interview-fluency work — specifically a unified `harness ask` entry point and a cheat-sheet "interview behavior" preamble that codifies the eval criteria — has higher leverage.
+
+## Phase 18 — MCP polish (the harness as a presentation surface)
+
+### Session P18 — 2026-05-03 — DONE
+
+The interviewer will watch the harness run live during screen-share. Polish the output so it "feels like a well-running MCP" and doubles as a teleprompter the user can read aloud.
+
+**Changes:**
+
+- **`packages/harness/src/output.ts`** — new shared module with TTY-aware ANSI helpers (color, bold, dim), box-drawn header, section dividers, padded `table()`, `talkTrack()` callout template. `NO_COLOR=1` and non-TTY both fall back to plain text (logs stay grep-friendly).
+- **`packages/harness/src/commands/ask.ts`** — new one-shot subcommand. `pnpm harness ask "<symptom>"` runs keyword search across `failure_modes`, picks the top match by weighted match strength, renders META → TALK TRACK → DIAGNOSE → FIX → CITATIONS → NEXT in one polished sectioned response. Word-boundary regex (DuckDB `regexp_matches` with `\b`) prevents incidental substring noise (e.g. "nat" matching "Termination"). Alternate fms only surface when they (a) score ≥50% of top AND (b) share a substantive id-token with the top — so "also plausible: ecs.awslogs" no longer shows up for an OOM query.
+- **`playbook.ts` refactored** to use the same sectioned output + talk-track. ISO-date `last_verified` instead of full Date.toString().
+- **`lookup.ts` refactored** — failure modes lead (most actionable for interview), then commands, concepts, docs. Same word-boundary improvement.
+- **`stats.ts` refactored** — replaced tab-separated dump with two aligned padded tables: corpus inventory + failure-mode quality (% thin, avg diag/fix steps).
+- **Help output** in `index.ts` reorganized — Most-used vs Reference sections instead of one flat list.
+- **`.aliases`** — added `ha='pnpm harness ask'`. Renamed `hr` → `hrel` (was shadowing bash `history -r`).
+- **`CHEATSHEET.md`** — §7 now leads with `harness ask` as the primary one-shot, including a reading-aloud script for live use. Symptom→fm table now uses `harness ask "<symptom>"` instead of `playbook <id>`.
+- **`README.md`** — interview-day usage block leads with `ha "<symptom>"`.
+
+**Why this matters for the interview:** the eval criteria are efficiency, clarity, communication, curiosity, trade-offs. `harness ask` serves all five in a single command — the "talk track" section literally scripts the user saying "Before I touch anything — when did this start? I'll start by [diag step 1] — that confirms the class before I commit. Could also be [alternate] — diag step #1 distinguishes." Reading that aloud while the harness output is on screen is direct evidence of the eval criteria, not a claim about them.
+
+**Acceptance**: `pnpm harness ask "OOMKilled"` returns a structured sectioned response in under 1s with: top match `docker.fm.exit-137-oomkilled` (conf 0.98), alternates filtered to genuine variants (k8s.fm.oomkilled), 3 diag + 3 fix steps with `expected:`/`validate:`/`rollback:` annotations, 4 source citations with URLs, and 4 suggested NEXT commands. Verified.
