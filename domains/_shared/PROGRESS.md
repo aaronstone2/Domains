@@ -702,3 +702,37 @@ Of 52 thin k8s fms, deepened the **top 25 most-interview-relevant** to 3+ diag /
 **Domain-wide impact:** thin count **52 → 34** (35% reduction); avg diag 1.94 → 2.30; avg fix 1.81 → 2.20. Each P16 fm now has 3-4 specific diagnostic commands with concrete `expected:` outcomes plus 3 fix steps with copy-pasteable commands and explicit `validate:` / `rollback:` paths.
 
 **Cumulative quality work (P13+P14+P15+P16):** 6 primary scenario fms + 28 methodology + 25 docker + 25 linux + 25 k8s = **109 fms now exemplary**. Methodology 100% clean; docker/linux/k8s thin counts down 31-38%.
+
+## Phase 17 — Quality pass on all 36 thin devin failure_modes
+
+### Session P17 — 2026-05-03 — DONE
+
+Deepened **all 36** thin devin fms (the entire devin-domain backlog) to 3+ diag / 2+ fix steps. Output: `domains/devin/extract/failure_modes_p17_quality.json`.
+
+**Devin domain final state:** 37 fms total, **0 thin**, avg 3.03 diag / 3.03 fix. Devin is now the second domain (after methodology) with 100% exemplary coverage.
+
+**Coverage by category:**
+
+| Group | Count | Examples |
+|---|---:|---|
+| Billing/limits | 4 | acu-budget-exhausted, acu-burn-runaway, knowledge-cap-hit, session-cap-on-runtime |
+| DevBox state | 6 | devbox-disk-full, devbox-port-not-exposed, bash-stale-prompt-state, browser-session-cookie-not-shared, ide-disconnect-on-vm-restart, internal-svc-cert-untrusted |
+| Network/auth | 5 | corporate-proxy-not-set, vpn-not-engaging, repo-clone-failed, repo-clone-https-vs-ssh, private-pkg-pull-fail |
+| Snapshot/blueprint | 5 | snapshot-cold-boot-slow, snapshot-stale-deps, build-failed-blueprint-error, build-step-timeout-1h, secret-vault-unmounted-on-blueprint-edit |
+| Integrations | 5 | github-app-perms-stale, slack-integration-stale-token, linear-issue-not-mapping, mcp-tool-timeout, enterprise-sso-fail |
+| Agent/session | 6 | session-failed-to-start, session-stuck-paused-without-ask, session-multiple-conflicting-prompts, devin-stuck-paused, knowledge-not-applied, swe-1-6-vs-other-models |
+| API/orchestration | 3 | api-rate-limit, scheduled-session-skipped, chat-message-truncated |
+| Misc | 2 | private-registry-pull-fail, windows-blueprint-ps-error |
+
+**Cumulative quality work (P13+P14+P15+P16+P17):** 109 → **145 fms exemplary**. Two domains 100% clean (methodology + devin). Docker/linux/k8s thin counts down 31-38% from baseline.
+
+## Reframing: the repo as an MCP-style support tool
+
+User clarified the operating model for the technical-panel interview (2026-05-03):
+
+- The interview is screen-share on a Docker/Linux VM (likely a real Devin DevBox).
+- **External sources are explicitly allowed: Google, AI (Claude Code), etc.** This means the user will be running `claude` live during the interview.
+- The repo functions as **a Devin customer-support-playbook MCP that installs on a VM**: `bootstrap.sh` is the installer, the corpus + cheat sheet are the knowledge, and Claude Code is the agent that queries them via the harness.
+- Eval criteria: efficiency, clarity of thought, communication. Must demonstrate: curiosity, clarifying questions BEFORE solutions, trade-off thinking, "why" behind decisions.
+
+Going forward: depth-grinding more fms past P17 has diminishing returns. Interview-fluency work — specifically a unified `harness ask` entry point and a cheat-sheet "interview behavior" preamble that codifies the eval criteria — has higher leverage.
