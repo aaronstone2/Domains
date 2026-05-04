@@ -1,0 +1,332 @@
+[
+  {"id":"k8s.fm.crashloopbackoff","symptom":"Pod CrashLoopBackOff: container repeatedly crashing","error_patterns":["CrashLoopBackOff","Back-off restarting","container exited","Last State: Terminated"],"root_cause_class":"app-crash","affected_concepts":["k8s.core.crash-loop-backoff","k8s.core.pod-condition-initialized"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Get the previous container's logs (current is gone after restart)","command":"kubectl logs <pod> --previous --tail=200","expected":"app's last words before crash — usually a stack trace or 'config error' line","source_id":"k8s-debug-running-pod"},
+      {"step":2,"action":"Get exit code + reason from describe","command":"kubectl describe pod <pod> | grep -E 'Last State|Exit Code|Reason|Restart Count|Started|Finished' -A 1","expected":"Exit Code 137=OOM, 139=SIGSEGV, 1=app error, 2=usage; Reason field tells more","source_id":"k8s-debug-running-pod"},
+      {"step":3,"action":"Check events around the crashes","command":"kubectl get events --field-selector involvedObject.name=<pod> --sort-by=.lastTimestamp | tail -10","expected":"BackOff, Killing, Started events with timestamps","source_id":"k8s-debug-running-pod"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For exit 137 (OOMKilled): raise memory limit OR fix leak","command":"# spec.containers[].resources.limits.memory: '2Gi'\\n# OR investigate leak with heap dump","validation":"pod runs steady; no Restart Count growth","rollback":"prior limit","source_id":"k8s-resource-management"},
+      {"step":2,"action":"For app crashes (exit 1/2): fix the actual bug surfaced by --previous logs","command":"# update image; kubectl set image deployment/<name> <container>=<new-image>","validation":"pod stays running","rollback":"kubectl rollout undo deployment/<name>","source_id":"k8s-debug-running-pod"},
+      {"step":3,"action":"For probes killing it: check liveness/startup probe timing (cross-link to liveness-killing-slow-starter)","command":"# spec.containers[].livenessProbe.initialDelaySeconds + startupProbe to gate liveness","validation":"slow-start app gets full startup window","rollback":"prior probe","source_id":"k8s-probes"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-debug-running-pod","k8s-pod-lifecycle","k8s-probes","k8s-resource-management"]},
+
+  {"id":"k8s.fm.oomkilled","symptom":"Container OOMKilled (exit 137) inside pod","error_patterns":["OOMKilled","exit code 137","Last State: Terminated, Reason: OOMKilled"],"root_cause_class":"resource-limit","affected_concepts":["k8s.core.oom-kill","k8s.core.limits"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Confirm OOMKilled in pod state","command":"kubectl get pod <pod> -o jsonpath='{.status.containerStatuses[*].lastState.terminated.reason} {.status.containerStatuses[*].lastState.terminated.exitCode}'","expected":"'OOMKilled 137'","source_id":"k8s-resource-management"},
+      {"step":2,"action":"Inspect the limit set","command":"kubectl get pod <pod> -o jsonpath='{range .spec.containers[*]}{.name}: requests={.resources.requests.memory} limits={.resources.limits.memory}{\"\\n\"}{end}'","expected":"limits.memory shown — that's the cgroup ceiling","source_id":"k8s-resource-management"},
+      {"step":3,"action":"Get actual usage at peak","command":"kubectl top pod <pod> --containers   # OR for history: prom query container_memory_working_set_bytes","expected":"actual usage close to limit confirms cgroup OOM (not host pressure)","source_id":"k8s-resource-metrics-pipeline"},
+      {"step":4,"action":"Cross-check kernel: was it cgroup OOM or node-pressure eviction?","command":"# kubectl get events --field-selector involvedObject.name=<pod> | grep -iE 'OOMKilling|Evicted'","expected":"OOMKilling = cgroup; Evicted = node-pressure (different fm: evicted-by-node-pressure)","source_id":"k8s-pod-lifecycle"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Raise memory limit if workload genuinely needs more","command":"kubectl set resources deployment/<name> --limits=memory=2Gi --requests=memory=2Gi","validation":"pod stays Running; no OOMKills in subsequent kubectl get events","rollback":"kubectl set resources deployment/<name> --limits=memory=<prior>","source_id":"k8s-resource-management"},
+      {"step":2,"action":"For Java workloads: respect cgroup via -XX:MaxRAMPercentage","command":"# env: JAVA_TOOL_OPTIONS='-XX:MaxRAMPercentage=60.0 -XX:+UseContainerSupport'\\n# (UseContainerSupport is on by default in JDK 11+)","validation":"JVM heap sized to 60% of cgroup limit","rollback":"remove env var","source_id":"k8s-resource-management"},
+      {"step":3,"action":"Set requests==limits for Guaranteed QoS class (less preemption risk)","command":"# requests.memory == limits.memory; requests.cpu == limits.cpu","validation":"kubectl get pod -o jsonpath='{.status.qosClass}' shows 'Guaranteed'","rollback":"requests<limits = Burstable","source_id":"k8s-quality-of-service"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-resource-management","k8s-quality-of-service","k8s-resource-metrics-pipeline","k8s-pod-lifecycle"]},
+
+  {"id":"k8s.fm.imagepullbackoff","symptom":"Pod ImagePullBackOff or ErrImagePull","error_patterns":["ImagePullBackOff","ErrImagePull","manifest unknown","pull access denied","unauthorized","no basic auth credentials"],"root_cause_class":"registry","affected_concepts":["k8s.core.image-pull-back-off","k8s.core.secret"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Get the exact error message","command":"kubectl describe pod <pod> | grep -A3 -E 'Failed|Warning' | tail -15","expected":"specific error: 'no basic auth' = missing/wrong imagePullSecret; 'manifest unknown' = wrong tag/digest; 'pull access denied' = repo policy","source_id":"k8s-debug-running-pod"},
+      {"step":2,"action":"Verify the image string is correct","command":"kubectl get pod <pod> -o jsonpath='{range .spec.containers[*]}{.image}{\"\\n\"}{end}'","expected":"check registry hostname / repo / tag against what exists","source_id":"k8s-debug-running-pod"},
+      {"step":3,"action":"Check imagePullSecrets configuration","command":"kubectl get pod <pod> -o jsonpath='{.spec.imagePullSecrets[*].name}{\"\\n\"}'; kubectl get secrets","expected":"named secret exists; if missing, registry needs no creds OR uses node-IAM (EKS+ECR) OR creds need to be added","source_id":"k8s-secret"},
+      {"step":4,"action":"For ECR specifically, verify node IAM has ecr:GetAuthorizationToken","command":"# from a worker node: aws sts get-caller-identity && aws ecr get-login-password --region <region>","expected":"both commands succeed → IAM ok","source_id":"k8s-secret"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For 'no basic auth': create + reference imagePullSecret","command":"kubectl create secret docker-registry regcred --docker-server=<host> --docker-username=<u> --docker-password=<p>\\n# pod spec: spec.imagePullSecrets: - name: regcred","validation":"pod transitions to Running","rollback":"kubectl delete secret regcred","source_id":"k8s-secret"},
+      {"step":2,"action":"For ECR: prefer IRSA (IAM Roles for Service Accounts) over rotating Secret","command":"# Create IAM role with AmazonEC2ContainerRegistryReadOnly; annotate sa: eks.amazonaws.com/role-arn=<arn>","validation":"pulls work without imagePullSecret","rollback":"recreate Secret","source_id":"k8s-secret"},
+      {"step":3,"action":"For 'manifest unknown': check tag exists at the registry","command":"docker manifest inspect <image>   # OR  aws ecr describe-images --repository-name <r>","validation":"tag found; pod proceeds","rollback":"use a known-existing tag","source_id":"k8s-debug-running-pod"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-debug-running-pod","k8s-secret","k8s-pod-lifecycle"]},
+
+  {"id":"k8s.fm.terminating-stuck","symptom":"Pod stuck in Terminating state for minutes/hours","error_patterns":["stuck terminating","Terminating for too long","finalizer not removed"],"root_cause_class":"finalizer","affected_concepts":["k8s.core.finalizer","k8s.core.pod"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect for finalizers","command":"kubectl get pod <pod> -o jsonpath='{.metadata.finalizers}{\"\\n\"}'","expected":"if non-empty, finalizer is blocking deletion","source_id":"k8s-namespace"},
+      {"step":2,"action":"Check container shutdown grace period","command":"kubectl get pod <pod> -o jsonpath='{.spec.terminationGracePeriodSeconds}{\"\\n\"}'","expected":"default 30s; if app ignores SIGTERM, kubelet waits this long then SIGKILLs","source_id":"k8s-pod-lifecycle"},
+      {"step":3,"action":"Check kubelet logs on the node","command":"kubectl get pod <pod> -o wide   # find node\\n# then on node: sudo journalctl -u kubelet --since '5 min ago' | grep <pod>","expected":"errors like 'failed to remove container' or 'mount still in use' = stuck cleanup","source_id":"k8s-kubelet"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For finalizer-stuck: identify the controller and fix it (don't just patch finalizer)","command":"# look at finalizer name (e.g. 'foo.example.com/cleanup'); find that operator's pod; check its logs","validation":"finalizer removed naturally by the operator","rollback":null,"source_id":"k8s-controller-pattern"},
+      {"step":2,"action":"Force-delete (last resort — leaves resources behind in some cases)","command":"kubectl delete pod <pod> --force --grace-period=0","validation":"pod gone","rollback":"can't undo a delete","source_id":"k8s-debug-cluster"},
+      {"step":3,"action":"For pod ignoring SIGTERM: shorten terminationGracePeriodSeconds + fix app","command":"# spec.terminationGracePeriodSeconds: 10\\n# AND fix app to handle SIGTERM (graceful shutdown)","validation":"future deletes complete in 10s","rollback":"prior value","source_id":"k8s-pod-lifecycle"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-pod-lifecycle","k8s-namespace","k8s-controller-pattern","k8s-kubelet","k8s-debug-cluster"]},
+
+  {"id":"k8s.fm.evicted-by-node-pressure","symptom":"Pods evicted with reason 'Evicted'; status.message about node-pressure","error_patterns":["Evicted","DiskPressure","MemoryPressure","node has condition","The node was low on resource"],"root_cause_class":"node-pressure","affected_concepts":["k8s.core.node-pressure-eviction","k8s.core.eviction"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect evicted pod's status message","command":"kubectl get pod <evicted-pod> -o jsonpath='{.status.message}{\"\\n\"}'","expected":"'The node was low on resource: memory|ephemeral-storage|pids|...'","source_id":"k8s-node-pressure-eviction"},
+      {"step":2,"action":"Check the node's conditions","command":"kubectl describe node <node-name> | grep -A1 -E 'Conditions:|DiskPressure|MemoryPressure|PIDPressure'","expected":"any True condition = active pressure","source_id":"k8s-node-pressure-eviction"},
+      {"step":3,"action":"See current node resource usage","command":"kubectl top node && kubectl top pods -A --sort-by=memory --containers | head","expected":"identifies who's consuming","source_id":"k8s-resource-metrics-pipeline"},
+      {"step":4,"action":"Check kubelet eviction thresholds","command":"# on node: sudo cat /var/lib/kubelet/config.yaml | grep -A1 -E 'evictionHard|evictionSoft'","expected":"thresholds (memory.available, nodefs.available, etc.)","source_id":"k8s-node-pressure-eviction"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Set Guaranteed QoS for survival-critical pods (last to be evicted)","command":"# spec.containers[].resources: requests==limits for cpu+memory","validation":"pod has qosClass Guaranteed; not in eviction order","rollback":"requests<limits","source_id":"k8s-quality-of-service"},
+      {"step":2,"action":"Reduce node memory pressure: kill biggest non-essential pod or scale up","command":"kubectl scale deploy <hog> --replicas=0   # OR add nodes","validation":"node MemoryPressure = False","rollback":"scale back","source_id":"k8s-node-pressure-eviction"},
+      {"step":3,"action":"Tune kubelet thresholds for less-aggressive eviction","command":"# kubeletConfig: evictionSoft: {memory.available: '500Mi'}; evictionSoftGracePeriod: {memory.available: '1m30s'}","validation":"more headroom before eviction triggers","rollback":"prior values","source_id":"k8s-node-pressure-eviction"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-node-pressure-eviction","k8s-quality-of-service","k8s-resource-metrics-pipeline"]},
+
+  {"id":"k8s.fm.configmap-not-updating","symptom":"ConfigMap edited but pod doesn't see new value","error_patterns":["stale config","old configmap","not picking up changes","config not refreshed"],"root_cause_class":"configmap-mount","affected_concepts":["k8s.core.configmap","k8s.core.pod"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Confirm ConfigMap was actually updated","command":"kubectl get cm <name> -o yaml | grep -A20 'data:'","expected":"new value present","source_id":"k8s-configmap"},
+      {"step":2,"action":"Check how the pod consumes it (env vs volume)","command":"kubectl get pod <pod> -o yaml | grep -B1 -A5 -E 'configMapKeyRef|configMap:'","expected":"env: changes only on pod restart; volume: kubelet syncs every ~60-90s","source_id":"k8s-configmap"},
+      {"step":3,"action":"For volume mounts: check file freshness inside pod","command":"kubectl exec <pod> -- stat /etc/myapp/config.yaml","expected":"modify time should be recent if kubelet has synced","source_id":"k8s-configmap"},
+      {"step":4,"action":"Check for subPath usage (subPath mounts are NOT auto-updated)","command":"kubectl get pod <pod> -o yaml | grep subPath","expected":"if subPath is used → pod won't see updates without restart","source_id":"k8s-configmap"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For env-var consumers: rolling restart (only way to pick up changes)","command":"kubectl rollout restart deployment/<name>","validation":"new pods see new env value","rollback":"kubectl rollout undo deployment/<name>","source_id":"k8s-configmap"},
+      {"step":2,"action":"For volume mounts WITHOUT subPath: wait ~90s for kubelet auto-sync (or restart)","command":"# wait OR force: kubectl rollout restart deployment/<name>","validation":"file inside pod has new content","rollback":null,"source_id":"k8s-configmap"},
+      {"step":3,"action":"For subPath consumers: switch to full mount (gets auto-update) OR add config-reloader sidecar","command":"# remove subPath: ; mount the whole CM at /etc/myapp/   OR add a sidecar that watches + signals app","validation":"updates propagate without pod restart","rollback":"add subPath back","source_id":"k8s-configmap"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-configmap","k8s-pod-lifecycle"]},
+
+  {"id":"k8s.fm.liveness-killing-slow-starter","symptom":"Slow-to-start app keeps getting killed by livenessProbe","error_patterns":["Liveness probe failed","container restarted","slow startup","probe killed"],"root_cause_class":"probe-tuning","affected_concepts":["k8s.core.liveness-probe","k8s.core.startup-probe","k8s.core.readiness-probe"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check probe events","command":"kubectl describe pod <pod> | grep -A1 'Liveness probe failed' | tail","expected":"timestamps showing probe failures during startup, before app is ready","source_id":"k8s-probes"},
+      {"step":2,"action":"Inspect probe config","command":"kubectl get pod <pod> -o jsonpath='{range .spec.containers[*].livenessProbe}{.initialDelaySeconds}/{.periodSeconds}/{.failureThreshold}{\"\\n\"}{end}'","expected":"initialDelay too short for slow-start app","source_id":"k8s-probes"},
+      {"step":3,"action":"Time how long the app actually takes to be ready","command":"# kubectl logs --tail=200 + look for the 'ready' / 'listening' line; compare to start time","expected":"app needs N seconds; probe starts before that","source_id":"k8s-debug-running-pod"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Add a startupProbe to gate liveness during initialization","command":"# spec.containers[].startupProbe:\\n#   httpGet: { path: /healthz, port: 8080 }\\n#   periodSeconds: 5\\n#   failureThreshold: 60   # = 5min total budget for startup\\n# (liveness only kicks in after startupProbe succeeds)","validation":"slow-start app gets full window","rollback":"remove startupProbe","source_id":"k8s-probes"},
+      {"step":2,"action":"Or raise initialDelaySeconds on the liveness probe","command":"# spec.containers[].livenessProbe.initialDelaySeconds: 120","validation":"liveness doesn't fire during startup","rollback":"prior value","source_id":"k8s-probes"},
+      {"step":3,"action":"Distinguish liveness (restart on hang) from readiness (remove from endpoints): use both correctly","command":"# liveness should NEVER call into deps; readiness can. liveness = 'is the process alive'; readiness = 'can it serve'","validation":"transient dep failures don't restart pod","rollback":null,"source_id":"k8s-probes"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-probes","k8s-debug-running-pod"]},
+
+  {"id":"k8s.fm.taint-toleration-mismatch","symptom":"Pods stuck Pending with FailedScheduling due to taint X but pod has no matching toleration","error_patterns":["had taints","not tolerate","FailedScheduling","NoSchedule"],"root_cause_class":"scheduling","affected_concepts":["k8s.core.taint","k8s.core.toleration"],
+    "diagnostic_steps":[
+      {"step":1,"action":"See the FailedScheduling event verbatim","command":"kubectl describe pod <pod> | grep -A1 FailedScheduling | tail","expected":"'had untolerated taint {key: value, effect: NoSchedule}'","source_id":"k8s-taints-tolerations"},
+      {"step":2,"action":"Show node taints","command":"kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints","expected":"identifies which nodes have the taint","source_id":"k8s-taints-tolerations"},
+      {"step":3,"action":"Show pod's current tolerations","command":"kubectl get pod <pod> -o jsonpath='{.spec.tolerations}{\"\\n\"}'","expected":"matching toleration must have key+value+effect EXACTLY (or operator: Exists)","source_id":"k8s-taints-tolerations"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Add matching toleration to pod spec","command":"# spec.tolerations:\\n#   - key: 'dedicated'\\n#     operator: 'Equal'\\n#     value: 'gpu'\\n#     effect: 'NoSchedule'","validation":"pod schedules onto the tainted node","rollback":"remove toleration","source_id":"k8s-taints-tolerations"},
+      {"step":2,"action":"Or remove the taint from the node","command":"kubectl taint nodes <node> <key>=<value>:NoSchedule-   # the trailing - removes","validation":"pod schedules anywhere","rollback":"kubectl taint nodes <node> <key>=<value>:NoSchedule (re-add)","source_id":"k8s-taints-tolerations"},
+      {"step":3,"action":"For 'I want to land on this specific tainted node', also add nodeSelector","command":"# spec.nodeSelector: { nvidia.com/gpu: 'true' }   # toleration alone just allows; nodeSelector forces","validation":"pod always lands on the GPU node","rollback":"remove nodeSelector","source_id":"k8s-affinity"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-taints-tolerations","k8s-affinity"]},
+
+  {"id":"k8s.fm.networkpolicy-blocking","symptom":"Pod-to-pod traffic suddenly blocked after applying NetworkPolicy","error_patterns":["connection refused","timeout from pod-X to pod-Y","i/o timeout"],"root_cause_class":"networking","affected_concepts":["k8s.networking.network-policy","k8s.networking.network-policy-default-deny"],
+    "diagnostic_steps":[
+      {"step":1,"action":"List all NetworkPolicies in the namespace","command":"kubectl get networkpolicy -n <ns>","expected":"identify which one might be blocking","source_id":"k8s-network-policies"},
+      {"step":2,"action":"Check which pods each policy applies to","command":"kubectl describe networkpolicy <name> -n <ns>","expected":"podSelector matches your source/destination pods","source_id":"k8s-network-policies"},
+      {"step":3,"action":"Test connectivity directly","command":"kubectl exec <src-pod> -- nc -zv <dst-pod-ip> <port>   # OR curl --max-time 3","expected":"connection refused/timeout = blocked; succeeds = not policy","source_id":"k8s-debug-services"},
+      {"step":4,"action":"For deeper inspect, look at CNI's policy logs","command":"# Calico: kubectl logs -n calico-system -l k8s-app=calico-node | grep -i denied\\n# Cilium: cilium policy trace --src-pod <src> --dst-pod <dst>","expected":"explicit denied entry","source_id":"k8s-network-policies"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Add explicit allow rule for the blocked traffic","command":"# spec.ingress:\\n#   - from:\\n#       - podSelector:\\n#           matchLabels: { app: src-app }\\n#     ports:\\n#       - port: 8080","validation":"connection succeeds","rollback":"remove the rule","source_id":"k8s-network-policies"},
+      {"step":2,"action":"For default-deny policies: don't forget DNS","command":"# spec.egress:\\n#   - to:\\n#       - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: kube-system }}\\n#         podSelector: { matchLabels: { k8s-app: kube-dns }}\\n#     ports: [{ port: 53, protocol: UDP }]","validation":"DNS resolves; egress works","rollback":null,"source_id":"k8s-network-policies"},
+      {"step":3,"action":"Or temporarily delete the policy to confirm scope","command":"kubectl delete networkpolicy <name> -n <ns>","validation":"if traffic resumes = policy was the cause; then craft proper allow rule and re-apply","rollback":"kubectl apply -f <policy.yaml>","source_id":"k8s-network-policies"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-network-policies","k8s-debug-services"]},
+
+  {"id":"k8s.fm.networkpolicy-default-deny-too-broad","symptom":"After applying NetworkPolicy default-deny, kube-system pods can't reach apiserver/coredns","error_patterns":["NetworkPolicy","blocked","kube-system","timeout","cannot reach apiserver"],"root_cause_class":"networking","affected_concepts":["k8s.networking.network-policy","k8s.networking.cluster-dns"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check whether kube-system has NetworkPolicies applied","command":"kubectl get networkpolicy -n kube-system","expected":"if any default-deny applies, system pods blocked","source_id":"k8s-network-policies"},
+      {"step":2,"action":"Confirm symptom — coredns and apiserver unreachable","command":"kubectl exec <pod> -n <ns> -- nc -zv 10.96.0.1 443   # apiserver (CoreDNS varies)","expected":"timeout = blocked","source_id":"k8s-debug-services"},
+      {"step":3,"action":"List affected pods","command":"kubectl get pods -A -o wide | grep -v Running","expected":"system pods restarting or unhealthy","source_id":"k8s-debug-cluster"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Exclude kube-system from default-deny via namespaceSelector","command":"# Use a Kyverno/Gatekeeper policy or audit to ensure no NetworkPolicy in kube-system\\n# OR add explicit allow:\\n# spec.podSelector: {}   # default-deny\\n# But scope it: namespaceSelector matchExpressions: NotIn [kube-system]","validation":"system pods recover","rollback":"remove exclusion","source_id":"k8s-network-policies"},
+      {"step":2,"action":"For app namespaces with default-deny: explicit egress to coredns + apiserver","command":"# spec.egress:\\n#   - to: [namespaceSelector: kube-system, podSelector: k8s-app=kube-dns], ports: [53/UDP]\\n#   - to: [ipBlock: {cidr: <apiserver-cidr>/32}], ports: [{port: 6443}]","validation":"app pods can resolve DNS + reach apiserver","rollback":"remove egress block","source_id":"k8s-network-policies"},
+      {"step":3,"action":"Use cnpv2 / advanced CNI features (e.g. Calico GlobalNetworkPolicy) to apply per-namespace baseline","command":"# Calico: kind: GlobalNetworkPolicy; selector: 'projectcalico.org/namespace not in {\"kube-system\"}'","validation":"system namespaces always allowed","rollback":"remove GlobalNetworkPolicy","source_id":"k8s-network-policies"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-network-policies","k8s-debug-services","k8s-debug-cluster"]},
+
+  {"id":"k8s.fm.dns-resolution-fail","symptom":"Pod can't resolve DNS at all (NXDOMAIN for everything)","error_patterns":["could not resolve","NXDOMAIN","Temporary failure","getaddrinfo failed","no such host"],"root_cause_class":"dns","affected_concepts":["k8s.networking.coredns","k8s.networking.cluster-dns"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check pod's resolv.conf","command":"kubectl exec <pod> -- cat /etc/resolv.conf","expected":"nameserver = kube-dns ClusterIP (e.g. 10.96.0.10); search list present","source_id":"k8s-dns"},
+      {"step":2,"action":"Verify kube-dns Service has endpoints","command":"kubectl get endpoints -n kube-system kube-dns","expected":"non-empty endpoints (CoreDNS pod IPs)","source_id":"k8s-dns"},
+      {"step":3,"action":"Verify CoreDNS pods are running","command":"kubectl get pods -n kube-system -l k8s-app=kube-dns","expected":"all Running","source_id":"k8s-dns"},
+      {"step":4,"action":"Test DNS directly from pod to coredns","command":"kubectl exec <pod> -- nslookup kubernetes.default.svc.cluster.local 10.96.0.10","expected":"answers ok = CoreDNS works; fails = CoreDNS or network","source_id":"k8s-debug-services"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For no endpoints: restart CoreDNS","command":"kubectl rollout restart deployment/coredns -n kube-system","validation":"endpoints repopulate","rollback":null,"source_id":"k8s-dns"},
+      {"step":2,"action":"For NetworkPolicy blocking 53/UDP to coredns: add allow-egress rule","command":"# spec.egress: to: [namespaceSelector: kube-system, podSelector: k8s-app=kube-dns], ports: [53/UDP, 53/TCP]","validation":"DNS resolves","rollback":"remove egress","source_id":"k8s-network-policies"},
+      {"step":3,"action":"For broken Corefile: inspect ConfigMap","command":"kubectl get cm coredns -n kube-system -o yaml","validation":"if 'forward . /etc/resolv.conf' loops back, switch to public upstream (1.1.1.1)","rollback":"kubectl edit cm coredns","source_id":"k8s-dns"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-dns","k8s-debug-services","k8s-network-policies"]},
+
+  {"id":"k8s.fm.coredns-loop-detection","symptom":"CoreDNS pods CrashLoopBackOff with 'Loop (127.0.0.1:53 -> :53)'","error_patterns":["Loop","loopback","plugin/loop","CoreDNS","forward loop"],"root_cause_class":"dns","affected_concepts":["k8s.networking.coredns","k8s.networking.coredns-corefile"],
+    "diagnostic_steps":[
+      {"step":1,"action":"View Corefile","command":"kubectl get cm coredns -n kube-system -o yaml","expected":"forward . /etc/resolv.conf line — and host's resolv.conf points back to CoreDNS","source_id":"k8s-dns"},
+      {"step":2,"action":"Check kubelet config (which it's adding to /etc/resolv.conf for CoreDNS pods)","command":"kubectl get pod -n kube-system <coredns-pod> -o jsonpath='{.spec.dnsPolicy}{\"\\n\"}'","expected":"if 'Default', kubelet copies host's /etc/resolv.conf","source_id":"k8s-dns"},
+      {"step":3,"action":"Check host's resolv.conf","command":"# on a node: cat /etc/resolv.conf","expected":"nameserver pointing to systemd-resolved stub (127.0.0.53) or coredns itself = loop","source_id":"k8s-dns"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Switch Corefile to a real upstream resolver","command":"# Edit cm coredns: replace 'forward . /etc/resolv.conf' with 'forward . 1.1.1.1 9.9.9.9'\\nkubectl edit cm coredns -n kube-system\\nkubectl rollout restart deployment/coredns -n kube-system","validation":"CoreDNS pods stay Running; loop detection clears","rollback":"forward . /etc/resolv.conf","source_id":"k8s-dns"},
+      {"step":2,"action":"Or fix host resolv.conf to point at real upstream","command":"# /etc/systemd/resolved.conf: DNS=1.1.1.1; sudo systemctl restart systemd-resolved","validation":"forward . /etc/resolv.conf safe again","rollback":"prior config","source_id":"k8s-dns"},
+      {"step":3,"action":"For kubeadm clusters, set kubelet config to use a stable upstream","command":"# /var/lib/kubelet/config.yaml: clusterDNS, resolvConf path","validation":"CoreDNS pods get a non-looping resolv.conf","rollback":"prior config","source_id":"k8s-kubelet"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-dns","k8s-kubelet"]},
+
+  {"id":"k8s.fm.cni-mtu-mismatch","symptom":"Pod-to-pod across nodes hangs on large payloads; small packets work","error_patterns":["mtu","fragmentation","tcp retransmit","cross-node","DF set"],"root_cause_class":"networking","affected_concepts":["k8s.networking.cni","k8s.networking.cni-plugin","k8s.networking.cluster-network-plugin"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Pod ping with DF flag (binary search the MTU)","command":"kubectl exec <p1> -- ping -M do -s 1450 <pod2-ip>   # then 1400, 1350...","expected":"identifies max working size; gap from underlay MTU = overhead","source_id":"k8s-cluster-networking"},
+      {"step":2,"action":"Check CNI MTU config","command":"# Calico: kubectl get cm calico-config -n kube-system -o yaml | grep -i mtu\\n# Flannel: kubectl get cm kube-flannel-cfg -n kube-system -o yaml | grep -i mtu\\n# Cilium: kubectl exec -n kube-system cilium-<x> -- cilium status | grep -i mtu","expected":"current MTU vs underlay-overhead","source_id":"k8s-cni"},
+      {"step":3,"action":"Check underlay MTU (cloud provider, ENI, AZ peering)","command":"# from a node: ip link show eth0 | grep mtu\\n# AWS ENI default 9001; cross-AZ peering may drop to 1500","expected":"compare to CNI MTU","source_id":"k8s-cluster-networking"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Set CNI MTU = underlay-overhead","command":"# Calico cm: veth_mtu: 1450 (vxlan) or 1480 (no encap); restart calico-node ds\\n# Flannel: kubectl edit cm kube-flannel-cfg → 'MTU: 1450'","validation":"large packets succeed","rollback":"prior value","source_id":"k8s-cni"},
+      {"step":2,"action":"Or enable TCP MSS clamping at CNI level (works around MTU mismatch)","command":"# Calico: spec.calicoNetwork.mtu in tigera-operator; OR per-policy egress","validation":"TCP handshakes negotiate working MSS automatically","rollback":null,"source_id":"k8s-cni"},
+      {"step":3,"action":"Restart pods to pick up new CNI MTU (existing veth pairs keep old)","command":"kubectl delete pod <affected-pod>   # or rollout restart","validation":"new pod uses new MTU","rollback":null,"source_id":"k8s-cni"}
+    ],
+    "confidence":0.85,"last_verified":"2026-05-03","source_ids":["k8s-cni","k8s-cluster-networking"]},
+
+  {"id":"k8s.fm.admission-webhook-timeout","symptom":"Pod creation hangs and times out: 'webhook denied: context deadline exceeded'","error_patterns":["webhook","context deadline exceeded","admission","timeout","webhook unreachable"],"root_cause_class":"admission","affected_concepts":["k8s.core.admission-controller","k8s.core.api-server"],
+    "diagnostic_steps":[
+      {"step":1,"action":"List admission webhooks","command":"kubectl get validatingwebhookconfiguration,mutatingwebhookconfiguration","expected":"webhooks installed; identify which one is timing out","source_id":"k8s-architecture"},
+      {"step":2,"action":"Inspect webhook target service","command":"kubectl get svc -A | grep <webhook-svc>; kubectl get endpoints -A | grep <webhook-svc>","expected":"endpoints non-empty; pod is running","source_id":"k8s-architecture"},
+      {"step":3,"action":"Check webhook timeout + failurePolicy","command":"kubectl get validatingwebhookconfiguration <name> -o yaml | grep -E 'timeoutSeconds|failurePolicy|namespaceSelector'","expected":"timeoutSeconds (default 10s, max 30s); failurePolicy: Fail = blocks on failure","source_id":"k8s-architecture"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Restart the webhook deployment","command":"kubectl rollout restart deployment/<webhook-deploy> -n <ns>","validation":"webhook responds; admissions proceed","rollback":null,"source_id":"k8s-architecture"},
+      {"step":2,"action":"For non-critical webhooks: set failurePolicy: Ignore","command":"kubectl edit validatingwebhookconfiguration <name>   # set failurePolicy: Ignore","validation":"admission proceeds even if webhook is down","rollback":"failurePolicy: Fail","source_id":"k8s-architecture"},
+      {"step":3,"action":"Exclude kube-system to avoid bootstrap deadlock","command":"# webhooks[].namespaceSelector:\\n#   matchExpressions:\\n#     - key: kubernetes.io/metadata.name\\n#       operator: NotIn\\n#       values: [kube-system]","validation":"system pods unblocked","rollback":"remove selector","source_id":"k8s-architecture"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-architecture"]},
+
+  {"id":"k8s.fm.etcd-defrag-needed","symptom":"etcd disk usage growing despite low key count; alarm 'NOSPACE'","error_patterns":["NOSPACE","etcd","fragmentation","slow watch","etcdserver"],"root_cause_class":"etcd","affected_concepts":["k8s.core.etcd","k8s.debugging.etcd-logs"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check space alarms","command":"sudo etcdctl --endpoints=https://127.0.0.1:2379 alarm list","expected":"alarm: NOSPACE if full","source_id":"k8s-architecture"},
+      {"step":2,"action":"Show DB size + quota","command":"sudo etcdctl endpoint status -w table","expected":"DB SIZE near quota (default 2GB); FRAGMENTATION ratio high","source_id":"k8s-architecture"},
+      {"step":3,"action":"Identify revision growth rate","command":"sudo etcdctl get / --prefix --keys-only --revision=$(etcdctl endpoint status -w json | jq '.[0].Status.header.revision')","expected":"high revision count + many writes/sec → frequent compaction needed","source_id":"k8s-architecture"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Compact + defragment per-member","command":"REV=$(sudo etcdctl endpoint status -w json | jq -r '.[0].Status.header.revision')\\nsudo etcdctl compact $REV\\nsudo etcdctl defrag --cluster","validation":"DB SIZE drops; FRAGMENTATION drops","rollback":null,"source_id":"k8s-architecture"},
+      {"step":2,"action":"Disarm alarm","command":"sudo etcdctl alarm disarm","validation":"alarm list empty","rollback":null,"source_id":"k8s-architecture"},
+      {"step":3,"action":"Configure auto-compaction to prevent recurrence","command":"# kube-apiserver --etcd-compaction-interval=5m   OR  etcd --auto-compaction-mode=periodic --auto-compaction-retention=1h","validation":"future compactions happen automatically","rollback":"remove flag","source_id":"k8s-architecture"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-architecture"]},
+
+  {"id":"k8s.fm.kubelet-pleg-unhealthy","symptom":"Node reports NotReady; kubelet logs 'PLEG is not healthy'","error_patterns":["PLEG is not healthy","pleg","unhealthy","container runtime is down"],"root_cause_class":"kubelet","affected_concepts":["k8s.runtime.kubelet-pleg","k8s.runtime.kubelet","k8s.core.cri"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Get kubelet PLEG log lines","command":"# on node: sudo journalctl -u kubelet | grep -i pleg | tail","expected":"'PLEG: pod ... duration ... > 3m'","source_id":"k8s-kubelet"},
+      {"step":2,"action":"Check container runtime backlog","command":"sudo crictl ps --no-trunc | wc -l","expected":"large number = runtime is overloaded; PLEG can't keep up","source_id":"k8s-crictl"},
+      {"step":3,"action":"Check container runtime resource usage","command":"top -p $(pgrep containerd)   # OR: pidstat -p $(pgrep containerd) 1 5","expected":"containerd at 100% CPU = overload","source_id":"k8s-container-runtimes"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Restart container runtime","command":"sudo systemctl restart containerd   # OR cri-o","validation":"PLEG healthy in next minute; node Ready","rollback":null,"source_id":"k8s-container-runtimes"},
+      {"step":2,"action":"Reduce container churn (lower probe frequency, fix CrashLoopBackOff sources)","command":"# spec.containers[].livenessProbe.periodSeconds: 30   # less aggressive\\n# fix any CrashLoopBackOff pods that are constantly restarting","validation":"PLEG stays healthy under load","rollback":"prior probe","source_id":"k8s-probes"},
+      {"step":3,"action":"For chronic issue: bump kubelet pleg threshold","command":"# kubeletConfig: runtimeRequestTimeout: 5m0s   (default 2m); also nodeStatusUpdateFrequency","validation":"more tolerance for slow runtime","rollback":"prior values","source_id":"k8s-kubelet"}
+    ],
+    "confidence":0.85,"last_verified":"2026-05-03","source_ids":["k8s-kubelet","k8s-crictl","k8s-container-runtimes","k8s-probes"]},
+
+  {"id":"k8s.fm.kubeconfig-context-wrong","symptom":"`kubectl` lands in wrong cluster (prod vs staging); accidental damage risk","error_patterns":["wrong cluster","kubeconfig","context","prod vs staging"],"root_cause_class":"client-config","affected_concepts":["k8s.debugging.kubectl-debug-feature"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Show current context","command":"kubectl config current-context","expected":"verify against intent — name should make cluster + namespace obvious","source_id":"k8s-kubectl-overview"},
+      {"step":2,"action":"List all available contexts","command":"kubectl config get-contexts","expected":"see all clusters you have access to","source_id":"k8s-kubectl-overview"},
+      {"step":3,"action":"Verify which cluster's apiserver is being hit","command":"kubectl config view --minify --output 'jsonpath={.clusters[0].cluster.server}'","expected":"matches the URL you expect","source_id":"k8s-kubectl-overview"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Switch to correct context","command":"kubectl config use-context <context-name>   # OR kubectx <name>","validation":"current-context updated","rollback":"kubectl config use-context <prior>","source_id":"k8s-kubectl-overview"},
+      {"step":2,"action":"Use kubectx + a shell prompt indicator","command":"# install kubectx; modify PS1 to show $(kubectl config current-context)\\n# brew install kubectx (or apt) ; then `kubectx staging`","validation":"impossible to forget current context","rollback":null,"source_id":"k8s-kubectl-overview"},
+      {"step":3,"action":"Use separate kubeconfig files per cluster (avoids context confusion entirely)","command":"export KUBECONFIG=~/.kube/staging-config\\n# OR per-shell: alias kp='KUBECONFIG=~/.kube/prod kubectl'","validation":"explicit per-shell choice","rollback":"unset KUBECONFIG","source_id":"k8s-kubectl-overview"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-kubectl-overview"]},
+
+  {"id":"k8s.fm.hpa-not-scaling","symptom":"HorizontalPodAutoscaler metric reads 'unknown' or pods don't scale despite load","error_patterns":["unknown metric","unable to fetch metrics","FailedGetResourceMetric","metrics not available"],"root_cause_class":"autoscale","affected_concepts":["k8s.core.controller","k8s.core.api-server"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect HPA","command":"kubectl describe hpa <name>","expected":"events show why it can't read metrics; current value column","source_id":"k8s-resource-metrics-pipeline"},
+      {"step":2,"action":"Verify metrics-server APIService is Available","command":"kubectl get apiservice v1beta1.metrics.k8s.io","expected":"AVAILABLE: True; if False, metrics-server is broken","source_id":"k8s-resource-metrics-pipeline"},
+      {"step":3,"action":"Verify pods declare resources.requests","command":"kubectl get pod <pod> -o jsonpath='{.spec.containers[*].resources.requests}'","expected":"if requests.cpu/memory missing, HPA can't compute % utilization","source_id":"k8s-resource-management"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Install or repair metrics-server","command":"kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml","validation":"kubectl top pods works","rollback":"kubectl delete -f ...","source_id":"k8s-resource-metrics-pipeline"},
+      {"step":2,"action":"Add resources.requests to pod spec","command":"# spec.containers[].resources:\\n#   requests: { cpu: 100m, memory: 128Mi }\\n#   limits: { cpu: 1, memory: 1Gi }","validation":"HPA can compute %","rollback":"remove requests","source_id":"k8s-resource-management"},
+      {"step":3,"action":"For custom-metrics HPA: install prometheus-adapter or KEDA","command":"# helm install prometheus-adapter prometheus-community/prometheus-adapter","validation":"HPA can scale on custom metrics","rollback":"helm uninstall","source_id":"k8s-resource-metrics-pipeline"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-resource-metrics-pipeline","k8s-resource-management"]},
+
+  {"id":"k8s.fm.pvc-pending","symptom":"PVC stuck in Pending state","error_patterns":["PersistentVolumeClaim is not bound","provisioning failed","no storage class","WaitForFirstConsumer"],"root_cause_class":"storage","affected_concepts":["k8s.core.persistent-volume-claim","k8s.core.storage-class"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect PVC events","command":"kubectl describe pvc <name>","expected":"reason: 'no storage class' / 'provisioning failed' / 'WaitForFirstConsumer'","source_id":"k8s-pv-pvc"},
+      {"step":2,"action":"Check storage class","command":"kubectl get storageclass; kubectl describe storageclass <sc-name>","expected":"PROVISIONER and parameters set; default class marked","source_id":"k8s-storage-classes"},
+      {"step":3,"action":"Check CSI driver pods (provisioner)","command":"kubectl get pods -n kube-system | grep csi   # OR -n <csi-ns>","expected":"all Running; logs show no errors","source_id":"k8s-pv-pvc"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"For 'no storage class': create default OR specify in PVC","command":"# PVC: spec.storageClassName: gp3   # OR set a default sc:\\nkubectl patch storageclass gp3 -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'","validation":"PVC binds","rollback":"unset annotation","source_id":"k8s-storage-classes"},
+      {"step":2,"action":"For provisioning failed: check CSI driver logs + IAM","command":"kubectl logs -n kube-system <csi-controller-pod> | tail -30","validation":"identifies failure (perms / quota / region)","rollback":null,"source_id":"k8s-pv-pvc"},
+      {"step":3,"action":"For WaitForFirstConsumer: that's normal — PVC binds when pod is scheduled","command":"# Just wait for the consuming pod to be scheduled; PVC binds at that point","validation":"PVC moves Pending → Bound when pod is scheduled","rollback":null,"source_id":"k8s-storage-classes"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-pv-pvc","k8s-storage-classes"]},
+
+  {"id":"k8s.fm.pvc-resize-stuck","symptom":"Resized PVC stays at old size; pod sees old size after edit","error_patterns":["resize","volume expansion","Pending","FileSystemResizePending"],"root_cause_class":"storage","affected_concepts":["k8s.core.storage-class","k8s.runtime.csi","k8s.debugging.csi-debug"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect PVC for resize condition","command":"kubectl describe pvc <name> | grep -A2 -E 'Conditions|status'","expected":"FileSystemResizePending = waiting on next pod restart","source_id":"k8s-pv-pvc"},
+      {"step":2,"action":"Check storage class supports expansion","command":"kubectl get storageclass <name> -o yaml | grep allowVolumeExpansion","expected":"allowVolumeExpansion: true","source_id":"k8s-storage-classes"},
+      {"step":3,"action":"Verify CSI driver supports resize","command":"kubectl get csidriver <name> -o yaml | grep -i resize","expected":"capability for online or offline expansion","source_id":"k8s-pv-pvc"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Restart consuming pod (CSI completes resize on remount)","command":"kubectl rollout restart deploy/<app>","validation":"pod sees new size; PVC condition clears","rollback":null,"source_id":"k8s-pv-pvc"},
+      {"step":2,"action":"For online expansion: check CSI driver capability","command":"# csi-resizer must be installed and have ALLOW_VOLUME_EXPANSION_ONLINE","validation":"resize without restart","rollback":null,"source_id":"k8s-storage-classes"},
+      {"step":3,"action":"If sc didn't allow expansion at PVC create: recreate PVC (data loss) OR enable now","command":"kubectl patch storageclass <sc> -p '{\"allowVolumeExpansion\": true}'","validation":"future PVCs can expand","rollback":"set false","source_id":"k8s-storage-classes"}
+    ],
+    "confidence":0.85,"last_verified":"2026-05-03","source_ids":["k8s-pv-pvc","k8s-storage-classes","k8s-debug-cluster"]},
+
+  {"id":"k8s.fm.statefulset-volume-binding-stuck","symptom":"StatefulSet pod 0 stuck Pending with PVC unbound; subsequent ordinals can't proceed","error_patterns":["volume binding","PVC","Pending","statefulset","ordinal"],"root_cause_class":"storage","affected_concepts":["k8s.core.storage-class","k8s.runtime.csi"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Identify the pending PVC","command":"kubectl get pvc -l app=<sts-name>","expected":"data-<sts>-0 in Pending state","source_id":"k8s-pv-pvc"},
+      {"step":2,"action":"Inspect the volumeClaimTemplates","command":"kubectl get sts <name> -o yaml | grep -A20 volumeClaimTemplates","expected":"verify storageClassName + storage size","source_id":"k8s-storage-classes"},
+      {"step":3,"action":"Check storage class binding mode","command":"kubectl get storageclass <name> -o jsonpath='{.volumeBindingMode}{\"\\n\"}'","expected":"Immediate (binds at PVC create) or WaitForFirstConsumer (binds at pod schedule — chicken-and-egg)","source_id":"k8s-storage-classes"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Provision capacity / fix CSI driver","command":"kubectl logs -n kube-system <csi-provisioner-pod> | tail -30   # diagnose","validation":"PVC binds","rollback":null,"source_id":"k8s-pv-pvc"},
+      {"step":2,"action":"For non-cloud: ensure manually-created PV exists with matching storage class","command":"kubectl apply -f pv.yaml   # PV with claimRef matching the PVC","validation":"PVC binds to that PV","rollback":"kubectl delete pv","source_id":"k8s-pv-pvc"},
+      {"step":3,"action":"For WaitForFirstConsumer + node-selector pod: ensure a node satisfies BOTH the pod's selector AND the storage zone","command":"# common gotcha: pod nodeSelector forces a zone where no provisioner is available","validation":"pod schedules; PVC binds","rollback":null,"source_id":"k8s-storage-classes"}
+    ],
+    "confidence":0.85,"last_verified":"2026-05-03","source_ids":["k8s-pv-pvc","k8s-storage-classes"]},
+
+  {"id":"k8s.fm.validating-webhook-policy-rejects","symptom":"`kubectl apply` fails with 'admission webhook denied the request: <reason>'","error_patterns":["admission webhook denied","ValidatingAdmissionWebhook","policy","kyverno","gatekeeper"],"root_cause_class":"admission","affected_concepts":["k8s.core.admission-controller","k8s.core.api-server"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Identify the rejecting webhook","command":"# error message names it; OR list:\\nkubectl get validatingwebhookconfiguration -o jsonpath='{range .items[*]}{.metadata.name}{\"\\n\"}{end}'","expected":"webhook name","source_id":"k8s-architecture"},
+      {"step":2,"action":"For policy engines, inspect the matching policy","command":"# Kyverno: kubectl get clusterpolicy; kubectl describe clusterpolicy <name>\\n# Gatekeeper: kubectl get constraints","expected":"matching rule + reason","source_id":"k8s-architecture"},
+      {"step":3,"action":"Confirm what the manifest is missing/wrong","command":"# Re-read the error message — it usually quotes the failing rule (e.g. 'requires resource limits')","expected":"exact field/value to fix","source_id":"k8s-architecture"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Fix the manifest to satisfy the policy","command":"# add required label/annotation/securityContext per policy","validation":"kubectl apply succeeds","rollback":"revert manifest","source_id":"k8s-architecture"},
+      {"step":2,"action":"Or, exempt the namespace (only if intentionally out-of-policy)","command":"# Kyverno: spec.exclude.namespaces: [<ns>]\\n# Gatekeeper: spec.match.excludedNamespaces: [<ns>]","validation":"apply succeeds","rollback":"remove exemption","source_id":"k8s-architecture"},
+      {"step":3,"action":"For testing without the policy: temporarily delete the webhook","command":"kubectl delete validatingwebhookconfiguration <name>   # destructive; coordinate first","validation":"apply succeeds","rollback":"kubectl apply -f <webhook.yaml>","source_id":"k8s-architecture"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-architecture"]},
+
+  {"id":"k8s.fm.controller-stuck-on-crd-finalizer","symptom":"Custom resource stuck Terminating; controller's finalizer never removed","error_patterns":["finalizer","Terminating","CRD","custom resource","operator finalizer"],"root_cause_class":"finalizer","affected_concepts":["k8s.core.finalizer","k8s.core.controller"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect resource finalizers","command":"kubectl get <crd> <name> -n <ns> -o jsonpath='{.metadata.finalizers}{\"\\n\"}'","expected":"finalizer string identifies which controller owns cleanup","source_id":"k8s-namespace"},
+      {"step":2,"action":"Check the controller pod is running","command":"kubectl get pods -n <controller-ns>; kubectl logs -n <controller-ns> <controller-pod> --tail=50","expected":"Running with no errors; if errors point at cleanup failure, that's the cause","source_id":"k8s-controller-pattern"},
+      {"step":3,"action":"Check controller's RBAC for the resource","command":"kubectl auth can-i delete <crd> --as=system:serviceaccount:<ns>:<sa>","expected":"yes — if no, finalizer can't be removed","source_id":"k8s-rbac"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Fix or restart the controller","command":"kubectl rollout restart deployment/<controller> -n <ns>","validation":"finalizer removed normally; resource deletes","rollback":null,"source_id":"k8s-controller-pattern"},
+      {"step":2,"action":"For controller permanently broken / removed: patch out the finalizer (data risk)","command":"kubectl patch <crd> <name> -n <ns> -p '{\"metadata\":{\"finalizers\":null}}' --type=merge","validation":"resource deletes","rollback":"can't undo","source_id":"k8s-namespace"},
+      {"step":3,"action":"For Helm-managed: ensure helm uninstall removes the operator THEN the CRs (not vice versa)","command":"# correct order: delete CRs first; then helm uninstall <operator>\\n# Or use helm.sh/resource-policy: keep on the operator's CR","validation":"clean uninstall","rollback":null,"source_id":"k8s-controller-pattern"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-namespace","k8s-controller-pattern","k8s-rbac"]},
+
+  {"id":"k8s.fm.pdb-blocks-drain","symptom":"`kubectl drain` hangs or fails 'Cannot evict pod ... PodDisruptionBudget'","error_patterns":["PodDisruptionBudget","Cannot evict","drain","disruption","PDB"],"root_cause_class":"disruption","affected_concepts":["k8s.core.pod","k8s.core.controller"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Show PDB","command":"kubectl get pdb -A","expected":"min-available high enough that draining one would violate","source_id":"k8s-scheduling-eviction"},
+      {"step":2,"action":"Inspect specific PDB","command":"kubectl describe pdb <name> -n <ns>","expected":"Status: AllowedDisruptions=0 → blocks all evictions","source_id":"k8s-scheduling-eviction"},
+      {"step":3,"action":"Show selected pods + their nodes","command":"kubectl get pods -n <ns> -l <pdb-selector> -o wide","expected":"if all pods on the draining node, PDB is structurally tight","source_id":"k8s-scheduling-eviction"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Scale up replicas before drain (so PDB allows N-1 evictions)","command":"kubectl scale deploy <name> --replicas=<n+1>","validation":"AllowedDisruptions > 0","rollback":"scale back","source_id":"k8s-scheduling-eviction"},
+      {"step":2,"action":"Or temporarily relax PDB","command":"kubectl patch pdb <name> -p '{\"spec\":{\"minAvailable\":1}}'","validation":"drain proceeds","rollback":"original min-available","source_id":"k8s-scheduling-eviction"},
+      {"step":3,"action":"For node-cordon-only operations: skip drain, use cordon + scheduled rollout","command":"kubectl cordon <node>   # no eviction; just stops new schedules\\n# then rolling restart to migrate via deletion + reschedule","validation":"work moved without violating PDB","rollback":"kubectl uncordon <node>","source_id":"k8s-scheduling-eviction"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["k8s-scheduling-eviction"]},
+
+  {"id":"k8s.fm.service-no-endpoints","symptom":"Service exists but no endpoints; clients can't reach","error_patterns":["no endpoints","endpoints empty","NotReadyAddresses","service unreachable"],"root_cause_class":"selector","affected_concepts":["k8s.core.service","k8s.networking.endpoints"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect endpoints","command":"kubectl get endpoints <svc> -n <ns> -o yaml","expected":"empty 'subsets' or 'notReadyAddresses' instead of 'addresses'","source_id":"k8s-debug-services"},
+      {"step":2,"action":"Check service selector vs pod labels","command":"kubectl get svc <svc> -o jsonpath='{.spec.selector}{\"\\n\"}'; kubectl get pods --show-labels -n <ns>","expected":"selector must match pod labels exactly","source_id":"k8s-debug-services"},
+      {"step":3,"action":"Check pod readiness","command":"kubectl get pod -l <selector> -o wide","expected":"READY column = 1/1; if 0/1, readiness probe failing → not added to endpoints","source_id":"k8s-probes"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Fix label mismatch (service selector OR pod labels)","command":"kubectl label pod <p> app=myapp   # OR fix svc selector to match existing pods","validation":"endpoints populate","rollback":"kubectl label pod <p> app-","source_id":"k8s-debug-services"},
+      {"step":2,"action":"Fix readiness probe (most common root cause)","command":"# spec.containers[].readinessProbe.httpGet.path / port — adjust to actual app endpoint","validation":"pod READY=1/1; endpoints added","rollback":"prior probe","source_id":"k8s-probes"},
+      {"step":3,"action":"For headless services: check podSelector OR manual endpoints","command":"# clusterIP: None services need selector OR explicit Endpoints object","validation":"headless service serves correct pods","rollback":null,"source_id":"k8s-services"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["k8s-debug-services","k8s-probes","k8s-services"]}
+]

@@ -682,3 +682,23 @@ Of 80 thin linux fms, deepened the **top 25 most-interview-relevant** to 3+ diag
 **Domain-wide impact:** thin count **80 → 55** (31% reduction). Avg diag 1.67 → 2.12; avg fix 1.77 → 2.14. Each P15 fm now has 3-4 diagnostic steps with concrete `expected:` outcomes plus 3 fix steps with copy-pasteable commands and explicit `validate:` / `rollback:` paths.
 
 **Phase 16+ scope:** remaining 55 thin linux + 40 thin docker + k8s (52) + devin (36).
+
+## Phase 16 — Quality pass on top 25 k8s failure_modes
+
+### Session P16 — 2026-05-03 — DONE
+
+Of 52 thin k8s fms, deepened the **top 25 most-interview-relevant** to 3+ diag / 2+ fix steps. Output: `domains/k8s/extract/failure_modes_p16_quality.json` (25 fms).
+
+**Coverage by category:**
+
+| Group | Count | fm-ids |
+|---|---:|---|
+| Pod-state | 8 | crashloopbackoff, oomkilled, imagepullbackoff, terminating-stuck, evicted-by-node-pressure, configmap-not-updating, liveness-killing-slow-starter, taint-toleration-mismatch |
+| Networking + DNS | 5 | networkpolicy-blocking, networkpolicy-default-deny-too-broad, dns-resolution-fail, coredns-loop-detection, cni-mtu-mismatch |
+| Cluster-ops | 5 | admission-webhook-timeout, etcd-defrag-needed, kubelet-pleg-unhealthy, kubeconfig-context-wrong, hpa-not-scaling |
+| Storage | 3 | pvc-pending, pvc-resize-stuck, statefulset-volume-binding-stuck |
+| Admission/CRD/Other | 4 | validating-webhook-policy-rejects, controller-stuck-on-crd-finalizer, pdb-blocks-drain, service-no-endpoints |
+
+**Domain-wide impact:** thin count **52 → 34** (35% reduction); avg diag 1.94 → 2.30; avg fix 1.81 → 2.20. Each P16 fm now has 3-4 specific diagnostic commands with concrete `expected:` outcomes plus 3 fix steps with copy-pasteable commands and explicit `validate:` / `rollback:` paths.
+
+**Cumulative quality work (P13+P14+P15+P16):** 6 primary scenario fms + 28 methodology + 25 docker + 25 linux + 25 k8s = **109 fms now exemplary**. Methodology 100% clean; docker/linux/k8s thin counts down 31-38%.
