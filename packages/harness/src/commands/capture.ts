@@ -1,4 +1,4 @@
-import * as p from "@clack/prompts";
+import { println } from "../output.ts";
 import { spawn, spawnSync } from "node:child_process";
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, basename } from "node:path";
@@ -284,14 +284,14 @@ export async function captureCmd(args: string[]): Promise<void> {
 
   if (list) {
     const all = listBundles();
-    p.log.info("Available capture bundles:");
+    println("Available capture bundles:");
     for (const { id, bundle } of all) {
-      console.log(`  ${id.padEnd(20)} [${bundle.platform_hint.padEnd(14)}] ${bundle.description}`);
+      println(`  ${id.padEnd(20)} [${bundle.platform_hint.padEnd(14)}] ${bundle.description}`);
     }
-    console.log("\nUsage:");
-    console.log("  pnpm harness capture <bundle>");
-    console.log("  pnpm harness capture --from-fm <failure-mode-id>");
-    console.log("  pnpm harness capture <bundle> --output snapshot.md");
+    println("\nUsage:");
+    println("  pnpm harness capture <bundle>");
+    println("  pnpm harness capture --from-fm <failure-mode-id>");
+    println("  pnpm harness capture <bundle> --output snapshot.md");
     return;
   }
 
@@ -299,22 +299,22 @@ export async function captureCmd(args: string[]): Promise<void> {
   if (fromFm) {
     bundle = await fmToBundle(fromFm);
     if (!bundle) {
-      p.log.error(`failure mode not found: ${fromFm}`);
+      println(`failure mode not found: ${fromFm}`);
       process.exit(2);
     }
     if (bundle.commands.length === 0) {
-      p.log.warn(`fm ${fromFm} has no runnable diagnostic_steps (only commented placeholders)`);
+      println(`fm ${fromFm} has no runnable diagnostic_steps (only commented placeholders)`);
       return;
     }
   } else if (bundleId) {
     bundle = loadBundle(bundleId);
     if (!bundle) {
-      p.log.error(`bundle not found: ${bundleId}`);
-      p.log.info("Run `pnpm harness capture --list` to see available bundles.");
+      println(`bundle not found: ${bundleId}`);
+      println("Run `pnpm harness capture --list` to see available bundles.");
       process.exit(2);
     }
   } else {
-    p.log.error("usage: harness capture <bundle> | --from-fm <id> | --list");
+    println("usage: harness capture <bundle> | --from-fm <id> | --list");
     process.exit(1);
   }
 
@@ -336,18 +336,18 @@ export async function captureCmd(args: string[]): Promise<void> {
   }
   sections.push("");
 
-  p.log.info(`Running ${bundle.commands.length} commands from "${bundle.name}"...`);
+  println(`Running ${bundle.commands.length} commands from "${bundle.name}"...`);
 
   for (let i = 0; i < bundle.commands.length; i++) {
     const cmd = bundle.commands[i]!;
     process.stdout.write(`  [${i + 1}/${bundle.commands.length}] ${cmd.description}... `);
     const result = await runCommand(cmd);
     if (result.timed_out) {
-      console.log("TIMEOUT");
+      println("TIMEOUT");
     } else if (result.not_available) {
-      console.log("N/A");
+      println("N/A");
     } else {
-      console.log(`exit=${result.exit_code} (${result.duration_ms}ms)`);
+      println(`exit=${result.exit_code} (${result.duration_ms}ms)`);
     }
     sections.push(formatResult(result));
   }
@@ -356,9 +356,9 @@ export async function captureCmd(args: string[]): Promise<void> {
 
   if (outputFile) {
     writeFileSync(outputFile, blob, "utf8");
-    p.log.success(`Wrote ${blob.length} bytes to ${outputFile}`);
+    println(`Wrote ${blob.length} bytes to ${outputFile}`);
   } else {
-    console.log("\n" + "=".repeat(60));
-    console.log(blob);
+    println("\n" + "=".repeat(60));
+    println(blob);
   }
 }

@@ -1,10 +1,10 @@
-import * as p from "@clack/prompts";
+import { println } from "../output.ts";
 import { openDb, DOMAINS } from "../db.ts";
 
 export async function relatedCmd(args: string[]): Promise<void> {
   const id = args[0]?.trim();
   if (!id) {
-    p.log.error("usage: harness related <id> — walk relationships outward");
+    println("usage: harness related <id> — walk relationships outward");
     process.exit(1);
   }
   const depthArg = args[1] ? Number(args[1]) : 2;
@@ -38,14 +38,14 @@ export async function relatedCmd(args: string[]): Promise<void> {
     interface WalkRow { id: string; depth: number | bigint }
     const rows = (await db.all(sql)) as unknown as WalkRow[];
     if (rows.length === 0) {
-      p.log.warn(`no related nodes for ${id}`);
+      println(`no related nodes for ${id}`);
       return;
     }
-    p.log.info(`Reachable within depth ${depth} from ${id}:`);
+    println(`Reachable within depth ${depth} from ${id}:`);
     for (const r of rows) {
       const d = Number(r.depth);
       const indent = "  ".repeat(Math.max(d, 0));
-      console.log(`${indent}[d=${d}] ${r.id}`);
+      println(`${indent}[d=${d}] ${r.id}`);
     }
   } finally {
     await db.close();

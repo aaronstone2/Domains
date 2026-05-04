@@ -1,4 +1,4 @@
-import * as p from "@clack/prompts";
+import { println } from "../output.ts";
 import { openDb, DOMAINS } from "../db.ts";
 
 interface ConceptRow {
@@ -21,7 +21,7 @@ interface RelRow {
 export async function conceptCmd(args: string[]): Promise<void> {
   const id = args[0]?.trim();
   if (!id) {
-    p.log.error("usage: harness concept <concept-id>");
+    println("usage: harness concept <concept-id>");
     process.exit(1);
   }
   const escaped = id.replace(/'/g, "''");
@@ -32,19 +32,19 @@ export async function conceptCmd(args: string[]): Promise<void> {
     ).join("\nUNION ALL\n");
     const rows = (await db.all(conceptSql)) as unknown as ConceptRow[];
     if (rows.length === 0) {
-      p.log.error(`concept not found: ${id}`);
+      println(`concept not found: ${id}`);
       process.exit(2);
     }
     const c = rows[0]!;
-    console.log(`\n=== ${c.id}  [${c.domain}] ===`);
-    console.log(`Name: ${c.name}`);
-    console.log(`Kind: ${c.kind}`);
+    println(`\n=== ${c.id}  [${c.domain}] ===`);
+    println(`Name: ${c.name}`);
+    println(`Kind: ${c.kind}`);
     if (c.aliases && c.aliases.length > 0) {
-      console.log(`Aliases: ${c.aliases.join(", ")}`);
+      println(`Aliases: ${c.aliases.join(", ")}`);
     }
-    console.log(`\n${c.description}`);
+    println(`\n${c.description}`);
     if (c.source_ids && c.source_ids.length > 0) {
-      console.log(`\nSources: ${c.source_ids.join(", ")}`);
+      println(`\nSources: ${c.source_ids.join(", ")}`);
     }
     const relSql = DOMAINS.map(
       (d) => `
@@ -54,14 +54,14 @@ export async function conceptCmd(args: string[]): Promise<void> {
     ).join("\nUNION ALL\n");
     const rels = (await db.all(relSql)) as unknown as RelRow[];
     if (rels.length > 0) {
-      console.log("\n-- Relationships --");
+      println("\n-- Relationships --");
       for (const r of rels) {
         const arrow = r.from_id === id ? "->" : "<-";
         const other = r.from_id === id ? r.to_id : r.from_id;
-        console.log(`  ${arrow} ${r.rel_type}  ${other}  [${r.domain}]`);
+        println(`  ${arrow} ${r.rel_type}  ${other}  [${r.domain}]`);
       }
     }
-    console.log("");
+    println("");
   } finally {
     await db.close();
   }

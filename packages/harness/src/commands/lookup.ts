@@ -1,4 +1,5 @@
 import { openDb, DOMAINS } from "../db.ts";
+import { println } from "../output.ts";
 import {
   bold, dim, red, green, cyan,
   header, section, hr, domainChip, confidenceChip,
@@ -44,8 +45,8 @@ export async function lookupCmd(args: string[]): Promise<void> {
   const escaped = text.replace(/'/g, "''");
   const db = await openDb();
   try {
-    console.log("");
-    console.log(header("harness lookup", `query: ${text}`));
+    println("");
+    println(header("harness lookup", `query: ${text}`));
 
     const STOPWORDS = new Set([
       "the", "and", "but", "for", "are", "you", "this", "that", "with", "have",
@@ -92,17 +93,17 @@ export async function lookupCmd(args: string[]): Promise<void> {
     const fms = (await db.all(`${fmSql} LIMIT 8`)) as unknown as FailureHit[];
 
     if (fms.length > 0) {
-      console.log(section("FAILURE MODES"));
-      console.log(dim("  (rank by keyword match × confidence — try `harness playbook <id>`)"));
-      console.log("");
+      println(section("FAILURE MODES"));
+      println(dim("  (rank by keyword match × confidence — try `harness playbook <id>`)"));
+      println("");
       for (const f of fms) {
-        console.log(`  ${domainChip(f.domain)} ${bold(f.id)}  ${confidenceChip(f.confidence)}`);
-        console.log(`     ${f.symptom}`);
-        if (f.root_cause_class) console.log(`     ${dim("class:")} ${f.root_cause_class}`);
+        println(`  ${domainChip(f.domain)} ${bold(f.id)}  ${confidenceChip(f.confidence)}`);
+        println(`     ${f.symptom}`);
+        if (f.root_cause_class) println(`     ${dim("class:")} ${f.root_cause_class}`);
       }
     } else {
-      console.log(section("FAILURE MODES"));
-      console.log(dim("  (no failure-mode matches)"));
+      println(section("FAILURE MODES"));
+      println(dim("  (no failure-mode matches)"));
     }
 
     const cmdSql = DOMAINS.map(
@@ -114,10 +115,10 @@ export async function lookupCmd(args: string[]): Promise<void> {
     ).join("\nUNION ALL\n");
     const cmds = (await db.all(`${cmdSql} LIMIT 8`)) as unknown as CommandHit[];
     if (cmds.length > 0) {
-      console.log(section("COMMANDS"));
+      println(section("COMMANDS"));
       for (const c of cmds) {
-        console.log(`  ${domainChip(c.domain)} ${green("$")} ${c.command}`);
-        console.log(`     ${dim(c.purpose)}`);
+        println(`  ${domainChip(c.domain)} ${green("$")} ${c.command}`);
+        println(`     ${dim(c.purpose)}`);
       }
     }
 
@@ -131,9 +132,9 @@ export async function lookupCmd(args: string[]): Promise<void> {
     ).join("\nUNION ALL\n");
     const concepts = (await db.all(`${conceptSql} LIMIT 8`)) as unknown as ConceptHit[];
     if (concepts.length > 0) {
-      console.log(section("CONCEPTS"));
+      println(section("CONCEPTS"));
       for (const c of concepts) {
-        console.log(`  ${domainChip(c.domain)} ${bold(c.id)}  ${dim("(" + c.kind + ")")}  ${c.name}`);
+        println(`  ${domainChip(c.domain)} ${bold(c.id)}  ${dim("(" + c.kind + ")")}  ${c.name}`);
       }
     }
 
@@ -154,26 +155,26 @@ export async function lookupCmd(args: string[]): Promise<void> {
     const sql = `${unionSql}\nORDER BY score DESC NULLS LAST LIMIT 6`;
     const docs = (await db.all(sql)) as unknown as DocHit[];
     if (docs.length > 0) {
-      console.log(section("DOCS (BM25)"));
+      println(section("DOCS (BM25)"));
       for (const r of docs) {
         const score = Number(r.score).toFixed(2);
         const snippet = String(r.snippet ?? "").replace(/\s+/g, " ").trim().slice(0, 180);
-        console.log(`  ${domainChip(r.domain)} ${cyan(score)}  ${bold(r.source_id)}  ${dim(r.title ?? "")}`);
-        console.log(`     ${dim(snippet)}`);
+        println(`  ${domainChip(r.domain)} ${cyan(score)}  ${bold(r.source_id)}  ${dim(r.title ?? "")}`);
+        println(`     ${dim(snippet)}`);
       }
     }
 
     if (fms.length === 0 && cmds.length === 0 && concepts.length === 0 && docs.length === 0) {
-      console.log("");
-      console.log(red(`no hits for "${text}"`));
+      println("");
+      println(red(`no hits for "${text}"`));
     } else {
-      console.log(section("NEXT"));
+      println(section("NEXT"));
       if (fms.length > 0 && fms[0]) {
-        console.log(`  ${dim("Open top playbook:")}  ${green("pnpm harness playbook " + fms[0].id)}`);
-        console.log(`  ${dim("One-shot answer:")}    ${green("pnpm harness ask \"" + text + "\"")}`);
+        println(`  ${dim("Open top playbook:")}  ${green("pnpm harness playbook " + fms[0].id)}`);
+        println(`  ${dim("One-shot answer:")}    ${green("pnpm harness ask \"" + text + "\"")}`);
       }
-      console.log("");
-      console.log(hr());
+      println("");
+      println(hr());
     }
   } finally {
     await db.close();

@@ -3,16 +3,15 @@
 // Code can call ask/lookup/playbook/etc. as first-class tool calls instead of
 // shelling out to `! pnpm harness ask "<symptom>"`.
 //
-// Architecture: spawn the harness CLI per call. ~700-1500ms per call but
-// bulletproof. The two failures that pushed us back to spawn from in-process:
-// (1) MCP SDK shares process.stdout with the harness CLI; capturing one
-// captures the other and corrupts the JSON-RPC protocol stream; (2) DuckDB
-// file locks conflict when multiple in-process calls open the same .duckdb
-// concurrently (Windows-specific). Subprocess isolation fixes both.
+// V3 architecture: in-process. The harness module exposes a setOut(stream)
+// hook that swaps its writer (defaults to process.stdout for CLI use). MCP
+// server creates a Writable that buffers chunks, calls setOut(buffer) before
+// each tool call, runs the command in-process, restores. ~50ms per call vs
+// ~1500ms in the V1 spawn approach.
 //
-// For interview-day this is fine — typical tool call sequence is 5-10 calls
-// totaling <15s of latency. If a future client demands sub-100ms, refactor
-// the harness to use a configurable Writable + connection pool.
+// Why this works (where naive stdout-patching didn't): the harness writes via
+// a CONFIGURABLE writer, not process.stdout directly. The MCP SDK keeps using
+// real process.stdout for JSON-RPC protocol writes. No interleaving, no race.
 //
 // Stdio transport — Claude Code spawns this server when listed in .mcp.json.
 
@@ -23,43 +22,86 @@ import {
   ListToolsRequestSchema,
   type Tool,
 } from "@modelcontextprotocol/sdk/types.js";
-import { spawn } from "node:child_process";
-import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
+import { Writable } from "node:stream";
+import { commands } from "@domains/harness/commands";
+import { setOut, resetOut } from "@domains/harness/output";
 
-const here: string = dirname(fileURLToPath(import.meta.url));
-const repoRoot: string = resolve(here, "..", "..", "..");
+// Enable long-lived DB connection for the harness; without this each tool
+// call opens+closes a duckdb connection and rapid sequential calls collide
+// on the Windows file lock. Set BEFORE first command import side-effects.
+process.env["HARNESS_KEEPALIVE"] = "1";
 
 function stripAnsi(s: string): string {
   // eslint-disable-next-line no-control-regex
   return s.replace(/\x1b\[[0-9;]*m/g, "");
 }
 
-function runHarness(subcommand: string, args: string[]): Promise<string> {
-  return new Promise((resolveP) => {
-    const cmd = `pnpm harness ${[subcommand, ...args].map((a) => JSON.stringify(a)).join(" ")}`;
-    const child = spawn(cmd, {
-      cwd: repoRoot,
-      env: { ...process.env, NO_COLOR: "1" },
-      shell: true,
-    });
-    let out = "";
-    let err = "";
-    child.stdout?.on("data", (d: Buffer) => { out += d.toString(); });
-    child.stderr?.on("data", (d: Buffer) => { err += d.toString(); });
-    child.on("close", (code) => {
-      const cleanOut = stripAnsi(out);
-      if (code === 0) {
-        resolveP(cleanOut);
-      } else {
-        const cleanErr = stripAnsi(err);
-        resolveP(`harness ${subcommand} exited ${code}\n${cleanOut}\n${cleanErr}`.trim());
-      }
-    });
-    child.on("error", (e) => {
-      resolveP(`harness ${subcommand} spawn error: ${e.message}`);
-    });
+// Serial mutex: harness uses a module-global writer (setOut), so concurrent
+// in-flight calls would step on each other if MCP processed requests in
+// parallel. This chain enforces one-at-a-time even if the SDK lets handlers
+// overlap.
+let inFlight: Promise<unknown> = Promise.resolve();
+
+async function runHarness(subcommand: string, args: string[]): Promise<string> {
+  const cmd = commands[subcommand];
+  if (!cmd) {
+    return `harness: unknown subcommand "${subcommand}". Available: ${Object.keys(commands).join(", ")}`;
+  }
+
+  // Wait for prior call to finish before claiming the writer.
+  const prev = inFlight;
+  let releaseSlot!: () => void;
+  inFlight = new Promise<void>((r) => { releaseSlot = r; });
+  try {
+    await prev;
+  } catch { /* prior failures don't block us */ }
+
+  // Force NO_COLOR so the harness's output module skips ANSI escapes.
+  const origNoColor = process.env["NO_COLOR"];
+  process.env["NO_COLOR"] = "1";
+
+  // In-memory capture writer. Harness commands call setOut/println; their
+  // writes land in chunks here, NOT in process.stdout (which the MCP SDK
+  // owns for the JSON-RPC protocol).
+  const chunks: string[] = [];
+  const captureStream = new Writable({
+    write(chunk: Buffer | string, _enc, cb): void {
+      chunks.push(typeof chunk === "string" ? chunk : chunk.toString());
+      cb();
+    },
   });
+  setOut(captureStream);
+
+  // Some commands call process.exit on error (usage strings). Intercept so
+  // the MCP server doesn't die mid-request.
+  let exitCode: number | null = null;
+  const origExit = process.exit.bind(process);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (process as any).exit = (code?: number): never => {
+    exitCode = code ?? 0;
+    throw new Error("__harness_exit__");
+  };
+
+  try {
+    await cmd(args);
+  } catch (err) {
+    if (!(err instanceof Error && err.message === "__harness_exit__")) {
+      chunks.push(`\n[runHarness caught: ${err instanceof Error ? err.message : String(err)}]\n`);
+    }
+  } finally {
+    resetOut();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (process as any).exit = origExit;
+    if (origNoColor === undefined) delete process.env["NO_COLOR"];
+    else process.env["NO_COLOR"] = origNoColor;
+    releaseSlot();
+  }
+
+  let out = stripAnsi(chunks.join(""));
+  if (exitCode !== null && exitCode !== 0) {
+    out += `\n[harness ${subcommand} exited ${exitCode}]`;
+  }
+  return out || `[harness ${subcommand} produced no output]`;
 }
 
 const TOOLS: Tool[] = [

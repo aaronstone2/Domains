@@ -1,4 +1,5 @@
 import { openDb, DOMAINS } from "../db.ts";
+import { println } from "../output.ts";
 import {
   dim, red, green,
   header, section, talkTrack, stepLine, commandLine, expectLine,
@@ -54,71 +55,71 @@ export async function playbookCmd(args: string[]): Promise<void> {
     }
     const fm = rows[0]!;
 
-    console.log("");
-    console.log(header(fm.id, fm.symptom));
+    println("");
+    println(header(fm.id, fm.symptom));
 
-    console.log(section("META"));
+    println(section("META"));
     const verified = fm.last_verified ? formatDate(fm.last_verified) : null;
-    console.log(`  ${domainChip(fm.domain)}  ${confidenceChip(fm.confidence)}` + (verified ? `  ${dim("verified " + verified)}` : ""));
-    console.log(`  ${red("Symptom:")} ${fm.symptom}`);
-    if (fm.root_cause_class) console.log(`  ${dim("Root-cause class:")} ${fm.root_cause_class}`);
+    println(`  ${domainChip(fm.domain)}  ${confidenceChip(fm.confidence)}` + (verified ? `  ${dim("verified " + verified)}` : ""));
+    println(`  ${red("Symptom:")} ${fm.symptom}`);
+    if (fm.root_cause_class) println(`  ${dim("Root-cause class:")} ${fm.root_cause_class}`);
     if (fm.error_patterns?.length) {
-      console.log(`  ${dim("Error patterns:")} ${fm.error_patterns.join(" | ")}`);
+      println(`  ${dim("Error patterns:")} ${fm.error_patterns.join(" | ")}`);
     }
     if (fm.affected_concepts?.length) {
-      console.log(`  ${dim("Affects:")} ${fm.affected_concepts.join(", ")}`);
+      println(`  ${dim("Affects:")} ${fm.affected_concepts.join(", ")}`);
     }
 
-    console.log("");
-    console.log(talkTrack({
+    println("");
+    println(talkTrack({
       symptom: fm.symptom,
       rootCauseClass: fm.root_cause_class,
       diagFirstAction: fm.diagnostic_steps?.[0]?.action ?? null,
       fixFirstAction: fm.fix_steps?.[0]?.action ?? null,
     }));
 
-    console.log(section("DIAGNOSE"));
+    println(section("DIAGNOSE"));
     if (!fm.diagnostic_steps?.length) {
-      console.log(dim("  (no diagnostic steps recorded)"));
+      println(dim("  (no diagnostic steps recorded)"));
     } else {
       for (const s of fm.diagnostic_steps) {
-        console.log(stepLine(s.step, s.action, "diag"));
-        if (s.command) console.log(commandLine(s.command));
-        if (s.expected) console.log(expectLine("expect", s.expected));
-        if (s.source_id) console.log(`       ${dim("[src: " + s.source_id + "]")}`);
+        println(stepLine(s.step, s.action, "diag"));
+        if (s.command) println(commandLine(s.command));
+        if (s.expected) println(expectLine("expect", s.expected));
+        if (s.source_id) println(`       ${dim("[src: " + s.source_id + "]")}`);
       }
     }
 
-    console.log(section("FIX"));
+    println(section("FIX"));
     if (!fm.fix_steps?.length) {
-      console.log(dim("  (no fix steps recorded)"));
+      println(dim("  (no fix steps recorded)"));
     } else {
       for (const s of fm.fix_steps) {
-        console.log(stepLine(s.step, s.action, "fix"));
-        if (s.command) console.log(commandLine(s.command));
-        if (s.validation) console.log(expectLine("validate", s.validation));
-        if (s.rollback) console.log(expectLine("rollback", s.rollback));
-        if (s.source_id) console.log(`       ${dim("[src: " + s.source_id + "]")}`);
+        println(stepLine(s.step, s.action, "fix"));
+        if (s.command) println(commandLine(s.command));
+        if (s.validation) println(expectLine("validate", s.validation));
+        if (s.rollback) println(expectLine("rollback", s.rollback));
+        if (s.source_id) println(`       ${dim("[src: " + s.source_id + "]")}`);
       }
     }
 
     if (fm.source_ids?.length) {
-      console.log(section("CITATIONS"));
+      println(section("CITATIONS"));
       const inList = fm.source_ids.map((s) => `'${s.replace(/'/g, "''")}'`).join(",");
       const srcSql = DOMAINS.map(
         (d) => `SELECT '${d}' AS domain, id, title, url FROM ${d}.sources WHERE id IN (${inList})`,
       ).join("\nUNION ALL\n");
       interface SrcRow { domain: string; id: string; title: string | null; url: string | null }
       const srcs = (await db.all(srcSql)) as unknown as SrcRow[];
-      for (const s of srcs) console.log(citationLine(s.id, s.title, s.url));
+      for (const s of srcs) println(citationLine(s.id, s.title, s.url));
     }
 
-    console.log(section("NEXT"));
-    console.log(`  ${dim("Drill it:")}        ${green("pnpm harness drill " + fm.id)}`);
-    console.log(`  ${dim("Walk concepts:")}   ${green("pnpm harness related " + fm.id)}`);
-    console.log(`  ${dim("Capture diags:")}   ${green("pnpm harness capture --from-fm " + fm.id)}`);
-    console.log("");
-    console.log(hr());
+    println(section("NEXT"));
+    println(`  ${dim("Drill it:")}        ${green("pnpm harness drill " + fm.id)}`);
+    println(`  ${dim("Walk concepts:")}   ${green("pnpm harness related " + fm.id)}`);
+    println(`  ${dim("Capture diags:")}   ${green("pnpm harness capture --from-fm " + fm.id)}`);
+    println("");
+    println(hr());
   } finally {
     await db.close();
   }

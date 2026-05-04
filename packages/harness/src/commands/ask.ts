@@ -6,6 +6,7 @@
 // document/concept hits when no fm matches.
 
 import { openDb, DOMAINS } from "../db.ts";
+import { println } from "../output.ts";
 import {
   bold, dim, gray, red, yellow, cyan, green,
   header, section, talkTrack, stepLine, commandLine, expectLine,
@@ -76,8 +77,8 @@ export async function askCmd(args: string[]): Promise<void> {
 
   const db = await openDb();
   try {
-    console.log("");
-    console.log(header("harness ask", `query: ${text}`));
+    println("");
+    println(header("harness ask", `query: ${text}`));
 
     const fms = await rankFms(db, escaped, words);
     // Make sure curated shortcut targets are always in the candidate pool —
@@ -94,8 +95,8 @@ export async function askCmd(args: string[]): Promise<void> {
       }
     }
     if (fms.length === 0) {
-      console.log("");
-      console.log(yellow("⚠  no failure modes matched. Falling back to BM25 doc search."));
+      println("");
+      println(yellow("⚠  no failure modes matched. Falling back to BM25 doc search."));
       await fallbackDocs(db, escaped, text);
       return;
     }
@@ -120,19 +121,19 @@ export async function askCmd(args: string[]): Promise<void> {
       .filter((f) => tokensFromId(f.id).some((tok) => topTokens.includes(tok)))
       .slice(0, 2);
 
-    console.log(section("MATCH"));
-    console.log(`  ${domainChip(top.domain)} ${bold(top.id)}  ${confidenceChip(top.confidence)}  ${chip("match", String(Number(top.match_strength)), gray)}`);
-    console.log(`  ${red("Symptom:")} ${top.symptom}`);
-    if (top.root_cause_class) console.log(`  ${dim("Root-cause class:")} ${top.root_cause_class}`);
+    println(section("MATCH"));
+    println(`  ${domainChip(top.domain)} ${bold(top.id)}  ${confidenceChip(top.confidence)}  ${chip("match", String(Number(top.match_strength)), gray)}`);
+    println(`  ${red("Symptom:")} ${top.symptom}`);
+    if (top.root_cause_class) println(`  ${dim("Root-cause class:")} ${top.root_cause_class}`);
     if (top.error_patterns?.length) {
-      console.log(`  ${dim("Error patterns:")} ${top.error_patterns.slice(0, 3).join(" | ")}`);
+      println(`  ${dim("Error patterns:")} ${top.error_patterns.slice(0, 3).join(" | ")}`);
     }
     if (others.length > 0) {
-      console.log(`  ${dim("Also plausible:")} ${others.map((f) => `${f.id}${f.confidence ? ` (${f.confidence})` : ""}`).join("  ·  ")}`);
+      println(`  ${dim("Also plausible:")} ${others.map((f) => `${f.id}${f.confidence ? ` (${f.confidence})` : ""}`).join("  ·  ")}`);
     }
 
-    console.log("");
-    console.log(talkTrack({
+    println("");
+    println(talkTrack({
       symptom: top.symptom,
       rootCauseClass: top.root_cause_class,
       diagFirstAction: top.diagnostic_steps?.[0]?.action ?? null,
@@ -140,49 +141,49 @@ export async function askCmd(args: string[]): Promise<void> {
       alternateFms: others.map((f) => f.id),
     }));
 
-    console.log(section("DIAGNOSE"));
+    println(section("DIAGNOSE"));
     if (!top.diagnostic_steps?.length) {
-      console.log(dim("  (no diagnostic steps recorded — see citations)"));
+      println(dim("  (no diagnostic steps recorded — see citations)"));
     } else {
       for (const s of top.diagnostic_steps) {
-        console.log(stepLine(s.step, s.action, "diag"));
-        if (s.command) console.log(commandLine(s.command));
-        if (s.expected) console.log(expectLine("expect", s.expected));
-        if (s.source_id) console.log(`       ${dim("[src: " + s.source_id + "]")}`);
+        println(stepLine(s.step, s.action, "diag"));
+        if (s.command) println(commandLine(s.command));
+        if (s.expected) println(expectLine("expect", s.expected));
+        if (s.source_id) println(`       ${dim("[src: " + s.source_id + "]")}`);
       }
     }
 
-    console.log(section("FIX"));
+    println(section("FIX"));
     if (!top.fix_steps?.length) {
-      console.log(dim("  (no fix steps recorded — see citations)"));
+      println(dim("  (no fix steps recorded — see citations)"));
     } else {
       for (const s of top.fix_steps) {
-        console.log(stepLine(s.step, s.action, "fix"));
-        if (s.command) console.log(commandLine(s.command));
-        if (s.validation) console.log(expectLine("validate", s.validation));
-        if (s.rollback) console.log(expectLine("rollback", s.rollback));
-        if (s.source_id) console.log(`       ${dim("[src: " + s.source_id + "]")}`);
+        println(stepLine(s.step, s.action, "fix"));
+        if (s.command) println(commandLine(s.command));
+        if (s.validation) println(expectLine("validate", s.validation));
+        if (s.rollback) println(expectLine("rollback", s.rollback));
+        if (s.source_id) println(`       ${dim("[src: " + s.source_id + "]")}`);
       }
     }
 
     if (top.source_ids?.length) {
-      console.log(section("CITATIONS"));
+      println(section("CITATIONS"));
       const inList = top.source_ids.map((s) => `'${s.replace(/'/g, "''")}'`).join(",");
       const srcSql = DOMAINS.map(
         (d) => `SELECT '${d}' AS domain, id, title, url FROM ${d}.sources WHERE id IN (${inList})`,
       ).join("\nUNION ALL\n");
       interface Src { domain: string; id: string; title: string | null; url: string | null }
       const srcs = (await db.all(srcSql)) as unknown as Src[];
-      for (const s of srcs) console.log(citationLine(s.id, s.title, s.url));
+      for (const s of srcs) println(citationLine(s.id, s.title, s.url));
     }
 
-    console.log(section("NEXT"));
-    console.log(`  ${dim("Drill this scenario:")}    ${green("pnpm harness drill " + top.id)}`);
-    console.log(`  ${dim("See more matches:")}      ${green("pnpm harness lookup \"" + text + "\"")}`);
-    console.log(`  ${dim("Walk related concepts:")} ${green("pnpm harness related " + top.id)}`);
-    console.log(`  ${dim("Capture diagnostics:")}   ${green("pnpm harness capture --from-fm " + top.id)}`);
-    console.log("");
-    console.log(hr());
+    println(section("NEXT"));
+    println(`  ${dim("Drill this scenario:")}    ${green("pnpm harness drill " + top.id)}`);
+    println(`  ${dim("See more matches:")}      ${green("pnpm harness lookup \"" + text + "\"")}`);
+    println(`  ${dim("Walk related concepts:")} ${green("pnpm harness related " + top.id)}`);
+    println(`  ${dim("Capture diagnostics:")}   ${green("pnpm harness capture --from-fm " + top.id)}`);
+    println("");
+    println(hr());
   } finally {
     await db.close();
   }
@@ -314,19 +315,19 @@ async function fallbackDocs(db: import("duckdb-async").Database, escaped: string
   ).join("\nUNION ALL\n");
   const sql = `${unionSql} ORDER BY score DESC NULLS LAST LIMIT 8`;
   const rows = (await db.all(sql)) as unknown as DocHit[];
-  console.log(section("TOP DOC HITS"));
+  println(section("TOP DOC HITS"));
   if (rows.length === 0) {
-    console.log(dim("  (no hits)"));
-    console.log("");
-    console.log(yellow("Suggestion: rephrase with the literal error string, e.g. \"OOMKilled\", \"ImagePullBackOff\", \"connection refused\"."));
+    println(dim("  (no hits)"));
+    println("");
+    println(yellow("Suggestion: rephrase with the literal error string, e.g. \"OOMKilled\", \"ImagePullBackOff\", \"connection refused\"."));
     return;
   }
   for (const r of rows) {
     const snippet = String(r.snippet ?? "").replace(/\s+/g, " ").trim().slice(0, 180);
-    console.log(`  ${domainChip(r.domain)} ${cyan(Number(r.score).toFixed(2))}  ${bold(r.source_id)}  ${dim(r.title ?? "")}`);
-    console.log(`     ${dim(snippet)}`);
+    println(`  ${domainChip(r.domain)} ${cyan(Number(r.score).toFixed(2))}  ${bold(r.source_id)}  ${dim(r.title ?? "")}`);
+    println(`     ${dim(snippet)}`);
   }
-  console.log("");
-  console.log(`${dim("Drill into a doc:")} ${green("pnpm harness cite <source-id>")}`);
-  console.log(`${dim("Or look up by keyword:")} ${green("pnpm harness lookup \"" + original + "\"")}`);
+  println("");
+  println(`${dim("Drill into a doc:")} ${green("pnpm harness cite <source-id>")}`);
+  println(`${dim("Or look up by keyword:")} ${green("pnpm harness lookup \"" + original + "\"")}`);
 }

@@ -5,6 +5,17 @@
 // When stdout is not a TTY (piped to a file, redirected, etc.) all ANSI
 // escapes collapse to plain text so logs stay grep-friendly.
 
+// Writer abstraction — by default writes go to process.stdout (CLI behavior).
+// MCP server calls setOut(captureStream) before each tool invocation so the
+// harness output goes into a buffer instead of process.stdout (which the MCP
+// SDK uses for the JSON-RPC protocol). MCP requests are stdio-serial so a
+// module-level mutable writer is safe.
+let currentOut: NodeJS.WritableStream = process.stdout;
+export function setOut(s: NodeJS.WritableStream): void { currentOut = s; }
+export function resetOut(): void { currentOut = process.stdout; }
+export function out(): NodeJS.WritableStream { return currentOut; }
+export function println(s: string = ""): void { currentOut.write(s + "\n"); }
+
 const isTTY: boolean = !!process.stdout.isTTY && process.env["NO_COLOR"] !== "1";
 
 function wrap(open: string, close: string): (s: string) => string {

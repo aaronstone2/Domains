@@ -1,4 +1,4 @@
-import * as p from "@clack/prompts";
+import { println } from "../output.ts";
 import { openDb, DOMAINS } from "../db.ts";
 
 interface SourceRow {
@@ -15,7 +15,7 @@ interface SourceRow {
 export async function citeCmd(args: string[]): Promise<void> {
   const id = args[0]?.trim();
   if (!id) {
-    p.log.error("usage: harness cite <source-id>");
+    println("usage: harness cite <source-id>");
     process.exit(1);
   }
   const escaped = id.replace(/'/g, "''");
@@ -26,15 +26,15 @@ export async function citeCmd(args: string[]): Promise<void> {
     ).join("\nUNION ALL\n");
     const rows = (await db.all(sql)) as unknown as SourceRow[];
     if (rows.length === 0) {
-      p.log.error(`source not found: ${id}`);
+      println(`source not found: ${id}`);
       process.exit(2);
     }
     const s = rows[0]!;
-    console.log(`\n${s.id}  [${s.domain}/${s.subdomain}]`);
-    console.log(`Title: ${s.title}`);
-    console.log(`URL:   ${s.url}`);
-    console.log(`Tier:  ${s.tier}   License: ${s.license_note}`);
-    if (s.notes) console.log(`Notes: ${s.notes}`);
+    println(`\n${s.id}  [${s.domain}/${s.subdomain}]`);
+    println(`Title: ${s.title}`);
+    println(`URL:   ${s.url}`);
+    println(`Tier:  ${s.tier}   License: ${s.license_note}`);
+    if (s.notes) println(`Notes: ${s.notes}`);
   } finally {
     await db.close();
   }

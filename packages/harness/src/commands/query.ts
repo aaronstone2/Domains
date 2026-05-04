@@ -1,10 +1,10 @@
-import * as p from "@clack/prompts";
+import { println } from "../output.ts";
 import { openDb } from "../db.ts";
 
 export async function queryCmd(args: string[]): Promise<void> {
   const text = args.join(" ").trim();
   if (!text) {
-    p.log.error("usage: harness query <text>");
+    println("usage: harness query <text>");
     process.exit(1);
   }
   const db = await openDb();
@@ -14,7 +14,7 @@ export async function queryCmd(args: string[]): Promise<void> {
     );
     const replacer = (_k: string, v: unknown): unknown =>
       typeof v === "bigint" ? Number(v) : v;
-    p.log.info(JSON.stringify({ query: text, db_state: rows[0] }, replacer, 2));
+    println(JSON.stringify({ query: text, db_state: rows[0] }, replacer, 2));
   } finally {
     await db.close();
   }

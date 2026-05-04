@@ -8,6 +8,11 @@
   "bin": {
     "harness": "./src/index.ts"
   },
+  "exports": {
+    ".": "./src/index.ts",
+    "./commands": "./src/commands/index.ts",
+    "./output": "./src/output.ts"
+  },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",

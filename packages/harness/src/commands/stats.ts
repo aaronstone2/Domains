@@ -1,4 +1,5 @@
 import { openDb, DOMAINS } from "../db.ts";
+import { println } from "../output.ts";
 import {
   bold, dim, header, section, table, hr, domainChip,
 } from "../output.ts";
@@ -21,8 +22,8 @@ export async function statsCmd(_args: string[]): Promise<void> {
     ).join("\nUNION ALL\n");
     const rows = (await db.all(sql)) as Row[];
 
-    console.log("");
-    console.log(header("harness stats", "corpus inventory by domain"));
+    println("");
+    println(header("harness stats", "corpus inventory by domain"));
 
     const cols = [
       { header: "domain" },
@@ -49,11 +50,11 @@ export async function statsCmd(_args: string[]): Promise<void> {
       ...numCols.map((c) => bold(String(totals[c] ?? 0))),
     ]);
 
-    console.log("");
-    console.log(table(cols, tableRows));
+    println("");
+    println(table(cols, tableRows));
 
     // Failure-mode quality summary — depth grading.
-    console.log(section("FAILURE-MODE QUALITY"));
+    println(section("FAILURE-MODE QUALITY"));
     const qSql = DOMAINS.map(
       (d) => `
       SELECT '${d}' AS domain,
@@ -99,13 +100,13 @@ export async function statsCmd(_args: string[]): Promise<void> {
       "—",
       "—",
     ]);
-    console.log("");
-    console.log(table(qCols, qTableRows));
+    println("");
+    println(table(qCols, qTableRows));
 
-    console.log("");
-    console.log(dim("  thin = <3 diag steps OR <2 fix steps. Lower % thin = more interview-ready."));
-    console.log("");
-    console.log(hr());
+    println("");
+    println(dim("  thin = <3 diag steps OR <2 fix steps. Lower % thin = more interview-ready."));
+    println("");
+    println(hr());
   } finally {
     await db.close();
   }
