@@ -1,6 +1,7 @@
 # Claude Code
 .claude/
-.mcp.json
+# .mcp.json is committed — registers the harness MCP server + companion DBs
+# so claude code on a fresh clone can call ask/lookup/playbook as tools.
 
 # Local data — _db is gitignored EXCEPT the snapshot DB which is committed
 # so a fresh clone has the corpus available immediately (interview-day

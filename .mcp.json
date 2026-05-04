@@ -1,0 +1,31 @@
+{
+  "$comment": "Project-scoped MCP servers. Claude Code resolves relative paths from the directory containing this file, so this works on Windows + Linux + macOS without edits.",
+  "mcpServers": {
+    "domains-harness": {
+      "$comment": "Wraps the @domains/harness CLI as native MCP tools (ask, lookup, playbook, concept, related, cite, stats, capture). Claude calls these directly instead of shelling out to `! pnpm harness ask`. Source: ./packages/harness-mcp/src/index.ts",
+      "command": "pnpm",
+      "args": ["--filter", "@domains/harness-mcp", "--silent", "start"]
+    },
+    "motherduck": {
+      "$comment": "Direct DuckDB query access — useful for ad-hoc SQL against the corpus when the harness commands don't cover what you need.",
+      "command": "uvx",
+      "args": [
+        "mcp-server-motherduck",
+        "--db-path",
+        "./_db/knowledge.duckdb",
+        "--read-write"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_FILE_PATH": "./_db/knowledge_graph.json"
+      }
+    }
+  }
+}

@@ -228,23 +228,47 @@ if $WITH_AWS; then
 fi
 
 # -----------------------------------------------------------------------------
-# 2) Node.js (only if Claude Code is wanted)
+# 2) Node.js — required for both Claude Code AND the harness (pnpm + duckdb).
+# Always ensure Node >= 22 is present, even when --no-claude. The harness's
+# package.json declares "engines.node":">=22" and pnpm/tsx/duckdb-async all
+# behave better on 22+.
 # -----------------------------------------------------------------------------
-if ! $NO_CLAUDE; then
-  step "ensuring Node.js + npm are present"
-  if ! command -v npm >/dev/null 2>&1; then
-    # NodeSource setup — install Node 22.x (current LTS-ish for npm globals)
-    curl -fsSL https://deb.nodesource.com/setup_22.x | $SUDO -E bash -
-    $SUDO apt-get install -y nodejs
-    ok "node $(node --version) + npm $(npm --version) installed"
+NODE_MIN_MAJOR=22
+need_node_install=false
+if command -v node >/dev/null 2>&1; then
+  current_major="$(node --version 2>/dev/null | sed 's/^v//;s/\..*//')"
+  if [[ -z "$current_major" || "$current_major" -lt "$NODE_MIN_MAJOR" ]]; then
+    warn "node $(node --version 2>/dev/null) found but harness wants >= v${NODE_MIN_MAJOR}; will reinstall via NodeSource"
+    need_node_install=true
   else
-    ok "node $(node --version) + npm $(npm --version) already present"
+    ok "node $(node --version) already meets >= v${NODE_MIN_MAJOR}"
   fi
+else
+  need_node_install=true
+fi
 
+if $need_node_install; then
+  step "installing Node.js v${NODE_MIN_MAJOR}.x via NodeSource"
+  if curl -fsSL "https://deb.nodesource.com/setup_${NODE_MIN_MAJOR}.x" | $SUDO -E bash - 2>&1 | tail -3; then
+    $SUDO apt-get install -y nodejs || warn "apt nodejs install failed"
+  else
+    warn "NodeSource setup script failed (offline? proxy?); falling back to whatever node apt has"
+    $SUDO apt-get install -y nodejs npm || warn "apt nodejs install failed"
+  fi
+  if command -v node >/dev/null 2>&1; then
+    ok "node $(node --version) + npm $(npm --version 2>/dev/null || echo missing) installed"
+  else
+    err "node still not on PATH after install attempt"
+  fi
+fi
+
+if ! $NO_CLAUDE; then
   step "installing @anthropic-ai/claude-code via npm -g"
   if ! command -v claude >/dev/null 2>&1; then
-    $SUDO npm install -g @anthropic-ai/claude-code
-    ok "Claude Code installed: $(claude --version 2>/dev/null || echo 'see `claude --help`')"
+    $SUDO npm install -g @anthropic-ai/claude-code || warn "claude-code npm install failed; you can rerun: sudo npm install -g @anthropic-ai/claude-code"
+    if command -v claude >/dev/null 2>&1; then
+      ok "Claude Code installed: $(claude --version 2>/dev/null || echo 'see `claude --help`')"
+    fi
   else
     ok "Claude Code already present: $(claude --version 2>/dev/null || echo installed)"
   fi
@@ -421,20 +445,57 @@ if [[ -f "$REPO_DIR/package.json" ]]; then
   step "installing pnpm + corpus deps (so `pnpm harness …` works)"
   if ! command -v pnpm >/dev/null 2>&1; then
     if command -v npm >/dev/null 2>&1; then
-      $SUDO npm install -g pnpm
-      ok "pnpm installed"
+      $SUDO npm install -g pnpm || warn "pnpm npm install failed"
     else
       warn "npm not present; skipping pnpm install (re-run without --no-claude, or install Node manually)"
     fi
   fi
   if command -v pnpm >/dev/null 2>&1; then
-    (cd "$REPO_DIR" && pnpm install --silent 2>&1 | tail -3) || warn "pnpm install had issues; harness may not work"
-    ok "corpus deps installed"
+    if (cd "$REPO_DIR" && pnpm install --silent 2>&1 | tail -3); then
+      ok "corpus deps installed (pnpm $(pnpm --version 2>/dev/null))"
+    else
+      warn "pnpm install had issues; harness may not work — try \`cd $REPO_DIR && pnpm install\` manually"
+    fi
   fi
 fi
 
 # -----------------------------------------------------------------------------
-# 7) Done — summary + optional launch
+# 7) Verify the harness is actually queryable end-to-end
+# -----------------------------------------------------------------------------
+DB_PATH="$REPO_DIR/_db/knowledge.duckdb"
+if [[ ! -f "$DB_PATH" ]]; then
+  warn "missing corpus DB at $DB_PATH"
+  warn "the harness will not work until this file is present. Either re-clone the repo (the DB is committed), or copy from another machine."
+elif command -v pnpm >/dev/null 2>&1 && [[ -f "$REPO_DIR/packages/harness/package.json" ]]; then
+  step "verifying harness end-to-end (pnpm harness ask 'OOMKilled')"
+  verify_out="$(cd "$REPO_DIR" && NO_COLOR=1 pnpm harness ask "OOMKilled" 2>&1)"
+  if echo "$verify_out" | grep -qE 'docker\.fm\.exit-137-oomkilled|k8s\.fm\.oomkilled'; then
+    ok "harness verified — \`pnpm harness ask\` returns the OOMKilled playbook"
+  else
+    err "harness verify failed. Output tail:"
+    echo "$verify_out" | tail -8 >&2
+    warn "the harness install may be incomplete — try \`cd $REPO_DIR && pnpm install\` and re-run \`pnpm harness ask 'OOMKilled'\`."
+  fi
+fi
+
+# -----------------------------------------------------------------------------
+# 7b) Verify the MCP server boots — claude code reads .mcp.json and spawns it.
+# -----------------------------------------------------------------------------
+if [[ -f "$REPO_DIR/.mcp.json" ]] && [[ -f "$REPO_DIR/packages/harness-mcp/package.json" ]] && command -v pnpm >/dev/null 2>&1; then
+  step "verifying domains-harness MCP server boots (initialize handshake)"
+  mcp_test_input='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"bootstrap-verify","version":"1"}}}'
+  mcp_out="$(cd "$REPO_DIR" && (echo "$mcp_test_input"; sleep 3) | timeout 30 pnpm --filter @domains/harness-mcp --silent start 2>&1 | head -3)"
+  if echo "$mcp_out" | grep -q '"name":"domains-harness"'; then
+    ok "MCP server boots — claude code can call ask/lookup/playbook as native tools"
+  else
+    warn "MCP server didn't return expected initialize response. Output:"
+    echo "$mcp_out" | tail -5 >&2
+    warn "The CLI harness still works (try \`pnpm harness ask\`); only the MCP integration is degraded."
+  fi
+fi
+
+# -----------------------------------------------------------------------------
+# 8) Done — summary + optional launch
 # -----------------------------------------------------------------------------
 echo ""
 step "bootstrap complete"
@@ -444,8 +505,9 @@ if ! $NO_SHELL_CONFIG; then
   echo "  ${BOLD}Shell config${RESET}: bashrc updated. ${YELLOW}Run \`source ~/.bashrc\` or open a new shell.${RESET}"
 fi
 if [[ -d "$REPO_DIR/.git" ]]; then
-  echo "  ${BOLD}Corpus harness${RESET}: ${DIM}cd $REPO_DIR && pnpm harness --list${RESET} (after sourcing bashrc)"
-  echo "  ${BOLD}Cheat sheet${RESET}:    ${DIM}$REPO_DIR/domains/_shared/rehearsal/CHEATSHEET.md${RESET}"
+  echo "  ${BOLD}Corpus harness${RESET}: ${DIM}cd $REPO_DIR && pnpm harness ask \"<symptom>\"${RESET}    (or \`ha \"<symptom>\"\` after sourcing bashrc)"
+  echo "  ${BOLD}MCP integration${RESET}: ${DIM}.mcp.json registers domains-harness — claude code calls ask/lookup/playbook as native tools${RESET}"
+  echo "  ${BOLD}Cheat sheet${RESET}:    ${DIM}$REPO_DIR/domains/_shared/rehearsal/CHEATSHEET.md${RESET}    (or \`cheat\`)"
 fi
 echo ""
 
