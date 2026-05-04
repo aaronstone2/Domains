@@ -662,3 +662,23 @@ Of 65 thin docker fms, deepened the **top 25 most-interview-relevant** to 3+ dia
 **Domain-wide impact:** thin count **65 → 40** (38% reduction). Each P14 fm now has 3-4 specific diagnostic commands with concrete `expected:` outcomes plus 2-3 fix steps with copy-pasteable commands and explicit `validate:` / `rollback:` paths.
 
 **Phase 15+ scope:** remaining 40 thin docker fms + linux (80 thin) + k8s (52) + devin (36).
+
+## Phase 15 — Quality pass on top 25 linux failure_modes
+
+### Session P15 — 2026-05-03 — DONE
+
+Of 80 thin linux fms, deepened the **top 25 most-interview-relevant** to 3+ diag / 2+ fix steps. Output: `domains/linux/extract/failure_modes_p15_quality.json` (25 fms).
+
+**Coverage by leaf:**
+
+| Leaf | Count | fm-ids |
+|---|---:|---|
+| primitives (cgroup + caps) | 6 | cgroup-memory-oom-kill, cpu-throttled, cgroup-v2-controller-not-enabled, cgroup-no-internal-process-rule, cpu-cfs-bandwidth-throttle, capability-not-effective |
+| networking | 7 | tcp-time-wait-port-exhaustion, conntrack-table-full, dns-slow-ndots, arp-cache-stale, tcp-keepalive-too-long, epoll-edge-trigger-starvation, unix-socket-cred-mismatch |
+| filesystem | 5 | bind-mount-readonly-leak, ext4-orphan-inodes-on-mount, tmpfs-overflow, xattr-not-supported, fanotify-permission-events-stuck |
+| debugging | 3 | flame-graph-flat, bpf-verifier-rejects, strace-multiplies-overhead |
+| systemd + signal | 4 | systemd-resource-control-not-applied, systemd-service-killed-on-shutdown, systemd-cgroup-delegation-missing, zombie-orphan-init |
+
+**Domain-wide impact:** thin count **80 → 55** (31% reduction). Avg diag 1.67 → 2.12; avg fix 1.77 → 2.14. Each P15 fm now has 3-4 diagnostic steps with concrete `expected:` outcomes plus 3 fix steps with copy-pasteable commands and explicit `validate:` / `rollback:` paths.
+
+**Phase 16+ scope:** remaining 55 thin linux + 40 thin docker + k8s (52) + devin (36).

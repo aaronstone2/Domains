@@ -1,0 +1,327 @@
+[
+  {"id":"linux.fm.cgroup-memory-oom-kill","symptom":"Process killed by OOM but free memory available system-wide","error_patterns":["Killed","oom-kill","memory.oom.group","memory cgroup out of memory"],"root_cause_class":"cgroup-limit","affected_concepts":["linux.primitives.cfg.cgroup-v2-control-file.memory-max","linux.primitives.oom-killer","linux.primitives.cgroup-v2-memory-events"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Read memory.events to confirm cgroup-level OOM (not system-wide)","command":"cat /sys/fs/cgroup/<cg>/memory.events","expected":"oom or oom_kill > 0; oom_group_kill if memory.oom.group=1","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"Compare current usage vs configured limit","command":"cat /sys/fs/cgroup/<cg>/memory.{current,max,high,low}","expected":"current near max (or memory.high pressure-throttle exceeded)","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"Find which process inside the cgroup got killed","command":"sudo dmesg -T | grep -i 'oom\\|killed process' | tail -20","expected":"victim PID + RSS + comm + cgroup path","source_id":"man7-dmesg-1"},
+      {"step":4,"action":"Identify if it's a cgroup-limit issue vs node-pressure","command":"# free -h vs the cgroup limit; if free memory >> 0 and only a cgroup is OOMing, it's cgroup-limit not host-pressure","expected":"host has free memory; cgroup limit is the bottleneck","source_id":"kernel-docs-mm-concepts"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Raise memory.max if the workload genuinely needs more","command":"echo 4G | sudo tee /sys/fs/cgroup/<cg>/memory.max   # OR for systemd: sudo systemctl set-property name.service MemoryMax=4G","validation":"workload survives previous OOM trigger","rollback":"echo <prior> | sudo tee /sys/fs/cgroup/<cg>/memory.max","source_id":"systemd-systemd-resource-control-5"},
+      {"step":2,"action":"Set memory.high (soft limit, throttles before OOM) for graceful degradation","command":"echo 3G | sudo tee /sys/fs/cgroup/<cg>/memory.high","validation":"workload throttled at 3G but not killed","rollback":"echo max | sudo tee /sys/fs/cgroup/<cg>/memory.high","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"For real leak: profile heap and fix","command":"# Java: jcmd <pid> GC.heap_dump /tmp/dump.hprof; eclipse MAT\\n# Go: pprof -alloc_space http://localhost:port/debug/pprof/heap\\n# C/C++: valgrind --tool=memcheck --leak-check=full","validation":"steady-state RSS instead of monotonic growth","rollback":null,"source_id":"kernel-docs-mm-concepts"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["kernel-docs-cgroup-v2","systemd-systemd-resource-control-5","kernel-docs-mm-concepts","man7-dmesg-1"]},
+
+  {"id":"linux.fm.cpu-throttled","symptom":"CPU usage low but app slow; cpu.stat shows nr_throttled > 0","error_patterns":["throttled_usec","cpu throttling","nr_throttled","cfs throttle"],"root_cause_class":"cgroup-limit","affected_concepts":["linux.primitives.cfg.cgroup-v2-control-file.cpu-max","linux.primitives.cgroup-v2-cpu-stat"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Confirm CFS throttling is occurring","command":"cat /sys/fs/cgroup/<cg>/cpu.stat","expected":"nr_throttled > 0 AND throttled_usec growing across samples","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"Inspect quota window","command":"cat /sys/fs/cgroup/<cg>/cpu.max","expected":"e.g. '50000 100000' = 50% of 100ms window — bursty work hits cap then waits","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"Sample CPU usage to see burstiness","command":"# pidstat -p <pid> 1 30  OR mpstat -P ALL 1 30","expected":"average <50% but instantaneous bursts to 100% — confirms bursty","source_id":"kernel-docs-cgroup-v2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Increase quota window (longer period accommodates bursts)","command":"echo '500000 1000000' | sudo tee /sys/fs/cgroup/<cg>/cpu.max   # same 50% but 1s window","validation":"nr_throttled stops increasing for same load","rollback":"restore prior cpu.max","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"Or, raise the quota outright","command":"echo '100000 100000' | sudo tee /sys/fs/cgroup/<cg>/cpu.max  # 100% of 1 CPU","validation":"no throttle","rollback":"prior value","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"For systemd-managed services: use CPUQuota","command":"sudo systemctl set-property myapp.service CPUQuota=200%   # 2 CPUs worth","validation":"systemd writes a longer window with higher quota","rollback":"CPUQuota=infinity","source_id":"systemd-systemd-resource-control-5"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["kernel-docs-cgroup-v2","systemd-systemd-resource-control-5"]},
+
+  {"id":"linux.fm.cgroup-v2-controller-not-enabled","symptom":"Setting memory.max in a cgroup has no effect; child cgroups can't be created with memory limits","error_patterns":["No such file or directory","cgroup.subtree_control","controller not available"],"root_cause_class":"cgroup-config","affected_concepts":["linux.primitives.cgroup-v2","linux.primitives.cgroup-controller","linux.primitives.cgroup-subsystem"],
+    "diagnostic_steps":[
+      {"step":1,"action":"List enabled controllers in the cgroup root","command":"cat /sys/fs/cgroup/cgroup.controllers && cat /sys/fs/cgroup/cgroup.subtree_control","expected":"controllers: lists what's available; subtree_control: lists what's enabled FOR CHILDREN","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"Walk up parent cgroups to find where the controller stops being enabled","command":"# for d in $(echo <cg-path> | tr / ' '); do echo --- $d; cat .../subtree_control 2>/dev/null; done","expected":"identifies the parent that didn't enable the controller","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"Confirm cgroup v2 unified hierarchy is active (not v1 / hybrid)","command":"mount | grep cgroup","expected":"cgroup2 on /sys/fs/cgroup type cgroup2","source_id":"kernel-docs-cgroup-v2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Enable controllers in parent's subtree_control","command":"echo '+memory +cpu +io +pids' | sudo tee /sys/fs/cgroup/cgroup.subtree_control","validation":"child cgroups now have memory.max etc.","rollback":"echo '-memory -cpu -io -pids' | sudo tee .../cgroup.subtree_control","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"For systemd-managed: set Delegate= so systemd enables controllers in the unit's slice","command":"# unit file: [Service]\\n# Delegate=memory cpu io pids","validation":"sudo systemctl daemon-reload && sudo systemctl restart <unit>; verify controllers in cgroup tree","rollback":"remove Delegate","source_id":"systemd-systemd-resource-control-5"},
+      {"step":3,"action":"For non-unified hosts (rare in 2024+): convert to v2","command":"# Add to grub: systemd.unified_cgroup_hierarchy=1; sudo update-grub; reboot","validation":"mount shows cgroup2","rollback":"systemd.unified_cgroup_hierarchy=0","source_id":"systemd-systemd-resource-control-5"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["kernel-docs-cgroup-v2","systemd-systemd-resource-control-5"]},
+
+  {"id":"linux.fm.cgroup-no-internal-process-rule","symptom":"Cannot move a process into a cgroup that already has child cgroups: EBUSY","error_patterns":["EBUSY","Device or resource busy","cgroup.procs"],"root_cause_class":"cgroup-rule","affected_concepts":["linux.primitives.cgroup-no-internal-procs","linux.primitives.cgroup-v2","linux.primitives.cgroup-procs-vs-threads"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check for child cgroups","command":"ls /sys/fs/cgroup/<path>/","expected":"presence of subdirs = leaf-only rule violated (cgroup v2 doesn't allow processes in non-leaf nodes)","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"Read the v2 'no internal processes' rule","command":"# cgroup v2: a non-root cgroup can either contain processes OR have children, not both — once a controller is enabled in subtree_control, the cgroup becomes 'domain' and can't hold procs","expected":"yes","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"Check if you're trying to move process to a domain cgroup","command":"cat /sys/fs/cgroup/<path>/cgroup.type","expected":"'domain' = can't hold procs once children exist","source_id":"kernel-docs-cgroup-v2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Move process into a leaf cgroup (create one if needed)","command":"sudo mkdir /sys/fs/cgroup/<path>/leaf && echo <pid> | sudo tee /sys/fs/cgroup/<path>/leaf/cgroup.procs","validation":"echo succeeds; process appears in leaf/cgroup.procs","rollback":"sudo rmdir /sys/fs/cgroup/<path>/leaf","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"For systemd-managed workloads: use sub-units / scopes","command":"sudo systemd-run --scope --unit=myproc.scope -- /path/to/binary","validation":"systemd creates a leaf scope automatically","rollback":"sudo systemctl stop myproc.scope","source_id":"systemd-systemd-resource-control-5"},
+      {"step":3,"action":"Avoid the issue altogether — write process into target BEFORE enabling controllers in the parent","command":"# proc-then-controllers ordering means the cgroup is still type=domain-threaded; works","validation":"cgroup.procs accepts pid","rollback":null,"source_id":"kernel-docs-cgroup-v2"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["kernel-docs-cgroup-v2","systemd-systemd-resource-control-5"]},
+
+  {"id":"linux.fm.cpu-cfs-bandwidth-throttle","symptom":"Bursty workload throttled even though long-run CPU usage well under quota","error_patterns":["nr_throttled","throttled_time","cpu.stat","bursty throttling"],"root_cause_class":"cgroup-cpu","affected_concepts":["linux.primitives.cgroup-v2","linux.systemd.resource-cpu-quota"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Show throttle stats and quota","command":"cat /sys/fs/cgroup/<cg>/cpu.stat /sys/fs/cgroup/<cg>/cpu.max","expected":"nr_throttled > 0; throttled_usec > 0; quota in 100ms window","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"Sample fine-grained CPU usage","command":"# pidstat -u -p <pid> 1 30  ; look at instantaneous %CPU","expected":"avg ~30% but spikes to 200-400% (bursts)","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"Check if cgroup v2 burst feature is available","command":"ls /sys/fs/cgroup/<cg>/cpu.max.burst 2>/dev/null","expected":"cpu.max.burst exists on kernel >= 5.14","source_id":"kernel-docs-cgroup-v2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Increase quota period (longer window absorbs bursts)","command":"echo '500000 1000000' | sudo tee /sys/fs/cgroup/<cg>/cpu.max   # 50% of 1s instead of 50% of 100ms","validation":"nr_throttled stops; latency drops","rollback":"echo '50000 100000' | sudo tee .../cpu.max","source_id":"kernel-docs-cgroup-v2"},
+      {"step":2,"action":"Or, on kernel >= 5.14, allow CPU burst beyond quota","command":"echo 50000 | sudo tee /sys/fs/cgroup/<cg>/cpu.max.burst   # accumulate up to 50ms of unused quota","validation":"bursts succeed without throttling","rollback":"echo 0 | sudo tee .../cpu.max.burst","source_id":"kernel-docs-cgroup-v2"},
+      {"step":3,"action":"For systemd: CPUQuotaPeriodSec= (longer period)","command":"sudo systemctl set-property myapp.service CPUQuotaPeriodSec=1s","validation":"systemd writes longer-window cpu.max","rollback":"set CPUQuotaPeriodSec=100ms","source_id":"systemd-systemd-resource-control-5"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["kernel-docs-cgroup-v2","systemd-systemd-resource-control-5"]},
+
+  {"id":"linux.fm.capability-not-effective","symptom":"Process has cap in PERMITTED but not EFFECTIVE; operation fails EPERM","error_patterns":["EPERM","capability","not effective","CapEff","CapPrm"],"root_cause_class":"capabilities","affected_concepts":["linux.primitives.cap-bounding-set","linux.primitives.cap-effective-set","linux.primitives.cap-permitted-set"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect all five capability sets","command":"grep ^Cap /proc/<pid>/status","expected":"CapInh, CapPrm, CapEff, CapBnd, CapAmb shown as hex bitmaps","source_id":"man7-capabilities-7"},
+      {"step":2,"action":"Decode the bitmaps to capability names","command":"capsh --decode=$(grep ^CapEff /proc/<pid>/status | awk '{print $2}')","expected":"human-readable list; check if expected cap is missing","source_id":"man7-capabilities-7"},
+      {"step":3,"action":"Check the binary's file capabilities","command":"getcap /path/to/binary","expected":"file caps determine what the new exec'd process can have","source_id":"man7-capabilities-7"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Set ambient cap on the launcher process tree","command":"# in launcher: prctl(PR_CAP_AMBIENT, PR_CAP_AMBIENT_RAISE, CAP_X)\\n# OR run via 'capsh --caps=cap_x+pi --addamb=cap_x -- -c \"./mybin\"'","validation":"CapAmb shows the cap; child inherits in CapEff","rollback":"PR_CAP_AMBIENT_LOWER","source_id":"man7-capabilities-7"},
+      {"step":2,"action":"Or set file capability (binary gets cap on every exec)","command":"sudo setcap cap_x=+eip /path/to/binary","validation":"getcap shows cap_x+eip; exec'd process has cap","rollback":"sudo setcap -r /path/to/binary","source_id":"man7-capabilities-7"},
+      {"step":3,"action":"For systemd-managed services: AmbientCapabilities","command":"# unit: [Service]\\n# AmbientCapabilities=CAP_NET_BIND_SERVICE\\n# CapabilityBoundingSet=CAP_NET_BIND_SERVICE","validation":"systemd applies; service can bind low ports","rollback":"remove","source_id":"systemd-systemd-exec-5"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["man7-capabilities-7","man7-prctl-2","systemd-systemd-exec-5"]},
+
+  {"id":"linux.fm.tcp-time-wait-port-exhaustion","symptom":"Outbound clients fail EADDRNOTAVAIL after burst of short-lived connections","error_patterns":["EADDRNOTAVAIL","Cannot assign requested address","TIME-WAIT","ephemeral port"],"root_cause_class":"networking","affected_concepts":["linux.networking.tcp-state-time-wait","linux.networking.tcp-protocol"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Count TIME-WAIT sockets","command":"ss -ant state time-wait | wc -l","expected":">> 28k = ephemeral pool likely exhausted","source_id":"man7-ss-8"},
+      {"step":2,"action":"Check ephemeral port range","command":"sysctl net.ipv4.ip_local_port_range","expected":"e.g. '32768 60999' = ~28k usable; if low, less headroom","source_id":"kernel-docs-net-sysctl"},
+      {"step":3,"action":"Check tw_reuse and reuseport settings","command":"sysctl net.ipv4.tcp_tw_reuse net.ipv4.tcp_max_tw_buckets","expected":"tw_reuse=0 (default) → can't reuse TIME-WAIT for new outbound; max_tw_buckets cap","source_id":"kernel-docs-net-sysctl"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Widen ephemeral port range","command":"sudo sysctl -w net.ipv4.ip_local_port_range='1024 65535'","validation":"more usable ports (~64k)","rollback":"sysctl -w net.ipv4.ip_local_port_range='32768 60999'","source_id":"kernel-docs-net-sysctl"},
+      {"step":2,"action":"Enable tw_reuse for outbound (clients only — safe RFC 6191)","command":"sudo sysctl -w net.ipv4.tcp_tw_reuse=1","validation":"outbound bind succeeds even with TIME-WAITs","rollback":"sysctl -w net.ipv4.tcp_tw_reuse=0","source_id":"kernel-docs-net-sysctl"},
+      {"step":3,"action":"Use connection pooling in the app (root-cause fix)","command":"# keep persistent HTTP/2 / gRPC connections; HTTP keep-alive; reuse DB connections via pool","validation":"new TIME-WAITs growth slows; usually drops by 90%+","rollback":null,"source_id":"man7-tcp-7"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["kernel-docs-net-sysctl","man7-ss-8","man7-tcp-7"]},
+
+  {"id":"linux.fm.conntrack-table-full","symptom":"`nf_conntrack: table full, dropping packet` in dmesg; new connections silently fail","error_patterns":["nf_conntrack: table full","conntrack table full","dropping packet"],"root_cause_class":"networking","affected_concepts":["linux.networking.conntrack-table","linux.networking.cfg.sysctl-net-netfilter.nf-conntrack-max"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check current count vs max","command":"sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max","expected":"count near max (>80% = approaching exhaustion)","source_id":"kernel-docs-conntrack-sysctl"},
+      {"step":2,"action":"Confirm dmesg has the table-full warning","command":"dmesg -T | grep -i 'conntrack' | tail","expected":"'table full, dropping packet' message at incident time","source_id":"man7-dmesg-1"},
+      {"step":3,"action":"Inspect connection breakdown by state","command":"sudo conntrack -L | awk '{print $1, $2, $3}' | sort | uniq -c | sort -rn | head","expected":"often dominated by TCP TIME_WAIT entries that haven't expired","source_id":"debian-conntrack-8"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Raise table size","command":"sudo sysctl -w net.netfilter.nf_conntrack_max=1048576   # also raise hashsize: echo 262144 | sudo tee /sys/module/nf_conntrack/parameters/hashsize","validation":"count never approaches new max","rollback":"sudo sysctl -w net.netfilter.nf_conntrack_max=<prior>","source_id":"kernel-docs-conntrack-sysctl"},
+      {"step":2,"action":"Lower TIME_WAIT/UDP timeouts so flows expire faster","command":"sudo sysctl -w net.netfilter.nf_conntrack_tcp_timeout_time_wait=30 net.netfilter.nf_conntrack_udp_timeout=30","validation":"flows expire quickly; count drops","rollback":"sudo sysctl -w net.netfilter.nf_conntrack_tcp_timeout_time_wait=120","source_id":"kernel-docs-conntrack-sysctl"},
+      {"step":3,"action":"Add NOTRACK rule for high-volume internal traffic that doesn't need state","command":"sudo nft add rule ip raw prerouting ip saddr 10.0.0.0/8 notrack","validation":"those flows skip conntrack entirely","rollback":"delete the rule","source_id":"debian-nft-8"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["kernel-docs-conntrack-sysctl","debian-conntrack-8","debian-nft-8"]},
+
+  {"id":"linux.fm.dns-slow-ndots","symptom":"DNS queries slow inside container; first lookup takes multi-second","error_patterns":["search list expansion","NXDOMAIN multiple","DNS timeout","3 seconds","slow getent"],"root_cause_class":"dns","affected_concepts":["linux.networking.cfg.resolv-conf-directive.options-ndots","linux.networking.cfg.resolv-conf-directive.search"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect resolver config","command":"cat /etc/resolv.conf","expected":"high ndots (e.g. ndots:5) + many search domains","source_id":"man7-resolv-conf-5"},
+      {"step":2,"action":"Time a no-trailing-dot lookup vs FQDN","command":"time getent hosts api.github.com 2>&1; time getent hosts api.github.com. 2>&1","expected":"trailing-dot fast (<100ms); no-trailing slow (multi-second) = search amplification","source_id":"debian-dig-1"},
+      {"step":3,"action":"Cross-check with a direct dig to the resolver","command":"dig +tries=1 +time=2 @<nameserver-ip> api.github.com.","expected":"<100ms = upstream is fast; slow lookup is search-side, not upstream","source_id":"debian-dig-1"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Lower ndots in resolv.conf","command":"# Append: options ndots:1   # OR ndots:2 if cluster-internal short names matter\\necho 'options ndots:1' | sudo tee -a /etc/resolv.conf","validation":"first lookup fast","rollback":"original ndots","source_id":"man7-resolv-conf-5"},
+      {"step":2,"action":"Use FQDN with trailing dot in app code","command":"# Python: requests.get('https://api.github.com.')\\n# Go: 'api.github.com.'\\n# In Dockerfile/env: APP_API_URL=https://api.github.com.","validation":"avoid search expansion","rollback":null,"source_id":"man7-resolv-conf-5"},
+      {"step":3,"action":"For containers in k8s: use spec.dnsConfig.options ndots:2","command":"# spec.dnsConfig: { options: [{name: ndots, value: '2'}] }","validation":"new pods see ndots:2 in resolv.conf","rollback":"remove dnsConfig","source_id":"man7-resolv-conf-5"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["man7-resolv-conf-5","debian-dig-1"]},
+
+  {"id":"linux.fm.arp-cache-stale","symptom":"After IP move (failover, container restart), host can't reach VIP for 5-30s; arp -an shows wrong MAC","error_patterns":["No route to host","stale ARP","gratuitous ARP","wrong MAC address"],"root_cause_class":"networking","affected_concepts":["linux.networking.netlink-protocol","linux.networking.ipv4-protocol"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Show neighbor table","command":"ip neigh show","expected":"INCOMPLETE/STALE/FAILED entry for VIP, OR an entry pointing at the OLD MAC","source_id":"man7-ip-neighbour-8"},
+      {"step":2,"action":"Compare to actual MAC of the IP holder","command":"# from another host: arping -I eth0 -c 1 <VIP>","expected":"arping reply MAC vs ip neigh entry — if different, cache is stale","source_id":"man7-ip-neighbour-8"},
+      {"step":3,"action":"Check whether sysctls are tuned for fast invalidation","command":"sysctl net.ipv4.neigh.default.gc_stale_time net.ipv4.neigh.default.delay_first_probe_time","expected":"defaults can leave stale entries for tens of seconds","source_id":"kernel-docs-net-sysctl"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"From the new IP owner: send gratuitous ARP","command":"sudo arping -U -I eth0 -c 3 <vip>   # or: arping -A","validation":"peers update neighbor table","rollback":null,"source_id":"man7-ip-neighbour-8"},
+      {"step":2,"action":"On peers: invalidate cache for that IP","command":"sudo ip neigh flush <vip>   # OR: sudo ip neigh del <vip> dev eth0","validation":"new ARP request sent on next packet","rollback":null,"source_id":"man7-ip-neighbour-8"},
+      {"step":3,"action":"Tune sysctls for faster invalidation in HA setups","command":"sudo sysctl -w net.ipv4.neigh.default.gc_stale_time=30 net.ipv4.neigh.default.delay_first_probe_time=2","validation":"stale entries expire within 30s","rollback":"defaults: 60 / 5","source_id":"kernel-docs-net-sysctl"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["man7-ip-neighbour-8","kernel-docs-net-sysctl"]},
+
+  {"id":"linux.fm.tcp-keepalive-too-long","symptom":"Idle TCP connections through NAT are silently dropped after ~5 minutes","error_patterns":["tcp keepalive","NAT timeout","RST on read","connection reset by peer","idle timeout"],"root_cause_class":"networking","affected_concepts":["linux.networking.tcp-keepalive","linux.networking.conntrack-timeouts","linux.networking.tcp-protocol"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Show TCP keepalive defaults","command":"sysctl net.ipv4.tcp_keepalive_time net.ipv4.tcp_keepalive_intvl net.ipv4.tcp_keepalive_probes","expected":"7200/75/9 = first probe after 2 hours (way past most NAT timers)","source_id":"kernel-docs-net-sysctl"},
+      {"step":2,"action":"Check NAT/firewall idle timeout","command":"# typical: AWS NLB 350s, AWS ALB 60s default, stateful firewall 300s","expected":"<7200s — NAT will drop the connection before kernel keepalive fires","source_id":"man7-tcp-7"},
+      {"step":3,"action":"Confirm app even has SO_KEEPALIVE enabled","command":"ss -tnoa | grep keepalive   # or use --extended","expected":"keepalive timer present per socket — if absent, kernel never probes","source_id":"man7-getsockopt-2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Lower app keepalive (per-socket via SO_KEEPALIVE+TCP_KEEPIDLE)","command":"# setsockopt(fd, SOL_TCP, TCP_KEEPIDLE, 120, 4); TCP_KEEPINTVL=20; TCP_KEEPCNT=3","validation":"connection survives NAT timer","rollback":"defaults","source_id":"man7-getsockopt-2"},
+      {"step":2,"action":"Or system-wide, lower tcp_keepalive_time","command":"sudo sysctl -w net.ipv4.tcp_keepalive_time=120","validation":"defaults more aggressive; affects all sockets with SO_KEEPALIVE","rollback":"sysctl -w net.ipv4.tcp_keepalive_time=7200","source_id":"kernel-docs-net-sysctl"},
+      {"step":3,"action":"App-side: send periodic application-level pings","command":"# HTTP/2 PING frames; gRPC keepalive: 30s; WebSocket ping/pong","validation":"connection stays warm via app traffic, NAT timer never fires","rollback":null,"source_id":"man7-tcp-7"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["kernel-docs-net-sysctl","man7-getsockopt-2","man7-tcp-7"]},
+
+  {"id":"linux.fm.epoll-edge-trigger-starvation","symptom":"App using EPOLLET stops getting events for some FDs even though data arrived","error_patterns":["EPOLLET","starvation","missed event","stuck connection"],"root_cause_class":"epoll-misuse","affected_concepts":["linux.networking.epoll-edge-vs-level","linux.networking.epoll-syscalls"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check if app is using EPOLLET (edge-triggered)","command":"# code review: epoll_ctl with .events |= EPOLLET","expected":"yes","source_id":"man7-epoll-7"},
+      {"step":2,"action":"Verify app drains FD until EAGAIN","command":"# strace or code review of read() loop on each EPOLLIN — does it loop until EAGAIN?","expected":"if app does single read() per event, it'll miss subsequent data","source_id":"man7-epoll-7"},
+      {"step":3,"action":"Check FD non-blocking flag","command":"# fcntl(fd, F_GETFL) should include O_NONBLOCK","expected":"required for EPOLLET to work correctly","source_id":"man7-epoll-7"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"On EPOLLET, loop read() until EAGAIN before going back to epoll_wait","command":"# while ((n = read(fd, buf, sizeof buf)) > 0) handle_data(buf, n);\\n# if (n < 0 && errno != EAGAIN) handle_error();","validation":"all FDs serviced; no missed events","rollback":"single read per event (broken)","source_id":"man7-epoll-7"},
+      {"step":2,"action":"Make all FDs non-blocking","command":"# int flags = fcntl(fd, F_GETFL, 0); fcntl(fd, F_SETFL, flags | O_NONBLOCK);","validation":"read returns EAGAIN instead of blocking","rollback":"fcntl back to blocking","source_id":"man7-epoll-7"},
+      {"step":3,"action":"Or switch to level-triggered (EPOLLET removed) if read-loop pattern is hard to retrofit","command":"# epoll_ctl with .events &= ~EPOLLET","validation":"events repeat until drained; safer default","rollback":"add EPOLLET back","source_id":"man7-epoll-7"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["man7-epoll-7"]},
+
+  {"id":"linux.fm.unix-socket-cred-mismatch","symptom":"Server gets wrong UID via SCM_CREDENTIALS on AF_UNIX","error_patterns":["SCM_CREDENTIALS","ucred","unexpected uid","wrong client uid"],"root_cause_class":"ipc","affected_concepts":["linux.networking.unix-domain-protocol","linux.primitives.cap-effective-set"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check setsockopt SO_PASSCRED was enabled on the receiving socket","command":"# code review or strace: setsockopt(fd, SOL_SOCKET, SO_PASSCRED, &one, sizeof one)","expected":"if missing, no SCM_CREDENTIALS arrives","source_id":"man7-getsockopt-2"},
+      {"step":2,"action":"Check what's in the ucred when received","command":"# server-side: print recvmsg cmsg pid/uid/gid","expected":"compare to expected client uid","source_id":"man7-credentials-7"},
+      {"step":3,"action":"Verify AF_UNIX (not abstract+unauth)","command":"ss -lpx | grep <socket-path>   # check socket type","expected":"AF_UNIX SOCK_STREAM","source_id":"man7-getsockopt-2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Enable SO_PASSCRED on receiver before recvmsg","command":"# server: int one=1; setsockopt(fd, SOL_SOCKET, SO_PASSCRED, &one, sizeof one);","validation":"SCM_CREDENTIALS arrives in cmsg with correct uid","rollback":"remove setsockopt","source_id":"man7-getsockopt-2"},
+      {"step":2,"action":"For peer credentials at connect time (not per-message)","command":"# server: getsockopt(fd, SOL_SOCKET, SO_PEERCRED, &peer_cred, &len)","validation":"one-shot peer ucred on connect","rollback":null,"source_id":"man7-getsockopt-2"},
+      {"step":3,"action":"For abstract-namespace sockets, prefer SO_PEERCRED (avoids cmsg complexity)","command":"# socket bound to '\\0name' instead of /var/run/foo.sock; same SO_PEERCRED works","validation":"correct creds without filesystem perms","rollback":null,"source_id":"man7-credentials-7"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["man7-getsockopt-2","man7-credentials-7"]},
+
+  {"id":"linux.fm.bind-mount-readonly-leak","symptom":"`mount --bind -o ro` doesn't actually mark target readonly","error_patterns":["bind mount","readonly","still writable","ro flag ignored"],"root_cause_class":"mount","affected_concepts":["linux.filesystem.bind-mount","linux.filesystem.mount-syscall"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Confirm via mount listing","command":"mount | grep <target>   # OR: findmnt <target>","expected":"shows 'rw' despite -o ro on the bind — known bind-mount quirk","source_id":"man7-mount-8"},
+      {"step":2,"action":"Try writing to confirm","command":"touch <target>/test 2>&1   # remove on success: rm <target>/test","expected":"succeeds despite intent for readonly","source_id":"man7-mount-8"},
+      {"step":3,"action":"Inspect kernel bind-mount semantics","command":"# bind mounts inherit source's mount flags; -o ro is silently ignored on initial bind","expected":"yes","source_id":"man7-mount-namespaces-7"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Two-step: bind, then remount RO","command":"sudo mount --bind /src /dst && sudo mount -o remount,bind,ro /dst","validation":"mount shows ro","rollback":"sudo umount /dst","source_id":"man7-mount-8"},
+      {"step":2,"action":"For systemd mount units","command":"# [Mount]\\n# What=/src\\n# Where=/dst\\n# Options=bind,ro\\n# Type=none\\n# (newer systemd handles the two-step internally)","validation":"systemctl start <unit>.mount; readonly enforced","rollback":"Options=bind","source_id":"systemd-systemd-mount-5"},
+      {"step":3,"action":"For ephemeral containers/scripts: use a fresh mount namespace","command":"sudo unshare -m bash -c 'mount --bind -o remount,bind,ro /src /dst; ...'","validation":"ro within the namespace","rollback":"exit ns","source_id":"man7-unshare-1"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["man7-mount-8","man7-mount-namespaces-7","systemd-systemd-mount-5","man7-unshare-1"]},
+
+  {"id":"linux.fm.ext4-orphan-inodes-on-mount","symptom":"Mount slow after crash; dmesg shows 'orphan inode list' replay","error_patterns":["orphan inode","journal recovery","ext4-fs","journal replay"],"root_cause_class":"filesystem","affected_concepts":["linux.filesystem.ext4"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Confirm via dmesg","command":"sudo dmesg -T | grep -iE 'orphan|journal|ext4-fs' | tail -20","expected":"orphan inode replay messages near boot/mount time","source_id":"man7-dmesg-1"},
+      {"step":2,"action":"Check fs state","command":"sudo dumpe2fs -h <dev> | grep -iE 'state|free|errors|count'","expected":"Filesystem state: clean (or 'clean with errors')","source_id":"debian-mkfs-ext4-8"},
+      {"step":3,"action":"Check journal status","command":"sudo dumpe2fs -h <dev> | grep -i journal","expected":"Journal size, last journal write timestamp","source_id":"debian-mkfs-ext4-8"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Allow fsck to clean orphans","command":"sudo umount <mount> && sudo e2fsck -y -f <dev> && sudo mount <mount>","validation":"clean fs; mount instant","rollback":null,"source_id":"debian-mkfs-ext4-8"},
+      {"step":2,"action":"For root fs: schedule fsck on next boot","command":"sudo touch /forcefsck   # OR: sudo tune2fs -i 1 <dev>   # force interval check","validation":"reboot triggers fsck","rollback":"sudo tune2fs -i 0 <dev>","source_id":"debian-mkfs-ext4-8"},
+      {"step":3,"action":"Increase journal size if recovery is consistently slow","command":"# offline: sudo tune2fs -O ^has_journal <dev>; sudo tune2fs -J size=256 <dev>","validation":"larger journal absorbs more pending writes","rollback":"prior journal size","source_id":"debian-mkfs-ext4-8"}
+    ],
+    "confidence":0.85,"last_verified":"2026-05-03","source_ids":["debian-mkfs-ext4-8","man7-dmesg-1"]},
+
+  {"id":"linux.fm.tmpfs-overflow","symptom":"`/tmp` write fails ENOSPC; size shows 50% but tmpfs default is 50% of RAM","error_patterns":["No space left on device","tmpfs","/tmp full","tmpfs ENOSPC"],"root_cause_class":"tmpfs","affected_concepts":["linux.filesystem.tmpfs"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Inspect tmpfs size + usage","command":"df -h /tmp && mount | grep /tmp","expected":"size= option in mount line; df shows usage near limit","source_id":"kernel-docs-tmpfs"},
+      {"step":2,"action":"Find what's using the space","command":"sudo du -sh /tmp/* 2>/dev/null | sort -rh | head","expected":"identifies large files","source_id":"kernel-docs-tmpfs"},
+      {"step":3,"action":"Check if memory pressure caused tmpfs eviction","command":"# tmpfs is RAM-backed; high mem pressure can cause swapping or OOM","expected":"free -h shows low free + tmpfs counts as MemUsed","source_id":"kernel-docs-tmpfs"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Resize tmpfs without unmount","command":"sudo mount -o remount,size=4G /tmp","validation":"df shows new size","rollback":"original size","source_id":"kernel-docs-tmpfs"},
+      {"step":2,"action":"Persist via fstab","command":"# /etc/fstab: tmpfs /tmp tmpfs size=4G,mode=1777,nosuid,nodev 0 0","validation":"survives reboot","rollback":"restore prior fstab line","source_id":"man7-fstab-5"},
+      {"step":3,"action":"Or move heavy workload off /tmp to disk-backed dir","command":"# export TMPDIR=/var/tmp/work-area; mkdir -p $TMPDIR","validation":"app uses disk instead of RAM-tmpfs","rollback":"unset TMPDIR","source_id":"kernel-docs-tmpfs"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["kernel-docs-tmpfs","man7-fstab-5"]},
+
+  {"id":"linux.fm.xattr-not-supported","symptom":"`setfattr` fails 'Operation not supported'","error_patterns":["Operation not supported","setxattr","ENOTSUP","xattr not supported"],"root_cause_class":"filesystem","affected_concepts":["linux.filesystem.xattr","linux.filesystem.acl"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check fs supports xattr at all","command":"sudo tune2fs -l <dev> 2>/dev/null | grep -i features   # for ext","expected":"'user_xattr' feature flag should be set; if missing, fs doesn't support xattrs","source_id":"man7-xattr-7"},
+      {"step":2,"action":"Check current mount options","command":"mount | grep <mountpoint>","expected":"if 'nouser_xattr' in options, xattrs blocked","source_id":"man7-mount-8"},
+      {"step":3,"action":"Test on a different fs (rule out target binary issue)","command":"setfattr -n user.test -v hi /tmp/testfile && getfattr /tmp/testfile","expected":"works on tmpfs/ext4 if binary is fine","source_id":"man7-xattr-7"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Mount with user_xattr","command":"sudo mount -o remount,user_xattr <mountpoint>","validation":"setfattr works","rollback":"sudo mount -o remount,nouser_xattr <mountpoint>","source_id":"man7-mount-8"},
+      {"step":2,"action":"For ext fs without the feature at create time, enable via tune2fs","command":"sudo tune2fs -O user_xattr <dev>   # may need fs to be unmounted","validation":"feature appears in tune2fs -l output","rollback":"sudo tune2fs -O ^user_xattr <dev>","source_id":"debian-mkfs-ext4-8"},
+      {"step":3,"action":"Persist mount option in fstab","command":"# /etc/fstab: <dev> <mp> ext4 defaults,user_xattr 0 2","validation":"survives reboot","rollback":"remove user_xattr","source_id":"man7-fstab-5"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["man7-xattr-7","man7-mount-8","debian-mkfs-ext4-8","man7-fstab-5"]},
+
+  {"id":"linux.fm.fanotify-permission-events-stuck","symptom":"App with FAN_CLASS_CONTENT seems hung; access to watched files freezes","error_patterns":["fanotify","frozen","hung","FAN_ALLOW","permission event"],"root_cause_class":"fanotify","affected_concepts":["linux.filesystem.fanotify","linux.filesystem.inotify"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Identify the fanotify-listening process","command":"# fanotify-aware processes are in 'D' / 'S' state; check /proc/*/fd for fanotify fd","expected":"finds the listener","source_id":"man7-fanotify-7"},
+      {"step":2,"action":"Verify the listener is actually reading + responding","command":"strace -p <listener-pid> -e trace=read,write 2>&1 | head -20","expected":"reads fanotify_event_metadata; writes fanotify_response — if just reading, never replying","source_id":"man7-fanotify-7"},
+      {"step":3,"action":"Check timeout behavior","command":"# default: kernel waits forever for FAN_ALLOW/FAN_DENY response","expected":"yes — explains the hang","source_id":"man7-fanotify-7"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Always reply with FAN_RESPONSE within reasonable time","command":"# struct fanotify_response resp = { .fd = ev->fd, .response = FAN_ALLOW };\\n# write(fan_fd, &resp, sizeof(resp));","validation":"file ops resume","rollback":null,"source_id":"man7-fanotify-7"},
+      {"step":2,"action":"For broken/crashed listener: kill it (kernel falls back to allow)","command":"# pkill <listener>; or close its fanotify fd","validation":"file ops unstick","rollback":null,"source_id":"man7-fanotify-7"},
+      {"step":3,"action":"Use FAN_NOTIF (notification-only) instead of FAN_CLASS_CONTENT for monitoring without blocking","command":"# fanotify_init(FAN_NOTIF | FAN_NONBLOCK, O_RDONLY)","validation":"events delivered but no permission gating","rollback":"FAN_CLASS_CONTENT","source_id":"man7-fanotify-7"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["man7-fanotify-7"]},
+
+  {"id":"linux.fm.flame-graph-flat","symptom":"Flame graph shows shallow stacks; symbols mostly '[unknown]'","error_patterns":["[unknown]","frame pointer","fp","symbol","flat flame graph"],"root_cause_class":"profiling","affected_concepts":["linux.debugging.perf-subsystem","linux.debugging.gdb-backtrace"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check perf was given a call-graph option","command":"# what perf record command did you use?","expected":"perf record without -g/--call-graph = no stacks at all","source_id":"man7-perf-record-1"},
+      {"step":2,"action":"Check if the binary has frame pointers","command":"# objdump -d /path/to/bin | head -20  — look for push %rbp / mov %rsp,%rbp prologue","expected":"if missing, fp unwind fails → use dwarf","source_id":"man7-perf-record-1"},
+      {"step":3,"action":"Verify perf has access to debug symbols","command":"sudo perf report --stdio | head -30","expected":"if [unknown] dominates, install debug-symbols package","source_id":"man7-perf-report-1"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Use DWARF unwinding (works without frame pointers)","command":"sudo perf record -F 99 -g --call-graph dwarf -p <pid> -- sleep 30","validation":"deeper stacks in flame graph","rollback":"--call-graph fp","source_id":"man7-perf-record-1"},
+      {"step":2,"action":"For better fidelity, recompile target with frame pointers","command":"# add CFLAGS+=' -fno-omit-frame-pointer' (cheaper than dwarf at runtime)","validation":"fp call-graph works","rollback":"omit","source_id":"man7-perf-record-1"},
+      {"step":3,"action":"Install debug symbols for libraries","command":"sudo apt install -y libc6-dbg <pkg>-dbg   # or -dbgsym packages","validation":"flame graph shows symbol names instead of [unknown]","rollback":"sudo apt remove","source_id":"man7-perf-report-1"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["man7-perf-record-1","man7-perf-report-1"]},
+
+  {"id":"linux.fm.bpf-verifier-rejects","symptom":"`bpftrace` or `bcc` script fails: 'verifier failed' on attach","error_patterns":["verifier","R0 invalid","program failed to load","load_bpf_object","verifier rejected"],"root_cause_class":"bpf","affected_concepts":["linux.debugging.bpf-syscall","linux.debugging.bpf-program-types","linux.debugging.bpf-verifier"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Re-run with verifier log enabled","command":"# bpftrace -v ./script.bt   # OR: BCC_LOGLEVEL=DEBUG ./tool   # OR: bpftool prog load <obj> /sys/fs/bpf/x type ... and read syslog","expected":"verifier log points at the offending instruction","source_id":"man7-bpf-2"},
+      {"step":2,"action":"Check kernel version (verifier improves with each release)","command":"uname -r","expected":"if old kernel (<5.4), verifier may reject programs that work on newer","source_id":"man7-bpf-2"},
+      {"step":3,"action":"Check program complexity limits","command":"# default 1M instruction limit; or stack-depth limit","expected":"long unrolled loops or deep stacks may exceed","source_id":"man7-bpf-2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Bound the program: hard-code loop limit, narrow types","command":"# replace 'for ($i=0; ...)' with bpf_for + small N\\n# replace u64 with u32 where possible (smaller register state)","validation":"verifier accepts","rollback":null,"source_id":"man7-bpf-helpers-7"},
+      {"step":2,"action":"Use BTF-aware kfunc when available (better type checking, easier verifier)","command":"# kfunc:tcp_send instead of kprobe:tcp_send\\n# bpftrace -e 'kfunc:tcp_sendmsg { ... }'","validation":"strongly typed args; verifier happier","rollback":"kprobe","source_id":"man7-bpf-2"},
+      {"step":3,"action":"Use bounded helpers instead of arbitrary memory access","command":"# bpf_probe_read_kernel/_user with explicit size (not arbitrary deref)","validation":"verifier confirms bounds","rollback":null,"source_id":"man7-bpf-helpers-7"}
+    ],
+    "confidence":0.85,"last_verified":"2026-05-03","source_ids":["man7-bpf-2","man7-bpf-helpers-7"]},
+
+  {"id":"linux.fm.strace-multiplies-overhead","symptom":"App becomes 100x slower under `strace -f`; production user-impacting","error_patterns":["strace","slow","ptrace","ENOSYS","100x slower"],"root_cause_class":"tracing-overhead","affected_concepts":["linux.debugging.strace-tool","linux.debugging.ptrace-syscall"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Confirm strace is the cause","command":"# benchmark with vs without strace -f attached","expected":"big perf delta (10-100x for syscall-heavy apps)","source_id":"man7-strace-1"},
+      {"step":2,"action":"Identify which syscalls are most-frequent","command":"sudo strace -c -p <pid> -- sleep 10   # summary mode","expected":"hot syscalls = the multiplier","source_id":"man7-strace-1"},
+      {"step":3,"action":"Check whether the app's slowness is genuinely syscall-heavy (the only case strace really hurts)","command":"# pidstat -u 1 5 vs perf stat -e syscalls:sys_enter_* -p <pid>","expected":"high syscall rate confirms ptrace is the bottleneck","source_id":"man7-strace-1"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Use strace -e trace=<subset> to limit which syscalls are traced","command":"sudo strace -f -e trace=openat,read,write -p <pid>","validation":"reduced syscall set; lower overhead","rollback":"-e trace=all","source_id":"man7-strace-1"},
+      {"step":2,"action":"Switch to bpftrace tracepoints (lower overhead)","command":"sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat /pid==<P>/ { @[args->filename] = count(); }'","validation":"low-overhead capture; production-safe","rollback":"return to strace","source_id":"man7-bpf-2"},
+      {"step":3,"action":"Or perf trace (very low overhead alternative to strace)","command":"sudo perf trace -p <pid>","validation":"per-syscall view without ptrace cost","rollback":null,"source_id":"man7-perf-record-1"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["man7-strace-1","man7-bpf-2","man7-perf-record-1"]},
+
+  {"id":"linux.fm.systemd-resource-control-not-applied","symptom":"`systemctl set-property MemoryMax=2G` does nothing visible; cgroup memory.max unchanged","error_patterns":["set-property","MemoryMax","unchanged","resource control not applied"],"root_cause_class":"systemd-resource","affected_concepts":["linux.systemd.resource-memory-max","linux.systemd.cgroup-driver","linux.systemd.cgroup-integration"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Verify systemd accepted the property","command":"systemctl show <unit> -p MemoryMax,MemoryHigh,MemoryAccounting","expected":"shows new value if accepted; if 'infinity', wasn't applied","source_id":"systemd-systemd-resource-control-5"},
+      {"step":2,"action":"Verify accounting is enabled","command":"systemctl show <unit> -p MemoryAccounting","expected":"=yes (without it, the limit is set but not enforced)","source_id":"systemd-systemd-resource-control-5"},
+      {"step":3,"action":"Check the actual cgroup file","command":"cat /sys/fs/cgroup/system.slice/<unit>/memory.max","expected":"matches the value you set; if 'max', didn't take","source_id":"kernel-docs-cgroup-v2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Use --runtime=false to persist + reload","command":"sudo systemctl set-property myapp.service MemoryMax=2G && sudo systemctl daemon-reload","validation":"cgroup file updated","rollback":"sudo systemctl set-property myapp.service MemoryMax=infinity","source_id":"systemd-systemd-resource-control-5"},
+      {"step":2,"action":"Enable accounting (required for some properties to take effect)","command":"sudo systemctl set-property myapp.service MemoryAccounting=yes","validation":"systemctl show shows MemoryAccounting=yes","rollback":"=no","source_id":"systemd-systemd-resource-control-5"},
+      {"step":3,"action":"For cgroup v1 hosts: enable in /etc/systemd/system.conf","command":"# DefaultMemoryAccounting=yes; sudo systemctl daemon-reexec","validation":"new units have accounting on","rollback":"=no","source_id":"systemd-systemd-resource-control-5"}
+    ],
+    "confidence":0.9,"last_verified":"2026-05-03","source_ids":["systemd-systemd-resource-control-5","kernel-docs-cgroup-v2"]},
+
+  {"id":"linux.fm.systemd-service-killed-on-shutdown","symptom":"Long-running systemd service killed before finishing graceful shutdown","error_patterns":["TimeoutStopSec","killed by SIGKILL","systemd shutdown","killed during shutdown"],"root_cause_class":"systemd-shutdown","affected_concepts":["linux.systemd.restart-policy","linux.systemd.cgroup-integration"],
+    "diagnostic_steps":[
+      {"step":1,"action":"View shutdown timeline","command":"sudo journalctl -b -1 -u myapp.service","expected":"see TimeoutStopSec exceeded; SIGKILL message","source_id":"systemd-systemd-service-5"},
+      {"step":2,"action":"Show current TimeoutStopSec","command":"systemctl show myapp.service -p TimeoutStopSec","expected":"default 90s; if your shutdown takes longer, this is the issue","source_id":"systemd-systemd-service-5"},
+      {"step":3,"action":"Verify app even handles SIGTERM","command":"# log inspection: does the app log 'received SIGTERM, shutting down'?","expected":"if no log, app is silently dropping signal","source_id":"systemd-systemd-service-5"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Raise TimeoutStopSec","command":"# unit file: [Service]\\n# TimeoutStopSec=300s\\nsudo systemctl daemon-reload && sudo systemctl restart myapp","validation":"graceful exit completes within new window","rollback":"TimeoutStopSec=90s (default)","source_id":"systemd-systemd-service-5"},
+      {"step":2,"action":"Use SIGTERM-aware code in app","command":"# trap SIGTERM, drain in-flight work, exit cleanly","validation":"clean shutdown logged","rollback":"remove handler","source_id":"systemd-systemd-exec-5"},
+      {"step":3,"action":"For services that need notify-on-shutdown: KillSignal + SendSIGKILL","command":"# [Service]\\n# KillSignal=SIGTERM\\n# KillMode=mixed\\n# SendSIGKILL=no   # OR yes with longer TimeoutStopSec","validation":"systemd respects app's shutdown timing","rollback":null,"source_id":"systemd-systemd-service-5"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["systemd-systemd-service-5","systemd-systemd-exec-5"]},
+
+  {"id":"linux.fm.systemd-cgroup-delegation-missing","symptom":"User code can't write to its own cgroup tree even though it owns the slice","error_patterns":["EACCES","cgroup.subtree_control","Delegate","cannot write cgroup"],"root_cause_class":"systemd-cgroup","affected_concepts":["linux.systemd.cgroup-integration","linux.systemd.cgroup-driver","linux.primitives.cgroup-delegation"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Check Delegate property","command":"systemctl show -p Delegate myapp.service","expected":"=yes for full control; if =no, systemd manages all cgroup files","source_id":"systemd-systemd-resource-control-5"},
+      {"step":2,"action":"Check which controllers are delegated","command":"systemctl show -p DelegateControllers myapp.service","expected":"list of controllers (cpu, memory, io, pids)","source_id":"systemd-systemd-resource-control-5"},
+      {"step":3,"action":"Verify by attempting to write subtree_control","command":"# inside the unit: echo +memory > /sys/fs/cgroup/system.slice/myapp.service/cgroup.subtree_control","expected":"if EACCES, delegation isn't set","source_id":"kernel-docs-cgroup-v2"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Set Delegate=yes (and which controllers)","command":"# unit: [Service]\\n# Delegate=cpu memory io pids\\nsudo systemctl daemon-reload && sudo systemctl restart myapp","validation":"unit can write to cgroup.subtree_control","rollback":"Delegate=no","source_id":"systemd-systemd-resource-control-5"},
+      {"step":2,"action":"For container runtimes (docker/runc/containerd): typically need full delegation","command":"# /etc/systemd/system/docker.service.d/override.conf:\\n# [Service]\\n# Delegate=yes","validation":"docker can manage container cgroups","rollback":"Delegate=no (rare; usually needed)","source_id":"systemd-systemd-resource-control-5"},
+      {"step":3,"action":"For user services (systemd --user), enable Delegate at the user-manager level","command":"# /etc/systemd/system/user@.service.d/delegate.conf:\\n# [Service]\\n# Delegate=yes","validation":"user-level units can manage cgroups","rollback":"Delegate=no","source_id":"systemd-systemd-resource-control-5"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["systemd-systemd-resource-control-5","kernel-docs-cgroup-v2"]},
+
+  {"id":"linux.fm.zombie-orphan-init","symptom":"Container PID 1 not reaping; zombies pile up","error_patterns":["<defunct>","Z stat","PID 1","zombie","not reaped"],"root_cause_class":"signal-handling","affected_concepts":["linux.primitives.zombie-reaping","linux.primitives.pid-1-init-semantics"],
+    "diagnostic_steps":[
+      {"step":1,"action":"Confirm zombies are accumulating","command":"docker exec <c> sh -c 'ps axo pid,ppid,stat,comm | grep -E \"Z|<defunct>\"'","expected":"non-zero count; check growth over time","source_id":"man7-pid-namespaces-7"},
+      {"step":2,"action":"Identify what's PID 1 in the container","command":"docker exec <c> cat /proc/1/comm","expected":"if your app or 'sh', it's not designed to reap orphan zombies","source_id":"man7-pid-namespaces-7"},
+      {"step":3,"action":"Find the reaper-needed parent (PPID of zombies)","command":"docker exec <c> ps axo pid,ppid,stat,comm | awk '$3 ~ /^Z/ {print $2}' | sort -u","expected":"PPID = 1 → PID 1 isn't reaping; PPID = N → that process isn't reaping","source_id":"man7-pid-namespaces-7"}
+    ],
+    "fix_steps":[
+      {"step":1,"action":"Run with --init (docker injects tini as PID 1)","command":"docker run --init <image>","validation":"PID 1 = docker-init; zombies disappear, new ones don't accumulate","rollback":"omit --init","source_id":"docker-cli-container-run"},
+      {"step":2,"action":"For app PID 1 that forks: install SIGCHLD handler","command":"# C: signal(SIGCHLD, handler) where handler does waitpid(-1, &st, WNOHANG) in loop\\n# Python: signal.signal(signal.SIGCHLD, ...)","validation":"no zombies","rollback":"remove handler","source_id":"man7-fork-2"},
+      {"step":3,"action":"For Compose: init: true at the service level","command":"# services:\\n#   myapp:\\n#     init: true","validation":"compose creates containers with docker-init as PID 1","rollback":"init: false","source_id":"compose-spec-05-services"}
+    ],
+    "confidence":0.95,"last_verified":"2026-05-03","source_ids":["man7-pid-namespaces-7","man7-fork-2","docker-cli-container-run"]}
+]
