@@ -1,0 +1,4089 @@
+[
+  {
+    "id": "firecracker.networking.fm.guest-initiated-vsock-no-host-listener",
+    "symptom": "Guest tries to vsock-connect to host CID=2 port N but receives VIRTIO_VSOCK_OP_RST. No process is listening on the host UDS at <uds_path>_<N>.",
+    "root_cause_class": "missing-host-listener",
+    "error_patterns": [
+      "vsock RST",
+      "ECONNREFUSED",
+      "no listener at v.sock_<port>"
+    ],
+    "affected_concepts": [
+      "firecracker.vsock.guest-initiated-per-port-uds",
+      "firecracker.vsock.uds-multiplexing"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check whether host listener exists",
+        "command": "ss -lx | grep <uds_path>_<port>",
+        "expected": "Listener present (LISTEN state on the UDS)",
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker process logs for the request that errored",
+        "command": "journalctl -t firecracker -n 100 --no-pager | grep -iE 'error|warn|<interface-id>'",
+        "expected": "Find the relevant API request and its rejection reason; cross-check against fc-docs-network-setup constraints.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Pre-create the host-side AF_UNIX listener BEFORE guest connects",
+        "command": "host$ socat - UNIX-LISTEN:<uds_path>_<port>,fork",
+        "validation": "Guest connect succeeds",
+        "rollback": null,
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Build a generic per-port spawner on the host (e.g. systemd socket activation on UDS paths)",
+        "command": "Configure systemd .socket unit for each expected port",
+        "validation": "Listeners on demand",
+        "rollback": null,
+        "source_id": "fc-docs-vsock"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-vsock"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.ip-forward-disabled",
+    "symptom": "Guest can't reach the internet through the host. Packets from the TAP never make it to the egress interface. Host has IPv4 forwarding disabled.",
+    "root_cause_class": "host-routing-disabled",
+    "error_patterns": [
+      "no route to host",
+      "100% packet loss to internet"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.cfg.host-sysctl.ip-forward",
+      "firecracker.networking.nat-routing-pattern"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check host ip_forward sysctl",
+        "command": "sysctl net.ipv4.ip_forward",
+        "expected": "Should be 1; if 0 → root cause",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 2,
+        "action": "Trace whether packets reach the TAP",
+        "command": "host$ tcpdump -i tap0 -nn",
+        "expected": "Outbound packets visible from guest",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Enable IPv4 forwarding (runtime + persistent)",
+        "command": "echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward; echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf",
+        "validation": "Guest reaches internet",
+        "rollback": "echo 0 > /proc/sys/net/ipv4/ip_forward",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 2,
+        "action": "Re-issue the API call with corrected payload, then start instance",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/network-interfaces/eth0 -d '{\"iface_id\":\"eth0\",\"host_dev_name\":\"<tap>\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "API returns 204 No Content for PUT and InstanceStart; instance enters Running state.",
+        "rollback": "Stop the VM (PUT /actions {action_type: SendCtrlAltDel} for x86_64 or destroy the process) and undo TAP changes.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-network-setup"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.missing-virtio-vsockets-config",
+    "symptom": "Guest doesn't see /dev/vsock. PUT /vsock attached the device on Firecracker side but guest kernel lacks CONFIG_VIRTIO_VSOCKETS.",
+    "root_cause_class": "guest-kernel-config-missing",
+    "error_patterns": [
+      "/dev/vsock missing",
+      "no virtio-vsock driver"
+    ],
+    "affected_concepts": [
+      "firecracker.security.cfg.guest-kernel.config-virtio-vsockets",
+      "firecracker.vsock.virtio-vsock-device"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check guest kernel config",
+        "command": "guest$ zcat /proc/config.gz | grep CONFIG_VIRTIO_VSOCKETS",
+        "expected": "=y or =m",
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Verify /dev/vsock",
+        "command": "guest$ ls -la /dev/vsock",
+        "expected": "Char device should exist",
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Rebuild guest kernel with CONFIG_VIRTIO_VSOCKETS=y",
+        "command": "Edit .config; make olddefconfig; make -j",
+        "validation": "/dev/vsock appears",
+        "rollback": "Revert kernel",
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Re-issue the API call with corrected payload, then start instance",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/network-interfaces/eth0 -d '{\"iface_id\":\"eth0\",\"host_dev_name\":\"<tap>\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "API returns 204 No Content for PUT and InstanceStart; instance enters Running state.",
+        "rollback": "Stop the VM (PUT /actions {action_type: SendCtrlAltDel} for x86_64 or destroy the process) and undo TAP changes.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-vsock",
+      "fc-docs-kernel-policy"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.mmds-data-lost-on-snapshot",
+    "symptom": "After snapshot restore, MMDS GETs return empty/old data. The MMDS data store is intentionally not persisted across snapshots.",
+    "root_cause_class": "intentional-non-persistence",
+    "error_patterns": [
+      "MMDS data missing after restore",
+      "metadata empty"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.mmds-snapshot-non-persist",
+      "firecracker.snapshots.snapshot-files"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm MMDS configuration survived (only data is dropped)",
+        "command": "GET /mmds/config",
+        "expected": "version, network_interfaces, ipv4_address all preserved; data store empty",
+        "source_id": "fc-docs-mmds-user-guide"
+      },
+      {
+        "step": 2,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker process logs for the request that errored",
+        "command": "journalctl -t firecracker -n 100 --no-pager | grep -iE 'error|warn|<interface-id>'",
+        "expected": "Find the relevant API request and its rejection reason; cross-check against fc-docs-network-setup constraints.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Orchestrator must reseed MMDS after every restore",
+        "command": "PUT /mmds <fresh-payload> right after PUT /snapshot/load",
+        "validation": "MMDS GET returns expected data",
+        "rollback": null,
+        "source_id": "fc-docs-mmds-user-guide"
+      },
+      {
+        "step": 2,
+        "action": "Re-issue the API call with corrected payload, then start instance",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/network-interfaces/eth0 -d '{\"iface_id\":\"eth0\",\"host_dev_name\":\"<tap>\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "API returns 204 No Content for PUT and InstanceStart; instance enters Running state.",
+        "rollback": "Stop the VM (PUT /actions {action_type: SendCtrlAltDel} for x86_64 or destroy the process) and undo TAP changes.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-mmds-user-guide"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.mmds-unreachable-no-route",
+    "symptom": "Guest gets connection-refused or no-route when trying to fetch from MMDS at 169.254.169.254 (or configured IP). Guest hasn't added a route for the MMDS IP.",
+    "root_cause_class": "guest-routing-missing",
+    "error_patterns": [
+      "connection refused 169.254.169.254",
+      "no route to host"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.mmds-tightly-coupled-to-iface",
+      "firecracker.networking.mmds-default-ip"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check guest routes",
+        "command": "guest$ ip route get <mmds-ip>",
+        "expected": "Should resolve to a network interface",
+        "source_id": "fc-docs-mmds-user-guide"
+      },
+      {
+        "step": 2,
+        "action": "Verify MMDS network interface configuration",
+        "command": "GET /mmds/config",
+        "expected": "network_interfaces[] non-empty",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add route in guest",
+        "command": "guest$ ip route add <mmds-ip> dev <iface>",
+        "validation": "MMDS reachable",
+        "rollback": "guest$ ip route del <mmds-ip>",
+        "source_id": "fc-docs-mmds-user-guide"
+      },
+      {
+        "step": 2,
+        "action": "Make persistent via init script",
+        "command": "Add the route command to /etc/network/if-up.d or systemd-networkd config",
+        "validation": "Survives reboot",
+        "rollback": null,
+        "source_id": "fc-docs-mmds-user-guide"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-mmds-user-guide"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.mmds-v1-ssrf-vulnerability",
+    "symptom": "Untrusted guest workload (e.g., AI agent fetching arbitrary URLs) reads sensitive metadata from MMDS via SSRF. MMDS V1 has no token requirement.",
+    "root_cause_class": "mmds-v1-deprecated-no-auth",
+    "error_patterns": [
+      "unauthorized metadata exfiltration",
+      "SSRF to MMDS"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.mmds-v1-vs-v2",
+      "firecracker.vmm.mmds-imdsv2"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check MMDS version",
+        "command": "GET /mmds/config | jq '.version'",
+        "expected": "If 'V1' (or absent → defaults to V1) → vulnerability confirmed",
+        "source_id": "fc-docs-mmds-user-guide"
+      },
+      {
+        "step": 2,
+        "action": "Check Firecracker metrics for evidence of token abuse",
+        "command": "Inspect mmds.rx_no_token + mmds.rx_invalid_token counters in metrics output",
+        "expected": "Non-zero → workloads accessing without tokens",
+        "source_id": "fc-docs-mmds-user-guide"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Migrate MMDS to V2 (session-token-required)",
+        "command": "PUT /mmds/config {network_interfaces: [...], version: 'V2', ipv4_address: '169.254.169.254'}",
+        "validation": "MMDS rejects unauthenticated GETs; rx_no_token metric stops growing for new workloads",
+        "rollback": "Revert to V1 (insecure)",
+        "source_id": "fc-docs-mmds-user-guide"
+      },
+      {
+        "step": 2,
+        "action": "Audit guest workloads to use the V2 PUT-token-then-GET pattern",
+        "command": "Update guest tooling to issue PUT /latest/api/token first",
+        "validation": "Guest reads succeed via tokenized path",
+        "rollback": null,
+        "source_id": "fc-docs-mmds-user-guide"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-mmds-user-guide"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.nat-masquerade-rule-missing",
+    "symptom": "Guest packets reach the host's egress interface but have non-routable source IPs. NAT masquerade rule isn't installed.",
+    "root_cause_class": "missing-nat-rule",
+    "error_patterns": [
+      "packets dropped at upstream router",
+      "source IP unrouteable"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.nat-routing-pattern",
+      "firecracker.networking.cmd.nft-masquerade-rule"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect nftables/iptables NAT rules",
+        "command": "sudo nft list ruleset; OR sudo iptables-nft -t nat -S POSTROUTING",
+        "expected": "MASQUERADE rule for guest IP/subnet → egress iface",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 2,
+        "action": "Trace upstream packet src",
+        "command": "host$ tcpdump -i eth0 -nn 'src host <guest-ip>'",
+        "expected": "Without MASQUERADE: packets visible with raw guest IP (172.16.x.x — non-routable)",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Install MASQUERADE rule",
+        "command": "sudo nft add table firecracker; sudo nft 'add chain firecracker postrouting { type nat hook postrouting priority srcnat; policy accept; }'; sudo nft add rule firecracker postrouting ip saddr <guest-ip> oifname <egress> counter masquerade; sudo nft add rule firecracker filter iifname <tap> oifname <egress> accept",
+        "validation": "Guest reaches internet",
+        "rollback": "sudo nft delete table firecracker",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 2,
+        "action": "Re-issue the API call with corrected payload, then start instance",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/network-interfaces/eth0 -d '{\"iface_id\":\"eth0\",\"host_dev_name\":\"<tap>\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "API returns 204 No Content for PUT and InstanceStart; instance enters Running state.",
+        "rollback": "Stop the VM (PUT /actions {action_type: SendCtrlAltDel} for x86_64 or destroy the process) and undo TAP changes.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-network-setup"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.rate-limit-req-size-exceeds-bucket",
+    "symptom": "Network requests larger than the rate-limiter bucket size are silently never permitted — bucket can't accumulate enough tokens for one request.",
+    "root_cause_class": "rate-limiter-misconfiguration",
+    "error_patterns": [
+      "request stalled",
+      "rate limit starvation"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.token-bucket-rate-limit",
+      "firecracker.networking.cfg.rate-limiter.bandwidth.size"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check rate-limiter sizing",
+        "command": "GET /vm/config | jq '.\"network-interfaces\"[].rx_rate_limiter, .tx_rate_limiter'",
+        "expected": "size should be ≥ max single request size (typically MTU * burst factor)",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/259"
+      },
+      {
+        "step": 2,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker process logs for the request that errored",
+        "command": "journalctl -t firecracker -n 100 --no-pager | grep -iE 'error|warn|<interface-id>'",
+        "expected": "Find the relevant API request and its rejection reason; cross-check against fc-docs-network-setup constraints.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Increase rate limiter bucket size to exceed any single legitimate request",
+        "command": "PATCH /network-interfaces/<id> {tx_rate_limiter: {bandwidth: {size: <larger>, refill_time: <ms>}}}",
+        "validation": "Requests succeed",
+        "rollback": "Restore prior limiter",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Re-issue the API call with corrected payload, then start instance",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/network-interfaces/eth0 -d '{\"iface_id\":\"eth0\",\"host_dev_name\":\"<tap>\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "API returns 204 No Content for PUT and InstanceStart; instance enters Running state.",
+        "rollback": "Stop the VM (PUT /actions {action_type: SendCtrlAltDel} for x86_64 or destroy the process) and undo TAP changes.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/259"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.single-queue-tap-throughput-cap",
+    "symptom": "VirtIO/net throughput per microVM caps at ~10-15 Gbps despite faster host NIC. TAP backend is single-queue; no IFF_MULTI_QUEUE.",
+    "root_cause_class": "design-constraint",
+    "error_patterns": [
+      "network throughput plateau",
+      "single-queue bottleneck"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.no-multi-queue",
+      "firecracker.networking.network-perf-considerations"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm TAP queue count",
+        "command": "ip -d link show <tap>; ethtool -l <tap>",
+        "expected": "Combined: 1 (single-queue)",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 2,
+        "action": "Measure with iperf3",
+        "command": "iperf3 -c <peer> -t 60 -P 4",
+        "expected": "Plateau around single-queue limit",
+        "source_id": "fc-docs-network-perf"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Scale by adding more microVMs (each with its own TAP)",
+        "command": "Run N microVMs, distribute load across them",
+        "validation": "Aggregate throughput scales linearly",
+        "rollback": null,
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 2,
+        "action": "Tune host TAP txqueuelen for burst absorption",
+        "command": "ip link set <tap> txqueuelen 10000",
+        "validation": "Bursts handled; sustained throughput unchanged",
+        "rollback": "ip link set <tap> txqueuelen <prior>",
+        "source_id": "fc-docs-network-perf"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-network-setup",
+      "fc-docs-network-perf"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.tap-cap-net-admin-required",
+    "symptom": "Firecracker fails to attach a TAP device with EPERM. Running uid lacks CAP_NET_ADMIN.",
+    "root_cause_class": "missing-capability",
+    "error_patterns": [
+      "TUNSETIFF EPERM",
+      "permission denied",
+      "CAP_NET_ADMIN"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.tap-backend",
+      "firecracker.networking.cfg.network-interface.host-dev-name"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check uid capabilities",
+        "command": "getpcaps <fc-pid>; capsh --print",
+        "expected": "CAP_NET_ADMIN should be present (or TAP must be pre-created by privileged user)",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 2,
+        "action": "Verify TAP exists and is accessible",
+        "command": "ip link show <tap-name>; ls -la /dev/net/tun",
+        "expected": "TAP exists; /dev/net/tun rw for uid",
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Pre-create TAP under privileged user; Firecracker only opens, doesn't create",
+        "command": "sudo ip tuntap add <tap> mode tap user <fc-uid>; sudo ip link set <tap> up",
+        "validation": "Firecracker attaches without CAP_NET_ADMIN",
+        "rollback": null,
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 2,
+        "action": "Or grant CAP_NET_ADMIN to the binary (less secure)",
+        "command": "sudo setcap cap_net_admin+ep /usr/bin/firecracker",
+        "validation": "Firecracker can create TAPs itself",
+        "rollback": "sudo setcap -r /usr/bin/firecracker",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-network-setup",
+      "fc-docs-jailer"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.uds-path-collision-clones",
+    "symptom": "Two restored clones of the same snapshot collide on the same vsock UDS path. Second restore fails (or worse: succeeds and steps on the first clone's UDS).",
+    "root_cause_class": "snapshot-clone-uds-collision",
+    "error_patterns": [
+      "UDS path in use",
+      "address already in use",
+      "vsock collision"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.snapshot-clone",
+      "firecracker.vsock.uds-path-override-on-restore"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect both clones' configured UDS paths",
+        "command": "GET /vm/config (on each)",
+        "expected": "Same uds_path → collision",
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker process logs for the request that errored",
+        "command": "journalctl -t firecracker -n 100 --no-pager | grep -iE 'error|warn|<interface-id>'",
+        "expected": "Find the relevant API request and its rejection reason; cross-check against fc-docs-network-setup constraints.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Use vsock_override on snapshot/load to give each clone a unique UDS path",
+        "command": "PUT /snapshot/load {..., vsock_override: {uds_path: '/clones/v.sock.<id>'}}",
+        "validation": "Each clone has its own UDS",
+        "rollback": null,
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Use jailer per clone — each gets its own chroot, paths are naturally isolated",
+        "command": "Wrap each FC in jailer with unique --id (which becomes the chroot leaf)",
+        "validation": "Per-chroot UDS paths can't collide",
+        "rollback": null,
+        "source_id": "fc-docs-jailer"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-vsock"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.vhost-vsock-host-module-missing",
+    "symptom": "PUT /vsock fails with ENOENT or ENODEV. Host kernel lacks CONFIG_VHOST_VSOCK module — even though Firecracker bypasses vhost code, the module needs to be loaded.",
+    "root_cause_class": "host-kernel-module-missing",
+    "error_patterns": [
+      "vhost-vsock module not loaded",
+      "ENODEV"
+    ],
+    "affected_concepts": [
+      "firecracker.vsock.virtio-vsock-device"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check host module",
+        "command": "lsmod | grep vhost; modinfo vhost_vsock",
+        "expected": "vhost_vsock available",
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker process logs for the request that errored",
+        "command": "journalctl -t firecracker -n 100 --no-pager | grep -iE 'error|warn|<interface-id>'",
+        "expected": "Find the relevant API request and its rejection reason; cross-check against fc-docs-network-setup constraints.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Load the module",
+        "command": "sudo modprobe vhost_vsock; echo 'vhost_vsock' | sudo tee /etc/modules-load.d/vhost-vsock.conf",
+        "validation": "PUT /vsock succeeds",
+        "rollback": "sudo modprobe -r vhost_vsock",
+        "source_id": "fc-docs-vsock"
+      },
+      {
+        "step": 2,
+        "action": "Re-issue the API call with corrected payload, then start instance",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/network-interfaces/eth0 -d '{\"iface_id\":\"eth0\",\"host_dev_name\":\"<tap>\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "API returns 204 No Content for PUT and InstanceStart; instance enters Running state.",
+        "rollback": "Stop the VM (PUT /actions {action_type: SendCtrlAltDel} for x86_64 or destroy the process) and undo TAP changes.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-vsock"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.virtio-net-no-nack-lro",
+    "symptom": "FreeBSD (or other guest) disables Large Receive Offload (LRO), but Firecracker keeps sending 1536+ byte segments anyway. Guest virtio-net device hangs.",
+    "root_cause_class": "virtio-feature-negotiation-bug",
+    "error_patterns": [
+      "LRO not honored",
+      "guest network hung",
+      "virtio-net oversized frame"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.tap-backend",
+      "firecracker.networking.no-multi-queue"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm LRO is being NACKed by the guest driver",
+        "command": "guest$ ethtool -k eth0 | grep large-receive-offload",
+        "expected": "off [fixed] when guest doesn't support LRO",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"
+      },
+      {
+        "step": 2,
+        "action": "Capture frame sizes Firecracker is sending",
+        "command": "host$ tcpdump -i tap0 -nn -e -vvv | head -100",
+        "expected": "Frames >1500 bytes (LRO-aggregated) when guest expects MTU-sized only",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Track upstream issue #3905; upgrade to a Firecracker version with the LRO-respect fix",
+        "command": "Monitor github.com/firecracker-microvm/firecracker/issues/3905; update binary when fixed",
+        "validation": "Frames respect guest's NACK",
+        "rollback": "Pin to prior version",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"
+      },
+      {
+        "step": 2,
+        "action": "Workaround: switch guest OS to Linux which advertises LRO support",
+        "command": "Replace FreeBSD guest image with Linux",
+        "validation": "Network functional",
+        "rollback": null,
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/3905"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/3905"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.vsock-connect-before-guest-init",
+    "symptom": "Host initiates vsock CONNECT immediately after InstanceStart but Firecracker closes the host-side socket before the guest agent finishes booting and starts listening.",
+    "root_cause_class": "lifecycle-race",
+    "error_patterns": [
+      "vsock connection refused",
+      "Firecracker closed UDS prematurely"
+    ],
+    "affected_concepts": [
+      "firecracker.vsock.host-initiated-handshake",
+      "firecracker.vsock.virtio-vsock-device"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Trace timing — when did guest agent listen vs when did host CONNECT",
+        "command": "Add timestamp logging on both sides; correlate with FC log",
+        "expected": "Host CONNECT precedes guest listen by N ms",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1253"
+      },
+      {
+        "step": 2,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker process logs for the request that errored",
+        "command": "journalctl -t firecracker -n 100 --no-pager | grep -iE 'error|warn|<interface-id>'",
+        "expected": "Find the relevant API request and its rejection reason; cross-check against fc-docs-network-setup constraints.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Host should wait for a guest-readiness signal before CONNECT",
+        "command": "Have guest write a sentinel file or send a vsock packet from a known-listening port; host polls before CONNECT",
+        "validation": "No more premature closes",
+        "rollback": null,
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1253"
+      },
+      {
+        "step": 2,
+        "action": "Or implement retry-with-backoff on the host CONNECT side",
+        "command": "Wrap CONNECT in a 100ms-interval retry loop with max 30s timeout",
+        "validation": "Resilient to early-init races",
+        "rollback": null,
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1253"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/1253"
+    ]
+  },
+  {
+    "id": "firecracker.networking.fm.vsock-stream-read-error-mid-flight",
+    "symptom": "Active vsock connection terminates mid-flight with a stream read error — Firecracker fails to read from the backing AF_UNIX stream, possibly because the host peer closed it abruptly.",
+    "root_cause_class": "stream-cleanup-race",
+    "error_patterns": [
+      "error reading from backing stream",
+      "vsock connection dropped"
+    ],
+    "affected_concepts": [
+      "firecracker.vsock.uds-multiplexing",
+      "firecracker.vsock.virtio-vsock-device"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check FC log for backing-stream errors",
+        "command": "grep -i 'backing stream' <fc-log>",
+        "expected": "Error message identifying the failing channel",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"
+      },
+      {
+        "step": 2,
+        "action": "Inspect host peer process state at the time",
+        "command": "ps -p <host-peer-pid>; check for crashes/restarts",
+        "expected": "Peer may have died",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker API state for the affected interface/socket",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .network-interfaces",
+        "expected": "Configured interfaces match expected; missing entry indicates PUT was never made or PUT failed.",
+        "source_id": "fc-docs-network-setup"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Make host peers fault-tolerant — close UDS gracefully on shutdown",
+        "command": "Wrap UDS use in try/finally; explicit close()",
+        "validation": "Connections close cleanly on peer exit",
+        "rollback": null,
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"
+      },
+      {
+        "step": 2,
+        "action": "Implement guest-side reconnect logic",
+        "command": "Guest agent retries vsock connect on EPIPE / ECONNRESET",
+        "validation": "Transient stream errors recover",
+        "rollback": null,
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1751"
+      }
+    ],
+    "confidence": 0.6,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/1751"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.action-without-prerequisites",
+    "symptom": "PUT /actions {action_type: InstanceStart} returns 400. Required pre-boot resources aren't all configured.",
+    "root_cause_class": "missing-pre-boot-config",
+    "error_patterns": [
+      "InstanceStart 400",
+      "boot source not configured",
+      "machine config not set"
+    ],
+    "affected_concepts": [
+      "firecracker.api.actions-resource",
+      "firecracker.api.boot-source",
+      "firecracker.api.machine-config"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect what's been configured",
+        "command": "GET /vm/config | jq '.\"boot-source\", .\"machine-config\", .drives'",
+        "expected": "boot-source non-null; machine-config non-null; ≥1 drive",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Configure each missing resource before InstanceStart",
+        "command": "PUT /boot-source; PUT /machine-config; PUT /drives/<id> with is_root_device=true; (optional: /network-interfaces, /vsock, etc.); THEN PUT /actions",
+        "validation": "InstanceStart returns 204",
+        "rollback": null,
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Apply the missing/corrected configuration via PUT or PATCH then start",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "Both API calls return 204; subsequent GET /vm/config reflects the change.",
+        "rollback": "PATCH back to original values; or stop and re-create the microVM.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-swagger-spec"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.api-on-tcp-not-uds-attempt",
+    "symptom": "Operator attempts to bind the Firecracker API to a TCP port. Firecracker only accepts UDS transport.",
+    "root_cause_class": "fundamental-design-misunderstanding",
+    "error_patterns": [
+      "TCP bind attempted",
+      "API socket type wrong"
+    ],
+    "affected_concepts": [
+      "firecracker.api.unix-domain-socket-transport"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check firecracker --help and CLI args",
+        "command": "firecracker --help | grep -i sock",
+        "expected": "Only --api-sock <path> exists; no TCP option",
+        "source_id": "fc-docs-getting-started"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Use UDS; bridge to TCP via socat or similar if remote access needed",
+        "command": "socat TCP-LISTEN:8080,fork UNIX-CONNECT:/tmp/firecracker.socket",
+        "validation": "TCP clients can reach the API; security: protect with firewall + auth proxy",
+        "rollback": "Kill the socat bridge",
+        "source_id": "fc-docs-getting-started"
+      },
+      {
+        "step": 2,
+        "action": "For multi-host orchestration, use a per-host control plane that holds UDS local and exposes its own auth'd API",
+        "command": "Architectural — orchestrator owns the UDS, exposes a tenant-isolated REST/gRPC",
+        "validation": null,
+        "rollback": null,
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-getting-started"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.balloon-overcommit-thrashing",
+    "symptom": "MicroVM with VirtIO balloon overcommitted memory thrashes — guest's effective RAM drops to a tiny fraction (e.g., 8 GiB → 1.4 GiB) causing massive page churn.",
+    "root_cause_class": "balloon-overcommit",
+    "error_patterns": [
+      "guest swapping heavily",
+      "balloon inflated past safe level"
+    ],
+    "affected_concepts": [
+      "firecracker.api.balloon-resource",
+      "firecracker.api.cmd.patch-balloon"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check balloon size vs guest available memory",
+        "command": "GET /balloon; guest$ free -m",
+        "expected": "amount_mib should leave guest enough free memory for working set",
+        "source_id": "https://community.fly.io/t/virtio-balloon-overcommit-causing-severe-memory-thrashing-on-8-cpu-8gb-firecracker-vms/27124"
+      },
+      {
+        "step": 2,
+        "action": "Check balloon stats over time",
+        "command": "GET /balloon/statistics (multiple polls)",
+        "expected": "swap_in / swap_out trending up indicates pressure",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Deflate the balloon to give the guest memory back",
+        "command": "PATCH /balloon {amount_mib: <smaller>}",
+        "validation": "Guest free memory recovers; swap rate drops",
+        "rollback": null,
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Set deflate_on_oom=true so balloon auto-deflates under guest OOM pressure",
+        "command": "PUT /balloon {amount_mib: 0, deflate_on_oom: true, stats_polling_interval_s: 5} (pre-boot only, requires VM restart)",
+        "validation": "Future inflate-too-aggressive scenarios self-correct",
+        "rollback": "deflate_on_oom=false (no auto-recover)",
+        "source_id": "fc-swagger-spec"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "https://community.fly.io/t/virtio-balloon-overcommit-causing-severe-memory-thrashing-on-8-cpu-8gb-firecracker-vms/27124",
+      "fc-docs-ballooning"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.debug-binary-in-production",
+    "symptom": "Production deployment is using a debug-built Firecracker binary. Default seccomp filters are not embedded in debug builds — process runs unsandboxed at the syscall layer.",
+    "root_cause_class": "wrong-build-artifact",
+    "error_patterns": [
+      "debug build in prod",
+      "no seccomp loaded despite no --no-seccomp"
+    ],
+    "affected_concepts": [
+      "firecracker.security.seccomp-debug-binary-gap"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check Firecracker version/build flavor",
+        "command": "firecracker --version",
+        "expected": "Release; not debug or experimental-gnu",
+        "source_id": "fc-docs-seccomp"
+      },
+      {
+        "step": 2,
+        "action": "Check Seccomp status as a confirmation",
+        "command": "grep Seccomp /proc/<fc-pid>/status",
+        "expected": "Seccomp: 2; if 0 with no --no-seccomp → likely debug build",
+        "source_id": "fc-docs-seccomp"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Replace with release build (musl static)",
+        "command": "Pull official release tarball or rebuild with --release",
+        "validation": "Seccomp: 2; --version shows release identifier",
+        "rollback": "Revert to prior debug build (insecure)",
+        "source_id": "fc-docs-seccomp"
+      },
+      {
+        "step": 2,
+        "action": "Apply the missing/corrected configuration via PUT or PATCH then start",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "Both API calls return 204; subsequent GET /vm/config reflects the change.",
+        "rollback": "PATCH back to original values; or stop and re-create the microVM.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-seccomp"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.dirty-page-tracking-overhead",
+    "symptom": "VM with track_dirty_pages=true sees noticeable per-write overhead (small but measurable on write-heavy workloads). KVM page-walk for dirty bits adds cost.",
+    "root_cause_class": "intentional-tradeoff",
+    "error_patterns": [
+      "write throughput drop",
+      "dirty tracking overhead"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.dirty-page-protocol",
+      "firecracker.api.cfg.machine-config.track-dirty-pages",
+      "firecracker.kvm.dirty-log"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm track_dirty_pages is on",
+        "command": "GET /machine-config | jq '.track_dirty_pages'",
+        "expected": "true",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Benchmark write throughput with and without",
+        "command": "Run fio random-write workload pre and post",
+        "expected": "Slight degradation when on",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "If diff snapshots aren't needed, disable track_dirty_pages",
+        "command": "Pre-boot: PUT /machine-config {..., track_dirty_pages: false}; restart VM",
+        "validation": "Write throughput recovers",
+        "rollback": "Re-enable; lose diff capability",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "If keeping diff snapshots, accept the trade-off — it's by design",
+        "command": null,
+        "validation": null,
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.drive-backing-file-missing",
+    "symptom": "PUT /drives returns 400 with 'Block device backing file does not exist' or InstanceStart fails reading the disk.",
+    "root_cause_class": "missing-host-file",
+    "error_patterns": [
+      "backing file does not exist",
+      "ENOENT",
+      "block device error"
+    ],
+    "affected_concepts": [
+      "firecracker.api.drive-resource"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check the configured path_on_host (resolved relative to chroot if jailed)",
+        "command": "ls -la <chroot>/<path_on_host>",
+        "expected": "File exists and is readable by the FC uid",
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Copy/bind-mount the backing file into the chroot before PUT /drives",
+        "command": "Inside jail setup: cp <host-path> <chroot>/<inside-path>; chown <fc-uid>",
+        "validation": "Drive attaches",
+        "rollback": null,
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 2,
+        "action": "Or pass the file via --bind-mount in your jailer setup script",
+        "command": "Use a wrapper that mounts the host path into the chroot read-only or read-write",
+        "validation": "FC sees file at the configured chroot-relative path",
+        "rollback": null,
+        "source_id": "fc-docs-jailer"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-swagger-spec",
+      "fc-docs-jailer"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.drive-unsafe-cache-data-loss",
+    "symptom": "Host crashes; on reboot, guest filesystem is corrupted or 'recently committed' data is missing. Drive was attached with cache_type=Unsafe — guest fsync()s were dropped.",
+    "root_cause_class": "drive-cache-misconfiguration",
+    "error_patterns": [
+      "fsck errors after host crash",
+      "data missing after crash"
+    ],
+    "affected_concepts": [
+      "firecracker.api.drive-resource",
+      "firecracker.api.cfg.drive.cache-type"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check drive cache_type",
+        "command": "GET /vm/config | jq '.drives[].cache_type'",
+        "expected": "'Writeback' for any drive holding non-ephemeral data",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Restart microVM with cache_type=Writeback for persistent drives",
+        "command": "Pre-boot: PUT /drives/<id> {..., cache_type: 'Writeback'}",
+        "validation": "fsync calls propagate to host",
+        "rollback": "cache_type=Unsafe (faster, unsafe)",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Apply the missing/corrected configuration via PUT or PATCH then start",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "Both API calls return 204; subsequent GET /vm/config reflects the change.",
+        "rollback": "PATCH back to original values; or stop and re-create the microVM.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-swagger-spec"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-client-restart-cascades-to-sandboxes",
+    "symptom": "Orchestrator (e2b-style) client process restarts → all live Firecracker sandboxes crash. UFFD handler closure on client exit cascades to FCs that depend on it.",
+    "root_cause_class": "orchestrator-lifecycle-coupling",
+    "error_patterns": [
+      "sandbox crashed on client restart",
+      "UFFD handler closed"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.uffd-backend",
+      "firecracker.comparable-systems.e2b-firecracker-substrate"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Trace the failure chain — which process closure killed which sandboxes",
+        "command": "Add audit logging on UFFD handler exit → FC death",
+        "expected": "1:N relationship visible",
+        "source_id": "https://github.com/e2b-dev/infra/issues/127"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Decouple UFFD handler lifecycle from client process — run it as a separate long-lived service",
+        "command": "Architectural: standalone uffd-server process, client only registers FCs with it",
+        "validation": "Client restarts don't crash sandboxes",
+        "rollback": null,
+        "source_id": "https://github.com/e2b-dev/infra/issues/127"
+      },
+      {
+        "step": 2,
+        "action": "Or implement UFFD handler reattachment on restart",
+        "command": "Persist per-FC UFFD state to disk; new handler instance reads on startup",
+        "validation": "Handler crash + restart leaves FCs running",
+        "rollback": null,
+        "source_id": "https://github.com/e2b-dev/infra/issues/127"
+      }
+    ],
+    "confidence": 0.75,
+    "source_ids": [
+      "https://github.com/e2b-dev/infra/issues/127"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-guest-clock-drift-on-startup",
+    "symptom": "Guest clock drifts by ~100-500ms on startup. KVM PTP not configured in guest; guest relies on its initial RTC read which lags.",
+    "root_cause_class": "guest-time-source",
+    "error_patterns": [
+      "clock skew",
+      "ntp not synced",
+      "drift on boot"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.kvm-clock",
+      "firecracker.security.cfg.guest-kernel.config-virtio-vsockets"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check guest /dev/ptp0 availability",
+        "command": "guest$ ls /dev/ptp0",
+        "expected": "Should exist if CONFIG_PTP_1588_CLOCK_KVM=y",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Build guest kernel with CONFIG_PTP_1588_CLOCK=y and CONFIG_PTP_1588_CLOCK_KVM=y; configure chrony to use /dev/ptp0",
+        "command": "Edit kernel config; rebuild; in guest: add 'refclock PHC /dev/ptp0 poll 3 dpoll -2 offset 0' to /etc/chrony/chrony.conf; restart chrony",
+        "validation": "guest$ chronyc tracking shows /dev/ptp0 source; drift <1ms",
+        "rollback": "Remove refclock; rebuild without CONFIG_PTP",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Apply the missing/corrected configuration via PUT or PATCH then start",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "Both API calls return 204; subsequent GET /vm/config reflects the change.",
+        "rollback": "PATCH back to original values; or stop and re-create the microVM.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "https://github.com/e2b-dev/infra/issues/89",
+      "fc-repo-faq"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-orchestrator-cascade-restart",
+    "symptom": "Orchestrator-level health-check failure (Nomad/Consul) triggers a cascade of Firecracker process restarts. The actual fault wasn't with FC.",
+    "root_cause_class": "orchestrator-health-check-misconfig",
+    "error_patterns": [
+      "mass FC restart",
+      "orchestrator health-check failed"
+    ],
+    "affected_concepts": [
+      "firecracker.comparable-systems.e2b-firecracker-substrate"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Identify trigger — orchestrator log around the cascade time",
+        "command": "journalctl -u nomad --since 'X minutes ago'",
+        "expected": "Health-check failure entries",
+        "source_id": "https://github.com/e2b-dev/infra/issues/130"
+      },
+      {
+        "step": 2,
+        "action": "Differentiate FC fault vs orchestrator fault",
+        "command": "Per-FC log inspection during the same window",
+        "expected": "FCs were healthy when orchestrator killed them",
+        "source_id": "https://github.com/e2b-dev/infra/issues/130"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Tune orchestrator health-check thresholds — allow brief blips",
+        "command": "Raise Nomad check_restart.limit; widen health-check interval",
+        "validation": "Transient blips don't kill FCs",
+        "rollback": "Tighten back",
+        "source_id": "https://github.com/e2b-dev/infra/issues/130"
+      },
+      {
+        "step": 2,
+        "action": "Decouple FC lifecycle from orchestrator restart",
+        "command": "Use a separate FC supervisor that doesn't restart on orchestrator-level events",
+        "validation": "Orchestrator can restart independently of FC fleet",
+        "rollback": null,
+        "source_id": "https://github.com/e2b-dev/infra/issues/130"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "https://github.com/e2b-dev/infra/issues/130"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.e2b-uffd-firecracker-process-killing-race",
+    "symptom": "Orchestrator (e2b-style) tries to kill a Firecracker process while UFFD handler is mid-fault-service. Process kill races with handler cleanup → orphaned UFFD state, leaked fds, hung handlers.",
+    "root_cause_class": "lifecycle-race-uffd",
+    "error_patterns": [
+      "UFFD handler leaked",
+      "Firecracker zombie",
+      "kill -9 race"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.uffd-backend",
+      "firecracker.vmm.uffd-snapshot-backend"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect orphaned UFFD handlers",
+        "command": "ps aux | grep uffd-handler; lsof | grep userfaultfd",
+        "expected": "Zero handlers without a paired Firecracker",
+        "source_id": "https://github.com/e2b-dev/infra/pull/148"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Sequence kills: SIGTERM Firecracker first, wait for vCPU thread exit, then signal UFFD handler",
+        "command": "kill -TERM <fc-pid>; wait $fc; kill -TERM <uffd-pid>",
+        "validation": "No orphaned handlers",
+        "rollback": "Use SIGKILL on both (current racy behavior)",
+        "source_id": "https://github.com/e2b-dev/infra/pull/148"
+      },
+      {
+        "step": 2,
+        "action": "Track e2b-dev/infra PR #148 for the canonical lifecycle fix",
+        "command": "Monitor github.com/e2b-dev/infra/pull/148",
+        "validation": null,
+        "rollback": null,
+        "source_id": "https://github.com/e2b-dev/infra/pull/148"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "https://github.com/e2b-dev/infra/pull/148"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.fd-ulimit-too-low",
+    "symptom": "Firecracker fails with EMFILE (Too many open files) when starting many devices or under vsock-heavy workload. Each microVM uses 20+ FDs baseline.",
+    "root_cause_class": "fd-limit-exhaustion",
+    "error_patterns": [
+      "EMFILE",
+      "Too many open files",
+      "open(): bad file descriptor"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.eventfd-heavy-fd-usage",
+      "firecracker.jailer.cfg.cli.resource-limit-no-file"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check current ulimit",
+        "command": "cat /proc/<fc-pid>/limits | grep 'Max open files'",
+        "expected": "Soft limit ≥ 4096 for moderate workloads, much higher for vsock-heavy",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Count current FDs",
+        "command": "ls /proc/<fc-pid>/fd | wc -l",
+        "expected": "≤ soft limit; 20+ baseline",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise via jailer --resource-limit",
+        "command": "jailer ... --resource-limit no-file=8192 ...",
+        "validation": "Limits file shows new limit; Firecracker doesn't hit EMFILE",
+        "rollback": "Drop --resource-limit; use default 2048",
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 2,
+        "action": "Or systemd unit LimitNOFILE",
+        "command": "Set [Service] LimitNOFILE=8192 in unit file; systemctl daemon-reload; restart",
+        "validation": "/proc/<pid>/limits updated",
+        "rollback": "Remove LimitNOFILE",
+        "source_id": "fc-repo-faq"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-repo-faq",
+      "fc-docs-jailer"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.host-kernel-logs-slow-snapshot-restore",
+    "symptom": "Snapshot restore time degrades inexplicably (e.g., 3ms → 8.5ms on aarch64) after host kernel cmdline change. Host kernel logging hot during TAP create — synchronous console writes hold up the FC main thread.",
+    "root_cause_class": "host-console-blocking-fc-syscalls",
+    "error_patterns": [
+      "snapshot restore slow",
+      "host kernel log spam"
+    ],
+    "affected_concepts": [
+      "firecracker.setup.host-kernel-quiet-loglevel",
+      "firecracker.api.cmd.load-snapshot"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect host kernel cmdline",
+        "command": "cat /proc/cmdline",
+        "expected": "Should contain `quiet loglevel=1`; any console=ttyAMA0 / console=ttyS0 is suspect",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Check dmesg log volume during restore",
+        "command": "dmesg -c; trigger restore; dmesg | wc -l",
+        "expected": "Few lines if quiet loglevel=1 is set",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add quiet loglevel=1 to host kernel cmdline; remove any console= entries",
+        "command": "Edit /etc/default/grub GRUB_CMDLINE_LINUX; update-grub; reboot",
+        "validation": "Restore time returns to baseline",
+        "rollback": "Revert grub config",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Apply the missing/corrected configuration via PUT or PATCH then start",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "Both API calls return 204; subsequent GET /vm/config reflects the change.",
+        "rollback": "PATCH back to original values; or stop and re-create the microVM.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.hugepages-not-reserved",
+    "symptom": "PUT /machine-config with huge_pages='2M' fails or microVM creates fail under load. Host hasn't reserved enough hugepages.",
+    "root_cause_class": "host-resource-not-reserved",
+    "error_patterns": [
+      "hugepage allocation failed",
+      "no hugepages available"
+    ],
+    "affected_concepts": [
+      "firecracker.api.cfg.machine-config.huge-pages",
+      "firecracker.vmm.cfg.host-sysctl.vm-nr-hugepages"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check current hugepage reservation",
+        "command": "cat /proc/sys/vm/nr_hugepages; cat /proc/meminfo | grep -i huge",
+        "expected": "Reserved >= sum of expected microVM RAM in 2M units",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Reserve hugepages before starting microVMs",
+        "command": "echo <N> | sudo tee /proc/sys/vm/nr_hugepages",
+        "validation": "/proc/meminfo HugePages_Free >= demand",
+        "rollback": "Lower nr_hugepages",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Persist via sysctl",
+        "command": "echo 'vm.nr_hugepages=<N>' | sudo tee /etc/sysctl.d/hugepages.conf",
+        "validation": "Survives reboot",
+        "rollback": "Remove the file",
+        "source_id": "fc-repo-faq"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-repo-faq",
+      "fc-swagger-spec"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.hyperthreading-exposed-via-machine-config-smt-true",
+    "symptom": "machine-config.smt is true on a multi-tenant host. Guest sees hyperthreaded siblings via CPUID — speculation side-channel attack surface increases.",
+    "root_cause_class": "config-misuse-multi-tenant",
+    "error_patterns": [
+      "smt: true",
+      "guest sees SMT siblings"
+    ],
+    "affected_concepts": [
+      "firecracker.api.cfg.machine-config.smt",
+      "firecracker.setup.smt-off-side-channel"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check machine-config.smt",
+        "command": "GET /machine-config | jq '.smt'",
+        "expected": "false on multi-tenant hosts",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Set smt=false (pre-boot only, requires VM restart)",
+        "command": "PUT /machine-config {..., smt: false}; restart VM",
+        "validation": "guest$ lscpu shows Thread(s) per core: 1",
+        "rollback": "smt=true (insecure for multi-tenant)",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Apply the missing/corrected configuration via PUT or PATCH then start",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "Both API calls return 204; subsequent GET /vm/config reflects the change.",
+        "rollback": "PATCH back to original values; or stop and re-create the microVM.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-swagger-spec",
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.jailer-cgroup-v2-subtree-control-trap",
+    "symptom": "Jailer fails with 'no internal process constraint' when launched with --cgroup-version=2 + --parent-cgroup pointing at an existing cgroup that has domain controllers in subtree_control.",
+    "root_cause_class": "cgroup-v2-subtree-control-misconfiguration",
+    "error_patterns": [
+      "no internal process constraint",
+      "cgroup v2 move failed"
+    ],
+    "affected_concepts": [
+      "firecracker.jailer.cgroup-v2-subtree-control-trap",
+      "firecracker.jailer.cgroup-setup"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check the parent cgroup's subtree_control",
+        "command": "cat /sys/fs/cgroup/<parent>/cgroup.subtree_control",
+        "expected": "If non-empty (e.g. 'memory cpu') → root cause",
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Move the jailer to a leaf cgroup (no subtree_control set)",
+        "command": "Use a different --parent-cgroup that's a leaf, or pass --cgroup args so jailer creates its own subdir",
+        "validation": "Jailer launches without error",
+        "rollback": null,
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 2,
+        "action": "Or remove domain controllers from subtree_control",
+        "command": "echo '-memory -cpu' | sudo tee /sys/fs/cgroup/<parent>/cgroup.subtree_control",
+        "validation": "Parent now empty; jailer move succeeds",
+        "rollback": "Re-add the controllers",
+        "source_id": "fc-docs-jailer"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "fc-docs-jailer"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.jailer-chroot-base-permission-denied",
+    "symptom": "Jailer exits with EACCES creating <chroot_base>/<exec>/<id>/root. The chroot base directory or its parents have wrong permissions.",
+    "root_cause_class": "filesystem-permissions",
+    "error_patterns": [
+      "EACCES",
+      "permission denied",
+      "cannot create chroot"
+    ],
+    "affected_concepts": [
+      "firecracker.jailer.chroot-jail",
+      "firecracker.jailer.cfg.cli.chroot-base-dir"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check chroot-base-dir permissions all the way down",
+        "command": "namei -l /srv/jailer",
+        "expected": "Path is writable by the user invoking jailer (typically root)",
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Pre-create with correct perms",
+        "command": "sudo mkdir -p /srv/jailer; sudo chmod 755 /srv/jailer",
+        "validation": "Jailer creates the chroot tree successfully",
+        "rollback": null,
+        "source_id": "fc-docs-jailer"
+      },
+      {
+        "step": 2,
+        "action": "Ensure paths aren't writable by unprivileged users (per the prod-host-setup recommendation)",
+        "command": "sudo chmod 700 /srv/jailer; sudo chown root:root /srv/jailer",
+        "validation": "Path-traversal attack surface minimized",
+        "rollback": null,
+        "source_id": "fc-docs-prod-host-setup"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-jailer",
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.ksm-enabled-side-channel-risk",
+    "symptom": "Multi-tenant host has KSM (Kernel Samepage Merging) enabled. Page-deduplication side channels exploitable — one tenant can detect another's memory contents.",
+    "root_cause_class": "host-hardening-missing",
+    "error_patterns": [
+      "/sys/kernel/mm/ksm/run = 1",
+      "KSM merging active"
+    ],
+    "affected_concepts": [
+      "firecracker.setup.ksm-off-side-channel"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check KSM state",
+        "command": "cat /sys/kernel/mm/ksm/run /sys/kernel/mm/ksm/pages_shared",
+        "expected": "run=0; pages_shared=0",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Disable KSM and unmerge",
+        "command": "echo 0 | sudo tee /sys/kernel/mm/ksm/run",
+        "validation": "run=0; pages_shared decreases over time",
+        "rollback": "echo 1 > /sys/kernel/mm/ksm/run",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Make persistent via systemd unit",
+        "command": "Add a systemd unit that sets ksm/run=0 at boot; or set kernel.ksm_run=0 sysctl if your distro maps it",
+        "validation": "Survives reboot",
+        "rollback": null,
+        "source_id": "fc-docs-prod-host-setup"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.kvm-pit-cpu-overhead-untracked",
+    "symptom": "Host CPU usage spikes from kvm-pit kernel threads but the cost isn't accounted to any microVM cgroup. Schedulers undercount per-tenant CPU; noisy-neighbor effects.",
+    "root_cause_class": "kernel-thread-not-in-microvm-cgroup",
+    "error_patterns": [
+      "high CPU on kvm-pit/<pid> threads",
+      "cpu accounting drift"
+    ],
+    "affected_concepts": [
+      "firecracker.setup.kvm-pit-cpu-overhead",
+      "firecracker.kvm.in-kernel-irqchip"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Identify kvm-pit threads",
+        "command": "ps -eLo pid,comm | grep kvm-pit",
+        "expected": "kvm-pit/<fc-pid> entries",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Check which cgroup they're in",
+        "command": "for tid in $(ps -L -o tid= -p <fc-pid>); do cat /proc/$tid/cgroup; done",
+        "expected": "kvm-pit threads in root cgroup, not microVM cgroup",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Run an external agent that moves kvm-pit threads into the microVM's cgroup post-start",
+        "command": "After Firecracker starts, find kvm-pit/<fc-pid> tids and write them to <microvm-cgroup>/cgroup.procs (v2) or tasks (v1)",
+        "validation": "kvm-pit CPU now accounted to the microVM",
+        "rollback": "Move them back to root cgroup",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Or raise the kvm timer-period limit to reduce kvm-pit work",
+        "command": "sudo modprobe -r kvm_intel kvm; sudo modprobe kvm min_timer_period_us=1000; sudo modprobe kvm_intel; persist via /etc/modprobe.d/kvm.conf",
+        "validation": "kvm-pit CPU drops; APIC granularity coarsens (workload-test)",
+        "rollback": "Reset min_timer_period_us to default",
+        "source_id": "fc-docs-prod-host-setup"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.no-seccomp-in-production",
+    "symptom": "Production Firecracker is started with --no-seccomp (or with a custom filter that whitelists too many syscalls). Defense-in-depth boundary disabled.",
+    "root_cause_class": "operator-error-security-disabled",
+    "error_patterns": [
+      "--no-seccomp in process args",
+      "default seccomp not loaded"
+    ],
+    "affected_concepts": [
+      "firecracker.security.no-seccomp-flag",
+      "firecracker.security.seccomp-boundary"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect Firecracker process args",
+        "command": "ps -p <fc-pid> -o args=",
+        "expected": "Should NOT include --no-seccomp; --seccomp-filter only when needed",
+        "source_id": "fc-docs-seccomp"
+      },
+      {
+        "step": 2,
+        "action": "Verify seccomp is active",
+        "command": "grep Seccomp /proc/<fc-pid>/status",
+        "expected": "Seccomp: 2 (filter mode)",
+        "source_id": "fc-docs-seccomp"
+      },
+      {
+        "step": 3,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Remove --no-seccomp from launch script",
+        "command": "Update orchestrator/systemd unit to drop the flag",
+        "validation": "Seccomp: 2 in /proc/<pid>/status",
+        "rollback": null,
+        "source_id": "fc-docs-seccomp"
+      },
+      {
+        "step": 2,
+        "action": "If a custom filter is needed, audit it; only whitelist what's strictly required",
+        "command": "Review the JSON; remove unnecessary syscall allowances; recompile via seccompiler-bin",
+        "validation": "Filter audit clean",
+        "rollback": "Revert to default embedded filter",
+        "source_id": "fc-docs-seccompiler"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-seccomp",
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.pre-boot-only-call-after-boot",
+    "symptom": "API call returns 400 with 'cannot be modified after machine startup' or similar. Trying to PUT a pre-boot-only resource (drive, network-interface, vsock, machine-config, boot-source, mmds-config) after InstanceStart.",
+    "root_cause_class": "lifecycle-misuse",
+    "error_patterns": [
+      "cannot be modified after machine startup",
+      "pre-boot only"
+    ],
+    "affected_concepts": [
+      "firecracker.api.pre-boot-vs-runtime"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check VM state",
+        "command": "GET / | jq '.state'",
+        "expected": "If 'Running' or 'Paused' → pre-boot resources are immutable",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Snapshot, destroy, restart fresh microVM with the new pre-boot config",
+        "command": "PATCH /vm{Paused}; PUT /snapshot/create; SIGKILL; new FC process; load snapshot OR fresh boot with new config",
+        "validation": "Resource takes effect on the new microVM",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "If only the rate limiter or drive backing file needs changing, use PATCH (those ARE runtime-mutable)",
+        "command": "PATCH /drives/<id> {path_on_host: <new>} OR PATCH /network-interfaces/<id> {tx_rate_limiter: <new>}",
+        "validation": "Runtime change applied without restart",
+        "rollback": null,
+        "source_id": "fc-swagger-spec"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-swagger-spec"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.smt-enabled-side-channel-risk",
+    "symptom": "Multi-tenant Firecracker host has SMT (Hyperthreading) enabled. Speculation-class side channels (Spectre, MDS) become exploitable across tenants.",
+    "root_cause_class": "host-hardening-missing",
+    "error_patterns": [
+      "SMT enabled in /sys",
+      "tenant separation violated"
+    ],
+    "affected_concepts": [
+      "firecracker.setup.smt-off-side-channel",
+      "firecracker.api.cfg.machine-config.smt"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check host SMT status",
+        "command": "cat /sys/devices/system/cpu/smt/control; lscpu | grep 'Thread(s) per core'",
+        "expected": "off; 1",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Disable SMT at runtime",
+        "command": "echo off | sudo tee /sys/devices/system/cpu/smt/control",
+        "validation": "smt/control shows off; lscpu Thread(s) per core = 1",
+        "rollback": "echo on > /sys/devices/system/cpu/smt/control",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Make persistent: add nosmt to host kernel cmdline",
+        "command": "Edit /etc/default/grub GRUB_CMDLINE_LINUX; update-grub; reboot",
+        "validation": "SMT off after reboot",
+        "rollback": "Remove nosmt",
+        "source_id": "fc-docs-prod-host-setup"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.swap-enabled-data-remanence",
+    "symptom": "Host has swap enabled. Under memory pressure, guest memory contents get written to disk → data remanence on disk reuse.",
+    "root_cause_class": "host-hardening-missing",
+    "error_patterns": [
+      "swap partitions present",
+      "guest memory in /swap"
+    ],
+    "affected_concepts": [
+      "firecracker.setup.swap-off-data-remanence"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check swap status",
+        "command": "grep -q /dev /proc/swaps && echo 'swap present' || echo 'no swap'",
+        "expected": "no swap",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Disable all swap",
+        "command": "sudo swapoff -a; remove swap entries from /etc/fstab",
+        "validation": "Verification command returns 'no swap'",
+        "rollback": "sudo swapon -a (re-enables)",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "If swap is required, use encrypted swap (LUKS over swap partition)",
+        "command": "Configure dm-crypt-managed swap",
+        "validation": "Swap pages are encrypted at rest",
+        "rollback": null,
+        "source_id": "fc-docs-prod-host-setup"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.setup.fm.virtio-net-tx-scatter-gather-perf",
+    "symptom": "VirtIO/net TX throughput is lower than expected. Packets get copied twice — descriptor → intermediate buffer → kernel — instead of using scatter-gather.",
+    "root_cause_class": "design-perf-issue-fixed",
+    "error_patterns": [
+      "TX throughput plateau",
+      "extra packet copy"
+    ],
+    "affected_concepts": [
+      "firecracker.networking.tap-backend",
+      "firecracker.networking.network-perf-considerations"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Compare against Firecracker version where scatter-gather was added (PR #2958)",
+        "command": "firecracker --version; check CHANGELOG for scatter-gather mention",
+        "expected": "Modern versions include the optimization",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/420"
+      },
+      {
+        "step": 2,
+        "action": "Read current Firecracker configuration",
+        "command": "curl -s --unix-socket /tmp/firecracker.sock http://localhost/vm/config | jq .",
+        "expected": "All required pre-boot resources (boot-source, drives, machine-config, optional network-interfaces and vsock) appear in the config; missing entries indicate the API setup was incomplete.",
+        "source_id": "fc-docs-api-actions"
+      },
+      {
+        "step": 3,
+        "action": "Check Firecracker process exit status / log for setup errors",
+        "command": "journalctl -t firecracker -n 200 --no-pager | tail -60",
+        "expected": "No 'BadRequest', 'ResourceNotInitialized', or 'OperationNotSupportedPostBoot' errors; if present, the trailing message names the missing prerequisite.",
+        "source_id": "fc-docs-getting-started"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Upgrade Firecracker to a version >= the PR #2958 release",
+        "command": "Update binary",
+        "validation": "TX throughput improves",
+        "rollback": "Pin prior",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/420"
+      },
+      {
+        "step": 2,
+        "action": "Apply the missing/corrected configuration via PUT or PATCH then start",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/machine-config -d '{\"vcpu_count\":2,\"mem_size_mib\":1024}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"InstanceStart\"}'",
+        "validation": "Both API calls return 204; subsequent GET /vm/config reflects the change.",
+        "rollback": "PATCH back to original values; or stop and re-create the microVM.",
+        "source_id": "fc-docs-api-actions"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/420"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.cgroupv1-restore-latency-tax",
+    "symptom": "Snapshot restore on cgroup-v1 hosts is significantly slower than v2 — restore times of 100ms+ vs 5-15ms on v2.",
+    "root_cause_class": "host-cgroup-version",
+    "error_patterns": [
+      "slow snapshot restore",
+      "restore time elevated"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.cgroupv1-restore-latency",
+      "firecracker.api.cmd.load-snapshot"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check host cgroup version",
+        "command": "stat -fc %T /sys/fs/cgroup",
+        "expected": "cgroup2fs (v2) or tmpfs (v1)",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Time a restore",
+        "command": "time curl -X PUT --unix-socket <sock> http://localhost/snapshot/load -d <body>",
+        "expected": ">100ms on v1, <20ms on v2 typically",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Migrate host to cgroup v2 (kernel 5.10+ default on most distros)",
+        "command": "Add systemd.unified_cgroup_hierarchy=1 to host kernel cmdline; reboot",
+        "validation": "stat -fc %T /sys/fs/cgroup → cgroup2fs; restore latency drops",
+        "rollback": "Remove systemd.unified_cgroup_hierarchy=1; reboot",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Re-take the snapshot from a known-good state with current Firecracker version",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Paused\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/snapshot/create -d '{\"snapshot_path\":\"/srv/snap.state\",\"mem_file_path\":\"/srv/snap.mem\",\"snapshot_type\":\"Full\"}' && curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Resumed\"}'",
+        "validation": "Both .state and .memory files appear; restoring into a fresh Firecracker process succeeds.",
+        "rollback": "Delete the new snapshot files and continue using the prior known-good snapshot.",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/2129",
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.cpuid-divergence-restore-fails",
+    "symptom": "Snapshot restore fails because CPUID exposed at save time references features unavailable on the restore host (e.g., AVX-512 absent on target).",
+    "root_cause_class": "host-cpu-feature-mismatch",
+    "error_patterns": [
+      "CPUID mismatch",
+      "unsupported feature",
+      "KVM_SET_CPUID2 EINVAL"
+    ],
+    "affected_concepts": [
+      "firecracker.kvm.cpuid-control",
+      "firecracker.snapshots.snapshot-portability",
+      "firecracker.vmm.cpu-template-mechanism"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Compare host CPU features",
+        "command": "lscpu --extended; cat /proc/cpuinfo | grep flags (both hosts)",
+        "expected": "Save host has features missing on restore host",
+        "source_id": "fc-docs-cpu-templates"
+      },
+      {
+        "step": 2,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker logs from the time of snapshot create/restore",
+        "command": "journalctl -t firecracker --since=\"10 minutes ago\" --no-pager | grep -iE \"snapshot|restore|vmgenid|MismatchedVersion\"",
+        "expected": "Find any version-mismatch, 'NotAllowedAfterBoot', or restore-time validation errors.",
+        "source_id": "fc-docs-snapshot-versioning"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Use a CPU template that targets the LCD across the fleet (e.g., T2 for Intel-broad)",
+        "command": "PUT /cpu-config with a portable template before save; re-save",
+        "validation": "Snapshot restores on all hosts",
+        "rollback": "Use no template (lock fleet to identical CPUs)",
+        "source_id": "fc-docs-cpu-templates"
+      },
+      {
+        "step": 2,
+        "action": "Re-take the snapshot from a known-good state with current Firecracker version",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Paused\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/snapshot/create -d '{\"snapshot_path\":\"/srv/snap.state\",\"mem_file_path\":\"/srv/snap.mem\",\"snapshot_type\":\"Full\"}' && curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Resumed\"}'",
+        "validation": "Both .state and .memory files appear; restoring into a fresh Firecracker process succeeds.",
+        "rollback": "Delete the new snapshot files and continue using the prior known-good snapshot.",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "fc-docs-snapshot-support",
+      "fc-docs-cpu-templates"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.crc-mismatch-corrupt-state-file",
+    "symptom": "PUT /snapshot/load fails with CRC validation error. Snapshot state file is corrupted (interrupted write, disk corruption, transport error).",
+    "root_cause_class": "snapshot-corruption",
+    "error_patterns": [
+      "CRC mismatch",
+      "snapshot state file invalid",
+      "CRC validation failed"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.snapshot-files",
+      "firecracker.snapshots.snapshot-trust-model"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Verify state file size and basic readability",
+        "command": "ls -la <snap.bin>; xxd <snap.bin> | head",
+        "expected": "Non-zero size; recognizable header bytes",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Compute external checksum to compare with the source",
+        "command": "sha256sum <snap.bin>",
+        "expected": "Matches the checksum recorded at snapshot-create time (orchestrator's responsibility)",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Restore from a backup snapshot (orchestrator-managed retention)",
+        "command": "Pick last-known-good snap.bin + snap.mem from backup",
+        "validation": "Load succeeds; CRC valid",
+        "rollback": "Cold-boot a fresh microVM",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Implement mandatory checksum verification in snapshot transport",
+        "command": "Add SHA256 + signature alongside snap.bin/snap.mem in your storage tier",
+        "validation": "Transport detects corruption before load",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.diff-snapshot-without-track-dirty",
+    "symptom": "PUT /snapshot/create with snapshot_type=Diff returns 400. machine-config.track_dirty_pages was not set to true at boot, so KVM has no dirty bitmap to query.",
+    "root_cause_class": "missing-pre-boot-config",
+    "error_patterns": [
+      "track_dirty_pages must be enabled",
+      "diff snapshot not supported"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.diff-snapshot",
+      "firecracker.snapshots.dirty-page-protocol",
+      "firecracker.api.cfg.machine-config.track-dirty-pages"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check machine-config",
+        "command": "GET /machine-config | jq '.track_dirty_pages'",
+        "expected": "Should be true for diff snapshots; if false → root cause",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker logs from the time of snapshot create/restore",
+        "command": "journalctl -t firecracker --since=\"10 minutes ago\" --no-pager | grep -iE \"snapshot|restore|vmgenid|MismatchedVersion\"",
+        "expected": "Find any version-mismatch, 'NotAllowedAfterBoot', or restore-time validation errors.",
+        "source_id": "fc-docs-snapshot-versioning"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Enable track_dirty_pages BEFORE InstanceStart (it's pre-boot only)",
+        "command": "PUT /machine-config {vcpu_count: ..., mem_size_mib: ..., track_dirty_pages: true}",
+        "validation": "Diff snapshots succeed",
+        "rollback": "Drop diff snapshots; use Full only",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "If VM is already running, take a Full snapshot, restore with enable_diff_snapshots=true (re-enables tracking on the restored VM)",
+        "command": "PUT /snapshot/create {snapshot_type: 'Full', ...}; PUT /snapshot/load {..., enable_diff_snapshots: true}",
+        "validation": "Subsequent diff snapshots work on the restored VM",
+        "rollback": null,
+        "source_id": "fc-swagger-spec"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-swagger-spec",
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.gic-version-cross-restore-fails",
+    "symptom": "ARM snapshot restore fails when GIC version differs between save host (e.g., GICv2) and restore host (e.g., GICv3). Device-state mismatch.",
+    "root_cause_class": "host-hardware-mismatch-arm-gic",
+    "error_patterns": [
+      "GIC version mismatch",
+      "device init failed",
+      "interrupt controller state invalid"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.snapshot-portability",
+      "firecracker.kvm.in-kernel-irqchip"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check GIC version on both hosts",
+        "command": "dmesg | grep -i gic",
+        "expected": "Should show 'GICv2' or 'GICv3' line — must match",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker logs from the time of snapshot create/restore",
+        "command": "journalctl -t firecracker --since=\"10 minutes ago\" --no-pager | grep -iE \"snapshot|restore|vmgenid|MismatchedVersion\"",
+        "expected": "Find any version-mismatch, 'NotAllowedAfterBoot', or restore-time validation errors.",
+        "source_id": "fc-docs-snapshot-versioning"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Restrict snapshot fleet to a single GIC version",
+        "command": "Tag/group hosts by GIC version in your scheduler",
+        "validation": "Restores stay within homogeneous fleet",
+        "rollback": "Allow cross-version (will fail)",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Re-take the snapshot from a known-good state with current Firecracker version",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Paused\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/snapshot/create -d '{\"snapshot_path\":\"/srv/snap.state\",\"mem_file_path\":\"/srv/snap.mem\",\"snapshot_type\":\"Full\"}' && curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Resumed\"}'",
+        "validation": "Both .state and .memory files appear; restoring into a fresh Firecracker process succeeds.",
+        "rollback": "Delete the new snapshot files and continue using the prior known-good snapshot.",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.mem-file-deleted-while-vm-running",
+    "symptom": "Guest crashes mysteriously after restore — page faults can't be served. The MAP_PRIVATE-backed memory file was deleted from the host while the resumed VM was still running.",
+    "root_cause_class": "snapshot-mem-file-lifecycle-bug",
+    "error_patterns": [
+      "SIGBUS in guest",
+      "page fault in resumed VM",
+      "memory file removed"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.map-private-on-restore",
+      "firecracker.snapshots.snapshot-files"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check if mem file still exists",
+        "command": "ls -la <snap.mem>",
+        "expected": "File present and readable",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Inspect Firecracker process maps",
+        "command": "cat /proc/<fc-pid>/maps | grep <snap.mem-basename>",
+        "expected": "Mapping present and points at a deleted file (shown with '(deleted)')",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Mark the mem file immutable for VM lifetime in your orchestrator",
+        "command": "Track per-VM dependency: don't delete mem file until VM process exits",
+        "validation": "Long-running restored VMs no longer crash on cold pages",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Use Uffd backend instead — orchestrator-supplied page handler decouples mem file lifetime",
+        "command": "PUT /snapshot/load with mem_backend.backend_type='Uffd'",
+        "validation": "Mem file can be retired earlier (or not stored as a file at all)",
+        "rollback": "Revert to File backend; reinstate file-pinning policy",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.network-disrupt-after-resume",
+    "symptom": "After snapshot restore, in-flight TCP connections to the guest break. ARP cache is stale, switches haven't seen the new MAC's frames yet.",
+    "root_cause_class": "expected-network-disruption-on-resume",
+    "error_patterns": [
+      "connection reset",
+      "ARP timeout",
+      "no route to host after restore"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.network-disruption-on-restore",
+      "firecracker.snapshots.network-for-clones"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm network state is the issue",
+        "command": "guest$ ip a; ip route; arp -a",
+        "expected": "Routes present; but external peer ARP cache may be stale",
+        "source_id": "fc-docs-snapshot-network-clones"
+      },
+      {
+        "step": 2,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker logs from the time of snapshot create/restore",
+        "command": "journalctl -t firecracker --since=\"10 minutes ago\" --no-pager | grep -iE \"snapshot|restore|vmgenid|MismatchedVersion\"",
+        "expected": "Find any version-mismatch, 'NotAllowedAfterBoot', or restore-time validation errors.",
+        "source_id": "fc-docs-snapshot-versioning"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Send gratuitous ARPs from the guest immediately on resume",
+        "command": "guest$ arping -c 3 -A -I eth0 <guest-ip> (in init script)",
+        "validation": "Switch ARP tables refresh; peers can reach guest",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-network-clones"
+      },
+      {
+        "step": 2,
+        "action": "For multi-clone deployments, give each clone a unique TAP and unique guest IP",
+        "command": "Per-clone setup: ip netns + ip tuntap add + per-clone NAT rules",
+        "validation": "Clones have non-conflicting network identities",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-network-clones"
+      },
+      {
+        "step": 3,
+        "action": "Design app protocols to be reconnect-tolerant",
+        "command": "Application-level: idempotent operations + auto-reconnect logic",
+        "validation": "Resume disruptions are invisible to end users",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "fc-docs-snapshot-network-clones",
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.tsc-frequency-mismatch-no-cap",
+    "symptom": "Snapshot restore fails (or guest time runs at wrong rate) when source and destination hosts have different TSC frequencies and KVM_CAP_TSC_CONTROL is unavailable.",
+    "root_cause_class": "host-tsc-frequency-divergence",
+    "error_patterns": [
+      "TSC frequency mismatch",
+      "guest time skewed"
+    ],
+    "affected_concepts": [
+      "firecracker.kvm.tsc-control",
+      "firecracker.snapshots.snapshot-portability"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Compare TSC frequencies",
+        "command": "dmesg | grep 'Detected.*MHz processor' (both hosts)",
+        "expected": "Mismatch",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Verify KVM_CAP_TSC_CONTROL on restore host",
+        "command": "Check kernel version + try a minimal KVM_SET_TSC_KHZ ioctl",
+        "expected": "Available on modern kernels",
+        "source_id": "kvm-api"
+      },
+      {
+        "step": 3,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Restrict snapshot fleet to homogeneous TSC frequency hosts",
+        "command": "Tag/group hosts by TSC freq in scheduler",
+        "validation": "Restores stay within fleet",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Upgrade restore host kernel to one with KVM_CAP_TSC_CONTROL",
+        "command": "Standard kernel update",
+        "validation": "Cap probe returns 1",
+        "rollback": "Revert kernel",
+        "source_id": "kvm-api"
+      }
+    ],
+    "confidence": 0.8,
+    "source_ids": [
+      "fc-docs-snapshot-support",
+      "kvm-api"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.tsx-msr-not-preserved-no-template",
+    "symptom": "After snapshot restore, MSR_IA32_TSX_CTRL value differs from pre-snapshot. Workload that overwrote this MSR sees the host default after restore. Only happens when no CPU template is in use.",
+    "root_cause_class": "missing-cpu-template",
+    "error_patterns": [
+      "MSR_IA32_TSX_CTRL",
+      "RTM/HLE behavior changed after restore"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.snapshot-portability",
+      "firecracker.kvm.msr-control",
+      "firecracker.vmm.cpu-template-mechanism"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Verify CPU template is set",
+        "command": "GET /vm/config | jq '.\"machine-config\".cpu_template'",
+        "expected": "If 'None' (default) → root cause confirmed",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Check guest MSR pre and post restore",
+        "command": "guest$ rdmsr -p 0 0x122; (snapshot/restore); guest$ rdmsr -p 0 0x122",
+        "expected": "Different values",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Apply a CPU template that includes MSR_IA32_TSX_CTRL",
+        "command": "Use static template (T2/T2S) or PUT /cpu-config with custom template containing the MSR",
+        "validation": "Post-restore MSR matches pre-restore",
+        "rollback": "Drop template (revert to lossy behavior)",
+        "source_id": "fc-docs-cpu-templates"
+      },
+      {
+        "step": 2,
+        "action": "Re-take the snapshot from a known-good state with current Firecracker version",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Paused\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/snapshot/create -d '{\"snapshot_path\":\"/srv/snap.state\",\"mem_file_path\":\"/srv/snap.mem\",\"snapshot_type\":\"Full\"}' && curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Resumed\"}'",
+        "validation": "Both .state and .memory files appear; restoring into a fresh Firecracker process succeeds.",
+        "rollback": "Delete the new snapshot files and continue using the prior known-good snapshot.",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "fc-docs-snapshot-support",
+      "fc-docs-cpu-templates"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.uffd-handler-crash-leaves-vm-stuck",
+    "symptom": "Restored VM hangs on cold-page access. The userfaultfd handler process crashed or blocked, so page faults from KVM never get serviced.",
+    "root_cause_class": "uffd-handler-failure",
+    "error_patterns": [
+      "UFFD handler crashed",
+      "VM hung on page fault",
+      "userfaultfd no response"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.uffd-snapshot-backend",
+      "firecracker.snapshots.uffd-backend"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check UFFD handler process status",
+        "command": "ps -p <uffd-handler-pid>; ss -lx | grep <uffd-uds>",
+        "expected": "Process alive; UDS active",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Inspect VM thread state",
+        "command": "sudo gdb -p <fc-pid> -ex 'thread apply all bt' -batch",
+        "expected": "vCPU thread blocked in KVM_RUN waiting for page fault completion",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Restart the UFFD handler with fault-tolerance — it should re-attach to existing FCs via the per-VM UDS",
+        "command": "Implement: handler process registers with new VMs but also re-binds to existing UDSes on restart",
+        "validation": "Handler restart doesn't kill running VMs",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "If unrecoverable, kill the FC process and restart from snapshot",
+        "command": "kill -9 <fc-pid>; orchestrator restarts new FC + new UFFD handler",
+        "validation": "New VM boots; old session lost",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.virtio-block-flush-not-syncing",
+    "symptom": "virtio-block VIRTIO_BLK_T_FLUSH command issued by guest doesn't reach the host kernel block layer. Risk of data loss on host crash even though guest believes data is durable.",
+    "root_cause_class": "virtio-block-flush-propagation-bug",
+    "error_patterns": [
+      "data loss after host crash",
+      "fsync ineffective"
+    ],
+    "affected_concepts": [
+      "firecracker.api.drive-resource",
+      "firecracker.api.cfg.drive.cache-type"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check drive cache_type setting",
+        "command": "GET /vm/config | jq '.drives'",
+        "expected": "cache_type='Unsafe' explicitly drops flushes; 'Writeback' should propagate",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Trace block layer to confirm FLUSH propagation",
+        "command": "host$ sudo bpftrace -e 'tracepoint:block:block_rq_issue { if (str(args->comm) == \"firecracker\") { printf(\"%s\", args->cmd); } }'",
+        "expected": "FLUSH ops visible when cache_type=Writeback",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/2172"
+      },
+      {
+        "step": 3,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Set drive cache_type to Writeback (NOT Unsafe)",
+        "command": "PUT /drives/<id> {cache_type: 'Writeback', ...}",
+        "validation": "FLUSH ops propagate to host",
+        "rollback": "cache_type=Unsafe (faster but unsafe)",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Track upstream issue #2172 for any additional fixes; upgrade Firecracker when available",
+        "command": "Monitor github.com/firecracker-microvm/firecracker/issues/2172",
+        "validation": null,
+        "rollback": null,
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/2172"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/2172",
+      "fc-swagger-spec"
+    ]
+  },
+  {
+    "id": "firecracker.snapshots.fm.vmgenid-early-boot-restore-crash",
+    "symptom": "Restoring a snapshot taken during early guest kernel boot causes the resumed guest to crash. VMGenID device wasn't fully initialized when snapshot was taken.",
+    "root_cause_class": "snapshot-taken-too-early",
+    "error_patterns": [
+      "guest crash on resume",
+      "VMGenID",
+      "early boot snapshot"
+    ],
+    "affected_concepts": [
+      "firecracker.snapshots.vmgenid-device",
+      "firecracker.snapshots.pause-resume-cycle"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Identify when the original snapshot was taken",
+        "command": "Check orchestrator logs for snapshot-create timestamp relative to InstanceStart",
+        "expected": "Snapshot taken before guest finished booting userspace",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Validate the snapshot files exist and have expected sizes",
+        "command": "ls -lh <snapshot-path>.{state,memory}; file <snapshot-path>.state",
+        "expected": ".state is a small (~KB) binary; .memory matches mem_size_mib of the source VM (often hundreds of MB to GB).",
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 3,
+        "action": "Inspect Firecracker logs from the time of snapshot create/restore",
+        "command": "journalctl -t firecracker --since=\"10 minutes ago\" --no-pager | grep -iE \"snapshot|restore|vmgenid|MismatchedVersion\"",
+        "expected": "Find any version-mismatch, 'NotAllowedAfterBoot', or restore-time validation errors.",
+        "source_id": "fc-docs-snapshot-versioning"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Take snapshots only AFTER guest has fully booted (init system ready, /var/run/sysinit-progress complete)",
+        "command": "Orchestrator waits for guest readiness signal (vsock ping / SSH / cloud-init done) before pause+snapshot",
+        "validation": "Restored guests boot cleanly",
+        "rollback": null,
+        "source_id": "fc-docs-snapshot-support"
+      },
+      {
+        "step": 2,
+        "action": "Re-take the snapshot from a known-good state with current Firecracker version",
+        "command": "curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Paused\"}' && curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/snapshot/create -d '{\"snapshot_path\":\"/srv/snap.state\",\"mem_file_path\":\"/srv/snap.mem\",\"snapshot_type\":\"Full\"}' && curl -X PATCH --unix-socket /tmp/firecracker.sock http://localhost/vm -d '{\"state\":\"Resumed\"}'",
+        "validation": "Both .state and .memory files appear; restoring into a fresh Firecracker process succeeds.",
+        "rollback": "Delete the new snapshot files and continue using the prior known-good snapshot.",
+        "source_id": "fc-docs-snapshot-support"
+      }
+    ],
+    "confidence": 0.8,
+    "source_ids": [
+      "fc-docs-snapshot-support"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.amd-zen-msr-freeze",
+    "symptom": "VM hangs after 'random: crng init done' with no exception or message on AMD Zen processors (Zen, Zen+, Zen 2).",
+    "root_cause_class": "host-cpu-msr-quirk",
+    "error_patterns": [
+      "random: crng init done",
+      "MSR 0x10a",
+      "no further output"
+    ],
+    "affected_concepts": [
+      "firecracker.kvm.msr-control",
+      "firecracker.vmm.architecture-support"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Identify host CPU vendor and family",
+        "command": "lscpu | grep -E 'Vendor|Model name|Family'",
+        "expected": "AuthenticAMD with Zen family",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/815"
+      },
+      {
+        "step": 2,
+        "action": "Capture serial console past 'crng init done'",
+        "command": "Add console=ttyS0 to boot_args; capture full boot log",
+        "expected": "Output stops with no kernel oops",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Apply CPU template that masks the problematic MSR exposure",
+        "command": "PUT /cpu-config with template that filters MSR 0x10a (AMD platform-specific)",
+        "validation": "VM boots past the freeze point",
+        "rollback": "Boot without template — accept the freeze",
+        "source_id": "fc-docs-cpu-templates"
+      },
+      {
+        "step": 2,
+        "action": "Move workload to non-Zen AMD or Intel host",
+        "command": "Re-host to EPYC Milan+ or Intel Ice Lake+",
+        "validation": "VM boots normally",
+        "rollback": null,
+        "source_id": "fc-docs-cpu-templates"
+      }
+    ],
+    "confidence": 0.6,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/815"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.cross-arch-guest-on-host",
+    "symptom": "Firecracker fails to boot when guest kernel is built for a different architecture than the host (e.g., aarch64 guest on x86_64 host).",
+    "root_cause_class": "arch-mismatch",
+    "error_patterns": [
+      "KVM_EXIT_FAIL_ENTRY",
+      "invalid kernel image",
+      "boot hang"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.no-arch-emulation",
+      "firecracker.vmm.architecture-support"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check guest kernel vs host arch",
+        "command": "file <vmlinux>; uname -m",
+        "expected": "Both should be the same (x86-64 or aarch64)",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 3,
+        "action": "Capture Firecracker's metrics snapshot (FlushMetrics action)",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}' && cat <metrics-fifo-or-file>",
+        "expected": "VMM section shows panic_count, signal counts, vcpu exit reasons; non-zero entries point at the offender.",
+        "source_id": "fc-docs-metrics"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Rebuild guest kernel for the host arch",
+        "command": "make ARCH=<host-arch> CROSS_COMPILE=<...> -j",
+        "validation": "uname -m inside booted guest matches host",
+        "rollback": "Original mismatched kernel",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Or run on a host of the matching arch",
+        "command": "Migrate workload to correct-arch host",
+        "validation": null,
+        "rollback": null,
+        "source_id": "fc-repo-faq"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-repo-faq"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.dev-kvm-busy-vbox-vmware",
+    "symptom": "Firecracker fails to start with 'Resource busy' on /dev/kvm. Another hypervisor (VMware Workstation, VirtualBox) is loaded and holds /dev/kvm exclusively.",
+    "root_cause_class": "exclusive-dev-kvm-contention",
+    "error_patterns": [
+      "Resource busy",
+      "EBUSY",
+      "/dev/kvm"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.dev-kvm-exclusive",
+      "firecracker.kvm.kvm-subsystem"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "List loaded virt kernel modules",
+        "command": "lsmod | grep -E 'vbox|vmware|kvm'",
+        "expected": "vboxdrv or vmmon present alongside kvm",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Check who has /dev/kvm open",
+        "command": "sudo lsof /dev/kvm",
+        "expected": "VMware/VirtualBox process holds the fd",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Unload conflicting hypervisor module",
+        "command": "sudo modprobe -r vboxdrv vmmon",
+        "validation": "lsof /dev/kvm shows no holder; Firecracker starts",
+        "rollback": "sudo modprobe vboxdrv (re-enables VirtualBox)",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Disable VirtualBox/VMware autostart",
+        "command": "sudo systemctl disable vboxdrv vboxautostart-service",
+        "validation": "Persists across reboot",
+        "rollback": "systemctl enable vboxdrv",
+        "source_id": "fc-repo-faq"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-repo-faq"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.exit-code-12-oom",
+    "symptom": "Firecracker process exits immediately with exit code 12 (Out of memory). Host cannot satisfy the requested guest memory size (default 128 MiB if /machine-config not set).",
+    "root_cause_class": "host-oom",
+    "error_patterns": [
+      "exit code 12",
+      "Out of memory"
+    ],
+    "affected_concepts": [
+      "firecracker.api.machine-config",
+      "firecracker.vmm.minimum-microvm-memory"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check exit code and /proc/meminfo at time of failure",
+        "command": "echo $?; cat /proc/meminfo | head -5",
+        "expected": "Exit 12; MemFree very low",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Check for related dmesg page allocation failures",
+        "command": "sudo dmesg | grep -E 'page allocation|Out of memory|oom-killer'",
+        "expected": "Either page-alloc failures or OOM-killer events",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Reduce machine-config.mem_size_mib or free host memory",
+        "command": "PUT /machine-config {mem_size_mib: <smaller>}; or kill unrelated host processes",
+        "validation": "Firecracker boots",
+        "rollback": null,
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "If chronic, raise vm.min_free_kbytes (see page-allocation-failure-fragmentation)",
+        "command": "see fc.vmm.fm.page-allocation-failure-fragmentation",
+        "validation": null,
+        "rollback": null,
+        "source_id": "fc-repo-faq"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-repo-faq"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.kvm-exit-fail-entry-nested-virt",
+    "symptom": "MicroVM crashes immediately on InstanceStart with KVM_EXIT_FAIL_ENTRY when running Firecracker inside another VM (Azure VM, GCP VM, nested KVM).",
+    "root_cause_class": "nested-virt-unsupported",
+    "error_patterns": [
+      "KVM_EXIT_FAIL_ENTRY",
+      "hardware_entry_failure_reason",
+      "KVM_RUN failed"
+    ],
+    "affected_concepts": [
+      "firecracker.kvm.exit-fail-entry",
+      "firecracker.kvm.kvm-run",
+      "firecracker.vmm.firecracker-vmm"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm host is itself virtualized",
+        "command": "systemd-detect-virt; cat /proc/cpuinfo | grep -E 'vmx|svm'",
+        "expected": "If 'kvm' or 'microsoft' or 'amazon' returned → nested env",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/668"
+      },
+      {
+        "step": 2,
+        "action": "Check KVM exit reason in Firecracker logs",
+        "command": "PUT /logger {level: Debug}; reproduce; grep KVM_EXIT_FAIL_ENTRY <log>",
+        "expected": "Exit reason logged with cpu and hardware_entry_failure_reason",
+        "source_id": "fc-docs-logger"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Move Firecracker to a bare-metal host (or .metal EC2 instance type)",
+        "command": "Provision i3.metal / m5.metal / similar",
+        "validation": "InstanceStart succeeds; vCPU enters guest",
+        "rollback": null,
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 2,
+        "action": "If bare metal not available, use AWS C8i/M8i/R8i which support nested KVM (~10% perf tax)",
+        "command": "Provision a Nitro instance with nested-virt support",
+        "validation": "InstanceStart succeeds, accept perf overhead",
+        "rollback": null,
+        "source_id": "ecs-ec2-nested-virt"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/668"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.kvm-exit-shutdown-seccomp-shutdown",
+    "symptom": "Occasional KVM_EXIT_SHUTDOWN with 'bad system call (14)' (rt_sigprocmask) during VM shutdown — ~0-3 failures per 100 VMs.",
+    "root_cause_class": "seccomp-policy-gap",
+    "error_patterns": [
+      "KVM_EXIT_SHUTDOWN",
+      "bad system call",
+      "rt_sigprocmask",
+      "seccomp"
+    ],
+    "affected_concepts": [
+      "firecracker.security.seccomp-boundary",
+      "firecracker.security.default-seccomp-filter",
+      "firecracker.kvm.exit-shutdown"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Capture audit log of seccomp violations",
+        "command": "sudo auditctl -a always,exit -F arch=b64 -S all -F key=fc-seccomp; reproduce; ausearch -k fc-seccomp",
+        "expected": "audit lines with syscall=14 (rt_sigprocmask)",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1456"
+      },
+      {
+        "step": 2,
+        "action": "Confirm Firecracker version (was fixed in PR #1603)",
+        "command": "firecracker --version",
+        "expected": "Version that includes the fix",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1456"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Upgrade to a Firecracker release that includes PR #1603",
+        "command": "Update package or rebuild from main",
+        "validation": "Shutdown succeeds without seccomp violations",
+        "rollback": "Pin to prior version",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1456"
+      },
+      {
+        "step": 2,
+        "action": "Apply targeted host or guest-config remediation for the identified KVM/VMM failure",
+        "command": "# example: for OOM-class — increase host limits or microVM memory; for KVM_EXIT_FAIL_ENTRY — disable nested virt; for seccomp violations — review fc-docs-seccomp policy",
+        "validation": "Re-run the workload; verify the same failure does not recur in journalctl/dmesg.",
+        "rollback": "Revert the host kernel parameter, seccomp filter, or memory budget change.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/1456"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.kvm-internal-error-unsalvageable",
+    "symptom": "vCPU thread returns KVM_EXIT_INTERNAL_ERROR. KVM detected an unrecoverable inconsistency (emulation impossible, simul exception delivery, unexpected delivery_event). MicroVM is unsalvageable.",
+    "root_cause_class": "kvm-bug-or-unrecoverable-state",
+    "error_patterns": [
+      "KVM_EXIT_INTERNAL_ERROR",
+      "internal.suberror"
+    ],
+    "affected_concepts": [
+      "firecracker.kvm.exit-internal-error",
+      "firecracker.kvm.kvm-run"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Capture suberror code and ndata registers",
+        "command": "Enable Debug logging; reproduce; grep KVM_EXIT_INTERNAL_ERROR <log>",
+        "expected": "Suberror enum value (KVM_INTERNAL_ERROR_EMULATION etc.)",
+        "source_id": "kvm-api"
+      },
+      {
+        "step": 2,
+        "action": "Check host KVM/microcode versions",
+        "command": "modinfo kvm | grep version; ucode --version",
+        "expected": "Up-to-date per distro security advisories",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Update host KVM module + CPU microcode + Firecracker version",
+        "command": "yum/apt update kvm-related packages; load latest microcode; restart hosts",
+        "validation": "Issue does not recur",
+        "rollback": "Pin prior versions",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "If reproducible, file an upstream KVM/Firecracker bug",
+        "command": "github.com/firecracker-microvm/firecracker/issues with reproducer",
+        "validation": null,
+        "rollback": null,
+        "source_id": "fc-repo-security"
+      }
+    ],
+    "confidence": 0.5,
+    "source_ids": [
+      "kvm-api"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.missing-acpi-on-x86-acpi-boot",
+    "symptom": "x86_64 guest kernel built with CONFIG_ACPI=n fails to enumerate VirtIO devices when Firecracker uses ACPI boot path. Devices appear missing in dmesg.",
+    "root_cause_class": "guest-kernel-config-missing",
+    "error_patterns": [
+      "no virtio devices",
+      "ACPI not initialized"
+    ],
+    "affected_concepts": [
+      "firecracker.security.acpi-vs-mptable-boot",
+      "firecracker.security.minimal-boot-config"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check guest config",
+        "command": "zcat /proc/config.gz | grep -E 'CONFIG_ACPI|CONFIG_PCI'",
+        "expected": "Both =y for ACPI boot path on x86_64",
+        "source_id": "fc-docs-kernel-policy"
+      },
+      {
+        "step": 2,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 3,
+        "action": "Capture Firecracker's metrics snapshot (FlushMetrics action)",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}' && cat <metrics-fifo-or-file>",
+        "expected": "VMM section shows panic_count, signal counts, vcpu exit reasons; non-zero entries point at the offender.",
+        "source_id": "fc-docs-metrics"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Rebuild with CONFIG_ACPI=y and CONFIG_PCI=y",
+        "command": "Edit .config; make olddefconfig; make -j",
+        "validation": "Devices enumerate; mounts succeed",
+        "rollback": "Revert",
+        "source_id": "fc-docs-kernel-policy"
+      },
+      {
+        "step": 2,
+        "action": "Or fall back to legacy boot: enable CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y and CONFIG_X86_MPPARSE=y (note: deprecated)",
+        "command": "Edit .config; rebuild",
+        "validation": "Devices enumerate via legacy path",
+        "rollback": null,
+        "source_id": "fc-docs-kernel-policy"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "fc-docs-kernel-policy"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.missing-virtio-blk-cannot-mount-root",
+    "symptom": "Guest panics at boot with 'Cannot open root device vda' even though /drives is configured correctly. Guest kernel lacks CONFIG_VIRTIO_BLK.",
+    "root_cause_class": "guest-kernel-config-missing",
+    "error_patterns": [
+      "VFS: Cannot open root device",
+      "vda",
+      "unknown-block(0,0)"
+    ],
+    "affected_concepts": [
+      "firecracker.security.minimal-boot-config",
+      "firecracker.api.drive-resource"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check guest kernel config for VIRTIO_BLK",
+        "command": "zcat /proc/config.gz | grep CONFIG_VIRTIO_BLK",
+        "expected": "CONFIG_VIRTIO_BLK=y",
+        "source_id": "fc-docs-kernel-policy"
+      },
+      {
+        "step": 2,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 3,
+        "action": "Capture Firecracker's metrics snapshot (FlushMetrics action)",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}' && cat <metrics-fifo-or-file>",
+        "expected": "VMM section shows panic_count, signal counts, vcpu exit reasons; non-zero entries point at the offender.",
+        "source_id": "fc-docs-metrics"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Rebuild guest kernel with CONFIG_VIRTIO_BLK=y (and CONFIG_VIRTIO_MMIO=y on aarch64; CONFIG_VIRTIO_PCI=y if --enable-pci)",
+        "command": "Edit .config; make olddefconfig; make -j",
+        "validation": "Boot succeeds; /dev/vda visible",
+        "rollback": "Revert to prior kernel build",
+        "source_id": "fc-docs-kernel-policy"
+      },
+      {
+        "step": 2,
+        "action": "Apply targeted host or guest-config remediation for the identified KVM/VMM failure",
+        "command": "# example: for OOM-class — increase host limits or microVM memory; for KVM_EXIT_FAIL_ENTRY — disable nested virt; for seccomp violations — review fc-docs-seccomp policy",
+        "validation": "Re-run the workload; verify the same failure does not recur in journalctl/dmesg.",
+        "rollback": "Revert the host kernel parameter, seccomp filter, or memory budget change.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-kernel-policy"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.oom-despite-available-memory",
+    "symptom": "Guest with 16 GiB allocation OOM-killed despite host showing 9 GiB RSS / 64 GiB total. Memory accounting or page cache accumulation during heavy compilation workloads.",
+    "root_cause_class": "memory-accounting-or-page-cache-pressure",
+    "error_patterns": [
+      "killed by OOM-killer",
+      "Memory cgroup out of memory",
+      "oom_score_adj"
+    ],
+    "affected_concepts": [
+      "firecracker.api.machine-config",
+      "firecracker.api.balloon-resource",
+      "firecracker.setup.unprivileged-uid-per-microvm"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect cgroup memory accounting at OOM time",
+        "command": "cat /sys/fs/cgroup/<path>/memory.current /sys/fs/cgroup/<path>/memory.max /sys/fs/cgroup/<path>/memory.events",
+        "expected": "current near max; events.oom > 0",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1573"
+      },
+      {
+        "step": 2,
+        "action": "Check guest page-cache pressure",
+        "command": "guest$ cat /proc/meminfo | grep -E 'Cached|Buffers|MemAvailable'",
+        "expected": "Cached very high relative to MemFree",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1573"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Attach a balloon device with deflate_on_oom for safety",
+        "command": "PUT /balloon {amount_mib: 0, deflate_on_oom: true, stats_polling_interval_s: 5}",
+        "validation": "Future OOMs auto-deflate balloon (only helps if balloon was inflated)",
+        "rollback": null,
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Raise cgroup memory.max above mem_size_mib + overhead headroom",
+        "command": "echo <bytes> > /sys/fs/cgroup/<path>/memory.max",
+        "validation": "Guest no longer OOM-killed at workload peak",
+        "rollback": "Restore prior memory.max",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 3,
+        "action": "Drop guest page cache periodically if unavoidable",
+        "command": "guest$ echo 3 > /proc/sys/vm/drop_caches",
+        "validation": "Cached drops; MemAvailable rises",
+        "rollback": null,
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1573"
+      }
+    ],
+    "confidence": 0.6,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/1573"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.page-allocation-failure-fragmentation",
+    "symptom": "Host dmesg shows 'fc_vmm: page allocation failure: order:6, mode:0x140c0c0' during high-rate microVM creation. KVM cannot allocate large contiguous pages because host memory is fragmented.",
+    "root_cause_class": "host-memory-fragmentation",
+    "error_patterns": [
+      "fc_vmm: page allocation failure",
+      "order:6",
+      "GFP_KERNEL",
+      "mems_allowed"
+    ],
+    "affected_concepts": [
+      "firecracker.kvm.user-memory-region",
+      "firecracker.vmm.firecracker-vmm"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm fragmentation state",
+        "command": "cat /proc/buddyinfo; cat /proc/pagetypeinfo",
+        "expected": "Few or zero high-order free pages",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Check current vm.min_free_kbytes",
+        "command": "sysctl vm.min_free_kbytes",
+        "expected": "If <128 MiB on a busy host, likely too low",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise vm.min_free_kbytes to keep more reserve",
+        "command": "sudo sysctl -w vm.min_free_kbytes=262144; echo 'vm.min_free_kbytes=262144' | sudo tee -a /etc/sysctl.conf",
+        "validation": "Subsequent microVM creates succeed; buddyinfo shows higher-order pages",
+        "rollback": "sysctl -w vm.min_free_kbytes=<prior-value>",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Trigger explicit memory compaction",
+        "command": "echo 1 | sudo tee /proc/sys/vm/compact_memory",
+        "validation": "buddyinfo shows higher-order pages restored",
+        "rollback": null,
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "If chronic, switch to hugepages-backed RAM (vm.nr_hugepages reserved + machine-config.huge_pages=2M)",
+        "command": "sudo sysctl -w vm.nr_hugepages=<N>; PUT /machine-config {huge_pages: '2M'}",
+        "validation": "fc_vmm allocates from pre-reserved hugepages — no fragmentation",
+        "rollback": "sysctl -w vm.nr_hugepages=0; remove huge_pages from machine-config",
+        "source_id": "fc-repo-faq"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-repo-faq",
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.panic-handler-seccomp-mremap",
+    "symptom": "Firecracker panic produces a secondary seccomp violation — the panic handler calls mremap (Rust unwinding) which isn't in the default filter. Original panic info is lost.",
+    "root_cause_class": "seccomp-policy-gap-during-panic",
+    "error_patterns": [
+      "seccomp violation",
+      "mremap",
+      "panicked at"
+    ],
+    "affected_concepts": [
+      "firecracker.security.seccomp-boundary",
+      "firecracker.security.default-seccomp-filter"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Locate the panic in logs (panic message comes BEFORE the seccomp kill)",
+        "command": "grep -B5 'seccomp' <fc-log>",
+        "expected": "Original panic message visible above the seccomp line",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1088"
+      },
+      {
+        "step": 2,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 3,
+        "action": "Capture Firecracker's metrics snapshot (FlushMetrics action)",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}' && cat <metrics-fifo-or-file>",
+        "expected": "VMM section shows panic_count, signal counts, vcpu exit reasons; non-zero entries point at the offender.",
+        "source_id": "fc-docs-metrics"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Upgrade Firecracker to version with mremap in default seccomp filter",
+        "command": "Update binary",
+        "validation": "Panic produces full backtrace before exit",
+        "rollback": "Pin prior version",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1088"
+      },
+      {
+        "step": 2,
+        "action": "Apply targeted host or guest-config remediation for the identified KVM/VMM failure",
+        "command": "# example: for OOM-class — increase host limits or microVM memory; for KVM_EXIT_FAIL_ENTRY — disable nested virt; for seccomp violations — review fc-docs-seccomp policy",
+        "validation": "Re-run the workload; verify the same failure does not recur in journalctl/dmesg.",
+        "rollback": "Revert the host kernel parameter, seccomp filter, or memory budget change.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/1088"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.pci-off-when-pci-enabled",
+    "symptom": "Started Firecracker with --enable-pci but boot_args still contains pci=off. Guest disables PCI scanning and never sees the VirtIO/PCI devices Firecracker exposes.",
+    "root_cause_class": "config-mismatch-pci",
+    "error_patterns": [
+      "pci=off",
+      "no virtio devices found",
+      "PCI: disabled"
+    ],
+    "affected_concepts": [
+      "firecracker.security.pci-transport-option",
+      "firecracker.security.cfg.kernel-cmdline.swiotlb-noforce",
+      "firecracker.api.boot-source"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect boot_args and CLI flags",
+        "command": "GET /vm/config | jq; ps -p <fc-pid> -o args=",
+        "expected": "Either remove --enable-pci or remove pci=off — must be consistent",
+        "source_id": "fc-docs-kernel-policy"
+      },
+      {
+        "step": 2,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 3,
+        "action": "Capture Firecracker's metrics snapshot (FlushMetrics action)",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}' && cat <metrics-fifo-or-file>",
+        "expected": "VMM section shows panic_count, signal counts, vcpu exit reasons; non-zero entries point at the offender.",
+        "source_id": "fc-docs-metrics"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Remove pci=off from boot_args when --enable-pci is used",
+        "command": "PUT /boot-source {boot_args: 'reboot=k panic=1 nomodule ...' (no pci=off)}",
+        "validation": "Guest dmesg shows VirtIO PCI devices enumerated",
+        "rollback": "Drop --enable-pci AND keep pci=off (revert to MMIO transport)",
+        "source_id": "fc-docs-kernel-policy"
+      },
+      {
+        "step": 2,
+        "action": "Apply targeted host or guest-config remediation for the identified KVM/VMM failure",
+        "command": "# example: for OOM-class — increase host limits or microVM memory; for KVM_EXIT_FAIL_ENTRY — disable nested virt; for seccomp violations — review fc-docs-seccomp policy",
+        "validation": "Re-run the workload; verify the same failure does not recur in journalctl/dmesg.",
+        "rollback": "Revert the host kernel parameter, seccomp filter, or memory budget change.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "fc-docs-kernel-policy"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.reboot-without-reboot-k-hangs",
+    "symptom": "Guest `reboot` doesn't terminate the Firecracker process. Guest enters reboot loop — kernel restarts but Firecracker keeps running because i8042 reset signal isn't issued.",
+    "root_cause_class": "missing-reboot-k-bootarg",
+    "error_patterns": [
+      "guest rebooting in loop",
+      "Firecracker not exiting"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.ctrl-alt-del-shutdown",
+      "firecracker.vmm.no-guest-reboot"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect current boot_args",
+        "command": "GET /vm/config | jq '.\"boot-source\".boot_args'",
+        "expected": "Should contain 'reboot=k'",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Confirm guest sees i8042 keyboard controller",
+        "command": "guest$ dmesg | grep i8042",
+        "expected": "i8042 init message present",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Pre-boot: add reboot=k to boot_args",
+        "command": "PUT /boot-source {boot_args: 'reboot=k panic=1 pci=off ...'}",
+        "validation": "Guest reboot terminates FC process",
+        "rollback": "Remove reboot=k (reboot loops back to silent stuck state)",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Apply targeted host or guest-config remediation for the identified KVM/VMM failure",
+        "command": "# example: for OOM-class — increase host limits or microVM memory; for KVM_EXIT_FAIL_ENTRY — disable nested virt; for seccomp violations — review fc-docs-seccomp policy",
+        "validation": "Re-run the workload; verify the same failure does not recur in journalctl/dmesg.",
+        "rollback": "Revert the host kernel parameter, seccomp filter, or memory budget change.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-repo-faq"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.serial-console-enabled-slow-boot",
+    "symptom": "MicroVM boot takes 500+ ms instead of expected ≤125 ms. Serial console is enabled — every kernel printk causes a VM exit.",
+    "root_cause_class": "perf-misconfiguration-serial-console",
+    "error_patterns": [
+      "slow boot",
+      "boot time exceeded budget"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.serial-console-overhead",
+      "firecracker.vmm.startup-budget"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check boot_args for console=ttyS0",
+        "command": "GET /vm/config | jq '.\"boot-source\".boot_args'",
+        "expected": "If contains console=ttyS0 → root cause confirmed",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Measure boot time via boot-timer metric",
+        "command": "firecracker --boot-timer ...; PUT /metrics; FlushMetrics; grep boot_time <metrics>",
+        "expected": "≤125 ms when console disabled, multiple-x when enabled",
+        "source_id": "fc-docs-metrics"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Remove console=ttyS0 from boot_args (prod default)",
+        "command": "PUT /boot-source {boot_args: 'reboot=k panic=1 pci=off nomodule 8250.nr_uarts=0 ...'}",
+        "validation": "Boot time returns to ≤125 ms",
+        "rollback": "Re-add console=ttyS0 if debugging",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "If serial output needed in prod, capture to file via PUT /serial instead of console=ttyS0",
+        "command": "PUT /serial {out_path: '/tmp/console.log'}",
+        "validation": "Serial output captured without VM-exit overhead",
+        "rollback": null,
+        "source_id": "fc-swagger-spec"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-repo-faq",
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.signal-handler-deadlock-on-log-lock",
+    "symptom": "Firecracker thread becomes unresponsive after receiving a signal (SIGSEGV/SIGSYS). Custom signal handlers write logs and flush metrics — these use locks for synchronization but are NOT async-signal-safe. Handler intercepts signal on a thread already holding the lock → deadlock.",
+    "root_cause_class": "signal-handler-not-async-signal-safe",
+    "error_patterns": [
+      "thread unresponsive",
+      "no further log output after signal"
+    ],
+    "affected_concepts": [
+      "firecracker.setup.signal-handler-deadlock-risk",
+      "firecracker.api.logger-resource",
+      "firecracker.api.metrics-resource"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Detect unresponsive Firecracker via API ping",
+        "command": "timeout 5 curl --unix-socket <sock> http://localhost/ || echo HUNG",
+        "expected": "Timeout / no response",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Inspect thread state to confirm deadlock",
+        "command": "sudo gdb -p <pid> -ex 'thread apply all bt' -batch",
+        "expected": "Thread blocked on log/metrics mutex inside signal handler",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Run an overwatcher that SIGKILLs unresponsive Firecracker processes",
+        "command": "Periodic loop: ping API; if no response within timeout → kill -9 <pid>",
+        "validation": "Hung processes cleaned up automatically",
+        "rollback": "Disable overwatcher (accept the deadlock risk)",
+        "source_id": "fc-docs-prod-host-setup"
+      },
+      {
+        "step": 2,
+        "action": "Apply targeted host or guest-config remediation for the identified KVM/VMM failure",
+        "command": "# example: for OOM-class — increase host limits or microVM memory; for KVM_EXIT_FAIL_ENTRY — disable nested virt; for seccomp violations — review fc-docs-seccomp policy",
+        "validation": "Re-run the workload; verify the same failure does not recur in journalctl/dmesg.",
+        "rollback": "Revert the host kernel parameter, seccomp filter, or memory budget change.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-docs-prod-host-setup"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.signal-handler-seccomp-sigaction",
+    "symptom": "Firecracker process exits with seccomp violation when receiving SIGSEGV/SIGBUS — Rust signal handler calls unwhitelisted sigaction syscall.",
+    "root_cause_class": "seccomp-policy-gap",
+    "error_patterns": [
+      "seccomp violation",
+      "SIGSEGV",
+      "SIGBUS",
+      "sigaction"
+    ],
+    "affected_concepts": [
+      "firecracker.security.seccomp-boundary",
+      "firecracker.security.default-seccomp-filter",
+      "firecracker.setup.signal-handler-deadlock-risk"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Capture seccomp audit log around the crash",
+        "command": "sudo ausearch -k fc-seccomp --start recent",
+        "expected": "syscall=sigaction (or rt_sigaction) blocked",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1064"
+      },
+      {
+        "step": 2,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      },
+      {
+        "step": 3,
+        "action": "Capture Firecracker's metrics snapshot (FlushMetrics action)",
+        "command": "curl -X PUT --unix-socket /tmp/firecracker.sock http://localhost/actions -d '{\"action_type\":\"FlushMetrics\"}' && cat <metrics-fifo-or-file>",
+        "expected": "VMM section shows panic_count, signal counts, vcpu exit reasons; non-zero entries point at the offender.",
+        "source_id": "fc-docs-metrics"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Upgrade to Firecracker version where sigaction is whitelisted in default filter",
+        "command": "Update binary",
+        "validation": "SIGSEGV produces clean abort with handler output",
+        "rollback": "Pin to prior version",
+        "source_id": "https://github.com/firecracker-microvm/firecracker/issues/1064"
+      },
+      {
+        "step": 2,
+        "action": "Workaround: provide a custom seccomp filter that whitelists rt_sigaction",
+        "command": "seccompiler-bin --target-arch x86_64 --input-file <custom>.json --output-file <out>; firecracker --seccomp-filter <out>",
+        "validation": "SIGSEGV no longer triggers seccomp",
+        "rollback": "Revert to default filter (no --seccomp-filter)",
+        "source_id": "fc-docs-seccompiler"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "https://github.com/firecracker-microvm/firecracker/issues/1064"
+    ]
+  },
+  {
+    "id": "firecracker.vmm.fm.x86-poweroff-leaves-process-alive",
+    "symptom": "Guest `poweroff` shuts down the OS but the Firecracker process stays alive — no ACPI PM means there's no way for the guest to signal poweroff to the VMM.",
+    "root_cause_class": "no-acpi-pm",
+    "error_patterns": [
+      "guest powered off but firecracker process still running"
+    ],
+    "affected_concepts": [
+      "firecracker.vmm.no-acpi-pm",
+      "firecracker.vmm.no-guest-reboot"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm guest is x86_64 (ARM has PSCI and works correctly)",
+        "command": "guest$ uname -m",
+        "expected": "x86_64 → expected behavior; aarch64 → file separate issue",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 2,
+        "action": "Verify Firecracker process state",
+        "command": "ps -p <fc-pid>; cat /proc/<fc-pid>/status",
+        "expected": "Process running, vCPU thread idle in KVM_RUN",
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "Inspect dmesg + journalctl for KVM / Firecracker errors at the failure time",
+        "command": "journalctl -t firecracker --since=\"5 minutes ago\" --no-pager; dmesg -T | tail -50 | grep -iE \"kvm|vfio|fc_vmm\"",
+        "expected": "Find KVM_EXIT_*, internal-error codes, page-allocation failures, or seccomp violation messages.",
+        "source_id": "fc-docs-design"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Use SendCtrlAltDel API action instead of guest poweroff",
+        "command": "PUT /actions {action_type: SendCtrlAltDel}",
+        "validation": "Firecracker process exits within seconds",
+        "rollback": "Use SIGKILL on the FC pid",
+        "source_id": "fc-swagger-spec"
+      },
+      {
+        "step": 2,
+        "action": "Or use guest `reboot` with reboot=k boot_args (i8042 reset triggers FC exit)",
+        "command": "Ensure boot_args contains reboot=k; guest$ reboot",
+        "validation": "Firecracker exits cleanly",
+        "rollback": null,
+        "source_id": "fc-repo-faq"
+      },
+      {
+        "step": 3,
+        "action": "Or just SIGKILL from orchestrator",
+        "command": "kill -9 <fc-pid>",
+        "validation": "Process exits",
+        "rollback": null,
+        "source_id": "fc-repo-faq"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "fc-repo-faq"
+    ]
+  }
+]

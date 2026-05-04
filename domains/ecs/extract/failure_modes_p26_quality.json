@@ -1,0 +1,2760 @@
+[
+  {
+    "id": "ecs.agent.fm.account-setting-arn-format-required",
+    "symptom": "API calls return 'enable the new ARN format with account-setting before using this feature'. Tagging-aware features need new ARN format.",
+    "root_cause_class": "old-arn-format",
+    "error_patterns": [
+      "new ARN format",
+      "InvalidAccountSetting"
+    ],
+    "affected_concepts": [
+      "ecs.networking.cfg.account-setting.task-long-arn",
+      "ecs.networking.cfg.account-setting.container-instance-long-arn"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check account settings",
+        "command": "aws ecs list-account-settings --effective-settings",
+        "expected": "taskLongArnFormat + containerInstanceLongArnFormat + serviceLongArnFormat all = enabled",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Enable for the calling principal",
+        "command": "aws ecs put-account-setting --name taskLongArnFormat --value enabled; same for containerInstanceLongArnFormat + serviceLongArnFormat",
+        "validation": "Tag-aware operations succeed",
+        "rollback": "value=disabled",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-task-networking"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.agent-oom-on-dense-instance",
+    "symptom": "Agent process killed by OOM killer on instance running many high-density tasks. dmesg shows 'Out of memory: Killed process <pid> (agent)'. Tasks orphaned (still running but no agent control).",
+    "root_cause_class": "agent-memory-budget-exceeded",
+    "error_patterns": [
+      "agent OOM",
+      "Killed process .* (agent)",
+      "ECS_RESERVED_MEMORY too low"
+    ],
+    "affected_concepts": [
+      "ecs.agent.amazon-ecs-agent",
+      "ecs.agent.cfg.env.ecs-reserved-memory"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm OOM kill of agent specifically",
+        "command": "sudo dmesg | grep -i 'killed process' | grep -i agent",
+        "expected": "OOM-killer line targeting the agent",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Check current ECS_RESERVED_MEMORY",
+        "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | jq '.[] | select(contains(\"ECS_RESERVED_MEMORY\"))'",
+        "expected": "Should be high enough to cover agent + system overhead (typically 256-512 MiB on dense instances)",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise ECS_RESERVED_MEMORY to subtract more from advertised capacity (forces fewer tasks)",
+        "command": "echo 'ECS_RESERVED_MEMORY=512' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs",
+        "validation": "Tasks placed less densely; OOM stops",
+        "rollback": "Restore prior value",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Set agent container memory limit explicitly via systemd",
+        "command": "Add MemoryMax=512M to ecs.service drop-in",
+        "validation": "Agent OOMs gracefully (won't be killed first)",
+        "rollback": null,
+        "source_id": "ecs-init-readme"
+      }
+    ],
+    "confidence": 0.8,
+    "source_ids": [
+      "ecs-agent-readme"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.awslogs-missing-log-group",
+    "symptom": "Task fails ResourceInitializationError 'failed to create container: failed to initialize logging driver: awslogs: log group does not exist'. awslogs-create-group not set + group doesn't exist.",
+    "root_cause_class": "awslogs-create-group-not-set",
+    "error_patterns": [
+      "log group does not exist",
+      "ResourceNotFoundException",
+      "awslogs"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.container.log-driver",
+      "ecs.task-defs.cfg.container.log-options"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check log options",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.containerDefinitions[].logConfiguration'",
+        "expected": "options.awslogs-create-group=true OR group pre-created",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Pre-create the log group (recommended)",
+        "command": "aws logs create-log-group --log-group-name <group>; aws logs put-retention-policy --log-group-name <group> --retention-in-days 30",
+        "validation": "Tasks launch",
+        "rollback": "Delete group",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Or set awslogs-create-group=true in log options + grant logs:CreateLogGroup to executionRole",
+        "command": "Update task def options.awslogs-create-group=true; add IAM perm",
+        "validation": "Auto-created on first task",
+        "rollback": "Set to false; pre-create groups",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.bare-metal-host-misuse-firecracker",
+    "symptom": "Bare-metal EC2 instance hosting Firecracker-based workloads exhibits performance degradation. Investigation shows Firecracker not configured per fc-docs-prod-host-setup recommendations on the host.",
+    "root_cause_class": "host-not-firecracker-tuned",
+    "error_patterns": [
+      "firecracker performance",
+      "kvm-pit overhead",
+      "host-config drift"
+    ],
+    "affected_concepts": [
+      "ecs.nitro-baremetal.bare-metal-instance",
+      "ecs.nitro-baremetal.nested-kvm-on-bare-metal"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Verify host kernel cmdline includes 'quiet loglevel=1 nosmt'",
+        "command": "cat /proc/cmdline",
+        "expected": "Per Firecracker production-host-setup recommendations",
+        "source_id": "ecs-aws-baremetal-announce"
+      },
+      {
+        "step": 2,
+        "action": "Check KSM + swap + SMT",
+        "command": "cat /sys/kernel/mm/ksm/run; grep -q /dev /proc/swaps; cat /sys/devices/system/cpu/smt/control",
+        "expected": "ksm/run=0; no swap; smt=off",
+        "source_id": "ecs-ec2-nitro"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Apply Firecracker production-host hardening to the bare-metal instance",
+        "command": "Cross-reference firecracker.setup.production-checklist concept + per-fix steps in firecracker.setup.fm.* failure_modes",
+        "validation": "Host meets the Firecracker production checklist",
+        "rollback": "Tolerate unhardened host (insecure for multi-tenant)",
+        "source_id": "ecs-aws-baremetal-announce"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "ecs-aws-baremetal-announce",
+      "ecs-ec2-nitro"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.cgroupv2-task-launch-failure",
+    "symptom": "Tasks fail to launch on cgroup v2 instances; CannotCreateContainerError mentions cgroup-v2 mount or hierarchy issues. Particularly with older agent versions.",
+    "root_cause_class": "agent-cgroup-version-mismatch",
+    "error_patterns": [
+      "cgroup v2",
+      "ResourceInitializationError",
+      "failed to setup cgroup"
+    ],
+    "affected_concepts": [
+      "ecs.agent.amazon-ecs-agent",
+      "ecs.agent.cfg.env.ecs-cgroup-cpu-period"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check host cgroup version",
+        "command": "stat -fc %T /sys/fs/cgroup",
+        "expected": "cgroup2fs (v2) or tmpfs (v1)",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Check agent version",
+        "command": "curl -s http://localhost:51678/v1/metadata | jq .Version",
+        "expected": "≥ 1.79.0 for full cgroup-v2 support",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Upgrade agent (in-place or via AMI rotation)",
+        "command": "Trigger ECS-managed update OR use AL2023 ECS-Optimized AMI (ships current agent + cgroup-v2 ready)",
+        "validation": "Agent ≥ 1.79.0; tasks launch",
+        "rollback": "Pin to known-good agent version",
+        "source_id": "ecs-dg-optimized-ami"
+      },
+      {
+        "step": 2,
+        "action": "If can't upgrade, fall back to cgroup v1",
+        "command": "Add systemd.unified_cgroup_hierarchy=0 to host kernel cmdline; reboot",
+        "validation": "/sys/fs/cgroup is tmpfs (v1)",
+        "rollback": "Remove cmdline arg",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "ecs-agent-changelog"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.checkpoint-state-loss",
+    "symptom": "Agent restart re-discovers running tasks but takes a long time. agent log: 'state file not found'. Symptom: brief task-status flapping in console.",
+    "root_cause_class": "agent-data-dir-not-persisted",
+    "error_patterns": [
+      "state file not found",
+      "checkpoint missing",
+      "rediscovering tasks"
+    ],
+    "affected_concepts": [
+      "ecs.agent.checkpoint-state",
+      "ecs.agent.cfg.env.ecs-datadir",
+      "ecs.agent.cfg.env.ecs-host-data-dir"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm data dir bind mount",
+        "command": "docker inspect ecs-agent --format '{{json .Mounts}}' | jq",
+        "expected": "Bind from $ECS_HOST_DATA_DIR/data into $ECS_DATADIR (/data/)",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Ensure ECS_HOST_DATA_DIR + ECS_DATADIR set + bind mount present",
+        "command": "Verify /etc/ecs/ecs.config has both; restart agent",
+        "validation": "State persists across restarts",
+        "rollback": null,
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "ecs-agent-readme"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.codedeploy-blue-green-rollback-stuck",
+    "symptom": "CodeDeploy blue/green ECS deployment fails to roll back. Old (blue) target group still receiving 0 traffic; service stuck. Manual ALB intervention needed.",
+    "root_cause_class": "codedeploy-iam-or-hook-failed",
+    "error_patterns": [
+      "BlueGreenDeploymentFailed",
+      "deployment lifecycle hook failed"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.service-definition"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect CodeDeploy deployment",
+        "command": "aws deploy get-deployment --deployment-id <id> --query 'deploymentInfo.{status:status,errorInfo:errorInformation}'",
+        "expected": "Specific error code (HEALTH_CONSTRAINTS, IAM_ROLE_MISSING_PERMISSIONS, SCRIPT_FAILED)",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Stop the failed deployment + manually swap ALB listener back to blue TG",
+        "command": "aws deploy stop-deployment --deployment-id <id> --auto-rollback-enabled; aws elbv2 modify-listener --listener-arn <l> --default-actions Type=forward,TargetGroupArn=<blue-tg>",
+        "validation": "Traffic restored to blue",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Diagnose + retry once root cause fixed",
+        "command": "Fix the lifecycle hook script / IAM perm; new CodeDeploy deployment",
+        "validation": "Green TG healthy + cutover succeeds",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.cross-account-ecr-pull-denied",
+    "symptom": "Task in account A pulls from ECR in account B; CannotPullContainerError. Cross-account ECR repo policy doesn't allow account A's executionRole.",
+    "root_cause_class": "ecr-cross-account-policy-missing",
+    "error_patterns": [
+      "AccessDenied",
+      "cross-account ECR",
+      "RepositoryPolicyNotFoundException"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.container.image"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check repo policy",
+        "command": "aws ecr get-repository-policy --registry-id <accountB> --repository-name <repo>",
+        "expected": "Statement allowing account A's executionRole arn principal",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add cross-account permission to ECR repo policy",
+        "command": "aws ecr set-repository-policy --registry-id <accountB> --repository-name <repo> --policy-text '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"CrossAcct\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::<accountA>:role/<execRole>\"},\"Action\":[\"ecr:GetDownloadUrlForLayer\",\"ecr:BatchGetImage\",\"ecr:BatchCheckLayerAvailability\"]}]}'",
+        "validation": "Pull succeeds",
+        "rollback": "Remove statement",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.dev-kvm-not-needed-but-docker-failing",
+    "symptom": "agent log: 'failed to dial docker: Get \"http://%2Fvar%2Frun%2Fdocker.sock\": EOF'. Docker daemon isn't reachable.",
+    "root_cause_class": "docker-daemon-unhealthy",
+    "error_patterns": [
+      "failed to dial docker",
+      "docker.sock",
+      "EOF"
+    ],
+    "affected_concepts": [
+      "ecs.agent.docker-vs-containerd",
+      "ecs.agent.cfg.env.docker-host"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check Docker daemon",
+        "command": "sudo systemctl status docker; sudo journalctl -u docker --since '10min ago' | tail -50",
+        "expected": "docker.service active; recent activity",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Verify socket permissions",
+        "command": "ls -la /var/run/docker.sock",
+        "expected": "srw-rw---- root:docker; agent uid in docker group",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Restart Docker",
+        "command": "sudo systemctl restart docker; sudo systemctl restart ecs",
+        "validation": "agent reconnects within 60s",
+        "rollback": null,
+        "source_id": "ecs-init-readme"
+      },
+      {
+        "step": 2,
+        "action": "If Docker repeatedly fails, check disk space (Docker writes to /var/lib/docker)",
+        "command": "df -h /var/lib/docker; sudo docker system df",
+        "validation": "Adequate free space",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-agent-readme"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.draining-stuck-services-not-replacing",
+    "symptom": "Container instance set to DRAINING but tasks aren't being replaced. Tasks stuck in RUNNING on the draining instance. Service event log shows no new task placements.",
+    "root_cause_class": "no-capacity-for-replacement",
+    "error_patterns": [
+      "DRAINING but tasks not replaced",
+      "no scaling activity"
+    ],
+    "affected_concepts": [
+      "ecs.agent.container-instance-state-machine",
+      "ecs.launch-types.cp-strategy-base-weight"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check service deployment + capacity",
+        "command": "aws ecs describe-services --cluster <c> --services <svc> --query 'services[0].{desired:desiredCount,running:runningCount,pending:pendingCount,events:events[0:5]}'",
+        "expected": "Pending count >0 and events show 'unable to place task'",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Check cluster capacity",
+        "command": "aws ecs describe-container-instances --cluster <c> --container-instances <arn-list> --query 'containerInstances[].{status:status,remaining:remainingResources,registered:registeredResources}'",
+        "expected": "Sum of remainingResources should fit a task; if not, no capacity",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add capacity (scale up ASG or add an instance manually)",
+        "command": "Increase ASG desiredCapacity OR run-instances manually",
+        "validation": "New instance ACTIVE; service places replacement tasks",
+        "rollback": "Scale back down once draining completes",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "If using capacity providers, raise managedScaling targetCapacity / instanceWarmupPeriod",
+        "command": "Update CP managedScaling.targetCapacity to <100 (e.g. 80) so cluster keeps slack",
+        "validation": "Auto-scaling provisions new instance for replacement",
+        "rollback": "Restore prior targetCapacity",
+        "source_id": "ecs-dg-capacity-providers"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-dg-instance-draining"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.ecs-anywhere-ssm-activation-expired",
+    "symptom": "External instance fails to register. ecs-init log: 'ssm activation expired or invalid'. SSM activation token has 30-day max TTL.",
+    "root_cause_class": "ssm-activation-ttl-expired",
+    "error_patterns": [
+      "activation expired",
+      "InvalidActivation",
+      "ssm-init"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.external-launch-type"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check activation expiration",
+        "command": "aws ssm describe-activations --filters 'Key=ActivationIds,Values=<id>' --query 'ActivationList[].{ExpirationDate:ExpirationDate,Used:RegistrationsCount}'",
+        "expected": "ExpirationDate in future",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Create new activation + re-run ecs-anywhere-install.sh on the instance",
+        "command": "aws ssm create-activation --iam-role <role> --registration-limit 100 --expiration-date $(date -d '+30 days' --iso-8601=seconds); on instance: curl ... | bash -s -- --activation-id <new> --activation-code <new>",
+        "validation": "Instance registers in cluster",
+        "rollback": null,
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-dg-launch-types"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.efs-mount-failed-transit-encryption",
+    "symptom": "Task fails ResourceInitializationError 'failed to mount EFS volume: ... transit encryption mismatch'. Task-def says transitEncryption=ENABLED but EFS mount-target SG doesn't allow port 2049 from task SG, OR EFS access point requires IAM and task lacks perms.",
+    "root_cause_class": "efs-mount-misconfig",
+    "error_patterns": [
+      "failed to mount EFS",
+      "transit encryption",
+      "mount.nfs"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.volume.efs.transit-encryption",
+      "ecs.task-defs.cfg.volume.efs.iam"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check EFS mount target SG",
+        "command": "aws efs describe-mount-targets --file-system-id <fs>; aws ec2 describe-security-groups --group-ids <mt-sg>",
+        "expected": "Allow port 2049 from task SG",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "If iam=ENABLED on volume, check executionRoleArn has elasticfilesystem:ClientMount + ClientWrite",
+        "command": "aws iam simulate-principal-policy --policy-source-arn <execRole> --action-names elasticfilesystem:ClientMount",
+        "expected": "Allowed",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Open port 2049 in EFS mount target SG from task SG",
+        "command": "aws ec2 authorize-security-group-ingress --group-id <mt-sg> --protocol tcp --port 2049 --source-group <task-sg>",
+        "validation": "Mount succeeds",
+        "rollback": "Revoke",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Add ClientMount/ClientWrite to executionRole if iam=ENABLED",
+        "command": "Attach policy with elasticfilesystem:ClientMount + ClientWrite scoped to the file-system ARN",
+        "validation": "Mount succeeds with IAM auth",
+        "rollback": null,
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.environment-file-s3-not-found",
+    "symptom": "Task fails ResourceInitializationError 'environment file s3://bucket/file not accessible'. Bucket/key missing or executionRole lacks s3:GetObject.",
+    "root_cause_class": "environment-file-fetch-failed",
+    "error_patterns": [
+      "environment file",
+      "s3",
+      "NoSuchKey",
+      "AccessDenied"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.container.environment-files",
+      "ecs.task-defs.cfg.task.execution-role-arn"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Verify file exists",
+        "command": "aws s3 ls s3://<bucket>/<key>",
+        "expected": "Object present",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Check executionRole has s3:GetObject + bucket policy allows",
+        "command": "aws iam simulate-principal-policy --policy-source-arn <execRole> --action-names s3:GetObject --resource-arns 'arn:aws:s3:::<bucket>/<key>'",
+        "expected": "Allowed",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add S3 read perms to executionRole + bucket policy",
+        "command": "aws iam put-role-policy --role-name <execRole> --policy-name read-envs --policy-document '{...s3:GetObject on bucket+key...}'",
+        "validation": "Re-run task; env file loaded",
+        "rollback": "Remove policy",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.ephemeral-storage-exhausted-fargate",
+    "symptom": "Fargate task fills its scratch disk; container crashes with 'no space left on device'. Default ephemeralStorage is 20 GiB; bigger images / scratch usage exceeds.",
+    "root_cause_class": "ephemeral-storage-too-small",
+    "error_patterns": [
+      "no space left on device",
+      "ENOSPC",
+      "disk full"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.ephemeral-storage",
+      "ecs.task-defs.cfg.task.ephemeral-storage.size-in-gib"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check current ephemeralStorage",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.ephemeralStorage'",
+        "expected": "sizeInGiB ≥ image-size + scratch-budget + buffer",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise ephemeralStorage (Fargate platform 1.4.0+, range 21-200)",
+        "command": "Update task-def: ephemeralStorage.sizeInGiB=50; register new revision",
+        "validation": "Tasks no longer hit ENOSPC",
+        "rollback": "Restore prior size",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "For larger needs, attach EBS volume (configuredAtLaunch, Fargate platform 1.4+)",
+        "command": "Add task-def volume with configuredAtLaunch=true; provide volume config at run-task time",
+        "validation": "200+ GiB available",
+        "rollback": null,
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.exec-command-ssm-session-failed",
+    "symptom": "aws ecs execute-command fails: 'The execute command failed because execute command was not enabled when the Task was run'.",
+    "root_cause_class": "exec-command-not-opted-in",
+    "error_patterns": [
+      "execute command was not enabled",
+      "ECS Exec disabled"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.service-definition"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check service has enableExecuteCommand=true",
+        "command": "aws ecs describe-services --cluster <c> --services <s> --query 'services[].enableExecuteCommand'",
+        "expected": "true",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Check task IAM role has SSM perms",
+        "command": "aws iam simulate-principal-policy --policy-source-arn <taskRole> --action-names ssmmessages:CreateControlChannel ssmmessages:CreateDataChannel ssmmessages:OpenControlChannel ssmmessages:OpenDataChannel",
+        "expected": "All allowed",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Update service to enable Exec + grant taskRole SSM perms",
+        "command": "aws ecs update-service --cluster <c> --service <s> --enable-execute-command; force new deployment; attach AmazonSSMManagedInstanceCore (or specific 4 ssmmessages perms) to taskRole",
+        "validation": "execute-command opens shell",
+        "rollback": "Disable enableExecuteCommand",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.fargate-platform-version-pin-stale",
+    "symptom": "Fargate service pinned to platformVersion=1.3.0 hits behavior bugs that 1.4+ fixes. Or pin to LATEST and behavior changes broke an integration.",
+    "root_cause_class": "platform-version-mismatch",
+    "error_patterns": [
+      "platform version",
+      "Fargate behavior change"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.cfg.task.platform-version"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check service platformVersion",
+        "command": "aws ecs describe-services --cluster <c> --services <s> --query 'services[].platformVersion'",
+        "expected": "Pinned (e.g., 1.4.0) or LATEST",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Set platformVersion=1.4.0 (or latest stable) for new features",
+        "command": "aws ecs update-service --cluster <c> --service <s> --platform-version 1.4.0; force-new-deployment",
+        "validation": "Tasks land on platform 1.4.0",
+        "rollback": "platform-version 1.3.0 (loses features)",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "If chasing LATEST broke things, pin a known-good version",
+        "command": "Set platform-version=1.4.0 explicitly",
+        "validation": "Stable behavior",
+        "rollback": null,
+        "source_id": "ecs-dg-launch-types"
+      }
+    ],
+    "confidence": 0.8,
+    "source_ids": [
+      "ecs-dg-launch-types"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.fargate-restricted-syscall-or-cap",
+    "symptom": "Fargate task fails to launch: 'unsupported parameter: privileged' or 'sysctl X not allowed'. Fargate restricts privileged + many sysctls + capabilities.",
+    "root_cause_class": "fargate-restriction",
+    "error_patterns": [
+      "unsupported parameter",
+      "not supported on Fargate",
+      "privileged"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.fargate",
+      "ecs.task-defs.cfg.container.privileged",
+      "ecs.task-defs.cfg.container.linux-parameters.capabilities-add"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check task-def for restricted features",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.containerDefinitions[].{priv:privileged,caps:linuxParameters.capabilities,sysctls:systemControls,pidMode:pidMode}'",
+        "expected": "None of the Fargate-forbidden features set",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Remove the restricted parameter OR migrate to EC2 launch type",
+        "command": "Update task-def to drop privileged/restricted sysctl/capability; OR change launchType=EC2",
+        "validation": "Task launches",
+        "rollback": "Revert",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.firelens-config-fluentbit-syntax-error",
+    "symptom": "FireLens log-router container exits immediately. Task stops with 'essential container exited' for the firelens container; app logs lost. Fluent Bit parsed config-file-value with syntax error.",
+    "root_cause_class": "firelens-config-syntax",
+    "error_patterns": [
+      "fluent-bit",
+      "configuration error",
+      "FireLens"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.firelens-configuration",
+      "ecs.task-defs.cfg.container.firelens-config.options"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Read firelens container logs from prior failed task",
+        "command": "aws logs filter-log-events --log-group-name <fluentbit-group> --filter-pattern ERROR",
+        "expected": "Specific config line + error",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Test config file locally",
+        "command": "docker run --rm -v <config>:/etc/fluent-bit/parsers.conf amazon/aws-for-fluent-bit -c /etc/fluent-bit/parsers.conf --dry-run",
+        "expected": "No syntax errors",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Fix the config file; bump revision (S3 or built-in)",
+        "command": "Validate locally; push to S3 (if config-file-type=s3); register new task-def revision",
+        "validation": "FireLens container stays up",
+        "rollback": "Revert config change",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.8,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.iam-role-propagation-race",
+    "symptom": "Task fails immediately with 'Unable to assume the role' or 'access denied' on first call to AWS API, even though task IAM role exists. Race: task starts before IAM role's trust relationship has propagated.",
+    "root_cause_class": "iam-eventual-consistency",
+    "error_patterns": [
+      "Unable to assume",
+      "AccessDenied",
+      "AssumeRole failed"
+    ],
+    "affected_concepts": [
+      "ecs.agent.iam-roles-for-tasks",
+      "ecs.task-defs.task-role-vs-execution-role"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check task execution role + task role exist and are recent",
+        "command": "aws iam get-role --role-name <task-role>; check CreateDate",
+        "expected": "Role created >30s ago for IAM consistency",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Check trust policy",
+        "command": "aws iam get-role --role-name <task-role> --query 'Role.AssumeRolePolicyDocument'",
+        "expected": "Trust policy allows ecs-tasks.amazonaws.com to assume",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add 30-60s delay between IAM role creation and task launch in CI/CD",
+        "command": "Pipeline: create-role → sleep 60 → register-task-def → run-task",
+        "validation": "First task launch succeeds",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Or implement retry-with-backoff on the task side",
+        "command": "App code wraps first AWS API call in retry loop",
+        "validation": "Eventually-consistent IAM propagation absorbed",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.8,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.image-cleanup-races-task-launch",
+    "symptom": "Task fails with CannotPullContainerError 'image not found' RIGHT after a previous task using the same image successfully completed and was cleaned up. Image was deleted by agent's cleanup right as the new task tried to use it.",
+    "root_cause_class": "image-cleanup-too-aggressive",
+    "error_patterns": [
+      "CannotPullContainerError",
+      "image not found",
+      "cleanup race"
+    ],
+    "affected_concepts": [
+      "ecs.agent.image-cleanup",
+      "ecs.agent.cfg.env.ecs-image-cleanup-interval",
+      "ecs.agent.cfg.env.ecs-image-minimum-cleanup-age"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check current cleanup config",
+        "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | grep -E 'ECS_IMAGE|CLEANUP'",
+        "expected": "Cleanup interval + min age",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise ECS_IMAGE_MINIMUM_CLEANUP_AGE",
+        "command": "echo 'ECS_IMAGE_MINIMUM_CLEANUP_AGE=24h' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs",
+        "validation": "Recently-pulled images survive longer",
+        "rollback": "Restore prior value",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Or set ECS_IMAGE_PULL_BEHAVIOR=always so tasks re-pull regardless of cache state",
+        "command": "echo 'ECS_IMAGE_PULL_BEHAVIOR=always' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs",
+        "validation": "Tasks always pull (slower start, no cache races)",
+        "rollback": "Restore behavior=default",
+        "source_id": "ecs-agent-readme"
+      }
+    ],
+    "confidence": 0.7,
+    "source_ids": [
+      "ecs-agent-readme"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.spot-interruption-no-draining",
+    "symptom": "Spot-backed instance terminated mid-task. Tasks were running but no draining happened; service has to scramble to replace them. Disrupts in-flight work.",
+    "root_cause_class": "ecs-enable-spot-instance-draining-not-set",
+    "error_patterns": [
+      "Spot instance interrupted",
+      "instance terminated unexpectedly"
+    ],
+    "affected_concepts": [
+      "ecs.agent.spot-instance-draining",
+      "ecs.agent.cfg.env.ecs-enable-spot-instance-draining"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check current setting",
+        "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | grep SPOT",
+        "expected": "ECS_ENABLE_SPOT_INSTANCE_DRAINING=true",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Enable spot draining",
+        "command": "echo 'ECS_ENABLE_SPOT_INSTANCE_DRAINING=true' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs",
+        "validation": "Future spot interruptions trigger DRAINING; tasks gracefully replaced",
+        "rollback": "Set to false",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Bake into all AMI images (CloudInit/user-data)",
+        "command": "Add line to user-data so newly launched instances always have it",
+        "validation": "Cluster-wide consistent behavior",
+        "rollback": null,
+        "source_id": "ecs-dg-optimized-ami"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-agent-readme",
+      "ecs-dg-instance-draining"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.task-def-volume-name-collision",
+    "symptom": "Task fails to start: 'volume name X already exists'. Two task-def volumes with the same name; OR mountPoint references a volume name that doesn't exist in volumes[].",
+    "root_cause_class": "task-def-volume-misconfig",
+    "error_patterns": [
+      "volume name",
+      "duplicate volume",
+      "sourceVolume not found"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.task.volumes",
+      "ecs.task-defs.cfg.container.mount-points"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect task def volumes + mountPoints",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.{volumes:volumes,mounts:containerDefinitions[].mountPoints}'",
+        "expected": "Volume names unique; every mountPoint.sourceVolume matches a volume name",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      },
+      {
+        "step": 3,
+        "action": "Query the agent's introspection endpoint for current task state",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, lastStatus, desiredStatus, knownStatus, containers:[.Containers[]|{name,lastStatus,reason}]}'",
+        "expected": "Reveals whether the agent has knowledge of the task and what it sees for each container's last/known status.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Rename duplicates / fix mountPoint.sourceVolume references",
+        "command": "Update task-def JSON; register new revision",
+        "validation": "Tasks launch",
+        "rollback": "Revert revision",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Restart the ECS agent and confirm re-registration with the cluster",
+        "command": "sudo systemctl restart ecs && sleep 5 && curl -s http://localhost:51678/v1/metadata | jq .",
+        "validation": "/v1/metadata returns Cluster + ContainerInstanceArn; ECS console shows the instance as ACTIVE again.",
+        "rollback": "If restart causes worse state, check /var/log/ecs/ecs-init.log; downgrade agent via 'sudo yum downgrade ecs-init-<version>' or replace the AMI.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.agent.fm.task-stuck-in-stopping",
+    "symptom": "Task transitions to STOPPING but never reaches STOPPED. Held there for many minutes. Container won't respond to SIGTERM.",
+    "root_cause_class": "container-ignoring-sigterm",
+    "error_patterns": [
+      "Task stuck in STOPPING",
+      "container did not exit"
+    ],
+    "affected_concepts": [
+      "ecs.agent.cfg.env.ecs-container-stop-timeout",
+      "ecs.task-defs.cfg.container.stop-timeout"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check task lastStatus + stoppedReason",
+        "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[].{status:lastStatus,reason:stoppedReason,since:stoppingAt}'",
+        "expected": "STOPPING; stoppingAt > 30s ago",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "SSH to instance + force-kill if EC2 launch type",
+        "command": "ssh ...; docker ps; docker kill <container-id>",
+        "expected": "Container dies; task completes STOPPED",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ECS agent log on the container instance",
+        "command": "sudo journalctl -u ecs --no-pager -n 200 | tail -100; sudo tail -200 /var/log/ecs/ecs-agent.log",
+        "expected": "Find error messages with context: agent stop reasons, container state transitions, registration failures, or task launch errors.",
+        "source_id": "ecs-dg-agent-introspection"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "App should handle SIGTERM cleanly within stopTimeout",
+        "command": "Add SIGTERM handler that flushes + exits",
+        "validation": "Tasks stop within stopTimeout",
+        "rollback": null,
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Set linuxParameters.initProcessEnabled=true to use tini PID 1 (forwards signals correctly)",
+        "command": "Add to task-def container.linuxParameters",
+        "validation": "Signals reach app",
+        "rollback": "Disable initProcessEnabled",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.alb-health-check-cascading-failures",
+    "symptom": "ALB target group constantly killing tasks. Cascading failures: tasks killed → service launches replacements → new tasks also fail health check.",
+    "root_cause_class": "alb-health-check-misconfig",
+    "error_patterns": [
+      "Task failed ELB health checks",
+      "deregistering target",
+      "health check failed"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.service.health-check-grace-period-seconds"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check ALB TG health check",
+        "command": "aws elbv2 describe-target-group-attributes --target-group-arn <tg>; describe-target-health",
+        "expected": "Path/port/HealthCheckIntervalSeconds/HealthyThresholdCount sensible for the app",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Validate manually inside the task",
+        "command": "aws ecs execute-command --cluster <c> --task <arn> --container <name> --command '/bin/sh' --interactive; then curl localhost:<port><path>",
+        "expected": "Endpoint returns expected status",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Inspect the ENI / bridge state on the container instance for the failing task",
+        "command": "ip -br link show; ip -br addr show; aws ec2 describe-network-interfaces --filters Name=description,Values='*ECS*' --query 'NetworkInterfaces[].{eni:NetworkInterfaceId,status:Status,subnet:SubnetId,sg:Groups[].GroupId}' --output table",
+        "expected": "ENI is attached and Available; subnet matches task subnet; security groups allow expected egress.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Fix the health check (path, port, expected status)",
+        "command": "aws elbv2 modify-target-group --target-group-arn <tg> --health-check-path /healthz --health-check-port traffic-port",
+        "validation": "Targets healthy",
+        "rollback": "Restore prior",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Raise service.healthCheckGracePeriodSeconds for slow-starting apps",
+        "command": "aws ecs update-service --cluster <c> --service <s> --health-check-grace-period-seconds 300",
+        "validation": "Tasks survive past startup",
+        "rollback": null,
+        "source_id": "ecs-dg-service-defs-params"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.awsvpc-cant-pull-from-ecr-no-vpce",
+    "symptom": "awsvpc tasks in private subnets can't reach ECR. CannotPullContainerError net-timeout. No VPC endpoints + no NAT.",
+    "root_cause_class": "no-private-egress-to-aws-services",
+    "error_patterns": [
+      "CannotPullContainerError",
+      "i/o timeout",
+      "ecr"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.fm.cannot-pull-container-error-network",
+      "ecs.networking.network-mode-awsvpc"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check VPC endpoints",
+        "command": "aws ec2 describe-vpc-endpoints --filters Name=vpc-id,Values=<vpc> --query 'VpcEndpoints[].ServiceName'",
+        "expected": "Should include com.amazonaws.<region>.{ecr.api,ecr.dkr,s3,logs}",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ENI / bridge state on the container instance for the failing task",
+        "command": "ip -br link show; ip -br addr show; aws ec2 describe-network-interfaces --filters Name=description,Values='*ECS*' --query 'NetworkInterfaces[].{eni:NetworkInterfaceId,status:Status,subnet:SubnetId,sg:Groups[].GroupId}' --output table",
+        "expected": "ENI is attached and Available; subnet matches task subnet; security groups allow expected egress.",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 3,
+        "action": "Verify the agent's network mode + Service Connect / VPC Lattice config matches the task definition",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, networkMode:.NetworkMode, attachments:.Attachments}'",
+        "expected": "networkMode is awsvpc / bridge / host as declared; attachments include the attached ENI for awsvpc tasks.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Create the missing VPC endpoints",
+        "command": "aws ec2 create-vpc-endpoint --vpc-id <vpc> --service-name com.amazonaws.<region>.ecr.api --vpc-endpoint-type Interface --subnet-ids <subnets> --security-group-ids <sg>; same for ecr.dkr; for S3 use Gateway type with route-table assoc",
+        "validation": "Pulls succeed without internet egress",
+        "rollback": "Delete endpoints",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Update the security group / route table / task definition so the task can reach the target",
+        "command": "aws ec2 authorize-security-group-egress --group-id <sg> --protocol tcp --port <port> --cidr <cidr>  # OR change subnet route, OR update task def 'awsvpcConfiguration.assignPublicIp'",
+        "validation": "Re-run the connectivity test from inside the container; nslookup + curl now succeed.",
+        "rollback": "aws ec2 revoke-security-group-egress with the same params; revert task def to prior revision.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-task-networking"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.awsvpc-eni-quota-exhaustion",
+    "symptom": "Tasks fail to launch with 'ENI attach timeout'. Per-instance ENI limit hit (e.g., 4 on m5.large) before HDE/trunking enabled.",
+    "root_cause_class": "per-instance-eni-quota",
+    "error_patterns": [
+      "ENI attach timeout",
+      "InsufficientFreeAddressesInSubnet",
+      "instance ENI quota"
+    ],
+    "affected_concepts": [
+      "ecs.networking.eni-trunking",
+      "ecs.networking.network-mode-awsvpc"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check instance ENI usage",
+        "command": "aws ec2 describe-instances --instance-ids <id> --query 'Reservations[].Instances[].NetworkInterfaces | length(@)'",
+        "expected": "Compare to per-instance-type limit (lookup at docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html)",
+        "source_id": "ecs-agent-proposal-eni"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ENI / bridge state on the container instance for the failing task",
+        "command": "ip -br link show; ip -br addr show; aws ec2 describe-network-interfaces --filters Name=description,Values='*ECS*' --query 'NetworkInterfaces[].{eni:NetworkInterfaceId,status:Status,subnet:SubnetId,sg:Groups[].GroupId}' --output table",
+        "expected": "ENI is attached and Available; subnet matches task subnet; security groups allow expected egress.",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 3,
+        "action": "Verify the agent's network mode + Service Connect / VPC Lattice config matches the task definition",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, networkMode:.NetworkMode, attachments:.Attachments}'",
+        "expected": "networkMode is awsvpc / bridge / host as declared; attachments include the attached ENI for awsvpc tasks.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Enable awsvpc trunking (HDE)",
+        "command": "aws ecs put-account-setting --name awsvpcTrunking --value enabled; restart agents (or new instances pick up automatically)",
+        "validation": "Per-instance task density 5-20x higher",
+        "rollback": "Disable awsvpcTrunking",
+        "source_id": "ecs-agent-proposal-eni"
+      },
+      {
+        "step": 2,
+        "action": "Or use larger instances with higher ENI limits",
+        "command": "Switch to instance type with more ENI slots (e.g., m5.4xlarge has 8 vs m5.large's 3)",
+        "validation": "More tasks fit per instance",
+        "rollback": null,
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-agent-proposal-eni"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.awsvpc-subnet-ip-exhaustion",
+    "symptom": "Task ENI attach fails with 'InsufficientFreeAddressesInSubnet'. Subnet IP space exhausted by accumulated ENIs.",
+    "root_cause_class": "subnet-ip-exhaustion",
+    "error_patterns": [
+      "InsufficientFreeAddressesInSubnet"
+    ],
+    "affected_concepts": [
+      "ecs.networking.cfg.network-config.awsvpc.subnets"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check subnet free IPs",
+        "command": "aws ec2 describe-subnets --subnet-ids <subnet> --query 'Subnets[].{Cidr:CidrBlock,Free:AvailableIpAddressCount}'",
+        "expected": "Free IPs > expected task count + headroom",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ENI / bridge state on the container instance for the failing task",
+        "command": "ip -br link show; ip -br addr show; aws ec2 describe-network-interfaces --filters Name=description,Values='*ECS*' --query 'NetworkInterfaces[].{eni:NetworkInterfaceId,status:Status,subnet:SubnetId,sg:Groups[].GroupId}' --output table",
+        "expected": "ENI is attached and Available; subnet matches task subnet; security groups allow expected egress.",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 3,
+        "action": "Verify the agent's network mode + Service Connect / VPC Lattice config matches the task definition",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, networkMode:.NetworkMode, attachments:.Attachments}'",
+        "expected": "networkMode is awsvpc / bridge / host as declared; attachments include the attached ENI for awsvpc tasks.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add more/larger subnets to the network configuration",
+        "command": "Create new /22 subnets across more AZs; add to networkConfiguration.subnets[]",
+        "validation": "Tasks placed across new subnets",
+        "rollback": null,
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Reduce stale ENIs if accumulated",
+        "command": "aws ec2 describe-network-interfaces --filters Name=status,Values=available --query 'NetworkInterfaces[].NetworkInterfaceId' | xargs -n1 aws ec2 delete-network-interface --network-interface-id",
+        "validation": "Free IPs increase",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-task-networking"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.host-mode-port-conflict",
+    "symptom": "Second task in host network mode fails to start: 'port already allocated'. Two tasks on same instance try to bind same containerPort.",
+    "root_cause_class": "host-network-port-conflict",
+    "error_patterns": [
+      "port already allocated",
+      "bind: address already in use",
+      "RESOURCE:PORTS"
+    ],
+    "affected_concepts": [
+      "ecs.networking.network-mode-host",
+      "ecs.task-defs.cfg.container.port-mappings"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check task-def network mode + port mappings",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.{nm:networkMode,ports:containerDefinitions[].portMappings}'",
+        "expected": "networkMode=host with fixed containerPort = collision risk",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ENI / bridge state on the container instance for the failing task",
+        "command": "ip -br link show; ip -br addr show; aws ec2 describe-network-interfaces --filters Name=description,Values='*ECS*' --query 'NetworkInterfaces[].{eni:NetworkInterfaceId,status:Status,subnet:SubnetId,sg:Groups[].GroupId}' --output table",
+        "expected": "ENI is attached and Available; subnet matches task subnet; security groups allow expected egress.",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 3,
+        "action": "Verify the agent's network mode + Service Connect / VPC Lattice config matches the task definition",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, networkMode:.NetworkMode, attachments:.Attachments}'",
+        "expected": "networkMode is awsvpc / bridge / host as declared; attachments include the attached ENI for awsvpc tasks.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Switch to awsvpc mode (each task gets own IP, ports don't collide)",
+        "command": "Update networkMode=awsvpc; networkConfiguration with subnets+SGs",
+        "validation": "Multiple tasks on one instance",
+        "rollback": "Revert to host",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Or use bridge mode with hostPort=0 (ephemeral)",
+        "command": "Update task-def to networkMode=bridge, portMappings.hostPort=0; ALB target group uses dynamic port discovery",
+        "validation": "Multiple tasks coexist via different ephemeral host ports",
+        "rollback": null,
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-task-networking"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.imds-leak-from-task",
+    "symptom": "Untrusted task code accesses 169.254.169.254 (EC2 instance metadata) and exfiltrates the container instance role's credentials. SSRF in app code → metadata leak.",
+    "root_cause_class": "missing-awsvpc-imds-block",
+    "error_patterns": [
+      "IMDS access from task",
+      "instance role credentials leaked"
+    ],
+    "affected_concepts": [
+      "ecs.agent.awsvpc-block-imds",
+      "ecs.agent.cfg.env.ecs-awsvpc-block-imds"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check current setting",
+        "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | grep AWSVPC_BLOCK_IMDS",
+        "expected": "ECS_AWSVPC_BLOCK_IMDS=true on multi-tenant clusters",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ENI / bridge state on the container instance for the failing task",
+        "command": "ip -br link show; ip -br addr show; aws ec2 describe-network-interfaces --filters Name=description,Values='*ECS*' --query 'NetworkInterfaces[].{eni:NetworkInterfaceId,status:Status,subnet:SubnetId,sg:Groups[].GroupId}' --output table",
+        "expected": "ENI is attached and Available; subnet matches task subnet; security groups allow expected egress.",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 3,
+        "action": "Verify the agent's network mode + Service Connect / VPC Lattice config matches the task definition",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, networkMode:.NetworkMode, attachments:.Attachments}'",
+        "expected": "networkMode is awsvpc / bridge / host as declared; attachments include the attached ENI for awsvpc tasks.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Block IMDS from awsvpc tasks",
+        "command": "echo 'ECS_AWSVPC_BLOCK_IMDS=true' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs",
+        "validation": "Tasks can't reach 169.254.169.254",
+        "rollback": "Set to false",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Force IMDSv2 on the EC2 instance metadata",
+        "command": "aws ec2 modify-instance-metadata-options --instance-id <id> --http-tokens required",
+        "validation": "Anonymous IMDS GETs return 401",
+        "rollback": "http-tokens optional",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-agent-readme"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.security-group-blocks-task-traffic",
+    "symptom": "Task ENI security group denies egress (or ingress). App can't reach RDS, can't be reached by ALB targets, etc.",
+    "root_cause_class": "security-group-misconfig",
+    "error_patterns": [
+      "connection refused",
+      "connection timed out",
+      "no route to host"
+    ],
+    "affected_concepts": [
+      "ecs.networking.security-group-per-task",
+      "ecs.networking.cfg.network-config.awsvpc.security-groups"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Identify task ENI",
+        "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[].attachments[].details'",
+        "expected": "eni:eni-... and subnet/networkInterfaceId",
+        "source_id": "ecs-agent-proposal-eni"
+      },
+      {
+        "step": 2,
+        "action": "Inspect SG rules",
+        "command": "aws ec2 describe-security-groups --group-ids <task-sg>",
+        "expected": "Egress rules include the destination; ingress includes the expected source SG/IPs",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 3,
+        "action": "Use VPC Reachability Analyzer for E2E path",
+        "command": "aws ec2 create-network-insights-path --source <task-eni> --destination <rds-eni> --protocol TCP --destination-port 5432; analyze",
+        "expected": "Path REACHABLE",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add the missing rule to the task SG",
+        "command": "aws ec2 authorize-security-group-egress --group-id <task-sg> --protocol tcp --port 5432 --cidr <rds-cidr>",
+        "validation": "Connection succeeds",
+        "rollback": "Revoke",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Update the security group / route table / task definition so the task can reach the target",
+        "command": "aws ec2 authorize-security-group-egress --group-id <sg> --protocol tcp --port <port> --cidr <cidr>  # OR change subnet route, OR update task def 'awsvpcConfiguration.assignPublicIp'",
+        "validation": "Re-run the connectivity test from inside the container; nslookup + curl now succeed.",
+        "rollback": "aws ec2 revoke-security-group-egress with the same params; revert task def to prior revision.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-task-networking"
+    ]
+  },
+  {
+    "id": "ecs.networking.fm.task-iam-not-working-host-mode",
+    "symptom": "App in host-network-mode task gets 'no credentials available'. AWS SDK can't reach 169.254.170.2/credentials.",
+    "root_cause_class": "task-iam-host-mode-not-enabled",
+    "error_patterns": [
+      "NoCredentialsError",
+      "169.254.170.2",
+      "credential provider chain failed"
+    ],
+    "affected_concepts": [
+      "ecs.networking.task-credentials-endpoint",
+      "ecs.agent.cfg.env.ecs-enable-task-iam-role-network-host"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check agent env",
+        "command": "docker inspect ecs-agent --format '{{json .Config.Env}}' | jq '.[] | select(contains(\"TASK_IAM\"))'",
+        "expected": "ECS_ENABLE_TASK_IAM_ROLE=true AND ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST=true",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Inspect the ENI / bridge state on the container instance for the failing task",
+        "command": "ip -br link show; ip -br addr show; aws ec2 describe-network-interfaces --filters Name=description,Values='*ECS*' --query 'NetworkInterfaces[].{eni:NetworkInterfaceId,status:Status,subnet:SubnetId,sg:Groups[].GroupId}' --output table",
+        "expected": "ENI is attached and Available; subnet matches task subnet; security groups allow expected egress.",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 3,
+        "action": "Verify the agent's network mode + Service Connect / VPC Lattice config matches the task definition",
+        "command": "curl -s http://localhost:51678/v1/tasks | jq '.Tasks[] | {arn:.Arn, networkMode:.NetworkMode, attachments:.Attachments}'",
+        "expected": "networkMode is awsvpc / bridge / host as declared; attachments include the attached ENI for awsvpc tasks.",
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Set both flags + restart agent",
+        "command": "echo 'ECS_ENABLE_TASK_IAM_ROLE=true' | sudo tee -a /etc/ecs/ecs.config; echo 'ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST=true' | sudo tee -a /etc/ecs/ecs.config; sudo systemctl restart ecs",
+        "validation": "Credentials endpoint reachable",
+        "rollback": "Set to false (loses IAM-for-tasks)",
+        "source_id": "ecs-agent-readme"
+      },
+      {
+        "step": 2,
+        "action": "Or migrate to awsvpc mode (task IAM works by default)",
+        "command": "Update networkMode=awsvpc",
+        "validation": "Cleaner — recommended for new workloads",
+        "rollback": null,
+        "source_id": "ecs-dg-task-networking"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-agent-readme"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.cannot-pull-container-error-network",
+    "symptom": "stoppedReason 'CannotPullContainerError: net/http: TLS handshake timeout' or 'no such host'. Task subnet has no path to the registry.",
+    "root_cause_class": "registry-network-unreachable",
+    "error_patterns": [
+      "CannotPullContainerError",
+      "TLS handshake timeout",
+      "no such host",
+      "i/o timeout"
+    ],
+    "affected_concepts": [
+      "ecs.networking.cfg.network-config.awsvpc.assign-public-ip",
+      "ecs.task-defs.cfg.container.image"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Identify task subnet + check internet egress",
+        "command": "aws ec2 describe-route-tables --filters Name=association.subnet-id,Values=<subnet>",
+        "expected": "Route to NAT/IGW for ECR public OR VPC endpoint for ECR",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "If using VPC endpoints, confirm com.amazonaws.<region>.ecr.api + com.amazonaws.<region>.ecr.dkr + com.amazonaws.<region>.s3 endpoints exist + SG allows",
+        "command": "aws ec2 describe-vpc-endpoints --filters Name=vpc-id,Values=<vpc>",
+        "expected": "All 3 endpoints active",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add NAT for the private subnet OR enable assignPublicIp=ENABLED",
+        "command": "Update subnet route to NAT gateway, OR run-task --network-configuration '...,assignPublicIp=ENABLED'",
+        "validation": "Pull succeeds",
+        "rollback": "Remove NAT (cost reduction)",
+        "source_id": "ecs-dg-task-networking"
+      },
+      {
+        "step": 2,
+        "action": "Or create the ECR + S3 VPC endpoints (private connectivity, no egress cost)",
+        "command": "aws ec2 create-vpc-endpoint --vpc-id <vpc> --service-name com.amazonaws.<region>.ecr.api --vpc-endpoint-type Interface ...; same for ecr.dkr; for S3 use Gateway endpoint type",
+        "validation": "Pull works without internet egress",
+        "rollback": "Delete endpoints",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.cannot-pull-container-error-rate-limited",
+    "symptom": "stoppedReason 'CannotPullContainerError: toomanyrequests: You have reached your pull rate limit. You may increase the limit by authenticating'.  Anonymous Docker Hub pull rate limit hit.",
+    "root_cause_class": "registry-rate-limit",
+    "error_patterns": [
+      "toomanyrequests",
+      "pull rate limit",
+      "Docker Hub"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.container.image",
+      "ecs.agent.cfg.env.ecs-engine-auth-data"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm image is from docker.io anonymously",
+        "command": "echo <image> | grep -E '^(docker.io/|[^/]+/[^/]+:)' (no registry prefix = docker.io)",
+        "expected": "Docker Hub image",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Validate the task definition against ECS task-def constraints",
+        "command": "jq '{cpu, memory, networkMode, executionRoleArn, taskRoleArn, requiresCompatibilities, containerDefinitions:[.containerDefinitions[]|{name,image,essential,memoryReservation,memory,cpu,environment,secrets,logConfiguration}]}' /tmp/taskdef.json",
+        "expected": "All container definitions have a logConfiguration; essential=true on at least one; executionRoleArn set if pulling from ECR/Secrets-Manager.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Mirror image to ECR (recommended for production)",
+        "command": "aws ecr create-repository --repository-name mirror/<image>; docker pull <image>; docker tag ... ; docker push <ECR-URI>; update task def to use ECR URI",
+        "validation": "Pulls from ECR; no Docker Hub rate limit",
+        "rollback": "Revert task-def image",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Or authenticate to Docker Hub (raises rate limit)",
+        "command": "Set ECS_ENGINE_AUTH_DATA on instance OR use repositoryCredentials with Secrets Manager",
+        "validation": "Authenticated pulls have higher quota",
+        "rollback": null,
+        "source_id": "ecs-agent-readme"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.deployment-circuit-breaker-trip",
+    "symptom": "Deployment fails; service event: 'service X is unable to consistently start tasks successfully'. Circuit breaker tripped after multiple task failures; rolled back automatically.",
+    "root_cause_class": "deployment-broken",
+    "error_patterns": [
+      "unable to consistently start tasks",
+      "circuit breaker"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.service.deployment-circuit-breaker-enable",
+      "ecs.task-defs.cfg.service.deployment-circuit-breaker-rollback"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Find the failing tasks from the failed deployment",
+        "command": "aws ecs list-tasks --cluster <c> --desired-status STOPPED --family <family>; describe each",
+        "expected": "Common stoppedReason across the failures",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Validate the task definition against ECS task-def constraints",
+        "command": "jq '{cpu, memory, networkMode, executionRoleArn, taskRoleArn, requiresCompatibilities, containerDefinitions:[.containerDefinitions[]|{name,image,essential,memoryReservation,memory,cpu,environment,secrets,logConfiguration}]}' /tmp/taskdef.json",
+        "expected": "All container definitions have a logConfiguration; essential=true on at least one; executionRoleArn set if pulling from ECR/Secrets-Manager.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Diagnose root cause from common stoppedReason (likely one of the other failure modes here)",
+        "command": "Cross-reference with this catalog by stoppedReason pattern",
+        "validation": "Root cause identified",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Once fixed, register new revision + update service; circuit breaker auto-resets",
+        "command": "Standard CI/CD flow",
+        "validation": "Deployment reaches steady state",
+        "rollback": "Service is already on prior good revision (auto-rollback)",
+        "source_id": "ecs-dg-service-defs-params"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-service-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.essential-container-exited-app-crash",
+    "symptom": "Task stops with stoppedReason 'Essential container in task exited' and container exitCode != 0. App crashed; ECS terminated the whole task.",
+    "root_cause_class": "app-crash",
+    "error_patterns": [
+      "Essential container in task exited",
+      "exitCode"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.container.essential",
+      "ecs.task-defs.cfg.container.log-driver"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check container exitCode",
+        "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[0].containers[].{name:name,exitCode:exitCode,reason:reason}'",
+        "expected": "exitCode + reason for the essential container",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Read container logs",
+        "command": "aws logs filter-log-events --log-group-name <group> --filter-pattern '' --start-time <ms-since-task-start>",
+        "expected": "Stack trace / error message",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Fix the app and deploy a new task-def revision",
+        "command": "Build → push → register-task-def → update-service",
+        "validation": "App stays up",
+        "rollback": "Roll back to previous revision via update-service --task-definition <family>:<old-revision>",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "If crash is transient/non-deterministic, set deploymentCircuitBreaker.enable+rollback to auto-rollback failed deployments",
+        "command": "Update service deploymentConfiguration",
+        "validation": "Bad deployments auto-revert",
+        "rollback": null,
+        "source_id": "ecs-dg-service-defs-params"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.health-check-grace-too-short",
+    "symptom": "ELB-fronted service constantly killing tasks. Service event: 'service X has stopped Y running tasks: Task failed ELB health checks'. Tasks are healthy app-internally but slow to start.",
+    "root_cause_class": "health-check-grace-too-short",
+    "error_patterns": [
+      "Task failed ELB health checks",
+      "constantly stopping/starting tasks"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.service.health-check-grace-period-seconds",
+      "ecs.task-defs.cfg.container.health-check.start-period"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Measure app startup time",
+        "command": "Look at first-successful-LB-check time post task start in app logs",
+        "expected": "Should be < healthCheckGracePeriodSeconds",
+        "source_id": "ecs-dg-service-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Check service config",
+        "command": "aws ecs describe-services --cluster <c> --services <s> --query 'services[0].healthCheckGracePeriodSeconds'",
+        "expected": "≥ app startup time + safety margin",
+        "source_id": "ecs-dg-service-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise healthCheckGracePeriodSeconds on the service",
+        "command": "aws ecs update-service --cluster <c> --service <s> --health-check-grace-period-seconds 300",
+        "validation": "Tasks survive past startup",
+        "rollback": "Restore prior value",
+        "source_id": "ecs-dg-service-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Also set container.healthCheck.startPeriod",
+        "command": "Add startPeriod to the task-def healthCheck",
+        "validation": "Container HC failures during startup don't count",
+        "rollback": null,
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-service-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.placement-failure-attribute",
+    "symptom": "Placement fails with reason 'ATTRIBUTE:ecs.<x>'. No instance matches the task's placementConstraints expression.",
+    "root_cause_class": "placement-constraint-no-match",
+    "error_patterns": [
+      "ATTRIBUTE:ecs",
+      "placement constraint cannot be matched"
+    ],
+    "affected_concepts": [
+      "ecs.troubleshooting.task-placement-failure",
+      "ecs.task-defs.cfg.task.placement-constraints"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect the failing constraint",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.placementConstraints'",
+        "expected": "Constraint identified (e.g., attribute:ecs.instance-type =~ m5.*)",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Check instance attributes",
+        "command": "aws ecs describe-container-instances --cluster <c> --container-instances <list> --query 'containerInstances[].attributes'",
+        "expected": "Confirm the constraint matches at least some instances",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Loosen constraint OR add instances matching it",
+        "command": "Update placement constraint expression; OR launch instances with the right attribute (via PutAttributes API or ECS_INSTANCE_ATTRIBUTES env var)",
+        "validation": "Placement succeeds",
+        "rollback": "Restore strict constraint",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Register a new task definition revision with the corrected fields and update the service",
+        "command": "aws ecs register-task-definition --cli-input-json file:///tmp/taskdef-fixed.json && aws ecs update-service --cluster <cluster> --service <service> --task-definition <family>:<new-rev>",
+        "validation": "Service deployment reaches steady state (aws ecs describe-services); new tasks reach RUNNING; no stoppedReason on subsequent tasks.",
+        "rollback": "aws ecs update-service --task-definition <family>:<previous-rev>",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.placement-failure-resource-cpu-memory",
+    "symptom": "RunTask fails synchronously with failures[].reason 'RESOURCE:CPU' or 'RESOURCE:MEMORY' — no instance has enough free capacity.",
+    "root_cause_class": "cluster-capacity-exhausted",
+    "error_patterns": [
+      "RESOURCE:CPU",
+      "RESOURCE:MEMORY",
+      "no container instances were found"
+    ],
+    "affected_concepts": [
+      "ecs.troubleshooting.task-placement-failure",
+      "ecs.task-defs.cfg.task.cpu",
+      "ecs.task-defs.cfg.task.memory"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Inspect cluster capacity",
+        "command": "aws ecs describe-container-instances --cluster <c> --container-instances $(aws ecs list-container-instances --cluster <c> --query 'containerInstanceArns' --output text) --query 'containerInstances[].remainingResources'",
+        "expected": "Sum of CPU/MEMORY across instances should fit the task",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Check task-def resource requests",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.{cpu:cpu,memory:memory}'",
+        "expected": "Should fit on at least one instance",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 3,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add capacity (scale ASG up, add instance, or use Fargate)",
+        "command": "Increase ASG desiredCapacity OR run-task --launch-type FARGATE",
+        "validation": "Task placed",
+        "rollback": null,
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "Reduce task resource requests if over-provisioned",
+        "command": "Lower task-level cpu/memory; register new revision",
+        "validation": "Task fits existing capacity",
+        "rollback": "Restore",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.resource-initialization-secret-fetch-failed",
+    "symptom": "Task fails with stoppedReason 'ResourceInitializationError: unable to pull secrets or registry auth: ... AccessDeniedException'. Execution role can't fetch from Secrets Manager / SSM.",
+    "root_cause_class": "execution-role-missing-secret-perms",
+    "error_patterns": [
+      "ResourceInitializationError",
+      "unable to pull secrets",
+      "AccessDeniedException",
+      "secretsmanager"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.container.secrets",
+      "ecs.task-defs.cfg.task.execution-role-arn"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Identify failing secret ARN",
+        "command": "Look at task def container 'secrets' field; cross-reference stoppedReason for the specific ARN that failed",
+        "expected": "Specific secret/parameter ARN identified",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Test execution role can fetch",
+        "command": "aws sts assume-role --role-arn <execRole> --role-session-name test; with creds: aws secretsmanager get-secret-value --secret-id <arn>",
+        "expected": "Secret value returned",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Add secretsmanager:GetSecretValue (or ssm:GetParameters) + kms:Decrypt (if KMS-encrypted) to executionRoleArn",
+        "command": "aws iam put-role-policy --role-name <execRole> --policy-name fetch-secrets --policy-document '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"],\"Resource\":[\"<secret-arn>\",\"<kms-arn>\"]}]}'",
+        "validation": "Re-run task; secrets resolved",
+        "rollback": "Remove inline policy",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Register a new task definition revision with the corrected fields and update the service",
+        "command": "aws ecs register-task-definition --cli-input-json file:///tmp/taskdef-fixed.json && aws ecs update-service --cluster <cluster> --service <service> --task-definition <family>:<new-rev>",
+        "validation": "Service deployment reaches steady state (aws ecs describe-services); new tasks reach RUNNING; no stoppedReason on subsequent tasks.",
+        "rollback": "aws ecs update-service --task-definition <family>:<previous-rev>",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-troubleshooting",
+      "ecs-dg-task-defs-params"
+    ]
+  },
+  {
+    "id": "ecs.task-defs.fm.task-oom-killed",
+    "symptom": "Task stops with stoppedReason 'OutOfMemoryError: Container killed due to memory usage'. Container hit its hard memory limit.",
+    "root_cause_class": "container-cgroup-oom",
+    "error_patterns": [
+      "OutOfMemoryError",
+      "memory limit",
+      "OOMKilled"
+    ],
+    "affected_concepts": [
+      "ecs.task-defs.cfg.container.memory",
+      "ecs.task-defs.cfg.container.memory-reservation",
+      "ecs.agent.task-cpu-mem-limit"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check container memory setting",
+        "command": "aws ecs describe-task-definition --task-definition <family> --query 'taskDefinition.containerDefinitions[].{name:name,memory:memory,memoryReservation:memoryReservation}'",
+        "expected": "Compare to actual usage from CloudWatch /aws/ecs/containerinsights/<cluster>/performance",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Inspect dmesg on container instance for OOM kill",
+        "command": "ssh ec2-user@<instance>; sudo dmesg | grep -i 'killed process'",
+        "expected": "OOM kill of the container's main process",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Read the active task definition and the failing task's stoppedReason",
+        "command": "aws ecs describe-task-definition --task-definition <family>:<revision> --query 'taskDefinition' --output json > /tmp/taskdef.json; aws ecs describe-tasks --cluster <cluster> --tasks <task-arn> --query 'tasks[0].{stoppedReason,containers:containers[].{name,lastStatus,reason,exitCode}}'",
+        "expected": "stoppedReason names the trigger (essential container exited, image-pull failure, ulimit etc.); container exitCode disambiguates app crash vs ECS stop.",
+        "source_id": "ecs-dg-task-defs-params"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise container memory hard limit",
+        "command": "Update task-def container.memory; register new revision; update service",
+        "validation": "No more OOM kills under normal load",
+        "rollback": "Restore prior limit",
+        "source_id": "ecs-dg-task-defs-params"
+      },
+      {
+        "step": 2,
+        "action": "Investigate memory leak in app",
+        "command": "Run with profiler / heap dump; fix leaks",
+        "validation": "RSS stable over time",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.amazon-linux-2-eol-2026-06-30",
+    "symptom": "Cluster running ECS-Optimized AL2 AMI past 2026-06-30. No more security updates from upstream Amazon Linux 2.",
+    "root_cause_class": "ami-eol",
+    "error_patterns": [
+      "AL2 EOL",
+      "AmazonLinux2 unsupported",
+      "deprecated AMI"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.ecs-optimized-ami-family",
+      "ecs.launch-types.ami-deprecation-2yr"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check AMI variant on instances",
+        "command": "aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].{Id:InstanceId,AMI:ImageId}'; cross-reference AMI name",
+        "expected": "Migrate any AL2-based to AL2023",
+        "source_id": "ecs-dg-optimized-ami"
+      },
+      {
+        "step": 2,
+        "action": "Pull recent service events for the affected service (often the first signal)",
+        "command": "aws ecs describe-services --cluster <cluster> --services <service> --query 'services[0].events[0:10]' --output table",
+        "expected": "Service events name the immediate cause: scaled-in by ASG, task could not be placed, deregistered from target group, etc.",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Check container instance state + agent connectivity",
+        "command": "aws ecs describe-container-instances --cluster <cluster> --container-instances $(aws ecs list-container-instances --cluster <cluster> --query 'containerInstanceArns' --output text) --query 'containerInstances[].{id:ec2InstanceId, status, agentConnected, runningTasksCount, registeredResources}' --output table",
+        "expected": "All instances ACTIVE + agentConnected=true; sum of registeredResources still has headroom for the desired task placement.",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Migrate AMIs to AL2023 ECS-Optimized",
+        "command": "Update launch template / launch config to use SSM parameter /aws/service/ecs/optimized-ami/amazon-linux-2023/recommended/image_id; rotate instances via DRAINING + ASG refresh",
+        "validation": "All instances on AL2023; supported through 2028",
+        "rollback": "Pin to AL2 AMI ID (insecure post-EOL)",
+        "source_id": "ecs-dg-optimized-ami"
+      },
+      {
+        "step": 2,
+        "action": "Apply the targeted remediation (capacity, health-check, IAM) and force a new deployment",
+        "command": "aws ecs update-service --cluster <cluster> --service <service> --force-new-deployment",
+        "validation": "Service reaches steady state; events stream shows tasks reaching RUNNING and remaining stable for >2 min.",
+        "rollback": "aws ecs update-service --task-definition <prior-rev> --desired-count <prior-count>",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-optimized-ami"
+    ]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.bare-metal-boot-time-exceeded-asg-warmup",
+    "symptom": "Bare-metal instance launched by ASG never becomes available. 20+ minute boot time exceeds ASG instanceWarmupPeriod / managed-scaling expectations.",
+    "root_cause_class": "warmup-too-short-for-bare-metal",
+    "error_patterns": [
+      "bare-metal slow boot",
+      "ASG instance health check failed",
+      "exceeded warmup"
+    ],
+    "affected_concepts": [
+      "ecs.nitro-baremetal.bare-metal-boot-time",
+      "ecs.launch-types.cfg.cp.managed-scaling.instance-warmup-period"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm instance type is .metal",
+        "command": "aws ec2 describe-instances --instance-ids <id> --query 'Reservations[].Instances[].InstanceType'",
+        "expected": "Ends in .metal",
+        "source_id": "ecs-ec2-nitro"
+      },
+      {
+        "step": 2,
+        "action": "Check current warmup period",
+        "command": "aws ecs describe-capacity-providers --capacity-providers <cp> --query 'capacityProviders[].autoScalingGroupProvider.managedScaling.instanceWarmupPeriod'",
+        "expected": "≥1500s (25 min) for bare-metal",
+        "source_id": "ecs-dg-capacity-providers"
+      },
+      {
+        "step": 3,
+        "action": "Pull recent service events for the affected service (often the first signal)",
+        "command": "aws ecs describe-services --cluster <cluster> --services <service> --query 'services[0].events[0:10]' --output table",
+        "expected": "Service events name the immediate cause: scaled-in by ASG, task could not be placed, deregistered from target group, etc.",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Raise instanceWarmupPeriod to >25 minutes",
+        "command": "aws ecs update-capacity-provider --name <cp> --auto-scaling-group-provider managedScaling={instanceWarmupPeriod=1800,...}",
+        "validation": "Bare-metal launches no longer fail health-check during boot",
+        "rollback": "Restore prior",
+        "source_id": "ecs-dg-capacity-providers"
+      },
+      {
+        "step": 2,
+        "action": "Pre-warm instances out-of-band (warm pool) for fast scale-out",
+        "command": "Configure ASG warm pool with N pre-booted instances; ASG promotes from pool first",
+        "validation": "Scale-out completes in seconds vs 20 min",
+        "rollback": null,
+        "source_id": "ecs-dg-launch-types"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-ec2-nitro",
+      "ecs-dg-capacity-providers"
+    ]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.containerinsights-missing-metrics",
+    "symptom": "CloudWatch Container Insights dashboard shows no data for an ECS cluster. Or partial data missing (e.g., per-container memory).",
+    "root_cause_class": "container-insights-not-enabled",
+    "error_patterns": [
+      "No metrics in Container Insights",
+      "ECS/ContainerInsights namespace empty"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.cfg.cluster.settings.container-insights"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check cluster setting",
+        "command": "aws ecs describe-clusters --clusters <c> --include SETTINGS --query 'clusters[].settings'",
+        "expected": "containerInsights: enabled (or enhanced)",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "Pull recent service events for the affected service (often the first signal)",
+        "command": "aws ecs describe-services --cluster <cluster> --services <service> --query 'services[0].events[0:10]' --output table",
+        "expected": "Service events name the immediate cause: scaled-in by ASG, task could not be placed, deregistered from target group, etc.",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Check container instance state + agent connectivity",
+        "command": "aws ecs describe-container-instances --cluster <cluster> --container-instances $(aws ecs list-container-instances --cluster <cluster> --query 'containerInstanceArns' --output text) --query 'containerInstances[].{id:ec2InstanceId, status, agentConnected, runningTasksCount, registeredResources}' --output table",
+        "expected": "All instances ACTIVE + agentConnected=true; sum of registeredResources still has headroom for the desired task placement.",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Enable Container Insights on the cluster",
+        "command": "aws ecs update-cluster-settings --cluster <c> --settings name=containerInsights,value=enabled",
+        "validation": "Metrics flow within 5-15 min",
+        "rollback": "value=disabled",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "For per-container detail, use 'enhanced' (more cost)",
+        "command": "aws ecs update-cluster-settings --cluster <c> --settings name=containerInsights,value=enhanced",
+        "validation": "Per-container metrics appear",
+        "rollback": "Back to 'enabled' or 'disabled'",
+        "source_id": "ecs-dg-launch-types"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-launch-types"
+    ]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.containerinsights-on-but-no-data-iam",
+    "symptom": "Container Insights enabled but no data flows. Cluster IAM role missing CloudWatchAgentServerPolicy / metrics:PutMetricData.",
+    "root_cause_class": "iam-missing-cloudwatch-perms",
+    "error_patterns": [
+      "Container Insights enabled but empty",
+      "no PutMetricData permission"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.cfg.cluster.settings.container-insights"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check container instance role policies",
+        "command": "aws iam list-attached-role-policies --role-name <instance-role>",
+        "expected": "AmazonEC2ContainerServiceforEC2Role + CloudWatchAgentServerPolicy",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Pull recent service events for the affected service (often the first signal)",
+        "command": "aws ecs describe-services --cluster <cluster> --services <service> --query 'services[0].events[0:10]' --output table",
+        "expected": "Service events name the immediate cause: scaled-in by ASG, task could not be placed, deregistered from target group, etc.",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Check container instance state + agent connectivity",
+        "command": "aws ecs describe-container-instances --cluster <cluster> --container-instances $(aws ecs list-container-instances --cluster <cluster> --query 'containerInstanceArns' --output text) --query 'containerInstances[].{id:ec2InstanceId, status, agentConnected, runningTasksCount, registeredResources}' --output table",
+        "expected": "All instances ACTIVE + agentConnected=true; sum of registeredResources still has headroom for the desired task placement.",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Attach CloudWatchAgentServerPolicy to the instance role",
+        "command": "aws iam attach-role-policy --role-name <role> --policy-arn arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+        "validation": "Metrics flow",
+        "rollback": "Detach",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Apply the targeted remediation (capacity, health-check, IAM) and force a new deployment",
+        "command": "aws ecs update-service --cluster <cluster> --service <service> --force-new-deployment",
+        "validation": "Service reaches steady state; events stream shows tasks reaching RUNNING and remaining stable for >2 min.",
+        "rollback": "aws ecs update-service --task-definition <prior-rev> --desired-count <prior-count>",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.fargate-spot-interruption",
+    "symptom": "Fargate Spot tasks stopped with stoppedReason 'Spot capacity not available' or 'TerminationNotice'. AWS reclaimed Spot capacity.",
+    "root_cause_class": "spot-capacity-reclaimed",
+    "error_patterns": [
+      "Spot capacity not available",
+      "TerminationNotice",
+      "SpotInterruption"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.fargate-spot",
+      "ecs.launch-types.cp-strategy-base-weight"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm task was on Fargate Spot",
+        "command": "aws ecs describe-tasks --cluster <c> --tasks <arn> --query 'tasks[0].capacityProviderName'",
+        "expected": "FARGATE_SPOT",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "Pull recent service events for the affected service (often the first signal)",
+        "command": "aws ecs describe-services --cluster <cluster> --services <service> --query 'services[0].events[0:10]' --output table",
+        "expected": "Service events name the immediate cause: scaled-in by ASG, task could not be placed, deregistered from target group, etc.",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Check container instance state + agent connectivity",
+        "command": "aws ecs describe-container-instances --cluster <cluster> --container-instances $(aws ecs list-container-instances --cluster <cluster> --query 'containerInstanceArns' --output text) --query 'containerInstances[].{id:ec2InstanceId, status, agentConnected, runningTasksCount, registeredResources}' --output table",
+        "expected": "All instances ACTIVE + agentConnected=true; sum of registeredResources still has headroom for the desired task placement.",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Mix FARGATE + FARGATE_SPOT via capacityProviderStrategy with base on FARGATE",
+        "command": "Update service: capacityProviderStrategy=[{cp:FARGATE,base:2,weight:1},{cp:FARGATE_SPOT,base:0,weight:9}] — first 2 tasks on guaranteed FARGATE",
+        "validation": "Survives partial Spot interruption",
+        "rollback": "All-FARGATE (more expensive but reliable)",
+        "source_id": "ecs-dg-launch-types"
+      },
+      {
+        "step": 2,
+        "action": "App: handle SIGTERM gracefully (2-min grace period)",
+        "command": "Trap SIGTERM, drain connections, exit cleanly",
+        "validation": "No connection-mid-flight loss on interruption",
+        "rollback": null,
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.95,
+    "source_ids": [
+      "ecs-dg-launch-types"
+    ]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.scheduled-task-eventbridge-rule-misfire",
+    "symptom": "Scheduled task (EventBridge rule with ECS target) doesn't fire. Cron expression valid but no tasks launched.",
+    "root_cause_class": "eventbridge-iam-missing",
+    "error_patterns": [
+      "EventBridge rule fired but no task",
+      "FailedInvocations metric > 0"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.cluster"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Check EventBridge rule + target IAM",
+        "command": "aws events describe-rule --name <rule>; aws events list-targets-by-rule --rule <rule> --query 'Targets[].{Arn:Arn,RoleArn:RoleArn}'",
+        "expected": "RoleArn allows ecs:RunTask + iam:PassRole on the task-def's executionRole + taskRole",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Check FailedInvocations metric",
+        "command": "aws cloudwatch get-metric-statistics --namespace AWS/Events --metric-name FailedInvocations --dimensions Name=RuleName,Value=<rule> --start-time $(date -d '1 hour ago' --iso-8601=seconds) --end-time $(date --iso-8601=seconds) --period 60 --statistics Sum",
+        "expected": "Sum=0; >0 indicates IAM/dest issue",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 3,
+        "action": "Pull recent service events for the affected service (often the first signal)",
+        "command": "aws ecs describe-services --cluster <cluster> --services <service> --query 'services[0].events[0:10]' --output table",
+        "expected": "Service events name the immediate cause: scaled-in by ASG, task could not be placed, deregistered from target group, etc.",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Grant the EventBridge rule's role ecs:RunTask + iam:PassRole",
+        "command": "aws iam put-role-policy --role-name <eb-role> --policy-name run-ecs --policy-document '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"ecs:RunTask\",\"Resource\":\"<task-def-arn>\"},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":[\"<execRole>\",\"<taskRole>\"]}]}'",
+        "validation": "Tasks launch on schedule",
+        "rollback": "Remove policy",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Apply the targeted remediation (capacity, health-check, IAM) and force a new deployment",
+        "command": "aws ecs update-service --cluster <cluster> --service <service> --force-new-deployment",
+        "validation": "Service reaches steady state; events stream shows tasks reaching RUNNING and remaining stable for >2 min.",
+        "rollback": "aws ecs update-service --task-definition <prior-rev> --desired-count <prior-count>",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "confidence": 0.85,
+    "source_ids": [
+      "ecs-dg-troubleshooting"
+    ]
+  },
+  {
+    "id": "ecs.troubleshooting.fm.task-stopped-by-asg-scale-in",
+    "symptom": "Tasks stopped without app fault. ASG scaled in and terminated the underlying instance. Service event: 'service X has stopped Y running tasks'.",
+    "root_cause_class": "asg-scale-in-without-protection",
+    "error_patterns": [
+      "Scaling activity initiated",
+      "instance terminated by ASG",
+      "TaskStoppedByAsg"
+    ],
+    "affected_concepts": [
+      "ecs.launch-types.cfg.cp.managed-termination-protection"
+    ],
+    "diagnostic_steps": [
+      {
+        "step": 1,
+        "action": "Confirm scale-in event",
+        "command": "aws autoscaling describe-scaling-activities --auto-scaling-group-name <asg> --max-records 10",
+        "expected": "Recent Successful 'Terminating EC2 instance' activity",
+        "source_id": "ecs-dg-troubleshooting"
+      },
+      {
+        "step": 2,
+        "action": "Check capacity provider scale-in protection",
+        "command": "aws ecs describe-capacity-providers --capacity-providers <cp> --query 'capacityProviders[].autoScalingGroupProvider.managedTerminationProtection'",
+        "expected": "ENABLED to prevent ASG terminating busy instances",
+        "source_id": "ecs-dg-capacity-providers"
+      },
+      {
+        "step": 3,
+        "action": "Pull recent service events for the affected service (often the first signal)",
+        "command": "aws ecs describe-services --cluster <cluster> --services <service> --query 'services[0].events[0:10]' --output table",
+        "expected": "Service events name the immediate cause: scaled-in by ASG, task could not be placed, deregistered from target group, etc.",
+        "source_id": "ecs-dg-troubleshooting"
+      }
+    ],
+    "fix_steps": [
+      {
+        "step": 1,
+        "action": "Enable managedTerminationProtection on capacity provider",
+        "command": "aws ecs update-capacity-provider --name <cp> --auto-scaling-group-provider managedTerminationProtection=ENABLED",
+        "validation": "ASG scale-in won't terminate task-bearing instances",
+        "rollback": "Set DISABLED",
+        "source_id": "ecs-dg-capacity-providers"
+      },
+      {
+        "step": 2,
+        "action": "Manually drain instances before terminating",
+        "command": "aws ecs update-container-instances-state --container-instances <arn> --status DRAINING; wait until tasks replaced; then terminate",
+        "validation": "Zero-impact instance retirement",
+        "rollback": null,
+        "source_id": "ecs-dg-instance-draining"
+      }
+    ],
+    "confidence": 0.9,
+    "source_ids": [
+      "ecs-dg-instance-draining",
+      "ecs-dg-capacity-providers"
+    ]
+  }
+]
