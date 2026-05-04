@@ -1891,50 +1891,10 @@
 {"type":"entity","name":"docker.fm.exit-137-oomkilled","entityType":"failure_mode","observations":["Container exited with code 137; `docker inspect` shows OOMKilled=true [class: resource-limit]"]}
 {"type":"entity","name":"docker.fm.published-port-not-reachable","entityType":"failure_mode","observations":["`docker run -p 8080:80` succeeds but client can't reach localhost:8080 [class: networking]"]}
 {"type":"entity","name":"docker.fm.disk-full-but-df-shows-free","entityType":"failure_mode","observations":["`docker pull` or `docker run` fails 'no space left on device'; `df` shows host has space [class: storage]"]}
-{"type":"entity","name":"docker.fm.docker-build-cache-not-hitting","entityType":"failure_mode","observations":["`docker build` re-runs RUN steps that should be cached [class: build-cache]"]}
-{"type":"entity","name":"docker.fm.container-network-host-mode-permission","entityType":"failure_mode","observations":["`docker run --network=host` requires root or fails [class: capabilities]"]}
 {"type":"entity","name":"docker.fm.exit-126-not-executable","entityType":"failure_mode","observations":["Container exit code 126 [class: image-build]"]}
-{"type":"entity","name":"docker.fm.exit-127-command-not-found","entityType":"failure_mode","observations":["Container exit code 127 [class: image-build]"]}
-{"type":"entity","name":"docker.fm.docker-network-create-conflict","entityType":"failure_mode","observations":["`docker network create` fails with `Pool overlaps with other one on this address space` [class: networking]"]}
-{"type":"entity","name":"docker.fm.userns-remap-permissions","entityType":"failure_mode","observations":["With `userns-remap` enabled, container can't write to host bind-mount; permission denied [class: namespace-isolation]"]}
 {"type":"entity","name":"docker.fm.dns-not-resolving-from-container","entityType":"failure_mode","observations":["Container can't resolve DNS — `getent hosts example.com` fails inside [class: dns]"]}
-{"type":"entity","name":"docker.fm.live-restore-skipped-version","entityType":"failure_mode","observations":["Container died on docker daemon major-version upgrade despite live-restore=true [class: daemon-upgrade]"]}
-{"type":"entity","name":"docker.fm.compose-volume-named-vs-anon","entityType":"failure_mode","observations":["After `docker compose down -v`, named volumes preserved unintentionally OR anonymous volumes leaking [class: volume-misconfig]"]}
-{"type":"entity","name":"docker.fm.exit-125-daemon-error","entityType":"failure_mode","observations":["`docker run` exits 125 immediately [class: daemon-error]"]}
-{"type":"entity","name":"docker.fm.healthcheck-flapping","entityType":"failure_mode","observations":["Container repeatedly transitions between healthy/unhealthy [class: app-health]"]}
-{"type":"entity","name":"docker.fm.buildkit-secret-leaked","entityType":"failure_mode","observations":["Secret accidentally baked into image (visible in `docker history`) [class: build-security]"]}
-{"type":"entity","name":"docker.fm.buildkit-cache-mount-id-collision","entityType":"failure_mode","observations":["Two parallel `docker buildx build` runs of different projects corrupt each other's `RUN --mount=type=cache` content [class: build-cache]"]}
-{"type":"entity","name":"docker.fm.buildkit-multi-arch-emulation-slow","entityType":"failure_mode","observations":["`docker buildx build --platform linux/amd64,linux/arm64` is 10-50x slower than native; build hangs or OOMs in QEMU [class: build-perf]"]}
-{"type":"entity","name":"docker.fm.copy-from-stage-not-found","entityType":"failure_mode","observations":["`COPY --from=builder /out/app /app` fails: 'invalid from flag value builder: stage not found' [class: image-build]"]}
-{"type":"entity","name":"docker.fm.dockerignore-too-aggressive","entityType":"failure_mode","observations":["`docker build` fails 'COPY failed: file not found in build context' but the file exists on disk [class: build-context]"]}
-{"type":"entity","name":"docker.fm.buildkit-registry-cache-no-credentials","entityType":"failure_mode","observations":["`--cache-from type=registry,ref=...` ignored; build always misses cache from registry [class: build-cache]"]}
-{"type":"entity","name":"docker.fm.buildkit-frontend-version-pinning","entityType":"failure_mode","observations":["Dockerfile parser feature (heredoc `<<EOF`, `--mount=type=secret`) errors as 'unknown flag' on older builders [class: build-frontend]"]}
-{"type":"entity","name":"docker.fm.buildkit-output-no-load","entityType":"failure_mode","observations":["`docker buildx build -t app .` succeeds but `docker images` doesn't list `app` [class: build-output]"]}
 {"type":"entity","name":"docker.fm.containerd-shim-orphaned","entityType":"failure_mode","observations":["`ps aux | grep containerd-shim` shows shims with no parent containerd; `docker ps` doesn't list the corresponding container [class: runtime-orphan]"]}
-{"type":"entity","name":"docker.fm.containerd-content-store-disk-fill","entityType":"failure_mode","observations":["`/var/lib/containerd` grows beyond expected size; `docker system df` shows much less [class: storage-leak]"]}
-{"type":"entity","name":"docker.fm.compose-profile-not-applied","entityType":"failure_mode","observations":["`docker compose up` doesn't start a service that has `profiles: [debug]` even with `--profile debug` [class: compose-config]"]}
-{"type":"entity","name":"docker.fm.compose-healthcheck-dep-timeout","entityType":"failure_mode","observations":["`docker compose up` exits before app starts: dependency 'service X' did not pass healthcheck within timeout [class: compose-orchestration]"]}
-{"type":"entity","name":"docker.fm.compose-network-default-collision","entityType":"failure_mode","observations":["Two `docker compose` projects in different dirs collide because both default to network name 'default' [class: compose-networking]"]}
-{"type":"entity","name":"docker.fm.compose-restart-unless-stopped-vs-always","entityType":"failure_mode","observations":["After host reboot, container doesn't auto-restart even though compose has `restart: always` [class: compose-restart]"]}
-{"type":"entity","name":"docker.fm.compose-secret-mode-bits-wrong","entityType":"failure_mode","observations":["App can't read /run/secrets/foo: 'permission denied' even though secret defined in compose [class: compose-secret]"]}
-{"type":"entity","name":"docker.fm.embedded-dns-stale-after-rename","entityType":"failure_mode","observations":["After `docker rename` or `docker network connect/disconnect`, other containers still resolve old name (or fail) [class: dns]"]}
-{"type":"entity","name":"docker.fm.macvlan-cant-reach-host","entityType":"failure_mode","observations":["With `--network=macvlan`, container can reach external network but cannot reach the host it runs on [class: networking]"]}
-{"type":"entity","name":"docker.fm.apparmor-profile-not-loaded","entityType":"failure_mode","observations":["`docker run --security-opt apparmor=docker-custom` fails 'apparmor profile not loaded' [class: security]"]}
-{"type":"entity","name":"docker.fm.seccomp-blocks-syscall","entityType":"failure_mode","observations":["Workload that runs natively fails inside container with EPERM on a syscall (e.g. clone3, io_uring_setup) [class: security]"]}
-{"type":"entity","name":"docker.fm.cosign-verify-no-signature","entityType":"failure_mode","observations":["`cosign verify <image>` fails 'no matching signatures' even though image was signed [class: security]"]}
-{"type":"entity","name":"docker.fm.log-driver-fluentd-buffer-full","entityType":"failure_mode","observations":["Container hangs on stdout writes after high log volume; `docker logs` empty or stalled [class: logging]"]}
-{"type":"entity","name":"docker.fm.swarm-leader-loss","entityType":"failure_mode","observations":["`docker node ls` returns 'no manager available'; swarm services stop reconciling [class: swarm]"]}
-{"type":"entity","name":"docker.fm.exec-tty-no-input","entityType":"failure_mode","observations":["`docker exec -it <c> bash` works but typed keys don't reach shell [class: exec]"]}
-{"type":"entity","name":"docker.fm.disk-full-overlay2-leaked","entityType":"failure_mode","observations":["`/var/lib/docker/overlay2` enormous; `docker system df` shows much less than disk reports [class: storage]"]}
-{"type":"entity","name":"docker.fm.image-pull-architecture-mismatch","entityType":"failure_mode","observations":["`docker run alpine` on M-series Mac warns 'platform mismatch' or container crashes immediately [class: image-platform]"]}
-{"type":"entity","name":"docker.fm.daemon-restart-during-pull","entityType":"failure_mode","observations":["`docker pull` hangs or fails 'manifest unknown' after `systemctl restart docker` mid-pull; subsequent pull works [class: daemon-restart]"]}
-{"type":"entity","name":"docker.fm.userns-remap-bind-mount-uid-mismatch","entityType":"failure_mode","observations":["With `userns-remap`, container writes files to bind-mount, host sees them owned by UID 100000+ instead of expected user [class: namespace-isolation]"]}
 {"type":"entity","name":"docker.fm.container-no-egress-umbrella","entityType":"failure_mode","observations":["Container can ping itself but can't reach the internet, internal services, or even the gateway [class: networking]"]}
-{"type":"entity","name":"docker.fm.host-firewall-blocks-docker","entityType":"failure_mode","observations":["After enabling firewalld/ufw, all container egress dies; docker iptables rules exist but don't apply [class: networking]"]}
-{"type":"entity","name":"docker.fm.embedded-dns-misroute","entityType":"failure_mode","observations":["`getent hosts service-name` works inside container but resolves to old IP; service moved to a new container [class: dns]"]}
-{"type":"entity","name":"docker.fm.container-egress-vpn-conflict","entityType":"failure_mode","observations":["VPN client on host (Tailscale, OpenVPN) breaks docker bridge networking; containers can't reach internet [class: networking]"]}
-{"type":"entity","name":"docker.fm.compose-build-args-not-passed-to-stage","entityType":"failure_mode","observations":["Multi-stage Dockerfile: ARG declared at top but value undefined inside a later FROM stage [class: image-build]"]}
-{"type":"entity","name":"docker.fm.compose-watch-not-firing","entityType":"failure_mode","observations":["`docker compose watch` configured but file changes don't trigger sync/rebuild [class: compose-dev]"]}
 {"type":"entity","name":"docker.fm.image-pull-private-registry-auth","entityType":"failure_mode","observations":["`docker pull` from private registry fails 'unauthorized: incorrect username or password' OR 'denied: requested access to the resource is denied' OR 'pull access denied for X, repository does not exist or may require docker login' [class: registry-auth]"]}
 {"type":"entity","name":"docker.fm.docker-stop-hangs-10s","entityType":"failure_mode","observations":["`docker stop` takes 10 seconds before container exits (then SIGKILL) [class: signal-handling]"]}
 {"type":"entity","name":"docker.fm.zombie-processes-leaking","entityType":"failure_mode","observations":["Defunct/zombie processes accumulating inside container; `ps` shows multiple <defunct> entries [class: signal-handling]"]}
@@ -1961,71 +1921,56 @@
 {"type":"entity","name":"docker.fm.buildkit-secret-not-mounted","entityType":"failure_mode","observations":["`RUN --mount=type=secret,id=foo cat /run/secrets/foo` returns empty file or 'No such file' inside build [class: build-security]"]}
 {"type":"entity","name":"docker.fm.image-pull-rate-limit","entityType":"failure_mode","observations":["`toomanyrequests: You have reached your pull rate limit` from docker.io [class: registry-throttle]"]}
 {"type":"entity","name":"docker.fm.dockerd-tls-cert-expired","entityType":"failure_mode","observations":["`docker -H tcp://host:2376 ps` fails 'x509: certificate has expired' [class: security]"]}
+{"type":"entity","name":"docker.fm.compose-volume-named-vs-anon","entityType":"failure_mode","observations":["After `docker compose down -v`, named volumes preserved unintentionally OR anonymous volumes leaking [class: volume-misconfig]"]}
+{"type":"entity","name":"docker.fm.daemon-restart-during-pull","entityType":"failure_mode","observations":["`docker pull` hangs or fails 'manifest unknown' after `systemctl restart docker` mid-pull; subsequent pull works [class: daemon-restart]"]}
+{"type":"entity","name":"docker.fm.compose-build-args-not-passed-to-stage","entityType":"failure_mode","observations":["Multi-stage Dockerfile: ARG declared at top but value undefined inside a later FROM stage [class: image-build]"]}
+{"type":"entity","name":"docker.fm.compose-healthcheck-dep-timeout","entityType":"failure_mode","observations":["`docker compose up` exits before app starts: dependency 'service X' did not pass healthcheck within timeout [class: compose-orchestration]"]}
+{"type":"entity","name":"docker.fm.compose-watch-not-firing","entityType":"failure_mode","observations":["`docker compose watch` configured but file changes don't trigger sync/rebuild [class: compose-dev]"]}
+{"type":"entity","name":"docker.fm.container-network-host-mode-permission","entityType":"failure_mode","observations":["`docker run --network=host` requires root or fails [class: capabilities]"]}
+{"type":"entity","name":"docker.fm.apparmor-profile-not-loaded","entityType":"failure_mode","observations":["`docker run --security-opt apparmor=docker-custom` fails 'apparmor profile not loaded' [class: security]"]}
+{"type":"entity","name":"docker.fm.buildkit-cache-mount-id-collision","entityType":"failure_mode","observations":["Two parallel `docker buildx build` runs of different projects corrupt each other's `RUN --mount=type=cache` content [class: build-cache]"]}
+{"type":"entity","name":"docker.fm.docker-build-cache-not-hitting","entityType":"failure_mode","observations":["`docker build` re-runs RUN steps that should be cached [class: build-cache]"]}
+{"type":"entity","name":"docker.fm.seccomp-blocks-syscall","entityType":"failure_mode","observations":["Workload that runs natively fails inside container with EPERM on a syscall (e.g. clone3, io_uring_setup) [class: security]"]}
+{"type":"entity","name":"docker.fm.swarm-leader-loss","entityType":"failure_mode","observations":["`docker node ls` returns 'no manager available'; swarm services stop reconciling [class: swarm]"]}
+{"type":"entity","name":"docker.fm.buildkit-registry-cache-no-credentials","entityType":"failure_mode","observations":["`--cache-from type=registry,ref=...` ignored; build always misses cache from registry [class: build-cache]"]}
+{"type":"entity","name":"docker.fm.exit-127-command-not-found","entityType":"failure_mode","observations":["Container exit code 127 [class: image-build]"]}
+{"type":"entity","name":"docker.fm.macvlan-cant-reach-host","entityType":"failure_mode","observations":["With `--network=macvlan`, container can reach external network but cannot reach the host it runs on [class: networking]"]}
+{"type":"entity","name":"docker.fm.buildkit-frontend-version-pinning","entityType":"failure_mode","observations":["Dockerfile parser feature (heredoc `<<EOF`, `--mount=type=secret`) errors as 'unknown flag' on older builders [class: build-frontend]"]}
+{"type":"entity","name":"docker.fm.buildkit-secret-leaked","entityType":"failure_mode","observations":["Secret accidentally baked into image (visible in `docker history`) [class: build-security]"]}
+{"type":"entity","name":"docker.fm.docker-network-create-conflict","entityType":"failure_mode","observations":["`docker network create` fails with `Pool overlaps with other one on this address space` [class: networking]"]}
+{"type":"entity","name":"docker.fm.embedded-dns-misroute","entityType":"failure_mode","observations":["`getent hosts service-name` works inside container but resolves to old IP; service moved to a new container [class: dns]"]}
+{"type":"entity","name":"docker.fm.exit-125-daemon-error","entityType":"failure_mode","observations":["`docker run` exits 125 immediately [class: daemon-error]"]}
+{"type":"entity","name":"docker.fm.copy-from-stage-not-found","entityType":"failure_mode","observations":["`COPY --from=builder /out/app /app` fails: 'invalid from flag value builder: stage not found' [class: image-build]"]}
+{"type":"entity","name":"docker.fm.dockerignore-too-aggressive","entityType":"failure_mode","observations":["`docker build` fails 'COPY failed: file not found in build context' but the file exists on disk [class: build-context]"]}
+{"type":"entity","name":"docker.fm.host-firewall-blocks-docker","entityType":"failure_mode","observations":["After enabling firewalld/ufw, all container egress dies; docker iptables rules exist but don't apply [class: networking]"]}
+{"type":"entity","name":"docker.fm.buildkit-multi-arch-emulation-slow","entityType":"failure_mode","observations":["`docker buildx build --platform linux/amd64,linux/arm64` is 10-50x slower than native; build hangs or OOMs in QEMU [class: build-perf]"]}
+{"type":"entity","name":"docker.fm.compose-network-default-collision","entityType":"failure_mode","observations":["Two `docker compose` projects in different dirs collide because both default to network name 'default' [class: compose-networking]"]}
+{"type":"entity","name":"docker.fm.containerd-content-store-disk-fill","entityType":"failure_mode","observations":["`/var/lib/containerd` grows beyond expected size; `docker system df` shows much less [class: storage-leak]"]}
+{"type":"entity","name":"docker.fm.embedded-dns-stale-after-rename","entityType":"failure_mode","observations":["After `docker rename` or `docker network connect/disconnect`, other containers still resolve old name (or fail) [class: dns]"]}
+{"type":"entity","name":"docker.fm.cosign-verify-no-signature","entityType":"failure_mode","observations":["`cosign verify <image>` fails 'no matching signatures' even though image was signed [class: security]"]}
+{"type":"entity","name":"docker.fm.log-driver-fluentd-buffer-full","entityType":"failure_mode","observations":["Container hangs on stdout writes after high log volume; `docker logs` empty or stalled [class: logging]"]}
+{"type":"entity","name":"docker.fm.userns-remap-permissions","entityType":"failure_mode","observations":["With `userns-remap` enabled, container can't write to host bind-mount; permission denied [class: namespace-isolation]"]}
+{"type":"entity","name":"docker.fm.buildkit-output-no-load","entityType":"failure_mode","observations":["`docker buildx build -t app .` succeeds but `docker images` doesn't list `app` [class: build-output]"]}
+{"type":"entity","name":"docker.fm.compose-restart-unless-stopped-vs-always","entityType":"failure_mode","observations":["After host reboot, container doesn't auto-restart even though compose has `restart: always` [class: compose-restart]"]}
+{"type":"entity","name":"docker.fm.userns-remap-bind-mount-uid-mismatch","entityType":"failure_mode","observations":["With `userns-remap`, container writes files to bind-mount, host sees them owned by UID 100000+ instead of expected user [class: namespace-isolation]"]}
+{"type":"entity","name":"docker.fm.compose-secret-mode-bits-wrong","entityType":"failure_mode","observations":["App can't read /run/secrets/foo: 'permission denied' even though secret defined in compose [class: compose-secret]"]}
+{"type":"entity","name":"docker.fm.container-egress-vpn-conflict","entityType":"failure_mode","observations":["VPN client on host (Tailscale, OpenVPN) breaks docker bridge networking; containers can't reach internet [class: networking]"]}
+{"type":"entity","name":"docker.fm.healthcheck-flapping","entityType":"failure_mode","observations":["Container repeatedly transitions between healthy/unhealthy [class: app-health]"]}
+{"type":"entity","name":"docker.fm.compose-profile-not-applied","entityType":"failure_mode","observations":["`docker compose up` doesn't start a service that has `profiles: [debug]` even with `--profile debug` [class: compose-config]"]}
+{"type":"entity","name":"docker.fm.disk-full-overlay2-leaked","entityType":"failure_mode","observations":["`/var/lib/docker/overlay2` enormous; `docker system df` shows much less than disk reports [class: storage]"]}
+{"type":"entity","name":"docker.fm.image-pull-architecture-mismatch","entityType":"failure_mode","observations":["`docker run alpine` on M-series Mac warns 'platform mismatch' or container crashes immediately [class: image-platform]"]}
+{"type":"entity","name":"docker.fm.exec-tty-no-input","entityType":"failure_mode","observations":["`docker exec -it <c> bash` works but typed keys don't reach shell [class: exec]"]}
+{"type":"entity","name":"docker.fm.live-restore-skipped-version","entityType":"failure_mode","observations":["Container died on docker daemon major-version upgrade despite live-restore=true [class: daemon-upgrade]"]}
 {"type":"entity","name":"linux.fm.process-stuck-d-state","entityType":"failure_mode","observations":["Process in D state (uninterruptible sleep), unkillable even by SIGKILL [class: kernel-io]"]}
 {"type":"entity","name":"linux.fm.fd-leak","entityType":"failure_mode","observations":["App fails 'Too many open files' (EMFILE) [class: fd-leak]"]}
 {"type":"entity","name":"linux.fm.disk-full-but-df-shows-free-space","entityType":"failure_mode","observations":["`df` shows free space but writes fail ENOSPC [class: storage]"]}
-{"type":"entity","name":"linux.fm.cannot-create-userns","entityType":"failure_mode","observations":["`unshare --user` fails EPERM [class: sysctl]"]}
-{"type":"entity","name":"linux.fm.systemd-service-flapping","entityType":"failure_mode","observations":["systemd unit goes 'failed' after StartLimitBurst restarts [class: service-config]"]}
-{"type":"entity","name":"linux.fm.mount-not-visible-on-host","entityType":"failure_mode","observations":["Mount inside container/namespace not visible on host [class: mount-propagation]"]}
 {"type":"entity","name":"linux.fm.tcp-time-wait-exhaustion","entityType":"failure_mode","observations":["Many short outbound TCP connections; client gets EADDRNOTAVAIL [class: networking]"]}
-{"type":"entity","name":"linux.fm.cap-dropped-but-binary-still-works","entityType":"failure_mode","observations":["Drop CAP_X but binary still does X [class: capabilities]"]}
-{"type":"entity","name":"linux.fm.systemd-coredump-not-saved","entityType":"failure_mode","observations":["App SIGSEGV but no core dump in /var/lib/systemd/coredump [class: coredump]"]}
 {"type":"entity","name":"linux.fm.permission-denied-not-mode-bits","entityType":"failure_mode","observations":["chmod 777 doesn't fix permission denied; SELinux/AppArmor denying [class: lsm]"]}
 {"type":"entity","name":"linux.fm.high-context-switch","entityType":"failure_mode","observations":["High context-switch rate; vmstat cs column >>1k/sec [class: contention]"]}
 {"type":"entity","name":"linux.fm.iowait-high","entityType":"failure_mode","observations":["vmstat wa column high; CPUs waiting on IO [class: io]"]}
-{"type":"entity","name":"linux.fm.swap-storm","entityType":"failure_mode","observations":["vmstat shows si/so > 0 continuously; system unresponsive [class: memory]"]}
 {"type":"entity","name":"linux.fm.fork-eagain","entityType":"failure_mode","observations":["fork()/clone() returns EAGAIN [class: resource-limit]"]}
-{"type":"entity","name":"linux.fm.systemd-mount-failed","entityType":"failure_mode","observations":["systemd `<path>.mount` unit failed; mountpoint unavailable [class: mount]"]}
-{"type":"entity","name":"linux.fm.journald-rate-limited","entityType":"failure_mode","observations":["systemd: 'Suppressed N messages from /SYSTEMD_UNIT'; expected logs missing [class: logging]"]}
 {"type":"entity","name":"linux.fm.tcp-listen-overflow","entityType":"failure_mode","observations":["Connection refused under load; nstat shows TCPListenOverflows [class: networking]"]}
-{"type":"entity","name":"linux.fm.no-shell-in-distroless","entityType":"failure_mode","observations":["Cannot debug container — no shell, no ps, no tools [class: image-design]"]}
-{"type":"entity","name":"linux.fm.userns-creation-blocked-ubuntu24","entityType":"failure_mode","observations":["`unshare -U` or container creation fails 'Permission denied' on Ubuntu 24.04+ [class: sysctl-lsm]"]}
-{"type":"entity","name":"linux.fm.pid1-not-reaping-zombies","entityType":"failure_mode","observations":["`ps` inside container shows accumulating <defunct> processes; PID 1 ignores SIGCHLD [class: signal-handling]"]}
-{"type":"entity","name":"linux.fm.namespace-fd-leak","entityType":"failure_mode","observations":["`ls /proc/*/ns/` accumulates after many container creations; eventually 'Too many open files' on namespace FDs [class: resource-leak]"]}
-{"type":"entity","name":"linux.fm.seccomp-blocks-clone3","entityType":"failure_mode","observations":["Recently-built glibc apps fail inside older container with EPERM; strace shows clone3 → EPERM [class: seccomp]"]}
 {"type":"entity","name":"linux.fm.lsm-double-restriction","entityType":"failure_mode","observations":["Permission denied even with full Linux DAC perms; chmod 777 doesn't help [class: lsm]"]}
-{"type":"entity","name":"linux.fm.chroot-escape-via-cwd","entityType":"failure_mode","observations":["chroot'd process accesses files outside chroot via existing FD or chdir [class: isolation-design]"]}
-{"type":"entity","name":"linux.fm.proc-self-vs-thread","entityType":"failure_mode","observations":["Reading /proc/self/status from a thread shows main-thread fields, not the thread [class: proc-fs-semantics]"]}
-{"type":"entity","name":"linux.fm.path-mtu-blackhole","entityType":"failure_mode","observations":["Small TCP requests work; large payloads or HTTPS handshake hang [class: networking]"]}
-{"type":"entity","name":"linux.fm.ip-forward-disabled","entityType":"failure_mode","observations":["Linux router not forwarding packets between interfaces [class: networking]"]}
-{"type":"entity","name":"linux.fm.ipv6-rp-filter-strict","entityType":"failure_mode","observations":["Asymmetric IPv6 routing drops packets silently [class: networking]"]}
-{"type":"entity","name":"linux.fm.netfilter-rule-order","entityType":"failure_mode","observations":["Allow rule placed but traffic still blocked; jump to chain returns earlier [class: networking]"]}
-{"type":"entity","name":"linux.fm.nf-conntrack-mark-not-restored","entityType":"failure_mode","observations":["Reply traffic doesn't get the right fwmark; routing rule mismatches [class: networking]"]}
-{"type":"entity","name":"linux.fm.so-reuseport-bad-distribution","entityType":"failure_mode","observations":["With SO_REUSEPORT and N workers, one worker gets all connections under low load [class: networking]"]}
-{"type":"entity","name":"linux.fm.io-uring-disabled-by-seccomp","entityType":"failure_mode","observations":["Modern app fails to init io_uring; falls back to epoll or errors [class: seccomp]"]}
-{"type":"entity","name":"linux.fm.overlayfs-redirect-dir-disabled","entityType":"failure_mode","observations":["Cross-layer rename fails 'invalid argument' or moves whole directory [class: overlayfs]"]}
-{"type":"entity","name":"linux.fm.overlayfs-whiteout-leak","entityType":"failure_mode","observations":["Deleted-in-upper file still appears in container directory listing [class: overlayfs]"]}
-{"type":"entity","name":"linux.fm.fsync-not-durable-cache","entityType":"failure_mode","observations":["After hard power-off, files written via fsync() lost or corrupted [class: durability]"]}
-{"type":"entity","name":"linux.fm.mount-propagation-unexpected","entityType":"failure_mode","observations":["Mount inside container leaks to host (or vice versa) unexpectedly [class: mount-propagation]"]}
-{"type":"entity","name":"linux.fm.lvm-thin-pool-out-of-space","entityType":"failure_mode","observations":["Writes fail / FS goes read-only on thin-provisioned LV; metadata or data pool exhausted [class: lvm]"]}
-{"type":"entity","name":"linux.fm.luks-cant-unlock-after-passphrase-rotation","entityType":"failure_mode","observations":["`cryptsetup open` fails 'No key available' after re-keying [class: crypto]"]}
-{"type":"entity","name":"linux.fm.path-busy-cant-unmount","entityType":"failure_mode","observations":["`umount` fails 'target is busy' even after killing all visible users [class: mount]"]}
-{"type":"entity","name":"linux.fm.proc-mounts-stale","entityType":"failure_mode","observations":["`/proc/mounts` shows entries no longer mounted; mountpoint missing in `mount` [class: mount]"]}
-{"type":"entity","name":"linux.fm.inotify-watch-limit","entityType":"failure_mode","observations":["Editor (vscode/jetbrains) fails to watch project: 'too many open files' or watches dropped [class: resource-limit]"]}
-{"type":"entity","name":"linux.fm.systemd-mount-failed-fstab","entityType":"failure_mode","observations":["systemd `<mount>.mount` unit failed; fstab entry has typo or invalid options [class: systemd-mount]"]}
-{"type":"entity","name":"linux.fm.systemd-target-reached-but-services-not-up","entityType":"failure_mode","observations":["`systemctl is-active multi-user.target` = active, but app's own service shows 'not yet started' [class: systemd-deps]"]}
-{"type":"entity","name":"linux.fm.systemd-socket-activation-not-firing","entityType":"failure_mode","observations":["systemd socket unit listening but service isn't started on connect [class: systemd-socket]"]}
-{"type":"entity","name":"linux.fm.systemd-timer-skipped","entityType":"failure_mode","observations":["systemd .timer skipped firings; OnCalendar=daily missed days [class: systemd-timer]"]}
-{"type":"entity","name":"linux.fm.systemd-resolved-stub-loops","entityType":"failure_mode","observations":["DNS through systemd-resolved stub (127.0.0.53) loops back [class: dns]"]}
-{"type":"entity","name":"linux.fm.perf-event-paranoid-blocks","entityType":"failure_mode","observations":["`perf record` fails 'Permission denied' or 'No permission' [class: sysctl]"]}
-{"type":"entity","name":"linux.fm.kprobe-attach-fails-inlined","entityType":"failure_mode","observations":["`bpftrace -e 'kprobe:func {...}'` fails 'function not found' but symbol in /proc/kallsyms [class: tracing]"]}
-{"type":"entity","name":"linux.fm.gdb-ptrace-restricted-yama","entityType":"failure_mode","observations":["`gdb -p <pid>` fails 'ptrace: Operation not permitted' [class: yama-lsm]"]}
-{"type":"entity","name":"linux.fm.ftrace-buffer-overrun","entityType":"failure_mode","observations":["function tracer drops events; trace_pipe shows missed entries [class: tracing]"]}
-{"type":"entity","name":"linux.fm.kdump-no-crashkernel","entityType":"failure_mode","observations":["After kernel panic, no /var/crash/* dump produced [class: kdump]"]}
-{"type":"entity","name":"linux.fm.lsof-shows-deleted","entityType":"failure_mode","observations":["`df` shows disk full but `du` adds up to less; `lsof | grep deleted` shows large files [class: storage]"]}
-{"type":"entity","name":"linux.fm.iostat-await-explained","entityType":"failure_mode","observations":["Disk slow; `iostat -x` shows high await/svctm [class: io]"]}
-{"type":"entity","name":"linux.fm.audit-logs-spam","entityType":"failure_mode","observations":["`auditd` floods log; disk fills [class: audit]"]}
-{"type":"entity","name":"linux.fm.journal-corrupt","entityType":"failure_mode","observations":["`journalctl` shows 'No journal files were found' or 'corrupt' [class: journal]"]}
-{"type":"entity","name":"linux.fm.numa-imbalance","entityType":"failure_mode","observations":["Multi-socket box: one NUMA node CPUs at 90%, other idle; throughput limited [class: numa]"]}
-{"type":"entity","name":"linux.fm.irq-storm-single-cpu","entityType":"failure_mode","observations":["One CPU pinned at 100% softirq/hardirq; rest idle; high si/hi in vmstat [class: irq-steering]"]}
-{"type":"entity","name":"linux.fm.ksoftirqd-pegged","entityType":"failure_mode","observations":["`top` shows ksoftirqd/<N> consuming 100% of one CPU [class: irq-storm]"]}
-{"type":"entity","name":"linux.fm.rcu-stall","entityType":"failure_mode","observations":["dmesg: 'INFO: rcu_sched detected stalls on CPUs/tasks' [class: kernel]"]}
-{"type":"entity","name":"linux.fm.soft-lockup","entityType":"failure_mode","observations":["dmesg: 'BUG: soft lockup - CPU#X stuck for Ys! [comm:pid]' [class: kernel]"]}
-{"type":"entity","name":"linux.fm.hard-lockup","entityType":"failure_mode","observations":["NMI watchdog: 'BUG: hard lockup' or system unresponsive even to magic-sysrq [class: kernel]"]}
-{"type":"entity","name":"linux.fm.kernel-panic-decoding","entityType":"failure_mode","observations":["Boot fails with kernel panic; need to read the stack to find driver [class: kernel]"]}
-{"type":"entity","name":"linux.fm.realtime-prio-inversion","entityType":"failure_mode","observations":["SCHED_FIFO/RR thread blocked on lock held by lower-prio thread; realtime task starves [class: scheduler]"]}
-{"type":"entity","name":"linux.fm.cpuset-placement-wrong","entityType":"failure_mode","observations":["App pinned to cpuset but `taskset` shows it on other CPUs; cpu.max not honored [class: cgroup-cpu]"]}
-{"type":"entity","name":"linux.fm.slab-leak","entityType":"failure_mode","observations":["`slabtop` shows specific slab cache growing without bound; memory not reclaimable [class: kernel-memory]"]}
 {"type":"entity","name":"linux.fm.systemd-unit-restart-loop","entityType":"failure_mode","observations":["systemd unit goes 'failed' after StartLimitBurst (5 by default) restarts; further `systemctl start` returns 'start-limit-hit' until counter is reset [class: systemd-restart]"]}
 {"type":"entity","name":"linux.fm.cgroup-memory-oom-kill","entityType":"failure_mode","observations":["Process killed by OOM but free memory available system-wide [class: cgroup-limit]"]}
 {"type":"entity","name":"linux.fm.cpu-throttled","entityType":"failure_mode","observations":["CPU usage low but app slow; cpu.stat shows nr_throttled > 0 [class: cgroup-limit]"]}
@@ -2052,44 +1997,65 @@
 {"type":"entity","name":"linux.fm.systemd-service-killed-on-shutdown","entityType":"failure_mode","observations":["Long-running systemd service killed before finishing graceful shutdown [class: systemd-shutdown]"]}
 {"type":"entity","name":"linux.fm.systemd-cgroup-delegation-missing","entityType":"failure_mode","observations":["User code can't write to its own cgroup tree even though it owns the slice [class: systemd-cgroup]"]}
 {"type":"entity","name":"linux.fm.zombie-orphan-init","entityType":"failure_mode","observations":["Container PID 1 not reaping; zombies pile up [class: signal-handling]"]}
+{"type":"entity","name":"linux.fm.systemd-socket-activation-not-firing","entityType":"failure_mode","observations":["systemd socket unit listening but service isn't started on connect [class: systemd-socket]"]}
+{"type":"entity","name":"linux.fm.chroot-escape-via-cwd","entityType":"failure_mode","observations":["chroot'd process accesses files outside chroot via existing FD or chdir [class: isolation-design]"]}
+{"type":"entity","name":"linux.fm.hard-lockup","entityType":"failure_mode","observations":["NMI watchdog: 'BUG: hard lockup' or system unresponsive even to magic-sysrq [class: kernel]"]}
+{"type":"entity","name":"linux.fm.journal-corrupt","entityType":"failure_mode","observations":["`journalctl` shows 'No journal files were found' or 'corrupt' [class: journal]"]}
+{"type":"entity","name":"linux.fm.lvm-thin-pool-out-of-space","entityType":"failure_mode","observations":["Writes fail / FS goes read-only on thin-provisioned LV; metadata or data pool exhausted [class: lvm]"]}
+{"type":"entity","name":"linux.fm.nf-conntrack-mark-not-restored","entityType":"failure_mode","observations":["Reply traffic doesn't get the right fwmark; routing rule mismatches [class: networking]"]}
+{"type":"entity","name":"linux.fm.systemd-service-flapping","entityType":"failure_mode","observations":["systemd unit goes 'failed' after StartLimitBurst restarts [class: service-config]"]}
+{"type":"entity","name":"linux.fm.userns-creation-blocked-ubuntu24","entityType":"failure_mode","observations":["`unshare -U` or container creation fails 'Permission denied' on Ubuntu 24.04+ [class: sysctl-lsm]"]}
+{"type":"entity","name":"linux.fm.kernel-panic-decoding","entityType":"failure_mode","observations":["Boot fails with kernel panic; need to read the stack to find driver [class: kernel]"]}
+{"type":"entity","name":"linux.fm.systemd-coredump-not-saved","entityType":"failure_mode","observations":["App SIGSEGV but no core dump in /var/lib/systemd/coredump [class: coredump]"]}
+{"type":"entity","name":"linux.fm.systemd-resolved-stub-loops","entityType":"failure_mode","observations":["DNS through systemd-resolved stub (127.0.0.53) loops back [class: dns]"]}
+{"type":"entity","name":"linux.fm.cap-dropped-but-binary-still-works","entityType":"failure_mode","observations":["Drop CAP_X but binary still does X [class: capabilities]"]}
+{"type":"entity","name":"linux.fm.proc-self-vs-thread","entityType":"failure_mode","observations":["Reading /proc/self/status from a thread shows main-thread fields, not the thread [class: proc-fs-semantics]"]}
+{"type":"entity","name":"linux.fm.ftrace-buffer-overrun","entityType":"failure_mode","observations":["function tracer drops events; trace_pipe shows missed entries [class: tracing]"]}
+{"type":"entity","name":"linux.fm.io-uring-disabled-by-seccomp","entityType":"failure_mode","observations":["Modern app fails to init io_uring; falls back to epoll or errors [class: seccomp]"]}
+{"type":"entity","name":"linux.fm.no-shell-in-distroless","entityType":"failure_mode","observations":["Cannot debug container — no shell, no ps, no tools [class: image-design]"]}
+{"type":"entity","name":"linux.fm.overlayfs-redirect-dir-disabled","entityType":"failure_mode","observations":["Cross-layer rename fails 'invalid argument' or moves whole directory [class: overlayfs]"]}
+{"type":"entity","name":"linux.fm.so-reuseport-bad-distribution","entityType":"failure_mode","observations":["With SO_REUSEPORT and N workers, one worker gets all connections under low load [class: networking]"]}
+{"type":"entity","name":"linux.fm.iostat-await-explained","entityType":"failure_mode","observations":["Disk slow; `iostat -x` shows high await/svctm [class: io]"]}
+{"type":"entity","name":"linux.fm.proc-mounts-stale","entityType":"failure_mode","observations":["`/proc/mounts` shows entries no longer mounted; mountpoint missing in `mount` [class: mount]"]}
+{"type":"entity","name":"linux.fm.journald-rate-limited","entityType":"failure_mode","observations":["systemd: 'Suppressed N messages from /SYSTEMD_UNIT'; expected logs missing [class: logging]"]}
+{"type":"entity","name":"linux.fm.luks-cant-unlock-after-passphrase-rotation","entityType":"failure_mode","observations":["`cryptsetup open` fails 'No key available' after re-keying [class: crypto]"]}
+{"type":"entity","name":"linux.fm.swap-storm","entityType":"failure_mode","observations":["vmstat shows si/so > 0 continuously; system unresponsive [class: memory]"]}
+{"type":"entity","name":"linux.fm.cannot-create-userns","entityType":"failure_mode","observations":["`unshare --user` fails EPERM [class: sysctl]"]}
+{"type":"entity","name":"linux.fm.ip-forward-disabled","entityType":"failure_mode","observations":["Linux router not forwarding packets between interfaces [class: networking]"]}
+{"type":"entity","name":"linux.fm.ksoftirqd-pegged","entityType":"failure_mode","observations":["`top` shows ksoftirqd/<N> consuming 100% of one CPU [class: irq-storm]"]}
+{"type":"entity","name":"linux.fm.rcu-stall","entityType":"failure_mode","observations":["dmesg: 'INFO: rcu_sched detected stalls on CPUs/tasks' [class: kernel]"]}
+{"type":"entity","name":"linux.fm.fsync-not-durable-cache","entityType":"failure_mode","observations":["After hard power-off, files written via fsync() lost or corrupted [class: durability]"]}
+{"type":"entity","name":"linux.fm.cpuset-placement-wrong","entityType":"failure_mode","observations":["App pinned to cpuset but `taskset` shows it on other CPUs; cpu.max not honored [class: cgroup-cpu]"]}
+{"type":"entity","name":"linux.fm.ipv6-rp-filter-strict","entityType":"failure_mode","observations":["Asymmetric IPv6 routing drops packets silently [class: networking]"]}
+{"type":"entity","name":"linux.fm.irq-storm-single-cpu","entityType":"failure_mode","observations":["One CPU pinned at 100% softirq/hardirq; rest idle; high si/hi in vmstat [class: irq-steering]"]}
+{"type":"entity","name":"linux.fm.kdump-no-crashkernel","entityType":"failure_mode","observations":["After kernel panic, no /var/crash/* dump produced [class: kdump]"]}
+{"type":"entity","name":"linux.fm.namespace-fd-leak","entityType":"failure_mode","observations":["`ls /proc/*/ns/` accumulates after many container creations; eventually 'Too many open files' on namespace FDs [class: resource-leak]"]}
+{"type":"entity","name":"linux.fm.path-mtu-blackhole","entityType":"failure_mode","observations":["Small TCP requests work; large payloads or HTTPS handshake hang [class: networking]"]}
+{"type":"entity","name":"linux.fm.audit-logs-spam","entityType":"failure_mode","observations":["`auditd` floods log; disk fills [class: audit]"]}
+{"type":"entity","name":"linux.fm.kprobe-attach-fails-inlined","entityType":"failure_mode","observations":["`bpftrace -e 'kprobe:func {...}'` fails 'function not found' but symbol in /proc/kallsyms [class: tracing]"]}
+{"type":"entity","name":"linux.fm.lsof-shows-deleted","entityType":"failure_mode","observations":["`df` shows disk full but `du` adds up to less; `lsof | grep deleted` shows large files [class: storage]"]}
+{"type":"entity","name":"linux.fm.mount-not-visible-on-host","entityType":"failure_mode","observations":["Mount inside container/namespace not visible on host [class: mount-propagation]"]}
+{"type":"entity","name":"linux.fm.path-busy-cant-unmount","entityType":"failure_mode","observations":["`umount` fails 'target is busy' even after killing all visible users [class: mount]"]}
+{"type":"entity","name":"linux.fm.mount-propagation-unexpected","entityType":"failure_mode","observations":["Mount inside container leaks to host (or vice versa) unexpectedly [class: mount-propagation]"]}
+{"type":"entity","name":"linux.fm.perf-event-paranoid-blocks","entityType":"failure_mode","observations":["`perf record` fails 'Permission denied' or 'No permission' [class: sysctl]"]}
+{"type":"entity","name":"linux.fm.systemd-timer-skipped","entityType":"failure_mode","observations":["systemd .timer skipped firings; OnCalendar=daily missed days [class: systemd-timer]"]}
+{"type":"entity","name":"linux.fm.inotify-watch-limit","entityType":"failure_mode","observations":["Editor (vscode/jetbrains) fails to watch project: 'too many open files' or watches dropped [class: resource-limit]"]}
+{"type":"entity","name":"linux.fm.numa-imbalance","entityType":"failure_mode","observations":["Multi-socket box: one NUMA node CPUs at 90%, other idle; throughput limited [class: numa]"]}
+{"type":"entity","name":"linux.fm.systemd-mount-failed","entityType":"failure_mode","observations":["systemd `<path>.mount` unit failed; mountpoint unavailable [class: mount]"]}
+{"type":"entity","name":"linux.fm.gdb-ptrace-restricted-yama","entityType":"failure_mode","observations":["`gdb -p <pid>` fails 'ptrace: Operation not permitted' [class: yama-lsm]"]}
+{"type":"entity","name":"linux.fm.netfilter-rule-order","entityType":"failure_mode","observations":["Allow rule placed but traffic still blocked; jump to chain returns earlier [class: networking]"]}
+{"type":"entity","name":"linux.fm.realtime-prio-inversion","entityType":"failure_mode","observations":["SCHED_FIFO/RR thread blocked on lock held by lower-prio thread; realtime task starves [class: scheduler]"]}
+{"type":"entity","name":"linux.fm.soft-lockup","entityType":"failure_mode","observations":["dmesg: 'BUG: soft lockup - CPU#X stuck for Ys! [comm:pid]' [class: kernel]"]}
+{"type":"entity","name":"linux.fm.overlayfs-whiteout-leak","entityType":"failure_mode","observations":["Deleted-in-upper file still appears in container directory listing [class: overlayfs]"]}
+{"type":"entity","name":"linux.fm.pid1-not-reaping-zombies","entityType":"failure_mode","observations":["`ps` inside container shows accumulating <defunct> processes; PID 1 ignores SIGCHLD [class: signal-handling]"]}
+{"type":"entity","name":"linux.fm.systemd-mount-failed-fstab","entityType":"failure_mode","observations":["systemd `<mount>.mount` unit failed; fstab entry has typo or invalid options [class: systemd-mount]"]}
+{"type":"entity","name":"linux.fm.systemd-target-reached-but-services-not-up","entityType":"failure_mode","observations":["`systemctl is-active multi-user.target` = active, but app's own service shows 'not yet started' [class: systemd-deps]"]}
+{"type":"entity","name":"linux.fm.seccomp-blocks-clone3","entityType":"failure_mode","observations":["Recently-built glibc apps fail inside older container with EPERM; strace shows clone3 → EPERM [class: seccomp]"]}
+{"type":"entity","name":"linux.fm.slab-leak","entityType":"failure_mode","observations":["`slabtop` shows specific slab cache growing without bound; memory not reclaimable [class: kernel-memory]"]}
 {"type":"entity","name":"k8s.fm.pod-pending-failedscheduling","entityType":"failure_mode","observations":["Pod stuck Pending; events show FailedScheduling [class: scheduling]"]}
-{"type":"entity","name":"k8s.fm.ingress-404","entityType":"failure_mode","observations":["Ingress returns 404 for valid path [class: routing]"]}
-{"type":"entity","name":"k8s.fm.cpu-throttled","entityType":"failure_mode","observations":["App slow but `kubectl top` shows low CPU [class: resource-limit]"]}
 {"type":"entity","name":"k8s.fm.rolling-update-stalled","entityType":"failure_mode","observations":["`kubectl rollout status` reports 'progressing' indefinitely [class: rollout]"]}
-{"type":"entity","name":"k8s.fm.statefulset-pod-stuck","entityType":"failure_mode","observations":["StatefulSet pod stuck Pending; subsequent ordinals can't proceed [class: orchestration]"]}
-{"type":"entity","name":"k8s.fm.kubeconfig-bad","entityType":"failure_mode","observations":["`kubectl: error: You must be logged in to the server` [class: auth]"]}
-{"type":"entity","name":"k8s.fm.rbac-permission-denied","entityType":"failure_mode","observations":["`Forbidden: User cannot list resource X in namespace Y` [class: rbac]"]}
-{"type":"entity","name":"k8s.fm.api-throttle","entityType":"failure_mode","observations":["`The server is currently unable to handle the request` or HTTP 429 [class: api-throttle]"]}
 {"type":"entity","name":"k8s.fm.node-not-ready","entityType":"failure_mode","observations":["Node in NotReady state [class: node]"]}
 {"type":"entity","name":"k8s.fm.cron-schedule-skipped","entityType":"failure_mode","observations":["CronJob doesn't run on time [class: cron]"]}
-{"type":"entity","name":"k8s.fm.finalizer-stuck-namespace","entityType":"failure_mode","observations":["Namespace stuck Terminating for hours; resources have finalizers [class: finalizer]"]}
-{"type":"entity","name":"k8s.fm.daemonset-rolling-update-stuck","entityType":"failure_mode","observations":["DaemonSet OnDelete or RollingUpdate not progressing on some nodes [class: orchestration]"]}
-{"type":"entity","name":"k8s.fm.kube-reserved-too-low","entityType":"failure_mode","observations":["Node thrashes / OOMs system processes when pods near capacity [class: node-config]"]}
-{"type":"entity","name":"k8s.fm.scheduler-preempt-thrash","entityType":"failure_mode","observations":["PriorityClass preemption keeps churning pods; SLA pods evicted/restored repeatedly [class: scheduling]"]}
-{"type":"entity","name":"k8s.fm.ingress-tls-secret-missing","entityType":"failure_mode","observations":["Ingress shows 'failed to get certificate'; TLS endpoint not reachable [class: ingress]"]}
-{"type":"entity","name":"k8s.fm.crictl-ps-empty","entityType":"failure_mode","observations":["`crictl ps` returns empty even though kubelet runs pods [class: runtime-debug]"]}
-{"type":"entity","name":"k8s.fm.pod-overhead-not-accounted","entityType":"failure_mode","observations":["With RuntimeClass that has pod-overhead, scheduler skips overhead in resource calc [class: runtime-class]"]}
-{"type":"entity","name":"k8s.fm.serviceaccount-token-not-mounted","entityType":"failure_mode","observations":["Pod can't reach apiserver; /var/run/secrets/kubernetes.io/serviceaccount missing [class: rbac-projection]"]}
-{"type":"entity","name":"k8s.fm.cluster-autoscaler-cooldown","entityType":"failure_mode","observations":["Cluster Autoscaler not scaling up despite Pending pods; 'recently failed' nodes excluded [class: autoscale]"]}
-{"type":"entity","name":"k8s.fm.deployment-stuck-ConditionPaused","entityType":"failure_mode","observations":["`kubectl rollout status` reports 'paused'; pods don't update [class: rollout]"]}
-{"type":"entity","name":"k8s.fm.cronjob-ttl-cleaning-too-aggressive","entityType":"failure_mode","observations":["CronJob's pods/jobs immediately deleted; can't inspect failed runs [class: cron]"]}
-{"type":"entity","name":"k8s.fm.endpoints-not-updating","entityType":"failure_mode","observations":["Service endpoints don't reflect ready pods; clients hit dead pods [class: endpoint]"]}
-{"type":"entity","name":"k8s.fm.kubelet-image-gc-thrash","entityType":"failure_mode","observations":["Kubelet aggressively garbage-collects images; subsequent pulls slow [class: kubelet]"]}
-{"type":"entity","name":"k8s.fm.kubelet-tls-bootstrap-fail","entityType":"failure_mode","observations":["New nodes fail to join: kubelet logs 'Unable to register node ... certificate' [class: node-join]"]}
-{"type":"entity","name":"k8s.fm.replicaset-conflict-multi-owners","entityType":"failure_mode","observations":["Pod has multiple owner references; controllers fight to delete it [class: controller]"]}
-{"type":"entity","name":"k8s.fm.gateway-route-not-attached","entityType":"failure_mode","observations":["Gateway API HTTPRoute exists but traffic doesn't route; status shows 'NotAttached' [class: gateway]"]}
-{"type":"entity","name":"k8s.fm.kube-proxy-ipvs-out-of-sync","entityType":"failure_mode","observations":["`kubectl get svc` shows ClusterIP yet ipvsadm doesn't list real servers [class: networking]"]}
-{"type":"entity","name":"k8s.fm.eviction-soft-vs-hard","entityType":"failure_mode","observations":["Memory eviction triggers wrong pods; system pods evicted [class: eviction]"]}
-{"type":"entity","name":"k8s.fm.ephemeral-container-debug-not-supported","entityType":"failure_mode","observations":["`kubectl debug` fails 'ephemeral containers feature is not enabled' [class: debug]"]}
-{"type":"entity","name":"k8s.fm.qos-class-burstable-eviction","entityType":"failure_mode","observations":["Burstable QoS pods evicted before guaranteed pods under memory pressure [class: eviction]"]}
-{"type":"entity","name":"k8s.fm.cronjob-startingdeadline-skipped","entityType":"failure_mode","observations":["CronJob doesn't run despite schedule firing; startingDeadlineSeconds expired [class: cron]"]}
-{"type":"entity","name":"k8s.fm.node-not-ready-cni-not-ready","entityType":"failure_mode","observations":["Node NotReady; kubelet says 'cni plugin not initialized' or 'network plugin returns error' [class: cni]"]}
-{"type":"entity","name":"k8s.fm.svc-traffic-policy-local-no-endpoints","entityType":"failure_mode","observations":["Service with externalTrafficPolicy=Local drops all traffic when no local pod [class: networking]"]}
-{"type":"entity","name":"k8s.fm.init-container-stuck","entityType":"failure_mode","observations":["Pod stuck PodInitializing; init container exit code or running indefinitely [class: init-container]"]}
-{"type":"entity","name":"k8s.fm.mutating-webhook-conflict","entityType":"failure_mode","observations":["Multiple mutating webhooks fight over the same field; final state oscillates or last-one-wins [class: admission]"]}
-{"type":"entity","name":"k8s.fm.crd-conversion-webhook-fail","entityType":"failure_mode","observations":["`kubectl get <crd>` fails 'conversion webhook for <group>/<version>, Kind=<X> failed' [class: crd]"]}
-{"type":"entity","name":"k8s.fm.crd-openapi-validation-mismatch","entityType":"failure_mode","observations":["`kubectl apply` fails 'unknown field' or 'invalid' for a CRD field that should exist [class: crd]"]}
-{"type":"entity","name":"k8s.fm.cluster-autoscaler-no-fit-pending","entityType":"failure_mode","observations":["Cluster Autoscaler scales up nodes but new node doesn't accept the Pending pod [class: autoscale]"]}
 {"type":"entity","name":"k8s.fm.dns-pod-search-too-many","entityType":"failure_mode","observations":["DNS lookups inside pods take 3-5 seconds for external hostnames (api.stripe.com, s3.amazonaws.com) — search-domain amplification with the default ndots:5 [class: dns]"]}
 {"type":"entity","name":"k8s.fm.crashloopbackoff","entityType":"failure_mode","observations":["Pod CrashLoopBackOff: container repeatedly crashing [class: app-crash]"]}
 {"type":"entity","name":"k8s.fm.oomkilled","entityType":"failure_mode","observations":["Container OOMKilled (exit 137) inside pod [class: resource-limit]"]}
@@ -2116,6 +2082,40 @@
 {"type":"entity","name":"k8s.fm.controller-stuck-on-crd-finalizer","entityType":"failure_mode","observations":["Custom resource stuck Terminating; controller's finalizer never removed [class: finalizer]"]}
 {"type":"entity","name":"k8s.fm.pdb-blocks-drain","entityType":"failure_mode","observations":["`kubectl drain` hangs or fails 'Cannot evict pod ... PodDisruptionBudget' [class: disruption]"]}
 {"type":"entity","name":"k8s.fm.service-no-endpoints","entityType":"failure_mode","observations":["Service exists but no endpoints; clients can't reach [class: selector]"]}
+{"type":"entity","name":"k8s.fm.gateway-route-not-attached","entityType":"failure_mode","observations":["Gateway API HTTPRoute exists but traffic doesn't route; status shows 'NotAttached' [class: gateway]"]}
+{"type":"entity","name":"k8s.fm.svc-traffic-policy-local-no-endpoints","entityType":"failure_mode","observations":["Service with externalTrafficPolicy=Local drops all traffic when no local pod [class: networking]"]}
+{"type":"entity","name":"k8s.fm.daemonset-rolling-update-stuck","entityType":"failure_mode","observations":["DaemonSet OnDelete or RollingUpdate not progressing on some nodes [class: orchestration]"]}
+{"type":"entity","name":"k8s.fm.crd-conversion-webhook-fail","entityType":"failure_mode","observations":["`kubectl get <crd>` fails 'conversion webhook for <group>/<version>, Kind=<X> failed' [class: crd]"]}
+{"type":"entity","name":"k8s.fm.crd-openapi-validation-mismatch","entityType":"failure_mode","observations":["`kubectl apply` fails 'unknown field' or 'invalid' for a CRD field that should exist [class: crd]"]}
+{"type":"entity","name":"k8s.fm.pod-overhead-not-accounted","entityType":"failure_mode","observations":["With RuntimeClass that has pod-overhead, scheduler skips overhead in resource calc [class: runtime-class]"]}
+{"type":"entity","name":"k8s.fm.qos-class-burstable-eviction","entityType":"failure_mode","observations":["Burstable QoS pods evicted before guaranteed pods under memory pressure [class: eviction]"]}
+{"type":"entity","name":"k8s.fm.rbac-permission-denied","entityType":"failure_mode","observations":["`Forbidden: User cannot list resource X in namespace Y` [class: rbac]"]}
+{"type":"entity","name":"k8s.fm.cluster-autoscaler-no-fit-pending","entityType":"failure_mode","observations":["Cluster Autoscaler scales up nodes but new node doesn't accept the Pending pod [class: autoscale]"]}
+{"type":"entity","name":"k8s.fm.cpu-throttled","entityType":"failure_mode","observations":["App slow but `kubectl top` shows low CPU [class: resource-limit]"]}
+{"type":"entity","name":"k8s.fm.kubelet-tls-bootstrap-fail","entityType":"failure_mode","observations":["New nodes fail to join: kubelet logs 'Unable to register node ... certificate' [class: node-join]"]}
+{"type":"entity","name":"k8s.fm.deployment-stuck-ConditionPaused","entityType":"failure_mode","observations":["`kubectl rollout status` reports 'paused'; pods don't update [class: rollout]"]}
+{"type":"entity","name":"k8s.fm.endpoints-not-updating","entityType":"failure_mode","observations":["Service endpoints don't reflect ready pods; clients hit dead pods [class: endpoint]"]}
+{"type":"entity","name":"k8s.fm.kube-proxy-ipvs-out-of-sync","entityType":"failure_mode","observations":["`kubectl get svc` shows ClusterIP yet ipvsadm doesn't list real servers [class: networking]"]}
+{"type":"entity","name":"k8s.fm.mutating-webhook-conflict","entityType":"failure_mode","observations":["Multiple mutating webhooks fight over the same field; final state oscillates or last-one-wins [class: admission]"]}
+{"type":"entity","name":"k8s.fm.cronjob-startingdeadline-skipped","entityType":"failure_mode","observations":["CronJob doesn't run despite schedule firing; startingDeadlineSeconds expired [class: cron]"]}
+{"type":"entity","name":"k8s.fm.kubeconfig-bad","entityType":"failure_mode","observations":["`kubectl: error: You must be logged in to the server` [class: auth]"]}
+{"type":"entity","name":"k8s.fm.kubelet-image-gc-thrash","entityType":"failure_mode","observations":["Kubelet aggressively garbage-collects images; subsequent pulls slow [class: kubelet]"]}
+{"type":"entity","name":"k8s.fm.statefulset-pod-stuck","entityType":"failure_mode","observations":["StatefulSet pod stuck Pending; subsequent ordinals can't proceed [class: orchestration]"]}
+{"type":"entity","name":"k8s.fm.api-throttle","entityType":"failure_mode","observations":["`The server is currently unable to handle the request` or HTTP 429 [class: api-throttle]"]}
+{"type":"entity","name":"k8s.fm.ingress-tls-secret-missing","entityType":"failure_mode","observations":["Ingress shows 'failed to get certificate'; TLS endpoint not reachable [class: ingress]"]}
+{"type":"entity","name":"k8s.fm.cronjob-ttl-cleaning-too-aggressive","entityType":"failure_mode","observations":["CronJob's pods/jobs immediately deleted; can't inspect failed runs [class: cron]"]}
+{"type":"entity","name":"k8s.fm.ephemeral-container-debug-not-supported","entityType":"failure_mode","observations":["`kubectl debug` fails 'ephemeral containers feature is not enabled' [class: debug]"]}
+{"type":"entity","name":"k8s.fm.cluster-autoscaler-cooldown","entityType":"failure_mode","observations":["Cluster Autoscaler not scaling up despite Pending pods; 'recently failed' nodes excluded [class: autoscale]"]}
+{"type":"entity","name":"k8s.fm.kube-reserved-too-low","entityType":"failure_mode","observations":["Node thrashes / OOMs system processes when pods near capacity [class: node-config]"]}
+{"type":"entity","name":"k8s.fm.eviction-soft-vs-hard","entityType":"failure_mode","observations":["Memory eviction triggers wrong pods; system pods evicted [class: eviction]"]}
+{"type":"entity","name":"k8s.fm.serviceaccount-token-not-mounted","entityType":"failure_mode","observations":["Pod can't reach apiserver; /var/run/secrets/kubernetes.io/serviceaccount missing [class: rbac-projection]"]}
+{"type":"entity","name":"k8s.fm.ingress-404","entityType":"failure_mode","observations":["Ingress returns 404 for valid path [class: routing]"]}
+{"type":"entity","name":"k8s.fm.init-container-stuck","entityType":"failure_mode","observations":["Pod stuck PodInitializing; init container exit code or running indefinitely [class: init-container]"]}
+{"type":"entity","name":"k8s.fm.node-not-ready-cni-not-ready","entityType":"failure_mode","observations":["Node NotReady; kubelet says 'cni plugin not initialized' or 'network plugin returns error' [class: cni]"]}
+{"type":"entity","name":"k8s.fm.replicaset-conflict-multi-owners","entityType":"failure_mode","observations":["Pod has multiple owner references; controllers fight to delete it [class: controller]"]}
+{"type":"entity","name":"k8s.fm.scheduler-preempt-thrash","entityType":"failure_mode","observations":["PriorityClass preemption keeps churning pods; SLA pods evicted/restored repeatedly [class: scheduling]"]}
+{"type":"entity","name":"k8s.fm.crictl-ps-empty","entityType":"failure_mode","observations":["`crictl ps` returns empty even though kubelet runs pods [class: runtime-debug]"]}
+{"type":"entity","name":"k8s.fm.finalizer-stuck-namespace","entityType":"failure_mode","observations":["Namespace stuck Terminating for hours; resources have finalizers [class: finalizer]"]}
 {"type":"entity","name":"devin.fm.session-cant-reach-internal-svc","entityType":"failure_mode","observations":["Devin DevBox can't reach internal/private service (staging.internal.acme.io). Session log: 'Could not resolve host', or 'connection timed out', or 'self-signed certificate in certificate chain' [class: network]"]}
 {"type":"entity","name":"devin.fm.acu-budget-exhausted","entityType":"failure_mode","observations":["Sessions stop running mid-month; ACU cap reached [class: billing]"]}
 {"type":"entity","name":"devin.fm.acu-burn-runaway","entityType":"failure_mode","observations":["Single session burns hundreds of ACUs; checking takes hours [class: billing]"]}
@@ -6038,22 +6038,10 @@
 {"type":"relation","from":"docker.fm.published-port-not-reachable","to":"linux.networking.nat-dnat","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.disk-full-but-df-shows-free","to":"docker.engine.cfg.daemon.json.data-root","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.disk-full-but-df-shows-free","to":"docker.engine.cfg.daemon.json.storage-driver","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.docker-build-cache-not-hitting","to":"docker.engine.image-layer","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.container-network-host-mode-permission","to":"docker.engine.cfg.daemon.json.userns-remap","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.exit-126-not-executable","to":"docker.engine.image","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.exit-126-not-executable","to":"linux.primitives.execve-syscall","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.exit-127-command-not-found","to":"docker.engine.image","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.docker-network-create-conflict","to":"docker.engine.cfg.daemon.json.bip","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.userns-remap-permissions","to":"docker.engine.cfg.daemon.json.userns-remap","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.userns-remap-permissions","to":"linux.primitives.user-namespace-uid-mapping","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.dns-not-resolving-from-container","to":"linux.networking.dns-resolver-glibc","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.dns-not-resolving-from-container","to":"docker.engine.cfg.daemon.json.dns","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.live-restore-skipped-version","to":"docker.engine.live-restore","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-volume-named-vs-anon","to":"docker.engine.named-volume","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-volume-named-vs-anon","to":"docker.engine.anonymous-volume","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.exit-125-daemon-error","to":"docker.engine.dockerd","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.exit-125-daemon-error","to":"docker.engine.cmd.container-run","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.healthcheck-flapping","to":"docker.engine.health-check","relationType":"affects-concept"}
 {"type":"relation","from":"docker.runtime.namespace-pid","to":"linux.primitives.pid-namespace","relationType":"implements"}
 {"type":"relation","from":"docker.runtime.namespace-mount","to":"linux.primitives.mount-namespace","relationType":"implements"}
 {"type":"relation","from":"docker.runtime.namespace-network","to":"linux.primitives.network-namespace","relationType":"implements"}
@@ -6102,58 +6090,9 @@
 {"type":"relation","from":"docker.engine.runc","to":"linux.primitives.apparmor-profile-model","relationType":"applies"}
 {"type":"relation","from":"docker.engine.containerd","to":"linux.systemd.systemd-subsystem","relationType":"managed-by"}
 {"type":"relation","from":"docker.engine.containerd-sock","to":"linux.networking.unix-domain-protocol","relationType":"binds-to"}
-{"type":"relation","from":"docker.fm.buildkit-cache-mount-id-collision","to":"docker.build-buildkit.cache-mount","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-cache-mount-id-collision","to":"docker.build-buildkit.mount-cache-id-shareable","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-cache-mount-id-collision","to":"docker.build-buildkit.cache-key-derivation","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-multi-arch-emulation-slow","to":"docker.build-buildkit.buildx-driver-docker-container","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.copy-from-stage-not-found","to":"docker.build-buildkit.multi-stage-build","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.copy-from-stage-not-found","to":"docker.build-buildkit.parser-directive","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.dockerignore-too-aggressive","to":"docker.build-buildkit.build-context","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-registry-cache-no-credentials","to":"docker.build-buildkit.registry-cache","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-registry-cache-no-credentials","to":"docker.build-buildkit.cache-key-derivation","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-frontend-version-pinning","to":"docker.build-buildkit.buildkit-frontend","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-frontend-version-pinning","to":"docker.build-buildkit.parser-directive","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-output-no-load","to":"docker.build-buildkit.buildx-driver-docker-container","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.buildkit-output-no-load","to":"docker.build-buildkit.output-tarball","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.containerd-shim-orphaned","to":"docker.runtime.containerd-shim-runc-v2","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.containerd-shim-orphaned","to":"docker.runtime.containerd","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.containerd-shim-orphaned","to":"docker.runtime.containerd-tasks-service","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.containerd-content-store-disk-fill","to":"docker.runtime.containerd-content-store","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.containerd-content-store-disk-fill","to":"docker.runtime.content-addressable-storage","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-profile-not-applied","to":"docker.compose.compose-profile","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-healthcheck-dep-timeout","to":"docker.compose.service-depends-on-condition-healthy","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-healthcheck-dep-timeout","to":"docker.compose.service-healthcheck","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-network-default-collision","to":"docker.compose.compose-network-default","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-network-default-collision","to":"docker.compose.compose-project","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-network-default-collision","to":"docker.networking.docker-network","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-restart-unless-stopped-vs-always","to":"docker.compose.compose-restart-on-failure","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-restart-unless-stopped-vs-always","to":"docker.compose.service-restart-policy","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-secret-mode-bits-wrong","to":"docker.compose.compose-secret","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-secret-mode-bits-wrong","to":"docker.compose.compose-secret-mode-bits","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.embedded-dns-stale-after-rename","to":"docker.networking.embedded-dns","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.embedded-dns-stale-after-rename","to":"docker.networking.embedded-dns-resolver","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.macvlan-cant-reach-host","to":"docker.networking.macvlan-driver","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.macvlan-cant-reach-host","to":"docker.networking.proxy-arp","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.apparmor-profile-not-loaded","to":"docker.security.apparmor-profile","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.apparmor-profile-not-loaded","to":"docker.security.default-apparmor-profile","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.seccomp-blocks-syscall","to":"docker.security.seccomp-profile","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.seccomp-blocks-syscall","to":"docker.security.default-seccomp-profile","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.seccomp-blocks-syscall","to":"docker.runtime.seccomp-syscall-action","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.cosign-verify-no-signature","to":"docker.security.image-signing-cosign","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.cosign-verify-no-signature","to":"docker.security.cosign-keypair","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.cosign-verify-no-signature","to":"docker.security.signed-image-pull","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.log-driver-fluentd-buffer-full","to":"docker.engine.cfg.daemon.json.log-driver","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.swarm-leader-loss","to":"docker.networking.swarm-routing-mesh","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.exec-tty-no-input","to":"docker.runtime.terminal-pty","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.exec-tty-no-input","to":"docker.runtime.console-socket","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.disk-full-overlay2-leaked","to":"docker.engine.overlay2-driver","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.disk-full-overlay2-leaked","to":"docker.runtime.overlayfs-snapshotter","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.image-pull-architecture-mismatch","to":"docker.runtime.runtime-platform","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.image-pull-architecture-mismatch","to":"docker.build-buildkit.oci-image-format-vs-docker-v2-2","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.daemon-restart-during-pull","to":"docker.runtime.containerd-content-store","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.daemon-restart-during-pull","to":"docker.runtime.chunked-upload","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.userns-remap-bind-mount-uid-mismatch","to":"docker.security.subuid-file","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.userns-remap-bind-mount-uid-mismatch","to":"docker.security.subgid-file","relationType":"affects-concept"}
 {"type":"relation","from":"docker.engine.dockerd","to":"docker.engine.containerd","relationType":"talks-to"}
 {"type":"relation","from":"docker.engine.containerd","to":"docker.engine.runc","relationType":"invokes"}
 {"type":"relation","from":"docker.engine.dockerd","to":"docker.engine.docker-cli","relationType":"served-by"}
@@ -6279,25 +6218,10 @@
 {"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.networking.bridge-driver","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.networking.gateway-ip","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.networking.iptables-DOCKER-chain","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.host-firewall-blocks-docker","to":"docker.networking.iptables-DOCKER-USER-chain","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.host-firewall-blocks-docker","to":"docker.engine.iptables-management","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.embedded-dns-misroute","to":"docker.networking.embedded-dns","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.embedded-dns-misroute","to":"docker.networking.embedded-dns-resolver","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.container-egress-vpn-conflict","to":"docker.networking.bridge-driver","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.container-egress-vpn-conflict","to":"docker.networking.docker0-interface","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-build-args-not-passed-to-stage","to":"docker.build-buildkit.arg-instruction","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-build-args-not-passed-to-stage","to":"docker.build-buildkit.build-arg","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-build-args-not-passed-to-stage","to":"docker.build-buildkit.multi-stage-build","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.compose-watch-not-firing","to":"docker.compose.compose-application","relationType":"affects-concept"}
-{"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.fm.host-firewall-blocks-docker","relationType":"specific-cause"}
 {"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.fm.no-masquerade-bridge","relationType":"specific-cause"}
-{"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.fm.embedded-dns-misroute","relationType":"specific-cause"}
-{"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.fm.container-egress-vpn-conflict","relationType":"specific-cause"}
 {"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"linux.fm.ip-forward-disabled","relationType":"specific-cause"}
 {"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"linux.fm.netfilter-rule-order","relationType":"specific-cause"}
 {"type":"relation","from":"docker.fm.container-no-egress-umbrella","to":"docker.fm.iptables-docker-chain-flushed","relationType":"specific-cause"}
-{"type":"relation","from":"docker.fm.compose-secrets-vs-configs","to":"docker.fm.compose-secret-mode-bits-wrong","relationType":"sibling-of"}
-{"type":"relation","from":"docker.fm.compose-build-args-not-passed-to-stage","to":"docker.fm.copy-from-stage-not-found","relationType":"sibling-of"}
 {"type":"relation","from":"docker.fm.image-pull-private-registry-auth","to":"docker.engine.docker-cli","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.image-pull-private-registry-auth","to":"docker.engine.cfg.daemon.json.tls","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.image-pull-private-registry-auth","to":"docker.runtime.auth-bearer-token","relationType":"affects-concept"}
@@ -6367,31 +6291,90 @@
 {"type":"relation","from":"docker.fm.image-pull-rate-limit","to":"docker.networking.cmd.image-pull","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.dockerd-tls-cert-expired","to":"docker.security.dockerd-tls-listener","relationType":"affects-concept"}
 {"type":"relation","from":"docker.fm.dockerd-tls-cert-expired","to":"docker.security.cert-rotation","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.exit-127-command-not-found","to":"docker.engine.image","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.userns-remap-bind-mount-uid-mismatch","to":"docker.security.subgid-file","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.apparmor-profile-not-loaded","to":"docker.security.apparmor-profile","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.embedded-dns-misroute","to":"docker.networking.embedded-dns","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.cosign-verify-no-signature","to":"docker.security.cosign-keypair","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.userns-remap-permissions","to":"docker.engine.cfg.daemon.json.userns-remap","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.exec-tty-no-input","to":"docker.runtime.terminal-pty","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.host-firewall-blocks-docker","to":"docker.engine.iptables-management","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.healthcheck-flapping","to":"docker.engine.health-check","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.docker-build-cache-not-hitting","to":"docker.engine.image-layer","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-frontend-version-pinning","to":"docker.build-buildkit.buildkit-frontend","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-network-default-collision","to":"docker.compose.compose-project","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.swarm-leader-loss","to":"docker.networking.swarm-routing-mesh","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.copy-from-stage-not-found","to":"docker.build-buildkit.parser-directive","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-volume-named-vs-anon","to":"docker.engine.named-volume","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.seccomp-blocks-syscall","to":"docker.security.default-seccomp-profile","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.macvlan-cant-reach-host","to":"docker.networking.macvlan-driver","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.embedded-dns-misroute","to":"docker.networking.embedded-dns-resolver","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.exit-125-daemon-error","to":"docker.engine.cmd.container-run","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.log-driver-fluentd-buffer-full","to":"docker.engine.cfg.daemon.json.log-driver","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.macvlan-cant-reach-host","to":"docker.networking.proxy-arp","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-multi-arch-emulation-slow","to":"docker.build-buildkit.buildx-driver-docker-container","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.cosign-verify-no-signature","to":"docker.security.signed-image-pull","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-registry-cache-no-credentials","to":"docker.build-buildkit.registry-cache","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.container-network-host-mode-permission","to":"docker.engine.cfg.daemon.json.userns-remap","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-cache-mount-id-collision","to":"docker.build-buildkit.cache-key-derivation","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.exec-tty-no-input","to":"docker.runtime.console-socket","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.live-restore-skipped-version","to":"docker.engine.live-restore","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-cache-mount-id-collision","to":"docker.build-buildkit.mount-cache-id-shareable","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.embedded-dns-stale-after-rename","to":"docker.networking.embedded-dns","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.disk-full-overlay2-leaked","to":"docker.engine.overlay2-driver","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-build-args-not-passed-to-stage","to":"docker.build-buildkit.arg-instruction","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.dockerignore-too-aggressive","to":"docker.build-buildkit.build-context","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-output-no-load","to":"docker.build-buildkit.output-tarball","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-restart-unless-stopped-vs-always","to":"docker.compose.service-restart-policy","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-secret-mode-bits-wrong","to":"docker.compose.compose-secret-mode-bits","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.container-egress-vpn-conflict","to":"docker.networking.docker0-interface","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-build-args-not-passed-to-stage","to":"docker.build-buildkit.build-arg","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.container-egress-vpn-conflict","to":"docker.networking.bridge-driver","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.userns-remap-permissions","to":"linux.primitives.user-namespace-uid-mapping","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-profile-not-applied","to":"docker.compose.compose-profile","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.disk-full-overlay2-leaked","to":"docker.runtime.overlayfs-snapshotter","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.host-firewall-blocks-docker","to":"docker.networking.iptables-DOCKER-USER-chain","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.containerd-content-store-disk-fill","to":"docker.runtime.containerd-content-store","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-secret-mode-bits-wrong","to":"docker.compose.compose-secret","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-cache-mount-id-collision","to":"docker.build-buildkit.cache-mount","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-network-default-collision","to":"docker.compose.compose-network-default","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-healthcheck-dep-timeout","to":"docker.compose.service-healthcheck","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.apparmor-profile-not-loaded","to":"docker.security.default-apparmor-profile","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-frontend-version-pinning","to":"docker.build-buildkit.parser-directive","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.image-pull-architecture-mismatch","to":"docker.build-buildkit.oci-image-format-vs-docker-v2-2","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.seccomp-blocks-syscall","to":"docker.security.seccomp-profile","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-network-default-collision","to":"docker.networking.docker-network","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.containerd-content-store-disk-fill","to":"docker.runtime.content-addressable-storage","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.exit-125-daemon-error","to":"docker.engine.dockerd","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.copy-from-stage-not-found","to":"docker.build-buildkit.multi-stage-build","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-watch-not-firing","to":"docker.compose.compose-application","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-healthcheck-dep-timeout","to":"docker.compose.service-depends-on-condition-healthy","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-output-no-load","to":"docker.build-buildkit.buildx-driver-docker-container","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.docker-network-create-conflict","to":"docker.engine.cfg.daemon.json.bip","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.userns-remap-bind-mount-uid-mismatch","to":"docker.security.subuid-file","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.image-pull-architecture-mismatch","to":"docker.runtime.runtime-platform","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.cosign-verify-no-signature","to":"docker.security.image-signing-cosign","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.buildkit-registry-cache-no-credentials","to":"docker.build-buildkit.cache-key-derivation","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.embedded-dns-stale-after-rename","to":"docker.networking.embedded-dns-resolver","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-build-args-not-passed-to-stage","to":"docker.build-buildkit.multi-stage-build","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-restart-unless-stopped-vs-always","to":"docker.compose.compose-restart-on-failure","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.compose-volume-named-vs-anon","to":"docker.engine.anonymous-volume","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.daemon-restart-during-pull","to":"docker.runtime.chunked-upload","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.seccomp-blocks-syscall","to":"docker.runtime.seccomp-syscall-action","relationType":"affects-concept"}
+{"type":"relation","from":"docker.fm.daemon-restart-during-pull","to":"docker.runtime.containerd-content-store","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.process-stuck-d-state","to":"linux.primitives.process-state-disk-sleep","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.fd-leak","to":"linux.primitives.cfg.proc-sys-file.fs-file-max","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.disk-full-but-df-shows-free-space","to":"linux.filesystem.cfg.proc-control.diskstats","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.disk-full-but-df-shows-free-space","to":"linux.filesystem.inode","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.cannot-create-userns","to":"linux.primitives.cfg.proc-sys-file.user-max-user-namespaces","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-service-flapping","to":"linux.systemd.cfg.unit.StartLimitIntervalSec","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-service-flapping","to":"linux.systemd.restart-rate-limit","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.mount-not-visible-on-host","to":"linux.primitives.mount-namespace-propagation","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.tcp-time-wait-exhaustion","to":"linux.networking.tcp-state-time-wait","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.tcp-time-wait-exhaustion","to":"linux.networking.cfg.sysctl-net-ipv4.ip-local-port-range","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.cap-dropped-but-binary-still-works","to":"linux.primitives.cap-effective-set","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-coredump-not-saved","to":"linux.systemd.coredump-handling","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-coredump-not-saved","to":"linux.primitives.cfg.proc-sys-file.kernel-core-pattern","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.permission-denied-not-mode-bits","to":"linux.primitives.linux-security-module","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.high-context-switch","to":"linux.debugging.context-switch","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.iowait-high","to":"linux.debugging.iostat-tool","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.iowait-high","to":"linux.filesystem.cfg.proc-control.diskstats","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.swap-storm","to":"linux.primitives.cfg.proc-sys-file.vm-swappiness","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.fork-eagain","to":"linux.primitives.cfg.proc-sys-file.kernel-pid-max","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.fork-eagain","to":"linux.primitives.cfg.cgroup-v2-control-file.pids-max","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-mount-failed","to":"linux.systemd.mount-unit","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-mount-failed","to":"linux.filesystem.cmd.mount","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.journald-rate-limited","to":"linux.systemd.journal-rate-limit","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.tcp-listen-overflow","to":"linux.networking.somaxconn","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.no-shell-in-distroless","to":"linux.primitives.cmd.nsenter","relationType":"affects-concept"}
 {"type":"relation","from":"linux.networking.tcp-state-time-wait","to":"linux.networking.tcp-protocol","relationType":"state-of"}
 {"type":"relation","from":"linux.networking.tcp-state-established","to":"linux.networking.tcp-protocol","relationType":"state-of"}
 {"type":"relation","from":"linux.networking.tcp-state-close-wait","to":"linux.networking.tcp-protocol","relationType":"state-of"}
@@ -6400,86 +6383,8 @@
 {"type":"relation","from":"linux.systemd.cgroup-driver","to":"linux.primitives.cgroup-hierarchy","relationType":"writes-to"}
 {"type":"relation","from":"linux.systemd.cgroup-slice-tree","to":"linux.primitives.cgroup-hierarchy","relationType":"organizes"}
 {"type":"relation","from":"linux.systemd.resource-memory-max","to":"linux.primitives.cgroup-v2-memory-events","relationType":"writes"}
-{"type":"relation","from":"linux.fm.userns-creation-blocked-ubuntu24","to":"linux.primitives.user-namespace","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.userns-creation-blocked-ubuntu24","to":"linux.primitives.namespace-subsystem","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.userns-creation-blocked-ubuntu24","to":"linux.primitives.apparmor-profile-model","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.pid1-not-reaping-zombies","to":"linux.primitives.pid-1-init-semantics","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.pid1-not-reaping-zombies","to":"linux.primitives.pid-namespace","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.pid1-not-reaping-zombies","to":"linux.primitives.signal-disposition","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.namespace-fd-leak","to":"linux.primitives.namespace-fs-membership","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.namespace-fd-leak","to":"linux.primitives.namespace-subsystem","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.seccomp-blocks-clone3","to":"linux.primitives.seccomp-bpf-program","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.seccomp-blocks-clone3","to":"linux.primitives.seccomp-syscall","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.seccomp-blocks-clone3","to":"linux.primitives.seccomp-filter-mode","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.lsm-double-restriction","to":"linux.primitives.selinux-policy-model","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.lsm-double-restriction","to":"linux.primitives.apparmor-profile-model","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.chroot-escape-via-cwd","to":"linux.primitives.namespace-isolation-model","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.chroot-escape-via-cwd","to":"linux.filesystem.path-resolution","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.chroot-escape-via-cwd","to":"linux.primitives.mount-namespace","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.proc-self-vs-thread","to":"linux.primitives.proc-pid-cgroup","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.proc-self-vs-thread","to":"linux.primitives.pid-namespace","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.proc-self-vs-thread","to":"linux.primitives.proc-pid-ns","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.path-mtu-blackhole","to":"linux.networking.tcp-protocol","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.path-mtu-blackhole","to":"linux.networking.ipv4-protocol","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.ip-forward-disabled","to":"linux.networking.ipv4-protocol","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.ipv6-rp-filter-strict","to":"linux.networking.ipv6-protocol","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.ipv6-rp-filter-strict","to":"linux.networking.ipv4-protocol","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.netfilter-rule-order","to":"linux.networking.iptables-chain","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.netfilter-rule-order","to":"linux.networking.netfilter-hook-chain","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.netfilter-rule-order","to":"linux.networking.iptables-rule-match-target","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.nf-conntrack-mark-not-restored","to":"linux.networking.conntrack-subsystem","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.nf-conntrack-mark-not-restored","to":"linux.networking.iptables-feature-state-match","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.so-reuseport-bad-distribution","to":"linux.networking.socket-api-subsystem","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.so-reuseport-bad-distribution","to":"linux.networking.tcp-protocol","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.io-uring-disabled-by-seccomp","to":"linux.filesystem.io-uring","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.io-uring-disabled-by-seccomp","to":"linux.primitives.seccomp-bpf-program","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.overlayfs-redirect-dir-disabled","to":"linux.filesystem.overlayfs","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.overlayfs-redirect-dir-disabled","to":"linux.filesystem.overlayfs-copy-up","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.overlayfs-redirect-dir-disabled","to":"linux.filesystem.overlayfs-lowerdir","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.overlayfs-whiteout-leak","to":"linux.filesystem.overlayfs","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.overlayfs-whiteout-leak","to":"linux.filesystem.overlayfs-copy-up","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.fsync-not-durable-cache","to":"linux.filesystem.fsync-syscall","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.fsync-not-durable-cache","to":"linux.filesystem.disk-state-readonly-remount","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.mount-propagation-unexpected","to":"linux.primitives.mount-namespace-propagation","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.mount-propagation-unexpected","to":"linux.filesystem.mount-syscall","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.mount-propagation-unexpected","to":"linux.primitives.mount-namespace","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.lvm-thin-pool-out-of-space","to":"linux.filesystem.lvm","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.lvm-thin-pool-out-of-space","to":"linux.filesystem.lvm","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.luks-cant-unlock-after-passphrase-rotation","to":"linux.filesystem.cryptsetup-luks","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.path-busy-cant-unmount","to":"linux.filesystem.mount-state-busy","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.path-busy-cant-unmount","to":"linux.filesystem.mount-syscall","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.proc-mounts-stale","to":"linux.filesystem.proc-mounts","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.proc-mounts-stale","to":"linux.filesystem.mtab-mountinfo","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.inotify-watch-limit","to":"linux.filesystem.inotify","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.inotify-watch-limit","to":"linux.filesystem.fanotify","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-mount-failed-fstab","to":"linux.systemd.mount-unit","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-mount-failed-fstab","to":"linux.systemd.unit-state-failed","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-target-reached-but-services-not-up","to":"linux.systemd.target-unit","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-target-reached-but-services-not-up","to":"linux.systemd.unit-state-active","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-socket-activation-not-firing","to":"linux.systemd.socket-unit","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-socket-activation-not-firing","to":"linux.systemd.unit-state-active","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-timer-skipped","to":"linux.systemd.timer-unit","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-resolved-stub-loops","to":"linux.networking.dns-systemd-resolved","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.systemd-resolved-stub-loops","to":"linux.networking.dns-resolver-glibc","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.perf-event-paranoid-blocks","to":"linux.debugging.perf-subsystem","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.perf-event-paranoid-blocks","to":"linux.debugging.perf-event-counter","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kprobe-attach-fails-inlined","to":"linux.debugging.bpftrace-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kprobe-attach-fails-inlined","to":"linux.debugging.tracepoint","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kprobe-attach-fails-inlined","to":"linux.debugging.bpf-syscall","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.gdb-ptrace-restricted-yama","to":"linux.debugging.gdb-backtrace","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.gdb-ptrace-restricted-yama","to":"linux.debugging.ptrace-syscall","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.ftrace-buffer-overrun","to":"linux.debugging.ftrace-subsystem","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.ftrace-buffer-overrun","to":"linux.debugging.ftrace","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kdump-no-crashkernel","to":"linux.debugging.kdump","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kdump-no-crashkernel","to":"linux.debugging.crash-utility","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.lsof-shows-deleted","to":"linux.filesystem.proc-pid-fd","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.lsof-shows-deleted","to":"linux.debugging.lsof-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.iostat-await-explained","to":"linux.debugging.iostat-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.iostat-await-explained","to":"linux.debugging.blktrace-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.audit-logs-spam","to":"linux.debugging.audit-rule","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.audit-logs-spam","to":"linux.debugging.audit-record-types","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.journal-corrupt","to":"linux.systemd.journal-fields","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.journal-corrupt","to":"linux.systemd.journal-rate-limit","relationType":"affects-concept"}
 {"type":"relation","from":"linux.primitives.cgroup-v2","to":"linux.primitives.cgroup-v1","relationType":"replaces"}
 {"type":"relation","from":"linux.primitives.cgroup-v2","to":"linux.primitives.cgroup-hierarchy","relationType":"is-a"}
 {"type":"relation","from":"linux.primitives.cgroup-controller","to":"linux.primitives.cgroup-v2","relationType":"property-of"}
@@ -6595,36 +6500,6 @@
 {"type":"relation","from":"linux.debugging.perf-event-open","to":"linux.debugging.perf-subsystem","relationType":"interface-to"}
 {"type":"relation","from":"linux.filesystem.cgroup-fs","to":"linux.primitives.cgroup-v2","relationType":"interface-to"}
 {"type":"relation","from":"linux.filesystem.proc-pid-mountinfo","to":"linux.filesystem.proc-mounts","relationType":"per-namespace-of"}
-{"type":"relation","from":"linux.fm.numa-imbalance","to":"linux.debugging.numastat-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.numa-imbalance","to":"linux.primitives.sched-setaffinity","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.irq-storm-single-cpu","to":"linux.debugging.vmstat-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.irq-storm-single-cpu","to":"linux.primitives.sched-setaffinity","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.ksoftirqd-pegged","to":"linux.debugging.htop-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.ksoftirqd-pegged","to":"linux.debugging.vmstat-tool","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.rcu-stall","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.rcu-stall","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.soft-lockup","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.soft-lockup","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.hard-lockup","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.hard-lockup","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.hard-lockup","to":"linux.debugging.kdump","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kernel-panic-decoding","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kernel-panic-decoding","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.kernel-panic-decoding","to":"linux.debugging.kdump","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.realtime-prio-inversion","to":"linux.primitives.sched-setaffinity","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.cpuset-placement-wrong","to":"linux.primitives.cgroup-v2","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.cpuset-placement-wrong","to":"linux.primitives.cgroup-controller","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.slab-leak","to":"linux.primitives.memory-overcommit","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.slab-leak","to":"linux.primitives.virtual-memory-areas","relationType":"affects-concept"}
-{"type":"relation","from":"linux.fm.numa-imbalance","to":"linux.primitives.cgroup-v2","relationType":"interacts-with"}
-{"type":"relation","from":"linux.fm.irq-storm-single-cpu","to":"linux.fm.ksoftirqd-pegged","relationType":"causes"}
-{"type":"relation","from":"linux.fm.hard-lockup","to":"linux.fm.kernel-panic-decoding","relationType":"escalates-to"}
-{"type":"relation","from":"linux.fm.soft-lockup","to":"linux.fm.hard-lockup","relationType":"can-escalate-to"}
-{"type":"relation","from":"linux.fm.rcu-stall","to":"linux.fm.soft-lockup","relationType":"related-to"}
-{"type":"relation","from":"linux.fm.cpuset-placement-wrong","to":"linux.fm.cpu-throttled","relationType":"can-cause"}
-{"type":"relation","from":"linux.fm.slab-leak","to":"linux.fm.swap-storm","relationType":"can-cause"}
-{"type":"relation","from":"linux.fm.numa-imbalance","to":"firecracker.vmm.process-model","relationType":"can-affect"}
-{"type":"relation","from":"linux.fm.kernel-panic-decoding","to":"linux.debugging.kdump","relationType":"diagnosed-via"}
 {"type":"relation","from":"linux.fm.systemd-unit-restart-loop","to":"linux.systemd.unit-state-failed","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.systemd-unit-restart-loop","to":"linux.systemd.restart-policy","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.systemd-unit-restart-loop","to":"linux.systemd.restart-rate-limit","relationType":"affects-concept"}
@@ -6684,13 +6559,117 @@
 {"type":"relation","from":"linux.fm.systemd-cgroup-delegation-missing","to":"linux.primitives.cgroup-delegation","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.zombie-orphan-init","to":"linux.primitives.zombie-reaping","relationType":"affects-concept"}
 {"type":"relation","from":"linux.fm.zombie-orphan-init","to":"linux.primitives.pid-1-init-semantics","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.ingress-404","to":"k8s.networking.ingress","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.cpu-throttled","to":"k8s.core.cpu-throttling","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.cap-dropped-but-binary-still-works","to":"linux.primitives.cap-effective-set","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.realtime-prio-inversion","to":"linux.primitives.sched-setaffinity","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.journal-corrupt","to":"linux.systemd.journal-fields","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.userns-creation-blocked-ubuntu24","to":"linux.primitives.namespace-subsystem","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.pid1-not-reaping-zombies","to":"linux.primitives.pid-1-init-semantics","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.seccomp-blocks-clone3","to":"linux.primitives.seccomp-bpf-program","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.lvm-thin-pool-out-of-space","to":"linux.filesystem.lvm","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.ipv6-rp-filter-strict","to":"linux.networking.ipv4-protocol","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.irq-storm-single-cpu","to":"linux.primitives.sched-setaffinity","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.mount-propagation-unexpected","to":"linux.primitives.mount-namespace","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.slab-leak","to":"linux.primitives.virtual-memory-areas","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.ftrace-buffer-overrun","to":"linux.debugging.ftrace-subsystem","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.irq-storm-single-cpu","to":"linux.debugging.vmstat-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.namespace-fd-leak","to":"linux.primitives.namespace-fs-membership","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.overlayfs-whiteout-leak","to":"linux.filesystem.overlayfs","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.pid1-not-reaping-zombies","to":"linux.primitives.pid-namespace","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.io-uring-disabled-by-seccomp","to":"linux.primitives.seccomp-bpf-program","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.no-shell-in-distroless","to":"linux.primitives.cmd.nsenter","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.overlayfs-redirect-dir-disabled","to":"linux.filesystem.overlayfs-lowerdir","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.cpuset-placement-wrong","to":"linux.primitives.cgroup-controller","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.pid1-not-reaping-zombies","to":"linux.primitives.signal-disposition","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.overlayfs-redirect-dir-disabled","to":"linux.filesystem.overlayfs-copy-up","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.so-reuseport-bad-distribution","to":"linux.networking.socket-api-subsystem","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-target-reached-but-services-not-up","to":"linux.systemd.target-unit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.userns-creation-blocked-ubuntu24","to":"linux.primitives.apparmor-profile-model","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-coredump-not-saved","to":"linux.primitives.cfg.proc-sys-file.kernel-core-pattern","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.ip-forward-disabled","to":"linux.networking.ipv4-protocol","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.namespace-fd-leak","to":"linux.primitives.namespace-subsystem","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.mount-not-visible-on-host","to":"linux.primitives.mount-namespace-propagation","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.ipv6-rp-filter-strict","to":"linux.networking.ipv6-protocol","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-mount-failed-fstab","to":"linux.systemd.mount-unit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.slab-leak","to":"linux.primitives.memory-overcommit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.iostat-await-explained","to":"linux.debugging.blktrace-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.luks-cant-unlock-after-passphrase-rotation","to":"linux.filesystem.cryptsetup-luks","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.overlayfs-whiteout-leak","to":"linux.filesystem.overlayfs-copy-up","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.seccomp-blocks-clone3","to":"linux.primitives.seccomp-filter-mode","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.proc-self-vs-thread","to":"linux.primitives.pid-namespace","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.cpuset-placement-wrong","to":"linux.primitives.cgroup-v2","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.inotify-watch-limit","to":"linux.filesystem.inotify","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.soft-lockup","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.hard-lockup","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.overlayfs-redirect-dir-disabled","to":"linux.filesystem.overlayfs","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.proc-mounts-stale","to":"linux.filesystem.mtab-mountinfo","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.fsync-not-durable-cache","to":"linux.filesystem.disk-state-readonly-remount","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.io-uring-disabled-by-seccomp","to":"linux.filesystem.io-uring","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.rcu-stall","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kdump-no-crashkernel","to":"linux.debugging.kdump","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kprobe-attach-fails-inlined","to":"linux.debugging.tracepoint","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-service-flapping","to":"linux.systemd.restart-rate-limit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.so-reuseport-bad-distribution","to":"linux.networking.tcp-protocol","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.swap-storm","to":"linux.primitives.cfg.proc-sys-file.vm-swappiness","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.ksoftirqd-pegged","to":"linux.debugging.vmstat-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.path-mtu-blackhole","to":"linux.networking.ipv4-protocol","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.audit-logs-spam","to":"linux.debugging.audit-record-types","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kprobe-attach-fails-inlined","to":"linux.debugging.bpf-syscall","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.numa-imbalance","to":"linux.primitives.sched-setaffinity","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-resolved-stub-loops","to":"linux.networking.dns-systemd-resolved","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.netfilter-rule-order","to":"linux.networking.netfilter-hook-chain","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.netfilter-rule-order","to":"linux.networking.iptables-chain","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.nf-conntrack-mark-not-restored","to":"linux.networking.iptables-feature-state-match","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.chroot-escape-via-cwd","to":"linux.filesystem.path-resolution","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.lsof-shows-deleted","to":"linux.filesystem.proc-pid-fd","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.seccomp-blocks-clone3","to":"linux.primitives.seccomp-syscall","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.userns-creation-blocked-ubuntu24","to":"linux.primitives.user-namespace","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kdump-no-crashkernel","to":"linux.debugging.crash-utility","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.perf-event-paranoid-blocks","to":"linux.debugging.perf-event-counter","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.path-mtu-blackhole","to":"linux.networking.tcp-protocol","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.path-busy-cant-unmount","to":"linux.filesystem.mount-state-busy","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-mount-failed","to":"linux.systemd.mount-unit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.chroot-escape-via-cwd","to":"linux.primitives.namespace-isolation-model","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.hard-lockup","to":"linux.debugging.kdump","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-timer-skipped","to":"linux.systemd.timer-unit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-mount-failed-fstab","to":"linux.systemd.unit-state-failed","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kernel-panic-decoding","to":"linux.debugging.kernel-panic","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.journal-corrupt","to":"linux.systemd.journal-rate-limit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.inotify-watch-limit","to":"linux.filesystem.fanotify","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kernel-panic-decoding","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-coredump-not-saved","to":"linux.systemd.coredump-handling","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.fsync-not-durable-cache","to":"linux.filesystem.fsync-syscall","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.gdb-ptrace-restricted-yama","to":"linux.debugging.gdb-backtrace","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-socket-activation-not-firing","to":"linux.systemd.unit-state-active","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kernel-panic-decoding","to":"linux.debugging.kdump","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.path-busy-cant-unmount","to":"linux.filesystem.mount-syscall","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-target-reached-but-services-not-up","to":"linux.systemd.unit-state-active","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-socket-activation-not-firing","to":"linux.systemd.socket-unit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.nf-conntrack-mark-not-restored","to":"linux.networking.conntrack-subsystem","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.audit-logs-spam","to":"linux.debugging.audit-rule","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.kprobe-attach-fails-inlined","to":"linux.debugging.bpftrace-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.mount-propagation-unexpected","to":"linux.primitives.mount-namespace-propagation","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-resolved-stub-loops","to":"linux.networking.dns-resolver-glibc","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-mount-failed","to":"linux.filesystem.cmd.mount","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.gdb-ptrace-restricted-yama","to":"linux.debugging.ptrace-syscall","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.iostat-await-explained","to":"linux.debugging.iostat-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.proc-self-vs-thread","to":"linux.primitives.proc-pid-cgroup","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.rcu-stall","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.soft-lockup","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.proc-mounts-stale","to":"linux.filesystem.proc-mounts","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.chroot-escape-via-cwd","to":"linux.primitives.mount-namespace","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.ftrace-buffer-overrun","to":"linux.debugging.ftrace","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.journald-rate-limited","to":"linux.systemd.journal-rate-limit","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.cannot-create-userns","to":"linux.primitives.cfg.proc-sys-file.user-max-user-namespaces","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.lsof-shows-deleted","to":"linux.debugging.lsof-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.netfilter-rule-order","to":"linux.networking.iptables-rule-match-target","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.hard-lockup","to":"linux.debugging.kernel-oops","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.ksoftirqd-pegged","to":"linux.debugging.htop-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.perf-event-paranoid-blocks","to":"linux.debugging.perf-subsystem","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.numa-imbalance","to":"linux.debugging.numastat-tool","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.proc-self-vs-thread","to":"linux.primitives.proc-pid-ns","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.systemd-service-flapping","to":"linux.systemd.cfg.unit.StartLimitIntervalSec","relationType":"affects-concept"}
+{"type":"relation","from":"linux.fm.mount-propagation-unexpected","to":"linux.filesystem.mount-syscall","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.rolling-update-stalled","to":"k8s.core.deployment-rollout","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.statefulset-pod-stuck","to":"k8s.core.statefulset","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.statefulset-pod-stuck","to":"k8s.core.statefulset-ordinal","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kubeconfig-bad","to":"k8s.core.kubeconfig","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.api-throttle","to":"k8s.debugging.api-throttle","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.node-not-ready","to":"k8s.runtime.kubelet","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.cron-schedule-skipped","to":"k8s.core.cronjob","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.runtime.pause-container","to":"linux.primitives.namespace-subsystem","relationType":"holds-shared"}
@@ -6726,49 +6705,6 @@
 {"type":"relation","from":"k8s.runtime.cri-runtime-service","to":"docker.runtime.containerd-tasks-service","relationType":"calls"}
 {"type":"relation","from":"k8s.debugging.crictl","to":"k8s.runtime.cri-debug-via-crictl","relationType":"is-tool-for"}
 {"type":"relation","from":"k8s.runtime.crun","to":"docker.runtime.runc","relationType":"alternative-to"}
-{"type":"relation","from":"k8s.fm.finalizer-stuck-namespace","to":"k8s.core.finalizer","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.finalizer-stuck-namespace","to":"k8s.core.namespace","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.daemonset-rolling-update-stuck","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.daemonset-rolling-update-stuck","to":"k8s.runtime.kubelet","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kube-reserved-too-low","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kube-reserved-too-low","to":"k8s.core.kubelet","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.scheduler-preempt-thrash","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.scheduler-preempt-thrash","to":"k8s.core.taint","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.ingress-tls-secret-missing","to":"k8s.networking.ingress-controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.ingress-tls-secret-missing","to":"k8s.core.secret","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.crictl-ps-empty","to":"k8s.debugging.crictl","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.crictl-ps-empty","to":"k8s.runtime.cri","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.pod-overhead-not-accounted","to":"k8s.runtime.runtime-class","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.pod-overhead-not-accounted","to":"k8s.core.kubelet","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.serviceaccount-token-not-mounted","to":"k8s.core.serviceaccount","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.serviceaccount-token-not-mounted","to":"k8s.core.security-context","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.cluster-autoscaler-cooldown","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.deployment-stuck-ConditionPaused","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.cronjob-ttl-cleaning-too-aggressive","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.endpoints-not-updating","to":"k8s.networking.endpoint-slice-controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.endpoints-not-updating","to":"k8s.networking.endpoints","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kubelet-image-gc-thrash","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kubelet-image-gc-thrash","to":"k8s.runtime.kubelet","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kubelet-tls-bootstrap-fail","to":"k8s.runtime.kubelet-tls","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kubelet-tls-bootstrap-fail","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.replicaset-conflict-multi-owners","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.gateway-route-not-attached","to":"k8s.networking.ingress-controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.gateway-route-not-attached","to":"k8s.networking.gateway-api","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kube-proxy-ipvs-out-of-sync","to":"k8s.networking.kube-proxy-ipvs","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.kube-proxy-ipvs-out-of-sync","to":"k8s.runtime.kube-proxy","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.eviction-soft-vs-hard","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.eviction-soft-vs-hard","to":"k8s.core.kubelet","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.ephemeral-container-debug-not-supported","to":"k8s.debugging.kubectl-debug-feature","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.ephemeral-container-debug-not-supported","to":"k8s.core.kubelet","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.qos-class-burstable-eviction","to":"k8s.runtime.qos-cgroup","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.qos-class-burstable-eviction","to":"k8s.core.limits","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.cronjob-startingdeadline-skipped","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.node-not-ready-cni-not-ready","to":"k8s.networking.cni","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.node-not-ready-cni-not-ready","to":"k8s.runtime.kubelet-cni-call","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.svc-traffic-policy-local-no-endpoints","to":"k8s.networking.external-traffic-policy-local","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.svc-traffic-policy-local-no-endpoints","to":"k8s.networking.kube-proxy-iptables","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.init-container-stuck","to":"k8s.core.init-container","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.init-container-stuck","to":"k8s.debugging.troubleshoot-init-pattern","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.core.kubelet","to":"k8s.runtime.kubelet","relationType":"is-the-same"}
 {"type":"relation","from":"k8s.runtime.kubelet","to":"k8s.core.cri","relationType":"calls"}
 {"type":"relation","from":"k8s.runtime.kubelet","to":"k8s.runtime.kubelet-pleg","relationType":"runs"}
@@ -6890,17 +6826,8 @@
 {"type":"relation","from":"k8s.fm.dns-resolution-fail","to":"linux.fm.dns-slow-ndots","relationType":"related-to"}
 {"type":"relation","from":"k8s.fm.evicted-by-node-pressure","to":"linux.fm.cgroup-memory-oom-kill","relationType":"escalates-to"}
 {"type":"relation","from":"k8s.fm.networkpolicy-blocking","to":"linux.fm.netfilter-rule-order","relationType":"manifests-as"}
-{"type":"relation","from":"k8s.fm.mutating-webhook-conflict","to":"k8s.core.admission-controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.mutating-webhook-conflict","to":"k8s.core.api-server","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.crd-conversion-webhook-fail","to":"k8s.core.api-server","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.crd-conversion-webhook-fail","to":"k8s.core.controller","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.crd-openapi-validation-mismatch","to":"k8s.core.api-server","relationType":"affects-concept"}
-{"type":"relation","from":"k8s.fm.cluster-autoscaler-no-fit-pending","to":"k8s.core.controller","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.validating-webhook-policy-rejects","to":"k8s.fm.admission-webhook-timeout","relationType":"sibling-of"}
-{"type":"relation","from":"k8s.fm.crd-conversion-webhook-fail","to":"k8s.fm.crd-openapi-validation-mismatch","relationType":"sibling-of"}
-{"type":"relation","from":"k8s.fm.controller-stuck-on-crd-finalizer","to":"k8s.fm.finalizer-stuck-namespace","relationType":"is-a"}
 {"type":"relation","from":"k8s.fm.pdb-blocks-drain","to":"k8s.core.pod","relationType":"affects-eviction-of"}
-{"type":"relation","from":"k8s.fm.cluster-autoscaler-no-fit-pending","to":"k8s.fm.pod-pending-failedscheduling","relationType":"is-special-case-of"}
 {"type":"relation","from":"k8s.fm.dns-pod-search-too-many","to":"k8s.networking.dns-pod-search","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.dns-pod-search-too-many","to":"k8s.networking.dns-policy-clusterfirst","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.dns-pod-search-too-many","to":"k8s.networking.cluster-dns","relationType":"affects-concept"}
@@ -6958,6 +6885,61 @@
 {"type":"relation","from":"k8s.fm.pdb-blocks-drain","to":"k8s.core.controller","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.service-no-endpoints","to":"k8s.core.service","relationType":"affects-concept"}
 {"type":"relation","from":"k8s.fm.service-no-endpoints","to":"k8s.networking.endpoints","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kubelet-image-gc-thrash","to":"k8s.runtime.kubelet","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kube-reserved-too-low","to":"k8s.core.kubelet","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.finalizer-stuck-namespace","to":"k8s.core.namespace","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.cpu-throttled","to":"k8s.core.cpu-throttling","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.qos-class-burstable-eviction","to":"k8s.runtime.qos-cgroup","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kubelet-tls-bootstrap-fail","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kubelet-image-gc-thrash","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.ingress-tls-secret-missing","to":"k8s.networking.ingress-controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.ephemeral-container-debug-not-supported","to":"k8s.debugging.kubectl-debug-feature","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.cronjob-ttl-cleaning-too-aggressive","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.mutating-webhook-conflict","to":"k8s.core.admission-controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.pod-overhead-not-accounted","to":"k8s.runtime.runtime-class","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kube-reserved-too-low","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.serviceaccount-token-not-mounted","to":"k8s.core.serviceaccount","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.init-container-stuck","to":"k8s.core.init-container","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.mutating-webhook-conflict","to":"k8s.core.api-server","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.ingress-tls-secret-missing","to":"k8s.core.secret","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.scheduler-preempt-thrash","to":"k8s.core.taint","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.crictl-ps-empty","to":"k8s.runtime.cri","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.cluster-autoscaler-no-fit-pending","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.deployment-stuck-ConditionPaused","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kubeconfig-bad","to":"k8s.core.kubeconfig","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.finalizer-stuck-namespace","to":"k8s.core.finalizer","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.crd-conversion-webhook-fail","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.statefulset-pod-stuck","to":"k8s.core.statefulset-ordinal","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kubelet-tls-bootstrap-fail","to":"k8s.runtime.kubelet-tls","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.statefulset-pod-stuck","to":"k8s.core.statefulset","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.crictl-ps-empty","to":"k8s.debugging.crictl","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.pod-overhead-not-accounted","to":"k8s.core.kubelet","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.cluster-autoscaler-cooldown","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.init-container-stuck","to":"k8s.debugging.troubleshoot-init-pattern","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.endpoints-not-updating","to":"k8s.networking.endpoints","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.serviceaccount-token-not-mounted","to":"k8s.core.security-context","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.node-not-ready-cni-not-ready","to":"k8s.runtime.kubelet-cni-call","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.cronjob-startingdeadline-skipped","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.eviction-soft-vs-hard","to":"k8s.core.kubelet","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.svc-traffic-policy-local-no-endpoints","to":"k8s.networking.external-traffic-policy-local","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.daemonset-rolling-update-stuck","to":"k8s.runtime.kubelet","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.qos-class-burstable-eviction","to":"k8s.core.limits","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.api-throttle","to":"k8s.debugging.api-throttle","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.gateway-route-not-attached","to":"k8s.networking.ingress-controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.endpoints-not-updating","to":"k8s.networking.endpoint-slice-controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.eviction-soft-vs-hard","to":"k8s.runtime.kubelet-config","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.scheduler-preempt-thrash","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.svc-traffic-policy-local-no-endpoints","to":"k8s.networking.kube-proxy-iptables","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kube-proxy-ipvs-out-of-sync","to":"k8s.networking.kube-proxy-ipvs","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.crd-openapi-validation-mismatch","to":"k8s.core.api-server","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.ephemeral-container-debug-not-supported","to":"k8s.core.kubelet","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.ingress-404","to":"k8s.networking.ingress","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.gateway-route-not-attached","to":"k8s.networking.gateway-api","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.kube-proxy-ipvs-out-of-sync","to":"k8s.runtime.kube-proxy","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.replicaset-conflict-multi-owners","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.daemonset-rolling-update-stuck","to":"k8s.core.controller","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.crd-conversion-webhook-fail","to":"k8s.core.api-server","relationType":"affects-concept"}
+{"type":"relation","from":"k8s.fm.node-not-ready-cni-not-ready","to":"k8s.networking.cni","relationType":"affects-concept"}
 {"type":"relation","from":"devin.devbox.snapshot","to":"devin.devbox.microvm","relationType":"snapshots"}
 {"type":"relation","from":"devin.devbox.snapshot-machine-state","to":"devin.devbox.microvm","relationType":"captures"}
 {"type":"relation","from":"devin.devbox.warm-vm-pool","to":"devin.devbox.snapshot","relationType":"hydrates-from"}

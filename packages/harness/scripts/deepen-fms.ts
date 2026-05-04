@@ -49,10 +49,16 @@ const DEFAULT_SRC: Record<string, string> = {
   "ecs.troubleshooting": "ecs-dg-troubleshooting",
   "ecs.launch-types": "ecs-dg-launch-types",
   "ecs.nitro-baremetal": "ecs-dg-launch-types",
+  // domains where fm ids use <domain>.fm.* (no leaf segment) — leafKey()
+  // returns "<domain>.fm" so we use that as the dispatch key.
+  "docker.fm": "docker-docs-root",
+  "linux.fm": "kernel-docs-proc-fs",
+  "k8s.fm": "k8s-architecture",
 };
 
 function leafKey(fm: Fm): string {
-  const m = fm.id.match(/^([a-z]+)\.([a-z-]+)\./);
+  // Allow digits (k8s) in domain segment.
+  const m = fm.id.match(/^([a-z0-9]+)\.([a-z0-9-]+)\./);
   return m ? `${m[1]}.${m[2]}` : "unknown";
 }
 
@@ -312,6 +318,102 @@ const ECS_TROUBLESHOOTING_FIX: FixBuilder[] = [
   }),
 ];
 
+// ---- Docker generic templates --------------------------------------------
+
+const DOCKER_DIAG: DiagBuilder[] = [
+  (fm) => ({
+    action: "Inspect the affected container/image/network state",
+    command: "docker ps -a --format 'table {{.Names}}\\t{{.Status}}\\t{{.Command}}\\t{{.RunningFor}}' | head -20; docker inspect <name> --format '{{json .State}}' | jq .",
+    expected: "State.ExitCode + State.OOMKilled + State.Error name the immediate failure; Status timestamp matches when the user noticed.",
+    source_id: "docker-docs-root",
+  }),
+  (fm) => ({
+    action: "Read the docker daemon log around the failure time",
+    command: "sudo journalctl -u docker -n 200 --no-pager | tail -80",
+    expected: "Daemon-side reason for the action: image-pull errors, OCI runtime errors, network plugin failures, storage driver issues.",
+    source_id: "docker-docs-root",
+  }),
+  (fm) => ({
+    action: "Check related host state (disk, memory, iptables) that the symptom implies",
+    command: "df -h /var/lib/docker; free -h; sudo iptables -L DOCKER-USER -n -v 2>/dev/null | head; ip link show | grep -E 'docker|veth' | head",
+    expected: "Either the host resource is exhausted (df/free), or the daemon's iptables/network state is wrong. First red flag IS the cause.",
+    source_id: "docker-docs-root",
+  }),
+];
+const DOCKER_FIX: FixBuilder[] = [
+  (fm) => ({
+    action: "Apply the targeted remediation (docker config, restart, or image/container fix)",
+    command: "# example: docker update --memory 2g <name>  OR  docker rm -f <name> && docker run ...  OR  sudo systemctl restart docker (last resort)",
+    validation: "Re-run the failing operation; docker inspect shows the previously-broken state corrected; daemon journal has no new errors.",
+    rollback: "docker update with the prior values; restore the prior image tag; revert daemon.json change + systemctl restart docker.",
+    source_id: "docker-docs-root",
+  }),
+];
+
+// ---- Linux generic templates ---------------------------------------------
+
+const LINUX_DIAG: DiagBuilder[] = [
+  (fm) => ({
+    action: "Read the kernel log + relevant /proc or /sys files for the symptom",
+    command: "sudo dmesg -T --level=err,warn,crit,alert,emerg | tail -30; sudo journalctl -p err -b --no-pager | tail -30",
+    expected: "Kernel-level errors (cgroup OOM, KVM, network, storage) appear in dmesg; userspace daemon errors in journalctl. Match timestamp with user's first observation.",
+    source_id: "kernel-docs-proc-fs",
+  }),
+  (fm) => ({
+    action: "Inspect process / cgroup / namespace state for the affected workload",
+    command: "ps -eo pid,user,stat,pcpu,pmem,rss,cmd --sort=-rss | head -10; cat /proc/<pid>/status; cat /proc/<pid>/cgroup; ls -l /proc/<pid>/ns/",
+    expected: "stat column reveals process state (R/S/D/Z); status reveals VmRSS / capabilities; cgroup reveals which cgroup limits apply; ns reveals which namespaces are joined.",
+    source_id: "kernel-docs-proc-fs",
+  }),
+  (fm) => ({
+    action: "Check the relevant subsystem control file or sysctl",
+    command: "# pick based on symptom: cat /sys/fs/cgroup/.../memory.events  for OOM; sysctl net.ipv4.ip_forward  for routing; cat /proc/sys/kernel/...  for kernel tunables",
+    expected: "Configuration matches expected; mismatched value points at root cause.",
+    source_id: "kernel-docs-proc-fs",
+  }),
+];
+const LINUX_FIX: FixBuilder[] = [
+  (fm) => ({
+    action: "Apply the targeted change (sysctl, cgroup, namespace, capability) to fix the failure",
+    command: "# example: sudo sysctl -w net.ipv4.ip_forward=1  OR  sudo setcap cap_net_admin+ep <binary>  OR  echo <value> | sudo tee /sys/fs/cgroup/<cg>/memory.max",
+    validation: "Re-run the failing operation; the relevant /proc, /sys, or sysctl reflects the new value; symptom no longer reproduces.",
+    rollback: "Revert the sysctl / setcap / write back the previous value (or restart the affected service).",
+    source_id: "kernel-docs-proc-fs",
+  }),
+];
+
+// ---- K8s generic templates ----------------------------------------------
+
+const K8S_DIAG: DiagBuilder[] = [
+  (fm) => ({
+    action: "Describe the affected pod/node/service and read its events",
+    command: "kubectl describe pod <name> | tail -40; kubectl get events --sort-by=.lastTimestamp --field-selector involvedObject.name=<name> | tail -10",
+    expected: "Events show the immediate cause (FailedScheduling, ImagePullBackOff, OOMKilled, BackOff, FailedMount, etc.) with the controller's message.",
+    source_id: "k8s-architecture",
+  }),
+  (fm) => ({
+    action: "Inspect related cluster state (nodes, capacity, controllers) that the events imply",
+    command: "kubectl get nodes -o wide; kubectl describe node <node> | grep -A 5 'Allocated resources'; kubectl get pods -A --field-selector=status.phase=Pending,status.phase=Failed",
+    expected: "Either node-level constraints (capacity, taints) or controller-level issues (scheduler, kubelet) match the event message.",
+    source_id: "k8s-architecture",
+  }),
+  (fm) => ({
+    action: "Read container/kubelet logs for the workload",
+    command: "kubectl logs <pod> --previous --tail 100 2>/dev/null; kubectl logs <pod> -c <container> --tail 100; ssh <node> 'sudo journalctl -u kubelet --since=10m --no-pager | tail -40'",
+    expected: "Application-level errors (crash logs, init failures) AND kubelet-level errors (probe failures, image-pull errors, runtime errors).",
+    source_id: "k8s-architecture",
+  }),
+];
+const K8S_FIX: FixBuilder[] = [
+  (fm) => ({
+    action: "Apply the targeted spec change and roll out",
+    command: "# example: kubectl set resources deployment/<name> --limits=memory=2Gi; kubectl rollout restart deployment/<name>; kubectl rollout status deployment/<name>",
+    validation: "kubectl get pod shows new pod RUNNING; events stream is clean for >2 min; the previously-failing operation succeeds end-to-end.",
+    rollback: "kubectl rollout undo deployment/<name>  OR  kubectl set resources with the prior values.",
+    source_id: "k8s-architecture",
+  }),
+];
+
 // ---- Dispatch -------------------------------------------------------------
 
 const DIAG_TEMPLATES: Record<string, DiagBuilder[]> = {
@@ -326,6 +428,9 @@ const DIAG_TEMPLATES: Record<string, DiagBuilder[]> = {
   "ecs.troubleshooting": ECS_TROUBLESHOOTING_DIAG,
   "ecs.launch-types": ECS_TROUBLESHOOTING_DIAG,
   "ecs.nitro-baremetal": ECS_TROUBLESHOOTING_DIAG,
+  "docker.fm": DOCKER_DIAG,
+  "linux.fm": LINUX_DIAG,
+  "k8s.fm": K8S_DIAG,
 };
 const FIX_TEMPLATES: Record<string, FixBuilder[]> = {
   "firecracker.networking": FC_NETWORKING_FIX,
@@ -339,6 +444,9 @@ const FIX_TEMPLATES: Record<string, FixBuilder[]> = {
   "ecs.troubleshooting": ECS_TROUBLESHOOTING_FIX,
   "ecs.launch-types": ECS_TROUBLESHOOTING_FIX,
   "ecs.nitro-baremetal": ECS_TROUBLESHOOTING_FIX,
+  "docker.fm": DOCKER_FIX,
+  "linux.fm": LINUX_FIX,
+  "k8s.fm": K8S_FIX,
 };
 
 const MIN_DIAG = 3;
