@@ -2,8 +2,13 @@
 .claude/
 .mcp.json
 
-# Local data
-_db/
+# Local data — _db is gitignored EXCEPT the snapshot DB which is committed
+# so a fresh clone has the corpus available immediately (interview-day
+# robustness). Raw fetched pages and intermediate staging stay ignored.
+_db/raw/
+_db/staging/
+_db/*.duckdb.wal
+_db/*.duckdb.tmp/
 
 # Per-domain raw fetched HTML/MD caches — rebuildable from sources.yaml + ingest pipeline.
 # (extract/ stays committed: the corpus is reproducible from JSON without re-fetching.)
@@ -102,8 +107,11 @@ node_modules/
 .svelte-kit/
 .cache/
 
-# DuckDB / data
+# DuckDB / data — *.duckdb gitignored globally, but _db/knowledge.duckdb is
+# explicitly allowlisted because it ships with the repo so fresh clones can
+# query the corpus without rebuilding from JSONLs.
 *.duckdb
+!_db/knowledge.duckdb
 *.duckdb.wal
 *.duckdb.tmp/
 *.db

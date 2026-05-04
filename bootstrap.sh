@@ -8,13 +8,16 @@
 # Usage:
 #   ./bootstrap.sh [flags]
 #
-# Common one-liner (interview opener):
-#   git clone https://github.com/aaronstone2/Domains && cd Domains && \
-#     ./bootstrap.sh --anthropic-key='sk-ant-...' --launch
+# Common one-liner (interview opener — single line, NO backslash):
+#   git clone https://github.com/aaronstone2/Domains.git ~/domains && cd ~/domains && ./bootstrap.sh --launch
 #
 # Idempotent: safe to re-run. Bashrc additions are guarded by markers.
+#
+# `set -e` is intentionally NOT used — apt mirror blips, missing kernel headers,
+# and other transient issues should not abort the install. Each step has its
+# own || warn fallback so failures degrade gracefully.
 
-set -euo pipefail
+set -uo pipefail
 
 # -----------------------------------------------------------------------------
 # Defaults + flag parsing
@@ -182,7 +185,7 @@ APT_AWS=()   # awscli installed via official installer below
 # Set noninteractive so apt doesn't try to open a pager / prompt
 export DEBIAN_FRONTEND=noninteractive
 
-$SUDO apt-get update -y
+$SUDO apt-get update -y || warn "apt-get update failed (network blip or stale mirror); continuing with cached lists"
 $SUDO apt-get install -y "${APT_CORE[@]}" || warn "some core apt packages failed; continuing"
 
 if ! $MINIMAL; then
@@ -421,7 +424,7 @@ if [[ -f "$REPO_DIR/package.json" ]]; then
       $SUDO npm install -g pnpm
       ok "pnpm installed"
     else
-      warn "npm not present; skipping pnpm install (re-run with --no-no-claude or install nodejs)"
+      warn "npm not present; skipping pnpm install (re-run without --no-claude, or install Node manually)"
     fi
   fi
   if command -v pnpm >/dev/null 2>&1; then
