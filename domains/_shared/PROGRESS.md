@@ -819,3 +819,26 @@ User: "look back on the main plan doc and ensure all of the work promised there 
 **One genuine gap relative to plan:** memory-MCP knowledge graph at `_db/knowledge_graph.json` is not curated. Plan called this "complementary, not duplicative" — SQL is source-of-truth, graph is optional layer. Status: leave as future work.
 
 **Result:** master plan is fully aligned. The repo + harness + MCP server + cheat sheet + bootstrap form a coherent interview-day system. Aaron's remaining work is rehearsal (Phase 6 drill execution) — he runs the 10 scenarios via `pnpm harness drill <id>` and times himself.
+
+## Phase 22 — Knowledge graph + in-process MCP exploration
+
+### Session P22 — 2026-05-04 — DONE
+
+**P22a — In-process MCP**: attempted refactor from spawn-per-call to direct workspace import + stdout capture. Hit two issues:
+
+1. **Protocol race**: MCP SDK shares `process.stdout` with the harness CLI. When my second tool-call handler patched stdout, the SDK's deferred write of the previous request's response leaked into the captured buffer, corrupting the JSON-RPC stream. Tried setImmediate flush + JSON-RPC pass-through filter — didn't fully solve (chunked writes broke prefix detection).
+2. **DuckDB file lock conflict**: rapid concurrent in-process calls collided on the .duckdb file lock (Windows-specific behavior).
+
+Reverted to V1 spawn-per-call. ~1.5s per call but bulletproof. For interview-day use (~5-10 calls per session = <15s total latency) this is acceptable. Future optimization path documented in `packages/harness-mcp/src/index.ts` comments: refactor harness commands to take a `Writable` parameter so capture doesn't share `process.stdout` with the SDK.
+
+**P22b — Knowledge graph derivation**: new `pnpm graph` script (`packages/harness/scripts/build-graph.ts`) generates `_db/knowledge_graph.json` from current SQL state. Output is NDJSON (one entity or relation per line) suitable for the `@modelcontextprotocol/server-memory` MCP — already registered in `.mcp.json`.
+
+- Source: every domain's `concepts` + `failure_modes` + `commands` + `config_keys` tables (entity rows) UNION ALL `relationships` (edge rows).
+- Output: 6029 entities, 1576 valid relations (7 dangling refs filtered out).
+- File: 1.8 MB, committed so a fresh clone has the graph immediately.
+- Bootstrap.sh runs `pnpm graph` if the file is missing — cheap (~1s) and deterministic.
+- Verified end-to-end on Linux WSL: `search_nodes "oomkilled"` via memory MCP returns 4 cross-domain entities (docker, k8s.core, k8s.debugging) with their observations.
+
+Two MCP servers now active in this repo when claude code launches:
+- `domains-harness` — derived runbooks (ask/lookup/playbook/concept/related/cite/stats/capture)
+- `memory` — typed entity-relation graph for cross-domain inference ("what other concepts link to X?")
