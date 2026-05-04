@@ -67,6 +67,23 @@ Each script in this directory creates an actual broken state on the local Linux 
 | 19 | `19-corporate-ca-bundle.sh` | Corporate proxy MITMs all HTTPS with org's CA. Install in EVERY tool's trust store (system, npm, pip, docker, git, java). **The most common Devin onboarding cert issue.** | openssl, python3 |
 | 20 | `20-private-registry-cert.sh` | `docker pull` from private registry fails x509 even when curl works — dockerd has its own per-registry trust path under `/etc/docker/certs.d/<host>/ca.crt` | docker, openssl |
 
+### Systemd, clock, security (21–23)
+
+| # | Script | Triggers | Needs |
+|---:|---|---|---|
+| 21 | `21-systemd-cascade.sh` | N units failed; root is one. Walk dep graph backward; distinguish ROOT vs cascade. | systemctl --user OR sudo |
+| 22 | `22-clock-skew.sh` | "JWT expired" / "cert expired" with valid-looking creds — root is the box's clock | openssl |
+| 23 | `23-apparmor-denial.sh` | POSIX perms fine, `chmod 777` no help — LSM blocks at syscall layer; dmesg/audit log | nothing (docs-style) |
+
+### Process internals + container security (24–27)
+
+| # | Script | Triggers | Needs |
+|---:|---|---|---|
+| 24 | `24-fd-exhaustion.sh` | "Too many open files" / EMFILE — find the leak via `/proc/<pid>/fd`, distinguish socket/file/pipe leaks | python3 |
+| 25 | `25-slow-disk-io.sh` | App slow, CPU low, disk %wa elevated — iowait saturation. Per-process I/O via iotop / pidstat / `/proc/<pid>/io` | nothing |
+| 26 | `26-swap-thrashing.sh` | System sluggish, vmstat si/so > 0 sustained, swap heavily used — distinguish thrashing from OOM-bound | python3 |
+| 27 | `27-dind-permissions.sh` | "permission denied" on docker socket from inside a container — uid/gid mismatch on bind-mounted socket. Devin/CI-runner classic | docker |
+
 Scripts that need docker check for it and exit cleanly if absent. Scripts that need sudo prompt explicitly.
 
 The fleet scenarios (09–12) test a fundamentally different skill from 01–08: when you have 10s/100s of containers, you can't `docker logs` each one. You need **aggregation** — `docker inspect $(docker ps -aq)` with `--format` templating, then `sort | uniq -c` or `awk` to find the outlier. This is the daily reality on any DevBox running multiple Devin sessions, or any prod cluster.
@@ -114,10 +131,16 @@ The fleet scenarios are likely most relevant for the Cognition interview — Dev
 17. **19-corporate-ca-bundle** (~15 min) — install corp CA into system + npm + pip + docker + git + java (the Devin onboarding question)
 18. **20-private-registry-cert** (~12 min) — dockerd's per-registry trust path (`/etc/docker/certs.d/`)
 
-**Total practice (all 20 scenarios, single careful pass)**: ~3.5 hours.
-**With a second warm pass**: ~5 hours.
+**Total practice (all 27 scenarios, single careful pass)**: ~5 hours.
+**With a second warm pass**: ~7 hours.
 
-If you only do ONE scenario, do **15-cpu-throttled** (Devin DevBox-specific) or **19-corporate-ca-bundle** (Devin onboarding-specific). Those two are the highest interview-likelihood items in the whole list.
+For a **prioritized practice plan** (tier-ranked by interview likelihood, with topical-cluster grouping for sessions), see **[PRACTICE-ORDER.md](PRACTICE-ORDER.md)**.
+
+If you only do ONE scenario, do **[15 cpu-throttled](15-cpu-throttled.sh)** (Devin DevBox-specific) or **[19 corporate-ca-bundle](19-corporate-ca-bundle.sh)** (Devin onboarding-specific). Those two are the highest interview-likelihood items in the whole list.
+
+If you have **30 min**, do the Memory cluster (3 → 6 → 16 → 9 → 26).
+If you have **1 hour**, do the top-6: 06, 15, 19, 09, 08, 24.
+If you have **2+ hours**, follow [PRACTICE-ORDER.md](PRACTICE-ORDER.md) cluster sequence.
 
 ## Extending
 
