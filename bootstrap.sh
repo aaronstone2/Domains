@@ -460,6 +460,19 @@ if [[ -f "$REPO_DIR/package.json" ]]; then
 fi
 
 # -----------------------------------------------------------------------------
+# 6b) Build the knowledge graph if missing (memory MCP server reads this NDJSON).
+# Cheap: ~1s, deterministic from the SQL relationships table.
+# -----------------------------------------------------------------------------
+if command -v pnpm >/dev/null 2>&1 && [[ -f "$REPO_DIR/_db/knowledge.duckdb" ]] && [[ ! -f "$REPO_DIR/_db/knowledge_graph.json" ]]; then
+  step "building knowledge graph for memory MCP server"
+  if (cd "$REPO_DIR" && pnpm graph 2>&1 | tail -3); then
+    ok "knowledge graph built ($(wc -l < "$REPO_DIR/_db/knowledge_graph.json" 2>/dev/null) lines)"
+  else
+    warn "knowledge graph build failed; memory MCP will start empty (run \`pnpm graph\` later to populate)"
+  fi
+fi
+
+# -----------------------------------------------------------------------------
 # 7) Verify the harness is actually queryable end-to-end
 # -----------------------------------------------------------------------------
 DB_PATH="$REPO_DIR/_db/knowledge.duckdb"

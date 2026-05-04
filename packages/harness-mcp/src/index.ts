@@ -3,12 +3,18 @@
 // Code can call ask/lookup/playbook/etc. as first-class tool calls instead of
 // shelling out to `! pnpm harness ask "<symptom>"`.
 //
-// V1 strategy: spawn the harness CLI for each tool call and return cleaned
-// stdout. Trades ~700ms per call for zero code duplication and perfect parity
-// with the CLI experience the user knows from `cheat`.
+// Architecture: spawn the harness CLI per call. ~700-1500ms per call but
+// bulletproof. The two failures that pushed us back to spawn from in-process:
+// (1) MCP SDK shares process.stdout with the harness CLI; capturing one
+// captures the other and corrupts the JSON-RPC protocol stream; (2) DuckDB
+// file locks conflict when multiple in-process calls open the same .duckdb
+// concurrently (Windows-specific). Subprocess isolation fixes both.
 //
-// Stdio transport — Claude Code spawns this server when listed in .mcp.json,
-// pipes JSON-RPC over stdin/stdout, and the user sees tool calls in the UI.
+// For interview-day this is fine — typical tool call sequence is 5-10 calls
+// totaling <15s of latency. If a future client demands sub-100ms, refactor
+// the harness to use a configurable Writable + connection pool.
+//
+// Stdio transport — Claude Code spawns this server when listed in .mcp.json.
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -24,16 +30,11 @@ import { dirname, resolve } from "node:path";
 const here: string = dirname(fileURLToPath(import.meta.url));
 const repoRoot: string = resolve(here, "..", "..", "..");
 
-// Strip ANSI escape sequences — claude shows tool results in its own UI and
-// raw escapes are noise.
 function stripAnsi(s: string): string {
   // eslint-disable-next-line no-control-regex
   return s.replace(/\x1b\[[0-9;]*m/g, "");
 }
 
-// Run `pnpm harness <subcommand> <args...>` from the repo root and return the
-// cleaned stdout. Uses spawn(shell:true) for cross-platform compat — Windows
-// needs shell:true to invoke pnpm.cmd, Linux/macOS handles either way.
 function runHarness(subcommand: string, args: string[]): Promise<string> {
   return new Promise((resolveP) => {
     const cmd = `pnpm harness ${[subcommand, ...args].map((a) => JSON.stringify(a)).join(" ")}`;
@@ -162,7 +163,7 @@ const TOOLS: Tool[] = [
 ];
 
 const server = new Server(
-  { name: "domains-harness", version: "0.1.0" },
+  { name: "domains-harness", version: "0.2.0" },
   { capabilities: { tools: {} } },
 );
 
