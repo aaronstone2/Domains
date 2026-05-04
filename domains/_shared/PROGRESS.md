@@ -758,3 +758,64 @@ The interviewer will watch the harness run live during screen-share. Polish the 
 **Why this matters for the interview:** the eval criteria are efficiency, clarity, communication, curiosity, trade-offs. `harness ask` serves all five in a single command — the "talk track" section literally scripts the user saying "Before I touch anything — when did this start? I'll start by [diag step 1] — that confirms the class before I commit. Could also be [alternate] — diag step #1 distinguishes." Reading that aloud while the harness output is on screen is direct evidence of the eval criteria, not a claim about them.
 
 **Acceptance**: `pnpm harness ask "OOMKilled"` returns a structured sectioned response in under 1s with: top match `docker.fm.exit-137-oomkilled` (conf 0.98), alternates filtered to genuine variants (k8s.fm.oomkilled), 3 diag + 3 fix steps with `expected:`/`validate:`/`rollback:` annotations, 4 source citations with URLs, and 4 suggested NEXT commands. Verified.
+
+## Phase 19 — Bootstrap robustness for fresh-VM install
+
+### Session P19 — 2026-05-03 — DONE
+
+Three issues that bit during WSL Ubuntu install testing:
+
+- Exec bit on `bootstrap.sh` wasn't set in the git index (was 100644 in HEAD but 100755 in working tree). Fresh clones got "Permission denied". Fixed via `git update-index --chmod=+x bootstrap.sh` so it's permanently 100755.
+- `_db/knowledge.duckdb` (74 MB corpus) was gitignored. A fresh clone had no DB, so `pnpm harness ask` failed with "Cannot open file". `.gitignore` now allowlists `_db/knowledge.duckdb` while keeping `_db/raw/` and staging dirs ignored. GitHub warned about >50 MB recommended-max but accepted. Adds ~5-30s to clone time, removes the biggest interview-day blocker.
+- Node version check now compares major (`>=22`), not just `command -v npm`. Previous logic skipped nodesource install when system had Node 18, leaving pnpm/duckdb-async on an unsupported runtime.
+- `set -e` was too aggressive — apt mirror blip → whole install aborts. Switched to `set -uo pipefail`. Wrapped `apt-get update` and `nodesource curl` in `|| warn` so transient network issues degrade gracefully.
+- New verify step at end runs `pnpm harness ask "OOMKilled"` and confirms the OOMKilled playbook returns. Catches install failures the prior `✓ corpus deps installed` message missed.
+- Cosmetic: removed `pnpm harness --list` from success message (no such subcommand exists). Fixed backticks-in-`step "..."` bug that was triggering bash subshell expansion.
+
+## Phase 20 — Harness-as-MCP server (the repo IS an MCP)
+
+### Session P20 — 2026-05-03 — DONE
+
+User reframing: "this whole code repo is supposed to be an mcp." Built a real MCP server wrapping the harness so Claude Code calls `ask`/`lookup`/`playbook`/etc. as native tool calls instead of shell-out to `! pnpm harness ask "..."`.
+
+- **`packages/harness-mcp/`** — new TS package. Stdio transport, `@modelcontextprotocol/sdk` v1.18+. V1 strategy: spawn the harness CLI per call (~700ms-1.5s) for zero code duplication and perfect parity with the cheat-sheet experience. 8 tools: `ask`, `lookup`, `playbook`, `concept`, `related`, `cite`, `stats`, `capture`. Each has a description tuned for an LLM client to pick correctly.
+- **`.mcp.json`** — now committed (was gitignored). Registers `domains-harness` alongside motherduck/filesystem/memory. Paths converted from absolute Windows (`C:/Users/.../`) to relative (`./_db/knowledge.duckdb`) so the same config works on Linux interview-day VM and macOS without edits.
+- **`bootstrap.sh`** — verifies the MCP server boots end-to-end via `initialize` handshake before declaring complete. New `==> verifying domains-harness MCP server boots` step.
+- **`CLAUDE.md`** — added "Using the corpus during interviews / live debugging (MCP tools)" section with a `When to call` table. Tells future Claude instances (including the interview-day one) to prefer MCP tool calls over shell-out, and to read the TALK TRACK aloud as a teleprompter.
+- **`CHEATSHEET.md`** — §7 now describes both paths (MCP-as-teleprompter vs shell command).
+
+**Verified end-to-end on WSL Ubuntu 24.04:**
+- Fresh `git clone` from GitHub → `pnpm install` → `pnpm harness ask "OOMKilled"` → polished sectioned playbook in 1.2s.
+- All 8 MCP tools tested via raw JSON-RPC: `ask`, `stats`, `concept`, `playbook`, `lookup`, `cite`, `related`, `capture` all return data.
+- Bootstrap with `--no-claude --no-shell-config --minimal` (root) prints both `✓ harness verified` and `✓ MCP server boots`.
+
+## Phase 21 — Master plan audit (alignment with `~/.claude/plans/i-am-applying-for-indexed-hellman.md`)
+
+### Session P21 — 2026-05-03 — DONE
+
+User: "look back on the main plan doc and ensure all of the work promised there is also done." Master-plan audit:
+
+| Phase | Plan goal | Done | Notes |
+|---|---|:-:|---|
+| 0 | DuckDB schemas, ingest pipeline, harness scaffold | ✓ | Exceeded — also has firecracker + ecs |
+| 1 | Per-domain source corpus (devin/docker/linux/k8s/methodology) | ✓ | 767 sources vs original ~50/domain target — 15× over |
+| 2 | Devin DevBox capture (USER work — Aaron runs on his trial) | ✓* | Created `domains/devin/devbox/CAPTURE.md` (8-section checklist) for Aaron to run when ready |
+| 3 | Per-domain extraction: concepts/commands/config_keys/failure_modes/relationships | ✓ | 1889 concepts, 706 commands, 3019 config_keys, 415 failure_modes, 1583 relationships — exceeded all targets |
+| 4 | Cross-domain failure-mode + Devin→primitive chain linking | ✓ | 1583 relationships include cross-domain edges; auto-derived during ingest from `affected_concepts` field |
+| 5 | Harness build (CLI subcommands + DuckDB backend + portable) | ✓ | 10 subcommands: ask, lookup, playbook, concept, related, cite, stats, capture, drill, query. Tested on Linux WSL — works |
+| 6 | Drills (mock-interview practice) | ✓ | 10 drill JSONs + 10 multi-turn rehearsal scenarios. Aaron runs these to build fluency |
+| 7 | Optional: embeddings + LLM-routed query + update bot | partial | `harness ask` + curated shortcuts cover much of 7.2 (LLM-routed). 7.1/7.3 explicitly optional in plan |
+
+**Beyond plan (added during execution):**
+
+- P10: interactive practice REPL (`harness drill`)
+- P11: single-page cheat sheet (`CHEATSHEET.md`)
+- P12: `bootstrap.sh` interview-day installer (one-liner cloud-VM setup)
+- P13–17: deep quality pass on 145 failure_modes — 3+ diag / 2+ fix steps with concrete commands
+- P18: MCP polish (talk-track, sectioned ANSI output, aligned tables, harness `ask`)
+- P19: bootstrap robustness fixes (Node version, exec bit, DB shipping, verify step)
+- P20: real MCP server (`packages/harness-mcp/`) + portable `.mcp.json` + verification
+
+**One genuine gap relative to plan:** memory-MCP knowledge graph at `_db/knowledge_graph.json` is not curated. Plan called this "complementary, not duplicative" — SQL is source-of-truth, graph is optional layer. Status: leave as future work.
+
+**Result:** master plan is fully aligned. The repo + harness + MCP server + cheat sheet + bootstrap form a coherent interview-day system. Aaron's remaining work is rehearsal (Phase 6 drill execution) — he runs the 10 scenarios via `pnpm harness drill <id>` and times himself.
