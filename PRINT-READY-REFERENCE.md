@@ -135,6 +135,106 @@ Signal table: `128 + N` = killed by signal N
 
 ---
 
+# PART 4B: KNOW COLD — 48 commands (4 per category, type without thinking)
+
+**Container won't start / OOM:**
+```
+docker logs --tail 30 <c>
+docker inspect <c> --format '{{.State.ExitCode}} {{.State.OOMKilled}}'
+dmesg -T | grep -i 'killed process'
+docker events --since 10m --filter event=die --format '{{.Time}} {{.Action}} {{.Actor.Attributes.name}}'
+```
+
+**DNS:**
+```
+cat /etc/resolv.conf
+dig +short <host>
+cat /etc/hosts | grep -v '^#'
+docker exec <c> getent hosts <hostname>
+```
+
+**TLS/Certs:**
+```
+openssl s_client -connect host:443
+openssl x509 -noout -dates -subject -issuer
+echo $NODE_EXTRA_CA_CERTS $REQUESTS_CA_BUNDLE $SSL_CERT_FILE
+curl -v https://host 2>&1 | grep -i 'ssl\|cert\|verify'
+```
+
+**CPU / Throttle:**
+```
+top -H -p <pid>
+ps -eo pid,pcpu,rss,comm --sort=-pcpu | head
+cat /sys/fs/cgroup/cpu.stat
+strace -cp <pid> -e trace=all
+```
+
+**Disk:**
+```
+df -h
+du -sh /* 2>/dev/null | sort -rh | head
+docker system df
+find /var/log -type f -exec du -sh {} \; 2>/dev/null | sort -rh | head
+```
+
+**Memory:**
+```
+free -h
+ps -eo pid,rss,comm --sort=-rss | head
+cat /proc/<pid>/status | grep -E 'VmRSS|VmSwap'
+docker stats --no-stream
+```
+
+**Port conflict:**
+```
+ss -tlnp | grep <port>
+lsof -i :<port>
+docker port <c>
+docker inspect <c> --format '{{json .NetworkSettings.Ports}}' | jq
+```
+
+**Zombies:**
+```
+ps aux | awk '$8=="Z"'
+ps -p 1 -o comm
+ps -eo pid,ppid,stat,cmd | awk '$3 ~ /Z/ {print "zombie PID="$1, "parent="$2}'
+docker inspect <c> --format '{{.HostConfig.Init}}'
+```
+
+**FD exhaustion:**
+```
+ls /proc/<pid>/fd | wc -l
+cat /proc/<pid>/limits | grep 'Max open files'
+lsof -p <pid> | wc -l
+ls -la /proc/<pid>/fd | awk '{print $NF}' | grep -c socket
+```
+
+**Env vars / Secrets:**
+```
+docker exec <c> env | grep KEY
+cat /proc/<pid>/environ | tr '\0' '\n'
+docker inspect <c> --format '{{json .Config.Env}}' | jq
+ls /run/repo_secrets/
+```
+
+**Permissions:**
+```
+ls -la /path
+namei -l /path
+dmesg | grep -i 'denied\|apparmor\|audit' | tail
+id
+```
+
+**Network:**
+```
+ss -tlnp
+docker exec <c> nc -zv host port
+iptables -L FORWARD -n -v
+docker inspect <c> --format '{{json .NetworkSettings.Networks}}' | jq
+```
+
+---
+
 # PART 5: SYMPTOM → FIRST COMMAND
 
 | Symptom | Run first | Then |
