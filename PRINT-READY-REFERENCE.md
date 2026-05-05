@@ -454,4 +454,73 @@ bash practice/NN-name.sh restore    # Clean up
 
 ---
 
+# PART 19: TRIAGE — PLATFORM BUG VS CUSTOMER ISSUE
+
+## Decision tree
+
+```
+Can I reproduce on clean DevBox with default config?
+  YES → PLATFORM BUG → escalate
+  NO  → Reproduces ONLY with their config/code?
+    YES → CUSTOMER ISSUE → fix it for them
+    UNCLEAR → strip config to minimal repro, isolate the variable
+```
+
+## Three-point proof (before telling customer "it's on your side")
+
+1. **REPRODUCE** with their config → confirms symptom is real
+2. **FIX** one variable → shows what caused it
+3. **VERIFY** fix holds → proves causation
+
+## Common customer-side fix categories
+
+| Category | Common problem | Fix pattern |
+|----------|---------------|-------------|
+| **environment.yaml** | Wrong section (initialize vs setup vs maintenance) | Move command to correct section |
+| **environment.yaml** | Secrets not sourced | Add `source /run/repo_secrets/org/repo/.env.secrets` |
+| **Dockerfile** | ENV not passed through | `docker run -e KEY=VAL` or compose `environment:` |
+| **Dockerfile** | Zombies (no init) | Add `init: true` to compose or `--init` to run |
+| **Script** | Windows line endings | `sed -i 's/\r$//' script.sh` |
+| **Script** | Hardcoded paths | `sed -i 's\|/Users/foo\|/home/user/repos\|g'` |
+| **Agent** | Stuck repeating | Add knowledge note with correct approach |
+| **Agent** | Wrong tool version | Pin version in `initialize:` section |
+| **TLS/Auth** | Corp CA not trusted | Add CA to system trust + set `NODE_EXTRA_CA_CERTS` |
+| **TLS/Auth** | SSH key missing | Add as secret + `chmod 600` in setup |
+
+## Communication templates
+
+**It's their config:**
+> "The issue is in your [config/script]. Specifically, [line] is [wrong].
+> Fix: [change]. Want me to apply it?"
+
+**It's our bug:**
+> "This is on our side. Filed with engineering. Workaround to unblock you
+> now: [workaround]. I'll follow up when the fix ships."
+
+**Feature gap:**
+> "Devin doesn't support [X] natively yet. Recommended approach: [pattern].
+> I can help set it up. Flagging as a feature request."
+
+## Escalation paths
+
+| Root cause | Escalate to |
+|-----------|-------------|
+| Agent code (prompt, planning, tool use) | Deployed Engineering |
+| DevBox infra (provisioning, networking) | Field IT / Platform Eng |
+| Enterprise (SSO, RBAC, blueprints) | Enterprise Engineering |
+| Customer's code/config | **Don't escalate — fix it yourself** |
+
+## Escalation template
+
+```
+Customer impact: [critical/high/medium/low] — [N users, since when]
+Repro steps: [exact steps + session ID]
+Tried: [what you checked]
+Ruled out: [what it's NOT]
+Hypothesis: [best guess]
+Workaround: [yes/no + what]
+```
+
+---
+
 *End of print-ready reference. Good luck.*
