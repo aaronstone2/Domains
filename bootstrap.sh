@@ -61,8 +61,17 @@ if ! command -v pnpm >/dev/null 2>&1; then
 fi
 
 # ---- 3. Install workspace deps (cheap on re-runs) ----
-say "pnpm install (workspace)"
-pnpm install --silent --frozen-lockfile 2>&1 | tail -3 || warn "pnpm install had issues; bootstrap may fail"
+# Stream output and hard-fail on non-zero. Previous version was --silent +
+# `|| warn` which swallowed errors and caused downstream cascades (modules
+# that needed harness deps would fail with unhelpful messages).
+# Drop --frozen-lockfile so a minor pnpm-version diff between machines
+# doesn't block the install.
+say "pnpm install (workspace) — streaming output"
+if ! pnpm install; then
+  warn "pnpm install FAILED — bootstrap cannot continue safely."
+  warn "Try: rm -rf node_modules pnpm-lock.yaml && pnpm install"
+  exit 1
+fi
 
 # ---- 4. Hand off to the TS installer ----
 # All flags (--with-docker / --module=X / --dry-run / --launch / --anthropic-key /
