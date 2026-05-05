@@ -35,28 +35,43 @@
 set +e
 
 APPLY=false
+COPY=false
 ARGS=()
 for arg in "$@"; do
   case "$arg" in
     --apply|-y) APPLY=true ;;
+    --copy|-c) COPY=true ;;
     *) ARGS+=("$arg") ;;
   esac
 done
 set -- "${ARGS[@]}"
 
-_section()  { echo ""; echo "=== $* ==="; }
-_say()      { echo "  $*"; }
-_dryrun()   { echo "  [dry-run] $*"; }
+# Three modes:
+#   default   pretty preview + permanent-fix notes + verify steps (decorated)
+#   --copy    raw commands only, one per line, paste-friendly
+#   --apply   actually execute
+#
+# --copy and --apply are mutually exclusive (--copy implies "don't run, just print")
+if $COPY && $APPLY; then
+  echo "ERROR: --copy and --apply are mutually exclusive" >&2
+  exit 2
+fi
+
+_section()  { $COPY || { echo ""; echo "=== $* ==="; }; }
+_say()      { $COPY || echo "  $*"; }
 _run()      {
   if $APPLY; then
     echo "  [apply]   $*"
     eval "$@"
+  elif $COPY; then
+    # Raw command only — no decoration, no prefix, paste-friendly
+    echo "$*"
   else
-    _dryrun "$@"
+    echo "  [dry-run] $*"
   fi
 }
-_perm()     { echo ""; echo "  PERMANENT FIX (do this in your deployment config):"; while [ -n "${1:-}" ]; do echo "    $1"; shift; done; }
-_verify()   { echo ""; echo "  VERIFY:"; while [ -n "${1:-}" ]; do echo "    $1"; shift; done; }
+_perm()     { $COPY || { echo ""; echo "  PERMANENT FIX (do this in your deployment config):"; while [ -n "${1:-}" ]; do echo "    $1"; shift; done; }; }
+_verify()   { $COPY || { echo ""; echo "  VERIFY:"; while [ -n "${1:-}" ]; do echo "    $1"; shift; done; }; }
 _die()      { echo "ERROR: $*" >&2; exit 1; }
 
 # ---------- env ----------
@@ -239,10 +254,17 @@ _k_prune() {
 
 _k_help() {
   cat <<EOF
-dfix — keyword-driven remediation dispatcher (DRY-RUN BY DEFAULT, --apply to mutate)
+dfix — keyword-driven remediation dispatcher
+
+Three modes:
+  (default)    Preview — pretty output + permanent-fix notes + verify steps
+  --copy / -c  Raw commands only, paste-friendly (no decoration)
+  --apply / -y Actually execute the commands
+
+  --copy and --apply are mutually exclusive.
 
 Usage:
-  dfix <keyword> [container] [args...] [--apply]
+  dfix <keyword> [container] [args...] [--copy|--apply]
 
 Keywords:
   env <c> <KEY> <VALUE>            Set env var inside container (process restart)
@@ -265,21 +287,30 @@ Each fix prints:
   - VERIFY commands to confirm the fix landed
 
 Examples:
-  # Multi-symptom gateway scenario fixes:
+  # Preview (default — see what it'd do + permanent fix notes):
+  dfix env staff-tls NODE_EXTRA_CA_CERTS /etc/ssl/custom/root-ca.crt
+
+  # Copy mode (Windows paste workflow — output ONLY raw commands):
+  dfix env staff-tls NODE_EXTRA_CA_CERTS /etc/ssl/custom/root-ca.crt --copy
+    # Output:
+    #   docker exec staff-tls sh -c 'echo "export NODE_EXTRA_CA_CERTS=..." >> ...'
+    #   docker exec staff-tls sh -c 'kill -HUP 1 2>/dev/null || true'
+    # Copy-paste straight into DevBox terminal.
+
+  # Apply mode (Linux execute — actually run):
+  dfix env staff-tls NODE_EXTRA_CA_CERTS /etc/ssl/custom/root-ca.crt --apply
+
+  # Multi-symptom gateway scenario — full fix-set:
   dfix env staff-tls NODE_EXTRA_CA_CERTS /etc/ssl/custom/root-ca.crt --apply
   dfix hosts staff-tls 10.0.0.5 db.corp.internal --apply
   dfix hosts staff-tls 10.0.0.6 cache.corp.internal --apply
   dfix dns staff-tls 10.0.0.53 --apply
   dfix cabundle staff-tls /etc/ssl/custom/root-ca.crt /etc/ssl/custom/intermediate.crt --apply
 
-  # OOM scenario:
-  dfix restart-container <c> --apply
-
-  # Zombie scenario:
-  dfix recreate-init <c>     # prints the manual recipe (intentionally not auto)
-
-  # Disk full scenario:
-  dfix prune --apply
+  # Other common fixes:
+  dfix restart-container <c> --apply        # OOM scenario
+  dfix recreate-init <c>                    # zombies — prints manual recipe
+  dfix prune --apply                        # disk full
 EOF
 }
 
@@ -303,7 +334,7 @@ case "$kw" in
   *) echo "unknown keyword: $kw" >&2; _k_help; exit 2 ;;
 esac
 
-if ! $APPLY && [ "$kw" != "help" ] && [ -n "$kw" ]; then
+if ! $APPLY && ! $COPY && [ "$kw" != "help" ] && [ -n "$kw" ]; then
   echo ""
-  echo "  (DRY RUN — add --apply to actually run the commands above)"
+  echo "  (PREVIEW — add --copy for paste-friendly commands, --apply to execute)"
 fi
