@@ -49,6 +49,8 @@ if ! $NODE_OK; then
   for bin in node npm npx; do
     $SUDO ln -sf "$NODE_DIR/bin/$bin" "/usr/local/bin/$bin"
   done
+  # Add tarball bin dir to PATH so npm-installed globals (pnpm) are findable.
+  export PATH="$NODE_DIR/bin:$PATH"
 fi
 
 # ---- Hand off to pre-built bundle (no pnpm/tsx needed) ----
