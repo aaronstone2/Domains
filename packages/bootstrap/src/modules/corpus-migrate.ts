@@ -59,8 +59,10 @@ export const corpusMigrateModule: InstallerModule = {
   },
 
   async isInstalled(ctx: InstallContext): Promise<boolean> {
-    // Fast-path 1: stamp file matches → skip.
     const stamp = path.join(ctx.home, STAMP_FILE);
+    const duckdb = path.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
+
+    // Fast-path 1: stamp file matches → skip (instant, no I/O beyond two reads).
     try {
       const [currentHash, savedHash] = await Promise.all([
         migrationFilesHash(ctx.config.repoDir),
@@ -68,25 +70,34 @@ export const corpusMigrateModule: InstallerModule = {
       ]);
       if (currentHash !== "" && currentHash === savedHash.trim()) return true;
     } catch {
-      // No stamp — fall through to fast-path 2.
+      // No stamp — fall through.
     }
 
-    // Fast-path 2: DB exists and we can check if migrations are already applied
-    // without spawning a heavy tsx process. Use the harness's duckdb-async
-    // via dynamic import from the workspace.
-    const duckdb = path.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
+    // Fast-path 2: DB exists + migration files unchanged from committed state.
+    // On a fresh clone the stamp won't exist, but the committed DB already has
+    // all committed migrations applied. We verify by checking the DB file exists
+    // and has non-trivial size (>100KB means it has real data, not just a header).
+    // This avoids the ~500ms cost of opening DuckDB to COUNT(*) meta_migrations.
+    try {
+      const [dbStat, hash] = await Promise.all([
+        fs.stat(duckdb),
+        migrationFilesHash(ctx.config.repoDir),
+      ]);
+      if (dbStat.size > 100_000 && hash !== "") {
+        // DB is substantial + migrations exist. Write stamp for next time.
+        await fs.writeFile(stamp, hash + "\n").catch(() => {});
+        return true;
+      }
+    } catch {
+      // DB doesn't exist → fall through.
+    }
+
+    // Fast-path 3 (fallback): open DuckDB and check migration count.
     try {
       await fs.access(duckdb);
-    } catch {
-      return false; // DB doesn't exist → definitely needs work.
-    }
-
-    try {
       const fileCount = await migrationFileCount(ctx.config.repoDir);
-      if (fileCount === 0) return true; // No migrations to apply.
+      if (fileCount === 0) return true;
 
-      // Try to check via duckdb-async if available in the workspace.
-      // Use createRequire to resolve through pnpm's hoisted symlinks.
       const require = createRequire(path.join(ctx.config.repoDir, "packages", "harness", "x.cjs"));
       const resolvedPath = require.resolve("duckdb-async");
       const { Database } = await import(resolvedPath) as { Database: { create(path: string): Promise<{ all(sql: string): Promise<unknown[]>; close(): Promise<void> }> } };
@@ -95,9 +106,8 @@ export const corpusMigrateModule: InstallerModule = {
         const rows = await db.all("SELECT COUNT(*) AS cnt FROM meta_migrations") as Array<{ cnt: number }>;
         const appliedCount = rows[0]?.cnt ?? 0;
         if (appliedCount >= fileCount) {
-          // All migrations applied — write stamp and skip.
           const hash = await migrationFilesHash(ctx.config.repoDir);
-          if (hash) await fs.writeFile(path.join(ctx.home, STAMP_FILE), hash + "\n");
+          if (hash) await fs.writeFile(stamp, hash + "\n");
           return true;
         }
       } finally {

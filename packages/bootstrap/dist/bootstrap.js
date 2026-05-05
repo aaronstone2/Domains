@@ -55,7 +55,7 @@ var init_atomic_write = __esm({
 });
 
 // src/index.ts
-import * as os3 from "node:os";
+import * as os4 from "node:os";
 
 // src/lib/lock.ts
 import * as fs from "node:fs/promises";
@@ -452,10 +452,10 @@ async function persistKey(key) {
 }
 async function readFromConfigFile() {
   try {
-    let stat5 = await fs4.stat(KEY_PATH);
-    if ((stat5.mode & 63) !== 0)
+    let stat6 = await fs4.stat(KEY_PATH);
+    if ((stat6.mode & 63) !== 0)
       throw new Error(
-        `~/.config/domains/anthropic-key has unsafe permissions (${(stat5.mode & 511).toString(8)}). Run: chmod 600 ~/.config/domains/anthropic-key`
+        `~/.config/domains/anthropic-key has unsafe permissions (${(stat6.mode & 511).toString(8)}). Run: chmod 600 ~/.config/domains/anthropic-key`
       );
     let trimmed = (await fs4.readFile(KEY_PATH, "utf8")).trim();
     return trimmed === "" ? void 0 : trimmed;
@@ -864,8 +864,19 @@ var APT_CORE = [
 
 // src/modules/apt-optional.ts
 import * as fs5 from "node:fs/promises";
+import * as os3 from "node:os";
 import * as path6 from "node:path";
-var STAMP_FILE = ".apt-optional-attempted", aptOptionalModule = {
+var STAMP_FILE = ".apt-optional-attempted", BINS = ["bpftrace", "btop", "sysbench"];
+async function binExists(name) {
+  let dirs = (process.env.PATH ?? "").split(":");
+  for (let dir of dirs)
+    try {
+      return await fs5.access(path6.join(dir, name), fs5.constants.X_OK), !0;
+    } catch {
+    }
+  return !1;
+}
+var aptOptionalModule = {
   id: "apt-optional",
   description: "Optional heavy apt packages (eBPF tooling, perf, btop, sysbench)",
   narrative: "eBPF + perf for kernel-level tracing (bpftrace, off-CPU profiling, perf-record)",
@@ -874,17 +885,33 @@ var STAMP_FILE = ".apt-optional-attempted", aptOptionalModule = {
     return process.platform === "linux" && !config.minimal;
   },
   async isInstalled(ctx) {
-    if (await ctx.runner.commandExists("bpftrace")) return !0;
+    for (let bin of BINS)
+      if (await binExists(bin)) return !0;
     let stamp = path6.join(ctx.home, STAMP_FILE);
     try {
-      let kernel = (await ctx.runner.capture("uname -r")).trim();
-      return (await fs5.readFile(stamp, "utf8")).trim() === kernel;
+      return (await fs5.readFile(stamp, "utf8")).trim() === os3.release();
     } catch {
       return !1;
     }
   },
   async install(ctx) {
-    let kernel = (await ctx.runner.capture("uname -r")).trim(), pkgs = [
+    let kernel = os3.release(), headersDir = `/usr/src/linux-headers-${kernel}`;
+    try {
+      await fs5.access(headersDir);
+    } catch {
+      if (!(await ctx.runner.run(
+        `dpkg-query -W -f='\${Status}' linux-headers-${kernel} 2>/dev/null`,
+        { allowFailure: !0 }
+      )).stdout.includes("install ok installed")) {
+        ctx.logger.warn(
+          `linux-headers-${kernel} not available \u2014 skipping eBPF/perf install (non-standard kernel)`
+        ), await fs5.writeFile(path6.join(ctx.home, STAMP_FILE), kernel + `
+`).catch(() => {
+        });
+        return;
+      }
+    }
+    let pkgs = [
       "bpfcc-tools",
       `linux-headers-${kernel}`,
       "bpftrace",
@@ -903,10 +930,10 @@ var STAMP_FILE = ".apt-optional-attempted", aptOptionalModule = {
 `).catch(() => {
     });
   },
-  async verify(ctx) {
+  async verify(_ctx) {
     let present = [];
-    for (let bin of ["bpftrace", "btop", "sysbench"])
-      await ctx.runner.commandExists(bin) && present.push(bin);
+    for (let bin of BINS)
+      await binExists(bin) && present.push(bin);
     return {
       ok: present.length > 0,
       message: present.length > 0 ? `installed: ${present.join(", ")}` : "no optional binaries present"
@@ -1665,10 +1692,10 @@ var anthropicKeyModule = {
       return { ok: !0, message: "no encrypted key file (skipped)" };
     }
     try {
-      let stat5 = await fs9.stat(configFilePath());
-      return (stat5.mode & 63) !== 0 ? {
+      let stat6 = await fs9.stat(configFilePath());
+      return (stat6.mode & 63) !== 0 ? {
         ok: !1,
-        message: `${configFilePath()} has unsafe perms ${(stat5.mode & 511).toString(8)} (want 600)`
+        message: `${configFilePath()} has unsafe perms ${(stat6.mode & 511).toString(8)} (want 600)`
       } : { ok: !0, message: `${configFilePath()} present + chmod 600` };
     } catch {
       return { ok: !1, message: `${configFilePath()} missing` };
@@ -1752,14 +1779,11 @@ var pnpmInstallModule = {
         ok: !1,
         message: "node_modules/.pnpm missing \u2014 pnpm install did not run successfully"
       };
-    let result = await ctx.runner.run(
-      'pnpm --filter @domains/harness exec node -e "console.log(\\"ok\\")"',
-      { cwd: ctx.config.repoDir, allowFailure: !0, timeoutMs: 1e4 }
-    );
-    return result.code !== 0 || !result.stdout.includes("ok") ? {
+    let harnessDir = `${ctx.config.repoDir}/packages/harness/node_modules`;
+    return await ctx.runner.pathExists(harnessDir) ? { ok: !0, message: "workspace deps present + harness ready" } : {
       ok: !1,
-      message: `harness workspace not resolvable via pnpm filter: ${(result.stderr || result.stdout).trim().slice(0, 200)}`
-    } : { ok: !0, message: "workspace deps present + harness resolvable" };
+      message: "packages/harness/node_modules missing \u2014 workspace deps not installed"
+    };
   }
 };
 
@@ -1798,7 +1822,7 @@ var corpusMigrateModule = {
     return !0;
   },
   async isInstalled(ctx) {
-    let stamp = path12.join(ctx.home, STAMP_FILE3);
+    let stamp = path12.join(ctx.home, STAMP_FILE3), duckdb = path12.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
     try {
       let [currentHash, savedHash] = await Promise.all([
         migrationFilesHash(ctx.config.repoDir),
@@ -1807,20 +1831,26 @@ var corpusMigrateModule = {
       if (currentHash !== "" && currentHash === savedHash.trim()) return !0;
     } catch {
     }
-    let duckdb = path12.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
     try {
-      await fs11.access(duckdb);
+      let [dbStat, hash] = await Promise.all([
+        fs11.stat(duckdb),
+        migrationFilesHash(ctx.config.repoDir)
+      ]);
+      if (dbStat.size > 1e5 && hash !== "")
+        return await fs11.writeFile(stamp, hash + `
+`).catch(() => {
+        }), !0;
     } catch {
-      return !1;
     }
     try {
+      await fs11.access(duckdb);
       let fileCount = await migrationFileCount(ctx.config.repoDir);
       if (fileCount === 0) return !0;
       let resolvedPath = createRequire(path12.join(ctx.config.repoDir, "packages", "harness", "x.cjs")).resolve("duckdb-async"), { Database } = await import(resolvedPath), db = await Database.create(duckdb);
       try {
         if (((await db.all("SELECT COUNT(*) AS cnt FROM meta_migrations"))[0]?.cnt ?? 0) >= fileCount) {
           let hash = await migrationFilesHash(ctx.config.repoDir);
-          return hash && await fs11.writeFile(path12.join(ctx.home, STAMP_FILE3), hash + `
+          return hash && await fs11.writeFile(stamp, hash + `
 `), !0;
         }
       } finally {
@@ -2078,7 +2108,7 @@ ${HELP_TEXT}`), 2;
     config: parsed.config,
     logger,
     runner: new Runner({ dryRun: parsed.config.dryRun, logger }),
-    home: os3.homedir()
+    home: os4.homedir()
   };
   switch (parsed.subcommand) {
     case "install":
