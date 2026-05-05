@@ -1,5 +1,5 @@
 // Module: verify-mcp — JSON-RPC initialize handshake against the harness MCP
-// server. Confirms the MCP boots and registers tools.
+// server. Runs once per bootstrap; install() caches the result for verify().
 
 import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types.ts";
 
@@ -13,6 +13,8 @@ const INITIALIZE_REQUEST = JSON.stringify({
     clientInfo: { name: "@domains/bootstrap", version: "0.1.0" },
   },
 });
+
+let cachedResult: { readonly ok: boolean; readonly message: string } | undefined;
 
 export const verifyMcpModule: InstallerModule = {
   id: "verify-mcp",
@@ -35,19 +37,17 @@ export const verifyMcpModule: InstallerModule = {
       timeoutMs: 30_000,
     });
     if (!result.stdout.includes('"jsonrpc"') || !result.stdout.includes('"result"')) {
-      throw new Error(
-        `MCP initialize did not return a valid JSON-RPC response. Got: ${result.stdout.slice(0, 200)}`,
-      );
+      cachedResult = {
+        ok: false,
+        message: `MCP handshake failed. Got: ${result.stdout.slice(0, 200)}`,
+      };
+      throw new Error(cachedResult.message);
     }
+    cachedResult = { ok: true, message: "MCP server boots + handshakes" };
     ctx.logger.ok("MCP initialize handshake succeeded");
   },
 
-  async verify(ctx: InstallContext): Promise<VerifyResult> {
-    try {
-      await this.install(ctx);
-      return { ok: true, message: "MCP server boots + handshakes" };
-    } catch (err) {
-      return { ok: false, message: (err as Error).message };
-    }
+  async verify(): Promise<VerifyResult> {
+    return cachedResult ?? { ok: false, message: "install() did not run" };
   },
 };

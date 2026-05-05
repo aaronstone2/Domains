@@ -138,17 +138,27 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     logger.step("DRY RUN — printing commands; no mutations");
   }
 
-  // Pre-flight: do this BEFORE selecting modules so the user gets blockers
-  // before waiting through 18 module gates. Skip entirely in dry-run because
-  // every shell command returns synthetic empty output and the parsers see
-  // garbage. Also skip if --skip-preflight (escape hatch for buggy checks).
-  if (!ctx.config.dryRun && !ctx.config.skipPreflight) {
+  const modules = selectModules(ctx.config);
+  if (modules.length === 0) {
+    logger.warn("no modules selected (check --module / --skip-module / --skip-tag)");
+    return 0;
+  }
+
+  // Run preflight + isInstalled checks in parallel for speed.
+  const installedCache = new Map<string, boolean>();
+  const preflightPromise = (!ctx.config.dryRun && !ctx.config.skipPreflight)
+    ? runPreflight({ runner: ctx.runner, logger: ctx.logger, offline: ctx.config.offline })
+    : Promise.resolve(undefined);
+  const installCheckPromise = Promise.all(modules.map(async (mod) => {
+    if (!mod.shouldRun(ctx.config)) return;
+    try {
+      installedCache.set(mod.id, await mod.isInstalled(ctx));
+    } catch { installedCache.set(mod.id, false); }
+  }));
+  const [preflightResults] = await Promise.all([preflightPromise, installCheckPromise]);
+
+  if (preflightResults !== undefined) {
     logger.step("pre-flight checks");
-    const preflightResults = await runPreflight({
-      runner: ctx.runner,
-      logger: ctx.logger,
-      offline: ctx.config.offline,
-    });
     const blockers = reportPreflight(preflightResults, logger);
     if (blockers > 0) {
       logger.fail(
@@ -159,22 +169,11 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     }
   }
 
-  const modules = selectModules(ctx.config);
-  if (modules.length === 0) {
-    logger.warn("no modules selected (check --module / --skip-module / --skip-tag)");
-    return 0;
-  }
-
-  // Estimate total time: check which modules actually need install vs skip.
-  const needsInstall: string[] = [];
-  for (const mod of modules) {
-    if (!mod.shouldRun(ctx.config)) continue;
-    try {
-      if (!(await mod.isInstalled(ctx)) || ctx.config.force) needsInstall.push(mod.id);
-    } catch { needsInstall.push(mod.id); }
-  }
+  const needsInstall = modules.filter((m) =>
+    m.shouldRun(ctx.config) && (!installedCache.get(m.id) || ctx.config.force),
+  );
   const etaSec = needsInstall.length > 0
-    ? needsInstall.reduce((sum, id) => sum + (ETA_PER_MODULE_SEC[id] ?? 5), 0)
+    ? needsInstall.reduce((sum, m) => sum + (ETA_PER_MODULE_SEC[m.id] ?? 5), 0)
     : 5;
   logger.step(
     `installing ${modules.length} module(s)` +
@@ -203,7 +202,7 @@ async function runInstall(ctx: InstallContext): Promise<number> {
       const phasePromises = phaseModules.map(async (mod, j) => {
         const idx = baseIdx + j + 1;
         const t0 = Date.now();
-        const result = await runOne(mod, ctx, idx, modules.length);
+        const result = await runOne(mod, ctx, idx, modules.length, installedCache);
         const dt = Math.round((Date.now() - t0) / 1000);
         if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
         return result;
@@ -215,7 +214,7 @@ async function runInstall(ctx: InstallContext): Promise<number> {
         const mod = phaseModules[j]!;
         const idx = baseIdx + j + 1;
         const t0 = Date.now();
-        const result = await runOne(mod, ctx, idx, modules.length);
+        const result = await runOne(mod, ctx, idx, modules.length, installedCache);
         const dt = Math.round((Date.now() - t0) / 1000);
         if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
         results.push(result);
@@ -269,6 +268,7 @@ async function runOne(
   ctx: InstallContext,
   idx: number,
   total: number,
+  installedCache: ReadonlyMap<string, boolean>,
 ): Promise<ModuleStatus> {
   const log = ctx.logger.child(`${idx}/${total} ${mod.id}`);
 
@@ -277,12 +277,7 @@ async function runOne(
     return { kind: "skipped", id: mod.id, reason: "shouldRun=false" };
   }
 
-  let alreadyInstalled = false;
-  try {
-    alreadyInstalled = await mod.isInstalled(ctx);
-  } catch (err) {
-    log.warn(`isInstalled() threw: ${(err as Error).message} — proceeding to install`);
-  }
+  const alreadyInstalled = installedCache.get(mod.id) ?? false;
 
   if (alreadyInstalled && !ctx.config.force) {
     log.ok("already installed (use --force to re-run)");
