@@ -533,7 +533,10 @@ async function execLaunch(ctx: InstallContext, results: readonly ModuleStatus[])
     fromFlag: ctx.config.anthropicKey,
     logger,
     interactive: true,
-    offerPersist: true,
+    // Skip persist prompt when key came from the flag — passing --anthropic-key
+    // signals one-shot intent (typical for fresh-DevBox installs each session).
+    // Persist offer still fires when key arrives via the interactive prompt.
+    offerPersist: ctx.config.anthropicKey === undefined,
   });
   logger.step(`exec'ing claude (key from ${source}: ${mask(key)})`);
 
