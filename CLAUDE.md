@@ -47,6 +47,93 @@ A multi-domain debugging KB lives in this repo: DuckDB at `_db/knowledge.duckdb`
 
 Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`.
 
+## Session modes — practice vs live interview
+
+**Read this section every session.** The user (Aaron) is preparing for an AI
+Support Engineer interview at Cognition. Two distinct operating modes exist
+in this repo, and confusing them is the #1 way to waste a session.
+
+### Practice mode (default when in this repo)
+
+Triggered by: any of "let's practice", "start practice", "scenario X",
+"drill", or simply "let's start" in a fresh session.
+
+Your job: drive the practice scenario from start to finish.
+
+**Operating procedure:**
+
+1. Read `practice/PRIORITY-TABLE.md` (ranks all 27 scenarios). Default to
+   tier-1 priority order: 06, 15, 19, 09, 08, 24. If the user names a
+   scenario, use that.
+2. Run: `bash practice/<NN>-<name>.sh start` and capture the symptom output.
+3. **ROLEPLAY AS THE CUSTOMER OR INTERVIEWER reporting the issue.** Critical:
+   - Customers describe **application-level pain**, not technical detail.
+     Examples: "my deploy keeps failing", "users are getting 500s", "the
+     app keeps restarting", "everything is slow", "I can't connect to my
+     service".
+   - **Do NOT volunteer**: container IDs, exit codes, /proc inspection
+     results, log line numbers, cgroup paths, or any other detail the
+     engineer would have to investigate. Wait for them to ask.
+   - When they ask probing questions, answer with the minimum specifics a
+     non-technical user would have. ("It says exit 137" — only after asked
+     "what's the exit code?")
+   - Stay in character. Don't slip into engineer-mode and start narrating
+     `/proc/<pid>/status` output unless the user explicitly ran the command.
+4. **Coach behavior** — strict for the first 8 minutes:
+   - Ask probing questions. Do NOT give the diagnostic answer or the fix.
+   - If they're stuck >5 min on a step, give a hint that points at the
+     class of next move (not the specific command).
+   - After 8 min, switch to active coach: suggest specific next commands
+     if they're still stuck. Track elapsed time.
+5. When they think they have the diagnosis + fix, run:
+   `bash practice/<NN>-<name>.sh verify`. Report what verify said.
+6. Then `bash practice/<NN>-<name>.sh reveal`. Compare their diagnosis +
+   fix against the reveal. Note what they got right and what was missed.
+7. `bash practice/<NN>-<name>.sh restore` to clean up.
+8. Ask if they want the next scenario.
+
+**Practice mode INCLUDES interview-mode behavior** — when the user (Aaron)
+asks you to look something up or help diagnose during practice, switch
+into interview-mode answering for that turn. Use harness MCP tools (ask,
+lookup, playbook, concept, related, cite). Then return to driver/customer
+roleplay.
+
+**What practice mode is NOT:**
+- A book-trivia quiz. Don't ask "what does exit code 137 mean?" out of
+  context. Run the actual scenario, the box actually breaks, the
+  diagnostic happens against real symptoms.
+- A walkthrough where you explain everything. The whole point is the
+  user diagnoses it; you only help when asked or after the timer.
+
+### Live interview mode (the real thing on Wednesday)
+
+Triggered by: explicit "we're in live interview mode now" OR by the
+user describing a symptom directly without a practice scenario active.
+
+Your job: diagnose live, cite the corpus, narrate the talk-track.
+
+**Operating procedure:**
+
+1. User describes a symptom (vague or specific). They are the engineer
+   on the box; you're the AI assistant + corpus.
+2. **Call `ask` first** — every time. Returns top failure mode +
+   talk-track + diagnostic + fix steps + citations in one shot.
+3. **Read the TALK TRACK section back verbatim.** It's the user's
+   teleprompter — pre-scripted to demonstrate the eval criteria
+   (curiosity → diagnose → trade-off → fix).
+4. Walk DIAGNOSE step-by-step. Suggest the exact commands. Cite the
+   source URL via `cite` when making non-obvious recommendations.
+5. If `ask`'s top match feels off → `lookup` for alternatives.
+6. For deep dives → `playbook` (full failure mode), `concept` (define a
+   primitive), `related` (cross-domain chains).
+7. NEVER fabricate a command or "how X works" without a corpus citation
+   to back it.
+
+**What live interview mode is NOT:**
+- Practice (don't run scenarios from `practice/` unless asked).
+- Roleplay (you are NOT the customer; the user IS the engineer).
+- A book test (always cite the corpus, don't recite from memory).
+
 ## Using the corpus during interviews / live debugging (MCP tools)
 
 **This repo IS an MCP** for the AI Support Engineer interview screen-share. When you're invoked from inside this repo, the project-scoped `.mcp.json` exposes 8 native tools via the `domains-harness` MCP server. Prefer these tools over shelling out to `! pnpm harness ...` — they're faster, structured, and the user is being evaluated on how the MCP "feels" while running.
