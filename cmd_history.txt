@@ -7,6 +7,114 @@
 # "I need to check docker memory", not "scenario 06's command."
 
 # ============================================================================
+# ===== SYMPTOM QUICK TRIAGE — first 3 commands per symptom =====
+# ============================================================================
+# Use this as your "hands first, MCP second" reference.
+# Run these BEFORE hitting MCP. Narrate as you go.
+#
+# --- container won't start / keeps restarting ---
+#   → check exit code + OOM + restart count, then read last logs
+docker inspect <c> --format '{{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}} restarts={{.RestartCount}}'
+docker logs --tail 30 <c> 2>&1
+docker events --since 10m --filter event=die --filter event=oom --format '{{.Time}} {{.Action}} {{.Actor.Attributes.name}}'
+#
+# --- DNS failure (ENOTFOUND / EAI_AGAIN / resolution slow) ---
+#   → check resolv.conf first (ndots, search domains), then test resolution, then /etc/hosts
+cat /etc/resolv.conf
+dig +short <host> || nslookup <host>
+cat /etc/hosts | grep -v '^#'
+#
+# --- TLS / cert error (UNABLE_TO_VERIFY / CERT_HAS_EXPIRED / unknown authority) ---
+#   → check what cert the server sends, check dates, check trust store env vars
+openssl s_client -connect <host>:443 < /dev/null 2>&1 | grep -E 'subject|issuer|verify|depth'
+openssl s_client -connect <host>:443 < /dev/null 2>&1 | openssl x509 -noout -dates
+echo $NODE_EXTRA_CA_CERTS $REQUESTS_CA_BUNDLE $SSL_CERT_FILE
+#
+# --- high CPU / process runaway ---
+#   → find the hot process, check its threads, check if it's throttled
+ps -eo pid,pcpu,rss,comm --sort=-pcpu | head -10
+top -H -p <pid> -bn1 | head -20
+cat /sys/fs/cgroup/cpu.stat | grep -E 'nr_throttled|throttled_usec'
+#
+# --- disk full / ENOSPC ---
+#   → check filesystem usage, then find big files, check docker disk
+df -h
+du -sh /* 2>/dev/null | sort -rh | head -10
+docker system df
+#
+# --- OOMKilled / exit 137 ---
+#   → confirm OOM in dmesg, check which process got killed, check cgroup memory limit
+sudo dmesg -T | grep -i 'killed process\|out of memory' | tail -5
+docker inspect <c> --format '{{.State.OOMKilled}} exit={{.State.ExitCode}} mem_limit={{.HostConfig.Memory}}'
+cat /proc/meminfo | grep -E 'MemTotal|MemAvailable|SwapTotal|SwapFree'
+#
+# --- port conflict / EADDRINUSE ---
+#   → find what's on the port, check if it's the expected process
+ss -tlnp 'sport = :<port>'
+sudo lsof -i :<port>
+docker port <c>
+#
+# --- permission denied / EACCES ---
+#   → check file perms, trace the full path, check if SELinux/AppArmor is blocking
+ls -la /path/to/file
+namei -l /path/to/file
+sudo dmesg | grep -i 'denied\|apparmor\|audit' | tail -10
+#
+# --- zombie processes (Z state) ---
+#   → find zombies, check what PID 1 is (can it reap?), check parent
+ps -eo state,pid,ppid,cmd | awk '$1=="Z"'
+ps -p 1 -o pid,comm
+ps -eo pid,ppid,stat,cmd | awk '$3 ~ /Z/ {print "zombie PID="$1, "parent="$2}'
+#
+# --- slow / hanging process (D state) ---
+#   → check for D-state processes, check I/O wait, check what syscall it's stuck on
+ps -eo state,pid,wchan,cmd | awk '$1=="D"'
+cat /proc/pressure/io
+sudo cat /proc/<pid>/stack
+#
+# --- memory leak / growing RSS ---
+#   → snapshot RSS, wait, snapshot again, check swap
+ps -eo pid,rss,vsz,comm --sort=-rss | head -10
+free -h
+cat /proc/<pid>/status | grep -E 'VmRSS|VmSwap|VmSize'
+#
+# --- fd exhaustion / EMFILE / too many open files ---
+#   → check fd count vs limit for the process
+ls /proc/<pid>/fd | wc -l
+cat /proc/<pid>/limits | grep 'Max open files'
+lsof -p <pid> | wc -l
+#
+# --- systemd unit failed ---
+#   → check status, read the logs, check dependencies
+systemctl status <unit>
+journalctl -u <unit> --since '10 min ago' --no-pager
+systemctl list-dependencies <unit>
+#
+# --- container networking broken (can't reach other containers) ---
+#   → check what network the container is on, check iptables FORWARD, test connectivity
+docker inspect <c> --format '{{json .NetworkSettings.Networks}}' | jq
+sudo iptables -L FORWARD -n -v --line-numbers
+docker exec <c> nc -zv <target-host> <port>
+#
+# --- swap thrashing / system unresponsive ---
+#   → check swap usage, find swap consumers, check memory pressure
+swapon --show
+vmstat 1 5
+cat /proc/pressure/memory
+#
+# --- clock skew (token expired / cert valid but rejected) ---
+#   → compare local time to remote, check NTP
+date -u
+curl -sI https://www.google.com | grep -i ^date
+timedatectl
+#
+# --- config file mismatch (app not reading expected config) ---
+#   → check what config the process actually loaded, check env vars
+cat /proc/<pid>/cmdline | tr '\0' ' '
+cat /proc/<pid>/environ | tr '\0' '\n' | grep -iE 'config|conf|setting'
+docker inspect <c> --format '{{json .Config.Env}}' | jq
+
+# ============================================================================
 # ===== Harness MCP — call ask FIRST every time =====
 # ============================================================================
 pnpm harness ask "container OOMKilled exit 137"
@@ -383,6 +491,11 @@ ip route
 ip route show default
 ip route get 8.8.8.8
 ip neigh show
+
+# Permission path tracing — walks each component of the path showing perms
+namei -l /path/to/file
+namei -l /var/run/docker.sock
+namei -l /etc/ssl/certs/ca-certificates.crt
 
 # Packet capture
 sudo tcpdump -i any -c 50 -nn
@@ -815,6 +928,58 @@ pnpm bootstrap key set
 pnpm bootstrap key show
 
 # ============================================================================
+# ===== STRACE — targeted patterns =====
+# ============================================================================
+# → "what is this process DOING right now?" (syscall summary, 10s sample)
+sudo strace -cp <pid> -e trace=all 2>&1
+# → "what files is it opening?" (trace open/openat syscalls)
+sudo strace -p <pid> -e trace=openat -f 2>&1 | head -30
+# → "what network connections is it making?"
+sudo strace -p <pid> -e trace=connect -f 2>&1 | head -20
+# → "is it stuck on a read/write?" (see blocking I/O)
+sudo strace -p <pid> -e trace=read,write -f 2>&1 | head -20
+# → "what child processes does it spawn?"
+sudo strace -f -e trace=execve -p <pid> 2>&1 | head -20
+# → "is it doing DNS lookups?" (socket + connect)
+sudo strace -p <pid> -e trace=network -f 2>&1 | head -30
+# → full syscall trace (noisy but complete)
+sudo strace -p <pid> -tt -T 2>&1 | head -50
+# → attach to ALL threads of a process
+sudo strace -fp <pid> -c
+
+# ============================================================================
+# ===== QUICK ENV INSPECTION — what does this process see? =====
+# ============================================================================
+# → see the ACTUAL environment a running process has (not what you think it has)
+cat /proc/<pid>/environ | tr '\0' '\n' | sort
+cat /proc/<pid>/environ | tr '\0' '\n' | grep -iE 'path|home|node|python|api|key|secret|cert|ssl|ca'
+# → what command line was used to start it?
+cat /proc/<pid>/cmdline | tr '\0' ' ' && echo
+# → where is the binary actually located?
+readlink -f /proc/<pid>/exe
+# → what directory is it running from?
+readlink -f /proc/<pid>/cwd
+# → what user is it running as?
+ps -p <pid> -o pid,user,group,comm
+
+# ============================================================================
+# ===== ULIMITS / RESOURCE LIMITS =====
+# ============================================================================
+# → check limits for a running process (more reliable than `ulimit` in your shell)
+prlimit --pid <pid>
+# → just the open files limit
+prlimit --pid <pid> --nofile
+# → check system-wide limits
+sysctl fs.file-max
+sysctl fs.file-nr
+# → check pid limit
+sysctl kernel.pid_max
+cat /sys/fs/cgroup/pids.max 2>/dev/null
+cat /sys/fs/cgroup/pids.current 2>/dev/null
+# → count all pids in use
+ls /proc/ | grep '^[0-9]' | wc -l
+
+# ============================================================================
 # ===== Misc one-liners =====
 # ============================================================================
 find /var/log -type f -exec du -sh {} \; 2>/dev/null | sort -h | tail
@@ -827,12 +992,12 @@ sudo lsof -i :8080
 sudo ss -tlnp 'sport = :8080'
 pkill -f myapp
 sudo pkill -9 -f myapp
-sudo strace -p <pid>
-sudo strace -p <pid> -c
-sudo strace -e trace=connect -p <pid>
-sudo strace -f -e trace=execve -p <pid>
 dpkg -S /usr/bin/curl
 dpkg -L curl | head
 zgrep -h '"install "' /var/log/dpkg.log* | tail -20
 systemctl is-active docker postgresql nginx
 systemctl is-active --quiet docker && echo running || echo dead
+# → "what changed recently?" (find recently modified config files)
+find /etc -type f -mmin -60 2>/dev/null | head -20
+# → "is the system overloaded?" (one-line health check)
+echo "load=$(cat /proc/loadavg | awk '{print $1}') cpus=$(nproc) mem=$(free -h | awk '/^Mem/{print $3"/"$2}') swap=$(free -h | awk '/^Swap/{print $3"/"$2}') disk=$(df -h / | awk 'NR==2{print $5}')"
