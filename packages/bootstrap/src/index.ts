@@ -40,7 +40,10 @@ import type {
 import { ALL_MODULES, PHASES } from "./modules/registry.ts";
 
 /** Module IDs that can be deferred when --launch is set (not needed for Claude Code). */
-const DEFERRABLE_IDS = new Set(["pnpm-install", "corpus-migrate", "knowledge-graph", "verify-harness", "verify-mcp"]);
+const DEFERRABLE_IDS = new Set([
+  "seed-history", "pnpm-install", "corpus-migrate", "knowledge-graph",
+  "verify-harness", "verify-mcp",
+]);
 
 const logger = new Logger();
 

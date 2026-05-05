@@ -2086,7 +2086,14 @@ var PHASES = [
 ], ALL_MODULES = PHASES.flatMap((p) => p.modules);
 
 // src/index.ts
-var DEFERRABLE_IDS = /* @__PURE__ */ new Set(["pnpm-install", "corpus-migrate", "knowledge-graph", "verify-harness", "verify-mcp"]), logger = new Logger(), GLOBAL_TIMEOUT_MS = 18e4;
+var DEFERRABLE_IDS = /* @__PURE__ */ new Set([
+  "seed-history",
+  "pnpm-install",
+  "corpus-migrate",
+  "knowledge-graph",
+  "verify-harness",
+  "verify-mcp"
+]), logger = new Logger(), GLOBAL_TIMEOUT_MS = 18e4;
 async function main() {
   setTimeout(() => {
     logger.fail(
