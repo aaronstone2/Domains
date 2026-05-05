@@ -8,7 +8,7 @@ import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types
 export const seedHistoryModule: InstallerModule = {
   id: "seed-history",
   description: "Append cmd_history.txt → ~/.bash_history and import into atuin",
-  tags: ["shell", "productivity"],
+  tags: ["shell", "history"],
 
   shouldRun(config): boolean {
     return !config.noShellConfig;

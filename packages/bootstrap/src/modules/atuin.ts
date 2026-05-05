@@ -7,7 +7,7 @@ import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types
 export const atuinModule: InstallerModule = {
   id: "atuin",
   description: "atuin (TUI shell history). User-local install via setup.atuin.sh.",
-  tags: ["shell", "productivity"],
+  tags: ["shell", "history"],
 
   shouldRun(): boolean {
     return process.platform === "linux";
