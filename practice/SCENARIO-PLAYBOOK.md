@@ -265,3 +265,38 @@ When a scenario doesn't match any row exactly:
 - The closest row's `dprobe` keyword is usually still useful
 - `dprobe gateway <c>` (full dump) is the catch-all when uncertain
 - `harness ask` with the customer's exact words → the corpus surfaces the closest failure mode
+
+---
+
+## Corpus integration
+
+The playbook content is also stored in the corpus DuckDB so `harness ask`
+returns it during the interview. New failure mode IDs:
+
+| ID | Surface symptom |
+|---|---|
+| `docker.fm.multi-symptom-service-gateway` | gateway 503 + N downstream classes failing |
+| `devin.fm.repo-scoped-secret-not-auto-injected` | Devin Bug 101 — secret env var empty |
+| `devin.fm.snapshot-fallback-after-build-failure` | session boots from old snapshot after blueprint changes |
+| `devin.fm.nat-gateway-idle-timeout-disconnects` | long-running session loses connections after idle |
+| `devin.fm.long-session-context-overflow-loop` | Devin loops re-reading files; ACU burn climbs |
+| `devin.fm.git-push-blocked-by-branch-protection` | Devin completes work but git push rejected |
+
+Existing failure modes were also enriched with `dprobe`/`dfix` references in
+their fix_steps: `docker.fm.exit-137-oomkilled`, `docker.fm.dns-not-resolving-from-container`,
+`docker.fm.cgroup-driver-mismatch`, `docker.fm.zombie-processes-leaking`,
+plus several Linux + Devin networking/cert ones.
+
+To re-apply (e.g., after a fresh DB clone):
+
+```bash
+pnpm corpus              # apply all migrations + rebuild FTS if any new
+pnpm corpus --dry-run    # preview what would run
+pnpm corpus --rebuild-fts  # force FTS rebuild even if no new migrations
+```
+
+Migrations are idempotent — re-running on an already-migrated DB does nothing.
+
+The bootstrap installer (`./bootstrap.sh install`) runs `pnpm corpus` automatically
+via the `corpus-migrate` module, so a fresh DevBox install ends up with the
+enriched corpus state without manual steps.

@@ -21,6 +21,7 @@ import { dockerCompletionModule } from "./docker-completion.ts";
 import { bashrcModule } from "./bashrc.ts";
 import { anthropicKeyModule } from "./anthropic-key.ts";
 import { pnpmInstallModule } from "./pnpm-install.ts";
+import { corpusMigrateModule } from "./corpus-migrate.ts";
 import { knowledgeGraphModule } from "./knowledge-graph.ts";
 import { verifyHarnessModule } from "./verify-harness.ts";
 import { verifyMcpModule } from "./verify-mcp.ts";
@@ -60,7 +61,7 @@ export const PHASES: readonly Phase[] = [
   {
     name: "Repo + verify",
     description: "Workspace deps, knowledge graph, end-to-end smoke tests",
-    modules: [pnpmInstallModule, knowledgeGraphModule, verifyHarnessModule, verifyMcpModule],
+    modules: [pnpmInstallModule, corpusMigrateModule, knowledgeGraphModule, verifyHarnessModule, verifyMcpModule],
   },
 ];
 
