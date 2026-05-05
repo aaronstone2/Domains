@@ -35,10 +35,23 @@ export class NoAnthropicKeyError extends Error {
 }
 
 export class InvalidAnthropicKeyError extends Error {
-  constructor(reason: string) {
-    super(`Anthropic key looks invalid: ${reason}. Got: ${reason}`);
+  constructor(reason: string, maskedKey?: string) {
+    const got = maskedKey !== undefined ? ` Got: ${maskedKey}.` : "";
+    super(`Anthropic key looks invalid: ${reason}.${got}`);
     this.name = "InvalidAnthropicKeyError";
   }
+}
+
+/**
+ * Diagnostic mask: never shows the full key. Tells the user the LENGTH and
+ * the first 4 chars so they can spot paste issues (truncation, trailing
+ * newlines, etc.) without exposing the secret.
+ */
+function diagnosticMask(key: string): string {
+  if (key.length === 0) return "(empty input)";
+  if (key.length < 4) return `(${key.length} chars: "${key}")`;
+  const head = key.slice(0, 4);
+  return `(${key.length} chars starting "${head}…")`;
 }
 
 const KEY_PATH = path.join(os.homedir(), ".config", "domains", "anthropic-key");
@@ -54,42 +67,70 @@ export async function loadAnthropicKey(opts: {
   readonly interactive?: boolean;
   readonly offerPersist?: boolean;
 }): Promise<{ readonly key: string; readonly source: KeySource }> {
-  // 1. CLI flag (explicit, wins)
-  if (opts.fromFlag !== undefined && opts.fromFlag !== "") {
-    validateKey(opts.fromFlag);
-    if (opts.offerPersist === true) {
-      await maybeOfferPersist(opts.fromFlag, "flag", opts.logger);
+  // 1. CLI flag (explicit, wins). Trim — pasted flags often have trailing
+  // whitespace that the shell doesn't strip.
+  if (opts.fromFlag !== undefined) {
+    const trimmed = opts.fromFlag.trim();
+    if (trimmed !== "") {
+      validateKey(trimmed);
+      if (opts.offerPersist === true) {
+        await maybeOfferPersist(trimmed, "flag", opts.logger);
+      }
+      return { key: trimmed, source: "flag" };
     }
-    return { key: opts.fromFlag, source: "flag" };
   }
 
-  // 2. Environment
-  const fromEnv = process.env["ANTHROPIC_API_KEY"];
-  if (fromEnv !== undefined && fromEnv !== "") {
-    validateKey(fromEnv);
-    if (opts.offerPersist === true) {
-      await maybeOfferPersist(fromEnv, "env", opts.logger);
+  // 2. Environment. Same trim — env vars often have trailing newlines from
+  // export commands.
+  const fromEnvRaw = process.env["ANTHROPIC_API_KEY"];
+  if (fromEnvRaw !== undefined) {
+    const fromEnv = fromEnvRaw.trim();
+    if (fromEnv !== "") {
+      validateKey(fromEnv);
+      if (opts.offerPersist === true) {
+        await maybeOfferPersist(fromEnv, "env", opts.logger);
+      }
+      return { key: fromEnv, source: "env" };
     }
-    return { key: fromEnv, source: "env" };
   }
 
-  // 3. Config file
+  // 3. Config file (already trimmed by readFromConfigFile).
   const fromFile = await readFromConfigFile();
   if (fromFile !== undefined) {
     validateKey(fromFile);
     return { key: fromFile, source: "file" };
   }
 
-  // 4. Interactive prompt
+  // 4. Interactive prompt — with retries. Most paste failures are
+  // recoverable by trying again. Up to 3 attempts; Ctrl-C aborts.
   if (opts.interactive !== false && process.stdin.isTTY === true) {
-    opts.logger.info(`No key found in flag/env/file. Prompting (input hidden)...`);
-    const typed = await promptHidden("Anthropic API key: ");
-    if (typed === "") throw new NoAnthropicKeyError();
-    validateKey(typed);
-    if (opts.offerPersist === true) {
-      await maybeOfferPersist(typed, "prompt", opts.logger);
+    const MAX_ATTEMPTS = 3;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      opts.logger.info(
+        attempt === 1
+          ? "No key found in flag/env/file. Prompting (input hidden, paste from your password manager)..."
+          : `Attempt ${attempt}/${MAX_ATTEMPTS} — paste again (Ctrl-C to abort)`,
+      );
+      const typed = (await promptHidden("Anthropic API key: ")).trim();
+      if (typed === "") {
+        opts.logger.warn(`Got empty input. Try again.`);
+        continue;
+      }
+      try {
+        validateKey(typed);
+        if (opts.offerPersist === true) {
+          await maybeOfferPersist(typed, "prompt", opts.logger);
+        }
+        return { key: typed, source: "prompt" };
+      } catch (err) {
+        if (err instanceof InvalidAnthropicKeyError) {
+          opts.logger.warn((err as Error).message);
+          if (attempt < MAX_ATTEMPTS) continue;
+        }
+        throw err;
+      }
     }
-    return { key: typed, source: "prompt" };
+    // All retries exhausted — fall through to NoAnthropicKeyError below.
   }
 
   throw new NoAnthropicKeyError();
@@ -149,13 +190,16 @@ export function configFilePath(): string {
 
 function validateKey(key: string): void {
   if (!key.startsWith("sk-ant-")) {
-    throw new InvalidAnthropicKeyError("missing sk-ant- prefix");
+    throw new InvalidAnthropicKeyError("missing sk-ant- prefix", diagnosticMask(key));
   }
   if (key.length < 30) {
-    throw new InvalidAnthropicKeyError("too short to be a real key");
+    throw new InvalidAnthropicKeyError("too short to be a real key", diagnosticMask(key));
   }
   if (/\s/.test(key)) {
-    throw new InvalidAnthropicKeyError("contains whitespace");
+    throw new InvalidAnthropicKeyError(
+      "contains whitespace (did you paste something that includes a newline?)",
+      diagnosticMask(key),
+    );
   }
 }
 
