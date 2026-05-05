@@ -10,7 +10,7 @@
 
 set +e
 
-c="${1:-}"; n="${2:-20}"; pat="${3:-gateway\|server\|node}"
+c="${1:-}"; n="${2:-30}"; pat="${3:-gateway\|server\|node}"
 section() { echo ""; echo "=== $* ==="; }
 
 if [ "$c" = "-h" ] || [ "$c" = "--help" ]; then
@@ -19,7 +19,8 @@ if [ "$c" = "-h" ] || [ "$c" = "--help" ]; then
 fi
 [ -z "$c" ] && { echo "usage: $0 <container> [n_samples] [pattern]" >&2; exit 2; }
 
-section "Leak watch ($n samples, 0.3s apart) on '$pat' inside '$c'"
+section "Leak watch ($n samples, 1s apart) on '$pat' inside '$c'"
+echo "Tip: generate load between samples (e.g. curl the endpoint in another tab)"
 echo "i  pid  RSS_MB  fd_count"
 for i in $(seq 1 "$n"); do
   pid=$(docker exec "$c" sh -c "pgrep -f '$pat' | head -1" 2>/dev/null)
@@ -27,7 +28,7 @@ for i in $(seq 1 "$n"); do
   rss=$(docker exec "$c" sh -c "awk '/VmRSS/ {print int(\$2/1024)}' /proc/$pid/status 2>/dev/null")
   fd=$(docker exec "$c" sh -c "ls /proc/$pid/fd 2>/dev/null | wc -l")
   printf "%-3d %-4s %-7s %s\n" "$i" "$pid" "$rss" "$fd"
-  sleep 0.3
+  sleep 1
 done
 
 section "Hint"

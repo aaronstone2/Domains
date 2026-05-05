@@ -36,6 +36,7 @@ Every script:
 | `throttle.sh <c>` | CPU throttling specifically (DevBox classic — slow but %CPU low) |
 | `disk.sh <c>` | df + du + iostat + per-process /proc/<pid>/io + inode usage |
 | `secrets.sh <c>` | Devin Bug 101 — env vars + /run/repo_secrets check |
+| `ulimits.sh <c> [pat]` | fd exhaustion — per-process fd usage vs limit + system-wide counts |
 | `restart.sh <c>` | Restart count + die events + last logs + exit-code interpretation |
 | `gateway.sh <c>` | Multi-symptom service gateway full dump (calls all the above) |
 

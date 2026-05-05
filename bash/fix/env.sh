@@ -25,9 +25,10 @@ if [ "$c" = "-h" ] || [ "$c" = "--help" ]; then
 fi
 [ -z "$c" ] || [ -z "$key" ] || [ -z "$val" ] && { echo "usage: $0 <container> <KEY> <VALUE> [--apply]" >&2; exit 2; }
 
-section "TEMP FIX: write env to /etc/profile.d, then HUP PID 1"
+section "TEMP FIX: write env to /etc/profile.d (picked up by new shells)"
 run "docker exec $c sh -c 'echo \"export $key=$val\" >> /etc/profile.d/dfix-env.sh'"
-run "docker exec $c sh -c 'kill -HUP 1 2>/dev/null || true'"
+echo "  NOTE: running processes won't see this until restarted."
+echo "  Next step: bash bash/fix/restart-process.sh $c --apply"
 
 section "PERMANENT FIX (do this in your deployment config)"
 echo "  docker-compose: add 'environment: $key: $val' under the service"
@@ -35,6 +36,7 @@ echo "  docker run:     -e $key=$val ..."
 echo "  k8s:            env: [{name: $key, value: $val}]"
 
 section "VERIFY"
-echo "  docker exec $c sh -c 'env | grep $key'"
+echo "  docker exec $c sh -c '. /etc/profile.d/dfix-env.sh && echo \$${key}'  # new shell"
+echo "  docker exec $c sh -c 'cat /proc/1/environ | tr \"\\0\" \"\\n\" | grep $key'  # PID 1 (needs restart to change)"
 
-$APPLY || echo ""; $APPLY || echo "(dry-run; pass --apply to execute)"
+$APPLY || echo "(dry-run; pass --apply to execute)"

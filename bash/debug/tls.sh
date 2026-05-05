@@ -28,7 +28,7 @@ section "Cert dates"
 in_c "echo | openssl s_client -connect $hp 2>&1 | openssl x509 -noout -dates 2>/dev/null"
 
 section "Cert chain (server-presented)"
-in_c "echo | openssl s_client -connect $hp -showcerts 2>&1 | grep -E 'depth|verify|^ *[is]:'"
+in_c "echo | openssl s_client -connect $hp -showcerts 2>&1 | grep -E 'depth|verify|subject|issuer'"
 
 section "Container CA env vars"
 in_c "env | grep -iE 'CA_|CERT|SSL'"

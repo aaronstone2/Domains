@@ -20,6 +20,7 @@ fi
 
 img=$(docker inspect "$c" --format '{{.Config.Image}}' 2>/dev/null)
 cmd=$(docker inspect "$c" --format '{{join .Config.Cmd " "}}' 2>/dev/null)
+# NOTE: port extraction grabs first binding per port — review if container has multiple bindings
 ports=$(docker inspect "$c" --format '{{range $p, $v := .NetworkSettings.Ports}}-p {{(index $v 0).HostPort}}:{{$p}} {{end}}' 2>/dev/null)
 mounts=$(docker inspect "$c" --format '{{range .Mounts}}-v {{.Source}}:{{.Destination}} {{end}}' 2>/dev/null)
 

@@ -26,6 +26,8 @@ fi
 [ -z "$c" ] || [ -z "$dns" ] && { echo "usage: $0 <container> <dns_ip> [--apply]" >&2; exit 2; }
 
 section "TEMP FIX: prepend nameserver $dns to '$c' resolv.conf"
+echo "  WARNING: Docker bind-mounts /etc/resolv.conf — edits may revert on container restart."
+echo "  This fix is for proving DNS works NOW. Use PERMANENT FIX for persistence."
 run "docker exec $c sh -c 'cp /etc/resolv.conf /etc/resolv.conf.bak'"
 run "docker exec $c sh -c '(echo \"nameserver $dns\"; cat /etc/resolv.conf) > /tmp/.r && cat /tmp/.r > /etc/resolv.conf && rm /tmp/.r'"
 
