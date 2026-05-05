@@ -1,18 +1,18 @@
-// Module: node — Node.js >= 22. Tries NodeSource apt repo first; if that
-// fails (rate-limiting, network issues, repo down), falls back to fnm
-// (fast node manager) which installs user-locally with no apt dependency.
+// Module: node — Node.js >= 22. Uses binary tarball for speed (~2s vs ~25s
+// for NodeSource apt). Falls back to fnm if the tarball download fails.
 //
-// The trampoline (bootstrap.sh) already ensures a basic node exists before
-// this module runs. This module only fires when the existing version is
-// below the required major.
+// The trampoline (bootstrap.sh) already ensures node exists before this
+// module runs. This module only fires when the existing version is below
+// the required major (e.g. system node is v18).
 
 import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types.ts";
 
 const REQUIRED_MAJOR = 22;
+const NODE_VERSION = "22.15.0";
 
 export const nodeModule: InstallerModule = {
   id: "node",
-  description: `Node.js >= ${REQUIRED_MAJOR} via NodeSource apt repo (fnm fallback)`,
+  description: `Node.js >= ${REQUIRED_MAJOR} via binary tarball (fnm fallback)`,
   tags: ["runtime"],
 
   shouldRun(): boolean {
@@ -24,12 +24,12 @@ export const nodeModule: InstallerModule = {
   },
 
   async install(ctx: InstallContext): Promise<void> {
-    // Strategy 1: NodeSource apt repo (preferred — system-wide install).
-    const nodeSourceOk = await tryNodeSource(ctx);
-    if (nodeSourceOk && (await currentNodeMajor(ctx)) >= REQUIRED_MAJOR) return;
+    // Strategy 1: binary tarball (fast — ~2s download+extract, no apt needed).
+    const tarballOk = await tryBinaryTarball(ctx);
+    if (tarballOk && (await currentNodeMajor(ctx)) >= REQUIRED_MAJOR) return;
 
     // Strategy 2: fnm (fast node manager) — user-local, no root needed.
-    ctx.logger.warn("NodeSource install failed or node version still too old; trying fnm fallback");
+    ctx.logger.warn("binary tarball install failed; trying fnm fallback");
     await tryFnm(ctx);
   },
 
@@ -43,29 +43,30 @@ export const nodeModule: InstallerModule = {
   },
 };
 
-async function tryNodeSource(ctx: InstallContext): Promise<boolean> {
-  const setupUrl = `https://deb.nodesource.com/setup_${REQUIRED_MAJOR}.x`;
-  const setupResult = await ctx.runner.run(`curl -fsSL --max-time 15 ${setupUrl} | bash -`, {
-    sudo: true,
-    stream: true,
-    allowFailure: true,
-  });
-  if (setupResult.code !== 0) {
-    ctx.logger.warn(
-      `NodeSource setup script failed (exit ${setupResult.code}). ` +
-        `Possibly rate-limited or unreachable.`,
-    );
+async function tryBinaryTarball(ctx: InstallContext): Promise<boolean> {
+  const arch = process.arch === "x64" ? "x64" : "arm64";
+  const url = `https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${arch}.tar.gz`;
+  const nodeDir = `/usr/local/lib/node-v${NODE_VERSION}`;
+
+  const result = await ctx.runner.run(
+    `curl -fsSL --max-time 15 "${url}" | tar xz -C /usr/local/lib/ && mv /usr/local/lib/node-v${NODE_VERSION}-linux-${arch} ${nodeDir}`,
+    { sudo: true, allowFailure: true },
+  );
+  if (result.code !== 0) {
+    ctx.logger.warn(`binary tarball download failed (exit ${result.code})`);
     return false;
   }
-  const installResult = await ctx.runner.run(
-    "DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs",
-    { sudo: true, stream: true, allowFailure: true },
-  );
-  return installResult.code === 0;
+  // Symlink into /usr/local/bin
+  for (const bin of ["node", "npm", "npx"]) {
+    await ctx.runner.run(`ln -sf ${nodeDir}/bin/${bin} /usr/local/bin/${bin}`, {
+      sudo: true,
+      allowFailure: true,
+    });
+  }
+  return true;
 }
 
 async function tryFnm(ctx: InstallContext): Promise<void> {
-  // fnm installs to ~/.local/share/fnm and is a single static binary.
   const fnmInstall = await ctx.runner.run(
     "curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell",
     { stream: true, allowFailure: true },
@@ -77,15 +78,12 @@ async function tryFnm(ctx: InstallContext): Promise<void> {
         `curl -fsSL https://fnm.vercel.app/install | bash`,
     );
   }
-  // fnm binary lands at ~/.local/share/fnm/fnm; add to PATH for this session.
   const fnmDir = `${ctx.home}/.local/share/fnm`;
   const envSetup = `export PATH="${fnmDir}:$PATH" && eval "$(fnm env)"`;
   await ctx.runner.run(
     `${envSetup} && fnm install ${REQUIRED_MAJOR} && fnm use ${REQUIRED_MAJOR} && fnm default ${REQUIRED_MAJOR}`,
     { stream: true },
   );
-  // Symlink fnm's node/npm into /usr/local/bin so subsequent modules find
-  // them on the default PATH without needing fnm env in every shell.
   const nodePathResult = await ctx.runner.run(
     `${envSetup} && which node`,
     { allowFailure: true },
@@ -104,7 +102,6 @@ async function tryFnm(ctx: InstallContext): Promise<void> {
 async function currentNodeMajor(ctx: InstallContext): Promise<number> {
   if (!(await ctx.runner.commandExists("node"))) return 0;
   const v = await ctx.runner.capture("node -v");
-  // node -v prints "vNN.MM.PP"
   const m = /^v(\d+)\./.exec(v);
   if (m === null || m[1] === undefined) return 0;
   return Number.parseInt(m[1], 10);

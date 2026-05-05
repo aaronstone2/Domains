@@ -51,11 +51,15 @@ if ! command -v pnpm >/dev/null 2>&1; then
   $SUDO npm install -g pnpm 2>/dev/null
 fi
 
-# ---- Workspace deps ----
-say "pnpm install (workspace)"
-if ! pnpm install --prefer-offline 2>&1 | tail -1; then
-  warn "pnpm install FAILED"
-  exit 1
+# ---- Workspace deps (skip if already present) ----
+if [[ -d "$REPO_DIR/node_modules/.pnpm" ]]; then
+  say "workspace deps present (skipping pnpm install)"
+else
+  say "pnpm install (workspace)"
+  if ! pnpm install --prefer-offline 2>&1 | tail -3; then
+    warn "pnpm install FAILED"
+    exit 1
+  fi
 fi
 
 # ---- Hand off to TS ----

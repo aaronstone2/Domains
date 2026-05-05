@@ -172,9 +172,19 @@ async function runInstall(ctx: InstallContext): Promise<number> {
   const needsInstall = modules.filter((m) =>
     m.shouldRun(ctx.config) && (!installedCache.get(m.id) || ctx.config.force),
   );
-  const etaSec = needsInstall.length > 0
-    ? needsInstall.reduce((sum, m) => sum + (ETA_PER_MODULE_SEC[m.id] ?? 5), 0)
-    : 5;
+  // Phase-aware ETA: parallel phases use max(module ETAs), not sum.
+  const needsSet = new Set(needsInstall.map((m) => m.id));
+  let etaSec = 0;
+  for (const phase of PHASES) {
+    const phaseNeeds = phase.modules.filter((m) => needsSet.has(m.id));
+    if (phaseNeeds.length === 0) continue;
+    if (phase.parallel !== false && phaseNeeds.length > 1) {
+      etaSec += Math.max(...phaseNeeds.map((m) => ETA_PER_MODULE_SEC[m.id] ?? 2));
+    } else {
+      etaSec += phaseNeeds.reduce((s, m) => s + (ETA_PER_MODULE_SEC[m.id] ?? 2), 0);
+    }
+  }
+  if (etaSec === 0) etaSec = 3;
   logger.step(
     `installing ${modules.length} module(s)` +
       (needsInstall.length < modules.length ? ` (${needsInstall.length} need work)` : "") +
@@ -639,25 +649,27 @@ function printSummary(results: readonly ModuleStatus[], totalSec: number): void 
 // -------------------- helpers --------------------
 
 const ETA_PER_MODULE_SEC: Readonly<Record<string, number>> = {
-  "apt-core": 25,
-  "apt-optional": 60,
-  "apt-docker": 30,
-  "apt-k8s": 10,
-  "apt-aws": 30,
-  node: 20,
-  pnpm: 5,
-  "claude-code": 15,
-  eza: 15,
-  zoxide: 10,
-  atuin: 15,
-  "seed-history": 3,
+  "apt-core": 5,
+  "apt-optional": 2,
+  "apt-docker": 5,
+  "apt-k8s": 3,
+  "apt-aws": 5,
+  node: 1,
+  pnpm: 1,
+  "claude-code": 3,
+  eza: 2,
+  zoxide: 2,
+  atuin: 2,
+  "seed-history": 1,
   "docker-completion": 1,
   "interview-notes": 1,
   bashrc: 1,
-  "pnpm-install": 30,
-  "knowledge-graph": 5,
-  "verify-harness": 3,
-  "verify-mcp": 5,
+  "anthropic-key": 1,
+  "pnpm-install": 2,
+  "corpus-migrate": 1,
+  "knowledge-graph": 1,
+  "verify-harness": 2,
+  "verify-mcp": 2,
 };
 
 function formatDuration(sec: number): string {
