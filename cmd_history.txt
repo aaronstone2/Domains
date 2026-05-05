@@ -1001,3 +1001,199 @@ systemctl is-active --quiet docker && echo running || echo dead
 find /etc -type f -mmin -60 2>/dev/null | head -20
 # → "is the system overloaded?" (one-line health check)
 echo "load=$(cat /proc/loadavg | awk '{print $1}') cpus=$(nproc) mem=$(free -h | awk '/^Mem/{print $3"/"$2}') swap=$(free -h | awk '/^Swap/{print $3"/"$2}') disk=$(df -h / | awk 'NR==2{print $5}')"
+
+# ============================================================================
+# ===== Practice scenarios + matching debug/fix scripts =====
+# ============================================================================
+
+# --- #28 Bug 101: env-var-empty (repo-scoped secrets not auto-injected) ---
+bash practice/28-env-var-empty.sh start
+bash bash/debug/secrets.sh $C
+bash bash/fix/env.sh $C KEY VALUE --apply
+bash practice/28-env-var-empty.sh verify
+bash practice/28-env-var-empty.sh reveal
+bash practice/28-env-var-empty.sh restore
+
+# --- #06 Docker OOM (exit 137 / OOMKilled) ---
+bash practice/06-docker-oom.sh start
+bash bash/debug/oom.sh $C
+bash bash/debug/cgroup.sh $C
+bash bash/fix/restart-container.sh $C --apply
+bash practice/06-docker-oom.sh verify
+bash practice/06-docker-oom.sh reveal
+bash practice/06-docker-oom.sh restore
+
+# --- #15 CPU throttled ("slow but CPU low" — DevBox cgroup throttle) ---
+bash practice/15-cpu-throttled.sh start
+bash bash/debug/throttle.sh $C
+bash bash/debug/cgroup.sh $C
+bash practice/15-cpu-throttled.sh verify
+bash practice/15-cpu-throttled.sh reveal
+bash practice/15-cpu-throttled.sh restore
+
+# --- #13 Zombie processes (PID 1 not reaping) ---
+bash practice/13-zombie-processes.sh start
+bash bash/debug/procs.sh $C
+bash bash/fix/recreate-init.sh $C
+bash practice/13-zombie-processes.sh verify
+bash practice/13-zombie-processes.sh reveal
+bash practice/13-zombie-processes.sh restore
+
+# --- #32 Push rejected (perms vs branch protection) ---
+bash practice/32-push-rejected.sh start
+bash practice/32-push-rejected.sh verify
+bash practice/32-push-rejected.sh reveal
+bash practice/32-push-rejected.sh restore
+
+# --- #24 FD exhaustion (EMFILE / CLOSE_WAIT) ---
+bash practice/24-fd-exhaustion.sh start
+bash bash/debug/ulimits.sh $C 'node\|server'
+bash bash/debug/leak.sh $C 30 'node\|server'
+bash practice/24-fd-exhaustion.sh verify
+bash practice/24-fd-exhaustion.sh reveal
+bash practice/24-fd-exhaustion.sh restore
+
+# --- #19 Corporate CA bundle (Customer App 101 — corp proxy TLS) ---
+bash practice/19-corporate-ca-bundle.sh start
+bash bash/debug/tls.sh $C auth.corp.internal:8443
+bash bash/fix/cabundle.sh $C /path/root.pem /path/inter.pem --apply
+bash bash/fix/env.sh $C NODE_EXTRA_CA_CERTS /etc/ssl/custom/full-chain.pem --apply
+bash practice/19-corporate-ca-bundle.sh verify
+bash practice/19-corporate-ca-bundle.sh reveal
+bash practice/19-corporate-ca-bundle.sh restore
+
+# --- #08 Bad resolv.conf (DNS layer-by-layer) ---
+bash practice/08-bad-resolv.sh start
+bash bash/debug/dns.sh $C db.corp.internal
+bash bash/fix/dns.sh $C 10.0.0.53 --apply
+bash bash/fix/hosts.sh $C 10.0.0.5 db.corp.internal --apply
+bash practice/08-bad-resolv.sh verify
+bash practice/08-bad-resolv.sh reveal
+bash practice/08-bad-resolv.sh restore
+
+# --- #09 Fleet OOM (multi-container OOM sweep) ---
+bash practice/09-fleet-oom.sh start
+bash bash/debug/oom.sh $C
+bash bash/debug/gateway.sh $C
+bash practice/09-fleet-oom.sh verify
+bash practice/09-fleet-oom.sh reveal
+bash practice/09-fleet-oom.sh restore
+
+# --- #18 TLS cert errors (expired / unknown CA / hostname mismatch) ---
+bash practice/18-tls-cert.sh start
+bash bash/debug/tls.sh $C host:443
+bash bash/fix/cert-renew.sh $C hostname 365 --apply
+bash practice/18-tls-cert.sh verify
+bash practice/18-tls-cert.sh reveal
+bash practice/18-tls-cert.sh restore
+
+# --- #04 Bad systemd unit ---
+bash practice/04-bad-systemd-unit.sh start
+bash practice/04-bad-systemd-unit.sh verify
+bash practice/04-bad-systemd-unit.sh reveal
+bash practice/04-bad-systemd-unit.sh restore
+
+# --- #07 Docker no egress (container can't reach internet) ---
+bash practice/07-docker-no-egress.sh start
+bash bash/debug/network.sh $C
+bash bash/debug/dns.sh $C google.com
+bash practice/07-docker-no-egress.sh verify
+bash practice/07-docker-no-egress.sh reveal
+bash practice/07-docker-no-egress.sh restore
+
+# --- #11 Noisy neighbor (disk/log spam) ---
+bash practice/11-noisy-neighbor.sh start
+bash bash/debug/disk.sh $C
+bash bash/fix/prune.sh --apply
+bash practice/11-noisy-neighbor.sh verify
+bash practice/11-noisy-neighbor.sh reveal
+bash practice/11-noisy-neighbor.sh restore
+
+# --- #14 CPU thread runaway (top -H / strace) ---
+bash practice/14-cpu-thread-runaway.sh start
+bash bash/debug/throttle.sh $C
+bash bash/debug/cgroup.sh $C
+bash bash/fix/restart-process.sh $C 'runaway' --apply
+bash practice/14-cpu-thread-runaway.sh verify
+bash practice/14-cpu-thread-runaway.sh reveal
+bash practice/14-cpu-thread-runaway.sh restore
+
+# --- #16 Host OOM killer (dmesg oom) ---
+bash practice/16-host-oom-killer.sh start
+bash bash/debug/oom.sh
+bash bash/debug/cgroup.sh
+bash practice/16-host-oom-killer.sh verify
+bash practice/16-host-oom-killer.sh reveal
+bash practice/16-host-oom-killer.sh restore
+
+# --- #20 Private registry cert (dockerd per-registry trust) ---
+bash practice/20-private-registry-cert.sh start
+bash bash/debug/tls.sh '' registry.corp.internal:443
+bash practice/20-private-registry-cert.sh verify
+bash practice/20-private-registry-cert.sh reveal
+bash practice/20-private-registry-cert.sh restore
+
+# --- #12 Version skew (fleet drift) ---
+bash practice/12-version-skew.sh start
+bash bash/debug/gateway.sh $C
+bash practice/12-version-skew.sh verify
+bash practice/12-version-skew.sh reveal
+bash practice/12-version-skew.sh restore
+
+# --- Devin-specific scenarios ---
+
+# --- #29 Tools old version (snapshot fallback) ---
+bash practice/29-tools-old-version.sh start
+bash practice/29-tools-old-version.sh verify
+bash practice/29-tools-old-version.sh reveal
+bash practice/29-tools-old-version.sh restore
+
+# --- #30 Session drops periodically (NAT Gateway idle timeout) ---
+bash practice/30-session-drops-periodically.sh start
+bash bash/debug/network.sh $C
+bash practice/30-session-drops-periodically.sh verify
+bash practice/30-session-drops-periodically.sh reveal
+bash practice/30-session-drops-periodically.sh restore
+
+# --- #31 Agent stuck repeating (context overflow) ---
+bash practice/31-agent-stuck-repeating.sh start
+bash practice/31-agent-stuck-repeating.sh verify
+bash practice/31-agent-stuck-repeating.sh reveal
+bash practice/31-agent-stuck-repeating.sh restore
+
+# ============================================================================
+# ===== Debug script quick-reference (run standalone) =====
+# ============================================================================
+
+# --- Full gateway dump (runs all debug scripts) ---
+bash bash/debug/gateway.sh $C > notes/logs/$(date +%F-%H%M)-gateway.log
+# --- Individual debug scripts ---
+bash bash/debug/oom.sh $C
+bash bash/debug/dns.sh $C hostname
+bash bash/debug/tls.sh $C host:port
+bash bash/debug/network.sh $C
+bash bash/debug/procs.sh $C
+bash bash/debug/leak.sh $C 30 'node\|server'
+bash bash/debug/cgroup.sh $C
+bash bash/debug/throttle.sh $C
+bash bash/debug/disk.sh $C
+bash bash/debug/secrets.sh $C
+bash bash/debug/ulimits.sh $C 'node\|server'
+bash bash/debug/restart.sh $C
+
+# ============================================================================
+# ===== Fix script quick-reference (all dry-run by default, add --apply) =====
+# ============================================================================
+
+bash bash/fix/env.sh $C KEY VALUE --apply
+bash bash/fix/hosts.sh $C 10.0.0.5 db.corp.internal --apply
+bash bash/fix/hosts-rm.sh $C bad.host.example --apply
+bash bash/fix/dns.sh $C 10.0.0.53 --apply
+bash bash/fix/cabundle.sh $C /path/root.pem /path/inter.pem --apply
+bash bash/fix/cert-renew.sh $C hostname 365 --apply
+bash bash/fix/reload.sh $C nginx --apply
+bash bash/fix/restart-process.sh $C 'node\|server' --apply
+bash bash/fix/restart-container.sh $C --apply
+bash bash/fix/recreate-init.sh $C
+bash bash/fix/install-tools.sh $C --apply
+bash bash/fix/prune.sh --apply
