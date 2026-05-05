@@ -20,6 +20,7 @@ import { seedHistoryModule } from "./seed-history.ts";
 import { dockerCompletionModule } from "./docker-completion.ts";
 import { bashrcModule } from "./bashrc.ts";
 import { anthropicKeyModule } from "./anthropic-key.ts";
+import { interviewNotesModule } from "./interview-notes.ts";
 import { pnpmInstallModule } from "./pnpm-install.ts";
 import { corpusMigrateModule } from "./corpus-migrate.ts";
 import { knowledgeGraphModule } from "./knowledge-graph.ts";
@@ -56,6 +57,7 @@ export const PHASES: readonly Phase[] = [
       bashrcModule,
       seedHistoryModule,
       anthropicKeyModule,
+      interviewNotesModule,
     ],
   },
   {

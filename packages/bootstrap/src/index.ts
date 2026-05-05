@@ -620,6 +620,7 @@ const ETA_PER_MODULE_SEC: Readonly<Record<string, number>> = {
   atuin: 15,
   "seed-history": 3,
   "docker-completion": 1,
+  "interview-notes": 1,
   bashrc: 1,
   "pnpm-install": 30,
   "knowledge-graph": 5,
