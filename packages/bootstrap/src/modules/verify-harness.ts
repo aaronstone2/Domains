@@ -3,11 +3,17 @@
 // PERF: instead of spawning `pnpm harness ask "OOMKilled"` (~1s tsx overhead),
 // we do an inline DuckDB FTS query using the same dynamic import pattern as
 // corpus-migrate. Falls back to subprocess if the inline path fails.
+//
+// Stamp: writes ~/.verify-harness-ok after a successful check. On warm runs,
+// if the stamp exists and _db/knowledge.duckdb hasn't changed, skips entirely.
 
+import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { createRequire } from "node:module";
 
 import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types.ts";
+
+const STAMP_FILE = ".verify-harness-ok";
 
 let cachedResult: { readonly ok: boolean; readonly message: string } | undefined;
 
@@ -20,8 +26,23 @@ export const verifyHarnessModule: InstallerModule = {
     return true;
   },
 
-  async isInstalled(): Promise<boolean> {
-    return false; // always re-run; fast + idempotent
+  async isInstalled(ctx: InstallContext): Promise<boolean> {
+    // If stamp exists and DB hasn't been modified since stamp was written, skip.
+    const stamp = path.join(ctx.home, STAMP_FILE);
+    const dbPath = path.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
+    try {
+      const [stampStat, dbStat] = await Promise.all([
+        fs.stat(stamp),
+        fs.stat(dbPath),
+      ]);
+      if (stampStat.mtimeMs >= dbStat.mtimeMs) {
+        cachedResult = { ok: true, message: "corpus reachable (cached)" };
+        return true;
+      }
+    } catch {
+      // No stamp or no DB — need to verify.
+    }
+    return false;
   },
 
   async install(ctx: InstallContext): Promise<void> {
@@ -42,6 +63,7 @@ export const verifyHarnessModule: InstallerModule = {
 
         if (rows.length > 0 && /oom/i.test(rows[0]!.id)) {
           cachedResult = { ok: true, message: "corpus reachable" };
+          await fs.writeFile(path.join(ctx.home, STAMP_FILE), "ok\n").catch(() => {});
           ctx.logger.ok("harness corpus query verified (inline)");
         } else {
           throw new Error("no OOM failure mode found in corpus");
@@ -70,6 +92,7 @@ export const verifyHarnessModule: InstallerModule = {
         throw new Error(`pnpm harness ask returned exit 0 but no oom/kill match in output.`);
       }
       cachedResult = { ok: true, message: "corpus reachable" };
+      await fs.writeFile(path.join(ctx.home, STAMP_FILE), "ok\n").catch(() => {});
       ctx.logger.ok("harness ask hit the corpus successfully");
     }
   },

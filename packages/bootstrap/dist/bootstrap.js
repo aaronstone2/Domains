@@ -452,10 +452,10 @@ async function persistKey(key) {
 }
 async function readFromConfigFile() {
   try {
-    let stat3 = await fs4.stat(KEY_PATH);
-    if ((stat3.mode & 63) !== 0)
+    let stat5 = await fs4.stat(KEY_PATH);
+    if ((stat5.mode & 63) !== 0)
       throw new Error(
-        `~/.config/domains/anthropic-key has unsafe permissions (${(stat3.mode & 511).toString(8)}). Run: chmod 600 ~/.config/domains/anthropic-key`
+        `~/.config/domains/anthropic-key has unsafe permissions (${(stat5.mode & 511).toString(8)}). Run: chmod 600 ~/.config/domains/anthropic-key`
       );
     let trimmed = (await fs4.readFile(KEY_PATH, "utf8")).trim();
     return trimmed === "" ? void 0 : trimmed;
@@ -722,8 +722,8 @@ stderr: ${result.stderr.trim()}`), this.name = "CommandFailedError", this.cmd = 
       this.logger.info(`[dry-run] append ${content.length} bytes to ${path15}`);
       return;
     }
-    let fs13 = await import("node:fs/promises");
-    await fs13.mkdir(pathDirname(path15), { recursive: !0 }), await fs13.appendFile(path15, content);
+    let fs14 = await import("node:fs/promises");
+    await fs14.mkdir(pathDirname(path15), { recursive: !0 }), await fs14.appendFile(path15, content);
   }
   /**
    * Write file atomically (write-to-tmp + rename). Honors dryRun.
@@ -1665,10 +1665,10 @@ var anthropicKeyModule = {
       return { ok: !0, message: "no encrypted key file (skipped)" };
     }
     try {
-      let stat3 = await fs9.stat(configFilePath());
-      return (stat3.mode & 63) !== 0 ? {
+      let stat5 = await fs9.stat(configFilePath());
+      return (stat5.mode & 63) !== 0 ? {
         ok: !1,
-        message: `${configFilePath()} has unsafe perms ${(stat3.mode & 511).toString(8)} (want 600)`
+        message: `${configFilePath()} has unsafe perms ${(stat5.mode & 511).toString(8)} (want 600)`
       } : { ok: !0, message: `${configFilePath()} present + chmod 600` };
     } catch {
       return { ok: !1, message: `${configFilePath()} missing` };
@@ -1887,16 +1887,27 @@ var knowledgeGraphModule = {
 };
 
 // src/modules/verify-harness.ts
+import * as fs12 from "node:fs/promises";
 import * as path13 from "node:path";
 import { createRequire as createRequire2 } from "node:module";
-var cachedResult, verifyHarnessModule = {
+var STAMP_FILE4 = ".verify-harness-ok", cachedResult, verifyHarnessModule = {
   id: "verify-harness",
   description: "Verify harness can query the corpus (inline DuckDB check, subprocess fallback)",
   tags: ["repo", "verify"],
   shouldRun() {
     return !0;
   },
-  async isInstalled() {
+  async isInstalled(ctx) {
+    let stamp = path13.join(ctx.home, STAMP_FILE4), dbPath = path13.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
+    try {
+      let [stampStat, dbStat] = await Promise.all([
+        fs12.stat(stamp),
+        fs12.stat(dbPath)
+      ]);
+      if (stampStat.mtimeMs >= dbStat.mtimeMs)
+        return cachedResult = { ok: !0, message: "corpus reachable (cached)" }, !0;
+    } catch {
+    }
     return !1;
   },
   async install(ctx) {
@@ -1908,7 +1919,9 @@ var cachedResult, verifyHarnessModule = {
           "SELECT id FROM docker.failure_modes WHERE id ILIKE '%oom%' LIMIT 1"
         );
         if (rows.length > 0 && /oom/i.test(rows[0].id))
-          cachedResult = { ok: !0, message: "corpus reachable" }, ctx.logger.ok("harness corpus query verified (inline)");
+          cachedResult = { ok: !0, message: "corpus reachable" }, await fs12.writeFile(path13.join(ctx.home, STAMP_FILE4), `ok
+`).catch(() => {
+          }), ctx.logger.ok("harness corpus query verified (inline)");
         else
           throw new Error("no OOM failure mode found in corpus");
       } finally {
@@ -1929,7 +1942,9 @@ var cachedResult, verifyHarnessModule = {
         }, new Error(cachedResult.message);
       if (!/oom|kill/i.test(text))
         throw cachedResult = { ok: !1, message: `no relevant content. First 200: ${text.slice(0, 200)}` }, new Error("pnpm harness ask returned exit 0 but no oom/kill match in output.");
-      cachedResult = { ok: !0, message: "corpus reachable" }, ctx.logger.ok("harness ask hit the corpus successfully");
+      cachedResult = { ok: !0, message: "corpus reachable" }, await fs12.writeFile(path13.join(ctx.home, STAMP_FILE4), `ok
+`).catch(() => {
+      }), ctx.logger.ok("harness ask hit the corpus successfully");
     }
   },
   async verify() {
@@ -1938,9 +1953,9 @@ var cachedResult, verifyHarnessModule = {
 };
 
 // src/modules/verify-mcp.ts
-import * as fs12 from "node:fs/promises";
+import * as fs13 from "node:fs/promises";
 import * as path14 from "node:path";
-var INITIALIZE_REQUEST = JSON.stringify({
+var STAMP_FILE5 = ".verify-mcp-ok", INITIALIZE_REQUEST = JSON.stringify({
   jsonrpc: "2.0",
   id: 1,
   method: "initialize",
@@ -1956,16 +1971,29 @@ var INITIALIZE_REQUEST = JSON.stringify({
   shouldRun() {
     return !0;
   },
-  async isInstalled() {
+  async isInstalled(ctx) {
+    let stamp = path14.join(ctx.home, STAMP_FILE5), mcpEntry = path14.join(ctx.config.repoDir, "packages", "harness-mcp", "src", "index.ts"), dbPath = path14.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
+    try {
+      let [stampStat, mcpStat, dbStat] = await Promise.all([
+        fs13.stat(stamp),
+        fs13.stat(mcpEntry),
+        fs13.stat(dbPath)
+      ]);
+      if (stampStat.mtimeMs >= mcpStat.mtimeMs && stampStat.mtimeMs >= dbStat.mtimeMs)
+        return cachedResult2 = { ok: !0, message: "MCP entry point + DuckDB accessible (cached)" }, !0;
+    } catch {
+    }
     return !1;
   },
   async install(ctx) {
     let mcpEntry = path14.join(ctx.config.repoDir, "packages", "harness-mcp", "src", "index.ts"), dbPath = path14.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
     try {
       await Promise.all([
-        fs12.access(mcpEntry, fs12.constants.R_OK),
-        fs12.access(dbPath, fs12.constants.R_OK)
-      ]), cachedResult2 = { ok: !0, message: "MCP entry point + DuckDB accessible" }, ctx.logger.ok("MCP server verified (inline check)");
+        fs13.access(mcpEntry, fs13.constants.R_OK),
+        fs13.access(dbPath, fs13.constants.R_OK)
+      ]), cachedResult2 = { ok: !0, message: "MCP entry point + DuckDB accessible" }, await fs13.writeFile(path14.join(ctx.home, STAMP_FILE5), `ok
+`).catch(() => {
+      }), ctx.logger.ok("MCP server verified (inline check)");
     } catch {
       ctx.logger.info("inline MCP check failed, falling back to subprocess");
       let cmd = `printf '%s\\n' '${INITIALIZE_REQUEST}' | pnpm --filter @domains/harness-mcp --silent start 2>/dev/null | head -1`, result = await ctx.runner.run(cmd, {
@@ -1978,7 +2006,9 @@ var INITIALIZE_REQUEST = JSON.stringify({
           ok: !1,
           message: `MCP handshake failed. Got: ${result.stdout.slice(0, 200)}`
         }, new Error(cachedResult2.message);
-      cachedResult2 = { ok: !0, message: "MCP server boots + handshakes" }, ctx.logger.ok("MCP initialize handshake succeeded");
+      cachedResult2 = { ok: !0, message: "MCP server boots + handshakes" }, await fs13.writeFile(path14.join(ctx.home, STAMP_FILE5), `ok
+`).catch(() => {
+      }), ctx.logger.ok("MCP initialize handshake succeeded");
     }
   },
   async verify() {
@@ -2108,8 +2138,9 @@ async function runInstall(ctx) {
     let phaseNeeds = phase.modules.filter((m) => needsSet.has(m.id));
     phaseNeeds.length !== 0 && (phase.parallel !== !1 && phaseNeeds.length > 1 ? etaSec += Math.max(...phaseNeeds.map((m) => ETA_PER_MODULE_SEC[m.id] ?? 2)) : etaSec += phaseNeeds.reduce((s, m) => s + (ETA_PER_MODULE_SEC[m.id] ?? 2), 0));
   }
-  etaSec === 0 && (etaSec = 3), logger.step(
-    `installing ${modules.length} module(s)` + (needsInstall.length < modules.length ? ` (${needsInstall.length} need work)` : "") + ` \u2014 ETA ~${formatDuration(etaSec)}` + (ctx.config.snapshotBuild ? " [snapshot-build: strict mode]" : "") + (ctx.config.onlyModules !== void 0 ? ` (filtered: ${[...ctx.config.onlyModules].join(",")})` : "")
+  let etaLabel = needsInstall.length === 0 ? " \u2014 all cached" : ` \u2014 ETA ~${formatDuration(etaSec || 3)}`;
+  logger.step(
+    `installing ${modules.length} module(s)` + (needsInstall.length < modules.length ? ` (${needsInstall.length} need work)` : "") + etaLabel + (ctx.config.snapshotBuild ? " [snapshot-build: strict mode]" : "") + (ctx.config.onlyModules !== void 0 ? ` (filtered: ${[...ctx.config.onlyModules].join(",")})` : "")
   );
   let results = [], startTotal = Date.now(), globalIdx = 0;
   for (let phase of PHASES) {
@@ -2132,14 +2163,16 @@ async function runInstall(ctx) {
   let totalSec = Math.round((Date.now() - startTotal) / 1e3);
   if (printSummary(results, totalSec), ctx.config.snapshotBuild) {
     let nonOptionalFailed = results.filter(
-      (r) => r.kind === "failed" && !["apt-optional", "apt-docker", "apt-k8s", "apt-aws", "seed-history"].includes(r.id)
+      (r) => r.kind === "failed" && !isOptionalModule(r.id)
     );
     if (nonOptionalFailed.length > 0)
       return logger.fail(
         `[--snapshot-build] ${nonOptionalFailed.length} required module(s) failed: ` + nonOptionalFailed.map((r) => r.id).join(",")
       ), 1;
   }
-  return ctx.config.launch ? await execLaunch(ctx, results) : results.some((r) => r.kind === "failed") ? 1 : 0;
+  return ctx.config.launch ? await execLaunch(ctx, results) : results.some(
+    (r) => r.kind === "failed" && !isOptionalModule(r.id)
+  ) ? 1 : 0;
 }
 function selectModules(config) {
   return ALL_MODULES.filter((m) => {
@@ -2206,7 +2239,9 @@ async function runVerify(ctx) {
     let log = ctx.logger.child(`${i}/${modules.length} ${mod.id}`), v = await safeVerify(mod, ctx);
     v.ok ? (log.ok(v.message), results.push({ kind: "ok", id: mod.id, verifyMessage: v.message })) : (log.fail(v.message), results.push({ kind: "failed", id: mod.id, error: v.message }));
   }
-  return printSummary(results, 0), results.some((r) => r.kind === "failed") ? 1 : 0;
+  return printSummary(results, 0), results.some(
+    (r) => r.kind === "failed" && !isOptionalModule(r.id)
+  ) ? 1 : 0;
 }
 async function runList(ctx) {
   process.stdout.write(`
@@ -2282,14 +2317,14 @@ async function runKeyEncrypt(ctx) {
     return logger.fail(
       "age binary not found on PATH. Install with: sudo apt install age (Linux), brew install age (macOS), or `pnpm bootstrap install --module=apt-core`."
     ), 1;
-  let fs13 = await import("node:fs/promises"), path15 = await import("node:path"), candidates = [
+  let fs14 = await import("node:fs/promises"), path15 = await import("node:path"), candidates = [
     path15.join(ctx.home, ".ssh", "id_ed25519.pub"),
     path15.join(ctx.home, ".ssh", "id_ecdsa.pub"),
     path15.join(ctx.home, ".ssh", "id_rsa.pub")
   ], pubKey;
   for (let c of candidates)
     try {
-      await fs13.access(c), pubKey = c;
+      await fs14.access(c), pubKey = c;
       break;
     } catch {
     }
@@ -2304,7 +2339,7 @@ async function runKeyEncrypt(ctx) {
     interactive: !0,
     offerPersist: !1
   }), target = path15.join(ctx.config.repoDir, "_secrets", "anthropic-key.age");
-  await fs13.mkdir(path15.dirname(target), { recursive: !0 });
+  await fs14.mkdir(path15.dirname(target), { recursive: !0 });
   let { spawn: spawn2 } = await import("node:child_process"), result = await new Promise((resolve3) => {
     let child = spawn2("age", ["-R", pubKey, "-o", target], {
       stdio: ["pipe", "pipe", "pipe"]
@@ -2319,7 +2354,7 @@ async function runKeyEncrypt(ctx) {
 }
 async function execLaunch(ctx, results) {
   if (results.some(
-    (r) => r.kind === "failed" && !["apt-optional", "apt-docker", "apt-k8s", "apt-aws"].includes(r.id)
+    (r) => r.kind === "failed" && !isOptionalModule(r.id)
   ))
     return logger.warn("not launching claude \u2014 required modules failed (see summary above)"), 1;
   if (ctx.config.anthropicKey === void 0 && process.env.ANTHROPIC_API_KEY === void 0 && process.stdin.isTTY !== !0)
@@ -2347,7 +2382,7 @@ function printSummary(results, totalSec) {
   process.stdout.write(`
 === summary ===
 `);
-  let ok = 0, already = 0, skipped = 0, failed = 0, failedIds = [];
+  let ok = 0, already = 0, skipped = 0, failed = 0, warned = 0, failedIds = [];
   for (let r of results)
     switch (r.kind) {
       case "ok":
@@ -2363,20 +2398,22 @@ function printSummary(results, totalSec) {
 `), skipped++;
         break;
       case "failed":
-        process.stdout.write(`  FAIL     ${r.id.padEnd(22)} ${r.error}
-`), failed++, failedIds.push(r.id);
+        isOptionalModule(r.id) ? (process.stdout.write(`  WARN     ${r.id.padEnd(22)} ${r.error} (optional)
+`), warned++) : (process.stdout.write(`  FAIL     ${r.id.padEnd(22)} ${r.error}
+`), failed++, failedIds.push(r.id));
         break;
     }
-  let totalLine = totalSec > 0 ? ` (took ${formatDuration(totalSec)})` : "";
-  process.stdout.write(
-    `
-  ${ok} ok | ${already} already | ${skipped} skipped | ${failed} failed${totalLine}
-`
-  ), failed > 0 && (process.stdout.write(`
+  let totalLine = totalSec > 0 ? ` (took ${formatDuration(totalSec)})` : "", parts = [`${ok} ok`, `${already} already`, `${skipped} skipped`];
+  warned > 0 && parts.push(`${warned} warned`), failed > 0 && parts.push(`${failed} failed`), process.stdout.write(`
+  ${parts.join(" | ")}${totalLine}
+`), failed > 0 && (process.stdout.write(`
   Retry failed module(s) with:
 `), process.stdout.write(`    pnpm bootstrap install --module=${failedIds.join(",")}
 `)), process.stdout.write(`
 `);
+}
+function isOptionalModule(id) {
+  return ALL_MODULES.find((m) => m.id === id)?.tags?.includes("optional") ?? !1;
 }
 var ETA_PER_MODULE_SEC = {
   "apt-core": 5,

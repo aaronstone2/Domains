@@ -184,11 +184,13 @@ async function runInstall(ctx: InstallContext): Promise<number> {
       etaSec += phaseNeeds.reduce((s, m) => s + (ETA_PER_MODULE_SEC[m.id] ?? 2), 0);
     }
   }
-  if (etaSec === 0) etaSec = 3;
+  const etaLabel = needsInstall.length === 0
+    ? " — all cached"
+    : ` — ETA ~${formatDuration(etaSec || 3)}`;
   logger.step(
     `installing ${modules.length} module(s)` +
       (needsInstall.length < modules.length ? ` (${needsInstall.length} need work)` : "") +
-      ` — ETA ~${formatDuration(etaSec)}` +
+      etaLabel +
       (ctx.config.snapshotBuild ? " [snapshot-build: strict mode]" : "") +
       (ctx.config.onlyModules !== undefined
         ? ` (filtered: ${[...ctx.config.onlyModules].join(",")})`
@@ -239,9 +241,7 @@ async function runInstall(ctx: InstallContext): Promise<number> {
   // --snapshot-build: any non-optional failure = exit 1.
   if (ctx.config.snapshotBuild) {
     const nonOptionalFailed = results.filter(
-      (r) =>
-        r.kind === "failed" &&
-        !["apt-optional", "apt-docker", "apt-k8s", "apt-aws", "seed-history"].includes(r.id),
+      (r) => r.kind === "failed" && !isOptionalModule(r.id),
     );
     if (nonOptionalFailed.length > 0) {
       logger.fail(
@@ -257,7 +257,11 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     return await execLaunch(ctx, results);
   }
 
-  return results.some((r) => r.kind === "failed") ? 1 : 0;
+  // Only non-optional failures produce exit 1.
+  const fatalFail = results.some(
+    (r) => r.kind === "failed" && !isOptionalModule(r.id),
+  );
+  return fatalFail ? 1 : 0;
 }
 
 function selectModules(config: BootstrapConfig): InstallerModule[] {
@@ -375,7 +379,10 @@ async function runVerify(ctx: InstallContext): Promise<number> {
     }
   }
   printSummary(results, 0);
-  return results.some((r) => r.kind === "failed") ? 1 : 0;
+  const fatalFail = results.some(
+    (r) => r.kind === "failed" && !isOptionalModule(r.id),
+  );
+  return fatalFail ? 1 : 0;
 }
 
 // -------------------- list --------------------
@@ -565,7 +572,7 @@ async function runKeyEncrypt(ctx: InstallContext): Promise<number> {
 
 async function execLaunch(ctx: InstallContext, results: readonly ModuleStatus[]): Promise<number> {
   const failedNonOptional = results.some(
-    (r) => r.kind === "failed" && !["apt-optional", "apt-docker", "apt-k8s", "apt-aws"].includes(r.id),
+    (r) => r.kind === "failed" && !isOptionalModule(r.id),
   );
   if (failedNonOptional) {
     logger.warn("not launching claude — required modules failed (see summary above)");
@@ -613,6 +620,7 @@ function printSummary(results: readonly ModuleStatus[], totalSec: number): void 
   let already = 0;
   let skipped = 0;
   let failed = 0;
+  let warned = 0;
   const failedIds: string[] = [];
   for (const r of results) {
     switch (r.kind) {
@@ -629,16 +637,22 @@ function printSummary(results: readonly ModuleStatus[], totalSec: number): void 
         skipped++;
         break;
       case "failed":
-        process.stdout.write(`  FAIL     ${r.id.padEnd(22)} ${r.error}\n`);
-        failed++;
-        failedIds.push(r.id);
+        if (isOptionalModule(r.id)) {
+          process.stdout.write(`  WARN     ${r.id.padEnd(22)} ${r.error} (optional)\n`);
+          warned++;
+        } else {
+          process.stdout.write(`  FAIL     ${r.id.padEnd(22)} ${r.error}\n`);
+          failed++;
+          failedIds.push(r.id);
+        }
         break;
     }
   }
   const totalLine = totalSec > 0 ? ` (took ${formatDuration(totalSec)})` : "";
-  process.stdout.write(
-    `\n  ${ok} ok | ${already} already | ${skipped} skipped | ${failed} failed${totalLine}\n`,
-  );
+  const parts = [`${ok} ok`, `${already} already`, `${skipped} skipped`];
+  if (warned > 0) parts.push(`${warned} warned`);
+  if (failed > 0) parts.push(`${failed} failed`);
+  process.stdout.write(`\n  ${parts.join(" | ")}${totalLine}\n`);
   if (failed > 0) {
     process.stdout.write(`\n  Retry failed module(s) with:\n`);
     process.stdout.write(`    pnpm bootstrap install --module=${failedIds.join(",")}\n`);
@@ -647,6 +661,12 @@ function printSummary(results: readonly ModuleStatus[], totalSec: number): void 
 }
 
 // -------------------- helpers --------------------
+
+/** Modules tagged "optional" don't cause exit 1 on failure. */
+function isOptionalModule(id: string): boolean {
+  const mod = ALL_MODULES.find((m) => m.id === id);
+  return mod?.tags?.includes("optional") ?? false;
+}
 
 const ETA_PER_MODULE_SEC: Readonly<Record<string, number>> = {
   "apt-core": 5,
