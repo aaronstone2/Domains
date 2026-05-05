@@ -146,6 +146,11 @@ node_modules/
 *.sqlite
 *.sqlite3
 
+# Pre-built bootstrap bundle — committed so bare DevBox doesn't need pnpm/tsx.
+# Rebuild with: pnpm bootstrap:build
+!packages/bootstrap/dist/
+!packages/bootstrap/dist/bootstrap.js
+
 # Build / temp
 tmp/
 temp/

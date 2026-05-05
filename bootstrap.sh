@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
-# bootstrap.sh — fast trampoline: Node + pnpm + workspace deps, then TS.
+# bootstrap.sh — fast trampoline: Node → pre-built bundle. No pnpm/tsx needed.
 #
-# Optimized for cold DevBox: binary tarball node (~2s), parallel apt check,
-# pnpm corepack enable (~0.5s). Target: under 10s to TS handoff on bare box.
+# Optimized for bare interview DevBox:
+#   1. Binary tarball Node install (~2s if needed)
+#   2. Hand off to pre-built dist/bootstrap.js (~1s)
+#   Total on bare box: ~3s. Warm: ~1s.
+#
+# The bundle is committed to git — no pnpm install or tsx required on the
+# critical path. pnpm install runs later as a bootstrap module (pnpm-install)
+# to set up workspace deps for the harness CLI.
 #
 # Usage:
 #   ./bootstrap.sh                                          # full install
@@ -24,7 +30,7 @@ if [[ $EUID -eq 0 ]]; then SUDO=""; else SUDO="sudo"; fi
 say()  { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
 warn() { printf '\033[1;33mwarn:\033[0m %s\n' "$*" >&2; }
 
-# ---- Node + pnpm (fast path: binary tarball) ----
+# ---- Node (fast path: binary tarball, ~2s) ----
 NODE_VER="22.15.0"
 NODE_OK=false
 if command -v node >/dev/null 2>&1; then
@@ -33,40 +39,37 @@ if command -v node >/dev/null 2>&1; then
 fi
 
 if ! $NODE_OK; then
-  say "installing Node.js $NODE_VER (binary tarball — fast)"
+  say "installing Node.js $NODE_VER (binary tarball)"
   NODE_DIR="/usr/local/lib/node-v${NODE_VER}"
   if [[ ! -d "$NODE_DIR" ]]; then
     curl -fsSL "https://nodejs.org/dist/v${NODE_VER}/node-v${NODE_VER}-linux-x64.tar.gz" \
       | $SUDO tar xz -C /usr/local/lib/
     $SUDO mv "/usr/local/lib/node-v${NODE_VER}-linux-x64" "$NODE_DIR"
   fi
-  # Symlink into /usr/local/bin (idempotent)
   for bin in node npm npx; do
     $SUDO ln -sf "$NODE_DIR/bin/$bin" "/usr/local/bin/$bin"
   done
 fi
 
+# ---- Hand off to pre-built bundle (no pnpm/tsx needed) ----
+BUNDLE="$REPO_DIR/packages/bootstrap/dist/bootstrap.js"
+if [[ -f "$BUNDLE" ]]; then
+  exec node "$BUNDLE" "$@"
+fi
+
+# Fallback: if bundle doesn't exist, use tsx via pnpm (dev mode)
+warn "pre-built bundle not found at $BUNDLE — falling back to tsx"
 if ! command -v pnpm >/dev/null 2>&1; then
   say "installing pnpm"
   $SUDO npm install -g pnpm 2>/dev/null
 fi
-
-# ---- Workspace deps (skip if already present) ----
-if [[ -d "$REPO_DIR/node_modules/.pnpm" ]]; then
-  say "workspace deps present (skipping pnpm install)"
-else
+if [[ ! -d "$REPO_DIR/node_modules/.pnpm" ]]; then
   say "pnpm install (workspace)"
-  if ! pnpm install --prefer-offline 2>&1 | tail -3; then
-    warn "pnpm install FAILED"
-    exit 1
-  fi
+  pnpm install --prefer-offline 2>&1 | tail -3
 fi
-
-# ---- Hand off to TS ----
-say "handing off to @domains/bootstrap (TypeScript)"
 TSX_BIN="$REPO_DIR/node_modules/.bin/tsx"
 if [[ ! -x "$TSX_BIN" ]]; then
-  warn "tsx not found at $TSX_BIN — pnpm install may have failed"
+  warn "tsx not found — pnpm install may have failed"
   exit 1
 fi
 exec "$TSX_BIN" "$REPO_DIR/packages/bootstrap/src/index.ts" "$@"
