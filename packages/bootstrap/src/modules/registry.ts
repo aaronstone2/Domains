@@ -33,6 +33,8 @@ export interface Phase {
   readonly name: string;
   readonly description: string;
   readonly modules: readonly InstallerModule[];
+  /** If false, modules in this phase run sequentially (e.g. DuckDB lock conflicts). Default: true. */
+  readonly parallel?: boolean;
 }
 
 export const PHASES: readonly Phase[] = [
@@ -61,9 +63,15 @@ export const PHASES: readonly Phase[] = [
     ],
   },
   {
-    name: "Repo + verify",
-    description: "Workspace deps, knowledge graph, end-to-end smoke tests",
-    modules: [pnpmInstallModule, corpusMigrateModule, knowledgeGraphModule, verifyHarnessModule, verifyMcpModule],
+    name: "Repo deps",
+    description: "Workspace deps, corpus migrations, knowledge graph (sequential — DuckDB locks)",
+    modules: [pnpmInstallModule, corpusMigrateModule, knowledgeGraphModule],
+    parallel: false,
+  },
+  {
+    name: "Verify",
+    description: "End-to-end smoke tests",
+    modules: [verifyHarnessModule, verifyMcpModule],
   },
 ];
 

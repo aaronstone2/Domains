@@ -37,7 +37,7 @@ import type {
   InstallerModule,
   ModuleStatus,
 } from "./lib/types.ts";
-import { ALL_MODULES } from "./modules/registry.ts";
+import { ALL_MODULES, PHASES } from "./modules/registry.ts";
 
 const logger = new Logger();
 
@@ -165,10 +165,21 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     return 0;
   }
 
-  // Estimate total time: rough seconds-per-module from observed cold installs.
-  const etaSec = estimateEtaSec(modules);
+  // Estimate total time: check which modules actually need install vs skip.
+  const needsInstall: string[] = [];
+  for (const mod of modules) {
+    if (!mod.shouldRun(ctx.config)) continue;
+    try {
+      if (!(await mod.isInstalled(ctx)) || ctx.config.force) needsInstall.push(mod.id);
+    } catch { needsInstall.push(mod.id); }
+  }
+  const etaSec = needsInstall.length > 0
+    ? needsInstall.reduce((sum, id) => sum + (ETA_PER_MODULE_SEC[id] ?? 5), 0)
+    : 5;
   logger.step(
-    `installing ${modules.length} module(s) — ETA ~${formatDuration(etaSec)}` +
+    `installing ${modules.length} module(s)` +
+      (needsInstall.length < modules.length ? ` (${needsInstall.length} need work)` : "") +
+      ` — ETA ~${formatDuration(etaSec)}` +
       (ctx.config.snapshotBuild ? " [snapshot-build: strict mode]" : "") +
       (ctx.config.onlyModules !== undefined
         ? ` (filtered: ${[...ctx.config.onlyModules].join(",")})`
@@ -177,14 +188,40 @@ async function runInstall(ctx: InstallContext): Promise<number> {
 
   const results: ModuleStatus[] = [];
   const startTotal = Date.now();
-  let i = 0;
-  for (const mod of modules) {
-    i++;
-    const t0 = Date.now();
-    const result = await runOne(mod, ctx, i, modules.length);
-    const dt = Math.round((Date.now() - t0) / 1000);
-    if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
-    results.push(result);
+
+  // Phase-aware execution: phases run sequentially, but modules within a
+  // phase run in parallel (unless phase.parallel === false, e.g. DuckDB locks).
+  let globalIdx = 0;
+  for (const phase of PHASES) {
+    const phaseModules = phase.modules.filter((m) => modules.includes(m));
+    if (phaseModules.length === 0) continue;
+
+    const runParallel = phase.parallel !== false;
+    const baseIdx = globalIdx;
+
+    if (runParallel && phaseModules.length > 1) {
+      const phasePromises = phaseModules.map(async (mod, j) => {
+        const idx = baseIdx + j + 1;
+        const t0 = Date.now();
+        const result = await runOne(mod, ctx, idx, modules.length);
+        const dt = Math.round((Date.now() - t0) / 1000);
+        if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
+        return result;
+      });
+      const phaseResults = await Promise.all(phasePromises);
+      results.push(...phaseResults);
+    } else {
+      for (let j = 0; j < phaseModules.length; j++) {
+        const mod = phaseModules[j]!;
+        const idx = baseIdx + j + 1;
+        const t0 = Date.now();
+        const result = await runOne(mod, ctx, idx, modules.length);
+        const dt = Math.round((Date.now() - t0) / 1000);
+        if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
+        results.push(result);
+      }
+    }
+    globalIdx += phaseModules.length;
   }
   const totalSec = Math.round((Date.now() - startTotal) / 1000);
 
@@ -627,10 +664,6 @@ const ETA_PER_MODULE_SEC: Readonly<Record<string, number>> = {
   "verify-harness": 3,
   "verify-mcp": 5,
 };
-
-function estimateEtaSec(modules: readonly InstallerModule[]): number {
-  return modules.reduce((sum, m) => sum + (ETA_PER_MODULE_SEC[m.id] ?? 5), 0);
-}
 
 function formatDuration(sec: number): string {
   if (sec < 60) return `${sec}s`;
