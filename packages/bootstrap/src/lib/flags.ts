@@ -41,6 +41,11 @@ export interface ParseOptions {
  *   --help, -h                    show help and exit
  */
 export function parseArgs(argv: readonly string[], opts: ParseOptions): ParsedArgs {
+  // Strip POSIX flag-terminator '--' if pnpm passed it through. Some pnpm
+  // versions strip it before exec'ing the script; others don't. Filtering
+  // here makes the parser version-agnostic.
+  argv = argv.filter((a) => a !== "--");
+
   let subcommand: Subcommand = "install";
   let dryRun = false;
   let noClaude = false;

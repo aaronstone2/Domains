@@ -69,4 +69,7 @@ pnpm install --silent --frozen-lockfile 2>&1 | tail -3 || warn "pnpm install had
 # --no-claude / --minimal / etc.) are parsed in packages/bootstrap/src/lib/flags.ts.
 # Run `./bootstrap.sh --help` to see them.
 say "handing off to @domains/bootstrap (TypeScript)"
-exec pnpm --filter @domains/bootstrap --silent start -- "$@"
+# Note: no "--" here. Newer pnpm passes it through to the script, which my
+# flag parser then has to defend against. Our flags don't conflict with pnpm's
+# own flags (different namespace), so we can safely omit the separator.
+exec pnpm --filter @domains/bootstrap --silent start "$@"
