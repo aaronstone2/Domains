@@ -2086,7 +2086,7 @@ var PHASES = [
 ], ALL_MODULES = PHASES.flatMap((p) => p.modules);
 
 // src/index.ts
-var logger = new Logger(), GLOBAL_TIMEOUT_MS = 18e4;
+var DEFERRABLE_IDS = /* @__PURE__ */ new Set(["pnpm-install", "corpus-migrate", "knowledge-graph", "verify-harness", "verify-mcp"]), logger = new Logger(), GLOBAL_TIMEOUT_MS = 18e4;
 async function main() {
   setTimeout(() => {
     logger.fail(
@@ -2172,26 +2172,33 @@ async function runInstall(ctx) {
   logger.step(
     `installing ${modules.length} module(s)` + (needsInstall.length < modules.length ? ` (${needsInstall.length} need work)` : "") + etaLabel + (ctx.config.snapshotBuild ? " [snapshot-build: strict mode]" : "") + (ctx.config.onlyModules !== void 0 ? ` (filtered: ${[...ctx.config.onlyModules].join(",")})` : "")
   );
-  let results = [], startTotal = Date.now(), globalIdx = 0;
+  let results = [], deferredModules = [], startTotal = Date.now(), deferring = ctx.config.launch, globalIdx = 0;
   for (let phase of PHASES) {
     let phaseModules = phase.modules.filter((m) => modules.includes(m));
     if (phaseModules.length === 0) continue;
+    let immediate = [];
+    for (let m of phaseModules)
+      deferring && DEFERRABLE_IDS.has(m.id) && (installedCache.get(m.id) !== !0 || !ctx.config.force) ? deferredModules.push(m) : immediate.push(m);
+    if (immediate.length === 0) {
+      globalIdx += phaseModules.length;
+      continue;
+    }
     let runParallel = phase.parallel !== !1, baseIdx = globalIdx;
-    if (runParallel && phaseModules.length > 1) {
-      let phasePromises = phaseModules.map(async (mod, j) => {
+    if (runParallel && immediate.length > 1) {
+      let phasePromises = immediate.map(async (mod, j) => {
         let idx = baseIdx + j + 1, t0 = Date.now(), result = await runOne(mod, ctx, idx, modules.length, installedCache), dt = Math.round((Date.now() - t0) / 1e3);
         return dt > 1 && logger.info(`  (${mod.id} took ${dt}s)`), result;
       }), phaseResults = await Promise.all(phasePromises);
       results.push(...phaseResults);
     } else
-      for (let j = 0; j < phaseModules.length; j++) {
-        let mod = phaseModules[j], idx = baseIdx + j + 1, t0 = Date.now(), result = await runOne(mod, ctx, idx, modules.length, installedCache), dt = Math.round((Date.now() - t0) / 1e3);
+      for (let j = 0; j < immediate.length; j++) {
+        let mod = immediate[j], idx = baseIdx + j + 1, t0 = Date.now(), result = await runOne(mod, ctx, idx, modules.length, installedCache), dt = Math.round((Date.now() - t0) / 1e3);
         dt > 1 && logger.info(`  (${mod.id} took ${dt}s)`), results.push(result);
       }
     globalIdx += phaseModules.length;
   }
   let totalSec = Math.round((Date.now() - startTotal) / 1e3);
-  if (printSummary(results, totalSec), ctx.config.snapshotBuild) {
+  if (deferredModules.length > 0 && logger.info(`deferred ${deferredModules.length} module(s) to background: ${deferredModules.map((m) => m.id).join(", ")}`), printSummary(results, totalSec), ctx.config.snapshotBuild) {
     let nonOptionalFailed = results.filter(
       (r) => r.kind === "failed" && !isOptionalModule(r.id)
     );
@@ -2200,7 +2207,7 @@ async function runInstall(ctx) {
         `[--snapshot-build] ${nonOptionalFailed.length} required module(s) failed: ` + nonOptionalFailed.map((r) => r.id).join(",")
       ), 1;
   }
-  return ctx.config.launch ? await execLaunch(ctx, results) : results.some(
+  return ctx.config.launch ? await execLaunch(ctx, results, deferredModules) : results.some(
     (r) => r.kind === "failed" && !isOptionalModule(r.id)
   ) ? 1 : 0;
 }
@@ -2382,7 +2389,7 @@ async function runKeyEncrypt(ctx) {
     "After that, every box with your SSH private key gets the API key zero-paste via `./bootstrap.sh install`."
   ), 0);
 }
-async function execLaunch(ctx, results) {
+async function execLaunch(ctx, results, deferred) {
   if (results.some(
     (r) => r.kind === "failed" && !isOptionalModule(r.id)
   ))
@@ -2395,12 +2402,16 @@ async function execLaunch(ctx, results) {
     fromFlag: ctx.config.anthropicKey,
     logger,
     interactive: !0,
-    // Skip persist prompt when key came from the flag — passing --anthropic-key
-    // signals one-shot intent (typical for fresh-DevBox installs each session).
-    // Persist offer still fires when key arrives via the interactive prompt.
     offerPersist: ctx.config.anthropicKey === void 0
   });
-  logger.step(`exec'ing claude (key from ${source}: ${mask(key)})`);
+  if (logger.step(`exec'ing claude (key from ${source}: ${mask(key)})`), deferred.length > 0) {
+    let { fork } = await import("node:child_process"), deferredIds = deferred.map((m) => m.id).join(","), child = fork(process.argv[1], ["install", "--skip-preflight", `--module=${deferredIds}`], {
+      stdio: "ignore",
+      detached: !0,
+      env: { ...process.env, ANTHROPIC_API_KEY: key }
+    });
+    child.unref(), logger.info(`background: deferred modules spawned (pid ${child.pid})`);
+  }
   let { spawn: spawn2 } = await import("node:child_process");
   return spawn2("claude", ["--model", "claude-opus-4-7", "--effort", "max"], {
     stdio: "inherit",

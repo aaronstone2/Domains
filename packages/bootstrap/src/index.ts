@@ -39,6 +39,9 @@ import type {
 } from "./lib/types.ts";
 import { ALL_MODULES, PHASES } from "./modules/registry.ts";
 
+/** Module IDs that can be deferred when --launch is set (not needed for Claude Code). */
+const DEFERRABLE_IDS = new Set(["pnpm-install", "corpus-migrate", "knowledge-graph", "verify-harness", "verify-mcp"]);
+
 const logger = new Logger();
 
 /** Global safety timeout — prevents the bootstrap from hanging forever
@@ -198,7 +201,13 @@ async function runInstall(ctx: InstallContext): Promise<number> {
   );
 
   const results: ModuleStatus[] = [];
+  const deferredModules: InstallerModule[] = [];
   const startTotal = Date.now();
+
+  // When --launch is set, defer "Repo deps" + "Verify" modules — they're not
+  // needed for Claude Code and add 5-10s on a cold DevBox. They run in the
+  // background after claude spawns.
+  const deferring = ctx.config.launch;
 
   // Phase-aware execution: phases run sequentially, but modules within a
   // phase run in parallel (unless phase.parallel === false, e.g. DuckDB locks).
@@ -207,11 +216,22 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     const phaseModules = phase.modules.filter((m) => modules.includes(m));
     if (phaseModules.length === 0) continue;
 
+    // Separate deferrable modules when --launch is active.
+    const immediate: InstallerModule[] = [];
+    for (const m of phaseModules) {
+      if (deferring && DEFERRABLE_IDS.has(m.id) && (installedCache.get(m.id) !== true || !ctx.config.force)) {
+        deferredModules.push(m);
+      } else {
+        immediate.push(m);
+      }
+    }
+    if (immediate.length === 0) { globalIdx += phaseModules.length; continue; }
+
     const runParallel = phase.parallel !== false;
     const baseIdx = globalIdx;
 
-    if (runParallel && phaseModules.length > 1) {
-      const phasePromises = phaseModules.map(async (mod, j) => {
+    if (runParallel && immediate.length > 1) {
+      const phasePromises = immediate.map(async (mod, j) => {
         const idx = baseIdx + j + 1;
         const t0 = Date.now();
         const result = await runOne(mod, ctx, idx, modules.length, installedCache);
@@ -222,8 +242,8 @@ async function runInstall(ctx: InstallContext): Promise<number> {
       const phaseResults = await Promise.all(phasePromises);
       results.push(...phaseResults);
     } else {
-      for (let j = 0; j < phaseModules.length; j++) {
-        const mod = phaseModules[j]!;
+      for (let j = 0; j < immediate.length; j++) {
+        const mod = immediate[j]!;
         const idx = baseIdx + j + 1;
         const t0 = Date.now();
         const result = await runOne(mod, ctx, idx, modules.length, installedCache);
@@ -235,6 +255,10 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     globalIdx += phaseModules.length;
   }
   const totalSec = Math.round((Date.now() - startTotal) / 1000);
+
+  if (deferredModules.length > 0) {
+    logger.info(`deferred ${deferredModules.length} module(s) to background: ${deferredModules.map((m) => m.id).join(", ")}`);
+  }
 
   printSummary(results, totalSec);
 
@@ -254,7 +278,7 @@ async function runInstall(ctx: InstallContext): Promise<number> {
 
   // --launch path: exec into claude after a successful install.
   if (ctx.config.launch) {
-    return await execLaunch(ctx, results);
+    return await execLaunch(ctx, results, deferredModules);
   }
 
   // Only non-optional failures produce exit 1.
@@ -570,7 +594,11 @@ async function runKeyEncrypt(ctx: InstallContext): Promise<number> {
 
 // -------------------- launch --------------------
 
-async function execLaunch(ctx: InstallContext, results: readonly ModuleStatus[]): Promise<number> {
+async function execLaunch(
+  ctx: InstallContext,
+  results: readonly ModuleStatus[],
+  deferred: readonly InstallerModule[],
+): Promise<number> {
   const failedNonOptional = results.some(
     (r) => r.kind === "failed" && !isOptionalModule(r.id),
   );
@@ -597,12 +625,23 @@ async function execLaunch(ctx: InstallContext, results: readonly ModuleStatus[])
     fromFlag: ctx.config.anthropicKey,
     logger,
     interactive: true,
-    // Skip persist prompt when key came from the flag — passing --anthropic-key
-    // signals one-shot intent (typical for fresh-DevBox installs each session).
-    // Persist offer still fires when key arrives via the interactive prompt.
     offerPersist: ctx.config.anthropicKey === undefined,
   });
   logger.step(`exec'ing claude (key from ${source}: ${mask(key)})`);
+
+  // Run deferred modules in the background (pnpm-install, corpus, verify).
+  // They complete while the user interacts with Claude Code.
+  if (deferred.length > 0) {
+    const { fork } = await import("node:child_process");
+    const deferredIds = deferred.map((m) => m.id).join(",");
+    const child = fork(process.argv[1]!, ["install", "--skip-preflight", `--module=${deferredIds}`], {
+      stdio: "ignore",
+      detached: true,
+      env: { ...process.env, ANTHROPIC_API_KEY: key },
+    });
+    child.unref();
+    logger.info(`background: deferred modules spawned (pid ${child.pid})`);
+  }
 
   const { spawn } = await import("node:child_process");
   spawn("claude", ["--model", "claude-opus-4-7", "--effort", "max"], {

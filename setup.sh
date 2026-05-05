@@ -6,18 +6,19 @@
 #
 # What it does:
 #   1. Provisions SSH private key (for age-decrypting the Anthropic API key)
-#   2. Clones the repo (or pulls if already present)
+#   2. Clones the repo + installs Node in PARALLEL (~3-5s)
 #   3. Runs bootstrap (installs everything + auto-decrypts API key)
 #   4. Launches Claude Code
 #
 # The Anthropic API key is NEVER typed or pasted — it's stored encrypted in
 # the repo (_secrets/anthropic-key.age) and decrypted automatically using
 # the SSH key provisioned in step 1.
+#
+# Target: SSH key paste → Claude Code ready in ~10s on a fast connection.
 
 set -euo pipefail
 
 say()  { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
-warn() { printf '\033[1;33mwarn:\033[0m %s\n' "$*" >&2; }
 
 # ---- 1. SSH key ----
 if [ -f ~/.ssh/id_ed25519 ]; then
@@ -49,17 +50,53 @@ else
   chmod 600 ~/.ssh/id_ed25519
 fi
 
-# ---- 2. Clone / pull ----
+# ---- 2. Parallel: clone repo + install Node ----
 REPO=~/Domains
-if [ -d "$REPO/.git" ]; then
-  say "Pulling latest"
-  cd "$REPO" && git pull --ff-only
+NODE_VER="22.15.0"
+if [[ $EUID -eq 0 ]]; then SUDO=""; else SUDO="sudo"; fi
+
+# Check if node 22+ exists
+NODE_OK=false
+if command -v node >/dev/null 2>&1; then
+  NODE_MAJOR="$(node -v 2>/dev/null | sed 's/^v//' | cut -d. -f1 || echo 0)"
+  [[ "$NODE_MAJOR" -ge 22 ]] && NODE_OK=true
+fi
+
+# Launch both in parallel
+say "Setting up (parallel: clone + node)..."
+
+# Background: install Node if needed
+if ! $NODE_OK; then
+  (
+    NODE_DIR="/usr/local/lib/node-v${NODE_VER}"
+    if [[ ! -d "$NODE_DIR" ]]; then
+      curl -fsSL "https://nodejs.org/dist/v${NODE_VER}/node-v${NODE_VER}-linux-x64.tar.gz" \
+        | $SUDO tar xz -C /usr/local/lib/
+      $SUDO mv "/usr/local/lib/node-v${NODE_VER}-linux-x64" "$NODE_DIR"
+    fi
+    for bin in node npm npx; do
+      $SUDO ln -sf "$NODE_DIR/bin/$bin" "/usr/local/bin/$bin"
+    done
+  ) &
+  NODE_PID=$!
 else
-  say "Cloning repo"
-  git clone https://github.com/aaronstone2/Domains.git "$REPO"
+  NODE_PID=""
+fi
+
+# Foreground: clone repo (or pull if exists)
+if [ -d "$REPO/.git" ]; then
+  cd "$REPO" && git pull --ff-only 2>/dev/null
+else
+  git clone --depth 1 https://github.com/aaronstone2/Domains.git "$REPO"
   cd "$REPO"
 fi
 
+# Wait for Node if it was backgrounded
+if [[ -n "${NODE_PID:-}" ]]; then
+  wait "$NODE_PID"
+  export PATH="/usr/local/lib/node-v${NODE_VER}/bin:$PATH"
+fi
+
 # ---- 3. Bootstrap + launch ----
-say "Running bootstrap (auto-decrypts API key via SSH key)"
+say "Running bootstrap"
 ./bootstrap.sh install --skip-preflight --launch
