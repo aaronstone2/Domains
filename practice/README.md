@@ -164,7 +164,7 @@ The fleet scenarios are likely most relevant for the Cognition interview — Dev
 17. **19-corporate-ca-bundle** (~15 min) — install corp CA into system + npm + pip + docker + git + java (the Devin onboarding question)
 18. **20-private-registry-cert** (~12 min) — dockerd's per-registry trust path (`/etc/docker/certs.d/`)
 
-**Total practice (all 27 scenarios, single careful pass)**: ~5 hours.
+**Total practice (all 32 scenarios, single careful pass)**: ~6 hours.
 **With a second warm pass**: ~7 hours.
 
 For a **prioritized practice plan** (tier-ranked by interview likelihood, with topical-cluster grouping for sessions), see **[PRACTICE-ORDER.md](PRACTICE-ORDER.md)**.

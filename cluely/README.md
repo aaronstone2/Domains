@@ -1,6 +1,6 @@
 # Cluely upload bundle
 
-A curated set of 8 cross-linked markdown files for upload to Cluely workspace. Designed to be the **primary reference visible during the live screen-share interview** when the harness CLI is in another window.
+A curated set of 13 markdown files for upload to Cluely workspace. Designed to be the **primary reference visible during the live screen-share interview** when the harness CLI is in another window.
 
 ## Why these files exist
 
@@ -22,6 +22,10 @@ Cluely is your teleprompter. The harness CLI (`pnpm harness ask "..."`) is your 
 7. **[06-talk-tracks.md](06-talk-tracks.md)** — literal scripts to read aloud at key moments (opener, mid-diagnosis, when stuck, when finishing).
 8. **[07-anti-patterns.md](07-anti-patterns.md)** — what NOT to do; common interview tripwires.
 9. **[08-recovery.md](08-recovery.md)** — if the harness crashes / DB is corrupt / install broke mid-interview, the manual fallback paths.
+10. **[09-triage-and-customer-fix.md](09-triage-and-customer-fix.md)** — decision tree for "is this our bug or theirs?" + customer-side fix workflows.
+11. **[10-mcp-full-guide.md](10-mcp-full-guide.md)** — comprehensive MCP usage guide: all 8 tools, CLI fallbacks, query script, decision tree.
+12. **[RCA-EXAMPLE-MULTI-SYMPTOM-GATEWAY.md](RCA-EXAMPLE-MULTI-SYMPTOM-GATEWAY.md)** — worked RCA example: multi-symptom gateway failure.
+13. **[SESSION-PROMPTS.md](SESSION-PROMPTS.md)** — session prompt templates for corpus build phases.
 
 ## How they cross-link
 
@@ -55,7 +59,7 @@ Cluely is your teleprompter. The harness CLI (`pnpm harness ask "..."`) is your 
 
 ## How to upload to Cluely
 
-In the Cluely workspace UI: drag-drop all 9 .md files into your workspace. Cluely indexes them; during the interview the panel can search across all uploaded files. Set 00-context.md as "open by default".
+In the Cluely workspace UI: drag-drop all 13 .md files into your workspace. Cluely indexes them; during the interview the panel can search across all uploaded files. Set 00-context.md as "open by default".
 
 ## Updating
 
@@ -65,4 +69,4 @@ If the corpus changes (new fms, new commands), regenerate the auto-built files:
 pnpm cluely     # rebuilds 02, 03, 04 from current DB state
 ```
 
-The hand-curated files (00, 01, 05, 06, 07, 08) don't need regeneration unless you want to add new content.
+The hand-curated files (00, 01, 05, 06, 07, 08, 09, 10) don't need regeneration unless you want to add new content.
