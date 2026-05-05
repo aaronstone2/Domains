@@ -15,31 +15,42 @@
 
 import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types.ts";
 
+// Lean apt-core for interview-day diagnostic work. Cut from the legacy list:
+// vim/less (preinstalled on Ubuntu), file/rsync (rarely diagnostic),
+// bsdmainutils/net-tools/nftables/conntrack/ltrace/python3-pip/systemd-coredump
+// (rarely needed; available via the in-the-holster install path during
+// interview if a scenario calls for them — see HOLSTER comment below).
+//
+// Net effect: ~30% smaller install, ~10-15s faster on cold DevBox.
 const APT_CORE: readonly string[] = [
   // General
-  "git", "curl", "ca-certificates", "jq", "vim", "less",
-  // Networking debug
-  "iproute2", "iptables", "nftables", "conntrack",
-  "dnsutils", "netcat-openbsd", "tcpdump", "net-tools", "nmap",
+  "git", "curl", "ca-certificates", "jq",
+  // Networking debug — minimum viable
+  "iproute2", "iptables",
+  "dnsutils", "netcat-openbsd", "tcpdump", "nmap",
   // Performance / observability
-  "sysstat", "htop", "lsof", "strace", "ltrace", "procps", "bsdmainutils",
-  // Files / process
-  "file", "rsync", "openssl",
-  // Productivity (TUI)
+  "sysstat", "htop", "lsof", "strace", "procps",
+  // TLS
+  "openssl",
+  // Productivity (TUI) — small + interview-relevant
   "ripgrep", "fzf",
-  // Editors / paging niceties
-  "bat",
-  // Completion framework — was missing in legacy bootstrap
+  // bash-completion framework (was missing in legacy)
   "bash-completion",
-  // Python — required by methodology examples + offcputime-bpfcc bindings
-  "python3", "python3-pip",
-  // Coredump support — referenced by cluely cheatsheet for exit code 139
-  "systemd-coredump",
-  // age — modern file encryption with SSH-key recipients. Used by the
-  // anthropic-key module to decrypt _secrets/anthropic-key.age in the repo
-  // using the user's existing ~/.ssh/id_* private key (zero-paste install).
+  // Python (preinstalled but explicit so install verifies it)
+  "python3",
+  // age — required by anthropic-key module (decrypts _secrets/*.age via SSH key)
   "age",
 ];
+
+// HOLSTER: install live mid-interview if the scenario needs them:
+//   pnpm bootstrap install --module=apt-optional   # eBPF / perf / btop / sysbench (~60s)
+//   sudo apt install -y nftables conntrack         # nftables debugging (~10s)
+//   sudo apt install -y net-tools                  # legacy netstat/ifconfig (~5s)
+//   sudo apt install -y bsdmainutils               # column, hexdump (~5s)
+//   sudo apt install -y systemd-coredump           # coredumpctl for segfaults (~5s)
+//   sudo apt install -y ltrace                     # library-call tracing (~5s)
+//   sudo apt install -y python3-pip                # pip install <whatever> (~10s)
+//   sudo apt install -y bat                        # cat with syntax highlight (~5s)
 
 /**
  * Binaries that MUST be on PATH after install. Used by both isInstalled()
@@ -47,7 +58,7 @@ const APT_CORE: readonly string[] = [
  * of truth means re-runs cannot disagree with verify.
  */
 const REQUIRED_BINS: readonly string[] = [
-  "jq", "rg", "lsof", "ss", "tcpdump", "python3", "nmap", "openssl", "git",
+  "jq", "rg", "lsof", "ss", "tcpdump", "python3", "nmap", "openssl", "git", "age",
 ];
 
 export const aptCoreModule: InstallerModule = {
@@ -72,10 +83,13 @@ export const aptCoreModule: InstallerModule = {
   async install(ctx: InstallContext): Promise<void> {
     await ctx.runner.run("apt-get update -y", { sudo: true, stream: true, allowFailure: true });
     const pkgList = APT_CORE.join(" ");
-    await ctx.runner.run(`DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkgList}`, {
-      sudo: true,
-      stream: true,
-    });
+    // --no-install-recommends skips the "soft dependency" packages apt would
+    // otherwise pull. Saves significant time + disk on cold install. Each
+    // package's HARD deps (Depends) still install.
+    await ctx.runner.run(
+      `DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${pkgList}`,
+      { sudo: true, stream: true },
+    );
   },
 
   async verify(ctx: InstallContext): Promise<VerifyResult> {
