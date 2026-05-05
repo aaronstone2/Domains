@@ -81,7 +81,17 @@ export const aptCoreModule: InstallerModule = {
   },
 
   async install(ctx: InstallContext): Promise<void> {
-    await ctx.runner.run("apt-get update -y", { sudo: true, stream: true, allowFailure: true });
+    const updateResult = await ctx.runner.run("apt-get update -y", {
+      sudo: true,
+      stream: true,
+      allowFailure: true,
+    });
+    if (updateResult.code !== 0) {
+      ctx.logger.warn(
+        `apt-get update failed (exit ${updateResult.code}) — package install may use stale lists. ` +
+          `stderr: ${updateResult.stderr.trim().slice(0, 200) || "(empty)"}`,
+      );
+    }
     const pkgList = APT_CORE.join(" ");
     // --no-install-recommends skips the "soft dependency" packages apt would
     // otherwise pull. Saves significant time + disk on cold install. Each

@@ -97,15 +97,20 @@ export const anthropicKeyModule: InstallerModule = {
     }
 
     if (!(await ctx.runner.commandExists("age"))) {
-      throw new Error("age binary not found on PATH (should have been installed by apt-core)");
+      ctx.logger.skip(
+        "age binary not found on PATH — cannot decrypt. " +
+          "Use --anthropic-key=KEY or set ANTHROPIC_API_KEY env instead.",
+      );
+      return;
     }
 
     const sshKey = await findSshPrivateKey(ctx.home);
     if (sshKey === undefined) {
-      throw new Error(
-        "no SSH private key found at ~/.ssh/id_ed25519, id_ecdsa, or id_rsa. " +
-          "Either add one (ssh-keygen -t ed25519), or set ANTHROPIC_API_KEY directly.",
+      ctx.logger.skip(
+        "no SSH private key on this box — cannot decrypt. " +
+          "Use --anthropic-key=KEY or set ANTHROPIC_API_KEY env instead.",
       );
+      return;
     }
 
     ctx.logger.info(`decrypting ${ENCRYPTED_REPO_PATH} using ${sshKey}`);
@@ -113,10 +118,11 @@ export const anthropicKeyModule: InstallerModule = {
       allowFailure: true,
     });
     if (result.code !== 0) {
-      throw new Error(
-        `age decryption failed (exit ${result.code}). The encrypted file may not be encrypted ` +
-          `for this SSH key. To re-encrypt: pnpm bootstrap key encrypt. stderr: ${result.stderr.trim()}`,
+      ctx.logger.warn(
+        `age decryption failed (exit ${result.code}) — SSH key may not match the encrypted file. ` +
+          `Use --anthropic-key=KEY or set ANTHROPIC_API_KEY env instead. stderr: ${result.stderr.trim()}`,
       );
+      return;
     }
     const key = result.stdout.trim();
     if (!key.startsWith("sk-ant-")) {

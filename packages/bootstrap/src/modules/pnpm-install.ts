@@ -30,6 +30,7 @@ export const pnpmInstallModule: InstallerModule = {
     await ctx.runner.run("pnpm install", {
       cwd: ctx.config.repoDir,
       stream: true,
+      timeoutMs: 120_000,
     });
   },
 

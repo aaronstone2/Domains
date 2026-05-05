@@ -41,7 +41,22 @@ import { ALL_MODULES } from "./modules/registry.ts";
 
 const logger = new Logger();
 
+/** Global safety timeout — prevents the bootstrap from hanging forever
+ * (e.g. waiting on an interactive prompt with no TTY, a stalled download,
+ * or a network partition). 3 minutes is generous; a full cold install
+ * typically finishes in ~90s. */
+const GLOBAL_TIMEOUT_MS = 180_000;
+
 async function main(): Promise<number> {
+  const timer = setTimeout(() => {
+    logger.fail(
+      `TIMEOUT: bootstrap exceeded ${GLOBAL_TIMEOUT_MS / 1000}s. Aborting. ` +
+        `If a module is stalled, retry it individually with --module=<id>.`,
+    );
+    process.exit(1);
+  }, GLOBAL_TIMEOUT_MS);
+  timer.unref(); // don't prevent clean exit
+
   const argv = process.argv.slice(2);
   let parsed;
   try {

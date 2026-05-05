@@ -35,6 +35,7 @@ export interface PreflightOptions {
 export async function runPreflight(opts: PreflightOptions): Promise<readonly PreflightResult[]> {
   const checks: Array<Promise<PreflightResult>> = [
     checkPlatform(),
+    checkArch(),
     checkDiskSpace(opts.runner, "/", 500),
     checkDiskSpace(opts.runner, "/tmp", 100),
     checkBashSanity(opts.runner),
@@ -78,6 +79,28 @@ async function checkPlatform(): Promise<PreflightResult> {
     description: "platform is Linux",
     ok: false,
     message: `running on ${process.platform}; many modules will be SKIP gated`,
+    severity: "warning",
+  };
+}
+
+async function checkArch(): Promise<PreflightResult> {
+  const arch = process.arch;
+  if (arch === "x64") {
+    return {
+      id: "arch",
+      description: "CPU architecture is x86_64",
+      ok: true,
+      message: arch,
+      severity: "blocker",
+    };
+  }
+  return {
+    id: "arch",
+    description: "CPU architecture is x86_64",
+    ok: false,
+    message:
+      `running on ${arch} — duckdb native module and some binary downloads ` +
+      `(eza, fnm) assume x86_64 and may fail to build/run`,
     severity: "warning",
   };
 }
