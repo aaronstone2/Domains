@@ -295,6 +295,207 @@ curl -s http://localhost:5000 | jq '.services'
 4. **DNS smoke test in deployment** — `getent hosts <each-corp-host>` on container startup; fail fast if any unresolvable.
 5. **Standardize on docker-compose `dns:` field** for all services that need corp resolution; don't rely on host's resolver propagating.
 
+## Addendum — full 8-issue audit (deeper than the surface-level report)
+
+The customer's degraded JSON listed 4 errors. Surface-level decomposition →
+3 root causes (corp PKI, cert expiry, DNS). But a deeper probe inside the
+container revealed **8 distinct issues**. Real-world incidents often layer.
+
+### 1. Auth: NODE_EXTRA_CA_CERTS pointing at the WRONG file
+
+```sh
+docker exec <gateway> bash -c 'cat /var/log/app/gateway-stdout.log | grep NODE_EXTRA'
+# NODE_EXTRA_CA_CERTS=/etc/ssl/custom/intermediate.crt
+```
+
+It's set — but to the **intermediate** CA, not the root. Node needs a root
+CA (a self-signed trust anchor) to verify the chain; the intermediate alone
+is useless.
+
+### 2. service-config.yaml has the CORRECT path; deploy script picked the wrong key
+
+```yaml
+gateway:
+  tls:
+    ca_bundle:        /etc/ssl/custom/root-ca.crt          # ← CORRECT (root CA)
+    node_extra_certs: /etc/ssl/custom/intermediate.crt    # ← WRONG (the intermediate)
+```
+
+Whatever templates the deploy env took `node_extra_certs` instead of
+`ca_bundle`. **Bug at deploy-time, not config-time.**
+
+### 3. Auth server-side chain is FINE
+
+```sh
+docker exec <gateway> bash -c 'echo | openssl s_client -connect auth.corp.internal:8443 -showcerts 2>&1' \
+  | grep -E 'depth|verify'
+# depth=2 ... CN=Corp Root CA       verify return:1
+# depth=1 ... CN=Corp Intermediate  verify return:1
+# depth=0 CN=auth.corp.internal     verify return:1
+```
+
+Server serves leaf + intermediate; openssl uses system trust for the root.
+Server-side fine. Bug is purely client-side trust store (#1).
+
+### 4. Metrics: zero-day cert (real expiry, port 9443 not 443)
+
+```sh
+docker exec <gateway> ss -tlnp | grep 9443
+# LISTEN  *:9443  node /app/metrics-service.js
+
+docker exec <gateway> bash -c 'echo | openssl s_client -connect metrics.corp.internal:9443 2>&1 | openssl x509 -noout -dates'
+# notBefore=May  5 06:26:31 2026 GMT
+# notAfter =May  5 06:26:31 2026 GMT     ← SAME timestamp; valid for 0 seconds
+```
+
+Not stale — the cert really expired the moment it was issued. Port is `9443`
+per `METRICS_URL`, not 443. Cert pipeline likely has `-days 0` bug.
+
+### 5. /etc/hosts has fake entries for auth+metrics, none for db+cache
+
+```sh
+docker exec <gateway> cat /etc/hosts
+# 127.0.0.1 auth.corp.internal      ← fake stub (services run in same container)
+# 127.0.0.1 metrics.corp.internal   ← fake stub
+# (no db.corp.internal)
+# (no cache.corp.internal)
+```
+
+Test scenario routes auth+metrics back to the same container, doesn't even
+bother stubbing db+cache → genuine ENOTFOUND for those.
+
+### 6. **ZOMBIE PROCESSES** — PID 1 doesn't reap
+
+```sh
+docker exec <gateway> ps auxf
+# PID 1: sleep 86400      ← container's init is sleep, can't reap children
+# PID 2410: [bash] <defunct>
+# PID 2428-2438: [sleep] <defunct>   (11+ zombies, growing)
+```
+
+Classic "no init in container." Fix: `docker run --init ...` (adds tini PID 1).
+Matches practice scenario `13-zombie-processes.sh`.
+
+### 7. Memory + request-log leak
+
+```sh
+for i in $(seq 1 20); do
+  curl -s http://localhost:5000 | jq '{memoryMB,requestLogSize}'
+done
+# {memoryMB:5,  requestLogSize:1}
+# {memoryMB:5,  requestLogSize:2}
+# ...
+# {memoryMB:6,  requestLogSize:5}    ← memoryMB ticked up; requestLogSize linear
+```
+
+Gateway accumulates an in-memory request log without bound. Linear growth
+in entries → eventual OOM. **Fix: bound the buffer (last N entries) OR
+rotate to disk + logrotate.**
+
+### 8. DB + cache: confirmed DNS root cause (same as surface-level report)
+
+No /etc/hosts entry, no upstream DNS resolver for `.corp.internal`.
+
+## 5-layer fix (the talk-track structure that scores high in interviews)
+
+### Layer A — immediate inside container (prove fixes work)
+
+```sh
+# Auth: point at the actual root CA per service-config.yaml's ca_bundle field
+export NODE_EXTRA_CA_CERTS=/etc/ssl/custom/root-ca.crt
+kill -HUP $(pgrep -f gateway.js)
+
+# DB + cache: temp /etc/hosts entries
+echo '127.0.0.1 db.corp.internal'    >> /etc/hosts
+echo '127.0.0.1 cache.corp.internal' >> /etc/hosts
+```
+
+### Layer B — deployment config (docker-compose / k8s)
+
+```yaml
+services:
+  staff-tls:
+    init: true                                       # fix #6: PID 1 reaping (tini)
+    environment:
+      NODE_EXTRA_CA_CERTS: /etc/ssl/custom/root-ca.crt   # fix #1, #2
+    extra_hosts:
+      - "db.corp.internal:127.0.0.1"
+      - "cache.corp.internal:127.0.0.1"
+    # OR (better) point at corp DNS:
+    dns: [<corp-dns-ip>]
+    dns_search: [corp.internal]
+```
+
+### Layer C — gateway code (fix #7 memory leak)
+
+```js
+// /app/gateway.js
+const MAX_LOG = 100;
+function pushLog(entry) {
+  requestLog.push(entry);
+  if (requestLog.length > MAX_LOG) requestLog.shift();
+}
+```
+
+### Layer D — deployment script bug (fix #2 properly)
+
+```diff
+- NODE_EXTRA_CA_CERTS: ${config.gateway.tls.node_extra_certs}
++ NODE_EXTRA_CA_CERTS: ${config.gateway.tls.ca_bundle}
+```
+
+Or concatenate into a full chain:
+```bash
+cat /etc/ssl/custom/root-ca.crt /etc/ssl/custom/intermediate.crt > /etc/ssl/custom/full-chain.pem
+NODE_EXTRA_CA_CERTS=/etc/ssl/custom/full-chain.pem
+```
+
+### Layer E — cert issuance pipeline (fix #4 zero-day cert)
+
+Wherever metrics certs are issued — the validity is set to 0 days:
+```bash
+- openssl req -new -x509 -key key -out cert -days 0 ...
++ openssl req -new -x509 -key key -out cert -days 365 ...
+```
+Audit + repair the issuance script. Add a CI check that rejects certs with
+notBefore >= notAfter.
+
+## Validation commands (interview-ready talk track)
+
+```sh
+# Confirm all 8 fixes in one pass via the all-in-one probe:
+docker exec -i <gateway> bash < practice/debug-tools/multi-symptom-probe.sh
+```
+
+Or per-fix:
+
+```sh
+docker exec <gateway> bash -c 'env | grep NODE_EXTRA_CA_CERTS'
+# NODE_EXTRA_CA_CERTS=/etc/ssl/custom/root-ca.crt   ← #1, #2
+
+docker exec <gateway> ps -eo state,cmd | awk '$1=="Z"' | wc -l
+# 0   ← #6 (zombies reaped)
+
+curl -s http://localhost:5000 | jq '.status'
+# "healthy"
+
+# Hit gateway 100 times; memory should be FLAT, not growing:
+for i in $(seq 1 100); do curl -s http://localhost:5000 > /dev/null; done
+docker exec <gateway> ps -o rss,cmd -p $(pgrep -f gateway.js)
+# RSS should stabilize after ~50 requests (#7 fixed)
+```
+
+## Reusable in-container debug script
+
+`practice/debug-tools/multi-symptom-probe.sh` — drop into any container,
+prints all the above sections in one pass. Use:
+
+```bash
+docker exec -i <container> bash < practice/debug-tools/multi-symptom-probe.sh
+```
+
+or pipe over the network from any host that can reach github raw.
+
 ## Cross-reference — failure modes in the corpus
 
 ```bash
