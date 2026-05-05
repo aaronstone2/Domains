@@ -1186,3 +1186,123 @@ bash bash/debug/blueprint.sh environment.yaml
 bash bash/fix/blueprint.sh validate environment.yaml
 bash bash/fix/blueprint.sh fix-yaml environment.yaml --apply
 bash bash/fix/blueprint.sh source-secrets
+
+# ============================================================================
+# ===== FILTERING & PIPING PATTERNS =====
+# ============================================================================
+# These patterns chain with debug scripts and raw commands.
+# Master pattern: COMMAND | FILTER | FORMAT | ACTION
+
+# --- grep: pattern matching ---
+# → filter debug script output for specific section
+bash bash/debug/oom.sh $C | grep -A5 'OOM signal'
+bash bash/debug/network.sh $C | grep -i 'error\|fail\|refused\|timeout'
+bash bash/debug/tls.sh $C | grep -E 'issuer|subject|dates'
+# → case-insensitive multi-pattern (OR)
+docker logs $C 2>&1 | grep -iE 'error|fatal|panic|exception|traceback'
+# → invert match (exclude noise)
+docker logs $C 2>&1 | grep -v 'healthcheck\|GET /health\|200 OK'
+# → count occurrences
+docker logs --since 1h $C 2>&1 | grep -ci 'error'
+# → show context around matches
+docker logs $C 2>&1 | grep -B2 -A5 'FATAL'
+# → extract just matching filenames
+grep -rl 'NODE_EXTRA_CA_CERTS' /etc/ 2>/dev/null
+
+# --- awk: field extraction + computation ---
+# → extract specific columns from ps
+ps -eo pid,pcpu,rss,comm --sort=-rss | awk '$3 > 100000 {printf "PID=%s RSS=%dMB %s\n", $1, $3/1024, $4}'
+# → sum total RSS across all processes
+ps -eo rss | awk '{sum+=$1} END {printf "Total RSS: %d MB\n", sum/1024}'
+# → parse docker stats output
+docker stats --no-stream --format '{{.Name}} {{.MemUsage}} {{.CPUPerc}}' | awk '{print $1, $2}'
+# → extract exit code from docker inspect JSON
+docker inspect $C --format '{{.State.ExitCode}}' | awk '{if($1!=0) print "EXIT="$1" (non-zero!)"}'
+# → count lines per second in logs
+docker logs --since 60s $C 2>&1 | awk 'END {printf "%d lines/min (%.1f/sec)\n", NR, NR/60}'
+# → extract timestamp and error from structured logs
+docker logs $C 2>&1 | awk -F'"' '/error/{print $4, $8}'
+
+# --- sed: inline transforms ---
+# → mask secrets in output before sharing
+env | sed 's/=.*/=***/'
+docker inspect $C --format '{{json .Config.Env}}' | sed 's/PASSWORD=[^"]*"/PASSWORD=***"/g'
+# → strip ANSI color codes from log output
+docker logs $C 2>&1 | sed 's/\x1b\[[0-9;]*m//g'
+# → extract just the value after a key
+docker inspect $C --format '{{json .Config.Env}}' | tr ',' '\n' | sed -n 's/.*NODE_EXTRA_CA_CERTS=\(.*\)".*/\1/p'
+
+# --- jq: JSON processing ---
+# → pretty-print docker inspect
+docker inspect $C | jq '.[0].State'
+docker inspect $C | jq '.[0].NetworkSettings.Networks'
+docker inspect $C | jq '.[0].Mounts'
+# → extract specific fields
+docker inspect $C | jq '.[0] | {ExitCode: .State.ExitCode, OOMKilled: .State.OOMKilled, RestartCount: .RestartCount}'
+# → filter networks for a compose project
+docker network ls --format '{{json .}}' | jq -s '[.[] | select(.Name | contains("myproject"))]'
+# → list env vars as key=value from inspect
+docker inspect $C | jq -r '.[0].Config.Env[]' | sort
+# → extract port mappings
+docker inspect $C | jq '.[0].NetworkSettings.Ports | to_entries[] | {port: .key, host: .value[0].HostPort}'
+# → filter docker events
+docker events --since 10m --format '{{json .}}' | jq 'select(.Action=="die") | {name: .Actor.Attributes.name, exit: .Actor.Attributes.exitCode}'
+
+# --- sort + uniq: frequency analysis ---
+# → top error messages by frequency
+docker logs --since 1h $C 2>&1 | grep -i error | sort | uniq -c | sort -rn | head -10
+# → unique exit codes across all containers
+docker ps -aq | xargs -I{} docker inspect {} --format '{{.Name}} exit={{.State.ExitCode}}' | sort -t= -k2 -rn
+# → most frequent log lines (find noisy patterns)
+docker logs --since 1h $C 2>&1 | sort | uniq -c | sort -rn | head -5
+
+# --- xargs: parallel operations ---
+# → run debug script on all running containers
+docker ps -q | xargs -I{} bash bash/debug/oom.sh {}
+# → check OOMKilled on all containers
+docker ps -aq | xargs -I{} docker inspect {} --format '{{.Name}} OOM={{.State.OOMKilled}} Exit={{.State.ExitCode}}'
+# → kill all zombie processes
+ps -eo pid,stat | awk '$2=="Z" {print $1}' | xargs -r kill -9
+
+# --- tee: save + display ---
+# → run debug script and save output while watching
+bash bash/debug/gateway.sh $C 2>&1 | tee ~/notes-gateway-$(date +%H%M).log
+bash bash/debug/tls.sh $C 2>&1 | tee ~/notes-tls-$(date +%H%M).log
+# → pipe to debug script AND save raw logs
+docker logs $C 2>&1 | tee /tmp/raw-logs.txt | grep -i error
+
+# --- watch: continuous monitoring ---
+# → watch container stats every 2s
+watch -n2 'docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"'
+# → watch for new errors in logs
+docker logs -f $C 2>&1 | grep --line-buffered -i 'error\|fatal'
+# → watch disk usage
+watch -n5 'df -h / && echo "---" && docker system df'
+
+# --- combined pipelines (interview power moves) ---
+# → "what's eating memory?" one-liner
+docker stats --no-stream --format '{{.Name}} {{.MemPerc}}' | awk '{gsub(/%/,"",$2); if($2>50) print "HIGH MEM:", $0}'
+# → "is the log filling disk?" one-liner
+for c in $(docker ps -q); do n=$(docker inspect $c --format '{{.Name}}' | sed 's/^\///'); lp=$(docker inspect $c --format '{{.LogPath}}'); [ -f "$lp" ] && echo "$n $(du -sh "$lp" | awk '{print $1}')"; done | sort -k2 -rh | head
+# → "what died recently?" one-liner
+docker events --since 30m --filter event=die --format '{{.Time}} {{.Actor.Attributes.name}} exit={{.Actor.Attributes.exitCode}}' 2>/dev/null
+# → "is anything throttled?" one-liner
+for c in $(docker ps -q); do n=$(docker inspect $c --format '{{.Name}}'); t=$(docker exec $c cat /sys/fs/cgroup/cpu.stat 2>/dev/null | awk '/nr_throttled/{print $2}'); [ -n "$t" ] && [ "$t" -gt 0 ] && echo "THROTTLED: $n ($t times)"; done
+# → "find the broken env var" one-liner
+docker ps -q | xargs -I{} sh -c 'n=$(docker inspect {} --format "{{.Name}}"); docker exec {} env 2>/dev/null | grep -qE "^(API_KEY|SECRET|TOKEN)=$" && echo "EMPTY SECRET in $n"'
+
+# --- piping debug scripts together ---
+# → chain OOM + cgroup check
+bash bash/debug/oom.sh $C > /tmp/diag.log && bash bash/debug/cgroup.sh $C >> /tmp/diag.log && grep -i 'oom\|killed\|limit\|max' /tmp/diag.log
+# → full diagnostic → filter for actionable items
+bash bash/debug/gateway.sh $C 2>&1 | grep -E 'FAIL|ERROR|✗|WARN|HINT' | sort -u
+
+# --- DuckDB corpus query from CLI ---
+# → search commands by keyword
+bash bash/query.sh commands "compose proxy"
+# → search failure modes by symptom
+bash bash/query.sh failures "service can't connect"
+# → search scripts by name/purpose
+bash bash/query.sh scripts "tls"
+# → search everything
+bash bash/query.sh all "OOM killed"
