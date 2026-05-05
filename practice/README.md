@@ -84,9 +84,42 @@ Each script in this directory creates an actual broken state on the local Linux 
 | 26 | `26-swap-thrashing.sh` | System sluggish, vmstat si/so > 0 sustained, swap heavily used — distinguish thrashing from OOM-bound | python3 |
 | 27 | `27-dind-permissions.sh` | "permission denied" on docker socket from inside a container — uid/gid mismatch on bind-mounted socket. Devin/CI-runner classic | docker |
 
+### Devin-specific top-tickets (28–32) — symptom-named so they don't spoil
+
+These 5 are forensic-style scenarios mapping to the most-common Devin support tickets. **Highest interview relevance.** Filenames describe the SYMPTOM not the cause — pick by number when drilling.
+
+| # | Script | Customer-facing symptom | Needs |
+|---:|---|---|---|
+| 28 | `28-env-var-empty.sh` | "I added a secret in Devin UI but my app says the env var is empty" | bash |
+| 29 | `29-tools-old-version.sh` | "I pushed environment.yaml changes but my session has the old tool versions" | bash |
+| 30 | `30-session-drops-periodically.sh` | "Enterprise session keeps dropping every 5-6 min, has to be a Devin bug" | bash |
+| 31 | `31-agent-stuck-repeating.sh` | "Devin keeps doing the same thing over and over, won't progress past a problem it already fixed" | bash |
+| 32 | `32-push-rejected.sh` | "Devin can't push my fix — permission denied. Worked yesterday." | git |
+
 Scripts that need docker check for it and exit cleanly if absent. Scripts that need sudo prompt explicitly.
 
-The fleet scenarios (09–12) test a fundamentally different skill from 01–08: when you have 10s/100s of containers, you can't `docker logs` each one. You need **aggregation** — `docker inspect $(docker ps -aq)` with `--format` templating, then `sort | uniq -c` or `awk` to find the outlier. This is the daily reality on any DevBox running multiple Devin sessions, or any prod cluster.
+## Multi-container / fleet debugging (the DevBox-scale skill)
+
+Scenarios **09, 10, 11, 12** test a fundamentally different skill from single-container debugging: when you have 10s/100s of containers, you cannot `docker logs <id>` each one. You must **aggregate** across the fleet to find the outlier or pattern.
+
+| # | Pattern tested | Aggregation technique |
+|---:|---|---|
+| 09 | 1 of 10 containers OOMing | `docker inspect $(docker ps -aq) --format '{{.Name}} {{.State.OOMKilled}}' \| awk '$2=="true"'` |
+| 10 | 1 of 8 agents in deterministic crash loop, others have transient restarts | `docker inspect $(docker ps -aq) --format '{{.Name}} {{.RestartCount}}' \| sort -k2 -rn` + `docker events --filter event=die` |
+| 11 | 1 of 6 containers filling disk via runaway logs | `docker ps -aq \| xargs -I{} docker inspect {} --format '{{.Name}} {{.LogPath}}' \| xargs -I{} du -sh {}` |
+| 12 | Partial deploy: 1 of 6 backends on wrong image tag | `docker inspect $(docker ps -aq) --format '{{.Config.Image}}' \| sort \| uniq -c` |
+
+**The core pattern across all four:**
+```
+docker ps -aq \                          # fan-out: all container IDs
+  | xargs -I{} docker inspect {} \       # gather: pull metric per container
+      --format '{{.WHATEVER_METRIC}}' \
+  | sort | uniq -c | sort -rn            # aggregate: find the outlier
+```
+
+This is **the daily reality on any DevBox running multiple Devin sessions**, on any K8s node with multiple pods, or any prod cluster. If an interviewer presents a "find which container/pod is causing the issue" problem, this aggregation idiom is the answer.
+
+For practice: drill **at least one** of 09–12 to lock in the muscle memory. **09 (fleet-oom)** is the canonical version.
 
 ## Safety contract
 

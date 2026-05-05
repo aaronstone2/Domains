@@ -1,15 +1,40 @@
-# Priority table — all 27 scenarios ranked
+# Priority table — all 32 scenarios ranked
+
+> Re-ranked 2026-05-05 with Devin top-tickets intel: scenarios 28-32 added
+> as Devin-platform-specific patterns. Customer App 101 = scenario 19;
+> Bug 101 = scenario 28; both jumped to top of priority list.
 
 > One table. Sortable mentally by any column. If you're picking what to drill, sort by **Priority** column. If you're grouping a session, sort by **Cluster** column. If you're filtering by what you can actually run, sort by **Needs**.
 
-## Master ranking (priority 1 → 27)
+## Devin top-tickets fast-path (do these 7 first)
+
+These map to the actual most-common Devin support tickets. If you have 90 minutes, do exactly these in order:
+
+| Order | # | Scenario file | What it actually is | Time |
+|---:|---:|---|---|---:|
+| 1 | 19 | `19-corporate-ca-bundle.sh` | **Customer App 101** — corp proxy TLS, npm/pip fails through Zscaler/Netskope | 15m |
+| 2 | 28 | `28-env-var-empty.sh` | **Bug 101** — repo-scoped secrets not auto-injected as env vars | 12m |
+| 3 | 06 | `06-docker-oom.sh` | container exit 137 / OOMKilled — most-asked container Q | 12m |
+| 4 | 15 | `15-cpu-throttled.sh` | DevBox cgroup throttling — "slow but CPU low" signature | 12m |
+| 5 | 32 | `32-push-rejected.sh` | git push blocked — distinguish perms vs branch protection | 10m |
+| 6 | 29 | `29-tools-old-version.sh` | snapshot fell back silently after build failure | 12m |
+| 7 | 31 | `31-agent-stuck-repeating.sh` | long-session context overflow — Knowledge note fix | 15m |
+
+Total: ~88 min cold. After this, you've covered every documented top-7 Devin support ticket.
+
+## Master ranking (priority 1 → 32)
 
 | Pri | # | Scenario | Tier | Difficulty | Cold | Warm | Cluster | Needs | Devin-relev | Core skill / pattern |
 |---:|---:|---|---:|---|---:|---:|---|---|---|---|
-| **1** | 06 | docker-oom | 1 | mid | 12m | 6m | Memory | docker | **HIGH** | `docker inspect .State.OOMKilled` + cgroup memory.events |
-| **2** | 15 | cpu-throttled | 1 | adv | 12m | 6m | CPU | docker | **HIGH** | `cpu.stat` `nr_throttled` / `throttled_usec` (slow but %CPU low) |
-| **3** | 19 | corporate-ca-bundle | 1 | adv | 15m | 8m | Certs | openssl,py3 | **HIGH** | install corp CA into 7+ trust stores (sys/npm/pip/docker/git/java) |
-| **4** | 09 | fleet-oom | 1 | mid | 12m | 6m | Fleet+Mem | docker | **HIGH** | `docker inspect $(docker ps -aq) --format ... | sort | uniq -c` |
+| **1** | 19 | corporate-ca-bundle | 1 | adv | 15m | 8m | Certs | openssl,py3 | **HIGH** | install corp CA into 7+ trust stores (sys/npm/pip/docker/git/java). **CUSTOMER APP 101** |
+| **2** | 28 | env-var-empty | 1 | mid | 12m | 6m | Devin+Secrets | bash | **HIGH** | repo-scoped secrets at /run/repo_secrets/.env.secrets need explicit source. **BUG 101** |
+| **3** | 06 | docker-oom | 1 | mid | 12m | 6m | Memory | docker | **HIGH** | `docker inspect .State.OOMKilled` + cgroup memory.events |
+| **4** | 15 | cpu-throttled | 1 | adv | 12m | 6m | CPU | docker | **HIGH** | `cpu.stat` `nr_throttled` / `throttled_usec` (slow but %CPU low) |
+| **5** | 32 | push-rejected | 1 | mid | 10m | 5m | Devin+Git | git | **HIGH** | distinguish GitHub App perms vs branch protection; PR-based workflow |
+| **6** | 29 | tools-old-version | 1 | mid | 12m | 6m | Devin+Snapshots | none | **HIGH** | snapshot.build.failed + snapshot.fallback.activate signals; environment.yaml init step |
+| **7** | 31 | agent-stuck-repeating | 1 | mid-adv | 15m | 8m | Devin+Agent | none | **HIGH** | repeated cmd patterns across hours; long-session context overflow; Knowledge note fix |
+| **8** | 30 | session-drops-periodically | 2 | mid-adv | 12m | 6m | Devin+Network | none | **HIGH** | exact ~351s pattern → AWS NAT Gateway idle timeout; PrivateLink fix |
+| **9** | 09 | fleet-oom | 1 | mid | 12m | 6m | Fleet+Mem | docker | **HIGH** | `docker inspect $(docker ps -aq) --format ... | sort | uniq -c` |
 | **5** | 08 | bad-resolv | 1 | mid | 12m | 6m | Network | docker | MED | DNS layer-by-layer (link → IP → DNS → app); `/etc/resolv.conf` |
 | **6** | 24 | fd-exhaustion | 1 | mid | 10m | 5m | Process | py3 | MED | `/proc/<pid>/fd/` count vs `RLIMIT_NOFILE`; CLOSE_WAIT smoking gun |
 | **7** | 12 | version-skew | 1 | mid | 12m | 6m | Fleet | docker | **HIGH** | `docker inspect | sort | uniq -c` to find the drifted replica |
