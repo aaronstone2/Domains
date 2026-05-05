@@ -11,6 +11,9 @@ _db/staging/
 _db/*.duckdb.wal
 _db/*.duckdb.tmp/
 
+# Personal scratch — paste logs/reports here. Concrete rules below the
+# global `logs/` and `*.log` rules so they take precedence (last wins).
+
 # Per-domain raw fetched HTML/MD caches — rebuildable from sources.yaml + ingest pipeline.
 # (extract/ stays committed: the corpus is reproducible from JSON without re-fetching.)
 domains/**/raw/
@@ -71,6 +74,16 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Personal scratch — notes/ — must come AFTER the global logs/ and *.log
+# rules so the re-include wins (last matching rule applies in gitignore).
+!notes/logs/
+!notes/reports/
+notes/logs/*
+notes/reports/*
+!notes/README.md
+!notes/logs/README.md
+!notes/reports/README.md
 
 # Python
 __pycache__/
