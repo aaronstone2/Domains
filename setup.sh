@@ -62,4 +62,4 @@ fi
 
 # ---- 3. Bootstrap + launch ----
 say "Running bootstrap (auto-decrypts API key via SSH key)"
-./bootstrap.sh install --launch
+./bootstrap.sh install --skip-preflight --launch

@@ -64,13 +64,13 @@ export const PHASES: readonly Phase[] = [
   },
   {
     name: "Repo deps",
-    description: "Workspace deps, corpus migrations, knowledge graph (sequential — DuckDB locks)",
+    description: "Workspace deps + corpus migrations (sequential — DuckDB locks)",
     modules: [pnpmInstallModule, corpusMigrateModule, knowledgeGraphModule],
     parallel: false,
   },
   {
     name: "Verify",
-    description: "End-to-end smoke tests",
+    description: "End-to-end smoke tests (parallel)",
     modules: [verifyHarnessModule, verifyMcpModule],
   },
 ];
