@@ -81,16 +81,78 @@ dprobe procs staff-tls
 dprobe restart staff-tls
 ```
 
-## Install — make `dprobe` available on PATH
+## 3. `dfix` — keyword-driven REMEDIATION dispatcher
+
+After `dprobe` tells you what's broken, `dfix` applies the fix. **Dry-run by
+default** — every keyword PRINTS what it would do. Add `--apply` (or `-y`)
+to actually mutate.
+
+Every fix prints THREE things:
+1. The TEMP fix command (inside-container, immediate)
+2. The PERMANENT FIX recipe (docker-compose / k8s / Dockerfile change)
+3. VERIFY commands to confirm the fix landed
+
+```bash
+dfix <keyword> [container] [args...] [--apply]
+```
+
+| Keyword | What it does | Args |
+|---|---|---|
+| `env` | Set env var inside container (process restart) | `<c> <KEY> <VALUE>` |
+| `hosts` | Append /etc/hosts entry | `<c> <ip> <host>` |
+| `hosts-rm` | Remove /etc/hosts entry | `<c> <host>` |
+| `dns` | Prepend custom DNS to resolv.conf | `<c> <dns_ip>` |
+| `cabundle` | Concat root+intermediate → full-chain.pem | `<c> <root> <inter>` |
+| `cert-renew` | New self-signed cert (test-only) | `<c> <name> [days]` |
+| `reload` | SIGHUP processes (graceful reload) | `<c> [pattern]` |
+| `restart-process` | Kill processes (PID 1 respawns) | `<c> [pattern]` |
+| `restart-container` | docker restart `<c>` | `<c>` |
+| `recreate-init` | Recreate with --init (zombie fix recipe) | `<c>` |
+| `install-tools` | apt/apk install dig+openssl+curl+jq | `<c>` |
+| `prune` | docker system prune -af (free disk) | — |
+| `help` | List keywords | — |
+
+### Multi-symptom gateway scenario — all 4 fixes via dfix:
+
+```bash
+# 1. Fix auth env var (point at root CA, not intermediate)
+dfix env staff-tls NODE_EXTRA_CA_CERTS /etc/ssl/custom/root-ca.crt --apply
+
+# 2. Add db + cache hosts entries
+dfix hosts staff-tls 10.0.0.5 db.corp.internal    --apply
+dfix hosts staff-tls 10.0.0.6 cache.corp.internal --apply
+
+# OR set DNS upstream once instead of N hosts entries:
+dfix dns staff-tls 10.0.0.53 --apply
+
+# 3. Build proper full-chain bundle from root+intermediate:
+dfix cabundle staff-tls /etc/ssl/custom/root-ca.crt /etc/ssl/custom/intermediate.crt --apply
+
+# 4. Renew metrics cert (test-only — real fix is in cert pipeline):
+dfix cert-renew staff-tls metrics.corp.internal 365 --apply
+
+# Verify gateway is healthy:
+curl -s http://localhost:5000 | jq '.status'
+```
+
+### Safety guardrails
+
+- **Dry-run by default** — see the commands before they run
+- Read your bash history — every command logged + searchable via Ctrl-R
+- `recreate-init` intentionally NEVER auto-applies (losing run-flags is worse than zombies)
+- `prune` warns about removing all stopped containers + unused images
+
+## Install — make `dprobe` + `dfix` available on PATH
 
 One-time on any box:
 
 ```bash
 sudo ln -sf $(pwd)/practice/debug-tools/dprobe.sh /usr/local/bin/dprobe
-chmod +x practice/debug-tools/dprobe.sh
+sudo ln -sf $(pwd)/practice/debug-tools/dfix.sh   /usr/local/bin/dfix
+chmod +x practice/debug-tools/dprobe.sh practice/debug-tools/dfix.sh
 ```
 
-Now `dprobe oom staff-tls` works from any directory.
+Now `dprobe oom staff-tls` and `dfix env <c> KEY VAL --apply` work from any directory.
 
 The bootstrap installer can do this automatically — see
 `packages/bootstrap/src/modules/` (todo: add `debug-tools-symlink` module).
