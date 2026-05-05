@@ -908,6 +908,18 @@ bash practice/31-agent-stuck-repeating.sh start
 bash practice/32-push-rejected.sh start
 
 # ============================================================================
+# ===== Interview notes — scratch clipboard for findings =====
+# ============================================================================
+# → copy template to home dir at start of interview
+cp interview-notes.template.md ~/notes.md
+# → append a finding (no editor needed)
+echo "| 1 | cert dates | openssl x509 -dates | expired zero-day cert |" >> ~/notes.md
+# → read your notes back
+cat ~/notes.md
+# → open in nano (Ctrl+O save, Ctrl+X exit)
+nano ~/notes.md
+
+# ============================================================================
 # ===== Bashrc safety =====
 # ============================================================================
 bashrc-landmines
