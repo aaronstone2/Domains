@@ -5,6 +5,7 @@ import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types
 export const aptDockerModule: InstallerModule = {
   id: "apt-docker",
   description: "Docker engine + compose plugin (gated on --with-docker)",
+  narrative: "Docker engine + compose + containerd",
   tags: ["apt", "docker", "optional"],
 
   shouldRun(config): boolean {

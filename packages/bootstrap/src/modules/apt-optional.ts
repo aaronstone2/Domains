@@ -8,6 +8,7 @@ import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types
 export const aptOptionalModule: InstallerModule = {
   id: "apt-optional",
   description: "Optional heavy apt packages (eBPF tooling, perf, btop, sysbench)",
+  narrative: "eBPF + perf for kernel-level tracing (bpftrace, off-CPU profiling, perf-record)",
   tags: ["apt", "optional"],
 
   shouldRun(config): boolean {

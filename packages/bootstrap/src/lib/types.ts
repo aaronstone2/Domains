@@ -95,6 +95,13 @@ export interface InstallerModule {
   readonly id: string;
   /** One-line description shown by `pnpm bootstrap list`. */
   readonly description: string;
+  /**
+   * Single-line narration printed BEFORE the module starts. Reads aloud
+   * cleanly. Used to make the install feel like a guided tour of what's
+   * being set up — useful when the user is screen-sharing the install or
+   * needs to fill 90 seconds of air-time explaining the project.
+   */
+  readonly narrative?: string;
   /** Free-form tags ("shell", "apt", "interactive") for grouping/filters. */
   readonly tags?: readonly string[];
 

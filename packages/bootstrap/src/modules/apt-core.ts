@@ -53,6 +53,7 @@ const REQUIRED_BINS: readonly string[] = [
 export const aptCoreModule: InstallerModule = {
   id: "apt-core",
   description: "Apt packages: network/perf/process/python/coredump diagnostics + bash-completion",
+  narrative: "32 diagnostic + dev tools — jq, ripgrep, lsof, tcpdump, python3, age, nmap, bash-completion",
   tags: ["apt", "core"],
 
   shouldRun(): boolean {
