@@ -78,7 +78,17 @@ fi
 # --no-claude / --minimal / etc.) are parsed in packages/bootstrap/src/lib/flags.ts.
 # Run `./bootstrap.sh --help` to see them.
 say "handing off to @domains/bootstrap (TypeScript)"
-# Note: no "--" here. Newer pnpm passes it through to the script, which my
-# flag parser then has to defend against. Our flags don't conflict with pnpm's
-# own flags (different namespace), so we can safely omit the separator.
-exec pnpm --filter @domains/bootstrap --silent start "$@"
+# Direct tsx invocation. We bypass `pnpm --filter @domains/bootstrap start`
+# because pnpm --filter changes cwd to the filtered package's directory
+# (packages/bootstrap), which breaks every path-based check in the bootstrap
+# (it would look for _db/knowledge.duckdb under packages/bootstrap/_db/,
+# not the actual repo root).
+#
+# Calling tsx directly preserves cwd as the repo root (where this script
+# lives), which is what every module expects.
+TSX_BIN="$REPO_DIR/node_modules/.bin/tsx"
+if [[ ! -x "$TSX_BIN" ]]; then
+  warn "tsx binary not found at $TSX_BIN — pnpm install may have failed"
+  exit 1
+fi
+exec "$TSX_BIN" "$REPO_DIR/packages/bootstrap/src/index.ts" "$@"

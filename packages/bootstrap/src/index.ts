@@ -21,6 +21,7 @@ import * as os from "node:os";
 import { acquireLock, LockHeldError, type LockHandle } from "./lib/lock.ts";
 import { HELP_TEXT, parseArgs } from "./lib/flags.ts";
 import { Logger } from "./lib/log.ts";
+import { findWorkspaceRoot } from "./lib/repo.ts";
 import {
   configFilePath,
   loadAnthropicKey,
@@ -44,7 +45,10 @@ async function main(): Promise<number> {
   const argv = process.argv.slice(2);
   let parsed;
   try {
-    parsed = parseArgs(argv, { cwd: process.cwd() });
+    // Walk up to the workspace root rather than trusting process.cwd() —
+    // pnpm --filter changes cwd to the package dir, breaking every path
+    // check. findWorkspaceRoot() looks for pnpm-workspace.yaml.
+    parsed = parseArgs(argv, { cwd: findWorkspaceRoot() });
   } catch (err) {
     logger.fail((err as Error).message);
     process.stderr.write(`\n${HELP_TEXT}`);
