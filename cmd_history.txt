@@ -1013,3 +1013,176 @@ systemctl is-active --quiet docker && echo running || echo dead
 find /etc -type f -mmin -60 2>/dev/null | head -20
 # → "is the system overloaded?" (one-line health check)
 echo "load=$(cat /proc/loadavg | awk '{print $1}') cpus=$(nproc) mem=$(free -h | awk '/^Mem/{print $3"/"$2}') swap=$(free -h | awk '/^Swap/{print $3"/"$2}') disk=$(df -h / | awk 'NR==2{print $5}')"
+
+# ============================================================================
+# ===== DOCKER COMPOSE — multi-service debugging =====
+# ============================================================================
+# --- validate compose file ---
+docker compose config --quiet
+docker compose config --services
+# --- service status ---
+docker compose ps
+docker compose ps -a
+# --- logs per service ---
+docker compose logs --tail 40 <service>
+docker compose logs --since 5m <service>
+docker compose logs -f <service>
+# --- restart / rebuild ---
+docker compose restart <service>
+docker compose up -d --build --no-cache <service>
+docker compose down --remove-orphans && docker compose up -d
+docker compose up -d --force-recreate <service>
+# --- inspect compose networks + dependencies ---
+docker network ls --filter "label=com.docker.compose.project"
+docker compose config --format json | jq '.services | to_entries[] | {name: .key, depends_on: (.value.depends_on // "none")}'
+# --- exec into a compose service ---
+docker compose exec <service> sh
+docker compose exec <service> env | grep -iE 'proxy|cert|key|secret'
+
+# ============================================================================
+# ===== CORPORATE PROXY / HTTP_PROXY =====
+# ============================================================================
+# --- check proxy env vars ---
+env | grep -iE 'proxy'
+echo $HTTP_PROXY $HTTPS_PROXY $NO_PROXY
+# --- check if proxy is intercepting TLS (MITM) ---
+echo | openssl s_client -connect pypi.org:443 2>/dev/null | openssl x509 -noout -issuer
+# → if issuer is Zscaler/Netskope/Symantec → corp proxy intercepting
+echo | openssl s_client -connect registry.npmjs.org:443 2>/dev/null | openssl x509 -noout -issuer
+# --- test direct vs proxied connectivity ---
+curl -sS --connect-timeout 5 -o /dev/null -w 'HTTP %{http_code}\n' https://pypi.org/simple/
+curl -sS --proxy $HTTPS_PROXY --connect-timeout 5 -o /dev/null -w 'HTTP %{http_code}\n' https://pypi.org/simple/
+# --- check per-tool proxy config ---
+npm config get proxy
+npm config get https-proxy
+pip config list 2>/dev/null | grep -i proxy
+git config --global --get http.proxy
+# --- set proxy for npm ---
+npm config set proxy http://proxy:port
+npm config set https-proxy http://proxy:port
+# --- set proxy for pip ---
+pip config set global.proxy http://proxy:port
+# --- set proxy for git ---
+git config --global http.proxy http://proxy:port
+# --- check Docker daemon proxy ---
+cat /etc/systemd/system/docker.service.d/http-proxy.conf 2>/dev/null
+# --- NO_PROXY patterns ---
+export NO_PROXY=localhost,127.0.0.1,.corp.local,.internal
+
+# ============================================================================
+# ===== DOCKER VOLUMES / BIND MOUNTS =====
+# ============================================================================
+# --- list mounts for a container ---
+docker inspect <c> --format '{{json .Mounts}}' | jq '.[] | {Type, Source, Destination, RW}'
+docker inspect <c> --format '{{range .Mounts}}Type={{.Type}} Src={{.Source}} Dst={{.Destination}} RW={{.RW}}{{"\n"}}{{end}}'
+# --- check permissions on bind mount source (host side) ---
+ls -ld /path/to/host/dir
+stat -c 'uid=%u gid=%g mode=%a' /path/to/host/dir
+# --- check who the container process runs as ---
+docker exec <c> id
+docker exec <c> ls -ld /app/data
+# --- fix permission mismatch ---
+# → option 1: match container UID on host
+sudo chown -R $(docker exec <c> id -u):$(docker exec <c> id -g) /path/to/host/dir
+# → option 2: run container as host user
+# docker run -u $(id -u):$(id -g) ...
+# → option 3: compose user field
+# user: "${UID}:${GID}"
+# --- list all volumes ---
+docker volume ls
+docker volume ls -f dangling=true
+# --- volume disk usage ---
+docker system df -v | grep -A50 'VOLUME NAME' | head -20
+# --- inspect a named volume ---
+docker volume inspect <volume-name>
+# --- test write access inside container ---
+docker exec <c> touch /app/data/test-write && docker exec <c> rm /app/data/test-write && echo 'write OK'
+
+# ============================================================================
+# ===== DOCKER BUILD DEBUGGING =====
+# ============================================================================
+# --- validate Dockerfile ---
+# → check for common issues
+grep -n 'ADD ' Dockerfile | grep -v '.tar\|.gz\|http'
+grep -n '^RUN.*cd ' Dockerfile
+grep -c '^FROM' Dockerfile
+# --- check .dockerignore ---
+cat .dockerignore
+# → missing .dockerignore = slow builds (entire context sent)
+# --- build with verbose output ---
+docker build --progress=plain -t myapp:debug .
+docker build --no-cache --progress=plain -t myapp:debug .
+DOCKER_BUILDKIT=1 docker build --progress=plain -t myapp:debug .
+# --- inspect image layers ---
+docker history myapp:latest --format 'table {{.Size}}\t{{.CreatedBy}}'
+docker history myapp:latest --no-trunc
+# --- image size ---
+docker images myapp --format 'table {{.Repository}}\t{{.Tag}}\t{{.Size}}'
+docker image inspect myapp:latest --format '{{.Size}}'
+# --- build cache ---
+docker builder prune --dry-run
+docker system df | grep 'Build Cache'
+# --- multi-stage: ARG re-declaration ---
+# ARG before FROM is global, must re-declare after each FROM
+# ARG MY_VAR ← re-declare here
+# --- dive into image layers (if dive installed) ---
+# dive myapp:latest
+
+# ============================================================================
+# ===== LOG ROTATION / CONTAINER LOG MANAGEMENT =====
+# ============================================================================
+# --- check container log file size ---
+docker inspect <c> --format '{{.LogPath}}'
+sudo ls -lh $(docker inspect <c> --format '{{.LogPath}}')
+# --- check log config for container ---
+docker inspect <c> --format '{{.HostConfig.LogConfig.Type}} {{json .HostConfig.LogConfig.Config}}'
+# --- check daemon-wide log config ---
+docker info --format '{{.LoggingDriver}}'
+cat /etc/docker/daemon.json 2>/dev/null | jq '.["log-driver"], .["log-opts"]'
+# --- measure log rate ---
+docker logs --since 60s <c> 2>&1 | wc -l
+# --- truncate a log NOW (emergency) ---
+sudo truncate -s 0 $(docker inspect <c> --format '{{.LogPath}}')
+# --- all container log sizes ---
+for cid in $(docker ps -aq); do name=$(docker inspect $cid --format '{{.Name}}' | sed 's/^\///'); lp=$(docker inspect $cid --format '{{.LogPath}}'); [ -f "$lp" ] && echo "$name $(du -sh "$lp" | awk '{print $1}')"; done | sort -k2 -rh
+# --- set log rotation in compose ---
+# logging:
+#   driver: json-file
+#   options:
+#     max-size: "10m"
+#     max-file: "3"
+# --- set log rotation daemon-wide ---
+# /etc/docker/daemon.json: { "log-opts": { "max-size": "10m", "max-file": "3" } }
+
+# ============================================================================
+# ===== DEVIN ENVIRONMENT.YAML / BLUEPRINT =====
+# ============================================================================
+# --- validate YAML syntax ---
+python3 -c "import yaml; yaml.safe_load(open('environment.yaml')); print('valid')"
+yamllint environment.yaml
+# --- check sections ---
+grep -nE '^\w+:' environment.yaml
+# --- check for tabs (YAML hates tabs) ---
+grep -Pn '\t' environment.yaml
+# --- fix tabs ---
+sed -i 's/\t/  /g' environment.yaml
+# --- source repo-scoped secrets ---
+source /run/repo_secrets/ORG/REPO/.env.secrets
+ls /run/repo_secrets/
+cat /run/repo_secrets/ORG/REPO/.env.secrets
+# --- check what secrets are available ---
+env | grep -iE 'SECRET|TOKEN|KEY|PASSWORD|API' | sed 's/=.*/=***/'
+# --- common section ordering ---
+# initialize: → runs at snapshot build (bake deps in)
+# setup:      → runs at session start (source secrets, start services)
+# maintenance: → runs on schedule (keep deps fresh)
+# --- check if snapshot fell back ---
+# → Devin UI: Settings > Environment > Build Log
+# → if build failed, Devin falls back to previous snapshot
+# → tools may be old version (scenario #29)
+# --- debug script ---
+bash bash/debug/blueprint.sh environment.yaml
+# --- fix scripts ---
+bash bash/fix/blueprint.sh validate environment.yaml
+bash bash/fix/blueprint.sh fix-yaml environment.yaml --apply
+bash bash/fix/blueprint.sh source-secrets
