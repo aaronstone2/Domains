@@ -122,8 +122,8 @@ async function runInstall(ctx: InstallContext): Promise<number> {
   // Pre-flight: do this BEFORE selecting modules so the user gets blockers
   // before waiting through 18 module gates. Skip entirely in dry-run because
   // every shell command returns synthetic empty output and the parsers see
-  // garbage.
-  if (!ctx.config.dryRun) {
+  // garbage. Also skip if --skip-preflight (escape hatch for buggy checks).
+  if (!ctx.config.dryRun && !ctx.config.skipPreflight) {
     logger.step("pre-flight checks");
     const preflightResults = await runPreflight({
       runner: ctx.runner,
@@ -132,7 +132,10 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     });
     const blockers = reportPreflight(preflightResults, logger);
     if (blockers > 0) {
-      logger.fail(`pre-flight: ${blockers} blocker(s); aborting before modules run`);
+      logger.fail(
+        `pre-flight: ${blockers} blocker(s); aborting before modules run. ` +
+          `Override with --skip-preflight if you believe this is a false positive.`,
+      );
       return 2;
     }
   }

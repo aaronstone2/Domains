@@ -189,26 +189,29 @@ async function checkNetwork(runner: Runner): Promise<PreflightResult> {
 }
 
 async function checkBashSanity(runner: Runner): Promise<PreflightResult> {
-  // Standard tools resolve to real binaries (no alias hijack).
-  const result = await runner.run(
-    "type -P grep sed awk curl 2>&1 | wc -l",
-    { allowFailure: true },
-  );
-  const count = Number.parseInt(result.stdout.trim(), 10);
-  if (count === 4) {
+  // Standard tools resolve to real binaries. Use `command -v` per-binary
+  // (POSIX, works in dash) instead of `type -P ...` (bash-only — fails on
+  // /bin/sh which Node's exec uses). The legacy version produced false
+  // 5/4 failures on Debian/Ubuntu derivatives where /bin/sh is dash.
+  const required = ["grep", "sed", "awk", "curl"];
+  const missing: string[] = [];
+  for (const bin of required) {
+    if (!(await runner.commandExists(bin))) missing.push(bin);
+  }
+  if (missing.length === 0) {
     return {
       id: "bash-sanity",
-      description: "standard tools (grep/sed/awk/curl) on PATH",
+      description: `standard tools (${required.join("/")}) on PATH`,
       ok: true,
-      message: "4/4 resolved",
+      message: `${required.length}/${required.length} resolved`,
       severity: "blocker",
     };
   }
   return {
     id: "bash-sanity",
-    description: "standard tools (grep/sed/awk/curl) on PATH",
+    description: `standard tools (${required.join("/")}) on PATH`,
     ok: false,
-    message: `only ${count}/4 resolved — install may fail unpredictably`,
+    message: `missing: ${missing.join(", ")} — install will fail without these`,
     severity: "blocker",
   };
 }

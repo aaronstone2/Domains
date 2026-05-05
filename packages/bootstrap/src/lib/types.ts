@@ -55,6 +55,12 @@ export interface BootstrapConfig {
    */
   readonly offline: boolean;
   /**
+   * Skip ALL pre-flight checks. Use when pre-flight is wrongly reporting
+   * blockers (e.g. a check has a bug) but the install would otherwise work.
+   * Last-resort escape hatch.
+   */
+  readonly skipPreflight: boolean;
+  /**
    * Skip modules with this tag (e.g. --skip-tag=productivity excludes
    * eza/zoxide/atuin which add no diagnostic value).
    */

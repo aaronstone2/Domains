@@ -65,6 +65,7 @@ export function parseArgs(argv: readonly string[], opts: ParseOptions): ParsedAr
   let snapshotBuild = false;
   let sessionMode = false;
   let offline = false;
+  let skipPreflight = false;
 
   let i = 0;
   // First positional: subcommand
@@ -125,6 +126,9 @@ export function parseArgs(argv: readonly string[], opts: ParseOptions): ParsedAr
       case "--offline":
         offline = true;
         break;
+      case "--skip-preflight":
+        skipPreflight = true;
+        break;
       case "--skip-tag": {
         const tags = (inlineValue ?? takeNext(argv, i++, "--skip-tag")).split(",").filter((s) => s !== "");
         for (const t of tags) skipTags.add(t);
@@ -179,6 +183,7 @@ export function parseArgs(argv: readonly string[], opts: ParseOptions): ParsedAr
     snapshotBuild,
     sessionMode,
     offline,
+    skipPreflight,
     skipTags,
   };
 
