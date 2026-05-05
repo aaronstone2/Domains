@@ -1,102 +1,747 @@
 # cmd_history.txt — curated commands for atuin to seed your interview-day history.
 # One command per line. Lines starting with # are skipped.
-# Bootstrap.sh appends these to ~/.bash_history (no dups), then runs `atuin import bash`.
-# After this you can Ctrl-R and find them by fuzzy search.
+# Bootstrap.sh's seed-history module appends these to ~/.bash_history (deduped),
+# then runs `atuin import bash`. After that, Ctrl-R fuzzy-finds them in atuin's TUI.
+#
+# Organized by DOMAIN, not by scenario — when you're in the interview you know
+# "I need to check docker memory", not "scenario 06's command."
 
-# ===== Harness (the corpus tool) =====
-pnpm harness stats
-pnpm harness lookup "exit 137 OOM"
-pnpm harness lookup "DNS slow ndots"
-pnpm harness lookup "container cannot reach internet"
-pnpm harness lookup "PLEG not healthy"
+# ============================================================================
+# ===== Harness MCP — call ask FIRST every time =====
+# ============================================================================
+pnpm harness ask "container OOMKilled exit 137"
+pnpm harness ask "container slow but CPU low"
+pnpm harness ask "DNS slow ndots search"
+pnpm harness ask "container cannot reach internet"
+pnpm harness ask "PLEG not healthy"
+pnpm harness ask "too many open files EMFILE"
+pnpm harness ask "TLS unable to verify leaf signature corporate proxy"
+pnpm harness ask "git push permission denied branch protection"
+pnpm harness ask "devin secret added but env var empty"
+pnpm harness ask "devin tools wrong version after pushing yaml"
+pnpm harness ask "devin session drops every 6 minutes"
+pnpm harness ask "devin agent stuck looping no progress"
+pnpm harness ask "iowait high disk slow"
+pnpm harness ask "swap thrashing si so sustained"
+pnpm harness ask "fork EAGAIN pid limit"
+pnpm harness ask "process stuck D state"
+pnpm harness ask "systemd unit failed dependency cascade"
+pnpm harness ask "docker socket permission denied container"
+pnpm harness ask "apparmor denied LSM"
+pnpm harness ask "docker registry x509 unknown authority"
+pnpm harness lookup "exit 137"
+pnpm harness lookup "OOMKilled"
+pnpm harness lookup "ndots"
+pnpm harness lookup "TLS handshake"
 pnpm harness playbook docker.fm.exit-137-oomkilled
-pnpm harness playbook k8s.fm.pod-pending-failedscheduling
-pnpm harness playbook k8s.fm.dns-pod-search-too-many
-pnpm harness playbook docker.fm.container-no-egress-umbrella
+pnpm harness playbook docker.fm.dns-resolv-broken-in-container
+pnpm harness playbook docker.fm.no-egress-network-broken
+pnpm harness playbook docker.fm.cgroup-cpu-throttled
+pnpm harness playbook linux.fm.fd-exhaustion-emfile
+pnpm harness playbook linux.fm.swap-thrashing
 pnpm harness playbook linux.fm.process-stuck-d-state
-pnpm harness playbook linux.fm.systemd-unit-restart-loop
-pnpm harness playbook methodology.fm.cpu-utilization-misleading
-pnpm harness playbook methodology.fm.retro-becomes-trial
+pnpm harness playbook devin.fm.repo-scoped-secret-not-auto-injected
+pnpm harness playbook devin.fm.snapshot-fallback-after-build-failure
+pnpm harness playbook devin.fm.long-session-context-overflow-loop
+pnpm harness playbook devin.fm.git-push-blocked-by-branch-protection
+pnpm harness concept linux.primitives.cgroup-v2
+pnpm harness concept linux.primitives.oom-killer
+pnpm harness concept docker.runtime.restart-policy
+pnpm harness concept docker.networking.bridge
+pnpm harness concept linux.networking.iptables-masquerade
 pnpm harness related linux.primitives.cgroup-v2 2
 pnpm harness related linux.primitives.oom-killer 2
-pnpm harness concept linux.primitives.cgroup-v2
+pnpm harness related docker.runtime.oom-killed 2
+pnpm harness cite docker.fm.exit-137-oomkilled
+pnpm harness stats
 pnpm harness capture --list
 pnpm harness capture oom
 pnpm harness capture network-egress
 pnpm harness capture --from-fm docker.fm.exit-137-oomkilled
-pnpm harness drill --list
-pnpm harness drill 01-docker-oom
-pnpm harness drill random
 
-# ===== Docker debugging =====
+# ============================================================================
+# ===== DOCKER — single container =====
+# ============================================================================
+docker ps
 docker ps -a
-docker inspect <c> --format '{{.State.OOMKilled}} {{.State.ExitCode}}'
-docker inspect <c> --format '{{.HostConfig.Memory}}'
-docker stats
-docker logs --tail 100 -f <c>
-docker exec -it <c> sh
+docker ps -a --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}'
+docker ps --filter status=running --format 'table {{.Names}}\t{{.Status}}'
+docker ps --filter status=exited --format 'table {{.Names}}\t{{.Status}}'
+docker ps --filter status=restarting --format 'table {{.Names}}\t{{.Status}}'
+docker ps -aq -l
+docker ps -aq -f name=domains-practice-
+docker images
+docker images --format 'table {{.Repository}}\t{{.Tag}}\t{{.Size}}'
+docker info
 docker system df
+docker system df -v
+docker version
+
+# Inspect templates — the high-yield ones
+docker inspect <c>
+docker inspect <c> --format '{{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}}'
+docker inspect <c> --format '{{.State.OOMKilled}} {{.State.ExitCode}}'
+docker inspect <c> --format '{{.State.RestartCount}}'
+docker inspect <c> --format '{{.State.StartedAt}} -> {{.State.FinishedAt}}'
+docker inspect <c> --format '{{.HostConfig.Memory}}'
+docker inspect <c> --format '{{.HostConfig.Memory}}' | numfmt --to=iec
+docker inspect <c> --format '{{.HostConfig.NanoCpus}}'
+docker inspect <c> --format '{{.HostConfig.RestartPolicy.Name}} max={{.HostConfig.RestartPolicy.MaximumRetryCount}}'
+docker inspect <c> --format '{{.HostConfig.OomScoreAdj}}'
+docker inspect <c> --format '{{.Config.Cmd}}'
+docker inspect <c> --format '{{.Config.Entrypoint}} {{.Config.Cmd}}'
+docker inspect <c> --format '{{json .Config.Env}}' | jq
+docker inspect <c> --format '{{json .NetworkSettings.Networks}}' | jq
+docker inspect <c> --format '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{println}}{{end}}'
+docker inspect <c> --format '{{.LogPath}}'
+docker inspect <c> --format '{{.Id}}'
+docker inspect <c> --format '{{.Image}}'
+
+# Logs
+docker logs <c>
+docker logs --tail 100 -f <c>
+docker logs --tail 50 <c> 2>&1
+docker logs <c> 2>&1 | grep -iE 'error|fatal|warn|fail|exception'
+docker logs --since 5m <c>
+docker logs --since 1h <c>
+docker logs -t <c>
+
+# Stats / live
+docker stats --no-stream
+docker stats --no-stream --format 'table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}'
+docker stats --no-stream --format 'table {{.Name}}\t{{.NetIO}}\t{{.BlockIO}}\t{{.PIDs}}'
+docker top <c>
+docker exec <c> ps aux
+docker exec <c> top -bn1
+docker exec <c> free -m
+
+# Events (THE underused diagnostic)
+docker events
+docker events --since 5m
+docker events --since 10m
+docker events --since 1h --filter event=die
+docker events --since 10m --filter event=oom
+docker events --since 10m --format '{{.Time}} {{.Type}} {{.Action}} {{.Actor.Attributes.name}}'
+
+# Exec / shell
+docker exec -it <c> sh
+docker exec -it <c> bash
+docker exec -it <c> /bin/sh -c 'cat /proc/1/cgroup'
+docker exec <c> id
+docker exec <c> ls -la /var/run/docker.sock 2>/dev/null
+
+# Network
 docker network ls
 docker network inspect bridge
-docker events --since 5m
+docker network inspect <net>
+docker port <c>
 
-# ===== kubectl debugging =====
-kubectl get pods -A -o wide
-kubectl describe pod <p>
-kubectl get events -A --sort-by=.lastTimestamp | tail -30
-kubectl logs <p> --previous --tail 100
-kubectl exec -it <p> -- sh
-kubectl describe node | grep -E 'Name:|Allocated' -A 5
-kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
-kubectl get pods -A --field-selector=status.phase=Pending
-kubectl rollout status deploy/<name>
-kubectl get networkpolicy -A
-kubectl top pods --containers
-kubectl auth can-i get pods --as=system:serviceaccount:default:default
-kubectl config current-context
+# ============================================================================
+# ===== DOCKER — multi-container fleet aggregation =====
+# ============================================================================
+# THE canonical idiom: substitute .METRIC for any inspect path
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.State.OOMKilled}}'
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.State.OOMKilled}}' | awk '$2=="true"'
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.RestartCount}}' | sort -k2 -rn
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.State.ExitCode}}' | awk '$2!=0'
+docker inspect $(docker ps -aq) --format '{{.Config.Image}}' | sort | uniq -c | sort -rn
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.HostConfig.Memory}}' | sort -k2 -rn
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.HostConfig.RestartPolicy.Name}}'
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.NetworkSettings.IPAddress}}'
+docker inspect $(docker ps -aq) --format '{{.Name}} {{.State.Status}}' | awk '{print $2}' | sort | uniq -c
+docker events --since 30m --filter event=die --format '{{.Actor.Attributes.name}}' | sort | uniq -c | sort -rn
+for c in $(docker ps -aq); do echo -n "$(docker inspect $c --format '{{.Name}}'): "; docker inspect $c --format '{{.LogPath}}' | xargs -I{} du -h {} 2>/dev/null; done | sort -k2 -h
+docker stats --no-stream --format '{{.Name}} {{.CPUPerc}}' | sort -k2 -rn
+docker stats --no-stream --format '{{.Name}} {{.MemUsage}}'
+docker inspect $(docker ps -aq) --format '{{.Config.Image}}' | sort | uniq -c | awk '$1==1'
+docker ps --filter status=restarting
 
-# ===== Linux debugging =====
-sudo dmesg -T | tail -50
-sudo dmesg -T | grep -i 'killed process\|out of memory'
-ps -o pid,stat,wchan,cmd | awk '$2 ~ /^D/'
-sudo cat /proc/<pid>/stack
-sudo cat /proc/<pid>/wchan
-cat /proc/<pid>/status | grep -E 'State|VmRSS|Cap'
-free -h
-vmstat 1 10
-iostat -xz 1 5
-mpstat -P ALL 1 3
-sar -n DEV 1 5
-ss -tnp
-nstat -az | grep -E 'TcpExt|IpExt'
-sudo perf stat -p $(pgrep -f myapp) -- sleep 10
-sudo perf record -F 99 -g --call-graph dwarf -p $(pgrep -f myapp) -- sleep 30
-sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat { @[comm,args->filename] = count(); }'
-sudo offcputime-bpfcc -p $(pgrep -f myapp) 30
+# Bashrc aliases (interview-day muscle memory)
+dps
+dpsr
+dpsx
+dpsl
+dwhy <c>
+dforensic <c>
+dlog <c>
+dlogerr <c>
+dlog5m <c>
+dmem <c>
+denv <c>
+dmounts <c>
+drestart <c>
+dimage <image>
+dprune
+dlast
 
-# ===== systemd =====
-systemctl status <unit>
-journalctl -u <unit> -e
-journalctl -u <unit> -f --since '5 min ago'
-sudo systemctl reset-failed <unit>
-systemd-analyze verify <unit>
-systemd-analyze blame
-coredumpctl list
-
-# ===== Networking =====
-sudo iptables -t nat -L POSTROUTING -n -v | grep MASQ
-sudo iptables -L FORWARD -n -v --line-numbers
-sudo iptables -L DOCKER-USER -n -v
-sudo nft list ruleset
-sudo conntrack -L | head
-sysctl net.ipv4.ip_forward
-sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max
-sudo tcpdump -i any -c 50 -nn 'host 1.1.1.1'
-dig +trace example.com
-getent hosts example.com
-
-# ===== cgroup state =====
+# ============================================================================
+# ===== CGROUP state (containers + processes) =====
+# ============================================================================
 cat /sys/fs/cgroup/memory.events
 cat /sys/fs/cgroup/cpu.stat
-cat /sys/fs/cgroup/<cg>/memory.{current,max}
+cat /sys/fs/cgroup/io.stat
+cat /proc/self/cgroup
+cat /proc/<pid>/cgroup
+find /sys/fs/cgroup -name 'memory.events' | head -10
 find /sys/fs/cgroup -name 'memory.current' | head -10
+find /sys/fs/cgroup -name 'cpu.stat' | head -10
+
+# Cgroup paths for docker container
+DC=$(docker inspect <c> --format '{{.Id}}')
+cat /sys/fs/cgroup/system.slice/docker-${DC}.scope/memory.events
+cat /sys/fs/cgroup/system.slice/docker-${DC}.scope/memory.current
+cat /sys/fs/cgroup/system.slice/docker-${DC}.scope/memory.max
+cat /sys/fs/cgroup/system.slice/docker-${DC}.scope/memory.peak
+cat /sys/fs/cgroup/system.slice/docker-${DC}.scope/cpu.stat
+cat /sys/fs/cgroup/system.slice/docker-${DC}.scope/cpu.max
+
+# CPU throttling — THE Devin DevBox signature
+cat /sys/fs/cgroup/cpu.stat | grep -E 'nr_throttled|throttled_usec'
+cat /sys/fs/cgroup/system.slice/docker-${DC}.scope/cpu.stat | grep throttled
+
+# memory.events — oom + oom_kill counters
+grep -E 'oom|oom_kill|max' /sys/fs/cgroup/memory.events
+grep -E 'oom|oom_kill' /sys/fs/cgroup/system.slice/docker-${DC}.scope/memory.events
+
+# Pressure stall information (PSI)
+cat /proc/pressure/memory
+cat /proc/pressure/cpu
+cat /proc/pressure/io
+cat /sys/fs/cgroup/memory.pressure
+cat /sys/fs/cgroup/cpu.pressure
+
+# ============================================================================
+# ===== K8S =====
+# ============================================================================
+kubectl get pods -A -o wide
+kubectl get pods -A --field-selector=status.phase=Pending
+kubectl get pods -A --field-selector=status.phase=Failed
+kubectl get pods -A | grep -v Running | grep -v Completed
+kubectl describe pod <p>
+kubectl describe pod <p> -n <ns>
+kubectl get events -A --sort-by=.lastTimestamp | tail -30
+kubectl get events -n <ns> --sort-by=.lastTimestamp
+kubectl logs <p> --tail 100
+kubectl logs <p> --previous --tail 100
+kubectl logs -f <p>
+kubectl logs <p> -c <container>
+kubectl exec -it <p> -- sh
+kubectl exec -it <p> -c <container> -- sh
+kubectl describe node | grep -E 'Name:|Allocated' -A 5
+kubectl get nodes -o wide
+kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
+kubectl rollout status deploy/<name>
+kubectl rollout history deploy/<name>
+kubectl rollout undo deploy/<name>
+kubectl get networkpolicy -A
+kubectl describe networkpolicy <np> -n <ns>
+kubectl top pods --containers
+kubectl top nodes
+kubectl auth can-i get pods --as=system:serviceaccount:default:default
+kubectl config current-context
+kubectl config get-contexts
+kubectl get svc -A
+kubectl get endpoints -A
+kubectl api-resources
+
+# ============================================================================
+# ===== LINUX process / memory / CPU =====
+# ============================================================================
+ps -ef --forest
+ps -eo pid,ppid,user,etime,cmd
+ps -eo pid,etimes,pcpu,rss,cmd --sort=-pcpu | head -10
+ps -eo pid,etimes,pcpu,rss,cmd --sort=-rss | head -10
+ps -eo state,pid,cmd | awk '$1 ~ /D/'
+ps -eo state,pid,cmd | awk '$1 ~ /Z/'
+ps -eo pid,stat,wchan,cmd | awk '$2 ~ /^D/'
+ps -eo pid,stat,wchan,cmd | awk '$2 ~ /^Z/'
+ps -eo ppid,pid,cmd | sort | head -20
+pgrep -a <name>
+pkill -f <pattern>
+top
+top -bn1
+top -H -p <pid>
+htop
+pidstat 1 5
+pidstat -t -p <pid> 1 5
+pidstat -d -p <pid> 1 5
+
+# /proc inspection
+cat /proc/<pid>/status
+cat /proc/<pid>/status | grep -E 'State|VmRSS|VmSize|VmSwap|Threads|FDSize'
+cat /proc/<pid>/cmdline | tr '\0' ' '
+readlink /proc/<pid>/exe
+readlink /proc/<pid>/cwd
+cat /proc/<pid>/limits
+cat /proc/<pid>/io
+cat /proc/<pid>/wchan
+cat /proc/<pid>/stack
+sudo cat /proc/<pid>/stack
+cat /proc/<pid>/cgroup
+ls /proc/<pid>/fd | wc -l
+ls -la /proc/<pid>/fd | head -20
+ls /proc/<pid>/task
+
+# Memory
+free -h
+free -m
+vmstat 1 10
+vmstat 2 5
+vmstat -s
+cat /proc/meminfo
+cat /proc/meminfo | grep -E 'MemTotal|MemFree|MemAvailable|Cached|Buffers|SwapTotal|SwapFree'
+swapon --show
+cat /proc/swaps
+sar -r 1 5
+
+# CPU
+mpstat -P ALL 1 3
+sar -u 1 5
+uptime
+cat /proc/loadavg
+cat /proc/cpuinfo | grep -E 'model name|MHz|cores' | head
+nproc
+
+# Sort by CPU / RSS
+ps -eo pid,pcpu,rss,comm --sort=-pcpu | head
+ps --sort=-rss -eo pid,rss,comm | head
+
+# Per-process VmSwap (find swap consumers)
+for pid in /proc/[0-9]*; do p=$(basename $pid); s=$(awk '/^VmSwap/{print $2}' $pid/status 2>/dev/null); [ -z "$s" ] || [ "$s" -eq 0 ] && continue; printf '%s %skB %s\n' "$p" "$s" "$(cat $pid/comm 2>/dev/null)"; done | sort -k2 -rn | head
+
+# OOM-killer investigation
+sudo dmesg -T | tail -50
+sudo dmesg -T | grep -i 'killed process\|out of memory'
+sudo dmesg -T | grep -i 'oom-killer'
+cat /proc/<pid>/oom_score
+cat /proc/<pid>/oom_score_adj
+journalctl -k --since '10 min ago' | grep -i oom
+
+# ============================================================================
+# ===== File descriptors / open files =====
+# ============================================================================
+lsof -p <pid>
+lsof -p <pid> -nP
+lsof -p <pid> | wc -l
+lsof -i
+lsof -i :8080
+lsof -i :443
+lsof -i tcp -nP
+lsof +L1
+lsof | awk 'NR>1 {print $1}' | sort | uniq -c | sort -rn | head
+lsof | grep CLOSE_WAIT | wc -l
+ls /proc/<pid>/fd | wc -l
+ls -la /proc/<pid>/fd | head -20
+ulimit -n
+ulimit -n -H
+ulimit -a
+prlimit --pid <pid>
+prlimit --pid <pid> --nofile
+
+# Find processes near their fd limit
+for pid in /proc/[0-9]*; do p=$(basename $pid); h=$(awk '/Max open files/{print $5}' $pid/limits 2>/dev/null); used=$(ls $pid/fd 2>/dev/null | wc -l); [ -z "$h" ] && continue; [ "$used" -gt "$((h/2))" ] && printf '%-7s used=%-6s limit=%-6s %s\n' "$p" "$used" "$h" "$(cat $pid/comm 2>/dev/null)"; done | sort -k3 -rn
+
+# ============================================================================
+# ===== NETWORKING — ports, sockets, connections =====
+# ============================================================================
+ss -tnp
+ss -tlnp
+ss -tlnp 'sport = :8080'
+ss -tlnp 'sport = :443'
+ss -tn state close-wait
+ss -tn state time-wait
+ss -tn state established
+ss -tnp | awk '{print $6}' | sort | uniq -c | sort -rn | head
+ss -s
+netstat -tnlp
+netstat -an | grep ESTABLISHED | wc -l
+
+# Conntrack
+sudo conntrack -L 2>/dev/null | head
+sudo conntrack -L | wc -l
+sysctl net.netfilter.nf_conntrack_count
+sysctl net.netfilter.nf_conntrack_max
+sysctl net.ipv4.ip_forward
+
+# iptables / netfilter
+sudo iptables -L -n -v
+sudo iptables -L FORWARD -n -v --line-numbers
+sudo iptables -L DOCKER-USER -n -v
+sudo iptables -t nat -L POSTROUTING -n -v
+sudo iptables -t nat -L PREROUTING -n -v
+sudo iptables -t nat -L POSTROUTING -n -v | grep MASQ
+sudo iptables -L INPUT -n -v --line-numbers
+sudo nft list ruleset
+sudo nft list table inet filter
+
+# Network interfaces / routes
+ip a
+ip addr show
+ip link show
+ip -br link
+ip route
+ip route show default
+ip route get 8.8.8.8
+ip neigh show
+
+# Packet capture
+sudo tcpdump -i any -c 50 -nn
+sudo tcpdump -i any -c 50 -nn 'host 1.1.1.1'
+sudo tcpdump -i any -c 50 -nn port 53
+sudo tcpdump -i any -c 50 -nn 'tcp port 443'
+sudo tcpdump -i any -c 50 -nn 'icmp'
+
+# nmap
+nmap -p 80,443,8080 host
+nmap -sV host
+nmap -sn 10.0.0.0/24
+
+# nc / connectivity tests
+nc -zv host 80
+nc -zv host 443
+nc -zv -w 3 host 8080
+nc -lvnp 8080
+
+# ============================================================================
+# ===== DNS =====
+# ============================================================================
+dig example.com
+dig +short example.com
+dig +trace example.com
+dig +noall +answer example.com
+dig @8.8.8.8 example.com
+dig @1.1.1.1 example.com
+dig +short MX example.com
+dig +short TXT example.com
+dig -x 8.8.8.8
+nslookup example.com
+nslookup example.com 8.8.8.8
+host example.com
+getent hosts example.com
+getent ahosts example.com
+cat /etc/resolv.conf
+cat /etc/nsswitch.conf
+cat /etc/hosts
+
+# DNS resolution timing
+time dig +short example.com
+time getent hosts example.com
+
+# Container DNS
+docker exec <c> cat /etc/resolv.conf
+docker exec <c> getent hosts example.com
+docker exec <c> dig example.com 2>/dev/null || docker exec <c> nslookup example.com
+
+# k8s DNS
+kubectl exec -it <p> -- nslookup kubernetes.default
+kubectl exec -it <p> -- cat /etc/resolv.conf
+kubectl get svc -n kube-system kube-dns
+kubectl get configmap -n kube-system coredns -o yaml
+
+# ============================================================================
+# ===== TLS / certs =====
+# ============================================================================
+openssl s_client -connect host:443
+openssl s_client -connect host:443 -servername host
+openssl s_client -connect host:443 -showcerts
+openssl s_client -connect host:443 -CAfile /path/ca.crt
+openssl s_client -connect host:443 < /dev/null 2>&1 | grep -E 'subject|issuer|verify'
+openssl s_client -connect host:443 < /dev/null 2>&1 | openssl x509 -noout -dates
+openssl s_client -connect host:443 < /dev/null 2>&1 | openssl x509 -noout -subject -issuer
+openssl s_client -connect host:443 < /dev/null 2>&1 | openssl x509 -noout -text | head -30
+openssl x509 -in /path/cert.pem -noout -text
+openssl x509 -in /path/cert.pem -noout -dates
+openssl x509 -in /path/cert.pem -noout -subject -issuer
+openssl verify -CAfile /path/ca.crt /path/cert.pem
+curl -svo /dev/null https://host
+curl -svo /dev/null https://host 2>&1 | grep -i 'subject\|issuer\|verify\|ssl'
+curl --cacert /path/ca.crt https://host
+curl -k https://host
+
+# Per-tool CA cert env vars (Customer App 101 fix)
+echo $NODE_EXTRA_CA_CERTS
+echo $REQUESTS_CA_BUNDLE
+echo $SSL_CERT_FILE
+echo $CURL_CA_BUNDLE
+git config http.sslCAInfo
+git config --global http.sslCAInfo /path/ca.crt
+export NODE_EXTRA_CA_CERTS=/path/corp-ca.pem
+export REQUESTS_CA_BUNDLE=/path/corp-ca.pem
+export SSL_CERT_FILE=/path/corp-ca.pem
+export CURL_CA_BUNDLE=/path/corp-ca.pem
+
+# System CA store
+ls /usr/local/share/ca-certificates/
+sudo cp /path/corp-ca.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+cat /etc/ssl/certs/ca-certificates.crt | head
+
+# Docker per-registry trust (private-registry-cert scenario)
+sudo mkdir -p /etc/docker/certs.d/registry.example.com
+sudo cp /path/ca.crt /etc/docker/certs.d/registry.example.com/ca.crt
+sudo systemctl reload docker
+
+# Java
+keytool -list -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit | head
+sudo keytool -import -alias corp-ca -file /path/ca.crt -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -noprompt
+
+# pip
+pip --cert /path/ca.crt install <pkg>
+pip config set global.cert /path/ca.crt
+
+# Clock skew (when certs look valid but verification fails)
+date -u
+date
+chronyc tracking
+chronyc sources
+sudo systemctl status chrony
+sudo systemctl status systemd-timesyncd
+timedatectl
+
+# JWT decode (clock skew → 'token expired' false alarm)
+echo "<JWT>" | cut -d. -f2 | base64 -d 2>/dev/null | jq
+
+# ============================================================================
+# ===== DISK / I/O =====
+# ============================================================================
+df -h
+df -i
+df -h /var/log
+du -sh /tmp/* | sort -h | tail
+du -sh /var/log/* | sort -h | tail
+du -sh /* 2>/dev/null | sort -rh | head -10
+ncdu /
+
+# Per-process I/O
+iostat -xz 1 5
+iostat -xz 1 5 | head -20
+iotop -b -o -n 3
+sudo iotop -b -o -n 3
+pidstat -d 1 5
+cat /proc/<pid>/io
+
+# Disk pressure / iowait
+iostat -x 1 5 | grep -E 'Device|sda|nvme'
+cat /proc/diskstats
+sudo dmesg | grep -i 'mount\|filesystem\|i/o'
+
+# Find what's eating disk space
+sudo find / -type f -size +100M 2>/dev/null | head
+sudo find / -type f -mtime -1 -size +10M 2>/dev/null | head
+journalctl --disk-usage
+sudo journalctl --vacuum-size=100M
+
+# Block devices
+lsblk
+lsblk -f
+sudo blkid
+sudo fdisk -l
+mount | column -t
+
+# ============================================================================
+# ===== SYSTEMD =====
+# ============================================================================
+systemctl status
+systemctl status <unit>
+systemctl status <unit>.service
+systemctl list-units --failed
+systemctl list-units --type=service --state=running
+systemctl list-unit-files --state=enabled
+systemctl is-active <unit>
+systemctl is-enabled <unit>
+systemctl list-dependencies <unit>
+systemctl list-dependencies --reverse <unit>
+sudo systemctl restart <unit>
+sudo systemctl reload <unit>
+sudo systemctl reset-failed <unit>
+sudo systemctl reset-failed
+systemctl cat <unit>
+
+journalctl -u <unit>
+journalctl -u <unit> -e
+journalctl -u <unit> -f
+journalctl -u <unit> --since '5 min ago'
+journalctl -u <unit> --since today
+journalctl -u <unit> -p err
+journalctl --since '1 hour ago' -p err
+journalctl -k --since '10 min ago'
+journalctl --no-pager --output=json-pretty -u <unit> -n 5
+journalctl -u <unit> --output=cat
+sudo journalctl --vacuum-size=100M
+sudo journalctl --vacuum-time=7d
+
+systemd-analyze
+systemd-analyze blame
+systemd-analyze critical-chain
+systemd-analyze critical-chain <unit>
+systemd-analyze verify <unit>
+systemd-analyze plot > startup.svg
+
+# Coredumps (segfault / exit 139)
+coredumpctl list
+coredumpctl info
+coredumpctl info <pid>
+coredumpctl gdb <pid>
+coredumpctl dump > core
+sudo journalctl --boot -p err | head -50
+
+# ============================================================================
+# ===== APPARMOR / SELINUX (LSM) =====
+# ============================================================================
+sudo aa-status
+sudo apparmor_parser -p /etc/apparmor.d/<profile>
+sudo dmesg | grep -i apparmor
+sudo dmesg | grep -i 'DENIED'
+sudo dmesg | grep -i 'audit'
+sudo ausearch -m AVC -ts recent
+sudo ausearch -c <comm> --raw | head
+sudo aa-complain /etc/apparmor.d/<profile>
+sudo aa-enforce /etc/apparmor.d/<profile>
+sestatus
+sudo getenforce
+sudo setenforce 0
+sudo ausearch -m AVC -ts recent | audit2allow
+
+# ============================================================================
+# ===== Container security / DinD =====
+# ============================================================================
+ls -la /var/run/docker.sock
+getent group docker
+id
+docker exec <c> ls -la /var/run/docker.sock
+docker exec <c> id
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --user $(id -u):$(getent group docker | cut -d: -f3) docker:cli docker ps
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --group-add $(getent group docker | cut -d: -f3) docker:cli docker ps
+
+# ============================================================================
+# ===== DEVIN-SPECIFIC =====
+# ============================================================================
+
+# Bug 101 — repo-scoped secrets not in env
+echo $MY_API_KEY
+env | grep -iE 'api|secret|token|key' | head
+ls /run/repo_secrets/ 2>/dev/null
+ls /run/repo_secrets/<owner>/<repo>/ 2>/dev/null
+cat /run/repo_secrets/<owner>/<repo>/.env.secrets 2>/dev/null
+set -a; source /run/repo_secrets/<owner>/<repo>/.env.secrets; set +a
+set -a; . /run/repo_secrets/<owner>/<repo>/.env.secrets; set +a
+
+# Customer App 101 — corp TLS / npm fails
+curl -svo /dev/null https://registry.npmjs.org 2>&1 | grep -iE 'issuer|subject|verify'
+npm config get cafile
+npm config set cafile /path/corp-ca.pem
+pip config get global.cert
+pip config set global.cert /path/corp-ca.pem
+git config http.sslCAInfo
+git config --global http.sslCAInfo /path/corp-ca.pem
+
+# Snapshot fallback (Bug #3)
+grep -E 'snapshot.build.failed|snapshot.fallback.activate' /var/log/devin/snapshot-build.log
+grep 'snapshot.initialize.step' /var/log/devin/snapshot-build.log
+grep 'status=failed' /var/log/devin/snapshot-build.log
+
+# Session disconnects (Bug #4)
+grep disconnect /var/log/devin/session.log | awk '{print $1}' | head
+awk -F'[[:space:]]' '/disconnect/{print $1}' /var/log/devin/session.log | head -10
+aws ec2 describe-vpc-endpoints --filters Name=service-name,Values=*devin*
+
+# Agent loop (Bug #5)
+grep -oE 'cmd="[^"]+"' agent-actions.log | sort | uniq -c | sort -rn | head
+awk '/action_id/' agent-actions.log | wc -l
+head -1 agent-actions.log; tail -1 agent-actions.log
+
+# Git push / branch protection (Bug #6)
+gh api repos/<owner>/<repo>/branches/main/protection
+gh api /user/installations
+gh api /repos/<owner>/<repo>/collaborators
+git branch -a
+git remote -v
+git checkout -b devin/fix-NN
+git push -u origin devin/fix-NN
+gh pr create --base main --title "fix" --body "Devin session NN"
+
+# Disk full (Bug #7)
+df -h
+docker system df
+docker system prune -af
+docker volume prune -f
+docker image prune -af
+sudo journalctl --vacuum-size=100M
+du -sh /var/lib/docker/* | sort -h
+
+# ============================================================================
+# ===== eBPF / perf (if installed) =====
+# ============================================================================
+sudo perf top
+sudo perf stat -p $(pgrep -f myapp) -- sleep 10
+sudo perf record -F 99 -g --call-graph dwarf -p $(pgrep -f myapp) -- sleep 30
+sudo perf report
+sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat { @[comm,args->filename] = count(); }'
+sudo bpftrace -e 'tracepoint:syscalls:sys_enter_execve { printf("%s -> %s\n", comm, str(args->filename)); }'
+sudo offcputime-bpfcc -p $(pgrep -f myapp) 30
+sudo execsnoop-bpfcc
+sudo opensnoop-bpfcc -p $(pgrep -f myapp)
+sudo tcpconnect-bpfcc
+sudo tcptracer-bpfcc
+
+# ============================================================================
+# ===== Practice scripts (drill mode) =====
+# ============================================================================
+ls practice/*.sh
+cat practice/PRIORITY-TABLE.md
+cat practice/PRACTICE-ORDER.md
+cat practice/README.md
+bash practice/06-docker-oom.sh start
+bash practice/06-docker-oom.sh verify
+bash practice/06-docker-oom.sh reveal
+bash practice/06-docker-oom.sh restore
+bash practice/15-cpu-throttled.sh start
+bash practice/19-corporate-ca-bundle.sh start
+bash practice/28-env-var-empty.sh start
+bash practice/29-tools-old-version.sh start
+bash practice/30-session-drops-periodically.sh start
+bash practice/31-agent-stuck-repeating.sh start
+bash practice/32-push-rejected.sh start
+
+# ============================================================================
+# ===== Bashrc safety =====
+# ============================================================================
+bashrc-landmines
+demoshell
+type -P grep sed awk find ps
+alias
+
+# ============================================================================
+# ===== Bootstrap commands =====
+# ============================================================================
+./bootstrap.sh install --launch --minimal --skip-tag=productivity
+pnpm bootstrap install --module=verify-harness
+pnpm bootstrap install --module=apt-optional
+pnpm bootstrap install --force --module=bashrc
+pnpm bootstrap list
+pnpm bootstrap verify
+pnpm bootstrap key set
+pnpm bootstrap key show
+
+# ============================================================================
+# ===== Misc one-liners =====
+# ============================================================================
+find /var/log -type f -exec du -sh {} \; 2>/dev/null | sort -h | tail
+find / -type f -mmin -30 2>/dev/null | head -20
+find / -type f -mtime -1 2>/dev/null | head -20
+sudo lsof +L1 2>/dev/null
+ss -tlnp
+sudo ss -tlnp
+sudo lsof -i :8080
+sudo ss -tlnp 'sport = :8080'
+pkill -f myapp
+sudo pkill -9 -f myapp
+sudo strace -p <pid>
+sudo strace -p <pid> -c
+sudo strace -e trace=connect -p <pid>
+sudo strace -f -e trace=execve -p <pid>
+dpkg -S /usr/bin/curl
+dpkg -L curl | head
+zgrep -h '"install "' /var/log/dpkg.log* | tail -20
+systemctl is-active docker postgresql nginx
+systemctl is-active --quiet docker && echo running || echo dead
