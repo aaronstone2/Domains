@@ -614,6 +614,97 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --user $(id -u):$(g
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --group-add $(getent group docker | cut -d: -f3) docker:cli docker ps
 
 # ============================================================================
+# ===== MULTI-SYMPTOM SERVICE GATEWAY (corp PKI + DNS + cert expiry) =====
+# ============================================================================
+# Pattern: gateway returns degraded JSON with N service errors. Decompose by
+# error CODE (not by service) — services with same error code likely share a
+# root cause. Then debug each error class separately.
+# Real example output:
+#   "auth":    UNABLE_TO_GET_ISSUER_CERT     (TLS chain incomplete)
+#   "metrics": CERT_HAS_EXPIRED              (real expiry OR clock skew)
+#   "db":      ENOTFOUND db.corp.internal    (DNS — same root as cache)
+#   "cache":   ENOTFOUND cache.corp.internal (DNS)
+# 4 services, 3 errors → 3 distinct root causes.
+
+# Initial discovery — find the gateway
+docker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
+sudo ss -tlnp 'sport = :5000'
+sudo lsof -i :5000
+docker network ls
+docker network inspect <net>
+curl -s http://localhost:5000 | jq
+curl -s http://localhost:5000/health | jq
+
+# Get inside the gateway container
+docker exec -it <gateway> sh
+docker exec -it <gateway> bash
+
+# === CA / TLS chain (auth-class: UNABLE_TO_GET_ISSUER_CERT) ===
+env | grep -i ca
+env | grep -i ssl
+env | grep -i cert
+env | grep -i node
+echo $NODE_EXTRA_CA_CERTS
+[ -n "$NODE_EXTRA_CA_CERTS" ] && ls -la "$NODE_EXTRA_CA_CERTS"
+[ -n "$NODE_EXTRA_CA_CERTS" ] && grep -c 'BEGIN CERTIFICATE' "$NODE_EXTRA_CA_CERTS"
+openssl s_client -connect <host>:443 -showcerts < /dev/null 2>&1
+openssl s_client -connect <host>:443 -showcerts < /dev/null 2>&1 | grep -E '^ *[is]:'
+openssl s_client -connect <host>:443 -servername <host> < /dev/null 2>&1 | grep -E 'subject|issuer|verify'
+node -e 'require("https").get({host:"<host>",port:443,rejectUnauthorized:true}, r => console.log("STATUS",r.statusCode)).on("error", e => console.log("ERR", e.code, e.message))'
+node -e 'const tls=require("tls"); const s=tls.connect({host:"<host>",port:443,rejectUnauthorized:true},()=>{console.log("OK",s.authorized);s.end()}); s.on("error",e=>console.log("ERR",e.message,e.code))'
+NODE_EXTRA_CA_CERTS=/path/full-chain.pem node -e 'require("https").get({host:"<host>",port:443}, r => console.log(r.statusCode))'
+cat /path/root.pem /path/intermediate.pem > /tmp/full-chain.pem
+grep -c 'BEGIN CERTIFICATE' /tmp/full-chain.pem
+
+# === Cert expiry vs clock skew (metrics-class: CERT_HAS_EXPIRED) ===
+openssl s_client -connect <host>:443 < /dev/null 2>&1 | openssl x509 -noout -dates
+openssl s_client -connect <host>:443 < /dev/null 2>&1 | openssl x509 -noout -subject -issuer -dates
+date -u
+date
+curl -sI https://www.google.com | grep -i ^date
+curl -sI https://api.github.com | grep -i ^date
+chronyc tracking 2>/dev/null
+sudo systemctl status systemd-timesyncd
+
+# === DNS resolution for internal corp domains (db/cache: ENOTFOUND) ===
+cat /etc/resolv.conf
+dig +short <host>.corp.internal
+dig <host>.corp.internal
+nslookup <host>.corp.internal
+getent hosts <host>.corp.internal
+host <host>.corp.internal
+
+# Direct probe against likely corp DNS server
+dig @<corp-dns-ip> <host>.corp.internal
+dig @172.17.0.1 <host>.corp.internal
+
+# Compare host vs container DNS
+exit
+dig +short <host>.corp.internal
+getent hosts <host>.corp.internal
+resolvectl status
+
+# Find gateway's docker network
+docker network inspect <gateway-network>
+
+# Workarounds inside container — for testing fix
+echo '<corp-ip> <host>.corp.internal' >> /etc/hosts
+
+# Permanent fix — add custom DNS to container
+docker run --dns <corp-dns-ip> ...
+docker run --dns <corp-dns-ip> --dns-search corp.internal ...
+
+# === Node.js direct TLS probes (matches gateway runtime) ===
+node -e 'require("https").get({host:"<host>",port:443}, r => console.log(r.statusCode)).on("error",e=>console.log(e.code,e.message))'
+NODE_EXTRA_CA_CERTS=/path/chain.pem node -e 'require("https").get({host:"<host>",port:443,rejectUnauthorized:true}, r => console.log(r.statusCode)).on("error",e=>console.log(e.code,e.message))'
+node -e 'require("https").get({host:"<host>",port:443,rejectUnauthorized:false}, r => console.log(r.statusCode)).on("error",e=>console.log(e.code,e.message))'
+
+# === Talk-track for multi-symptom decomposition ===
+# echo "DECOMPOSE: <N> services failing with <M> distinct error codes → likely <M> roots"
+# echo "Classify by error code first: UNABLE_TO_GET_ISSUER_CERT = TLS chain build, CERT_HAS_EXPIRED = expiry/clock, ENOTFOUND = DNS"
+# echo "Group services with same error code → debug as ONE class, not N services"
+
+# ============================================================================
 # ===== DEVIN-SPECIFIC =====
 # ============================================================================
 
