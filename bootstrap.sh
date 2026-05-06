@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
-# bootstrap.sh — minimal trampoline.
+# bootstrap.sh — fast trampoline: Node → pre-built bundle. No pnpm/tsx needed.
 #
-# Job: get Node 22+ and pnpm onto the box, then exec into the real installer
-# at packages/bootstrap (TypeScript, modular, single-responsibility).
+# Optimized for bare interview DevBox:
+#   1. Binary tarball Node install (~2s if needed)
+#   2. Hand off to pre-built dist/bootstrap.js (~1s)
+#   Total on bare box: ~3s. Warm: ~1s.
 #
-# All the install logic lives in TS — see packages/bootstrap/README.md.
+# The bundle is committed to git — no pnpm install or tsx required on the
+# critical path. pnpm install runs later as a bootstrap module (pnpm-install)
+# to set up workspace deps for the harness CLI.
 #
-# Common usage:
+# Usage:
 #   ./bootstrap.sh                                          # full install
 #   ./bootstrap.sh install --with-docker --launch           # docker + launch claude
 #   ./bootstrap.sh install --module=atuin                   # retry one module
@@ -15,80 +19,59 @@
 #   ./bootstrap.sh verify                                   # post-install checks
 #   ./bootstrap.sh landmines                                # bashrc safety check
 #   ./bootstrap.sh --help                                   # full help
-#
-# The legacy 545-line bash bootstrap is preserved at bootstrap.sh.legacy for
-# one cycle so you can diff during testing. Delete it once the TS version
-# has been validated end-to-end on a fresh DevBox.
 
 set -euo pipefail
 
-# ---- locate the repo (the dir this script lives in) ----
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$REPO_DIR"
 
-# ---- sudo if not root ----
-if [[ $EUID -eq 0 ]]; then
-  SUDO=""
-else
-  SUDO="sudo"
-fi
+if [[ $EUID -eq 0 ]]; then SUDO=""; else SUDO="sudo"; fi
 
-# ---- helpers (minimal — full Logger lives in TS) ----
 say()  { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
 warn() { printf '\033[1;33mwarn:\033[0m %s\n' "$*" >&2; }
 
-# ---- 1. Node >= 22 (required for tsx + @modelcontextprotocol/sdk) ----
-NEEDS_NODE=true
+# ---- Node (fast path: binary tarball, ~2s) ----
+NODE_VER="22.15.0"
+NODE_OK=false
 if command -v node >/dev/null 2>&1; then
   NODE_MAJOR="$(node -v 2>/dev/null | sed 's/^v//' | cut -d. -f1 || echo 0)"
-  if [[ "$NODE_MAJOR" -ge 22 ]]; then
-    NEEDS_NODE=false
-  fi
-fi
-if $NEEDS_NODE; then
-  say "installing Node.js 22 (NodeSource)"
-  if ! command -v curl >/dev/null 2>&1; then
-    $SUDO apt-get update -y && $SUDO apt-get install -y curl
-  fi
-  curl -fsSL https://deb.nodesource.com/setup_22.x | $SUDO -E bash -
-  $SUDO apt-get install -y nodejs
+  [[ "$NODE_MAJOR" -ge 22 ]] && NODE_OK=true
 fi
 
-# ---- 2. pnpm ----
+if ! $NODE_OK; then
+  say "installing Node.js $NODE_VER (binary tarball)"
+  NODE_DIR="/usr/local/lib/node-v${NODE_VER}"
+  if [[ ! -d "$NODE_DIR" ]]; then
+    curl -fsSL "https://nodejs.org/dist/v${NODE_VER}/node-v${NODE_VER}-linux-x64.tar.gz" \
+      | $SUDO tar xz -C /usr/local/lib/
+    $SUDO mv "/usr/local/lib/node-v${NODE_VER}-linux-x64" "$NODE_DIR"
+  fi
+  for bin in node npm npx; do
+    $SUDO ln -sf "$NODE_DIR/bin/$bin" "/usr/local/bin/$bin"
+  done
+  # Add tarball bin dir to PATH so npm-installed globals (pnpm) are findable.
+  export PATH="$NODE_DIR/bin:$PATH"
+fi
+
+# ---- Hand off to pre-built bundle (no pnpm/tsx needed) ----
+BUNDLE="$REPO_DIR/packages/bootstrap/dist/bootstrap.js"
+if [[ -f "$BUNDLE" ]]; then
+  exec node "$BUNDLE" "$@"
+fi
+
+# Fallback: if bundle doesn't exist, use tsx via pnpm (dev mode)
+warn "pre-built bundle not found at $BUNDLE — falling back to tsx"
 if ! command -v pnpm >/dev/null 2>&1; then
-  say "installing pnpm (global)"
-  $SUDO npm install -g pnpm
+  say "installing pnpm"
+  $SUDO npm install -g pnpm 2>/dev/null
 fi
-
-# ---- 3. Install workspace deps (cheap on re-runs) ----
-# Stream output and hard-fail on non-zero. Previous version was --silent +
-# `|| warn` which swallowed errors and caused downstream cascades (modules
-# that needed harness deps would fail with unhelpful messages).
-# Drop --frozen-lockfile so a minor pnpm-version diff between machines
-# doesn't block the install.
-say "pnpm install (workspace) — streaming output"
-if ! pnpm install; then
-  warn "pnpm install FAILED — bootstrap cannot continue safely."
-  warn "Try: rm -rf node_modules pnpm-lock.yaml && pnpm install"
-  exit 1
+if [[ ! -d "$REPO_DIR/node_modules/.pnpm" ]]; then
+  say "pnpm install (workspace)"
+  pnpm install --prefer-offline 2>&1 | tail -3
 fi
-
-# ---- 4. Hand off to the TS installer ----
-# All flags (--with-docker / --module=X / --dry-run / --launch / --anthropic-key /
-# --no-claude / --minimal / etc.) are parsed in packages/bootstrap/src/lib/flags.ts.
-# Run `./bootstrap.sh --help` to see them.
-say "handing off to @domains/bootstrap (TypeScript)"
-# Direct tsx invocation. We bypass `pnpm --filter @domains/bootstrap start`
-# because pnpm --filter changes cwd to the filtered package's directory
-# (packages/bootstrap), which breaks every path-based check in the bootstrap
-# (it would look for _db/knowledge.duckdb under packages/bootstrap/_db/,
-# not the actual repo root).
-#
-# Calling tsx directly preserves cwd as the repo root (where this script
-# lives), which is what every module expects.
 TSX_BIN="$REPO_DIR/node_modules/.bin/tsx"
 if [[ ! -x "$TSX_BIN" ]]; then
-  warn "tsx binary not found at $TSX_BIN — pnpm install may have failed"
+  warn "tsx not found — pnpm install may have failed"
   exit 1
 fi
 exec "$TSX_BIN" "$REPO_DIR/packages/bootstrap/src/index.ts" "$@"

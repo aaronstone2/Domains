@@ -37,7 +37,13 @@ import type {
   InstallerModule,
   ModuleStatus,
 } from "./lib/types.ts";
-import { ALL_MODULES } from "./modules/registry.ts";
+import { ALL_MODULES, PHASES } from "./modules/registry.ts";
+
+/** Module IDs that can be deferred when --launch is set (not needed for Claude Code). */
+const DEFERRABLE_IDS = new Set([
+  "seed-history", "pnpm-install", "corpus-migrate", "knowledge-graph",
+  "verify-harness", "verify-mcp",
+]);
 
 const logger = new Logger();
 
@@ -138,17 +144,27 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     logger.step("DRY RUN — printing commands; no mutations");
   }
 
-  // Pre-flight: do this BEFORE selecting modules so the user gets blockers
-  // before waiting through 18 module gates. Skip entirely in dry-run because
-  // every shell command returns synthetic empty output and the parsers see
-  // garbage. Also skip if --skip-preflight (escape hatch for buggy checks).
-  if (!ctx.config.dryRun && !ctx.config.skipPreflight) {
+  const modules = selectModules(ctx.config);
+  if (modules.length === 0) {
+    logger.warn("no modules selected (check --module / --skip-module / --skip-tag)");
+    return 0;
+  }
+
+  // Run preflight + isInstalled checks in parallel for speed.
+  const installedCache = new Map<string, boolean>();
+  const preflightPromise = (!ctx.config.dryRun && !ctx.config.skipPreflight)
+    ? runPreflight({ runner: ctx.runner, logger: ctx.logger, offline: ctx.config.offline })
+    : Promise.resolve(undefined);
+  const installCheckPromise = Promise.all(modules.map(async (mod) => {
+    if (!mod.shouldRun(ctx.config)) return;
+    try {
+      installedCache.set(mod.id, await mod.isInstalled(ctx));
+    } catch { installedCache.set(mod.id, false); }
+  }));
+  const [preflightResults] = await Promise.all([preflightPromise, installCheckPromise]);
+
+  if (preflightResults !== undefined) {
     logger.step("pre-flight checks");
-    const preflightResults = await runPreflight({
-      runner: ctx.runner,
-      logger: ctx.logger,
-      offline: ctx.config.offline,
-    });
     const blockers = reportPreflight(preflightResults, logger);
     if (blockers > 0) {
       logger.fail(
@@ -159,16 +175,28 @@ async function runInstall(ctx: InstallContext): Promise<number> {
     }
   }
 
-  const modules = selectModules(ctx.config);
-  if (modules.length === 0) {
-    logger.warn("no modules selected (check --module / --skip-module / --skip-tag)");
-    return 0;
+  const needsInstall = modules.filter((m) =>
+    m.shouldRun(ctx.config) && (!installedCache.get(m.id) || ctx.config.force),
+  );
+  // Phase-aware ETA: parallel phases use max(module ETAs), not sum.
+  const needsSet = new Set(needsInstall.map((m) => m.id));
+  let etaSec = 0;
+  for (const phase of PHASES) {
+    const phaseNeeds = phase.modules.filter((m) => needsSet.has(m.id));
+    if (phaseNeeds.length === 0) continue;
+    if (phase.parallel !== false && phaseNeeds.length > 1) {
+      etaSec += Math.max(...phaseNeeds.map((m) => ETA_PER_MODULE_SEC[m.id] ?? 2));
+    } else {
+      etaSec += phaseNeeds.reduce((s, m) => s + (ETA_PER_MODULE_SEC[m.id] ?? 2), 0);
+    }
   }
-
-  // Estimate total time: rough seconds-per-module from observed cold installs.
-  const etaSec = estimateEtaSec(modules);
+  const etaLabel = needsInstall.length === 0
+    ? " — all cached"
+    : ` — ETA ~${formatDuration(etaSec || 3)}`;
   logger.step(
-    `installing ${modules.length} module(s) — ETA ~${formatDuration(etaSec)}` +
+    `installing ${modules.length} module(s)` +
+      (needsInstall.length < modules.length ? ` (${needsInstall.length} need work)` : "") +
+      etaLabel +
       (ctx.config.snapshotBuild ? " [snapshot-build: strict mode]" : "") +
       (ctx.config.onlyModules !== undefined
         ? ` (filtered: ${[...ctx.config.onlyModules].join(",")})`
@@ -176,26 +204,71 @@ async function runInstall(ctx: InstallContext): Promise<number> {
   );
 
   const results: ModuleStatus[] = [];
+  const deferredModules: InstallerModule[] = [];
   const startTotal = Date.now();
-  let i = 0;
-  for (const mod of modules) {
-    i++;
-    const t0 = Date.now();
-    const result = await runOne(mod, ctx, i, modules.length);
-    const dt = Math.round((Date.now() - t0) / 1000);
-    if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
-    results.push(result);
+
+  // When --launch is set, defer "Repo deps" + "Verify" modules — they're not
+  // needed for Claude Code and add 5-10s on a cold DevBox. They run in the
+  // background after claude spawns.
+  const deferring = ctx.config.launch;
+
+  // Phase-aware execution: phases run sequentially, but modules within a
+  // phase run in parallel (unless phase.parallel === false, e.g. DuckDB locks).
+  let globalIdx = 0;
+  for (const phase of PHASES) {
+    const phaseModules = phase.modules.filter((m) => modules.includes(m));
+    if (phaseModules.length === 0) continue;
+
+    // Separate deferrable modules when --launch is active.
+    const immediate: InstallerModule[] = [];
+    for (const m of phaseModules) {
+      if (deferring && DEFERRABLE_IDS.has(m.id) && (installedCache.get(m.id) !== true || !ctx.config.force)) {
+        deferredModules.push(m);
+      } else {
+        immediate.push(m);
+      }
+    }
+    if (immediate.length === 0) { globalIdx += phaseModules.length; continue; }
+
+    const runParallel = phase.parallel !== false;
+    const baseIdx = globalIdx;
+
+    if (runParallel && immediate.length > 1) {
+      const phasePromises = immediate.map(async (mod, j) => {
+        const idx = baseIdx + j + 1;
+        const t0 = Date.now();
+        const result = await runOne(mod, ctx, idx, modules.length, installedCache);
+        const dt = Math.round((Date.now() - t0) / 1000);
+        if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
+        return result;
+      });
+      const phaseResults = await Promise.all(phasePromises);
+      results.push(...phaseResults);
+    } else {
+      for (let j = 0; j < immediate.length; j++) {
+        const mod = immediate[j]!;
+        const idx = baseIdx + j + 1;
+        const t0 = Date.now();
+        const result = await runOne(mod, ctx, idx, modules.length, installedCache);
+        const dt = Math.round((Date.now() - t0) / 1000);
+        if (dt > 1) logger.info(`  (${mod.id} took ${dt}s)`);
+        results.push(result);
+      }
+    }
+    globalIdx += phaseModules.length;
   }
   const totalSec = Math.round((Date.now() - startTotal) / 1000);
+
+  if (deferredModules.length > 0) {
+    logger.info(`deferred ${deferredModules.length} module(s) to background: ${deferredModules.map((m) => m.id).join(", ")}`);
+  }
 
   printSummary(results, totalSec);
 
   // --snapshot-build: any non-optional failure = exit 1.
   if (ctx.config.snapshotBuild) {
     const nonOptionalFailed = results.filter(
-      (r) =>
-        r.kind === "failed" &&
-        !["apt-optional", "apt-docker", "apt-k8s", "apt-aws", "seed-history"].includes(r.id),
+      (r) => r.kind === "failed" && !isOptionalModule(r.id),
     );
     if (nonOptionalFailed.length > 0) {
       logger.fail(
@@ -208,10 +281,14 @@ async function runInstall(ctx: InstallContext): Promise<number> {
 
   // --launch path: exec into claude after a successful install.
   if (ctx.config.launch) {
-    return await execLaunch(ctx, results);
+    return await execLaunch(ctx, results, deferredModules);
   }
 
-  return results.some((r) => r.kind === "failed") ? 1 : 0;
+  // Only non-optional failures produce exit 1.
+  const fatalFail = results.some(
+    (r) => r.kind === "failed" && !isOptionalModule(r.id),
+  );
+  return fatalFail ? 1 : 0;
 }
 
 function selectModules(config: BootstrapConfig): InstallerModule[] {
@@ -232,6 +309,7 @@ async function runOne(
   ctx: InstallContext,
   idx: number,
   total: number,
+  installedCache: ReadonlyMap<string, boolean>,
 ): Promise<ModuleStatus> {
   const log = ctx.logger.child(`${idx}/${total} ${mod.id}`);
 
@@ -240,12 +318,7 @@ async function runOne(
     return { kind: "skipped", id: mod.id, reason: "shouldRun=false" };
   }
 
-  let alreadyInstalled = false;
-  try {
-    alreadyInstalled = await mod.isInstalled(ctx);
-  } catch (err) {
-    log.warn(`isInstalled() threw: ${(err as Error).message} — proceeding to install`);
-  }
+  const alreadyInstalled = installedCache.get(mod.id) ?? false;
 
   if (alreadyInstalled && !ctx.config.force) {
     log.ok("already installed (use --force to re-run)");
@@ -333,7 +406,10 @@ async function runVerify(ctx: InstallContext): Promise<number> {
     }
   }
   printSummary(results, 0);
-  return results.some((r) => r.kind === "failed") ? 1 : 0;
+  const fatalFail = results.some(
+    (r) => r.kind === "failed" && !isOptionalModule(r.id),
+  );
+  return fatalFail ? 1 : 0;
 }
 
 // -------------------- list --------------------
@@ -521,9 +597,13 @@ async function runKeyEncrypt(ctx: InstallContext): Promise<number> {
 
 // -------------------- launch --------------------
 
-async function execLaunch(ctx: InstallContext, results: readonly ModuleStatus[]): Promise<number> {
+async function execLaunch(
+  ctx: InstallContext,
+  results: readonly ModuleStatus[],
+  deferred: readonly InstallerModule[],
+): Promise<number> {
   const failedNonOptional = results.some(
-    (r) => r.kind === "failed" && !["apt-optional", "apt-docker", "apt-k8s", "apt-aws"].includes(r.id),
+    (r) => r.kind === "failed" && !isOptionalModule(r.id),
   );
   if (failedNonOptional) {
     logger.warn("not launching claude — required modules failed (see summary above)");
@@ -548,12 +628,23 @@ async function execLaunch(ctx: InstallContext, results: readonly ModuleStatus[])
     fromFlag: ctx.config.anthropicKey,
     logger,
     interactive: true,
-    // Skip persist prompt when key came from the flag — passing --anthropic-key
-    // signals one-shot intent (typical for fresh-DevBox installs each session).
-    // Persist offer still fires when key arrives via the interactive prompt.
     offerPersist: ctx.config.anthropicKey === undefined,
   });
   logger.step(`exec'ing claude (key from ${source}: ${mask(key)})`);
+
+  // Run deferred modules in the background (pnpm-install, corpus, verify).
+  // They complete while the user interacts with Claude Code.
+  if (deferred.length > 0) {
+    const { fork } = await import("node:child_process");
+    const deferredIds = deferred.map((m) => m.id).join(",");
+    const child = fork(process.argv[1]!, ["install", "--skip-preflight", `--module=${deferredIds}`], {
+      stdio: "ignore",
+      detached: true,
+      env: { ...process.env, ANTHROPIC_API_KEY: key },
+    });
+    child.unref();
+    logger.info(`background: deferred modules spawned (pid ${child.pid})`);
+  }
 
   const { spawn } = await import("node:child_process");
   spawn("claude", ["--model", "claude-opus-4-7", "--effort", "max"], {
@@ -571,6 +662,7 @@ function printSummary(results: readonly ModuleStatus[], totalSec: number): void 
   let already = 0;
   let skipped = 0;
   let failed = 0;
+  let warned = 0;
   const failedIds: string[] = [];
   for (const r of results) {
     switch (r.kind) {
@@ -587,16 +679,22 @@ function printSummary(results: readonly ModuleStatus[], totalSec: number): void 
         skipped++;
         break;
       case "failed":
-        process.stdout.write(`  FAIL     ${r.id.padEnd(22)} ${r.error}\n`);
-        failed++;
-        failedIds.push(r.id);
+        if (isOptionalModule(r.id)) {
+          process.stdout.write(`  WARN     ${r.id.padEnd(22)} ${r.error} (optional)\n`);
+          warned++;
+        } else {
+          process.stdout.write(`  FAIL     ${r.id.padEnd(22)} ${r.error}\n`);
+          failed++;
+          failedIds.push(r.id);
+        }
         break;
     }
   }
   const totalLine = totalSec > 0 ? ` (took ${formatDuration(totalSec)})` : "";
-  process.stdout.write(
-    `\n  ${ok} ok | ${already} already | ${skipped} skipped | ${failed} failed${totalLine}\n`,
-  );
+  const parts = [`${ok} ok`, `${already} already`, `${skipped} skipped`];
+  if (warned > 0) parts.push(`${warned} warned`);
+  if (failed > 0) parts.push(`${failed} failed`);
+  process.stdout.write(`\n  ${parts.join(" | ")}${totalLine}\n`);
   if (failed > 0) {
     process.stdout.write(`\n  Retry failed module(s) with:\n`);
     process.stdout.write(`    pnpm bootstrap install --module=${failedIds.join(",")}\n`);
@@ -606,31 +704,35 @@ function printSummary(results: readonly ModuleStatus[], totalSec: number): void 
 
 // -------------------- helpers --------------------
 
+/** Modules tagged "optional" don't cause exit 1 on failure. */
+function isOptionalModule(id: string): boolean {
+  const mod = ALL_MODULES.find((m) => m.id === id);
+  return mod?.tags?.includes("optional") ?? false;
+}
+
 const ETA_PER_MODULE_SEC: Readonly<Record<string, number>> = {
-  "apt-core": 25,
-  "apt-optional": 60,
-  "apt-docker": 30,
-  "apt-k8s": 10,
-  "apt-aws": 30,
-  node: 20,
-  pnpm: 5,
-  "claude-code": 15,
-  eza: 15,
-  zoxide: 10,
-  atuin: 15,
-  "seed-history": 3,
+  "apt-core": 5,
+  "apt-optional": 2,
+  "apt-docker": 5,
+  "apt-k8s": 3,
+  "apt-aws": 5,
+  node: 1,
+  pnpm: 1,
+  "claude-code": 3,
+  eza: 2,
+  zoxide: 2,
+  atuin: 2,
+  "seed-history": 1,
   "docker-completion": 1,
   "interview-notes": 1,
   bashrc: 1,
-  "pnpm-install": 30,
-  "knowledge-graph": 5,
-  "verify-harness": 3,
-  "verify-mcp": 5,
+  "anthropic-key": 1,
+  "pnpm-install": 2,
+  "corpus-migrate": 1,
+  "knowledge-graph": 1,
+  "verify-harness": 2,
+  "verify-mcp": 2,
 };
-
-function estimateEtaSec(modules: readonly InstallerModule[]): number {
-  return modules.reduce((sum, m) => sum + (ETA_PER_MODULE_SEC[m.id] ?? 5), 0);
-}
 
 function formatDuration(sec: number): string {
   if (sec < 60) return `${sec}s`;

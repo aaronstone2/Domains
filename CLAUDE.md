@@ -1,9 +1,12 @@
 # Domains monorepo
 
-pnpm workspace. Two top-level dirs:
+pnpm workspace. Four top-level dirs:
 
-- `domains/<name>/` — research/knowledge domains (folders only for now; will be extended)
+- `domains/<name>/` — research/knowledge domains (corpus data + extract JSONs)
 - `packages/<name>/` — TS packages, all named `@domains/<name>`
+- `bash/` — 19 debug + 17 fix shell scripts for live debugging
+- `practice/` — 32 practice scenarios with start/verify/reveal/restore
+- `cluely/` — 10 markdown guides for Cluely teleprompter upload
 
 ## Commands
 
@@ -43,9 +46,7 @@ Cue's base enables `isolatedDeclarations`, so all exported values need explicit 
 
 ## Knowledge corpus
 
-A multi-domain debugging KB lives in this repo: DuckDB at `_db/knowledge.duckdb`, ingest pipeline at `domains/_shared/ingest/` (Python via `uv`), per-phase session prompts at `domains/_shared/sessions/`, queryable via `pnpm harness <sub> [args]`. **Always start a corpus session by reading `domains/_shared/sessions/PREAMBLE.md`** — it captures the interview goal (AI Support Engineer at Cognition), conventions, the MCP stack (motherduck/filesystem/memory/context7/playwright), and the plan-mode meta-research pattern every session follows. Per-phase docs (`phase-1-source-corpus.md`, etc.) are designed to be piped in as the first message of a new session.
-
-Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`.
+A multi-domain debugging KB lives in this repo: DuckDB at `_db/knowledge.duckdb`, ingest pipeline at `domains/_shared/ingest/` (Python via `uv`), per-phase session prompts at `domains/_shared/sessions/`, queryable via `pnpm harness <sub> [args]`. The MCP stack (domains-harness, motherduck, filesystem, memory) is registered in `.mcp.json`. Per-phase docs (`phase-1-source-corpus.md`, etc.) in `domains/_shared/sessions/` are historical build records.
 
 ## Session modes — practice vs live interview
 
@@ -62,7 +63,7 @@ Your job: drive the practice scenario from start to finish.
 
 **Operating procedure:**
 
-1. Read `practice/PRIORITY-TABLE.md` (ranks all 27 scenarios). Default to
+1. Read `practice/PRIORITY-TABLE.md` (ranks all 32 scenarios). Default to
    tier-1 priority order: 06, 15, 19, 09, 08, 24. If the user names a
    scenario, use that.
 2. Run: `bash practice/<NN>-<name>.sh start` and capture the symptom output.
@@ -105,7 +106,7 @@ roleplay.
 - A walkthrough where you explain everything. The whole point is the
   user diagnoses it; you only help when asked or after the timer.
 
-### Live interview mode (the real thing on Wednesday)
+### Live interview mode
 
 Triggered by: explicit "we're in live interview mode now" OR by the
 user describing a symptom directly without a practice scenario active.
@@ -153,21 +154,16 @@ Your job: diagnose live, cite the corpus, narrate the talk-track.
 
 If MCP tools aren't available (e.g. running outside the repo), the same commands work as `pnpm harness <subcommand>` shell-outs.
 
+## Bash toolkit
+
+- `bash/debug/*.sh` — 19 read-only diagnostic scripts. Pattern: `bash bash/debug/<name>.sh <container>`
+- `bash/fix/*.sh` — 17 fix scripts, dry-run by default, `--apply` to execute. Pattern: `bash bash/fix/<name>.sh <args> [--apply]`
+- `bash/query.sh` — CLI search against DuckDB: `bash bash/query.sh commands|failures|scripts|concepts|all "keyword"`
+- `bash/ingest-to-duckdb.py` — re-ingest scripts + commands into corpus after changes
+- `cmd_history.txt` — ~1300 curated commands seeded into atuin for Ctrl+R
+
+See `bash/README.md` for the full script inventory and workflow.
+
 ## CLI internals
 
-The CLI lives in `packages/cli/` (`@domains/cli`). Architecture:
-
-```
-packages/cli/src/
-  index.ts              # arg router: pnpm <group> <sub> [args]
-  paths.ts              # repo-root, domains/, packages/ paths
-  commands/
-    index.ts            # group registry
-    domain/{index,add}.ts
-    leaf/{index,add}.ts
-    package/{index,add}.ts
-```
-
-To add a new subcommand: drop a file in `commands/<group>/<sub>.ts` exporting an `async (args: string[]) => void`, then register it in `commands/<group>/index.ts`. To add a new group, create the folder and register it in `commands/index.ts`.
-
-Root scripts (`pnpm domain ...`, `pnpm package ...`) run `tsx packages/cli/src/index.ts <group>` and pnpm appends the remaining args.
+The scaffolding CLI lives in `packages/cli/` (`@domains/cli`). Used during corpus build phases (domain/leaf/package creation), not during interviews.

@@ -24,20 +24,15 @@ function wrap(open: string, close: string): (s: string) => string {
 
 export const bold: (s: string) => string = wrap("1", "22");
 export const dim: (s: string) => string = wrap("2", "22");
-export const italic: (s: string) => string = wrap("3", "23");
-export const underline: (s: string) => string = wrap("4", "24");
-
 export const red: (s: string) => string = wrap("31", "39");
 export const green: (s: string) => string = wrap("32", "39");
 export const yellow: (s: string) => string = wrap("33", "39");
-export const blue: (s: string) => string = wrap("34", "39");
-export const magenta: (s: string) => string = wrap("35", "39");
+const blue: (s: string) => string = wrap("34", "39");
+const magenta: (s: string) => string = wrap("35", "39");
 export const cyan: (s: string) => string = wrap("36", "39");
 export const gray: (s: string) => string = wrap("90", "39");
-
-export const bgRed: (s: string) => string = wrap("41", "49");
 export const bgYellow: (s: string) => string = wrap("43", "49");
-export const bgGreen: (s: string) => string = wrap("42", "49");
+const italic: (s: string) => string = wrap("3", "23");
 
 const TERM_WIDTH: number = (() => {
   const cols = process.stdout.columns;

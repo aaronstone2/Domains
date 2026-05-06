@@ -13,6 +13,7 @@
     "package": "tsx packages/cli/src/index.ts package",
     "harness": "tsx packages/harness/src/index.ts",
     "bootstrap": "tsx packages/bootstrap/src/index.ts",
+    "bootstrap:build": "pnpm --filter @domains/bootstrap run build",
     "graph": "tsx packages/harness/scripts/build-graph.ts",
     "cluely": "tsx packages/harness/scripts/build-cluely.ts",
     "corpus": "tsx packages/harness/scripts/migrate.ts",

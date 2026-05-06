@@ -47,31 +47,39 @@ API keys are **never stored in the repo**; they're passed at run time and live o
 ```
 bootstrap.sh                          ← interview-day installer
 .aliases                              ← sourced by bashrc; harness shortcuts
-cmd_history.txt                       ← seed commands for atuin
+cmd_history.txt                       ← ~1300 curated commands seeded into atuin (Ctrl+R)
+
+bash/
+  debug/                              ← 19 read-only diagnostic scripts
+  fix/                                ← 17 fix scripts (dry-run default, --apply to execute)
+  query.sh                            ← CLI search against DuckDB corpus
+  ingest-to-duckdb.py                 ← ingest scripts + commands into corpus
+
+practice/                             ← 32 practice scenarios (start/verify/reveal/restore)
+
+cluely/                               ← 10 markdown guides for Cluely teleprompter upload
 
 domains/                              ← knowledge corpus by domain
-  docker/       linux/      k8s/
-  devin/        methodology/  firecracker/  ecs/
+  docker/  linux/  k8s/  devin/  methodology/  firecracker/  ecs/
   _shared/
     sources.yaml                      ← global source registry (767 sources)
-    PROGRESS.md                       ← per-phase build log
-    rehearsal/
-      CHEATSHEET.md                   ← single-page interview reference
-      scenarios/                      ← 10 deep multi-turn rehearsal scenarios
+    rehearsal/                        ← cheatsheet + 10 deep rehearsal scenarios
 
 packages/
   cli/                                ← repo scaffolding CLI
-  harness/                            ← interview-day query tool
-    src/commands/                     ← 9 subcommands
+  harness/                            ← interview-day query tool (MCP + CLI)
+    src/commands/                     ← 10 subcommands (ask, lookup, playbook, drill, capture, concept, related, cite, stats, query)
     bundles/                          ← 8 capture bundles for live snapshots
     drills/                           ← 10 interactive practice scenarios
+  harness-mcp/                        ← MCP server wrapping harness (registered in .mcp.json)
+  bootstrap/                          ← TS-based modular installer
 
-_db/knowledge.duckdb                  ← gitignored; built locally from extract/ JSONs
+_db/knowledge.duckdb                  ← committed snapshot (85 MB); rebuilt via ingest pipeline
 ```
 
 ## Corpus snapshot
 
-767 sources, 1889 concepts, 706 commands, 3019 config_keys, **415 failure_modes**, 1551 relationships across 7 domains.
+767+ sources, 1889 concepts, 820+ commands, 3019 config_keys, **415 failure_modes**, 1551 relationships across 7 domains.
 
 | Domain | sources | concepts | failure_modes | relationships |
 |---|---:|---:|---:|---:|

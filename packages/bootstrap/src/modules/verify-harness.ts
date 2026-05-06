@@ -1,75 +1,103 @@
-// Module: verify-harness — end-to-end check that the harness CLI can hit
-// the corpus and return a known failure-mode. Doubles as proof the install
-// actually works.
+// Module: verify-harness — verify the harness can query the corpus.
 //
-// FIX (v1.2): legacy version captured combined stdout+stderr via `2>&1` then
-// piped through head, which sometimes truncated the actual error before we
-// could read it. New version captures stdout+stderr separately and reports
-// both, plus the exit code, so failures are debuggable from the install
-// summary alone.
+// PERF: instead of spawning `pnpm harness ask "OOMKilled"` (~1s tsx overhead),
+// we do an inline DuckDB FTS query using the same dynamic import pattern as
+// corpus-migrate. Falls back to subprocess if the inline path fails.
+//
+// Stamp: writes ~/.verify-harness-ok after a successful check. On warm runs,
+// if the stamp exists and _db/knowledge.duckdb hasn't changed, skips entirely.
+
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+import { createRequire } from "node:module";
 
 import type { InstallContext, InstallerModule, VerifyResult } from "../lib/types.ts";
 
-async function runHarnessAsk(ctx: InstallContext): Promise<{
-  readonly stdout: string;
-  readonly stderr: string;
-  readonly code: number;
-  readonly text: string;
-}> {
-  const result = await ctx.runner.run('pnpm harness ask "OOMKilled"', {
-    cwd: ctx.config.repoDir,
-    allowFailure: true,
-    timeoutMs: 30_000,
-  });
-  return {
-    stdout: result.stdout,
-    stderr: result.stderr,
-    code: result.code,
-    text: (result.stdout + "\n" + result.stderr).trim(),
-  };
-}
+const STAMP_FILE = ".verify-harness-ok";
+
+let cachedResult: { readonly ok: boolean; readonly message: string } | undefined;
 
 export const verifyHarnessModule: InstallerModule = {
   id: "verify-harness",
-  description: "End-to-end: `pnpm harness ask 'OOMKilled'` returns a docker failure-mode",
+  description: "Verify harness can query the corpus (inline DuckDB check, subprocess fallback)",
   tags: ["repo", "verify"],
 
   shouldRun(): boolean {
     return true;
   },
 
-  async isInstalled(): Promise<boolean> {
-    return false; // always re-run; fast + idempotent
+  async isInstalled(ctx: InstallContext): Promise<boolean> {
+    // If stamp exists and DB hasn't been modified since stamp was written, skip.
+    const stamp = path.join(ctx.home, STAMP_FILE);
+    const dbPath = path.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
+    try {
+      const [stampStat, dbStat] = await Promise.all([
+        fs.stat(stamp),
+        fs.stat(dbPath),
+      ]);
+      if (stampStat.mtimeMs >= dbStat.mtimeMs) {
+        cachedResult = { ok: true, message: "corpus reachable (cached)" };
+        return true;
+      }
+    } catch {
+      // No stamp or no DB — need to verify.
+    }
+    return false;
   },
 
   async install(ctx: InstallContext): Promise<void> {
-    const r = await runHarnessAsk(ctx);
-    if (r.code !== 0) {
-      throw new Error(
-        `pnpm harness ask exited ${r.code}. ` +
-          `stderr: ${r.stderr.trim() || "(empty)"} ` +
-          `stdout (last 300): ${r.stdout.trim().slice(-300) || "(empty)"}`,
-      );
+    // Fast path: inline DuckDB query (~0.1s vs ~1s subprocess).
+    const dbPath = path.join(ctx.config.repoDir, "_db", "knowledge.duckdb");
+    try {
+      const require = createRequire(path.join(ctx.config.repoDir, "packages", "harness", "x.cjs"));
+      const resolvedPath = require.resolve("duckdb-async");
+      const { Database } = await import(resolvedPath) as {
+        Database: { create(p: string): Promise<{ all(sql: string, ...args: unknown[]): Promise<unknown[]>; close(): Promise<void> }> }
+      };
+      const db = await Database.create(dbPath);
+      try {
+        // Simple ILIKE query to verify corpus is readable and has OOM data.
+        const rows = await db.all(
+          `SELECT id FROM docker.failure_modes WHERE id ILIKE '%oom%' LIMIT 1`,
+        ) as Array<{ id: string }>;
+
+        if (rows.length > 0 && /oom/i.test(rows[0]!.id)) {
+          cachedResult = { ok: true, message: "corpus reachable" };
+          await fs.writeFile(path.join(ctx.home, STAMP_FILE), "ok\n").catch(() => {});
+          ctx.logger.ok("harness corpus query verified (inline)");
+        } else {
+          throw new Error("no OOM failure mode found in corpus");
+        }
+      } finally {
+        await db.close();
+      }
+    } catch {
+      // Fallback: subprocess (slower but reliable).
+      ctx.logger.info("inline DuckDB check failed, falling back to subprocess");
+      const result = await ctx.runner.run('pnpm harness ask "OOMKilled"', {
+        cwd: ctx.config.repoDir,
+        allowFailure: true,
+        timeoutMs: 30_000,
+      });
+      const text = (result.stdout + "\n" + result.stderr).trim();
+      if (result.code !== 0) {
+        cachedResult = {
+          ok: false,
+          message: `harness exit ${result.code}. stderr: ${result.stderr.trim().slice(0, 200) || "(empty)"}`,
+        };
+        throw new Error(cachedResult.message);
+      }
+      if (!/oom|kill/i.test(text)) {
+        cachedResult = { ok: false, message: `no relevant content. First 200: ${text.slice(0, 200)}` };
+        throw new Error(`pnpm harness ask returned exit 0 but no oom/kill match in output.`);
+      }
+      cachedResult = { ok: true, message: "corpus reachable" };
+      await fs.writeFile(path.join(ctx.home, STAMP_FILE), "ok\n").catch(() => {});
+      ctx.logger.ok("harness ask hit the corpus successfully");
     }
-    if (!/oom|kill/i.test(r.text)) {
-      throw new Error(
-        `pnpm harness ask returned exit 0 but no oom/kill match in output. ` +
-          `Output (first 500): ${r.text.slice(0, 500)}`,
-      );
-    }
-    ctx.logger.ok("harness ask hit the corpus successfully");
   },
 
-  async verify(ctx: InstallContext): Promise<VerifyResult> {
-    const r = await runHarnessAsk(ctx);
-    if (r.code !== 0) {
-      return {
-        ok: false,
-        message: `harness exit ${r.code}. stderr: ${r.stderr.trim().slice(0, 200) || "(empty)"}`,
-      };
-    }
-    return /oom|kill/i.test(r.text)
-      ? { ok: true, message: "corpus reachable" }
-      : { ok: false, message: `query returned no relevant content. First 200: ${r.text.slice(0, 200)}` };
+  async verify(): Promise<VerifyResult> {
+    return cachedResult ?? { ok: false, message: "install() did not run" };
   },
 };

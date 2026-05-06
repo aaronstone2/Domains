@@ -39,6 +39,12 @@ Every script:
 | `ulimits.sh <c> [pat]` | fd exhaustion — per-process fd usage vs limit + system-wide counts |
 | `restart.sh <c>` | Restart count + die events + last logs + exit-code interpretation |
 | `gateway.sh <c>` | Multi-symptom service gateway full dump (calls all the above) |
+| `compose.sh [file] [svc]` | Docker Compose — config validation, service status, logs, networks, deps |
+| `proxy.sh [c]` | Corporate proxy — env vars, MITM detection, per-tool config, connectivity |
+| `volumes.sh [c]` | Docker volumes / bind mounts — mount listing, permissions, disk usage |
+| `build.sh [Dockerfile] [img]` | Docker build — Dockerfile lint, .dockerignore, layer sizes, cache |
+| `logs.sh [c]` | Container log rotation — log sizes, log rate, daemon config, disk impact |
+| `blueprint.sh [env.yaml]` | Devin environment.yaml — YAML validation, section check, secrets, build status |
 
 ## fix/ — one script per remediation type
 
@@ -56,6 +62,11 @@ Every script:
 | `recreate-init.sh <c>` | Recipe to recreate with --init (zombie fix; manual) |
 | `install-tools.sh <c>` | apt/apk install dig+openssl+curl+jq inside container |
 | `prune.sh` | docker system prune -af (frees disk) |
+| `compose.sh <action> [file]` | Docker Compose — restart, rebuild, reset, fix-deps |
+| `proxy.sh <url> [no-proxy]` | Configure corp proxy for shell, npm, pip, git, Docker |
+| `volume-perms.sh <c> <path>` | Fix bind mount permissions (chown to container UID) |
+| `log-rotate.sh <c>` / `--daemon` | Truncate logs + set rotation limits (per-container or daemon-wide) |
+| `blueprint.sh <action> [file]` | Fix environment.yaml — fix-yaml, move-to-init, source-secrets, validate |
 
 ## Workflow
 
