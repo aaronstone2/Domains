@@ -1306,3 +1306,44 @@ bash bash/query.sh failures "service can't connect"
 bash bash/query.sh scripts "tls"
 # → search everything
 bash bash/query.sh all "OOM killed"
+
+# ============================================================================
+# ===== PIPE OUTPUT TO FILE — generic templates for ~/logs/ =====
+# ============================================================================
+# > creates/overwrites file.  >> appends to file.  2>&1 captures stderr too.
+# Swap the command on the left, pick a filename, done.
+#
+# --- logs to file (overwrite) ---
+docker logs CONTAINER > ~/logs/logs.txt 2>&1
+docker logs --tail 100 CONTAINER > ~/logs/logs.txt 2>&1
+kubectl logs POD > ~/logs/pod-logs.txt 2>&1
+kubectl logs POD --previous > ~/logs/pod-prev.txt 2>&1
+#
+# --- metrics to file ---
+docker stats --no-stream CONTAINER > ~/logs/metrics.txt 2>&1
+docker stats --no-stream > ~/logs/all-metrics.txt 2>&1
+kubectl top pod > ~/logs/pod-metrics.txt 2>&1
+#
+# --- customer/container info to file ---
+docker inspect CONTAINER > ~/logs/customer.json 2>&1
+docker inspect --format '{{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}}' CONTAINER > ~/logs/state.txt 2>&1
+kubectl describe pod POD > ~/logs/pod-info.txt 2>&1
+kubectl get pod POD -o yaml > ~/logs/pod.yaml 2>&1
+#
+# --- system state to file ---
+dmesg -T > ~/logs/dmesg.txt 2>&1
+dmesg -T | grep -i 'oom\|killed' > ~/logs/oom.txt 2>&1
+ss -tlnp > ~/logs/ports.txt 2>&1
+ps aux --sort=-%mem | head -30 > ~/logs/top-mem.txt 2>&1
+free -h > ~/logs/memory.txt 2>&1
+df -h > ~/logs/disk.txt 2>&1
+#
+# --- append to existing file (>>) ---
+docker logs CONTAINER >> ~/logs/logs.txt 2>&1
+echo "--- $(date) ---" >> ~/logs/debug.txt && docker logs --tail 50 CONTAINER >> ~/logs/debug.txt 2>&1
+#
+# --- multiple commands into one file ---
+{ docker inspect CONTAINER; docker logs --tail 50 CONTAINER; docker stats --no-stream CONTAINER; } > ~/logs/full-debug.txt 2>&1
+#
+# --- create dir + pipe in one shot ---
+mkdir -p ~/logs && docker logs CONTAINER > ~/logs/logs.txt 2>&1
