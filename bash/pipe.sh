@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-# pipe.sh -- Source this to get shortcut functions that auto-pipe to ~/logs/
+# pipe.sh -- Source this to get shortcut functions that auto-pipe to ~/saved/
 #
 # Usage:   source bash/pipe.sh
-# Then:    di myapp           docker inspect -> ~/logs/inspect-myapp.json
-#          dl myapp           docker logs    -> ~/logs/logs-myapp.txt
-#          kl mypod           kubectl logs   -> ~/logs/klogs-mypod.txt
-#          p myfile.txt cmd   any command    -> ~/logs/myfile.txt
+# Then:    di myapp           docker inspect -> ~/saved/inspect-myapp.json
+#          dl myapp           docker logs    -> ~/saved/logs-myapp.txt
+#          kl mypod           kubectl logs   -> ~/saved/klogs-mypod.txt
+#          p myfile.txt cmd   any command    -> ~/saved/myfile.txt
 #
 # Every function prints the output path so you can tell Claude Code:
-#   "Read ~/logs/inspect-myapp.json and diagnose"
+#   "Read ~/saved/inspect-myapp.json and diagnose"
 
-mkdir -p "$HOME/logs"
+mkdir -p "$HOME/saved"
 
 # -- helper -------------------------------------------------------------------
 _p() {
-  local file="$HOME/logs/$1"
+  local file="$HOME/saved/$1"
   shift
   "$@" > "$file" 2>&1
   echo "=> $file"
@@ -343,8 +343,8 @@ cg() {
     echo ""
     echo "=== open FDs ==="
     echo "count: $(ls /proc/"$pid"/fd 2>/dev/null | wc -l)"
-  } > "$HOME/logs/cgroup-${ctr}.txt" 2>&1
-  echo "=> $HOME/logs/cgroup-${ctr}.txt"
+  } > "$HOME/saved/cgroup-${ctr}.txt" 2>&1
+  echo "=> $HOME/saved/cgroup-${ctr}.txt"
 }
 
 # -- ECS ----------------------------------------------------------------------
@@ -386,9 +386,9 @@ p() {
 # -- List collected files -----------------------------------------------------
 
 lf() {
-  echo "~/logs/ contents:"
-  ls -lhSt "$HOME/logs/" 2>/dev/null || echo "(empty)"
+  echo "~/saved/ contents:"
+  ls -lhSt "$HOME/saved/" 2>/dev/null || echo "(empty)"
 }
 
-echo "Pipe functions loaded. All output -> ~/logs/"
+echo "Pipe functions loaded. All output -> ~/saved/"
 echo "Run 'lf' to list files. Run 'p <name> <cmd...>' for any command."
