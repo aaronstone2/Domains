@@ -2,8 +2,8 @@
 # collect.sh — Diagnostic data collector for interview debugging
 # Usage: bash bash/collect.sh <scenario> [target]
 #
-# Collects logs + metrics → ~/logs/<scenario>-<timestamp>/
-# Then tell Claude Code: "read the files in ~/logs/<dir> and diagnose"
+# Collects logs + metrics → ~/saved/<scenario>-<timestamp>/
+# Then tell Claude Code: "read the files in ~/saved/<dir> and diagnose"
 #
 # Scenarios:
 #   container <name>    — Docker container diagnostics
@@ -18,7 +18,7 @@
 #   dns [domain]        — DNS resolution diagnostics
 #   all [container]     — Everything (system + container if provided)
 #
-# Output: ~/logs/<scenario>-<timestamp>/
+# Output: ~/saved/<scenario>-<timestamp>/
 # Files are plain text, ready for Claude Code to read.
 
 set -euo pipefail
@@ -31,7 +31,7 @@ TARGET_SLUG=""
 if [[ -n "$TARGET" ]]; then
   TARGET_SLUG="-$(echo "$TARGET" | tr '/:. ' '----' | tr -cd 'a-zA-Z0-9-' | head -c40)"
 fi
-LOGDIR="$HOME/logs/${SCENARIO}${TARGET_SLUG}-${TS}"
+LOGDIR="$HOME/saved/${SCENARIO}${TARGET_SLUG}-${TS}"
 
 header() { echo "=== $1 ===" >> "$2"; echo "" >> "$2"; }
 
@@ -106,7 +106,7 @@ finish() {
   echo "─────────────────────────────────────────────"
   echo "Tell Claude Code:"
   echo ""
-  echo "  Read ~/logs/$(basename "$LOGDIR")/summary.txt then diagnose"
+  echo "  Read ~/saved/$(basename "$LOGDIR")/summary.txt then diagnose"
   echo ""
 }
 

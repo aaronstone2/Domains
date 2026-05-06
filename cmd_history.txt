@@ -1502,3 +1502,93 @@ bash bash/query.sh failures "service can't connect"
 bash bash/query.sh scripts "tls"
 # → search everything
 bash bash/query.sh all "OOM killed"
+
+# ============================================================================
+# ===== PIPE OUTPUT TO FILE — generic templates for ~/saved/ =====
+# ============================================================================
+# > creates/overwrites file.  >> appends to file.  2>&1 captures stderr too.
+# Swap the command on the left, pick a filename, done.
+#
+# --- logs to file (overwrite) ---
+docker logs CONTAINER > ~/saved/logs.txt 2>&1
+docker logs --tail 100 CONTAINER > ~/saved/logs.txt 2>&1
+kubectl logs POD > ~/saved/pod-logs.txt 2>&1
+kubectl logs POD --previous > ~/saved/pod-prev.txt 2>&1
+#
+# --- metrics to file ---
+docker stats --no-stream CONTAINER > ~/saved/metrics.txt 2>&1
+docker stats --no-stream > ~/saved/all-metrics.txt 2>&1
+kubectl top pod > ~/saved/pod-metrics.txt 2>&1
+#
+# --- customer/container info to file ---
+docker inspect CONTAINER > ~/saved/customer.json 2>&1
+docker inspect --format '{{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}}' CONTAINER > ~/saved/state.txt 2>&1
+kubectl describe pod POD > ~/saved/pod-info.txt 2>&1
+kubectl get pod POD -o yaml > ~/saved/pod.yaml 2>&1
+#
+# --- system state to file ---
+dmesg -T > ~/saved/dmesg.txt 2>&1
+dmesg -T | grep -i 'oom\|killed' > ~/saved/oom.txt 2>&1
+ss -tlnp > ~/saved/ports.txt 2>&1
+ps aux --sort=-%mem | head -30 > ~/saved/top-mem.txt 2>&1
+free -h > ~/saved/memory.txt 2>&1
+df -h > ~/saved/disk.txt 2>&1
+#
+# --- append to existing file (>>) ---
+docker logs CONTAINER >> ~/saved/logs.txt 2>&1
+echo "--- $(date) ---" >> ~/saved/debug.txt && docker logs --tail 50 CONTAINER >> ~/saved/debug.txt 2>&1
+#
+# --- multiple commands into one file ---
+{ docker inspect CONTAINER; docker logs --tail 50 CONTAINER; docker stats --no-stream CONTAINER; } > ~/saved/full-debug.txt 2>&1
+#
+# --- create dir + pipe in one shot ---
+mkdir -p ~/logs && docker logs CONTAINER > ~/saved/logs.txt 2>&1
+
+# ============================================================================
+# ===== APPEND TO PRE-MADE FILES (>> appends, doesn't overwrite) =====
+# ============================================================================
+# 5 files ready: logs.txt  metrics.txt  customer.txt  system.txt  network.txt
+# Just swap CONTAINER/POD with the real name and run.
+#
+# --- >> ~/saved/logs.txt ---
+docker logs CONTAINER >> ~/saved/logs.txt 2>&1
+docker logs --tail 100 CONTAINER >> ~/saved/logs.txt 2>&1
+kubectl logs POD >> ~/saved/logs.txt 2>&1
+kubectl logs POD --previous >> ~/saved/logs.txt 2>&1
+journalctl -u SERVICE --no-pager -n 100 >> ~/saved/logs.txt 2>&1
+#
+# --- >> ~/saved/metrics.txt ---
+docker stats --no-stream CONTAINER >> ~/saved/metrics.txt 2>&1
+docker stats --no-stream >> ~/saved/metrics.txt 2>&1
+kubectl top pod >> ~/saved/metrics.txt 2>&1
+kubectl top node >> ~/saved/metrics.txt 2>&1
+free -h >> ~/saved/metrics.txt 2>&1
+vmstat 1 3 >> ~/saved/metrics.txt 2>&1
+iostat -xz 1 3 >> ~/saved/metrics.txt 2>&1
+#
+# --- >> ~/saved/customer.txt ---
+docker inspect CONTAINER >> ~/saved/customer.txt 2>&1
+docker inspect --format '{{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}}' CONTAINER >> ~/saved/customer.txt 2>&1
+kubectl describe pod POD >> ~/saved/customer.txt 2>&1
+kubectl get pod POD -o yaml >> ~/saved/customer.txt 2>&1
+kubectl get events --sort-by='.lastTimestamp' >> ~/saved/customer.txt 2>&1
+#
+# --- >> ~/saved/system.txt ---
+dmesg -T >> ~/saved/system.txt 2>&1
+dmesg -T | grep -i 'oom\|killed' >> ~/saved/system.txt 2>&1
+ps aux --sort=-%mem | head -30 >> ~/saved/system.txt 2>&1
+ss -tlnp >> ~/saved/system.txt 2>&1
+df -h >> ~/saved/system.txt 2>&1
+uptime >> ~/saved/system.txt 2>&1
+cat /proc/meminfo >> ~/saved/system.txt 2>&1
+lsof +L1 >> ~/saved/system.txt 2>&1
+#
+# --- >> ~/saved/network.txt ---
+ss -tan >> ~/saved/network.txt 2>&1
+ip addr show >> ~/saved/network.txt 2>&1
+ip route show >> ~/saved/network.txt 2>&1
+curl -sv --connect-timeout 5 https://HOST >> ~/saved/network.txt 2>&1
+dig DOMAIN >> ~/saved/network.txt 2>&1
+cat /etc/resolv.conf >> ~/saved/network.txt 2>&1
+sudo iptables -L -n -v --line-numbers >> ~/saved/network.txt 2>&1
+openssl s_client -connect HOST:443 -servername HOST </dev/null >> ~/saved/network.txt 2>&1
