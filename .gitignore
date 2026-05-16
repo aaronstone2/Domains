@@ -135,9 +135,18 @@ node_modules/
 .svelte-kit/
 .cache/
 
+# Professional Knowledge Corpus — personal career data is NEVER committed.
+# Only the generic design doc is tracked; everything else under
+# domains/_professional/ (extracted JSON, raw files, local DB) stays local.
+# Mirrors the proven _secrets/* allowlist pattern (single-star, not **).
+domains/_professional/*
+!domains/_professional/SCHEMA.md
+!domains/_professional/README.md
+
 # DuckDB / data — *.duckdb gitignored globally, but _db/knowledge.duckdb is
 # explicitly allowlisted because it ships with the repo so fresh clones can
-# query the corpus without rebuilding from JSONLs.
+# query the corpus without rebuilding from JSONLs. _db/career.duckdb is NOT
+# allowlisted (personal data) — the global *.duckdb rule keeps it ignored.
 *.duckdb
 !_db/knowledge.duckdb
 *.duckdb.wal
