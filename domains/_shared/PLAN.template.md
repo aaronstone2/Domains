@@ -1,67 +1,89 @@
-# Plan — `<domain>/<leaf>` (e.g. `docker/engine`)
+# Plan — `<domain>/<leaf>` (e.g. `exercise/movements`)
 
-> Per-domain plan. Open this file in a Claude Code plan-mode session inside the leaf directory; iterate phases A–E. Track progress in `PROGRESS.md` next to this file.
+> Per-leaf research plan. Open this in a plan-mode session **inside the leaf directory** and run the
+> meta-research ritual before executing. Track machine-readable phase state in `STATUS.yaml` and the
+> narrative log in `PROGRESS.md` next to this file.
+>
+> Set **depth** (`scout` | `standard` | `exhaustive`) in `STATUS.yaml` — it governs how wide each
+> phase fans out and how hard the gold layer (Phase D) is verified. See
+> `domains/_shared/sessions/depth-profiles.md`. The re-engagement contract (how a future session
+> resumes this leaf) is `domains/_shared/sessions/extend-playbook.md`.
 
 ## Context
 
-Why this leaf exists: <one paragraph: what subsystem this domain covers, why it matters for interview-day debugging, what the expected user-visible failure-modes look like>.
+Why this leaf exists: <one paragraph — what this leaf covers, why it matters, and what kind of
+question/answer the corpus must be able to serve from it>.
 
-How this leaf composes upward: <which other leaves it underpins or is underpinned by — e.g. `docker/engine` underpins `devin/devbox` failure-modes; `linux/primitives` underpins all of `docker/*`>.
+How it composes: <which leaves/domains it underpins or draws on. Cross-domain links are wired in
+Phase E *as you discover them*, not deferred to a final pass>.
 
-## Inputs already available
+## Target tables
 
-- Global source registry: `domains/_shared/sources.yaml` (filter to this leaf via `domain` + `subdomain`).
-- Base schema: `domains/_shared/schema.sql` (already applied to the leaf's domain schema).
-- Ingest pipeline: `domains/_shared/ingest/` (`uv run python -m ingest fetch --domain <d> --subdomain <s>`).
-- Anything captured live (e.g. DevBox CAPTURE.md outputs) under `raw/` with `tier=T0`.
+Base (every domain): `sources`, `documents`, `concepts`, `commands`, `config_keys`, `failure_modes`,
+`relationships`. Plus any domain-specific tables declared in `domains/<domain>/schema.<domain>.sql`.
 
-## Phase A — Survey (1 session)
+<List the tables this leaf actually fills and the rough row target per depth profile.>
 
-Goal: end with a complete, deduplicated list of sources scoped to this leaf.
+## Meta-research (before executing — do NOT skip)
 
-- [ ] Add per-leaf sources to `domains/_shared/sources.yaml` (or a leaf-local `sources.yaml` if the volume warrants).
-- [ ] For each, set `tier`, `license`, `parser`. Skim each URL once; throw out anything redundant.
-- [ ] **Verify:** `uv run python -m ingest list --domain <d> --subdomain <s>` shows N rows; manual eyeball pass.
+Plan-mode ritual: (1) **Explore** agents (1–3, parallel) map the territory — sitemaps, ToCs, repo
+trees, the authorities; (2) **Plan** agent(s) design the per-leaf extraction — which sources, which
+tables, what verification looks like; (3) `AskUserQuestion` on high-leverage forks (scope, depth);
+(4) write this PLAN + `STATUS.yaml`; (5) `ExitPlanMode`.
 
-## Phase B — Document ingest (1 session)
+The irreducible work is the **gold layer (Phase D)**. Everything before it is mechanical (find URLs,
+fetch, parse). The meta-research exists to protect the expensive layer from being spent on the wrong
+sources.
 
-Goal: every source's body lives in `<schema>.documents` and is FTS-searchable.
+## Phase A — Survey → `sources`
 
-- [ ] `uv run python -m ingest fetch --domain <d> --subdomain <s>` → fills `<d>.sources`, `<d>.documents`, caches raw under `_db/raw/<d>/<s>/`.
-- [ ] Re-run `domains/_shared/queries/fts_index.sql` for the affected schema.
-- [ ] **Verify:** `SELECT count(*), avg(length(content_md)) FROM <d>.documents WHERE source_id IN (<this leaf's source IDs>);` matches expected.
-- [ ] Spot-check 3 random documents: rendered markdown is sane (not nav-junk, not empty).
+Goal: a complete, deduplicated, tiered source list scoped to this leaf.
 
-## Phase C — Structured extraction: concepts, commands, config_keys (1–2 sessions)
+- [ ] Add per-leaf entries to `domains/_shared/sources.yaml` (or a leaf-local `sources.yaml`).
+- [ ] For each: `tier` (T0–T3 = evidence/authority grade), `license_note`, `parser`. Skim once; drop redundancy.
+- [ ] Width scales with depth (see depth-profiles): `scout` ~top sources only · `exhaustive` full sweep + reference-chasing.
+- [ ] **Verify:** `uv run python -m ingest list --domain <d> --subdomain <s>` shows N rows; eyeball pass.
 
-Goal: rows in the structured tables for the lookup-able entities in this leaf.
+## Phase B — Ingest → `documents` + FTS
 
-- [ ] **Concepts** — extract subsystems, files, daemons, features. Target ~50–200/leaf. Land via JSON in `extract/concepts.json`, then `uv run python -m ingest load --table concepts --leaf <d>/<s>`.
-- [ ] **Commands** — one row per CLI subcommand (`docker container exec` is a row; flags as STRUCT array). Mine from `man` pages, CLI reference pages, `--help` outputs from CAPTURE.
-- [ ] **Config keys** — daemon.json keys, compose YAML keys, kernel sysctls, env vars. Mine from reference docs.
-- [ ] **Verify:** counts match expected order-of-magnitude. Sampled rows have working `source_ids` references.
+- [ ] `uv run python -m ingest fetch --domain <d> --subdomain <s>` → fills `sources`/`documents`, caches raw under `_db/raw/`.
+- [ ] `uv run python -m ingest load --domain <d>` (close the motherduck MCP first — it holds a read lock).
+- [ ] Rebuild FTS: `duckdb _db/knowledge.duckdb < domains/_shared/queries/fts_index.sql`.
+- [ ] **Verify:** doc count + mean length match expectations; spot-check 3 random docs render as clean markdown.
 
-## Phase D — Failure-modes (1–2 sessions, the gold layer)
+## Phase C — Extract → entity tables
 
-Goal: the queryable runbook layer. This is what `harness symptom` searches.
+Goal: structured rows for the lookup-able entities in this leaf.
 
-- [ ] Mine sources tagged `troubleshoot`, `common-issues`, `error-reference`. Cross-reference GitHub issues with high engagement, canonical SO answers, kernel `Documentation/admin-guide/*-howto.md`.
-- [ ] For each failure-mode: symptom, error_patterns (regex), root_cause_class, diagnostic_steps[], fix_steps[], confidence, source_ids.
-- [ ] Cross-reference `affected_concepts` to concept IDs in this and other leaves.
-- [ ] **Verify:** for 5 random failure-modes, run `harness symptom "<symptom>"` and confirm a sensible top-3 returns. Run the diagnostic steps in a sandbox where applicable.
+- [ ] Extract into the leaf's target tables; land via JSON in `extract/<table>.json`, then `ingest load`.
+- [ ] **Verify:** counts within the depth-profile order-of-magnitude; sampled rows have resolvable `source_ids`.
 
-## Phase E — Relationships (0.5 session)
+## Phase D — Gold layer → verified facts (the irreducible work)
 
-Goal: connect concepts/commands/failure-modes within and across leaves.
+Goal: the queryable, **evidence-graded** layer — the part a human couldn't get from one search.
 
-- [ ] `affects`, `depends-on`, `controlled-by`, `surfaces-in`, `fixes`. Target ~3x relationships per concept.
-- [ ] **Verify:** `harness chain <concept-id>` walks ≥3 hops with sensible nodes.
+- For debugging-style domains this is `failure_modes` (symptom → diagnostic → fix → cite). For
+  evidence-style domains it's the claims/constraints layer (a recommendation → what the literature
+  actually shows → verdict → cite).
+- [ ] Each fact: the statement, supporting/contradicting `source_ids`, an evidence/confidence grade.
+- [ ] **Verification scales with depth:** `scout` none · `standard` single spot-check ·
+      `exhaustive` **N independent skeptics per claim, each prompted to refute; keep only majority-survivors, record the dissent.**
+- [ ] **Verify:** sample facts re-derive from their cited sources; contradictions are recorded, not silently dropped.
+
+## Phase E — Relationships → typed graph
+
+- [ ] Wire `affects`, `depends-on`, `substitutes`, `targets`, `evidenced-by`, etc. within and across leaves.
+- [ ] **Verify:** a graph walk from a seed node reaches ≥3 sensible hops.
+
+## On completion
+
+- [ ] Update `STATUS.yaml` (phase → `done`, `updated:` date) and append a session entry to `PROGRESS.md`.
 
 ## Reuse map (look here before writing code)
 
 - `domains/_shared/ingest/` — fetch, extract, load utilities.
-- Other leaves under the same domain — copy their `extract/concepts.json` shape as a starting point.
+- Sibling leaves under this domain — copy their `extract/*.json` shape as a starting point.
 
 ## Open questions
 
-- <Track any unresolved decisions here so the next session can pick them up.>
+- <Track unresolved decisions here so the next session picks them up.>

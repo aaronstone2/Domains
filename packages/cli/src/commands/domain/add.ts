@@ -28,5 +28,32 @@ export async function addDomain(args: string[]): Promise<void> {
   }
   await mkdir(dir, { recursive: true });
   await writeFile(resolve(dir, ".gitkeep"), "");
-  p.log.success(`Created domains/${name}/`);
+
+  // Domain-level README + PROGRESS so a new extension is usable immediately.
+  await writeFile(
+    resolve(dir, "README.md"),
+    [
+      `# \`${name}\` domain`,
+      ``,
+      `Top-level research domain. Leaves live in subfolders, each scaffolded with`,
+      `\`pnpm leaf add ${name}/<leaf>\` (README, PLAN, PROGRESS, STATUS.yaml, extract/, queries/).`,
+      ``,
+      `## Optional: domain-specific tables`,
+      ``,
+      `Every domain gets the shared base schema (sources, documents, concepts, commands,`,
+      `config_keys, failure_modes, relationships). To add domain-specific tables, create`,
+      `\`schema.${name}.sql\` here using the \`{{schema}}\` placeholder; \`ingest init-db\``,
+      `applies it on top of the base and leaves cross-domain \`meta.*\` views untouched.`,
+      ``,
+      `See \`domains/_shared/sessions/extend-playbook.md\` for the depth-configurable,`,
+      `re-engageable research flow.`,
+      ``,
+    ].join("\n"),
+  );
+  await writeFile(
+    resolve(dir, "PROGRESS.md"),
+    `# ${name} — PROGRESS log\n\nPer-domain log; rolls up into \`domains/_shared/PROGRESS.md\`. Per-leaf logs roll up into this file.\n`,
+  );
+
+  p.log.success(`Created domains/${name}/ (README.md, PROGRESS.md). Add an optional schema.${name}.sql for domain-specific tables.`);
 }

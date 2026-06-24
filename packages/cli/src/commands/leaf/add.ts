@@ -83,6 +83,31 @@ export async function addLeaf(args: string[]): Promise<void> {
     );
   }
 
+  // STATUS.yaml — machine-readable phase manifest so a fresh session can resume a
+  // partially-completed leaf deterministically (see _shared/sessions/extend-playbook.md).
+  const statusPath = resolve(leafDir, "STATUS.yaml");
+  if (!existsSync(statusPath)) {
+    await writeFile(
+      statusPath,
+      [
+        `# Phase manifest — read by a new session to resume where the last one left off.`,
+        `# phase states: todo | partial | done`,
+        `domain: ${domain}`,
+        `leaf: ${leaf}`,
+        `depth: standard          # scout | standard | exhaustive (see _shared/sessions/depth-profiles.md)`,
+        `phases:`,
+        `  meta_research: todo`,
+        `  a_survey: todo         # -> sources`,
+        `  b_ingest: todo         # -> documents + FTS`,
+        `  c_extract: todo        # -> entity tables`,
+        `  d_gold: todo           # -> verified facts (the irreducible layer)`,
+        `  e_relationships: todo  # -> typed graph`,
+        `updated: null`,
+        ``,
+      ].join("\n"),
+    );
+  }
+
   // extract/ and queries/ subdirs (with .gitkeep so they survive empty)
   for (const sub of ["extract", "queries"]) {
     const subDir = resolve(leafDir, sub);
@@ -91,5 +116,7 @@ export async function addLeaf(args: string[]): Promise<void> {
     if (!existsSync(keep)) await writeFile(keep, "");
   }
 
-  p.log.success(`Scaffolded domains/${domain}/${leaf}/ (README.md, PLAN.md, PROGRESS.md, extract/, queries/) — idempotent.`);
+  p.log.success(
+    `Scaffolded domains/${domain}/${leaf}/ (README.md, PLAN.md, PROGRESS.md, STATUS.yaml, extract/, queries/) — idempotent.`,
+  );
 }

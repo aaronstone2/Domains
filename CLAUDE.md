@@ -2,15 +2,15 @@
 
 pnpm workspace. Two top-level dirs:
 
-- `domains/<name>/` — research/knowledge domains (folders only for now; will be extended)
+- `domains/<name>/` — research/knowledge domains (each holds leaf folders + an optional `schema.<name>.sql`)
 - `packages/<name>/` — TS packages, all named `@domains/<name>`
 
 ## Commands
 
 Run from repo root:
 
-- `pnpm domain add <name>` — create `domains/<name>/` (just the folder shell + .gitkeep)
-- `pnpm leaf add <domain>/<leaf>` — scaffold `domains/<d>/<l>/` with `README.md`, `PLAN.md` (from `_shared/PLAN.template.md`), `PROGRESS.md`, `extract/`, `queries/`. **Idempotent** — only creates what's missing, never overwrites populated PLANs/PROGRESS files. Run this at the start of a Phase 3 session for the leaf you're working on.
+- `pnpm domain add <name>` — create `domains/<name>/` with a domain `README.md` + `PROGRESS.md`. Add an optional `schema.<name>.sql` for domain-specific tables.
+- `pnpm leaf add <domain>/<leaf>` — scaffold `domains/<d>/<l>/` with `README.md`, `PLAN.md` (from `_shared/PLAN.template.md`), `PROGRESS.md`, `STATUS.yaml` (phase manifest), `extract/`, `queries/`. **Idempotent** — only creates what's missing, never overwrites populated files. Run it when you start work on a leaf.
 - `pnpm package add <name> [--preset=<node|node-cjs|ts|vite|react>]` — scaffold a new `@domains/<name>` package; prompts for tsconfig preset if `--preset` omitted
 - `pnpm test` — run vitest across all packages
 - `pnpm typecheck` — `tsc --noEmit` across all packages
@@ -41,11 +41,22 @@ Cue's base enables `isolatedDeclarations`, so all exported values need explicit 
 - **Naming.** `^[a-z0-9][a-z0-9-]*$` for both domains and packages.
 - **Scratch files during research.** Never write loose research scratch (curl-dumped HTML, intermediate notes) to the project root — it gets accidentally committed via `git add .`. Drop scratch under `domains/<active-domain>/raw/` (gitignored). The pipeline's own raw cache lives at `_db/raw/<domain>/<subdomain>/<id>.html` (also gitignored). The repo-root `.gitignore` explicitly ignores `/*.md` with an allowlist for `CLAUDE.md`, `README.md`, `Start.md` to backstop this.
 
-## Knowledge corpus
+## Knowledge corpus (extensible engine)
 
-A multi-domain debugging KB lives in this repo: DuckDB at `_db/knowledge.duckdb`, ingest pipeline at `domains/_shared/ingest/` (Python via `uv`), per-phase session prompts at `domains/_shared/sessions/`, queryable via `pnpm harness <sub> [args]`. **Always start a corpus session by reading `domains/_shared/sessions/PREAMBLE.md`** — it captures the interview goal (AI Support Engineer at Cognition), conventions, the MCP stack (motherduck/filesystem/memory/context7/playwright), and the plan-mode meta-research pattern every session follows. Per-phase docs (`phase-1-source-corpus.md`, etc.) are designed to be piped in as the first message of a new session.
+A multi-domain knowledge corpus lives in this repo: DuckDB at `_db/knowledge.duckdb`, ingest pipeline at `domains/_shared/ingest/` (Python via `uv`), queryable via the `duckdb` CLI / motherduck MCP. (`pnpm harness <sub>` needs the native `duckdb` node dep, which can't compile on this machine — Node 25, no MSVC; migrate it to `@duckdb/node-api` prebuilt binaries when wiring up harness commands. The corpus is fully usable via the CLI / MCP meanwhile.)
 
-Master plan: `~/.claude/plans/i-am-applying-for-indexed-hellman.md`.
+**The engine is domain-agnostic and auto-extending:**
+
+- **Domains are auto-discovered** — a domain is any folder under `domains/` (excluding `_shared`). Dropping a folder registers it everywhere: `ingest init-db` creates its schema and regenerates the cross-domain `meta.*` views (`queries/cross_domain.sql`) and the FTS build script (`queries/fts_index.sql`) from the live domain list — both are AUTO-GENERATED, do not hand-edit.
+- **Per-domain tables** — every domain gets the shared base schema (`sources`, `documents`, `concepts`, `commands`, `config_keys`, `failure_modes`, `relationships` — `domains/_shared/schema.sql`). A domain may declare its own tables in `domains/<d>/schema.<d>.sql` (uses the `{{schema}}` placeholder; `init-db` applies it on top of the base).
+- **Per-leaf state** — each leaf carries a `STATUS.yaml` (depth + per-phase progress) for deterministic resume, plus a `PROGRESS.md` narrative log.
+- **Configurable depth** — `scout | standard | exhaustive` per leaf (`_shared/sessions/depth-profiles.md`); depth scales source breadth and how hard the gold layer (Phase D) is adversarially verified.
+
+**Starting or resuming work:** read `domains/_shared/sessions/extend-playbook.md` — the single entry point for engaging on any domain, new or partially complete. Each leaf runs a plan-mode meta-research ritual (Explore → Plan → clarify → write PLAN/STATUS → execute phases A–E in `PLAN.md`).
+
+**Active focus:** `domains/exercise/` — a science-backed training-fact corpus that generates an optimal Push/Pull/Legs routine (static loop + dynamic mesocycle). See `domains/exercise/PLAN.md`.
+
+**Parked (not deleted):** the original interview-prep domains (`devin`, `docker`, `linux`, `ecs`, `firecracker`, `methodology`), whose context lives in `domains/_shared/sessions/PREAMBLE.md` + the per-phase `phase-*.md` docs. Still queryable and resumable through the same engine; just not the current focus.
 
 ## CLI internals
 
