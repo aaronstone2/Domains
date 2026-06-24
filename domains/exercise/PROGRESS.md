@@ -62,3 +62,33 @@ consolidation/dedup/tier passes), merged deterministically into `domains/_shared
 
 **Next:** Phase B (ingest → documents + FTS). Suggest fetching T0–T2 first (redistribute-ok freely
 ingested; reference-only ingested to the private corpus, cite-only), then T3 selectively.
+
+## Session 2 — 2026-06-24 — Phase B ingest, tier-gated T0–T2 (anatomy + movements) — DONE
+
+Fetched + loaded the T0–T2 tier (66 sources) → **57 documents** in `exercise.documents`, BM25 FTS built.
+
+| Leaf | T0–T2 ingested | blocked | T3 deferred | avg chars | thin (<800) |
+|---|---:|---:|---:|---:|---:|
+| `anatomy` | 19 / 20 | 1 | 15 | 43,234 | 0 |
+| `movements` | 38 / 46 | 8 | 39 | 49,171 | 0 |
+
+- **FTS verified:** "soleus gastrocnemius knee angle" → top-5 are the exact gastroc-vs-soleus PMC papers;
+  "lifting straps grip deadlift" → the straps-bench-pull study + SBS grip/deadlift guides. Retrieval is sound.
+- Content is rich (avg ~43–49k chars, 0 thin/nav-junk docs).
+
+**Pipeline fixes landed this session (reusable across all domains):**
+1. **`--max-tier` filter** on `ingest list`/`fetch` (`_TIER_RANK`) — enables tier-gated ingest (T0–T2 first).
+2. **Browser User-Agent** in `fetch.py` — the bot UA was getting 403'd by journal/blog hosts; recovered
+   3 of the first 13 failures (oregonstate, a humankinetics EMG, the 38k-char lifting-straps systematic review).
+3. **Upsert FK fix** in `load.py` — `INSERT OR REPLACE` (delete+reinsert) violated the
+   `documents.source_id → sources.id` FK on any re-load; switched to in-place `ON CONFLICT DO UPDATE`.
+   Validated by re-loading 54→57 with no FK error.
+
+**Deferred to a Phase-1.5 gap-patch (9 still-blocked T0–T2 — hard paywalls / Cloudflare, need PMC mirror or playwright):**
+`exercise-anatomy-tandf-triceps-overhead-hypertrophy`, `exercise-movements-{peerj-moment-arm-model,
+emg-pec-nonuniform, sysrev-varying-exercises, trial-varying-exercises, straps-deadlift,
+straps-deadlift-females, straps-latpulldown, startingstrength-hook-vs-straps}`. Several EMG/sys-review
+papers likely have open-access PMC versions — swap the publisher URL → PMC and re-fetch.
+
+**Next:** Phase C extraction — `anatomy.muscles` (the every-muscle backbone, freezes `muscle.id`) then
+`movements.{movement_patterns, exercises, substitutions}` from the 57 ingested docs.

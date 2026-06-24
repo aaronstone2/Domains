@@ -159,17 +159,51 @@ def load_staged(con: duckdb.DuckDBPyConnection, domain: str) -> tuple[int, int]:
     return s_n, d_n
 
 
-def _load_jsonl(con: duckdb.DuckDBPyConnection, path: Path, table: str) -> int:
+def _pk_columns(con: duckdb.DuckDBPyConnection, schema: str, table: str) -> list[str]:
+    row = con.execute(
+        "SELECT constraint_column_names FROM duckdb_constraints() "
+        "WHERE schema_name = ? AND table_name = ? AND constraint_type = 'PRIMARY KEY'",
+        [schema, table],
+    ).fetchone()
+    return list(row[0]) if row else []
+
+
+def _table_columns(con: duckdb.DuckDBPyConnection, schema: str, table: str) -> list[str]:
+    return [
+        r[0]
+        for r in con.execute(
+            "SELECT column_name FROM information_schema.columns "
+            "WHERE table_schema = ? AND table_name = ? ORDER BY ordinal_position",
+            [schema, table],
+        ).fetchall()
+    ]
+
+
+def _load_jsonl(con: duckdb.DuckDBPyConnection, path: Path, qualified: str) -> int:
+    """Upsert a staged JSONL into `qualified` (schema.table) via in-place ON CONFLICT DO UPDATE.
+
+    Uses UPDATE (not INSERT OR REPLACE, which is delete+reinsert) so re-loads don't violate the
+    documents.source_id -> sources.id foreign key when a referenced source row already exists.
+    """
     if not path.is_file() or path.stat().st_size == 0:
         return 0
     posix = path.as_posix()
-    con.execute(
-        f"INSERT OR REPLACE INTO {table} BY NAME "
-        f"SELECT * FROM read_json('{posix}', format='newline_delimited')"
-    )
-    return con.execute(
-        f"SELECT count(*) FROM read_json('{posix}', format='newline_delimited')"
-    ).fetchone()[0]
+    schema, table = qualified.split(".", 1)
+    pk = _pk_columns(con, schema, table)
+    non_pk = [c for c in _table_columns(con, schema, table) if c not in pk]
+    src = f"read_json('{posix}', format='newline_delimited')"
+    if pk and non_pk:
+        conflict = ", ".join(f'"{c}"' for c in pk)
+        set_clause = ", ".join(f'"{c}" = excluded."{c}"' for c in non_pk)
+        con.execute(
+            f"INSERT INTO {qualified} BY NAME SELECT * FROM {src} "
+            f"ON CONFLICT ({conflict}) DO UPDATE SET {set_clause}"
+        )
+    elif pk:
+        con.execute(f"INSERT INTO {qualified} BY NAME SELECT * FROM {src} ON CONFLICT DO NOTHING")
+    else:
+        con.execute(f"INSERT INTO {qualified} BY NAME SELECT * FROM {src}")
+    return con.execute(f"SELECT count(*) FROM {src}").fetchone()[0]
 
 
 # ------------------------------------------------------ legacy direct upserts
