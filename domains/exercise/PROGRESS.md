@@ -41,3 +41,24 @@ extensible-as-hell first.
 
 **Next:** deepen the 6 leaf PLAN/README (in progress this session). Then per-leaf Phase A source sweep
 (exhaustive), starting with `anatomy` + `movements`. Equipment inventory needed before `routine`.
+
+## Session 1 — 2026-06-24 — Phase A survey (anatomy + movements) — DONE
+
+Exhaustive multi-modal source sweep (7 discovery agents across distinct search angles → 2 per-leaf
+consolidation/dedup/tier passes), merged deterministically into `domains/_shared/sources.yaml`.
+
+| Leaf | Sources | T0 | T1 | T2 | T3 | redistribute-ok | reference-only | unknown |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `anatomy` | 35 | 1 | 8 | 11 | 15 | 19 | 16 | 0 |
+| `movements` | 85 | 3 | 14 | 29 | 39 | 16 | 68 | 1 |
+
+- **Validated:** all 120 load via the pydantic `Source` model (`ingest list --domain exercise` → 120).
+- 1 duplicate URL auto-skipped during merge. Per-leaf provenance (with tier/license rationale +
+  coverage_notes) saved to `domains/exercise/<leaf>/extract/sources.json`.
+- `anatomy` is weighted T1/T2 (OpenStax/LibreTexts CC-BY anatomy + StatPearls + EMG/moment-arm PMC for
+  the contested claims). `movements` came in broad (85 vs 28–50 target) and skews T3/reference-only
+  (ExRx/MuscleWiki/practitioner pages) — fine at registry stage; Phase B will fetch in tier order.
+- STATUS for both leaves: `meta_research: done`, `a_survey: done`.
+
+**Next:** Phase B (ingest → documents + FTS). Suggest fetching T0–T2 first (redistribute-ok freely
+ingested; reference-only ingested to the private corpus, cite-only), then T3 selectively.

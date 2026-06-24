@@ -6014,3 +6014,1089 @@ sources:
     license_note: redistribute-ok
     parser: github-md
     notes: Phase-1.5 add (Session 3.2 mid-extraction) — referenced by api/balloon-resource concepts, was missed in P1.
+
+  # ============================================================
+  # EXERCISE — Phase A source sweep (2026-06-24)
+  # ============================================================
+  # --- exercise/anatomy (35) ---
+  - id: exercise-anatomy-openstax-axial-abdomen-thorax
+    url: https://openstax.org/books/anatomy-and-physiology-2e/pages/11-4-axial-muscles-of-the-abdominal-wall-and-thorax
+    title: 11.4 Axial Muscles of the Abdominal Wall and Thorax — Anatomy and Physiology 2e (OpenStax)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'OpenStax CC BY textbook. Core/axial muscle rows: rectus abdominis, external/internal obliques, transversus abdominis, diaphragm, intercostals with origin/insertion/movement tables. Anchor authority for the CORE region enumeration.'
+  - id: exercise-anatomy-openstax-lever-systems-roles
+    url: https://openstax.org/books/anatomy-and-physiology-2e/pages/11-1-interactions-of-skeletal-muscles-their-fascicle-arrangement-and-their-lever-systems
+    title: 11.1 Interactions of Skeletal Muscles, Fascicle Arrangement, and Lever Systems — Anatomy and Physiology 2e (OpenStax)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'Backs the kinesiology concepts rows: agonist/antagonist/synergist/fixator roles, origin vs insertion, lever classes/mechanical advantage. Foundational muscle-action vocabulary the antagonist-pairing concept reuses.'
+  - id: exercise-anatomy-openstax-appendicular-lower-limb
+    url: https://openstax.org/books/anatomy-and-physiology-2e/pages/11-6-appendicular-muscles-of-the-pelvic-girdle-and-lower-limbs
+    title: 11.6 Appendicular Muscles of the Pelvic Girdle and Lower Limbs — Anatomy and Physiology 2e (OpenStax)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'OpenStax CC BY. Anchor for LEGS enumeration: quads/hamstrings/glutes/adductors/calf origins, insertions, joint actions; anterior vs posterior compartment grouping.'
+  - id: exercise-anatomy-osu-agonist-antagonist-synergist
+    url: https://open.oregonstate.education/anatomy2e/chapter/agonists-antagonists-synergists/
+    title: The Roles of Agonists, Antagonists, and Synergists — Anatomy & Physiology 2e (Oregon State, OpenStax-derived)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: CC BY OpenStax-derived explainer of prime mover/antagonist/synergist/fixator. Second independent authority for the antagonist-pairing concept used in antagonist-of edges.
+  - id: exercise-anatomy-libretexts-axial-abdomen-thorax
+    url: https://med.libretexts.org/Bookshelves/Anatomy_and_Physiology/Human_Anatomy_(OERI)/10:_Muscular_System/10.05:_Axial_Muscles_of_the_Abdominal_Wall_and_Thorax
+    title: 10.5 Axial Muscles of the Abdominal Wall and Thorax — Human Anatomy (OERI), Medicine LibreTexts
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: CC BY OER. Abdominal-wall + thoracic tables WITH innervation (adds quadratus lumborum vs OpenStax 11.4). Complements OpenStax by supplying nerve supply for CORE rows.
+  - id: exercise-anatomy-libretexts-appendicular-upper-limb
+    url: https://med.libretexts.org/Bookshelves/Anatomy_and_Physiology/Human_Anatomy_(OERI)/10:_Muscular_System/10.06:_Appendicular_Muscles_of_the_Pectoral_Girdle_and_Upper_Limbs
+    title: 10.6 Appendicular Muscles of the Pectoral Girdle and Upper Limbs — Human Anatomy (OERI), Medicine LibreTexts
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC BY OER with full upper-limb tables incl. innervation: deltoid, rotator cuff, biceps/triceps, forearm flexors/extensors. Anchor authority for BACK/CHEST/SHOULDERS/ARMS/FOREARMS origin-insertion-action-innervation.'
+  - id: exercise-anatomy-statpearls-shoulder-upper-limb
+    url: https://www.ncbi.nlm.nih.gov/books/NBK482410/
+    title: Anatomy, Shoulder and Upper Limb, Muscles — StatPearls (NCBI Bookshelf)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Peer-reviewed StatPearls overview of shoulder/upper-limb musculature (attachments, innervation, function). StatPearls content is copyrighted (not OA-redistributable) — cite metadata + paraphrase only.
+  - id: exercise-anatomy-statpearls-rectus-femoris
+    url: https://www.ncbi.nlm.nih.gov/books/NBK539897/
+    title: Anatomy, Abdomen and Pelvis, Rectus Femoris Muscle — StatPearls (NCBI Bookshelf)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Authoritative anatomy reference for the rectus femoris biarticular row: origin/insertion + active-insufficiency mechanism (weak knee extender when hip flexed). Backs the RF length_bias claim. Copyrighted, paraphrase only.'
+  - id: exercise-anatomy-teachmeanatomy-upper-limb-hub
+    url: https://teachmeanatomy.info/upper-limb/muscles/
+    title: Upper Limb Muscles — Shoulder, Arm, Forearm and Hand (TeachMeAnatomy)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Regional hub enumerating all upper-limb muscles with attachment/innervation/action tables; useful as a completeness checklist for ARMS/SHOULDERS/BACK upper-limb rows. Proprietary — paraphrase only.
+  - id: exercise-anatomy-teachmeanatomy-anterior-forearm
+    url: https://teachmeanatomy.info/upper-limb/muscles/anterior-forearm/
+    title: Anterior Forearm Flexor Muscles — Anatomy & Innervation (TeachMeAnatomy)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Per-muscle data for the wrist-flexor / finger-flexor (FDS/FDP grip-crush) group flagged for the left-pinky constraint: pronator teres, FCR, palmaris longus, FCU, FDS, FDP, FPL, pronator quadratus.'
+  - id: exercise-anatomy-teachmeanatomy-posterior-forearm
+    url: https://teachmeanatomy.info/upper-limb/muscles/posterior-forearm/
+    title: Posterior Forearm Extensor Muscles — Anatomy & Innervation (TeachMeAnatomy)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Wrist-extensor group rows: ECRL/ECRB/ECU, extensor digitorum, supinator, abductor/extensor pollicis, radial-nerve innervation. Antagonist counterpart to the anterior-forearm flexor group.'
+  - id: exercise-anatomy-teachmeanatomy-upper-arm
+    url: https://teachmeanatomy.info/upper-limb/muscles/upper-arm/
+    title: Muscles of the Upper Arm (TeachMeAnatomy)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Biceps brachii (biarticular: flexes shoulder+elbow, supinates), brachialis, coracobrachialis, triceps brachii heads — joints-crossed and length_bias reference for the ARMS elbow flexor/extensor rows.'
+  - id: exercise-anatomy-teachmeanatomy-gluteal-region
+    url: https://teachmeanatomy.info/lower-limb/muscles/gluteal-region/
+    title: Muscles of the Gluteal Region — Superficial & Deep (TeachMeAnatomy)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Glute max/medius/minimus, TFL, deep lateral rotators with origin/insertion/innervation/action. Replaces the redundant per-muscle glute-max pages (Kenhub covers glute max single-muscle separately).
+  - id: exercise-anatomy-teachmeanatomy-anterior-thigh
+    url: https://teachmeanatomy.info/lower-limb/muscles/thigh/anterior-compartment/
+    title: Muscles of the Anterior Thigh — Quadriceps (TeachMeAnatomy)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Quadriceps (rectus femoris + 3 vasti), sartorius, iliopsoas, pectineus: attachments, femoral-nerve innervation, knee-extension/hip-flexion actions. LEGS quad-group enumeration.'
+  - id: exercise-anatomy-teachmeanatomy-hamstrings
+    url: https://teachmeanatomy.info/lower-limb/muscles/thigh/hamstrings/
+    title: Muscles of the Posterior Thigh — Hamstrings (TeachMeAnatomy)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Biceps femoris (long+short heads), semitendinosus, semimembranosus: ischial-tuberosity origin, sciatic (tibial/peroneal) innervation, hip-extension/knee-flexion biarticular actions.'
+  - id: exercise-anatomy-kenhub-hip-thigh-muscles
+    url: https://www.kenhub.com/en/library/anatomy/hip-and-thigh-muscles
+    title: 'Hip and thigh muscles: Anatomy and functions (Kenhub)'
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Comprehensive origin/insertion/innervation/action charts for hip + thigh incl. biarticular rectus femoris and hamstrings and the adductor group (magnus/longus/brevis/gracilis/pectineus). Kenhub anchor for LEGS. Proprietary — metadata + paraphrase only.
+  - id: exercise-anatomy-kenhub-pectoralis-major
+    url: https://www.kenhub.com/en/library/anatomy/major-pectoralis-muscle
+    title: 'Pectoralis major: Origin, insertion, innervation, function (Kenhub)'
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Clavicular/sternocostal/abdominal heads, intertubercular-sulcus insertion, medial+lateral pectoral nerves, adduction/internal-rotation/flexion. Backs the CHEST per-head split rows.
+  - id: exercise-anatomy-kenhub-gastrocnemius
+    url: https://www.kenhub.com/en/library/anatomy/gastrocnemius-muscle
+    title: 'Gastrocnemius muscle: Origin, insertion, functions (Kenhub)'
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Medial/lateral femoral-condyle heads, calcaneal-tendon insertion, tibial nerve, biarticular plantarflexion + knee flexion (triceps surae). Backs gastroc knee-straight length_bias row.
+  - id: exercise-anatomy-physiopedia-latissimus-dorsi
+    url: https://www.physio-pedia.com/Latissimus_Dorsi_Muscle
+    title: Latissimus Dorsi Muscle — Physiopedia
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Thoracolumbar/spinous-process origins, intertubercular-groove insertion, thoracodorsal nerve, shoulder extension/adduction/internal rotation. Anchor for the lat row + regionalization claim context. Physiopedia is CC BY-NC-SA but treat as reference-only.
+  - id: exercise-anatomy-exrx-hamstrings
+    url: https://exrx.net/Muscles/Hamstrings
+    title: Hamstrings — ExRx.net Muscle Directory
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Exercise-science muscle→exercise mapping for the biarticular hamstring group (hip-extension/knee-flexion actions and the lifts that train them). ExRx is proprietary — paraphrase only.
+  - id: exercise-anatomy-wikipedia-terms-of-motion
+    url: https://en.wikipedia.org/wiki/Anatomical_terms_of_motion
+    title: Anatomical terms of motion (Wikipedia)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: CC BY-SA canonical action vocabulary (flexion/extension, abduction/adduction, rotation, circumduction) across planes/axes. Freezes the primary_actions[] verb list as a concepts entry.
+  - id: exercise-anatomy-wikipedia-biarticular-muscle
+    url: https://en.wikipedia.org/wiki/Biarticular_muscle
+    title: Biarticular muscle (Wikipedia)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: CC BY-SA definition of two-joint muscles with lower-limb examples (rectus femoris, hamstrings, gastrocnemius) and active/passive insufficiency. Backs the biarticular concept row.
+  - id: exercise-anatomy-physiopedia-active-passive-insufficiency
+    url: https://www.physio-pedia.com/Active_and_Passive_Insufficiency
+    title: Active and Passive Insufficiency (Physiopedia)
+    domain: exercise
+    subdomain: anatomy
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Practitioner explainer of active/passive insufficiency with hamstring/rectus-femoris/finger-flexor examples. Backs the active-insufficiency concept feeding length_bias for biarticular rows.
+  - id: exercise-anatomy-pmc-moment-arm-systematic-review
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12283864/
+    title: 'Muscle Moment Arm–Joint Angle Relations in the Hip, Knee, and Ankle: A Visualization of Datasets (Ann Biomed Eng 2025)'
+    domain: exercise
+    subdomain: anatomy
+    tier: T0
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Systematic review compiling ~300 moment-arm datasets; moment-arm vs joint-angle curves for hip/knee/ankle muscles. CC BY 4.0. Mechanistic backbone for joint-angle length_bias claims across the lower limb.
+  - id: exercise-anatomy-pmc-two-joint-link-model
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC9681132/
+    title: 'Roles of Mono- and Bi-articular Muscles in Human Limbs: Two-joint Link Model and Applications (Integr Org Biol 2022)'
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: CC BY review of the two-joint link model — how mono/biarticular muscles coordinate force direction at the limb endpoint. Replaces the 403/unknown-license Royal Society Interface biarticular review.
+  - id: exercise-anatomy-pmc-biarticular-hdemg-insights
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8191471/
+    title: Novel Insights Into Biarticular Muscle Actions Gained From High-Density Electromyogram (Exerc Sport Sci Rev 2021)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: CC BY 4.0 (license confirmed via fetch). Region-specific activation of biarticular rectus femoris/gastrocnemius — proximal regions favor hip action, distal favor knee action. Backs RF and gastroc regional length_bias.
+  - id: exercise-anatomy-pmc-length-tension-understanding
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC2277231/
+    title: Understanding muscle from its length (PMC)
+    domain: exercise
+    subdomain: anatomy
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: PMC OA review of the length-tension relationship, active vs passive tension, filament overlap and titin. Core mechanism row behind length-dependent force / length_bias concept.
+  - id: exercise-anatomy-pmc-rf-active-insufficiency
+    url: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0034269
+    title: Task-Dependent Inhomogeneous Muscle Activities within the Bi-Articular Human Rectus Femoris Muscle (Miyamoto et al. 2012, PLoS ONE)
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC BY primary regional EMG: distal RF cannot be fully activated during hip flexion vs knee extension — direct evidence for the rectus-femoris active-insufficiency claim.'
+  - id: exercise-anatomy-pmc-triceps-surae-standing-vs-seated
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10753835/
+    title: Triceps surae hypertrophy greater after standing vs seated calf-raise training (Kinoshita et al. 2023, Front Physiol)
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC BY RCT: standing (knee-extended) grows gastroc far more, seated (knee-flexed) similar soleus. Primary trial settling the gastroc-knee-straight vs soleus-knee-bent length_bias claim.'
+  - id: exercise-anatomy-pmc-gastroc-plantarflexion-torque-angle
+    url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4471746/
+    title: Knee and Ankle Joint Angles Influence the Plantarflexion Torque of the Gastrocnemius (PMC)
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC OA: gastroc plantarflexion torque vs knee+ankle angle; gastroc contributes >=40% torque at straight knee. Moment-arm/length mechanism for the soleus-vs-gastroc knee-angle independence claim.'
+  - id: exercise-anatomy-pmc-lat-hdemg-regional
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC11057623/
+    title: High-Density EMG Excitation in Front vs Back Lat Pull-Down Prime Movers (J Hum Kinet 2024)
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC BY HD-sEMG: front vs back pulldown produce different lat excitation/phase-dependent engagement. Primary evidence for the lat-regionalization claim (bias by arm path).'
+  - id: exercise-anatomy-pmc-lat-grip-variations
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12452428/
+    title: 'EMG of Back Muscle Activation During Lat Pulldown: Grip Variations and Forearm Orientation (J Funct Morphol Kinesiol 2025)'
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC BY: 7 grip variants in 40 trained men show no significant LD-activation difference across grips. Counterpoint/nuance that constrains the lat-regionalization claim (grip width does NOT target lat regions).'
+  - id: exercise-anatomy-tandf-triceps-overhead-hypertrophy
+    url: https://www.tandfonline.com/doi/full/10.1080/17461391.2022.2100279
+    title: Triceps brachii hypertrophy substantially greater after elbow extension training in overhead vs neutral arm position (Maeo et al. 2023, Eur J Sport Sci)
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Primary RCT in trained subjects: overhead (lengthened long head) yields ~1.4x greater triceps growth than neutral. Backs the triceps-long-head-overhead-stretch length_bias claim. Tandfonline — license unconfirmed, treat as reference-only.'
+  - id: exercise-anatomy-pmc-biceps-shoulder-position-emg
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3737788/
+    title: Effect of shoulder position on biceps brachii EMG in different dumbbell curls (Oliveira et al., PMC)
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC OA primary EMG: shoulder position (extended vs flexed) modulates biceps EMG via long-head length. Basis for the incline (long-head bias) vs preacher (short-head) length_bias claim.'
+  - id: exercise-anatomy-pmc-hamstring-glute-regional-emg
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC9362892/
+    title: Muscle Activation Patterns of Proximal/Distal Biceps Femoris and Gluteus Maximus Across Hip-Extension and Knee-Flexion Exercises in Trained Women (PMC)
+    domain: exercise
+    subdomain: anatomy
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: 'CC OA EMG (trained women): region-specific biceps femoris and glute-max activation across hip-extension vs knee-flexion exercises. Backs the hamstring biarticular hip-extensor-vs-knee-flexor regional claim.'
+  # --- exercise/movements (85) ---
+  - id: exercise-movements-free-exercise-db-json
+    url: https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/dist/exercises.json
+    title: free-exercise-db (yuhonas) — exercises.json (800+ exercises, public domain)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: redistribute-ok
+    parser: github-md
+    notes: Public-domain (Unlicense) structured JSON of 800+ exercises with primaryMuscles, secondaryMuscles, equipment, force (push/pull), mechanic (isolation/compound), category, instructions. Best directly-fetchable redistributable spine for prime/secondary movers + equipment + force vector across all six equipment classes.
+  - id: exercise-movements-free-exercise-db-repo
+    url: https://github.com/yuhonas/free-exercise-db
+    title: free-exercise-db — repo README & schema (Unlicense)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: redistribute-ok
+    parser: github-md
+    notes: Documents the JSON schema (force, mechanic, category, primary/secondary muscles, equipment, level) and confirms Unlicense/public-domain. Field-interpretation reference for the exercises.json dataset.
+  - id: exercise-movements-exercemus-json
+    url: https://raw.githubusercontent.com/exercemus/exercises/minified/minified-exercises.json
+    title: exercemus/exercises — minified-exercises.json (curated open-license set)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: redistribute-ok
+    parser: github-md
+    notes: MIT-coded, open-license-curated dataset (merges exercemus, wger.de, exercises.json) with equipment, primary_muscles, secondary_muscles, category, tempo, and per-exercise license metadata. Cross-check / supplement to free-exercise-db.
+  - id: exercise-movements-wger-repo
+    url: https://github.com/wger-project/wger
+    title: wger — self-hosted FLOSS fitness/workout database (AGPL-3.0)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: redistribute-ok
+    parser: github-md
+    notes: 'Open-source (AGPL) exercise wiki: 845+ exercises by category, 16 muscle groups, 12 equipment types, primary & secondary targets. Fixture data + self-hostable DB; redistributable open movement reference.'
+  - id: exercise-movements-wger-api
+    url: https://wger.de/en/software/api
+    title: wger REST API documentation (open exercise database)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Public zero-auth REST API (wger.de/api/v2/) exposing exercises with muscles, equipment, categories, images. Programmatic access path to the wger open database.
+  - id: exercise-movements-musclewiki
+    url: https://musclewiki.com/
+    title: MuscleWiki — interactive exercise library / muscle map
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 2000+ exercises filterable by force type (push/pull/static), muscle group, equipment, mechanics (isolation/compound), grip; interactive muscle-map linking target muscle to exercises. Per-exercise target-muscle + force-vector cross-check. Proprietary.
+  - id: exercise-movements-musclewiki-api
+    url: https://api.musclewiki.com/documentation
+    title: MuscleWiki API documentation
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'API metadata schema for 1900+ MuscleWiki exercises: target body parts, force, mechanics, equipment, demo media. Documents the structured per-exercise fields. Proprietary.'
+  - id: exercise-movements-exrx-directory
+    url: https://exrx.net/Lists/Directory
+    title: ExRx.net — Exercise Directory (2100+ exercises by muscle)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Master directory indexing 2100+ exercises by muscle/body-part/apparatus; entry point to per-exercise prime-mover/synergist/stabilizer analyses and the canonical lookup for same-muscle substitution. Dedup: appeared twice in pool, kept once. Proprietary — read for facts.'
+  - id: exercise-movements-exrx-class-analyses
+    url: https://exrx.net/Questions/ExerciseClassAnalyses
+    title: ExRx.net — Exercise Classifications and Analyses
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Defines ExRx's Basic/Auxiliary, Mechanics (compound/isolated), and Force (push/pull) classification system — the schema behind force_vector, is_compound, and machine-to-free-weight substitution mapping. Proprietary.
+  - id: exercise-movements-exrx-glossary
+    url: https://exrx.net/Kinesiology/Glossary
+    title: ExRx.net — Kinesiology Glossary (muscle role definitions)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Definitions of functional muscle roles (prime mover/agonist, synergist, dynamic stabilizer, stabilizer, antagonist stabilizer) — the mover-attribution taxonomy underpinning prime vs secondary classification across the library. Proprietary.
+  - id: exercise-movements-exrx-chest-list
+    url: https://exrx.net/Lists/ExList/ChestWt
+    title: ExRx.net — Chest (weight) Exercises list
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Horizontal-push category list (presses, flyes) linking to per-exercise prime-mover/stabilizer analyses. Proprietary.
+  - id: exercise-movements-exrx-back-list
+    url: https://exrx.net/Lists/ExList/BackWt
+    title: ExRx.net — Back (weight) Exercises list
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Horizontal/vertical-pull category list (rows, pulldowns, pull-ups) linking to prime-mover/synergist/stabilizer breakdowns. Proprietary.
+  - id: exercise-movements-exrx-shoulder-list
+    url: https://exrx.net/Lists/ExList/ShouldWt
+    title: ExRx.net — Shoulder (weight) Exercises list
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Vertical-push / deltoid category list (overhead presses, raises) with per-exercise muscle role classification. Proprietary.
+  - id: exercise-movements-exrx-hip-list
+    url: https://exrx.net/Lists/ExList/HipsWt
+    title: ExRx.net — Hip (weight) Exercises list
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Hip-extension / hip-hinge category list (hip thrusts, deadlift variants, glute work) with muscle role data. Proprietary.
+  - id: exercise-movements-exrx-thigh-list
+    url: https://exrx.net/Lists/ExList/ThighWt
+    title: ExRx.net — Thigh (weight) Exercises list
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Squat/knee-extension and knee-flexion category list (squats, leg press, lunges, leg curls) linking to per-exercise prime-mover/stabilizer analyses. Proprietary.
+  - id: exercise-movements-exrx-squat-kines
+    url: https://exrx.net/Kinesiology/Squats
+    title: ExRx.net — Squat Analysis (kinesiology)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Kinesiological squat breakdown: joints, movements, prime movers, synergists, antagonist stabilizers (erectors, rectus abdominis, obliques). Exemplar squat-pattern analysis. Proprietary.'
+  - id: exercise-movements-exrx-bench-kines
+    url: https://exrx.net/Kinesiology/BenchPress
+    title: ExRx.net — Bench Press Analyses (kinesiology)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Kinesiological bench-press (horizontal-push) breakdown: muscle roles, grip-width biomechanics, cited research. Exemplar horizontal-push analysis. Proprietary.'
+  - id: exercise-movements-exrx-deadlift-kines
+    url: https://exrx.net/Kinesiology/Deadlift
+    title: ExRx.net — Deadlift Analysis (kinesiology)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Kinesiological deadlift (hip-hinge) breakdown: joints, movements, muscle roles (glutes, hamstrings, erectors, adductor magnus). Exemplar hinge analysis. Proprietary.'
+  - id: exercise-movements-muscleandstrength-db
+    url: https://www.muscleandstrength.com/exercises
+    title: Muscle & Strength — Exercise Video Database
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Exercise DB filterable by target muscle, mechanics (compound/isolation), force type (push/pull/hinge), equipment, experience level; per-exercise target + secondary muscles + force type. Cross-check source. Proprietary.
+  - id: exercise-movements-wtg-hip-hinge
+    url: https://weighttraining.guide/muscle-activation/hip-hinge-exercises/
+    title: weighttraining.guide — Muscles activated by hip-hinge exercises
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Movement-pattern page mapping hip-hinge to activated muscles (glutes, hamstrings, erectors, adductor magnus) with isolation-vs-compound classification by joint action. Pattern-taxonomy support. Proprietary.
+  - id: exercise-movements-wtg-vertical-push
+    url: https://weighttraining.guide/muscle-activation/vertical-pushing-exercises/
+    title: weighttraining.guide — Vertical pushing exercises (muscle activation)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Vertical-push pattern → target (anterior deltoid) + synergists (triceps, lateral deltoid). Pattern-taxonomy support. Proprietary.
+  - id: exercise-movements-wtg-vertical-pull
+    url: https://weighttraining.guide/muscle-activation/vertical-pulling-exercises/
+    title: weighttraining.guide — Vertical pulling exercises (muscle activation)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Vertical-pull pattern → lats (target); traps, rear delts, biceps, mid/lower back (synergists); how grip changes activation. Pattern-taxonomy support. Proprietary.
+  - id: exercise-movements-strengthlog-four-movements
+    url: https://www.strengthlog.com/four-basic-movements/
+    title: StrengthLog — The Four Basic Movements of Strength Training
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Defines push/pull/hinge/squat patterns with the primary muscles each trains and representative exercises — concise movement-pattern-to-muscle map for the taxonomy. Proprietary.
+  - id: exercise-movements-strengthlog-directory
+    url: https://www.strengthlog.com/exercise-directory/
+    title: StrengthLog — Exercise Directory
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Directory linking to per-exercise pages with target muscles, equipment, instructions; index for movement-pattern coverage. Proprietary.
+  - id: exercise-movements-rp-hypertrophy-guide
+    url: https://rpstrength.com/blogs/articles/complete-hypertrophy-training-guide
+    title: RP Strength — The Complete Hypertrophy Training Guide (Israetel)
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'RP/Israetel master framework for exercise selection: stimulus-to-fatigue ratio (SFR), volume landmarks, rep ranges, technique across all muscle groups. Anchors the SFR field. Proprietary.'
+  - id: exercise-movements-rp-chest
+    url: https://rpstrength.com/blogs/articles/chest-hypertrophy-training-tips
+    title: RP Strength — Complete Chest Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best chest exercises + technique (press angles, stretch emphasis, upper/mid regional bias), volume/frequency. Mover + regional_bias source for chest. Proprietary.
+  - id: exercise-movements-rp-back
+    url: https://rpstrength.com/blogs/articles/back-hypertrophy-training-tips
+    title: RP Strength — Maximizing Back Muscle Growth
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Best back exercises + technique: vertical vs horizontal pulling balance, grip/stretch cues, volume. Mover + regional_bias source for back. Proprietary.'
+  - id: exercise-movements-rp-quads
+    url: https://rpstrength.com/blogs/articles/quad-hypertrophy-training-tips
+    title: RP Strength — Quad Hypertrophy Training
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Nine quad movements (squat, leg press, hack squat, leg extension) with ROM/depth cues and volume. Mover + SFR source for quads. Proprietary.
+  - id: exercise-movements-rp-hamstrings
+    url: https://rpstrength.com/blogs/articles/hamstring-hypertrophy-training-tips
+    title: RP Strength — Complete Hamstring Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best hamstring exercises (curls vs hip-hinge), straight-set rationale, fatigue considerations and technique. Mover + regional_bias for hamstrings. Proprietary.
+  - id: exercise-movements-rp-glutes
+    url: https://rpstrength.com/blogs/articles/glute-hypertrophy-training-tips
+    title: RP Strength — Complete Glute Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best glute exercises + technique; why targeted glute work beats squats/deadlifts alone, volume, categories. Mover source for the glute-vs-hamstring hip-extension call. Proprietary.
+  - id: exercise-movements-rp-calves
+    url: https://rpstrength.com/blogs/articles/calves-hypertrophy-training-tips
+    title: RP Strength — Calf Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best calf exercises, stretch/ROM technique, volume/rep ranges for gastrocnemius (knee-straight) vs soleus (knee-bent plantarflexion). Proprietary.
+  - id: exercise-movements-rp-biceps
+    url: https://rpstrength.com/blogs/articles/bicep-hypertrophy-training-tips
+    title: RP Strength — Dr. Mike's Bicep Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Bicep exercise categories (full ROM, supination, peak contraction, stretch, compound), volume, frequency, interaction with back training. Elbow-flexion mover source. Proprietary.
+  - id: exercise-movements-rp-triceps
+    url: https://rpstrength.com/blogs/articles/triceps-hypertrophy-training-tips
+    title: RP Strength — Triceps Hypertrophy
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best triceps exercises by head (overhead/long-head stretch emphasis), technique, volume landmarks. Source for long-head vs lateral regional_bias. Proprietary.
+  - id: exercise-movements-rp-front-delt
+    url: https://rpstrength.com/blogs/articles/front-delt-hypertrophy-training-tips
+    title: RP Strength — Front Delt Hypertrophy
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Front-delt selection + technique, overlap with pressing volume, weekly sets. Deltoid-head mover source. Proprietary.
+  - id: exercise-movements-rp-side-delt
+    url: https://rpstrength.com/blogs/articles/side-delt-hypertrophy-training-tips
+    title: RP Strength — Side Delt Hypertrophy
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best side-delt (lateral raise) exercises + technique, volume for shoulder width. Medial-delt mover source (relevant to cable-cuff lateral grip-bypass). Proprietary.
+  - id: exercise-movements-rp-rear-delt
+    url: https://rpstrength.com/blogs/articles/rear-delt-hypertrophy-training-tips
+    title: RP Strength — Complete Rear Delt Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Rear-delt selection + technique, contribution from back rows/closer grips, direct volume. Shoulder-horizontal-abduction mover source. Proprietary.
+  - id: exercise-movements-rp-forearms
+    url: https://rpstrength.com/blogs/articles/forearm-hypertrophy-training-tips
+    title: RP Strength — Forearm Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best forearm/wrist flexor-extensor exercises, technique, volume for grip and forearm size. Grip-demand context. Proprietary.
+  - id: exercise-movements-rp-abs
+    url: https://rpstrength.com/blogs/articles/ab-hypertrophy-training-tips
+    title: RP Strength — Ab Hypertrophy
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Best ab/core hypertrophy exercises + technique, weekly sets (16-20), loading. Anti-extension / anti-rotation core mover source. Proprietary.
+  - id: exercise-movements-rp-forearm-demystified
+    url: https://rpstrength.com/blogs/articles/forearm-training-demystified
+    title: RP Strength — Forearm Training, Demystified
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Israetel-team guide on forearm/grip anatomy and whether to train grip directly or bypass — context for the pinky/grip_demand constraint and grip-bypass rationale. Proprietary.
+  - id: exercise-movements-sbs-exercise-selection
+    url: https://www.strongerbyscience.com/exercise-selection/
+    title: Stronger by Science — How to Select Exercises for Muscle Growth
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Canonical Nuckols framework for choosing AND substituting exercises by target muscle, SFR, and resistance profile — the conceptual backbone for the substitution graph and the equivalence_score rubric. Proprietary.
+  - id: exercise-movements-sbs-strength-guide
+    url: https://www.strongerbyscience.com/complete-strength-training-guide/
+    title: Stronger by Science — The Complete Strength Training Guide
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Nuckols master guide: exercise tiering (core/auxiliary/accessory), technique and programming for squat/bench/deadlift + accessories. Supports fixed_or_dynamic tagging. Proprietary.'
+  - id: exercise-movements-sbs-regional-hypertrophy
+    url: https://www.strongerbyscience.com/regional-hypertrophy/
+    title: Stronger by Science — Is Regional Hypertrophy Predictable?
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Nuckols review of how exercise selection drives regional growth (incline vs flat bench, EMG vs longitudinal hypertrophy predictability). Core evidence framing for regional_bias confidence grading. Proprietary.
+  - id: exercise-movements-sbs-compound-vs-isolation
+    url: https://www.strongerbyscience.com/compound-exercises-for-hypertrophy/
+    title: Stronger by Science — Are Compound Exercises Best for Hypertrophy?
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Compound vs isolation selection; regional examples (skullcrusher vs bench triceps heads, leg press vs leg extension). Supports is_compound + substitution caveats. Proprietary.
+  - id: exercise-movements-sbs-stretch-hypertrophy
+    url: https://www.strongerbyscience.com/stretch-mediated-hypertrophy/
+    title: Stronger by Science — Do Lengthened Partials Stimulate Stretch-Mediated Hypertrophy?
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Evidence review on lengthened partials / stretch position in selection+technique; effect sizes vs full ROM. Underpins the 'loses lengthened-position load' substitution caveats (e.g. seated vs lying leg curl). Proprietary.
+  - id: exercise-movements-sbs-leg-extension
+    url: https://www.strongerbyscience.com/leg-extension-muscle-growth/
+    title: Stronger by Science — Could a Small Leg Extension Tweak Double Your Growth?
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Technique tweak (hip/seat position on leg extension) affecting rectus femoris growth — practical execution + a leg-extension substitution caveat. Proprietary.
+  - id: exercise-movements-sbs-how-to-squat
+    url: https://www.strongerbyscience.com/how-to-squat/
+    title: 'Stronger by Science — How to Squat: The Definitive Guide'
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'In-depth squat technique: bar position, stance/grip width, depth, individual biomechanics. cues/rom_notes source for the squat pattern. Proprietary.'
+  - id: exercise-movements-sbs-how-to-deadlift
+    url: https://www.strongerbyscience.com/how-to-deadlift/
+    title: 'Stronger by Science — How to Deadlift: The Definitive Guide'
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: In-depth conventional + sumo deadlift technique, setup, biomechanics, cues. cues/rom_notes + grip_demand context for the hinge pattern. Proprietary.
+  - id: exercise-movements-sbs-grip
+    url: https://www.strongerbyscience.com/grip/
+    title: Stronger by Science — Evidence-Based Guide to Grip Strength & Forearm Development
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: When grip is the limiting factor in pulling, forearm flexor anatomy, and rationale for grip-bypass tools (straps) vs training grip — core to grip_demand and the pinky bypass logic. Proprietary.
+  - id: exercise-movements-nippard-pull
+    url: https://jeffnippard.com/blogs/news/the-ultimate-pull-workout-for-muscle-growth-back-biceps-rear-delts-2023
+    title: Jeff Nippard — The Ultimate PULL Workout (Back, Biceps, Rear Delts)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Science-based pull selection + technique (chest-supported rows, pullovers, face pulls, stretch curls) with study rationale. Cross-check for pull-pattern mover lists; not sole authority. Proprietary.
+  - id: exercise-movements-nippard-push
+    url: https://jeffnippard.com/blogs/news/the-ultimate-push-workout-for-muscle-growth-chest-shoulders-triceps-2023
+    title: Jeff Nippard — The Ultimate PUSH Workout (Chest, Shoulders, Triceps)
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Science-based push selection + technique (press angles, stretch emphasis, machine vs free weight) with rationale. Cross-check for push-pattern mover lists. Proprietary.
+  - id: exercise-movements-henselmans-exercise-selection
+    url: https://mennohenselmans.com/menno-henselmans-exercise-selection-podcast/
+    title: Menno Henselmans — Exercise Selection (podcast/article)
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Henselmans'' framework of biomechanical/physiological factors predicting growth per exercise: EMG ~40% MVIC threshold, resistance profiles, stretch emphasis. SFR + equivalence_score reasoning. Proprietary.'
+  - id: exercise-movements-henselmans-lat-prayers
+    url: https://mennohenselmans.com/lat-prayers/
+    title: 'Menno Henselmans — Lat Prayers: The Perfect Exercise for the Lats'
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Lat biomechanics: shoulder extension vs adduction, regional leverage, moment arms determining which lat regions row vs pulldown biases. Directly addresses the lat row-vs-pulldown regional_bias dispute. Proprietary.'
+  - id: exercise-movements-beardsley-strength-curves
+    url: https://sandcresearch.medium.com/how-can-exercise-strength-curves-affect-hypertrophy-906bfb210a88
+    title: Chris Beardsley — How Can Exercise Strength Curves Affect Hypertrophy?
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Core mechanistic explainer: how an exercise''s strength/resistance curve interacts with length-tension to bias which region is loaded. Foundation for resistance-profile substitution caveats. Proprietary (Medium).'
+  - id: exercise-movements-beardsley-long-lengths
+    url: https://sandcresearch.medium.com/when-is-strength-training-at-long-muscle-lengths-beneficial-226264fc4f96
+    title: Chris Beardsley — When Is Training at Long Muscle Lengths Beneficial?
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Long-muscle-length training + fascicle-length increases; why exercises loading the stretched position differ in regional stimulus. Supports RDL-stretch and incline-stretch caveats. Proprietary (Medium).
+  - id: exercise-movements-beardsley-neuromechanical-matching
+    url: https://sandcresearch.medium.com/what-is-the-principle-of-neuromechanical-matching-6e214c299dab
+    title: Chris Beardsley — What Is the Principle of Neuromechanical Matching?
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Neuromechanical matching: brain activates a region in proportion to its moment-arm leverage at each joint angle. Key mechanism behind disputed mover/regional-bias claims (lat regions, glute vs hamstring, pec heads). Proprietary (Medium).'
+  - id: exercise-movements-beardsley-leverage
+    url: https://sandcresearch.medium.com/does-leverage-determine-muscle-force-and-does-that-matter-for-hypertrophy-476971eb569c
+    title: Chris Beardsley — Does Leverage Determine Muscle Force (and Does That Matter)?
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Internal moment-arm length / leverage and whether it determines force and hypertrophy. Directly addresses moment-arm reasoning used to argue regional/mover bias. Proprietary (Medium).
+  - id: exercise-movements-beardsley-mechanical-tension
+    url: https://sandcresearch.medium.com/what-determines-mechanical-tension-during-strength-training-acdf31b93e18
+    title: Chris Beardsley — What Determines Mechanical Tension During Strength Training?
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Active vs passive tension across muscle lengths and how strength-curve position changes the tension a region experiences. Underpins regional-bias + stretch-position caveats. Proprietary (Medium).
+  - id: exercise-movements-beardsley-stretch-mediated
+    url: https://sandcresearch.medium.com/what-is-stretch-mediated-hypertrophy-and-how-does-it-work-e5d9cf5a0c57
+    title: Chris Beardsley — What Is Stretch-Mediated Hypertrophy and How Does It Work?
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Stretch-mediated hypertrophy mechanism (passive tension, fascicle lengthening) — why RDL (hamstrings at length) and incline press (pec at length) may bias stretched-position-loaded tissue. Proprietary (Medium).
+  - id: exercise-movements-peerj-moment-arm-model
+    url: https://peerj.com/articles/1462/
+    title: 'PeerJ — Biomechanical Implications of Muscle Hypertrophy/Atrophy: a Musculoskeletal Model (Beardsley & Contreras)'
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Open-access (CC-BY) model deriving the ACSA↔internal-moment-arm relationship (MA change ∝ arcsine of sqrt of ACSA change). Primary quantitative basis for Beardsley's leverage/neuromechanical-matching framework.
+  - id: exercise-movements-emg-lat-sperandei
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC449729/
+    title: Variations in Muscle Activation During Lat Dorsi Weight-Training Exercises (Sperandei et al.)
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: Primary EMG study comparing lat activation across pulldown variants (front vs behind-neck vs straight-arm). Evidence for the rows-vs-pulldown / grip-position lat-bias dispute. PMC OA.
+  - id: exercise-movements-emg-squat-vs-hipthrust
+    url: https://journals.humankinetics.com/view/journals/jab/31/6/article-p452.xml
+    title: Gluteus Maximus, Biceps Femoris & Vastus Lateralis EMG in Back Squat vs Barbell Hip Thrust (Contreras et al., 2015)
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: Landmark primary EMG study reporting higher upper/lower GMax activation in hip thrust vs back squat. Core source for the hip-thrust-vs-squat glute-bias dispute. Human Kinetics (JAB) — paywalled publisher.
+  - id: exercise-movements-contreras-squat-vs-hipthrust-blog
+    url: https://bretcontreras.com/squats-versus-hip-thrusts-emg-activity/
+    title: 'Bret Contreras — Squats Versus Hip Thrusts Part I: EMG Activity'
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Author's practitioner breakdown of the squat-vs-hip-thrust EMG data + strength-curve (peak resistance at hip extension) rationale. Mechanistic companion to the primary study. Proprietary blog.
+  - id: exercise-movements-sysrev-gmax
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC7039033/
+    title: 'Gluteus Maximus Activation During Common Strength & Hypertrophy Exercises: A Systematic Review (Neto et al., 2020)'
+    domain: exercise
+    subdomain: movements
+    tier: T0
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA systematic review ranking GMax %MVIC across step-ups, deadlifts, hip thrusts, lunges, squats. Authoritative synthesis for which exercises bias glutes. PMC OA.
+  - id: exercise-movements-sysrev-deadlift-emg
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC7046193/
+    title: 'Electromyographic Activity in Deadlift Exercise and Its Variants: A Systematic Review (Martin-Fuentes et al., 2020)'
+    domain: exercise
+    subdomain: movements
+    tier: T0
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA systematic review of EMG across deadlift variants (conventional, sumo, RDL, stiff-leg) covering hamstring (biceps femoris/semitendinosus), glute, erector activation. Core for RDL hamstring-bias claims. PMC OA (PLOS ONE).
+  - id: exercise-movements-emg-rdl-variants
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8835508/
+    title: EMG Analysis of Romanian, Step-Romanian and Stiff-Leg Deadlift
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA primary EMG study comparing RDL variants on hamstring vs erector activation. Directly addresses RDL hamstring-bias and stiff-leg vs Romanian distinctions. PMC OA.
+  - id: exercise-movements-emg-bench-inclines
+    url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7579505/
+    title: Effect of Five Bench Inclinations on EMG of Pectoralis Major, Anterior Deltoid & Triceps (Rodriguez-Ridao et al., 2020)
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA primary EMG study isolating clavicular vs sternocostal pec activation across inclines (-15 to 45 deg), with 30-45 deg optimum. Central evidence for the incline-vs-flat clavicular-bias dispute. PMC OA.
+  - id: exercise-movements-trial-bench-regional
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC7449336/
+    title: Effects of Horizontal and Incline Bench Press on Neuromuscular Adaptations in Untrained Young Men (Chaves et al., 2020)
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA training trial measuring regional pectoralis thickness (3 sites) + clavicular/sternal EMG after flat vs incline vs combined press. Hypertrophy-outcome (not just EMG) evidence on regional pec bias. PMC OA.
+  - id: exercise-movements-trial-pec-repatterning
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC11367169/
+    title: Neuromuscular Repatterning of the Pectoralis Major During the Bench Press After 10-Week Targeted Training
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA intervention showing regional (clavicular vs sternocostal) excitation can shift with targeted training — evidence on whether pec-head bias is fixed by leverage or trainable. PMC OA.
+  - id: exercise-movements-emg-pec-nonuniform
+    url: https://pubmed.ncbi.nlm.nih.gov/34644424/
+    title: Non-Uniform Excitation of the Pectoralis Major During Flat and Inclined Bench Press (PubMed record)
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: unknown
+    parser: trafilatura
+    notes: Primary study on regional pec excitation across flat vs incline + acute CSA via panoramic ultrasound. PubMed abstract record only (full text not confirmed OA) → license unknown. Incline-vs-flat clavicular-bias dispute.
+  - id: exercise-movements-gmax-clinical
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6670060/
+    title: Assessing and Treating Gluteus Maximus Weakness — A Clinical Commentary
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA clinical commentary on GMax function, synergistic dominance (hamstrings substituting in hip extension), and exercise selection for glute activation. Context for the glute-vs-hamstring hip-extension mover dispute. PMC OA.
+  - id: exercise-movements-sysrev-varying-exercises
+    url: https://pubmed.ncbi.nlm.nih.gov/35438660/
+    title: Does Varying Resistance Exercises Promote Superior Hypertrophy and Strength? A Systematic Review (Kassiano et al., 2022)
+    domain: exercise
+    subdomain: movements
+    tier: T0
+    license_note: reference-only
+    parser: trafilatura
+    notes: Systematic review on whether swapping/varying exercises changes hypertrophy & strength — the evidence base for whether a substitute is equivalent (informs equivalence_score). PubMed abstract; full text paywalled (JSCR).
+  - id: exercise-movements-trial-varying-exercises
+    url: https://pubmed.ncbi.nlm.nih.gov/39388663/
+    title: Muscle Hypertrophy and Strength Adaptations to Systematically Varying Resistance Exercises (2024)
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: Primary study on systematically rotating/substituting exercises and its effect on hypertrophy/strength — informs how interchangeable equipment variations are. PubMed abstract; paywalled.
+  - id: exercise-movements-straps-review
+    url: https://journals.humankinetics.com/view/journals/ijspp/21/3/article-p342.xml
+    title: Are Lifting Straps a Game Changer or an Overrated Tool? An Exploratory Review (IJSPP 2026)
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Most recent narrative/exploratory review synthesizing the strap literature: when straps bypass grip, effect on volume/hypertrophy, research gaps — best single overview for the grip-bypass decision. Human Kinetics (IJSPP) — paywalled.'
+  - id: exercise-movements-straps-deadlift
+    url: https://www.sciencedirect.com/science/article/abs/pii/S0031938420305977
+    title: Ergogenic Effects of Lifting Straps on Velocity, Grip Strength, RPE & Grip Security During the Deadlift
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: Primary study quantifying what straps do in the deadlift (velocity, grip security, RPE) — core evidence for choosing straps as a grip bypass on heavy hinge pulls. ScienceDirect abstract; paywalled (Elsevier).
+  - id: exercise-movements-straps-bench-pull
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC11569576/
+    title: Impact of Lifting Straps on the Max-Reps-to-Failure / Velocity Relationship During the Prone Bench Pull
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA primary study showing how straps change reps-to-failure/velocity in a horizontal pull — data on whether straps shift the working stimulus when bypassing grip. PMC OA.
+  - id: exercise-movements-straps-deadlift-females
+    url: https://pubmed.ncbi.nlm.nih.gov/37729509/
+    title: The Effect of Lifting Straps on Deadlift Performance in Females
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: Primary study on straps + deadlift performance in female lifters — population-specific grip-bypass benefit (smaller hands / lower absolute grip strength). PubMed abstract; paywalled.
+  - id: exercise-movements-straps-latpulldown
+    url: https://www.researchgate.net/publication/333796074_The_effects_of_lifting_straps_in_maximum_strength_number_of_repetitions_and_muscle_activation_during_lat_pull-down
+    title: Effects of Lifting Straps on Max Strength, Reps & Muscle Activation During Lat Pull-Down (Sports Biomechanics 2021)
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: reference-only
+    parser: trafilatura
+    notes: Primary EMG/strength study showing straps do NOT improve lat-pulldown 1RM/reps/lat activation in trained men — key counter-evidence on when grip bypass does and does not matter. ResearchGate record; paywalled (Sports Biomechanics).
+  - id: exercise-movements-pullup-grip-training
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12736907/
+    title: Comparative Effects of Core Versus Forearm Training on Pull-Up Repetition Performance
+    domain: exercise
+    subdomain: movements
+    tier: T1
+    license_note: redistribute-ok
+    parser: trafilatura
+    notes: OA primary study showing forearm/grip training delays grip fatigue and raises pull-up reps — evidence that grip is a limiting (bypass-candidate) factor in pulling. PMC OA.
+  - id: exercise-movements-issa-machine-alternatives
+    url: https://www.issaonline.com/blog/post/effective-alternatives-to-your-favorite-gym-machines
+    title: ISSA — Effective Alternatives to Your Favorite Gym Machines
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Certifying-body guide mapping common machines (leg extension, lat pulldown, etc.) to free-weight/bodyweight substitutes — directly serves the no-machine-swap requirement (substitution edges). Proprietary.
+  - id: exercise-movements-n1-freeweights-vs-cables
+    url: https://n1.training/free-weights-vs-cables-for-resistance-training/
+    title: N1 Training — Free Weights vs Cables for Resistance Training
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Resistance-profile reasoning (flat cable tension vs gravity-dependent free-weight curve) — how to match a substitute's loading profile when a machine/cable is unavailable. Feeds substitution caveats. Proprietary.
+  - id: exercise-movements-musclephd-variation
+    url: https://themusclephd.com/exercise-variation/
+    title: The Muscle PhD — Exercise Variation
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Mechanistic explainer on how angle/equipment/ROM variation creates distinct stimuli — biomechanical reasoning for selecting an equivalent substitute. Proprietary.
+  - id: exercise-movements-strengthmath-deadlift-grip
+    url: https://www.strengthmath.com/guides/deadlift-grip-strategy
+    title: 'StrengthMath — Deadlift Grip Strategy: Mixed vs Double-Overhand vs Hook (+ Straps)'
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Decision guide comparing all four grip options when grip limits the pull; cites Kapicioglu biceps-rupture data (24/24 ruptures on supinated/mixed side). Serves grip-bypass + injury-avoidance edges. Proprietary.
+  - id: exercise-movements-torokhtiy-hooks-vs-straps
+    url: https://store.torokhtiy.com/blogs/guides/lifting-hooks-vs-straps
+    title: 'Torokhtiy — Lifting Hooks vs Straps: The Complete Guide'
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: 'Practitioner (Olympic medalist coach) comparison of hooks vs straps: weight limits, dynamic vs grinding lifts, setup friction — when each grip tool applies. Proprietary.'
+  - id: exercise-movements-torokhtiy-figure8-vs-straps
+    url: https://store.torokhtiy.com/blogs/guides/figure-8-straps-vs-normal-straps
+    title: Torokhtiy — Figure 8 Straps vs Normal Straps
+    domain: exercise
+    subdomain: movements
+    tier: T3
+    license_note: reference-only
+    parser: trafilatura
+    notes: Figure-8 vs lasso strap mechanics (load onto wrist/skeleton vs finger flexors), quick-release safety, over-head vs below-waist rule — completes the strap-type grip-bypass matrix. Proprietary.
+  - id: exercise-movements-startingstrength-hook-vs-straps
+    url: https://startingstrength.com/training/hook-grip-vs-straps
+    title: Starting Strength — Hook Grip vs Straps (Stef Bradford)
+    domain: exercise
+    subdomain: movements
+    tier: T2
+    license_note: reference-only
+    parser: trafilatura
+    notes: Coaching-authority article weighing hook grip vs straps for training grip vs bypassing it — the train-vs-bypass philosophy that frames the grip_demand constraint. Proprietary.

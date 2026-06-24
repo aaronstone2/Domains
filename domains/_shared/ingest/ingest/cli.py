@@ -24,11 +24,15 @@ def _load_sources(path: Path = SHARED_SOURCES) -> list[Source]:
     return parsed.sources
 
 
+_TIER_RANK = {"T0": 0, "T1": 1, "T2": 2, "T3": 3}
+
+
 def _filter(
     sources: list[Source],
     domain: str | None,
     subdomain: str | None,
     source_id: str | None,
+    max_tier: str | None = None,
 ) -> list[Source]:
     out = sources
     if domain:
@@ -37,6 +41,9 @@ def _filter(
         out = [s for s in out if s.subdomain == subdomain]
     if source_id:
         out = [s for s in out if s.id == source_id]
+    if max_tier:
+        lim = _TIER_RANK[max_tier]
+        out = [s for s in out if _TIER_RANK.get(s.tier, 99) <= lim]
     return out
 
 
@@ -47,7 +54,7 @@ def _cmd_init_db(_: argparse.Namespace) -> int:
 
 
 def _cmd_list(args: argparse.Namespace) -> int:
-    sources = _filter(_load_sources(), args.domain, args.subdomain, args.source_id)
+    sources = _filter(_load_sources(), args.domain, args.subdomain, args.source_id, args.max_tier)
     for s in sources:
         sub = s.subdomain or "-"
         print(f"{s.id}\t{s.tier}\t{s.domain}/{sub}\t{s.url}")
@@ -61,7 +68,7 @@ def _cmd_fetch(args: argparse.Namespace) -> int:
     After fetch, run `ingest load --domain <d>` (acquires DB lock) OR load via the motherduck MCP
     using `INSERT OR REPLACE INTO <d>.<t> BY NAME SELECT * FROM read_json('_db/staging/<d>.<t>.jsonl', format='newline_delimited')`.
     """
-    sources = _filter(_load_sources(), args.domain, args.subdomain, args.source_id)
+    sources = _filter(_load_sources(), args.domain, args.subdomain, args.source_id, args.max_tier)
     if not sources:
         print("fetch: no sources matched filter", file=sys.stderr)
         return 1
@@ -124,6 +131,7 @@ def main(argv: list[str] | None = None) -> int:
         ("--domain", {"default": None}),
         ("--subdomain", {"default": None}),
         ("--source-id", {"default": None, "dest": "source_id"}),
+        ("--max-tier", {"default": None, "dest": "max_tier", "choices": ["T0", "T1", "T2", "T3"]}),
     )
 
     p_list = sub.add_parser("list", help="list sources from sources.yaml")
