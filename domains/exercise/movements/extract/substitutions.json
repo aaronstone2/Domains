@@ -1,0 +1,5130 @@
+[
+  {
+    "id": "exercise.sub.cable-reverse-wrist-curl__dumbbell-reverse-wrist-curl",
+    "from_exercise_id": "exercise.move.cable-reverse-wrist-curl",
+    "to_exercise_id": "exercise.move.dumbbell-reverse-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "loses constant cable tension at the top; resistance peaks at end-range and drops at the stretched position",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-reverse-wrist-curl__barbell-reverse-wrist-curl",
+    "from_exercise_id": "exercise.move.cable-reverse-wrist-curl",
+    "to_exercise_id": "exercise.move.barbell-reverse-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "loads both wrists together so the strength curve is bottom-heavy free-weight instead of constant cable tension",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-reverse-wrist-curl__dumbbell-reverse-wrist-curl",
+    "from_exercise_id": "exercise.move.barbell-reverse-wrist-curl",
+    "to_exercise_id": "exercise.move.dumbbell-reverse-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.93,
+    "caveat": "unilateral loading fixes side-to-side imbalance but caps the total load you can use",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-wrist-curl__dumbbell-wrist-curl",
+    "from_exercise_id": "exercise.move.cable-wrist-curl",
+    "to_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "loses constant cable tension; free-weight resistance is hardest at the contracted top and easiest at the stretched bottom",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-wrist-curl__barbell-wrist-curl",
+    "from_exercise_id": "exercise.move.cable-wrist-curl",
+    "to_exercise_id": "exercise.move.barbell-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "forearms-over-bench barbell loads both wrists heavier but loses the smooth cable tension curve",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-wrist-curl__dumbbell-wrist-curl",
+    "from_exercise_id": "exercise.move.barbell-wrist-curl",
+    "to_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.93,
+    "caveat": "unilateral; less absolute load but allows fuller wrist ROM per side",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.behind-back-barbell-wrist-curl__dumbbell-wrist-curl",
+    "from_exercise_id": "exercise.move.behind-back-barbell-wrist-curl",
+    "to_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "behind-back position adds a stretch component the seated forearms-over-bench dumbbell version lacks; shorter loaded ROM",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.finger-rolling-wrist-curl__dumbbell-wrist-curl",
+    "from_exercise_id": "exercise.move.finger-rolling-wrist-curl",
+    "to_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "plain dumbbell wrist curl trains the wrist flexors but drops the dynamic finger-flexor roll component",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-wrist-curl__cable-wrist-curl",
+    "from_exercise_id": "exercise.move.barbell-wrist-curl",
+    "to_exercise_id": "exercise.move.cable-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "grip relief: a light cable handle lets you train wrist flexion with constant tension and far less crushing grip than holding a loaded barbell",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.behind-back-barbell-wrist-curl__cable-wrist-curl",
+    "from_exercise_id": "exercise.move.behind-back-barbell-wrist-curl",
+    "to_exercise_id": "exercise.move.cable-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "grip relief: removes the standing static barbell hold; cable handle is far less grip-intensive",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-wrist-curl__cable-wrist-curl",
+    "from_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "to_exercise_id": "exercise.move.cable-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.86,
+    "caveat": "grip relief: cable handle reduces grip demand from moderate to low while keeping wrist-flexor training",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hand-gripper__dumbbell-wrist-curl",
+    "from_exercise_id": "exercise.move.hand-gripper",
+    "to_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "grip relief: replaces a max-crush finger-flexor task with a lighter wrist-flexor curl; trains the forearm flexors without the high crush-grip irritation, but does not directly train closing grip strength",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hand-gripper__cable-wrist-curl",
+    "from_exercise_id": "exercise.move.hand-gripper",
+    "to_exercise_id": "exercise.move.cable-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "grip relief: cable wrist curl trains wrist flexors with low grip demand instead of maximal gripper crush; loses dedicated crush-grip / finger-flexor stimulus",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hand-gripper__finger-rolling-wrist-curl",
+    "from_exercise_id": "exercise.move.hand-gripper",
+    "to_exercise_id": "exercise.move.finger-rolling-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "barbell",
+      "dumbbell"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "grip relief: rolling finger curl still trains finger flexors dynamically through ROM rather than a static maximal crush, easier on irritated finger pulleys",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.plate-pinch__finger-rolling-wrist-curl",
+    "from_exercise_id": "exercise.move.plate-pinch",
+    "to_exercise_id": "exercise.move.finger-rolling-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "barbell",
+      "dumbbell"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "grip relief: trades a static maximal thumb/pinch hold for a moving finger-flexor curl; reduces sustained crush load but drops the pinch-grip specificity",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.plate-pinch__cable-wrist-curl",
+    "from_exercise_id": "exercise.move.plate-pinch",
+    "to_exercise_id": "exercise.move.cable-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.45,
+    "caveat": "grip relief: removes the high-tension pinch hold entirely; trains forearm flexors at low grip demand but loses pinch/thumb strength stimulus",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.wrist-roller__cable-wrist-curl",
+    "from_exercise_id": "exercise.move.wrist-roller",
+    "to_exercise_id": "exercise.move.cable-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "grip relief: cable wrist curl isolates wrist flexors with low grip; loses the sustained grip-endurance / hanging-load demand of the roller",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.wrist-roller__dumbbell-wrist-curl",
+    "from_exercise_id": "exercise.move.wrist-roller",
+    "to_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.62,
+    "caveat": "grip relief: replaces continuous hanging-grip endurance with discrete wrist-flexion reps; less grip fatigue, but loses the rolling forearm-endurance stimulus",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.wrist-roller__forearm-pronation-supination",
+    "from_exercise_id": "exercise.move.wrist-roller",
+    "to_exercise_id": "exercise.move.forearm-pronation-supination",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "both hit the forearm but pronation/supination trains rotation rather than the roller's flexion-extension grip endurance",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.forearm-pronation-supination__dumbbell-wrist-curl",
+    "from_exercise_id": "exercise.move.forearm-pronation-supination",
+    "to_exercise_id": "exercise.move.dumbbell-wrist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "keeps forearm training but switches from pronator/supinator rotation to wrist-flexor curling; different primary mover",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.farmers-carry__suitcase-carry",
+    "from_exercise_id": "exercise.move.farmers-carry",
+    "to_exercise_id": "exercise.move.suitcase-carry",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "grip relief: single-side load halves total grip demand per hand and adds an anti-lateral-flexion core stimulus, but trains the carry/grip one side at a time",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.farmers-carry__dead-hang",
+    "from_exercise_id": "exercise.move.farmers-carry",
+    "to_exercise_id": "exercise.move.dead-hang",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell",
+      "kettlebell",
+      "barbell"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "grip relief: passive bar hang trains finger/wrist flexor grip endurance at bodyweight with no walking/stability load; you can drop off instantly if grip fails",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.farmers-carry__suitcase-rack-pull-hold",
+    "from_exercise_id": "exercise.move.farmers-carry",
+    "to_exercise_id": "exercise.move.suitcase-rack-pull-hold",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equipment_required": [
+      "barbell",
+      "plate"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "grip relief: a stationary loaded barbell hold trains the same finger/wrist-flexor grip endurance without the walking and locomotor stabilization demand",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.suitcase-rack-pull-hold__dead-hang",
+    "from_exercise_id": "exercise.move.suitcase-rack-pull-hold",
+    "to_exercise_id": "exercise.move.dead-hang",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "plate"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "grip relief: bar hang gives a self-limiting bodyweight grip-endurance stimulus; load is fixed at bodyweight rather than adjustable plates",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.suitcase-rack-pull-hold__farmers-carry",
+    "from_exercise_id": "exercise.move.suitcase-rack-pull-hold",
+    "to_exercise_id": "exercise.move.farmers-carry",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "adds a walking/locomotor component the static rack hold lacks; grip demand stays high",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.suitcase-carry__farmers-carry",
+    "from_exercise_id": "exercise.move.suitcase-carry",
+    "to_exercise_id": "exercise.move.farmers-carry",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell",
+      "barbell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "bilateral loading doubles grip demand and removes the anti-lateral-flexion core emphasis of the single-side suitcase version",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.suitcase-carry__cable-side-bend",
+    "from_exercise_id": "exercise.move.suitcase-carry",
+    "to_exercise_id": "exercise.move.cable-side-bend",
+    "reason": "injury-spare",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "grip relief: trains the same QL/oblique anti-lateral-flexion target without a heavy crushing one-hand carry; loses the gait/locomotor and grip-endurance component",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dead-hang__farmers-carry",
+    "from_exercise_id": "exercise.move.dead-hang",
+    "to_exercise_id": "exercise.move.farmers-carry",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell",
+      "barbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "requires a pull-up bar replacement only if no bar is available; carry adds walking load but grip demand rises and is no longer self-limiting",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dead-hang__suitcase-rack-pull-hold",
+    "from_exercise_id": "exercise.move.dead-hang",
+    "to_exercise_id": "exercise.move.suitcase-rack-pull-hold",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "barbell",
+      "plate"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "replaces the overhead bar with a floor-level loaded hold; same grip-endurance target with adjustable load instead of fixed bodyweight",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-upright-row__dumbbell-upright-row",
+    "from_exercise_id": "exercise.move.barbell-upright-row",
+    "to_exercise_id": "exercise.move.dumbbell-upright-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Independent dumbbells let the elbows track wider/more naturally, reducing the fixed-bar internal-rotation impingement risk; very close lateral-delt stimulus.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-upright-row__dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.barbell-upright-row",
+    "to_exercise_id": "exercise.move.dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Drops the upper-trap involvement of the upright row and isolates the lateral delt; pure abduction without the compound shrug component.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-upright-row__machine-lateral-raise",
+    "from_exercise_id": "exercise.move.barbell-upright-row",
+    "to_exercise_id": "exercise.move.machine-lateral-raise",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "GRIP-BYPASS: pad-against-arm machine removes the crush grip on the fixed bar and eliminates the internal-rotation impingement of the upright row; loses the trap/upright-row pull pattern.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cross-body-lateral-raise__lean-away-dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-cross-body-lateral-raise",
+    "to_exercise_id": "exercise.move.lean-away-dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Leaning away mimics the cross-body line of pull and loads the lengthened position, but loses the cable's constant tension at the bottom of the ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cross-body-lateral-raise__dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-cross-body-lateral-raise",
+    "to_exercise_id": "exercise.move.dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Loses constant-tension at the lengthened (cross-body) position; dumbbell resistance curve peaks near the top instead, with little tension at the bottom.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-lateral-raise__dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-lateral-raise",
+    "to_exercise_id": "exercise.move.dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Loses the cable's constant tension at the bottom/lengthened range; dumbbell only loads the mid-to-top of the raise.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-lateral-raise__lean-away-dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-lateral-raise",
+    "to_exercise_id": "exercise.move.lean-away-dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.83,
+    "caveat": "Leaning away recovers some of the lengthened-position tension the cable provides; still loses true constant tension through the full ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-lateral-raise__machine-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-lateral-raise",
+    "to_exercise_id": "exercise.move.machine-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Machine retains near-constant tension and a fixed path; only a swap if a machine is available where the cable is not, otherwise default to dumbbell.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cuff-lateral-raise__machine-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-cuff-lateral-raise",
+    "to_exercise_id": "exercise.move.machine-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "wrist-cuff"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Machine keeps the grip-free/pad-driven loading and constant tension of the cuff variant; fixed path loses the cable's free line of pull.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cuff-lateral-raise__dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-cuff-lateral-raise",
+    "to_exercise_id": "exercise.move.dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "wrist-cuff"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.68,
+    "caveat": "Reintroduces grip (lost the cuff's grip-bypass) and loses constant tension at the lengthened position; cheapest home option.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-upright-row__dumbbell-upright-row",
+    "from_exercise_id": "exercise.move.cable-upright-row",
+    "to_exercise_id": "exercise.move.dumbbell-upright-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Loses constant cable tension at the bottom; dumbbells allow a freer elbow path but raise grip demand to high.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-upright-row__dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-upright-row",
+    "to_exercise_id": "exercise.move.dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.74,
+    "caveat": "Isolates the lateral delt and drops the upper-trap/upright-row pull; also a safer choice for those who tweak with internal-rotation upright rows.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-upright-row__machine-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-upright-row",
+    "to_exercise_id": "exercise.move.machine-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Keeps constant tension and a grip-light, fixed path; loses the compound upright-row trap involvement.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-lateral-raise__dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.machine-lateral-raise",
+    "to_exercise_id": "exercise.move.dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Loses the machine's fixed path and constant tension; free dumbbells add stabilizer demand and only load the mid-top of the raise.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-lateral-raise__lean-away-dumbbell-lateral-raise",
+    "from_exercise_id": "exercise.move.machine-lateral-raise",
+    "to_exercise_id": "exercise.move.lean-away-dumbbell-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Lean-away loads the lengthened position to partly replace the machine's bottom-range tension; more stabilizer and balance demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-lateral-raise__cable-lateral-raise",
+    "from_exercise_id": "exercise.move.machine-lateral-raise",
+    "to_exercise_id": "exercise.move.cable-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "Cable preserves near-constant tension; closest stimulus match if a cable station is available in place of the machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-upright-row__machine-lateral-raise",
+    "from_exercise_id": "exercise.move.dumbbell-upright-row",
+    "to_exercise_id": "exercise.move.machine-lateral-raise",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "GRIP-BYPASS: pad-driven machine removes the high crush-grip demand of holding heavy dumbbells overhead-pull; also avoids the internal-rotation impingement, but loses the trap/upright-row component.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-upright-row__cable-cuff-lateral-raise",
+    "from_exercise_id": "exercise.move.dumbbell-upright-row",
+    "to_exercise_id": "exercise.move.cable-cuff-lateral-raise",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "cable",
+      "wrist-cuff"
+    ],
+    "equivalence_score": 0.68,
+    "caveat": "GRIP-BYPASS: the wrist cuff attaches to the forearm so no gripping is required; isolates the lateral delt and drops the compound upright-row pull.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-upright-row__cable-upright-row",
+    "from_exercise_id": "exercise.move.dumbbell-upright-row",
+    "to_exercise_id": "exercise.move.cable-upright-row",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "GRIP-BYPASS: cable upright row drops grip demand from high to moderate (lighter loads via constant tension, no heavy dumbbell to crush); same pull pattern retained.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-front-raise__dumbbell-front-raise",
+    "from_exercise_id": "exercise.move.cable-front-raise",
+    "to_exercise_id": "exercise.move.dumbbell-front-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Loses constant cable tension at the bottom; dumbbell front raise only loads the front delt near the top of the ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-front-raise__barbell-overhead-press",
+    "from_exercise_id": "exercise.move.cable-front-raise",
+    "to_exercise_id": "exercise.move.barbell-overhead-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "Overhead press also drives shoulder flexion via the anterior delt but is a heavy compound press recruiting triceps/upper chest; not an isolation swap.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cross-body-rear-lateral-raise__dumbbell-bent-over-rear-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-cross-body-rear-lateral-raise",
+    "to_exercise_id": "exercise.move.dumbbell-bent-over-rear-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Loses the cable's constant tension and cross-body line of pull; bent-over dumbbell version only loads the rear delt near the top of the ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cross-body-rear-lateral-raise__reverse-pec-deck",
+    "from_exercise_id": "exercise.move.cable-cross-body-rear-lateral-raise",
+    "to_exercise_id": "exercise.move.reverse-pec-deck",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Reverse pec-deck retains constant tension and a guided path for the rear delt; only a swap if a machine is available where the cable is not.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cuff-rear-delt-fly__reverse-pec-deck",
+    "from_exercise_id": "exercise.move.cable-cuff-rear-delt-fly",
+    "to_exercise_id": "exercise.move.reverse-pec-deck",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "wrist-cuff"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.83,
+    "caveat": "Reverse pec-deck keeps the grip-free, constant-tension rear-delt loading of the cuff fly with a guided path; fixed seat limits line-of-pull adjustment.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-cuff-rear-delt-fly__dumbbell-bent-over-rear-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-cuff-rear-delt-fly",
+    "to_exercise_id": "exercise.move.dumbbell-bent-over-rear-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "wrist-cuff"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.66,
+    "caveat": "Reintroduces grip (loses the cuff's grip-bypass) and loses constant tension at the lengthened position; cheapest home rear-delt option.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-face-pull__dumbbell-bent-over-rear-lateral-raise",
+    "from_exercise_id": "exercise.move.cable-face-pull",
+    "to_exercise_id": "exercise.move.dumbbell-bent-over-rear-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Bent-over raise hits the same rear-delt horizontal-abduction but loses the external-rotation/upper-back component and constant cable tension of the face pull.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-face-pull__reverse-pec-deck",
+    "from_exercise_id": "exercise.move.cable-face-pull",
+    "to_exercise_id": "exercise.move.reverse-pec-deck",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Reverse pec-deck keeps constant tension on the rear delt but lacks the rope's external-rotation finish; swap only if a machine replaces the cable.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-face-pull__high-cable-row-rope",
+    "from_exercise_id": "exercise.move.cable-face-pull",
+    "to_exercise_id": "exercise.move.high-cable-row-rope",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Both are flared-elbow rear-delt cable pulls with overlapping rhomboid/trap recruitment; high row adds more lat/mid-back and less external rotation. Still needs a cable.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.reverse-pec-deck__dumbbell-bent-over-rear-lateral-raise",
+    "from_exercise_id": "exercise.move.reverse-pec-deck",
+    "to_exercise_id": "exercise.move.dumbbell-bent-over-rear-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Loses the machine's fixed path and constant tension; bent-over dumbbells add stabilizer/low-back demand and only load the rear delt near the top of the ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.reverse-pec-deck__cable-cross-body-rear-lateral-raise",
+    "from_exercise_id": "exercise.move.reverse-pec-deck",
+    "to_exercise_id": "exercise.move.cable-cross-body-rear-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Cable retains near-constant tension on the rear delt; closest stimulus match if a cable station is available in place of the machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.reverse-pec-deck__cable-face-pull",
+    "from_exercise_id": "exercise.move.reverse-pec-deck",
+    "to_exercise_id": "exercise.move.cable-face-pull",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.76,
+    "caveat": "Face pull keeps constant tension and adds an external-rotation component the machine lacks; requires a cable instead of the pec-deck.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hack-squat__goblet-squat",
+    "from_exercise_id": "exercise.move.hack-squat",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "loses the fixed back-supported track and heavy quad-biased loading; goblet load is capped by front-rack/grip so reaching equivalent quad overload is hard, and it demands more trunk stability",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hack-squat__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.hack-squat",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "switches from a bilateral fixed-track squat to a unilateral split-squat; hits the same quad heads but adds balance/stabilizer demand and halves per-set load needs",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hack-squat__sissy-squat",
+    "from_exercise_id": "exercise.move.hack-squat",
+    "to_exercise_id": "exercise.move.sissy-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "bodyweight knee-dominant quad option with strong stretch on rectus femoris but no external load progression and high knee-flexion demand on the patellar tendon",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press__goblet-squat",
+    "from_exercise_id": "exercise.move.leg-press",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "loses back-supported high-load capacity; goblet caps load at what the front-rack/grip can hold so quad overload is much lower and trunk fatigue may limit before quads",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.leg-press",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "unilateral substitute hitting the same quad heads with high stretch; more stabilizer/balance demand and no spinal-stability bypass that the leg press offered",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press__walking-lunge-dumbbell",
+    "from_exercise_id": "exercise.move.leg-press",
+    "to_exercise_id": "exercise.move.walking-lunge-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "dynamic unilateral quad loader; loses constant-tension seated overload and adds coordination demand and a glute/hamstring contribution",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press-single-leg__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.leg-press-single-leg",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "both are unilateral quad-dominant; Bulgarian adds balance/stabilizer demand and a deeper hip-flexion stretch but loses the back-supported high-load track",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press-single-leg__step-up-dumbbell",
+    "from_exercise_id": "exercise.move.leg-press-single-leg",
+    "to_exercise_id": "exercise.move.step-up-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "box"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "unilateral quad option that drops the machine; shorter loaded ROM at the top and more balance demand than the supported single-leg press",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pendulum-squat__goblet-squat",
+    "from_exercise_id": "exercise.move.pendulum-squat",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.73,
+    "caveat": "loses the smooth back-supported arc and constant-tension lengthened loading; goblet load is grip/front-rack limited so quad overload is lower",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pendulum-squat__sissy-squat",
+    "from_exercise_id": "exercise.move.pendulum-squat",
+    "to_exercise_id": "exercise.move.sissy-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.58,
+    "caveat": "preserves the deep knees-forward quad stretch the pendulum emphasizes but with bodyweight only and no external progression, plus high patellar-tendon demand",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pendulum-squat__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.pendulum-squat",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "unilateral quad substitute trains the same heads with a lengthened stretch; adds stabilizer/balance demand and drops the fixed-track overload",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-squat__goblet-squat",
+    "from_exercise_id": "exercise.move.smith-machine-squat",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.77,
+    "caveat": "free-loaded squat removes the guided bar path; goblet load is grip/front-rack limited so it under-loads quads relative to a Smith squat and demands more balance",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-squat__barbell-back-squat-high-bar",
+    "from_exercise_id": "exercise.move.smith-machine-squat",
+    "to_exercise_id": "exercise.move.barbell-back-squat-high-bar",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "nearly identical loading pattern and quad emphasis; free barbell removes the fixed track so it needs more stabilization and a rack/spotter for heavy loads",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-squat__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.smith-machine-squat",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.68,
+    "caveat": "unilateral fallback when no barbell or rack is available; same quad heads but more balance demand and lower absolute load",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-back-squat-high-bar__goblet-squat",
+    "from_exercise_id": "exercise.move.barbell-back-squat-high-bar",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "for home gyms without a rack; same squat pattern and quad heads but load is capped by grip/front-rack so heavy quad overload is not achievable",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-back-squat-high-bar__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.barbell-back-squat-high-bar",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.74,
+    "caveat": "unilateral quad substitute that needs no rack; halves the per-leg load requirement and adds balance/stabilizer demand vs the bilateral barbell squat",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-back-squat-low-bar__goblet-squat",
+    "from_exercise_id": "exercise.move.barbell-back-squat-low-bar",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.66,
+    "caveat": "low-bar is hip/glute-biased and heavy; goblet keeps the squat pattern but is more upright/quad-biased and grip-limited so glute overload is much lower",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-back-squat-low-bar__bulgarian-split-squat-glute-bias",
+    "from_exercise_id": "exercise.move.barbell-back-squat-low-bar",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-glute-bias",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.68,
+    "caveat": "glute-biased unilateral option matching the low-bar glute emphasis; needs no rack but adds balance demand and lowers absolute load",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-front-squat__goblet-squat",
+    "from_exercise_id": "exercise.move.barbell-front-squat",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "goblet is essentially a light front-loaded squat with the same upright torso and quad emphasis; only limitation is grip/front-rack load cap vs the barbell",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-front-squat__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.barbell-front-squat",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "unilateral front-loaded-style quad substitute needing no rack; more balance demand and lower per-set load than the bilateral front squat",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-walking-lunge__walking-lunge-dumbbell",
+    "from_exercise_id": "exercise.move.barbell-walking-lunge",
+    "to_exercise_id": "exercise.move.walking-lunge-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "near-identical movement; dumbbells lower the center of mass and remove the barbell/rack need, slightly reducing balance challenge and capping load at grip limits",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-walking-lunge__bulgarian-split-squat-glute-bias",
+    "from_exercise_id": "exercise.move.barbell-walking-lunge",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-glute-bias",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "glute-biased stationary alternative matching the walking-lunge glute emphasis; static stance removes the gait component but allows heavier focused loading per leg",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.walking-lunge-barbell__walking-lunge-dumbbell",
+    "from_exercise_id": "exercise.move.walking-lunge-barbell",
+    "to_exercise_id": "exercise.move.walking-lunge-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.92,
+    "caveat": "same movement with dumbbells held at the sides; removes barbell/rack need, lowers the load center, and caps load at grip",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.walking-lunge-barbell__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.walking-lunge-barbell",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.74,
+    "caveat": "stationary unilateral quad substitute; loses the walking/gait component but allows heavier per-leg loading and needs no rack",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.bulgarian-split-squat-barbell__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.bulgarian-split-squat-barbell",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.95,
+    "caveat": "identical split-squat with dumbbells instead of a back-racked bar; far easier to balance and removes the rack need, only capping load at grip strength",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.bulgarian-split-squat-barbell__step-up-dumbbell",
+    "from_exercise_id": "exercise.move.bulgarian-split-squat-barbell",
+    "to_exercise_id": "exercise.move.step-up-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "unilateral quad alternative without a barbell; shorter loaded ROM and less rectus-femoris stretch than the rear-foot-elevated split squat",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-extension__sissy-squat",
+    "from_exercise_id": "exercise.move.leg-extension",
+    "to_exercise_id": "exercise.move.sissy-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "knee-extension-dominant bodyweight option isolating the quads; loses the seated-isolated constant tension and resistance-curve control, and is hardest in the stretched position rather than at full extension",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-extension__reverse-nordic-curl",
+    "from_exercise_id": "exercise.move.leg-extension",
+    "to_exercise_id": "exercise.move.reverse-nordic-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "open-chain-style bodyweight knee extension with a strong lengthened-quad stretch; no graded load progression and emphasizes the stretched range rather than peak contraction at lockout",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-extension__goblet-squat",
+    "from_exercise_id": "exercise.move.leg-extension",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "compound squat hits the same quad heads with external load if no isolation machine exists, but recruits glutes/hamstrings and loses the pure knee-extension isolation",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-extension-extended-hip__reverse-nordic-curl",
+    "from_exercise_id": "exercise.move.leg-extension-extended-hip",
+    "to_exercise_id": "exercise.move.reverse-nordic-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "best home match for the rectus-femoris bias: the reclined/extended-hip position is replicated by the long lever and hip extension of the reverse Nordic; no graded load and limited by the lengthened-position strength curve",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-extension-extended-hip__sissy-squat",
+    "from_exercise_id": "exercise.move.leg-extension-extended-hip",
+    "to_exercise_id": "exercise.move.sissy-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "keeps the hip extended to bias rectus femoris while isolating the quads; bodyweight-only with no load progression and high patellar-tendon demand",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-chest-press__dumbbell-flat-bench-press",
+    "from_exercise_id": "exercise.move.machine-chest-press",
+    "to_exercise_id": "exercise.move.dumbbell-flat-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Adds stabilizer demand and an independent-limb balance requirement the fixed machine path removes; loses the locked groove and constant guided tension.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-chest-press__push-up",
+    "from_exercise_id": "exercise.move.machine-chest-press",
+    "to_exercise_id": "exercise.move.push-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "No external load progression beyond bodyweight; scapulae free rather than pinned so more serratus involvement and less isolated pec loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.incline-machine-press__incline-dumbbell-bench-press",
+    "from_exercise_id": "exercise.move.incline-machine-press",
+    "to_exercise_id": "exercise.move.incline-dumbbell-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "More stabilizer and balance demand; loses the fixed path, and dumbbell grip becomes a high-grip demand the machine handle avoided.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.incline-machine-press__smith-machine-incline-press",
+    "from_exercise_id": "exercise.move.incline-machine-press",
+    "to_exercise_id": "exercise.move.smith-machine-incline-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "smith-machine",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Still a guided bar path but requires self-stabilizing the bar and re-racking; only a swap if a Smith is available instead of a chest-press machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pec-deck-machine-flye__dumbbell-flat-flye",
+    "from_exercise_id": "exercise.move.pec-deck-machine-flye",
+    "to_exercise_id": "exercise.move.dumbbell-flat-flye",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Loses constant tension at the shortened/peak-contraction position the pec deck provides; resistance falls off near lockout as the dumbbells stack over the chest.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pec-deck-machine-flye__push-up",
+    "from_exercise_id": "exercise.move.pec-deck-machine-flye",
+    "to_exercise_id": "exercise.move.push-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "Becomes a compound press rather than an isolation flye; adds triceps/front-delt and removes the adduction-at-shortened-range emphasis.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-flat-bench-press__barbell-flat-bench-press",
+    "from_exercise_id": "exercise.move.smith-machine-flat-bench-press",
+    "to_exercise_id": "exercise.move.barbell-flat-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "barbell",
+      "bench"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Free bar path requires stabilizing the barbell; loses the fixed vertical groove and the easy re-rack/spot safety of the Smith.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-flat-bench-press__dumbbell-flat-bench-press",
+    "from_exercise_id": "exercise.move.smith-machine-flat-bench-press",
+    "to_exercise_id": "exercise.move.dumbbell-flat-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Greater stabilizer/balance demand and larer ROM; harder to load heavy without a spot, and dumbbell grip raises grip demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-incline-press__incline-barbell-bench-press",
+    "from_exercise_id": "exercise.move.smith-machine-incline-press",
+    "to_exercise_id": "exercise.move.incline-barbell-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "barbell",
+      "bench"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Free bar path adds stabilization demand and loses the fixed groove and built-in re-rack safety of the Smith.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-incline-press__incline-dumbbell-bench-press",
+    "from_exercise_id": "exercise.move.smith-machine-incline-press",
+    "to_exercise_id": "exercise.move.incline-dumbbell-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "More stabilizer/balance demand and a deeper stretch; dumbbell grip becomes high grip demand absent on the Smith bar.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.bayesian-cable-flye__incline-dumbbell-flye",
+    "from_exercise_id": "exercise.move.bayesian-cable-flye",
+    "to_exercise_id": "exercise.move.incline-dumbbell-flye",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Loses cable constant-tension through the lengthened range; dumbbell resistance drops off as arms approach vertical, reducing peak-contraction load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.bayesian-cable-flye__dumbbell-flat-flye",
+    "from_exercise_id": "exercise.move.bayesian-cable-flye",
+    "to_exercise_id": "exercise.move.dumbbell-flat-flye",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Loses the behind-the-body lengthened-stretch tension the Bayesian setup emphasizes; tension falls off at the top of the dumbbell version.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-flye-mid__dumbbell-flat-flye",
+    "from_exercise_id": "exercise.move.cable-flye-mid",
+    "to_exercise_id": "exercise.move.dumbbell-flat-flye",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Loses constant-tension at the shortened (adducted) position; dumbbell resistance falls off near the top as load stacks over the chest.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.high-to-low-cable-crossover__dumbbell-flat-flye",
+    "from_exercise_id": "exercise.move.high-to-low-cable-crossover",
+    "to_exercise_id": "exercise.move.dumbbell-flat-flye",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Loses the high-to-low resistance line that biases the lower/sternal pec and the constant peak-contraction tension; closest free-weight isolation but different fiber bias.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.high-to-low-cable-crossover__push-up",
+    "from_exercise_id": "exercise.move.high-to-low-cable-crossover",
+    "to_exercise_id": "exercise.move.push-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "Converts an isolation flye to a compound press; adds triceps/front-delt and loses the adduction and lower-pec resistance-line emphasis.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.low-to-high-cable-crossover__incline-dumbbell-flye",
+    "from_exercise_id": "exercise.move.low-to-high-cable-crossover",
+    "to_exercise_id": "exercise.move.incline-dumbbell-flye",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.68,
+    "caveat": "Incline-bench flye approximates the upper/clavicular pec bias of the low-to-high line but loses constant cable tension at the top of the movement.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-flat-bench-press__dumbbell-flat-bench-press",
+    "from_exercise_id": "exercise.move.barbell-flat-bench-press",
+    "to_exercise_id": "exercise.move.dumbbell-flat-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "Greater per-arm stabilizer demand and deeper stretch, but harder to load maximally and to progress in small increments; dumbbell grip is more demanding.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-flat-bench-press__push-up",
+    "from_exercise_id": "exercise.move.barbell-flat-bench-press",
+    "to_exercise_id": "exercise.move.push-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "bench"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "No-equipment fallback; limited to bodyweight load (needs weight vest/bands to overload) and scapulae move freely versus pinned on the bench.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.incline-barbell-bench-press__incline-dumbbell-bench-press",
+    "from_exercise_id": "exercise.move.incline-barbell-bench-press",
+    "to_exercise_id": "exercise.move.incline-dumbbell-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "More stabilizer demand and a larger stretch at the bottom; harder to load heavy without a spot and dumbbell grip is more demanding.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.decline-barbell-bench-press__dumbbell-decline-bench-press",
+    "from_exercise_id": "exercise.move.decline-barbell-bench-press",
+    "to_exercise_id": "exercise.move.dumbbell-decline-bench-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.87,
+    "caveat": "More stabilizer/balance demand on the decline; getting heavy dumbbells into position unaided is awkward and grip demand is high.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.decline-barbell-bench-press__chest-dip",
+    "from_exercise_id": "exercise.move.decline-barbell-bench-press",
+    "to_exercise_id": "exercise.move.chest-dip",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "bench"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Dip mimics the lower-pec/decline pressing line with a deeper stretch but loads via bodyweight (needs a dip belt to overload) and stresses the shoulder more at the bottom.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-flat-bench-press__machine-chest-press",
+    "from_exercise_id": "exercise.move.dumbbell-flat-bench-press",
+    "to_exercise_id": "exercise.move.machine-chest-press",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: fixed handles remove the high crush-grip and balance demand of heavy dumbbells, letting you press with a lighter/neutral grip; loses free-path stabilizer training.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-flat-bench-press__smith-machine-flat-bench-press",
+    "from_exercise_id": "exercise.move.dumbbell-flat-bench-press",
+    "to_exercise_id": "exercise.move.smith-machine-flat-bench-press",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "smith-machine",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: a single guided bar lowers the per-hand grip burden of holding two heavy dumbbells and eases setup/re-rack; loses independent-limb stabilizer work.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-decline-bench-press__chest-dip",
+    "from_exercise_id": "exercise.move.dumbbell-decline-bench-press",
+    "to_exercise_id": "exercise.move.chest-dip",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Grip-bypass: weight is supported on the dip bars rather than crushed in each hand, sparing the grip while keeping the lower-pec pressing line; harder to add precise load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-decline-bench-press__machine-chest-press",
+    "from_exercise_id": "exercise.move.dumbbell-decline-bench-press",
+    "to_exercise_id": "exercise.move.machine-chest-press",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Grip-bypass: fixed handles remove the heavy crush grip and awkward decline setup, though the press angle is flat/neutral rather than decline so lower-pec bias is reduced.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.incline-dumbbell-bench-press__incline-machine-press",
+    "from_exercise_id": "exercise.move.incline-dumbbell-bench-press",
+    "to_exercise_id": "exercise.move.incline-machine-press",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: machine handles eliminate the high crush-grip and balance demand of heavy incline dumbbells while keeping the upper-pec angle; loses stabilizer training.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.incline-dumbbell-bench-press__smith-machine-incline-press",
+    "from_exercise_id": "exercise.move.incline-dumbbell-bench-press",
+    "to_exercise_id": "exercise.move.smith-machine-incline-press",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "smith-machine",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: a single guided bar reduces the per-hand grip load and simplifies setup at the incline; loses independent-limb stabilization.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.chest-dip__machine-chest-press",
+    "from_exercise_id": "exercise.move.chest-dip",
+    "to_exercise_id": "exercise.move.machine-chest-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight",
+      "plate"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Use when dip bars are unavailable or bodyweight is too heavy/light to manage; machine fixes the path and bench angle so loses the deep decline-style stretch of the dip.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-shoulder-press__seated-dumbbell-shoulder-press",
+    "from_exercise_id": "exercise.move.machine-shoulder-press",
+    "to_exercise_id": "exercise.move.seated-dumbbell-shoulder-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Adds stabilizer and balance demand the fixed machine path removes; dumbbell grip becomes a high grip demand and heavy loads are awkward to get overhead unaided.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-shoulder-press__barbell-overhead-press",
+    "from_exercise_id": "exercise.move.machine-shoulder-press",
+    "to_exercise_id": "exercise.move.barbell-overhead-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Standing free-bar press adds substantial core/stabilizer demand and a fixed bar path around the head; less isolated than the seated guided machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-shoulder-press__barbell-overhead-press",
+    "from_exercise_id": "exercise.move.smith-machine-shoulder-press",
+    "to_exercise_id": "exercise.move.barbell-overhead-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Free bar path requires stabilizing the bar and clearing the head; loses the Smith's fixed vertical groove and easy re-rack.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-shoulder-press__seated-dumbbell-shoulder-press",
+    "from_exercise_id": "exercise.move.smith-machine-shoulder-press",
+    "to_exercise_id": "exercise.move.seated-dumbbell-shoulder-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "More per-arm stabilizer demand and a deeper stretch; dumbbell grip raises grip demand and heavy loads are hard to get overhead without help.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-overhead-press__seated-dumbbell-shoulder-press",
+    "from_exercise_id": "exercise.move.barbell-overhead-press",
+    "to_exercise_id": "exercise.move.seated-dumbbell-shoulder-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Dumbbells allow a more natural arc and independent-limb work but cap maximal load and small-increment progression; grip demand is higher.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-overhead-press__machine-shoulder-press",
+    "from_exercise_id": "exercise.move.barbell-overhead-press",
+    "to_exercise_id": "exercise.move.machine-shoulder-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Seated machine removes the standing core/stabilizer demand and fixes the path; less carryover to free overhead strength but easier to load and isolate the delts.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-barbell-overhead-press__seated-dumbbell-shoulder-press",
+    "from_exercise_id": "exercise.move.seated-barbell-overhead-press",
+    "to_exercise_id": "exercise.move.seated-dumbbell-shoulder-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.87,
+    "caveat": "Nearly identical seated press; dumbbells add independent-limb stabilizer demand and a deeper stretch but cap top-end load and raise grip demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-barbell-overhead-press__machine-shoulder-press",
+    "from_exercise_id": "exercise.move.seated-barbell-overhead-press",
+    "to_exercise_id": "exercise.move.machine-shoulder-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Machine fixes the path and removes bar-balancing; loses the free-bar stabilizer demand but isolates the front delt with easier loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-dumbbell-shoulder-press__machine-shoulder-press",
+    "from_exercise_id": "exercise.move.seated-dumbbell-shoulder-press",
+    "to_exercise_id": "exercise.move.machine-shoulder-press",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: fixed handles remove the high crush-grip and overhead balance demand of heavy dumbbells, letting you press with a lighter neutral grip; loses stabilizer work.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-dumbbell-shoulder-press__smith-machine-shoulder-press",
+    "from_exercise_id": "exercise.move.seated-dumbbell-shoulder-press",
+    "to_exercise_id": "exercise.move.smith-machine-shoulder-press",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "smith-machine",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: a single guided bar lowers the per-hand grip burden of two heavy dumbbells and removes the awkward overhead lift-off; loses independent-limb stabilization.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.weighted-push-up__machine-chest-press",
+    "from_exercise_id": "exercise.move.weighted-push-up",
+    "to_exercise_id": "exercise.move.machine-chest-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "plate",
+      "band"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Machine allows clean incremental loading when plates/bands for the push-up are unavailable or hard to balance; loses the closed-chain scapular freedom and core demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.chest-supported-row-machine__incline-bench-dumbbell-row",
+    "from_exercise_id": "exercise.move.chest-supported-row-machine",
+    "to_exercise_id": "exercise.move.incline-bench-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Nearly identical chest-supported lat/rhomboid stimulus; loses fixed-path stability so slightly more stabilizer demand, and load capped by dumbbell availability.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.chest-supported-row-machine__seal-row",
+    "from_exercise_id": "exercise.move.chest-supported-row-machine",
+    "to_exercise_id": "exercise.move.seal-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "barbell",
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Prone chest-supported row keeps torso braced and removes lower-back contribution; needs an elevated bench to clear the load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-row-iso-lateral__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.machine-row-iso-lateral",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Preserves unilateral lat/teres-major loading; loses fixed arc and chest support so more torso bracing and grip involvement.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-row-iso-lateral__incline-bench-dumbbell-row",
+    "from_exercise_id": "exercise.move.machine-row-iso-lateral",
+    "to_exercise_id": "exercise.move.incline-bench-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Chest-supported variant retains the iso-lateral feel without the plate-loaded machine; load capped by dumbbells.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-row__barbell-bent-over-row",
+    "from_exercise_id": "exercise.move.smith-machine-row",
+    "to_exercise_id": "exercise.move.barbell-bent-over-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Free barbell restores natural bar path but adds high grip demand and more lower-back/stabilizer load without the smith's fixed track.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-row__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.smith-machine-row",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Bench-supported dumbbell row removes the fixed track and trains one side at a time; reduced spinal loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-cable-row-neutral-close__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.seated-cable-row-neutral-close",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Free-weight row matches close-neutral lat emphasis but loses constant cable tension through the stretched position.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-cable-row-neutral-close__incline-bench-dumbbell-row",
+    "from_exercise_id": "exercise.move.seated-cable-row-neutral-close",
+    "to_exercise_id": "exercise.move.incline-bench-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Chest-supported dumbbell row keeps strict form; loses cable constant tension and the seated leg-drive of the row.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-cable-row-wide__dumbbell-bent-over-rear-lateral-raise",
+    "from_exercise_id": "exercise.move.seated-cable-row-wide",
+    "to_exercise_id": "exercise.move.dumbbell-bent-over-rear-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "Wide-grip row is upper-back/rear-delt biased; rear-delt raise hits rhomboid/posterior-delt overlap but is an isolation movement with much less lat involvement.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-cable-row-wide__seal-row",
+    "from_exercise_id": "exercise.move.seated-cable-row-wide",
+    "to_exercise_id": "exercise.move.seal-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "machine"
+    ],
+    "equipment_required": [
+      "barbell",
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Prone seal row with a wide grip mimics the upper-back/rhomboid emphasis; loses cable constant tension.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.single-arm-cable-row__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.single-arm-cable-row",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Direct unilateral free-weight equivalent; loses cable constant tension and the rotational/anti-rotation core component of the half-kneeling version.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.high-cable-row-rope__dumbbell-bent-over-rear-lateral-raise",
+    "from_exercise_id": "exercise.move.high-cable-row-rope",
+    "to_exercise_id": "exercise.move.dumbbell-bent-over-rear-lateral-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "High cable row trains posterior delt/rhomboid; bent-over rear raise shares the primary mover but is isolation with no lat/trap mid-back rowing load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.high-cable-row-rope__cable-face-pull",
+    "from_exercise_id": "exercise.move.high-cable-row-rope",
+    "to_exercise_id": "exercise.move.cable-face-pull",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Same elbows-flared posterior-delt/rhomboid emphasis but classed as horizontal-abduction; still needs a cable, so only swap if a different cable height/handle is the constraint.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.t-bar-row__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.t-bar-row",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Bench-supported dumbbell row replaces the landmine setup; loses the heavy bilateral loading the T-bar allows.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.inverted-row__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.inverted-row",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Swap for when no bar/rack to set up the inverted row; loses the bodyweight-scaled, joint-friendly horizontal pull and adds grip load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-bent-over-row__chest-supported-row-machine",
+    "from_exercise_id": "exercise.move.barbell-bent-over-row",
+    "to_exercise_id": "exercise.move.chest-supported-row-machine",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: chest support removes the heavy bilateral crush grip and spares the lower back; loses free-weight stabilizer demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-bent-over-row__barbell-bent-over-row-straps",
+    "from_exercise_id": "exercise.move.barbell-bent-over-row",
+    "to_exercise_id": "exercise.move.barbell-bent-over-row-straps",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.95,
+    "caveat": "Grip-bypass: lifting straps offload the finger-flexor grip so the back can be trained past grip failure; identical movement otherwise.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-row-underhand__lat-pulldown-reverse-grip",
+    "from_exercise_id": "exercise.move.barbell-row-underhand",
+    "to_exercise_id": "exercise.move.lat-pulldown-reverse-grip",
+    "reason": "injury-spare",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine",
+      "cable"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Grip-bypass: reverse-grip pulldown keeps the supinated lat/teres bias and lets you use straps to remove crush grip; vertical rather than horizontal pull.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-row-underhand__machine-row-iso-lateral",
+    "from_exercise_id": "exercise.move.barbell-row-underhand",
+    "to_exercise_id": "exercise.move.machine-row-iso-lateral",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: machine handles and chest support cut the high crush-grip and spinal demand of the underhand barbell row.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.gorilla-row-dumbbell__chest-supported-row-machine",
+    "from_exercise_id": "exercise.move.gorilla-row-dumbbell",
+    "to_exercise_id": "exercise.move.chest-supported-row-machine",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: machine row with chest support removes the alternating heavy dumbbell crush grip and braced-spine demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.gorilla-row-dumbbell__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.gorilla-row-dumbbell",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: bench-supported single-arm row lets you use a strap and lowers grip demand from high to moderate while keeping the dumbbell.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.meadows-row__machine-row-iso-lateral",
+    "from_exercise_id": "exercise.move.meadows-row",
+    "to_exercise_id": "exercise.move.machine-row-iso-lateral",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "plate"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: iso-lateral machine row keeps the unilateral lat/teres emphasis without the thick landmine sleeve crush grip.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pendlay-row__barbell-bent-over-row-straps",
+    "from_exercise_id": "exercise.move.pendlay-row",
+    "to_exercise_id": "exercise.move.barbell-bent-over-row-straps",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: straps remove the explosive dead-stop grip demand; continuous-tension barbell row loses the dead-stop reset but trains the same musculature.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pendlay-row__chest-supported-row-machine",
+    "from_exercise_id": "exercise.move.pendlay-row",
+    "to_exercise_id": "exercise.move.chest-supported-row-machine",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Grip-bypass: machine row removes the heavy crush grip and the hinged-over lower-back load of the Pendlay; loses dead-stop power emphasis.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.thick-bar-dumbbell-row__one-arm-dumbbell-row",
+    "from_exercise_id": "exercise.move.thick-bar-dumbbell-row",
+    "to_exercise_id": "exercise.move.one-arm-dumbbell-row",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: switching from the fat-grip handle to a standard dumbbell (and adding straps) drops grip demand from high to moderate; same lat row.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.thick-bar-dumbbell-row__chest-supported-row-machine",
+    "from_exercise_id": "exercise.move.thick-bar-dumbbell-row",
+    "to_exercise_id": "exercise.move.chest-supported-row-machine",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: machine handles eliminate the fat-grip crush demand and add chest support.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-pulldown-close-neutral-grip__neutral-grip-pull-up",
+    "from_exercise_id": "exercise.move.lat-pulldown-close-neutral-grip",
+    "to_exercise_id": "exercise.move.neutral-grip-pull-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Bodyweight neutral-grip pull-up trains the same lat/teres pattern but is fixed at bodyweight load and raises grip demand to high.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-pulldown-close-neutral-grip__kneeling-banded-lat-pulldown",
+    "from_exercise_id": "exercise.move.lat-pulldown-close-neutral-grip",
+    "to_exercise_id": "exercise.move.kneeling-banded-lat-pulldown",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "band"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Banded pulldown reproduces the overhead pull at home; band tension peaks at the top (contracted) rather than the stretched position and load is capped by band strength.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-pulldown-wide-grip__pull-up-pronated",
+    "from_exercise_id": "exercise.move.lat-pulldown-wide-grip",
+    "to_exercise_id": "exercise.move.pull-up-pronated",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Pronated pull-up matches the wide-grip lat emphasis; load fixed at bodyweight and grip demand rises to high (use a bar).",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-pulldown-wide-grip__kneeling-banded-lat-pulldown",
+    "from_exercise_id": "exercise.move.lat-pulldown-wide-grip",
+    "to_exercise_id": "exercise.move.kneeling-banded-lat-pulldown",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "band"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Banded overhead pulldown for home use; band resistance is lightest at the stretched position and total load is limited.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-pulldown-reverse-grip__chin-up-supinated",
+    "from_exercise_id": "exercise.move.lat-pulldown-reverse-grip",
+    "to_exercise_id": "exercise.move.chin-up-supinated",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Supinated chin-up is the bodyweight analog of the reverse-grip pulldown; load fixed at bodyweight and grip demand is high.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-pulldown-single-arm__dumbbell-pullover",
+    "from_exercise_id": "exercise.move.lat-pulldown-single-arm",
+    "to_exercise_id": "exercise.move.dumbbell-pullover",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Dumbbell pullover trains lat/teres in the lengthened position without a cable; loses the unilateral pulldown ROM and constant tension.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-pulldown-single-arm__kneeling-banded-lat-pulldown",
+    "from_exercise_id": "exercise.move.lat-pulldown-single-arm",
+    "to_exercise_id": "exercise.move.kneeling-banded-lat-pulldown",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "machine"
+    ],
+    "equipment_required": [
+      "band"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Banded pulldown can be done single-arm at home; band tension profile differs and max load is limited.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.behind-neck-pulldown__pull-up-pronated",
+    "from_exercise_id": "exercise.move.behind-neck-pulldown",
+    "to_exercise_id": "exercise.move.pull-up-pronated",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Pronated pull-up replaces the behind-neck pulldown with a safer front-of-neck path; bodyweight-fixed load and high grip demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-pulldown-plate-loaded__neutral-grip-pull-up",
+    "from_exercise_id": "exercise.move.machine-pulldown-plate-loaded",
+    "to_exercise_id": "exercise.move.neutral-grip-pull-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Bodyweight pull-up replaces the plate-loaded iso-lateral pulldown; loses adjustable/independent-arm loading and is fixed at bodyweight.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-pulldown-plate-loaded__kneeling-banded-lat-pulldown",
+    "from_exercise_id": "exercise.move.machine-pulldown-plate-loaded",
+    "to_exercise_id": "exercise.move.kneeling-banded-lat-pulldown",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "band"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Banded pulldown gives an overhead pull at home; band tension and capped load differ from the heavy plate-loaded machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.straight-arm-pulldown__dumbbell-pullover",
+    "from_exercise_id": "exercise.move.straight-arm-pulldown",
+    "to_exercise_id": "exercise.move.dumbbell-pullover",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Dumbbell pullover trains the lat in the lengthened position with a free weight; loses cable constant tension in the contracted/short range.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lat-prayer__dumbbell-pullover",
+    "from_exercise_id": "exercise.move.lat-prayer",
+    "to_exercise_id": "exercise.move.dumbbell-pullover",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Dumbbell pullover replaces the cable straight-arm lat work; loses the cable's constant-tension contracted-position load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.assisted-pull-up-machine__band-assisted-pull-up",
+    "from_exercise_id": "exercise.move.assisted-pull-up-machine",
+    "to_exercise_id": "exercise.move.band-assisted-pull-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "band"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Band assistance replaces the machine counterweight; assistance is greatest at the bottom and tapers off near the top (opposite the machine's constant assist).",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.assisted-pull-up-machine__kneeling-banded-lat-pulldown",
+    "from_exercise_id": "exercise.move.assisted-pull-up-machine",
+    "to_exercise_id": "exercise.move.kneeling-banded-lat-pulldown",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "band"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "For those who cannot yet do a band-assisted pull-up, a banded pulldown trains the same pattern with scalable resistance; loses the vertical bodyweight overload.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.assisted-pull-up-machine__lat-pulldown-wide-grip",
+    "from_exercise_id": "exercise.move.assisted-pull-up-machine",
+    "to_exercise_id": "exercise.move.lat-pulldown-wide-grip",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "machine",
+      "cable"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: a seated pulldown removes the full-bodyweight hang/grip demand of the assisted pull-up and allows straps; still machine-based.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pull-up-weighted__lat-pulldown-wide-grip",
+    "from_exercise_id": "exercise.move.pull-up-weighted",
+    "to_exercise_id": "exercise.move.lat-pulldown-wide-grip",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight",
+      "plate",
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equipment_required": [
+      "machine",
+      "cable"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: pulldown lets you use lifting straps to remove the heavy crush grip of weighted pull-ups; loses the bodyweight-plus-load overload and trunk stabilization.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.pull-up-pronated__lat-pulldown-wide-grip",
+    "from_exercise_id": "exercise.move.pull-up-pronated",
+    "to_exercise_id": "exercise.move.lat-pulldown-wide-grip",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "machine",
+      "cable"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: strapped wide-grip pulldown removes the high hanging grip demand and lets you scale load below bodyweight.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.chin-up-supinated__lat-pulldown-reverse-grip",
+    "from_exercise_id": "exercise.move.chin-up-supinated",
+    "to_exercise_id": "exercise.move.lat-pulldown-reverse-grip",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "machine",
+      "cable"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: reverse-grip pulldown keeps the supinated lat/biceps emphasis and allows straps to bypass the high hanging grip.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.neutral-grip-pull-up__lat-pulldown-close-neutral-grip",
+    "from_exercise_id": "exercise.move.neutral-grip-pull-up",
+    "to_exercise_id": "exercise.move.lat-pulldown-close-neutral-grip",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "machine",
+      "cable"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: close neutral-grip pulldown matches the hand position and lets you use straps to remove the high hanging grip demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.commando-pull-up__lat-pulldown-single-arm",
+    "from_exercise_id": "exercise.move.commando-pull-up",
+    "to_exercise_id": "exercise.move.lat-pulldown-single-arm",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "cable",
+      "machine"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Grip-bypass: single-arm cable pulldown trains the unilateral lat emphasis of the commando pull-up with a cuff/strap removing the crush grip; loses the cross-body mixed-grip novelty.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.gironda-sternum-chin-up__lat-pulldown-reverse-grip",
+    "from_exercise_id": "exercise.move.gironda-sternum-chin-up",
+    "to_exercise_id": "exercise.move.lat-pulldown-reverse-grip",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "machine",
+      "cable"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Grip-bypass: reverse-grip pulldown lets you lean back for the sternum-to-bar pull while straps remove the high hanging grip; loses the exaggerated bodyweight arch ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.band-assisted-pull-up__assisted-pull-up-machine",
+    "from_exercise_id": "exercise.move.band-assisted-pull-up",
+    "to_exercise_id": "exercise.move.assisted-pull-up-machine",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "band"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: the assist machine provides constant counterweight so less time is spent at maximal grip; pad-supported knees reduce the full hanging grip demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-hip-abduction-machine__banded-hip-abduction",
+    "from_exercise_id": "exercise.move.seated-hip-abduction-machine",
+    "to_exercise_id": "exercise.move.banded-hip-abduction",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "band"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Resistance band tension peaks at end-range rather than mid-range; loses the smooth machine load curve and adjustable heavy loading, but trains gluteus medius through the same hip-abduction pattern.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-hip-abduction-machine__clamshell",
+    "from_exercise_id": "exercise.move.seated-hip-abduction-machine",
+    "to_exercise_id": "exercise.move.clamshell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "band",
+      "bodyweight"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Performed side-lying with hip flexed; trains glute medius but ROM and loadability are lower than the seated machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-hip-abduction__banded-hip-abduction",
+    "from_exercise_id": "exercise.move.cable-hip-abduction",
+    "to_exercise_id": "exercise.move.banded-hip-abduction",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "ankle-cuff"
+    ],
+    "equipment_required": [
+      "band"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Loses constant cable tension; band resistance is ascending (hardest at peak abduction) but same standing glute-medius pattern.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-hip-abduction__seated-hip-abduction-machine",
+    "from_exercise_id": "exercise.move.cable-hip-abduction",
+    "to_exercise_id": "exercise.move.seated-hip-abduction-machine",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "ankle-cuff"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Seated bilateral version; loses the standing/functional position and single-leg loading but allows heavier, smoother glute-medius loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-hip-thrust__barbell-hip-thrust",
+    "from_exercise_id": "exercise.move.machine-hip-thrust",
+    "to_exercise_id": "exercise.move.barbell-hip-thrust",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "barbell",
+      "bench"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Free-weight version needs setup and bar pad; more balance/stability demand but near-identical glute-max stimulus and loading potential.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-hip-thrust__frog-pump",
+    "from_exercise_id": "exercise.move.machine-hip-thrust",
+    "to_exercise_id": "exercise.move.frog-pump",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "Bodyweight/light-loaded floor variant; much lower loadability and shorter ROM, but trains glute-max hip extension when no bar/bench is available.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-hip-thrust__barbell-hip-thrust",
+    "from_exercise_id": "exercise.move.smith-machine-hip-thrust",
+    "to_exercise_id": "exercise.move.barbell-hip-thrust",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "barbell",
+      "bench"
+    ],
+    "equivalence_score": 0.92,
+    "caveat": "Free barbell removes the fixed bar path; slightly more stabilizer demand but essentially the same glute-max thrust.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.smith-machine-hip-thrust__single-leg-hip-thrust",
+    "from_exercise_id": "exercise.move.smith-machine-hip-thrust",
+    "to_exercise_id": "exercise.move.single-leg-hip-thrust",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "bench",
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Unilateral bodyweight/dumbbell version; lower absolute load and added balance demand but accessible without a smith rack.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-glute-kickback__cable-glute-kickback",
+    "from_exercise_id": "exercise.move.machine-glute-kickback",
+    "to_exercise_id": "exercise.move.cable-glute-kickback",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "cable",
+      "ankle-cuff"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Cable cuff version gives near-constant tension and same glute-max kickback; slightly less stable than the fixed machine pad.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-glute-kickback__frog-pump",
+    "from_exercise_id": "exercise.move.machine-glute-kickback",
+    "to_exercise_id": "exercise.move.frog-pump",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "No cable/machine needed; supine pump trains glute-max but loses the long-lever kickback and constant tension.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-glute-kickback__machine-glute-kickback",
+    "from_exercise_id": "exercise.move.cable-glute-kickback",
+    "to_exercise_id": "exercise.move.machine-glute-kickback",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "ankle-cuff"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Dedicated kickback machine adds back support; near-identical glute-max stimulus, just different stabilization.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-glute-kickback__frog-pump",
+    "from_exercise_id": "exercise.move.cable-glute-kickback",
+    "to_exercise_id": "exercise.move.frog-pump",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "ankle-cuff"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "Bodyweight/light home option; loses constant cable tension and the long-lever kickback ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.reverse-hyperextension__cable-glute-kickback",
+    "from_exercise_id": "exercise.move.reverse-hyperextension",
+    "to_exercise_id": "exercise.move.cable-glute-kickback",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "cable",
+      "ankle-cuff"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "Kickback isolates glute-max hip extension but loses the spinal-decompression and bilateral posterior-chain swing of the reverse-hyper.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.reverse-hyperextension__frog-pump",
+    "from_exercise_id": "exercise.move.reverse-hyperextension",
+    "to_exercise_id": "exercise.move.frog-pump",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "Floor glute-max option with no machine; loses the swinging long-lever loading and lumbar traction benefit.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.american-hip-thrust__single-leg-hip-thrust",
+    "from_exercise_id": "exercise.move.american-hip-thrust",
+    "to_exercise_id": "exercise.move.single-leg-hip-thrust",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "bench",
+      "dumbbell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Unilateral dumbbell version removes the barbell; lower absolute load and the American-style exaggerated posterior tilt is harder to load, but same glute-max emphasis.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-hip-thrust__single-leg-hip-thrust",
+    "from_exercise_id": "exercise.move.barbell-hip-thrust",
+    "to_exercise_id": "exercise.move.single-leg-hip-thrust",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "bench",
+      "dumbbell"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Single-leg dumbbell thrust drops the barbell; lower total load and balance-limited but matched glute-max stimulus per side.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-hip-thrust__frog-pump",
+    "from_exercise_id": "exercise.move.barbell-hip-thrust",
+    "to_exercise_id": "exercise.move.frog-pump",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "bench"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "No barbell or bench needed; markedly lower loadability and shorter ROM but trains glute-max hip extension at home.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-glute-bridge__frog-pump",
+    "from_exercise_id": "exercise.move.barbell-glute-bridge",
+    "to_exercise_id": "exercise.move.frog-pump",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Floor-based glute-max bridge variant; dumbbell/plate loading caps intensity well below a loaded barbell bridge.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-glute-bridge__single-leg-hip-thrust",
+    "from_exercise_id": "exercise.move.barbell-glute-bridge",
+    "to_exercise_id": "exercise.move.single-leg-hip-thrust",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "bench",
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Unilateral elevated version increases ROM and per-leg load without a barbell; adds balance demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lying-leg-curl__nordic-curl",
+    "from_exercise_id": "exercise.move.lying-leg-curl",
+    "to_exercise_id": "exercise.move.nordic-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "band"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Nordic is an eccentric-dominant bodyweight knee-flexion; very high intensity at long muscle length but hard to load the concentric and to scale for beginners (band-assist helps).",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.lying-leg-curl__glute-ham-raise",
+    "from_exercise_id": "exercise.move.lying-leg-curl",
+    "to_exercise_id": "exercise.move.glute-ham-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "plate"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "GHR can be done on a bench/pad with an anchor; combines knee-flexion with hip extension so it is less isolated than the prone curl.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-leg-curl__nordic-curl",
+    "from_exercise_id": "exercise.move.seated-leg-curl",
+    "to_exercise_id": "exercise.move.nordic-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "band"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Loses the flexed-hip lengthened-hamstring position the seated curl is prized for; Nordic trains knee flexion at a more shortened hip angle and is eccentric-biased.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-leg-curl__lying-leg-curl",
+    "from_exercise_id": "exercise.move.seated-leg-curl",
+    "to_exercise_id": "exercise.move.lying-leg-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "If only a prone curl machine is available; loses the lengthened flexed-hip position but keeps isolated, scalable knee-flexion loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-leg-curl__nordic-curl",
+    "from_exercise_id": "exercise.move.standing-leg-curl",
+    "to_exercise_id": "exercise.move.nordic-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "band"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Bilateral eccentric bodyweight curl replaces the single-leg standing machine; loses unilateral isolation and easy load adjustment.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-leg-curl__glute-ham-raise",
+    "from_exercise_id": "exercise.move.standing-leg-curl",
+    "to_exercise_id": "exercise.move.glute-ham-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "plate"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "GHR trains the same hamstrings via knee flexion but couples in hip extension; less isolated than the single-joint standing curl.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.glute-ham-raise__nordic-curl",
+    "from_exercise_id": "exercise.move.glute-ham-raise",
+    "to_exercise_id": "exercise.move.nordic-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "band"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Nordic curl is the no-machine analog; removes the knee-pad bench support so the eccentric is harder and the concentric near-impossible without band assist.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.glute-ham-raise__lying-leg-curl",
+    "from_exercise_id": "exercise.move.glute-ham-raise",
+    "to_exercise_id": "exercise.move.lying-leg-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Prone curl isolates knee flexion with scalable load but drops the hip-extension and erector contribution of the GHR.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.45-degree-back-extension__good-morning",
+    "from_exercise_id": "exercise.move.45-degree-back-extension",
+    "to_exercise_id": "exercise.move.good-morning",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Standing barbell hinge replaces the 45-degree bench; greater balance/erector demand and no pad support, but trains hamstrings, glutes and erectors through hip extension.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.45-degree-back-extension__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.45-degree-back-extension",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Dumbbell RDL covers the same hip-hinge posterior-chain stimulus without the back-extension bench; loses the pad-supported lumbar position.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.conventional-deadlift__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.conventional-deadlift",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Dumbbells cap absolute load and shift emphasis toward hamstrings/glutes with less floor-pull/erector demand; good home substitute when no barbell.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.conventional-deadlift__trap-bar-deadlift",
+    "from_exercise_id": "exercise.move.conventional-deadlift",
+    "to_exercise_id": "exercise.move.trap-bar-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: trap-bar handles (grip_demand moderate) and neutral grip reduce the double-overhand grip crush of a heavy conventional pull; lifting straps further relieve the grip while keeping near-identical posterior-chain loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.conventional-deadlift__45-degree-back-extension",
+    "from_exercise_id": "exercise.move.conventional-deadlift",
+    "to_exercise_id": "exercise.move.45-degree-back-extension",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine",
+      "bodyweight"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "Grip-bypass: removes all hand/grip loading entirely (no bar held), training the same hamstring/glute/erector hip extension; much lower loadability and no axial spinal load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.romanian-deadlift__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.romanian-deadlift",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: dumbbells (grip moderate) lower the grip crush of a heavy barbell RDL and let you use straps freely; nearly identical hamstring/glute hinge with slightly less top-end load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.romanian-deadlift__45-degree-back-extension",
+    "from_exercise_id": "exercise.move.romanian-deadlift",
+    "to_exercise_id": "exercise.move.45-degree-back-extension",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "machine",
+      "bodyweight",
+      "plate"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Grip-bypass: no bar in the hands removes grip limitation; trains the same hamstring/glute/erector hip extension with hugely reduced loading and no axial compression.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.stiff-leg-deadlift__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.stiff-leg-deadlift",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: dumbbells reduce the grip crush of a heavy SLDL and permit straps; same straight-leg hamstring emphasis with a slightly shorter ROM than a deficit bar pull.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.stiff-leg-deadlift__good-morning",
+    "from_exercise_id": "exercise.move.stiff-leg-deadlift",
+    "to_exercise_id": "exercise.move.good-morning",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Grip-bypass: bar sits on the back (grip_demand low) so the hands never grip the load, removing the SLDL grip limitation while keeping the straight-leg hamstring/glute hinge.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.deficit-deadlift__conventional-deadlift",
+    "from_exercise_id": "exercise.move.deficit-deadlift",
+    "to_exercise_id": "exercise.move.conventional-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass via straps recommended; pulling from the floor instead of a deficit shortens ROM slightly and lowers the prolonged grip-hold time, easing grip stress while keeping posterior-chain load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.deficit-deadlift__trap-bar-deadlift",
+    "from_exercise_id": "exercise.move.deficit-deadlift",
+    "to_exercise_id": "exercise.move.trap-bar-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: neutral trap-bar grip (grip moderate) cuts grip demand vs a deficit bar pull; loses the extended-ROM stretch of the deficit.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.sumo-deadlift__trap-bar-deadlift",
+    "from_exercise_id": "exercise.move.sumo-deadlift",
+    "to_exercise_id": "exercise.move.trap-bar-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Grip-bypass: neutral trap-bar grip lowers grip crush; loses the wide stance and adductor emphasis of the sumo pull.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.sumo-deadlift__barbell-hip-thrust",
+    "from_exercise_id": "exercise.move.sumo-deadlift",
+    "to_exercise_id": "exercise.move.barbell-hip-thrust",
+    "reason": "injury-spare",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "barbell",
+      "bench"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "Grip-bypass: bar rests across the hips (grip low) instead of being held, removing grip limitation while heavily loading glute-max; different (hip-extension) movement pattern, not a hinge.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.sumo-deficit-deadlift__sumo-deadlift",
+    "from_exercise_id": "exercise.move.sumo-deficit-deadlift",
+    "to_exercise_id": "exercise.move.sumo-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "plate"
+    ],
+    "equipment_required": [
+      "barbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass via straps; pulling from the floor rather than a deficit reduces ROM and the long grip-hold, easing grip while keeping glute/adductor/hamstring loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.romanian-deadlift-glute-bias__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.romanian-deadlift-glute-bias",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: dumbbells plus straps remove the heavy barbell grip crush; same glute-biased hinge with a slightly lower top-end load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.romanian-deadlift-glute-bias__single-leg-romanian-deadlift",
+    "from_exercise_id": "exercise.move.romanian-deadlift-glute-bias",
+    "to_exercise_id": "exercise.move.single-leg-romanian-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Grip-bypass: unilateral loading with one dumbbell/kettlebell (grip moderate) drastically cuts grip load for the same glute-max hip extension; adds balance demand.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.step-romanian-deadlift__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.step-romanian-deadlift",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Grip-bypass: dumbbells with straps remove barbell grip crush; standing on the floor loses the deficit stretch the step version adds.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.single-leg-romanian-deadlift__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.single-leg-romanian-deadlift",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "kettlebell",
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Bilateral dumbbell RDL needs only dumbbells; loses the unilateral balance/glute-medius challenge but allows higher total load and simpler execution.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.good-morning__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.good-morning",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Dumbbell RDL replaces the back-loaded barbell; load is held in the hands instead of on the spine, shifting some erector demand but matching the hamstring/glute hinge.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.trap-bar-deadlift__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.trap-bar-deadlift",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Dumbbell hinge replaces the hex bar; lower absolute load and more hamstring/glute (less quad) emphasis than the trap-bar pull.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-calf-raise-machine__seated-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.seated-calf-raise-machine",
+    "to_exercise_id": "exercise.move.seated-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Bent-knee soleus stimulus is preserved by resting a dumbbell/plate on the knees, but loading is capped by what the thigh can balance and there is no smooth machine resistance curve; place forefoot on a plate to recover stretch ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-calf-raise-machine__seated-calf-raise-smith",
+    "from_exercise_id": "exercise.move.seated-calf-raise-machine",
+    "to_exercise_id": "exercise.move.seated-calf-raise-smith",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "smith-machine",
+      "plate"
+    ],
+    "equivalence_score": 0.92,
+    "caveat": "Near-identical bent-knee soleus loading if a Smith rack is available; lose the dedicated knee pad so a folded towel over the thighs is needed for comfort.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-calf-raise-leg-press__seated-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.seated-calf-raise-leg-press",
+    "to_exercise_id": "exercise.move.seated-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Same bent-knee soleus emphasis but far less load is possible than a leg-press sled; balance the weight on the distal thigh and use a plate under the forefoot for full stretch.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.seated-calf-raise-smith__seated-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.seated-calf-raise-smith",
+    "to_exercise_id": "exercise.move.seated-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "plate"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Keeps the bent-knee soleus bias for a home gym; loading is limited to a balanceable dumbbell/plate and there is no guided bar path.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.donkey-calf-raise__single-leg-calf-raise-bodyweight",
+    "from_exercise_id": "exercise.move.donkey-calf-raise",
+    "to_exercise_id": "exercise.move.single-leg-calf-raise-bodyweight",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Same hip-flexed, straight-knee gastrocnemius emphasis without the donkey machine; single-leg bodyweight load eventually becomes too light for strong lifters, so high reps or holding a dumbbell are needed for overload.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.donkey-calf-raise__standing-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.donkey-calf-raise",
+    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Straight-knee gastrocnemius stimulus retained with a dumbbell; loses the hip-flexed position that maximally stretches the gastroc on the donkey machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hack-squat-calf-raise__standing-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.hack-squat-calf-raise",
+    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Straight-knee gastrocnemius training preserved; less stable than the hack-squat shoulder pads and load is limited to a single hand-held dumbbell on one leg.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hack-squat-calf-raise__stair-calf-raise",
+    "from_exercise_id": "exercise.move.hack-squat-calf-raise",
+    "to_exercise_id": "exercise.move.stair-calf-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Keeps straight-knee gastrocnemius work with full stretch off a step, but no external load means high-rep or single-leg variations are required to approach hack-squat overload.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press-calf-raise__standing-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.leg-press-calf-raise",
+    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Same straight-knee gastrocnemius pattern; you give up the heavy sled loading of a leg press, so a heavy dumbbell or single-leg work is needed for sufficient tension.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press-calf-raise__single-leg-calf-raise-bodyweight",
+    "from_exercise_id": "exercise.move.leg-press-calf-raise",
+    "to_exercise_id": "exercise.move.single-leg-calf-raise-bodyweight",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Trains the same straight-knee gastrocnemius but bodyweight-only load is far below leg-press capacity; use a step for full ROM and add a dumbbell once bodyweight is easy.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-calf-raise-machine__standing-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.standing-calf-raise-machine",
+    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Direct straight-knee gastrocnemius replacement for a home gym; single dumbbell limits load and adds balance demand versus the shoulder-padded machine.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-calf-raise-machine__single-leg-calf-raise-bodyweight",
+    "from_exercise_id": "exercise.move.standing-calf-raise-machine",
+    "to_exercise_id": "exercise.move.single-leg-calf-raise-bodyweight",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.74,
+    "caveat": "Same straight-knee gastrocnemius pattern with no equipment; loses external loading so it becomes an endurance/high-rep stimulus unless a dumbbell is added.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-calf-raise-lengthened-partials__single-leg-calf-raise-bodyweight",
+    "from_exercise_id": "exercise.move.standing-calf-raise-lengthened-partials",
+    "to_exercise_id": "exercise.move.single-leg-calf-raise-bodyweight",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "The lengthened-partial bottom-range emphasis can be reproduced single-leg off a step, but without the machine you cannot load heavy, so partials are done with bodyweight/dumbbell only.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-calf-raise-smith__standing-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.standing-calf-raise-smith",
+    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "smith-machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Straight-knee gastrocnemius stimulus preserved without the Smith rack; lose the guided bar path and bilateral heavy loading, so done single-leg with a dumbbell.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-calf-raise-barbell__standing-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.standing-calf-raise-barbell",
+    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Same straight-knee gastrocnemius pattern with dumbbells instead of a back-loaded barbell; removes the balance challenge of a bar on the spine but caps load to hand-held weight.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-calf-raise-dumbbell__standing-calf-raise-machine",
+    "from_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "to_exercise_id": "exercise.move.standing-calf-raise-machine",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Grip-bypass: the single-leg dumbbell version is grip-limited because the calf can out-load what one hand can hold; the shoulder-pad machine removes the crushing-grip ceiling so the gastrocnemius reaches true failure.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.standing-calf-raise-dumbbell__standing-calf-raise-smith",
+    "from_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "to_exercise_id": "exercise.move.standing-calf-raise-smith",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "smith-machine",
+      "plate"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: bar rests across the shoulders so the gastrocnemius is no longer limited by hand grip; trades single-leg range for a balanced bilateral lift.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.stair-calf-raise-dumbbell__standing-calf-raise-machine",
+    "from_exercise_id": "exercise.move.stair-calf-raise-dumbbell",
+    "to_exercise_id": "exercise.move.standing-calf-raise-machine",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: holding a dumbbell on a stair is grip-demand-high and the hand fails before the calf; the machine's shoulder pads carry the load so the gastrocnemius can be trained to failure.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.stair-calf-raise-dumbbell__standing-calf-raise-smith",
+    "from_exercise_id": "exercise.move.stair-calf-raise-dumbbell",
+    "to_exercise_id": "exercise.move.standing-calf-raise-smith",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "smith-machine",
+      "plate"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Grip-bypass for grip-demand-high stair raise: the Smith bar sits on the shoulders, removing the crush-grip limit; stand on a plate to recover the deep stretch the stair provided.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-crunch__machine-crunch",
+    "from_exercise_id": "exercise.move.cable-crunch",
+    "to_exercise_id": "exercise.move.machine-crunch",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "Both load spinal flexion of the rectus abdominis against external resistance; if no cable but a crunch machine exists this is the closest swap, losing the kneeling rope-overhead lat involvement.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-crunch__weighted-crunch",
+    "from_exercise_id": "exercise.move.cable-crunch",
+    "to_exercise_id": "exercise.move.weighted-crunch",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "plate",
+      "dumbbell",
+      "bodyweight"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Same loaded spinal-flexion stimulus for the rectus abdominis with only a plate; loses constant cable tension through the top range and peak resistance is at the bottom rather than the contracted position.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-crunch__decline-sit-up",
+    "from_exercise_id": "exercise.move.cable-crunch",
+    "to_exercise_id": "exercise.move.decline-sit-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "plate"
+    ],
+    "equivalence_score": 0.68,
+    "caveat": "Trains rectus-abdominis spinal flexion with no cable; involves more hip flexor recruitment and the resistance profile differs from the constant-tension cable crunch.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-crunch__weighted-crunch",
+    "from_exercise_id": "exercise.move.machine-crunch",
+    "to_exercise_id": "exercise.move.weighted-crunch",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "plate",
+      "dumbbell",
+      "bodyweight"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Direct home-gym swap for loaded rectus-abdominis spinal flexion; loses the machine's adjustable resistance and back support, with peak load shifting toward the lengthened position.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-crunch__cable-crunch",
+    "from_exercise_id": "exercise.move.machine-crunch",
+    "to_exercise_id": "exercise.move.cable-crunch",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "If a cable column is available instead of a crunch machine, the kneeling cable crunch matches the loaded spinal-flexion stimulus closely with constant tension.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.captains-chair-leg-raise__lying-leg-raise",
+    "from_exercise_id": "exercise.move.captains-chair-leg-raise",
+    "to_exercise_id": "exercise.move.lying-leg-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Same rectus-abdominis/iliopsoas spinal-flexion pattern done on the floor without the captain's-chair frame; less range at the bottom and easier to use momentum, so control the eccentric.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.captains-chair-leg-raise__reverse-crunch",
+    "from_exercise_id": "exercise.move.captains-chair-leg-raise",
+    "to_exercise_id": "exercise.move.reverse-crunch",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.76,
+    "caveat": "Reverse crunch reproduces the posterior-pelvic-tilt rectus-abdominis flexion of the captain's chair without equipment; shorter ROM and lower iliopsoas demand than the hanging-elbow-support version.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hanging-leg-raise__captains-chair-leg-raise",
+    "from_exercise_id": "exercise.move.hanging-leg-raise",
+    "to_exercise_id": "exercise.move.captains-chair-leg-raise",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "machine",
+      "bodyweight"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: hanging from a bar is grip-demand-high and forearms fail before the abs; the captain's chair supports the forearms so the rectus abdominis and iliopsoas can be trained without crush-grip limitation.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hanging-leg-raise__lying-leg-raise",
+    "from_exercise_id": "exercise.move.hanging-leg-raise",
+    "to_exercise_id": "exercise.move.lying-leg-raise",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Grip-bypass with zero equipment: removes the bar hang entirely so grip and shoulders are spared; loses the loaded stretch at the bottom and the anti-swing core demand of hanging.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hanging-knee-raise__captains-chair-leg-raise",
+    "from_exercise_id": "exercise.move.hanging-knee-raise",
+    "to_exercise_id": "exercise.move.captains-chair-leg-raise",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "machine",
+      "bodyweight"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip-bypass: forearm-supported captain's chair removes the grip-demand-high bar hang so the abs/hip flexors reach failure before the hands do; same knee-raise spinal-flexion pattern.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hanging-knee-raise__reverse-crunch",
+    "from_exercise_id": "exercise.move.hanging-knee-raise",
+    "to_exercise_id": "exercise.move.reverse-crunch",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "bodyweight"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Grip-bypass with no hanging at all: spares grip and shoulders; reverse crunch keeps the knee-to-chest rectus-abdominis flexion but loses the loaded hang and gives shorter ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-pallof-press__plank",
+    "from_exercise_id": "exercise.move.cable-pallof-press",
+    "to_exercise_id": "exercise.move.plank",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "When no cable or band is available, a plank (and side plank) trains the same obliques as an isometric core-bracing drill, but it is anti-extension/anti-lateral-flexion rather than the true anti-rotation resistance of the Pallof; no rotational load vector.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-pallof-press__suitcase-carry",
+    "from_exercise_id": "exercise.move.cable-pallof-press",
+    "to_exercise_id": "exercise.move.suitcase-carry",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "band"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.62,
+    "caveat": "A single-side-loaded suitcase carry trains the same obliques/quadratus-lumborum to resist trunk bending with only a dumbbell; it is an anti-lateral-flexion carry rather than true horizontal anti-rotation, so the resistance plane differs.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-woodchop__cable-pallof-press",
+    "from_exercise_id": "exercise.move.cable-woodchop",
+    "to_exercise_id": "exercise.move.cable-pallof-press",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "cable",
+      "band"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Both are cable/band oblique movements; the Pallof press can be run off a band when only a band (not a full cable stack) is on hand, converting the dynamic chop into an anti-rotation hold and losing the loaded rotation through range.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-woodchop__v-up",
+    "from_exercise_id": "exercise.move.cable-woodchop",
+    "to_exercise_id": "exercise.move.v-up",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable",
+      "band"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.5,
+    "caveat": "With no cable or band, a V-up (or bicycle-style twisting variation) hits the obliques dynamically; loses the rotational resistance vector and constant tension of the woodchop and becomes spinal flexion rather than anti-rotation.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-side-bend__dumbbell-side-bend",
+    "from_exercise_id": "exercise.move.cable-side-bend",
+    "to_exercise_id": "exercise.move.dumbbell-side-bend",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Direct swap for quadratus-lumborum/oblique lateral-flexion loading using a dumbbell instead of a cable stack; loses constant tension at the top contracted range that the cable provides.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-side-bend__suitcase-carry",
+    "from_exercise_id": "exercise.move.cable-side-bend",
+    "to_exercise_id": "exercise.move.suitcase-carry",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Suitcase carry loads the same quadratus-lumborum/obliques unilaterally without a cable, but as an isometric anti-lateral-flexion carry rather than the dynamic side-bend ROM.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.dumbbell-side-bend__cable-side-bend",
+    "from_exercise_id": "exercise.move.dumbbell-side-bend",
+    "to_exercise_id": "exercise.move.cable-side-bend",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "dumbbell"
+    ],
+    "equipment_required": [
+      "cable"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Grip relief: a cable handle (or wrist strap) lets the quadratus-lumborum and obliques be loaded heavily without the hand-grip ceiling of holding a heavy dumbbell, and adds constant tension at the top.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.close-grip-bench-press__overhead-dumbbell-extension",
+    "from_exercise_id": "exercise.move.close-grip-bench-press",
+    "to_exercise_id": "exercise.move.overhead-dumbbell-extension",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Dumbbell overhead extension biases the long head rather than the medial/lateral heads and loses the heavy compound pressing/chest involvement; lighter loadable and more elbow ROM than a close-grip press.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.close-grip-bench-press__triceps-dip",
+    "from_exercise_id": "exercise.move.close-grip-bench-press",
+    "to_exercise_id": "exercise.move.triceps-dip",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "smith-machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Bodyweight dip keeps the compound elbow-extension + chest pattern but load is fixed at bodyweight (add plate to progress) and it stresses the shoulder more in the bottom position.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.jm-press__overhead-dumbbell-extension",
+    "from_exercise_id": "exercise.move.jm-press",
+    "to_exercise_id": "exercise.move.overhead-dumbbell-extension",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "ez-bar"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.68,
+    "caveat": "Loses the hybrid press/extension overload of the JM press and shifts emphasis to the long head; far lighter loadable and more stretch at the bottom.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.jm-press__skullcrusher",
+    "from_exercise_id": "exercise.move.jm-press",
+    "to_exercise_id": "exercise.move.skullcrusher",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "ez-bar"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.74,
+    "caveat": "Performed with dumbbells the skullcrusher keeps the lying elbow-extension stimulus but each arm is loaded independently and the wrist path differs; slightly less elbow-friendly at heavy loads.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.overhead-barbell-ez-extension__overhead-dumbbell-extension",
+    "from_exercise_id": "exercise.move.overhead-barbell-ez-extension",
+    "to_exercise_id": "exercise.move.overhead-dumbbell-extension",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "ez-bar"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Near-identical long-head overhead stretch; dumbbell version allows independent arms and a slightly deeper stretch but is harder to load heavy as a single dumbbell.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.overhead-cable-rope-extension__overhead-dumbbell-extension",
+    "from_exercise_id": "exercise.move.overhead-cable-rope-extension",
+    "to_exercise_id": "exercise.move.overhead-dumbbell-extension",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Both train the long head in the lengthened overhead position; loses cable's constant tension at full lockout and the smooth resistance curve, gaining a deeper bottom stretch.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.overhead-cable-rope-extension__skullcrusher",
+    "from_exercise_id": "exercise.move.overhead-cable-rope-extension",
+    "to_exercise_id": "exercise.move.skullcrusher",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Lying dumbbell skullcrusher hits the long head in a lengthened position but loses constant-tension at lockout and shifts the line of pull; can be done with a single dumbbell or two.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.rope-pushdown__overhead-dumbbell-extension",
+    "from_exercise_id": "exercise.move.rope-pushdown",
+    "to_exercise_id": "exercise.move.overhead-dumbbell-extension",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Trades the cable's short-position lockout emphasis (lateral/medial head) for a long-head overhead stretch; loses constant tension and the easy rope-spread at the bottom.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.rope-pushdown__triceps-dip",
+    "from_exercise_id": "exercise.move.rope-pushdown",
+    "to_exercise_id": "exercise.move.triceps-dip",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Bodyweight dip keeps the elbows-tucked extension at the lateral/medial heads but adds chest/shoulder involvement and fixes load at bodyweight; no isolation.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.triceps-pushdown__overhead-dumbbell-extension",
+    "from_exercise_id": "exercise.move.triceps-pushdown",
+    "to_exercise_id": "exercise.move.overhead-dumbbell-extension",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "Shifts emphasis from short-position lockout (lateral/medial head) to the lengthened long head; loses cable constant tension. A bodyweight close-grip push-up is an alternative isolation-free option.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.triceps-pushdown__skullcrusher",
+    "from_exercise_id": "exercise.move.triceps-pushdown",
+    "to_exercise_id": "exercise.move.skullcrusher",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Dumbbell skullcrusher isolates the triceps without a cable but biases the long head and loses constant tension; resistance is hardest mid-rep rather than at lockout.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.triceps-dip__overhead-dumbbell-extension",
+    "from_exercise_id": "exercise.move.triceps-dip",
+    "to_exercise_id": "exercise.move.overhead-dumbbell-extension",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.62,
+    "caveat": "Replaces the assisted/weighted dip machine with an isolation extension; loses the compound chest/shoulder contribution and the heavy pressing overload but is fully home-gym friendly.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.rope-cable-hammer-curl__dumbbell-hammer-curl",
+    "from_exercise_id": "exercise.move.rope-cable-hammer-curl",
+    "to_exercise_id": "exercise.move.dumbbell-hammer-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Same neutral-grip brachioradialis/brachialis stimulus; loses the cable's constant tension at the contracted top but gains a stronger stretch and free-weight loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.rope-cable-hammer-curl__hammer-curl",
+    "from_exercise_id": "exercise.move.rope-cable-hammer-curl",
+    "to_exercise_id": "exercise.move.hammer-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Direct dumbbell equivalent of the neutral-grip curl; only loses cable constant tension, otherwise an essentially identical training stimulus.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-reverse-curl__reverse-curl",
+    "from_exercise_id": "exercise.move.barbell-reverse-curl",
+    "to_exercise_id": "exercise.move.reverse-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "ez-bar"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Reverse curl performed with dumbbells keeps the pronated brachioradialis emphasis without a barbell/ez-bar; the dumbbell version allows a neutral-to-pronated path that is easier on the wrists.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-reverse-curl__dumbbell-hammer-curl",
+    "from_exercise_id": "exercise.move.barbell-reverse-curl",
+    "to_exercise_id": "exercise.move.dumbbell-hammer-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell",
+      "ez-bar"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Hammer curl trains the same brachioradialis/brachialis but with a neutral rather than pronated grip, so wrist-extensor and forearm-supinator demand is lower and the wrists are spared.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.reverse-curl__dumbbell-hammer-curl",
+    "from_exercise_id": "exercise.move.reverse-curl",
+    "to_exercise_id": "exercise.move.dumbbell-hammer-curl",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "ez-bar",
+      "barbell",
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "Grip-bypass: pronated reverse curl is grip_demand=high and stresses the wrist extensors; switching to a neutral-grip hammer curl removes the pronated forearm/wrist strain while keeping brachioradialis/brachialis loading.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.reverse-curl__machine-curl",
+    "from_exercise_id": "exercise.move.reverse-curl",
+    "to_exercise_id": "exercise.move.machine-curl",
+    "reason": "injury-spare",
+    "shares_pattern": false,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "ez-bar",
+      "barbell",
+      "cable"
+    ],
+    "equipment_required": [
+      "machine"
+    ],
+    "equivalence_score": 0.55,
+    "caveat": "Grip-bypass: a low-grip-demand machine curl with a fixed handle removes the high pronated grip/wrist strain, but it is a supinated biceps movement (different mover and grip orientation) so it only partially substitutes the reverse curl's brachioradialis focus.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-curl__dumbbell-curl",
+    "from_exercise_id": "exercise.move.barbell-curl",
+    "to_exercise_id": "exercise.move.dumbbell-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.92,
+    "caveat": "Dumbbell curl trains the same supinated biceps pattern with independent arms; slightly less total loadable than a straight bar but allows full supination and is easier on the wrists.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.barbell-curl__dumbbell-twist-curl",
+    "from_exercise_id": "exercise.move.barbell-curl",
+    "to_exercise_id": "exercise.move.dumbbell-twist-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.88,
+    "caveat": "Adds active supination through the rep for extra short-head emphasis; otherwise the same biceps stimulus without a barbell, with somewhat lighter loading per arm.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-curl__dumbbell-curl",
+    "from_exercise_id": "exercise.move.cable-curl",
+    "to_exercise_id": "exercise.move.dumbbell-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Loses the cable's constant-tension resistance curve (hardest at the top) but keeps full supinated biceps loading; dumbbells are hardest mid-range instead.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.cable-curl__incline-dumbbell-curl",
+    "from_exercise_id": "exercise.move.cable-curl",
+    "to_exercise_id": "exercise.move.incline-dumbbell-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Incline curl emphasizes the long head in a lengthened position; loses cable constant tension but provides a strong stretch-mediated stimulus the cable curl lacks.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.ez-bar-curl__dumbbell-curl",
+    "from_exercise_id": "exercise.move.ez-bar-curl",
+    "to_exercise_id": "exercise.move.dumbbell-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "ez-bar"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.9,
+    "caveat": "Dumbbells replace the EZ-bar with independent arms and full supination; slightly less total loadable and no semi-pronated wrist relief that the EZ-bar provides.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.ez-bar-curl__dumbbell-hammer-curl",
+    "from_exercise_id": "exercise.move.ez-bar-curl",
+    "to_exercise_id": "exercise.move.dumbbell-hammer-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": false,
+    "equipment_removed": [
+      "ez-bar"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.6,
+    "caveat": "Hammer curl approximates the EZ-bar's semi-pronated wrist angle and is wrist-friendly, but it is a neutral-grip movement biasing brachialis/brachioradialis rather than the supinated biceps.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-curl__dumbbell-curl",
+    "from_exercise_id": "exercise.move.machine-curl",
+    "to_exercise_id": "exercise.move.dumbbell-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.82,
+    "caveat": "Free-weight dumbbell curl replaces the fixed-path machine; loses the machine's stable resistance curve and added stability so more stabilizer demand, but trains the same biceps.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-curl__concentration-curl",
+    "from_exercise_id": "exercise.move.machine-curl",
+    "to_exercise_id": "exercise.move.concentration-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Concentration curl matches the machine's single-arm, braced, strict-isolation feel with peak-contraction emphasis; loses constant tension at the top and limits load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-preacher-curl__preacher-curl",
+    "from_exercise_id": "exercise.move.machine-preacher-curl",
+    "to_exercise_id": "exercise.move.preacher-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.85,
+    "caveat": "Free-weight preacher curl over a bench replicates the braced, short-head-biased position; loses the machine's constant tension at the contracted top and requires a preacher/incline bench.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.machine-preacher-curl__spider-curl",
+    "from_exercise_id": "exercise.move.machine-preacher-curl",
+    "to_exercise_id": "exercise.move.spider-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Spider curl (chest on an incline bench) gives a similar short-head-biased, braced-arm stimulus with peak tension at the top; loses the machine's smooth resistance curve.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.preacher-curl__spider-curl",
+    "from_exercise_id": "exercise.move.preacher-curl",
+    "to_exercise_id": "exercise.move.spider-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "ez-bar",
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "bench"
+    ],
+    "equivalence_score": 0.83,
+    "caveat": "Dumbbell spider curl keeps the short-head-biased braced-arm pattern without a bar; independent arms and slightly lighter loading, with peak tension shifted toward the contracted position.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.preacher-curl__concentration-curl",
+    "from_exercise_id": "exercise.move.preacher-curl",
+    "to_exercise_id": "exercise.move.concentration-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "ez-bar",
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "Concentration curl provides a single-arm braced, short-head-emphasized isolation similar to the preacher; loses the fixed arm-pad support and requires no bench, but limits load.",
+    "source_ids": []
+  }
+]

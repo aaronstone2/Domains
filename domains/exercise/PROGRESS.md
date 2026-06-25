@@ -124,3 +124,51 @@ a generic `load --table` command is a future engine nicety).
 **Next:** Phase C `movements` — `movement_patterns` → `exercises` (movers cite the now-frozen muscle ids)
 → `substitutions`. This is the largest extraction (target ~120–200 exercises). Then the contested-anatomy
 `claims` (Phase D) can reuse the EMG papers already ingested.
+
+## Session 4 — 2026-06-25 — Phase C: `movements` patterns + exercises — DONE (lib)
+
+Dumped 38 movements docs + the 58 frozen muscle ids to scratch. Workflow: 1 pattern-taxonomy agent +
+11 category specialists (chest / back-vertical / back-horizontal / shoulders / biceps-triceps /
+forearms-grip / quads / hamstrings-hinge / glutes / calves / core) → all succeeded. The final
+LLM merge agent **looped on schema-validation** of the 210×22-field payload (session-limit interruption
++ a fragile single giant structured output) — stopped it and recovered deterministically: pulled the 11
+cached category results from the run journal and **merged/validated/normalized in Python**.
+
+**Result: 27 movement_patterns + 209 exercises** loaded (`extract/movement_patterns.json`, `exercises.json`).
+
+**Verified:** 0 invalid mover refs (every primary/secondary mover resolves to `exercise.muscles`); 0 unknown
+`movement_pattern_id`; 48 fixed-core / 161 dynamic-accessory; **130 exercises carry `grip_pattern_tags`**
+(pinky-gate join populated); 1 stray source ref (minor). Patterns by load: horizontal-push 20, horizontal-pull
+19, vertical-pull 18, hip-hinge 13, spinal-flexion 13, plantarflexion-knee-straight 12, ...
+
+**Gap notes (Phase 1.5 candidates):** 17 muscles are primary-mover of zero exercises — mostly true
+stabilizers (rotator cuff, serratus, popliteus, anconeus, plantaris, TFL), but adductors
+(`adductor-longus-brevis`) and shoulder external rotators (`teres-minor`/`subscapularis`) and
+`serratus-anterior` could use 1–2 dedicated exercises.
+
+**Lesson applied:** avoid one giant single-agent structured-output merge; prefer bounded per-group agents
++ deterministic Python merge. C2 (substitutions) will follow that pattern.
+
+`movements` STATUS: `c_extract: partial` (patterns + exercises done; `substitutions` next).
+
+## Session 5 — 2026-06-25 — Phase C: `movements.substitutions` — DONE
+
+8 bounded pattern-group agents (push/pull/quads/posterior/delts/arms/grip/calves-core) emitted swap
+edges; recovered from the run journal + merged/validated in Python (lesson from Session 4 applied — no
+giant single-agent merge).
+
+**Result: 292 substitution edges** loaded (`extract/substitutions.json`): 221 `equipment-unavailable`
++ 71 `injury-spare` (grip-bypass). 0 dropped, 0 dangling, 0 self-loops; avg equivalence 0.76.
+
+**Coverage guarantee met:** only **1/83** machine/cable/smith exercises lacks an equipment swap; only
+**1/40** high-grip exercises lacks a grip-bypass. The no-machine-swap + pinky grip-bypass requirements
+are now realized data.
+
+`movements` STATUS: `c_extract: done` (patterns + exercises + substitutions); `e_relationships: partial`.
+
+### Corpus state after Session 5
+`exercise.muscles` 58 · `movement_patterns` 27 · `exercises` 209 · `substitutions` 292 · plus 57
+ingested docs + BM25 FTS. Remaining: `programming` + `techniques` (A→D), Phase D `claims`
+(anatomy/programming/techniques), `constraints` (pinky + equipment profile), `routine` generator.
+Small gap-fills: 17 primary-mover-zero muscles (mostly stabilizers; adductors/ext-rotators/serratus
+worth a few exercises), 1 stray exercise source ref, 9 blocked T0–T2 sources (PMC-mirror patch).
