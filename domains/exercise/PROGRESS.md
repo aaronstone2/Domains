@@ -92,3 +92,35 @@ papers likely have open-access PMC versions — swap the publisher URL → PMC a
 
 **Next:** Phase C extraction — `anatomy.muscles` (the every-muscle backbone, freezes `muscle.id`) then
 `movements.{movement_patterns, exercises, substitutions}` from the 57 ingested docs.
+
+## Session 3 — 2026-06-24 — Phase C: `anatomy.muscles` — DONE (muscles)
+
+Dumped 19 anatomy docs to gitignored `anatomy/raw/scratch/`, ran 6 region specialists (back /
+chest-shoulder / arms-forearms / core / legs-upper / legs-lower) → merge pass that dedups, freezes
+the `exercise.muscle.<slug>` id namespace, wires antagonists, and runs a completeness check.
+
+**Result: 58 muscles** loaded into `exercise.muscles` (`extract/muscles.json` committed).
+
+| group | n | group | n | group | n |
+|---|--:|---|--:|---|--:|
+| back | 8 | forearms | 6 | hamstrings | 3 |
+| shoulders | 8 | core | 5 | hip-flexors | 3 |
+| arms | 7 | quads | 4 | adductors | 2 |
+| calves | 6 | glutes | 3 | chest | 2 / shins 1 |
+
+**Verified:** 13 biarticular muscles all carry `length_bias` (gastroc knee-extended, soleus mono,
+rectus-femoris hip-extended, hamstrings hip-flexed, biceps/triceps long heads, finger-flexors
+wrist-extended); **0 dangling antagonist_ids, 0 unresolved source_ids**; `exercise.muscle.finger-flexors`
+("crush-grip group") present = the **pinky-gate anatomy endpoint**. Merge collapsed 3 rotator-cuff
+duplicates + canonicalized the deltoid head ids (back vs shoulder agent naming clash) and repaired all
+cross-refs. No completeness gaps; deep/minor muscles folded into parent `heads[]`/notes per granularity rule.
+
+**Extension-table load:** muscles.json → `exercise.muscles` via `read_json_auto` + `INSERT BY NAME`
+(the base `ingest load` only handles sources/documents; extension tables load via duckdb directly —
+a generic `load --table` command is a future engine nicety).
+
+`anatomy` STATUS: `c_extract: partial` (muscles done + id frozen; `concepts` + Phase D `claims` pending).
+
+**Next:** Phase C `movements` — `movement_patterns` → `exercises` (movers cite the now-frozen muscle ids)
+→ `substitutions`. This is the largest extraction (target ~120–200 exercises). Then the contested-anatomy
+`claims` (Phase D) can reuse the EMG papers already ingested.
