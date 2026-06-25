@@ -4,10 +4,10 @@ domain: exercise
 leaf: programming
 depth: exhaustive        # scout | standard | exhaustive (see _shared/sessions/depth-profiles.md)
 phases:
-  meta_research: todo
-  a_survey: todo         # -> sources
-  b_ingest: todo         # -> documents + FTS
-  c_extract: todo        # -> entity tables
-  d_gold: todo           # -> verified facts (the irreducible layer)
+  meta_research: done
+  a_survey: done         # -> sources (69 in registry; 32 T0 metas + 13 T1 RCTs)
+  b_ingest: partial      # -> 50/67 T0-T2 ingested (17 paywalled-blocked, mirrors used); T3 deferred
+  c_extract: todo        # -> training_variables
+  d_gold: todo           # -> verified claims (the irreducible layer)
   e_relationships: todo  # -> typed graph
-updated: null
+updated: 2026-06-25
