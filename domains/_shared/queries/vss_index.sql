@@ -10,6 +10,7 @@ CREATE INDEX IF NOT EXISTS docker_emb_hnsw ON docker.embeddings USING HNSW (vect
 CREATE INDEX IF NOT EXISTS ecs_emb_hnsw ON ecs.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS exercise_emb_hnsw ON exercise.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS firecracker_emb_hnsw ON firecracker.embeddings USING HNSW (vector) WITH (metric = 'cosine');
+CREATE INDEX IF NOT EXISTS hci_emb_hnsw ON hci.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS k8s_emb_hnsw ON k8s.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS linux_emb_hnsw ON linux.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS market_emb_hnsw ON market.embeddings USING HNSW (vector) WITH (metric = 'cosine');

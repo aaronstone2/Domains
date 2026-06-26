@@ -1,0 +1,13 @@
+# Phase manifest — read by a new session to resume where the last one left off.
+# phase states: todo | partial | done
+domain: hci
+leaf: hci-grounding-synthesis
+depth: standard          # scout | standard | exhaustive (see _shared/sessions/depth-profiles.md)
+phases:
+  meta_research: todo
+  a_survey: todo         # -> sources
+  b_ingest: todo         # -> documents + FTS
+  c_extract: todo        # -> entity tables
+  d_gold: todo           # -> verified facts (the irreducible layer)
+  e_relationships: todo  # -> typed graph
+updated: null

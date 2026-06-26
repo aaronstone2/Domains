@@ -9,6 +9,7 @@ PRAGMA create_fts_index('docker.documents', 'source_id', 'content_md', stemmer='
 PRAGMA create_fts_index('ecs.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('exercise.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('firecracker.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('hci.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('k8s.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('linux.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('market.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
