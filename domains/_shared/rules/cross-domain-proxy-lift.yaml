@@ -1,0 +1,29 @@
+id: cross-domain-proxy-lift
+kind: sql_edge
+description: >
+  Cross-domain Layer-5 derivation: where mined Voice-of-Customer (voc) or empirical HCI (hci) evidence
+  grounds a market wedge claim, record the inverse edge back into the market graph so the market claim
+  itself carries a typed, provenance-stamped pointer to its proxy support — derived 'proxy_supported_by'
+  (voc) / 'empirically_grounded_by' (hci). HONESTY: this is a PROXY pointer only; it can never read as
+  experimental validation, and it is NOT created where an hci 'contradicts' edge exists for the same claim
+  (contested claims are not silently lifted). Derived edges are marked derived=TRUE for auditability.
+sql: |
+  SELECT v.to_id AS from_claim, v.from_id AS to_evidence,
+         CASE WHEN v.rel_type IN ('grounds','empirically_grounds') THEN 'empirically_grounded_by'
+              ELSE 'proxy_supported_by' END AS rel,
+         LEAST(0.6, COALESCE(v.confidence, 0.5)) AS c
+  FROM (
+    SELECT from_id, to_id, rel_type, confidence FROM voc.relationships
+      WHERE to_id LIKE 'market.claim%' AND rel_type IN ('grounds_by_proxy','weakly_grounds')
+    UNION ALL
+    SELECT from_id, to_id, rel_type, confidence FROM hci.relationships
+      WHERE to_id LIKE 'market.claim%' AND rel_type IN ('grounds','empirically_grounds')
+  ) v
+  WHERE NOT EXISTS (
+    SELECT 1 FROM hci.relationships hc
+    WHERE hc.to_id = v.to_id AND hc.rel_type = 'contradicts'
+  )
+  AND NOT EXISTS (
+    SELECT 1 FROM {domain}.relationships x
+    WHERE x.from_id = v.to_id AND x.to_id = v.from_id AND x.rel_type IN ('proxy_supported_by','empirically_grounded_by')
+  )
