@@ -5,6 +5,7 @@ INSTALL vss;
 LOAD vss;
 SET hnsw_enable_experimental_persistence = true;
 
+CREATE INDEX IF NOT EXISTS compintel_emb_hnsw ON compintel.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS devin_emb_hnsw ON devin.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS docker_emb_hnsw ON docker.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS ecs_emb_hnsw ON ecs.embeddings USING HNSW (vector) WITH (metric = 'cosine');

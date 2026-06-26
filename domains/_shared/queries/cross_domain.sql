@@ -4,6 +4,7 @@
 CREATE SCHEMA IF NOT EXISTS meta;
 
 CREATE OR REPLACE VIEW meta.all_sources AS
+  SELECT 'compintel' AS domain, * FROM compintel.sources UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.sources UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.sources UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.sources UNION ALL BY NAME
@@ -17,6 +18,7 @@ CREATE OR REPLACE VIEW meta.all_sources AS
   SELECT 'product' AS domain, * FROM product.sources;
 
 CREATE OR REPLACE VIEW meta.all_documents AS
+  SELECT 'compintel' AS domain, * FROM compintel.documents UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.documents UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.documents UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.documents UNION ALL BY NAME
@@ -30,6 +32,7 @@ CREATE OR REPLACE VIEW meta.all_documents AS
   SELECT 'product' AS domain, * FROM product.documents;
 
 CREATE OR REPLACE VIEW meta.all_concepts AS
+  SELECT 'compintel' AS domain, * FROM compintel.concepts UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.concepts UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.concepts UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.concepts UNION ALL BY NAME
@@ -43,6 +46,7 @@ CREATE OR REPLACE VIEW meta.all_concepts AS
   SELECT 'product' AS domain, * FROM product.concepts;
 
 CREATE OR REPLACE VIEW meta.all_commands AS
+  SELECT 'compintel' AS domain, * FROM compintel.commands UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.commands UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.commands UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.commands UNION ALL BY NAME
@@ -56,6 +60,7 @@ CREATE OR REPLACE VIEW meta.all_commands AS
   SELECT 'product' AS domain, * FROM product.commands;
 
 CREATE OR REPLACE VIEW meta.all_config_keys AS
+  SELECT 'compintel' AS domain, * FROM compintel.config_keys UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.config_keys UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.config_keys UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.config_keys UNION ALL BY NAME
@@ -69,6 +74,7 @@ CREATE OR REPLACE VIEW meta.all_config_keys AS
   SELECT 'product' AS domain, * FROM product.config_keys;
 
 CREATE OR REPLACE VIEW meta.all_failure_modes AS
+  SELECT 'compintel' AS domain, * FROM compintel.failure_modes UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.failure_modes UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.failure_modes UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.failure_modes UNION ALL BY NAME
@@ -82,6 +88,7 @@ CREATE OR REPLACE VIEW meta.all_failure_modes AS
   SELECT 'product' AS domain, * FROM product.failure_modes;
 
 CREATE OR REPLACE VIEW meta.all_relationships AS
+  SELECT 'compintel' AS domain, * FROM compintel.relationships UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.relationships UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.relationships UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.relationships UNION ALL BY NAME
@@ -95,6 +102,7 @@ CREATE OR REPLACE VIEW meta.all_relationships AS
   SELECT 'product' AS domain, * FROM product.relationships;
 
 CREATE OR REPLACE VIEW meta.all_claims AS
+  SELECT 'compintel' AS domain, * FROM compintel.claims UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.claims UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.claims UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.claims UNION ALL BY NAME
@@ -108,6 +116,7 @@ CREATE OR REPLACE VIEW meta.all_claims AS
   SELECT 'product' AS domain, * FROM product.claims;
 
 CREATE OR REPLACE VIEW meta.all_forecast_log AS
+  SELECT 'compintel' AS domain, * FROM compintel.forecast_log UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.forecast_log UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.forecast_log UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.forecast_log UNION ALL BY NAME
@@ -121,6 +130,7 @@ CREATE OR REPLACE VIEW meta.all_forecast_log AS
   SELECT 'product' AS domain, * FROM product.forecast_log;
 
 CREATE OR REPLACE VIEW meta.all_claim_evidence AS
+  SELECT 'compintel' AS domain, * FROM compintel.claim_evidence UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.claim_evidence UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.claim_evidence UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.claim_evidence UNION ALL BY NAME
@@ -134,6 +144,7 @@ CREATE OR REPLACE VIEW meta.all_claim_evidence AS
   SELECT 'product' AS domain, * FROM product.claim_evidence;
 
 CREATE OR REPLACE VIEW meta.all_primary_studies AS
+  SELECT 'compintel' AS domain, * FROM compintel.primary_studies UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.primary_studies UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.primary_studies UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.primary_studies UNION ALL BY NAME
@@ -147,6 +158,7 @@ CREATE OR REPLACE VIEW meta.all_primary_studies AS
   SELECT 'product' AS domain, * FROM product.primary_studies;
 
 CREATE OR REPLACE VIEW meta.all_claim_history AS
+  SELECT 'compintel' AS domain, * FROM compintel.claim_history UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.claim_history UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.claim_history UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.claim_history UNION ALL BY NAME
@@ -160,6 +172,7 @@ CREATE OR REPLACE VIEW meta.all_claim_history AS
   SELECT 'product' AS domain, * FROM product.claim_history;
 
 CREATE OR REPLACE VIEW meta.all_embeddings AS
+  SELECT 'compintel' AS domain, * FROM compintel.embeddings UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.embeddings UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.embeddings UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.embeddings UNION ALL BY NAME
@@ -173,6 +186,7 @@ CREATE OR REPLACE VIEW meta.all_embeddings AS
   SELECT 'product' AS domain, * FROM product.embeddings;
 
 CREATE OR REPLACE VIEW meta.all_derivations AS
+  SELECT 'compintel' AS domain, * FROM compintel.derivations UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.derivations UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.derivations UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.derivations UNION ALL BY NAME
@@ -186,6 +200,7 @@ CREATE OR REPLACE VIEW meta.all_derivations AS
   SELECT 'product' AS domain, * FROM product.derivations;
 
 CREATE OR REPLACE VIEW meta.all_model_assumptions AS
+  SELECT 'compintel' AS domain, * FROM compintel.model_assumptions UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.model_assumptions UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.model_assumptions UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.model_assumptions UNION ALL BY NAME
@@ -199,6 +214,7 @@ CREATE OR REPLACE VIEW meta.all_model_assumptions AS
   SELECT 'product' AS domain, * FROM product.model_assumptions;
 
 CREATE OR REPLACE VIEW meta.all_model_runs AS
+  SELECT 'compintel' AS domain, * FROM compintel.model_runs UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.model_runs UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.model_runs UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.model_runs UNION ALL BY NAME

@@ -4,6 +4,7 @@
 INSTALL fts;
 LOAD fts;
 
+PRAGMA create_fts_index('compintel.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('devin.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('docker.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('ecs.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
