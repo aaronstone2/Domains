@@ -13,3 +13,4 @@ PRAGMA create_fts_index('k8s.documents', 'source_id', 'content_md', stemmer='por
 PRAGMA create_fts_index('linux.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('market.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('methodology.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('product.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);

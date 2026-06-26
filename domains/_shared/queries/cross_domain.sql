@@ -12,7 +12,8 @@ CREATE OR REPLACE VIEW meta.all_sources AS
   SELECT 'k8s' AS domain, * FROM k8s.sources UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.sources UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.sources UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.sources;
+  SELECT 'methodology' AS domain, * FROM methodology.sources UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.sources;
 
 CREATE OR REPLACE VIEW meta.all_documents AS
   SELECT 'devin' AS domain, * FROM devin.documents UNION ALL BY NAME
@@ -23,7 +24,8 @@ CREATE OR REPLACE VIEW meta.all_documents AS
   SELECT 'k8s' AS domain, * FROM k8s.documents UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.documents UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.documents UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.documents;
+  SELECT 'methodology' AS domain, * FROM methodology.documents UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.documents;
 
 CREATE OR REPLACE VIEW meta.all_concepts AS
   SELECT 'devin' AS domain, * FROM devin.concepts UNION ALL BY NAME
@@ -34,7 +36,8 @@ CREATE OR REPLACE VIEW meta.all_concepts AS
   SELECT 'k8s' AS domain, * FROM k8s.concepts UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.concepts UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.concepts UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.concepts;
+  SELECT 'methodology' AS domain, * FROM methodology.concepts UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.concepts;
 
 CREATE OR REPLACE VIEW meta.all_commands AS
   SELECT 'devin' AS domain, * FROM devin.commands UNION ALL BY NAME
@@ -45,7 +48,8 @@ CREATE OR REPLACE VIEW meta.all_commands AS
   SELECT 'k8s' AS domain, * FROM k8s.commands UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.commands UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.commands UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.commands;
+  SELECT 'methodology' AS domain, * FROM methodology.commands UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.commands;
 
 CREATE OR REPLACE VIEW meta.all_config_keys AS
   SELECT 'devin' AS domain, * FROM devin.config_keys UNION ALL BY NAME
@@ -56,7 +60,8 @@ CREATE OR REPLACE VIEW meta.all_config_keys AS
   SELECT 'k8s' AS domain, * FROM k8s.config_keys UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.config_keys UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.config_keys UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.config_keys;
+  SELECT 'methodology' AS domain, * FROM methodology.config_keys UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.config_keys;
 
 CREATE OR REPLACE VIEW meta.all_failure_modes AS
   SELECT 'devin' AS domain, * FROM devin.failure_modes UNION ALL BY NAME
@@ -67,7 +72,8 @@ CREATE OR REPLACE VIEW meta.all_failure_modes AS
   SELECT 'k8s' AS domain, * FROM k8s.failure_modes UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.failure_modes UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.failure_modes UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.failure_modes;
+  SELECT 'methodology' AS domain, * FROM methodology.failure_modes UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.failure_modes;
 
 CREATE OR REPLACE VIEW meta.all_relationships AS
   SELECT 'devin' AS domain, * FROM devin.relationships UNION ALL BY NAME
@@ -78,7 +84,8 @@ CREATE OR REPLACE VIEW meta.all_relationships AS
   SELECT 'k8s' AS domain, * FROM k8s.relationships UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.relationships UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.relationships UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.relationships;
+  SELECT 'methodology' AS domain, * FROM methodology.relationships UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.relationships;
 
 CREATE OR REPLACE VIEW meta.all_claims AS
   SELECT 'devin' AS domain, * FROM devin.claims UNION ALL BY NAME
@@ -89,7 +96,8 @@ CREATE OR REPLACE VIEW meta.all_claims AS
   SELECT 'k8s' AS domain, * FROM k8s.claims UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claims UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claims UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.claims;
+  SELECT 'methodology' AS domain, * FROM methodology.claims UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.claims;
 
 CREATE OR REPLACE VIEW meta.all_forecast_log AS
   SELECT 'devin' AS domain, * FROM devin.forecast_log UNION ALL BY NAME
@@ -100,7 +108,8 @@ CREATE OR REPLACE VIEW meta.all_forecast_log AS
   SELECT 'k8s' AS domain, * FROM k8s.forecast_log UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.forecast_log UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.forecast_log UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.forecast_log;
+  SELECT 'methodology' AS domain, * FROM methodology.forecast_log UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.forecast_log;
 
 CREATE OR REPLACE VIEW meta.all_claim_evidence AS
   SELECT 'devin' AS domain, * FROM devin.claim_evidence UNION ALL BY NAME
@@ -111,7 +120,8 @@ CREATE OR REPLACE VIEW meta.all_claim_evidence AS
   SELECT 'k8s' AS domain, * FROM k8s.claim_evidence UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claim_evidence UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claim_evidence UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.claim_evidence;
+  SELECT 'methodology' AS domain, * FROM methodology.claim_evidence UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.claim_evidence;
 
 CREATE OR REPLACE VIEW meta.all_primary_studies AS
   SELECT 'devin' AS domain, * FROM devin.primary_studies UNION ALL BY NAME
@@ -122,7 +132,8 @@ CREATE OR REPLACE VIEW meta.all_primary_studies AS
   SELECT 'k8s' AS domain, * FROM k8s.primary_studies UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.primary_studies UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.primary_studies UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.primary_studies;
+  SELECT 'methodology' AS domain, * FROM methodology.primary_studies UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.primary_studies;
 
 CREATE OR REPLACE VIEW meta.all_claim_history AS
   SELECT 'devin' AS domain, * FROM devin.claim_history UNION ALL BY NAME
@@ -133,7 +144,8 @@ CREATE OR REPLACE VIEW meta.all_claim_history AS
   SELECT 'k8s' AS domain, * FROM k8s.claim_history UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claim_history UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claim_history UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.claim_history;
+  SELECT 'methodology' AS domain, * FROM methodology.claim_history UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.claim_history;
 
 CREATE OR REPLACE VIEW meta.all_embeddings AS
   SELECT 'devin' AS domain, * FROM devin.embeddings UNION ALL BY NAME
@@ -144,7 +156,8 @@ CREATE OR REPLACE VIEW meta.all_embeddings AS
   SELECT 'k8s' AS domain, * FROM k8s.embeddings UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.embeddings UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.embeddings UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.embeddings;
+  SELECT 'methodology' AS domain, * FROM methodology.embeddings UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.embeddings;
 
 CREATE OR REPLACE VIEW meta.all_derivations AS
   SELECT 'devin' AS domain, * FROM devin.derivations UNION ALL BY NAME
@@ -155,7 +168,8 @@ CREATE OR REPLACE VIEW meta.all_derivations AS
   SELECT 'k8s' AS domain, * FROM k8s.derivations UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.derivations UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.derivations UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.derivations;
+  SELECT 'methodology' AS domain, * FROM methodology.derivations UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.derivations;
 
 CREATE OR REPLACE VIEW meta.all_model_assumptions AS
   SELECT 'devin' AS domain, * FROM devin.model_assumptions UNION ALL BY NAME
@@ -166,7 +180,8 @@ CREATE OR REPLACE VIEW meta.all_model_assumptions AS
   SELECT 'k8s' AS domain, * FROM k8s.model_assumptions UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.model_assumptions UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.model_assumptions UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.model_assumptions;
+  SELECT 'methodology' AS domain, * FROM methodology.model_assumptions UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.model_assumptions;
 
 CREATE OR REPLACE VIEW meta.all_model_runs AS
   SELECT 'devin' AS domain, * FROM devin.model_runs UNION ALL BY NAME
@@ -177,4 +192,5 @@ CREATE OR REPLACE VIEW meta.all_model_runs AS
   SELECT 'k8s' AS domain, * FROM k8s.model_runs UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.model_runs UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.model_runs UNION ALL BY NAME
-  SELECT 'methodology' AS domain, * FROM methodology.model_runs;
+  SELECT 'methodology' AS domain, * FROM methodology.model_runs UNION ALL BY NAME
+  SELECT 'product' AS domain, * FROM product.model_runs;

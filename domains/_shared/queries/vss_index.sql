@@ -14,3 +14,4 @@ CREATE INDEX IF NOT EXISTS k8s_emb_hnsw ON k8s.embeddings USING HNSW (vector) WI
 CREATE INDEX IF NOT EXISTS linux_emb_hnsw ON linux.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS market_emb_hnsw ON market.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS methodology_emb_hnsw ON methodology.embeddings USING HNSW (vector) WITH (metric = 'cosine');
+CREATE INDEX IF NOT EXISTS product_emb_hnsw ON product.embeddings USING HNSW (vector) WITH (metric = 'cosine');
