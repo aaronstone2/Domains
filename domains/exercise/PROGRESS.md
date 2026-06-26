@@ -214,6 +214,19 @@ or claims without a source; 0 dangling concept sources. **3 documented exception
 (a grip exercise — bypass would defeat it), `full-can-raise` + `scapular-dip` (unique-primary accessories with
 no same-pattern same-prime-mover sibling). Claims verdicts: 17 disputed / 15 supported / 8 refuted / 6 equivalent.
 
+## Session 9 — 2026-06-26 — Rigorous Phase D (3-vote) — DONE
+
+Re-ran the gold layer with the rigor that twice tripped the rate-limit — but via a token-efficient
+**diverse-skeptic-panel**: 3 independent lenses (volume-equation / outcome-not-proxy / trained-subject-quality)
+each judging all 46 claims, then 3-vote synthesis. 10 agents, no limit hit (vs ~184 for per-claim-3-refuter).
+
+**Hardening (lean → rigorous):** supported 15→7 · equivalent 6→5 · disputed 17→15 · refuted **8→19**.
+17 verdicts changed, almost all downgrades — the panel demoted regional-bias claims resting on EMG/activation
+rather than measured growth (incline→upper-pec, deep-squat→leg-growth → disputed; hip-thrust glute-superiority,
+drop-sets-more-muscle → **refuted**). `agreement_score` is now a true 3-vote tally (0.0: 26 claims, 0.33: 13, 0.67: 7).
+
+OA-mirror chase for the 31 blocked load-bearing T0/T1 primaries: in progress.
+
 ### RESEARCH LAYER COMPLETE (all 4 leaves A→E done)
 **58 muscles · 32 patterns · 233 exercises · 302 substitutions · 103 training_variables · 13 set_structures ·
 46 verified claims · 81 concepts · 2291 relationships · 168 docs + FTS · 231 sources.**
