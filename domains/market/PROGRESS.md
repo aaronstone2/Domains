@@ -146,7 +146,7 @@ appendix. Made **self-auditing**: every in-body `[C:slug]` is annotated with its
 `domains/market/queries/insights.sql`. Floors, not ceilings — every leaf can be deepened further; companies
 keep growing via continuous discovery; blocked sources can be re-fetched (Playwright/archive.org).
 
-## Session 5 — 2026-06-26 — Verification audit + paper honesty revision — IN PROGRESS
+## Session 5 — 2026-06-26 — Verification audit + paper honesty revision — DONE (806a41d)
 
 Ran a full deterministic audit (algebra row counts, phase STATUS, citation resolution, git) +
 an **independent adversarial reviewer** of the paper. Verified: all phases done; algebra populated
@@ -168,3 +168,30 @@ the supported unserved-feature whitespace; verified numbers only; correct citati
 **Deferred (next):** populate funding_rounds (fix §4/§9 competitive-funding gap; people still deferred);
 backfill source_ids on the 46 unsourced claims; retry 845 blocked sources; recalibrate verification for
 interpretive claims (2-source cross-check vs strict refute-panel).
+
+## Session 6 — 2026-06-26 — Autopilot enrichment: funding + claim backfill + paper re-render — DONE
+
+Closed three of the four Session-5 deferrals autonomously via background workflows + deterministic loaders.
+
+- **Funding (`market-funding`, 22 agents):** researched all 212 companies → **327 funding_rounds**, **103
+  companies** now carry total_funding/valuation/stage/investors; the rest correctly classified
+  OSS/subsidiary/public/unknown (no fabricated numbers). 296 funding-provenance URLs registered as
+  `sources` rows (T2, reference-only). Sanity: Anthropic $965B, Databricks $134B, Tableau $15.7B/acquired,
+  Airtable $11B, Neo4j $801M/$2.2B. Sources 3898 → **4194**.
+- **Claim backfill + reverify (`market-claim-backfill`, 12 agents):** FTS-grounded the 46 unsourced claims
+  against the *ingested corpus* only. **23 newly sourced**; 23 honestly left unsourced and demoted to
+  speculative/refuted/disputed (no fabrication). Integrity guard enforced: **0** supported/equivalent
+  claims with zero sources. Claims sourced 115 → **138**; unsourced 46 → **23** (all non-supported).
+- **Figures + paper re-render:** added `funding_landscape` + `funding_rounds_timeline` figures;
+  re-ran the full 10-section synthesis on the enriched DB (§4 now cites the incumbent funding war-chest).
+- **Integrity audit + surgical fixes:** an independent adversarial auditor caught that the re-render
+  reintroduced the refuted **$63.9B Enterprise-Data-Teams TAM** as fact across §1/§2/§7/§8/§9 (with a §1
+  citation-laundering to a supported sibling) and a tangled KG CAGR (21.1% vs 31.9%, both refuted/disputed).
+  Fixed all 12 defects by hand: caveated every $63.9B occurrence (→ "corpus-refuted, see §10"), anchored
+  KG sizing on the **supported** graph-DB figure (27.1% CAGR, $510M→$2.14B→~$25B/2035) and marked
+  KG-specific CAGR disputed, reframed 3 refuted design-theory claims as explicit hypotheses, and removed the
+  refuted $63.9B from the §1 TAM math. Re-verified: no uncaveated $63.9B in body; §1↔§10 no longer contradict.
+
+**Remaining deferred:** retry the ~1680 unfetched/blocked sources (Playwright/archive.org — skipped as
+high-risk/low-yield on a finalized corpus); commission real A/B behavioral validation to move the wedge
+hypotheses from refuted → supported (not machine-executable); `people` still intentionally deferred.

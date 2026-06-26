@@ -1,0 +1,217 @@
+{
+  "name": "funding_landscape",
+  "caption": "Best-funded competitors (total raised + valuation + last stage).",
+  "sql": "SELECT name, ROUND(total_funding_usd/1e6,0) total_funding_musd, ROUND(valuation_usd/1e9,2) valuation_busd, last_round_stage, last_round_date FROM market.companies WHERE is_self=false AND total_funding_usd IS NOT NULL ORDER BY total_funding_usd DESC LIMIT 30",
+  "rows": [
+    {
+      "name": "Anthropic",
+      "total_funding_musd": 119880.0,
+      "valuation_busd": 965.0,
+      "last_round_stage": "series-h",
+      "last_round_date": "2026-05-01"
+    },
+    {
+      "name": "Databricks",
+      "total_funding_musd": 20200.0,
+      "valuation_busd": 134.0,
+      "last_round_stage": "series-l",
+      "last_round_date": "2026-02-09"
+    },
+    {
+      "name": "Tableau",
+      "total_funding_musd": 15700.0,
+      "valuation_busd": 15.7,
+      "last_round_stage": "acquired",
+      "last_round_date": "2019-08-01"
+    },
+    {
+      "name": "Snowflake",
+      "total_funding_musd": 1560.0,
+      "valuation_busd": null,
+      "last_round_stage": null,
+      "last_round_date": null
+    },
+    {
+      "name": "Microsoft Visio",
+      "total_funding_musd": 1500.0,
+      "valuation_busd": 1.5,
+      "last_round_stage": null,
+      "last_round_date": null
+    },
+    {
+      "name": "Airtable",
+      "total_funding_musd": 1353.0,
+      "valuation_busd": 11.0,
+      "last_round_stage": "series-f",
+      "last_round_date": "2021-12-01"
+    },
+    {
+      "name": "ClickHouse",
+      "total_funding_musd": 1050.0,
+      "valuation_busd": 6.35,
+      "last_round_stage": "series-d",
+      "last_round_date": "2026-01-16"
+    },
+    {
+      "name": "Grafana Labs",
+      "total_funding_musd": 810.0,
+      "valuation_busd": 6.0,
+      "last_round_stage": "growth-equity",
+      "last_round_date": "2024-08-21"
+    },
+    {
+      "name": "OutSystems",
+      "total_funding_musd": 802.0,
+      "valuation_busd": 9.5,
+      "last_round_stage": "series-g",
+      "last_round_date": "2023-01-11"
+    },
+    {
+      "name": "Neo4j",
+      "total_funding_musd": 801.0,
+      "valuation_busd": 2.2,
+      "last_round_stage": "private-equity",
+      "last_round_date": "2024-11-19"
+    },
+    {
+      "name": "Neo4j (engine)",
+      "total_funding_musd": 801.0,
+      "valuation_busd": 2.2,
+      "last_round_stage": "private-equity",
+      "last_round_date": "2024-11-19"
+    },
+    {
+      "name": "Mendix",
+      "total_funding_musd": 781.0,
+      "valuation_busd": null,
+      "last_round_stage": null,
+      "last_round_date": null
+    },
+    {
+      "name": "Figma",
+      "total_funding_musd": 749.0,
+      "valuation_busd": 19.3,
+      "last_round_stage": "ipo",
+      "last_round_date": "2025-07-31"
+    },
+    {
+      "name": "Fivetran",
+      "total_funding_musd": 730.0,
+      "valuation_busd": 5.6,
+      "last_round_stage": "debt",
+      "last_round_date": "2023-05-18"
+    },
+    {
+      "name": "Temporal",
+      "total_funding_musd": 650.0,
+      "valuation_busd": 5.0,
+      "last_round_stage": "series-d",
+      "last_round_date": "2026-02-17"
+    },
+    {
+      "name": "Grafana",
+      "total_funding_musd": 564.0,
+      "valuation_busd": 6.0,
+      "last_round_stage": "series-d",
+      "last_round_date": "2024-09-24"
+    },
+    {
+      "name": "Miro",
+      "total_funding_musd": 476.0,
+      "valuation_busd": 17.5,
+      "last_round_stage": null,
+      "last_round_date": null
+    },
+    {
+      "name": "Dremio",
+      "total_funding_musd": 420.0,
+      "valuation_busd": 2.0,
+      "last_round_stage": "series-e",
+      "last_round_date": "2022-01-01"
+    },
+    {
+      "name": "dbt Labs",
+      "total_funding_musd": 416.0,
+      "valuation_busd": 4.2,
+      "last_round_stage": "series-d",
+      "last_round_date": "2022-02-09"
+    },
+    {
+      "name": "Astronomer",
+      "total_funding_musd": 376.0,
+      "valuation_busd": null,
+      "last_round_stage": "series-d",
+      "last_round_date": "2025-05-01"
+    },
+    {
+      "name": "Matillion",
+      "total_funding_musd": 312.0,
+      "valuation_busd": 1.5,
+      "last_round_stage": "series-e",
+      "last_round_date": "2021-09-15"
+    },
+    {
+      "name": "Looker",
+      "total_funding_musd": 283.0,
+      "valuation_busd": 2.6,
+      "last_round_stage": "series-e",
+      "last_round_date": "2018-12-01"
+    },
+    {
+      "name": "Creatio",
+      "total_funding_musd": 273.0,
+      "valuation_busd": 1.2,
+      "last_round_stage": "series-d",
+      "last_round_date": "2025-05-29"
+    },
+    {
+      "name": "n8n",
+      "total_funding_musd": 254.0,
+      "valuation_busd": 2.5,
+      "last_round_stage": null,
+      "last_round_date": null
+    },
+    {
+      "name": "Monte Carlo",
+      "total_funding_musd": 236.0,
+      "valuation_busd": 1.6,
+      "last_round_stage": null,
+      "last_round_date": null
+    },
+    {
+      "name": "Webflow",
+      "total_funding_musd": 214.0,
+      "valuation_busd": 2.1,
+      "last_round_stage": "Series B",
+      "last_round_date": "2021-01-01"
+    },
+    {
+      "name": "Workato",
+      "total_funding_musd": 200.0,
+      "valuation_busd": 7.5,
+      "last_round_stage": "Series E",
+      "last_round_date": "2021-12-01"
+    },
+    {
+      "name": "Mural",
+      "total_funding_musd": 199.0,
+      "valuation_busd": 2.0,
+      "last_round_stage": null,
+      "last_round_date": null
+    },
+    {
+      "name": "Airbyte",
+      "total_funding_musd": 181.0,
+      "valuation_busd": 1.5,
+      "last_round_stage": "series-b",
+      "last_round_date": "2021-12-01"
+    },
+    {
+      "name": "Hex",
+      "total_funding_musd": 172.0,
+      "valuation_busd": null,
+      "last_round_stage": "series-c",
+      "last_round_date": "2025-05-28"
+    }
+  ]
+}

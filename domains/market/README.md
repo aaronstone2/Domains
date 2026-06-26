@@ -6,9 +6,10 @@ by the corpus engine across **73 leaves** and phases A–E, culminating in a ful
 
 ## Start here
 
-- **The paper** → [`market-synthesis/extract/paper.md`](market-synthesis/extract/paper.md) — ~22.5k words,
+- **The paper** → [`market-synthesis/extract/paper.md`](market-synthesis/extract/paper.md) — ~20.8k words,
   10 sections + Methodology + a 161-claim ledger. Self-auditing: every `[C:slug]` citation carries its
-  adversarial verdict (✓supported / ~disputed / ✗refuted).
+  adversarial verdict (✓supported / ~disputed / ✗refuted). Now backed by a populated `funding_rounds`
+  table (327 rounds, 103 funded companies) and 138/161 claims grounded in corpus sources.
 - **The plan** → [`PLAN.md`](PLAN.md) — charter, the algebra, tier rubric, the 73-leaf tree, cross-leaf
   contracts (C1–C14), dependency waves, acceptance tests.
 - **The log** → [`PROGRESS.md`](PROGRESS.md) — session-by-session build (Sessions 0–4).
