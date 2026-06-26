@@ -121,6 +121,39 @@ def _cmd_load(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_verify(args: argparse.Namespace) -> int:
+    """Recalibrate the gold layer: assign verification standards, compute CIs, flag stale claims."""
+    from ingest.verify import recalibrate
+    if not args.domain:
+        print("verify: --domain is required", file=sys.stderr)
+        return 1
+    con = open_db(read_only=False)
+    try:
+        summary = recalibrate(con, args.domain)
+        if args.stale_only:
+            rows = con.execute(
+                f"SELECT id, verdict, last_verified, decay_halflife_days FROM {args.domain}.claims "
+                f"WHERE stale ORDER BY last_verified NULLS FIRST"
+            ).fetchall()
+            for r in rows:
+                print(f"STALE {r[0]}  verdict={r[1]}  last_verified={r[2]}  halflife={r[3]}d")
+    finally:
+        con.close()
+    print(f"verify: {summary}", file=sys.stderr)
+    return 0
+
+
+def _cmd_calibrate(args: argparse.Namespace) -> int:
+    """Brier-score resolved predictive claims for forecast calibration."""
+    from ingest.verify import calibrate
+    con = open_db(read_only=False)
+    try:
+        print(f"calibrate {args.domain}: {calibrate(con, args.domain)}")
+    finally:
+        con.close()
+    return 0
+
+
 def _cmd_load_extract(args: argparse.Namespace) -> int:
     """Load committed extension-table rows from domains/<domain>/[<leaf>/]extract/*.json into the DB."""
     if not args.domain:
@@ -179,6 +212,15 @@ def main(argv: list[str] | None = None) -> int:
     p_lx.add_argument("--domain", required=True)
     p_lx.add_argument("--leaf", default=None)
     p_lx.set_defaults(func=_cmd_load_extract)
+
+    p_verify = sub.add_parser("verify", help="recalibrate claims: standards + Wilson CIs + freshness")
+    p_verify.add_argument("--domain", required=True)
+    p_verify.add_argument("--stale-only", action="store_true", dest="stale_only")
+    p_verify.set_defaults(func=_cmd_verify)
+
+    p_cal = sub.add_parser("calibrate", help="Brier-score resolved predictive claims")
+    p_cal.add_argument("--domain", required=True)
+    p_cal.set_defaults(func=_cmd_calibrate)
 
     args = p.parse_args(argv)
     return int(args.func(args))

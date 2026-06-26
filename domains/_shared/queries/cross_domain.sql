@@ -90,3 +90,14 @@ CREATE OR REPLACE VIEW meta.all_claims AS
   SELECT 'linux' AS domain, * FROM linux.claims UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claims UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claims;
+
+CREATE OR REPLACE VIEW meta.all_forecast_log AS
+  SELECT 'devin' AS domain, * FROM devin.forecast_log UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.forecast_log UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.forecast_log UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.forecast_log UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.forecast_log UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.forecast_log UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.forecast_log UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.forecast_log UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.forecast_log;

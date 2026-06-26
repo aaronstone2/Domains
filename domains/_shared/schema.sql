@@ -96,12 +96,42 @@ CREATE TABLE IF NOT EXISTS {{schema}}.claims (
   affected_ids             VARCHAR[],             -- entities this claim governs
   supporting_source_ids    VARCHAR[],
   contradicting_source_ids VARCHAR[],
-  last_verified            DATE
+  last_verified            DATE,
+  -- Layer 6 — verification recalibration
+  verification_standard    VARCHAR,               -- descriptive | evaluative | predictive (how this claim is checked)
+  confidence_low           DOUBLE,                -- CI lower bound (not just a point agreement_score)
+  confidence_high          DOUBLE,                -- CI upper bound
+  decay_halflife_days      INTEGER,               -- how fast this claim goes stale
+  stale                    BOOLEAN,               -- last_verified aged past halflife OR a supporting source changed
+  forecast_resolved        BOOLEAN,               -- predictive claims: has the outcome resolved?
+  forecast_actual          VARCHAR                -- the resolved outcome (for calibration)
+);
+
+-- forecast_log — predictive-claim calibration (Brier scoring). Base so meta.all_forecast_log exists.
+CREATE TABLE IF NOT EXISTS {{schema}}.forecast_log (
+  id              VARCHAR PRIMARY KEY,
+  claim_id        VARCHAR,
+  predicted_prob  DOUBLE,                          -- P assigned when the forecast was made (0..1)
+  predicted_at    DATE,
+  resolves_by     DATE,
+  resolved        BOOLEAN,
+  outcome         INTEGER,                         -- 1 = came true, 0 = did not (NULL until resolved)
+  brier           DOUBLE,                          -- (predicted_prob - outcome)^2 once resolved
+  notes           VARCHAR
 );
 
 -- ───────────────────────────────── migrations (idempotent) ─────────────────────────────────
 -- Runs every init-db. Fresh rebuilds already have these from the CREATEs above; existing DBs that
 -- predate a column get it here. ALTER … ADD COLUMN IF NOT EXISTS is a no-op when the column exists.
 -- (Append new-column migrations here as the engine evolves; keep them grouped by the layer that added them.)
+-- Stage 0:
 ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS claim_type VARCHAR;
 ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS confidence DOUBLE;
+-- Layer 6 (verification recalibration):
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS verification_standard VARCHAR;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS confidence_low DOUBLE;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS confidence_high DOUBLE;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS decay_halflife_days INTEGER;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS stale BOOLEAN;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS forecast_resolved BOOLEAN;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS forecast_actual VARCHAR;

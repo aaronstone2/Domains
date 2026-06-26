@@ -28,6 +28,23 @@ verdict, never silently dropped.
 This maps directly onto the orchestration patterns (loop-until-dry finders, N-vote adversarial
 verify). Depth = how many finders and how many verify votes.
 
+## Verification standards — not every claim earns trust the same way (Layer 6)
+
+Depth sets *how hard* to verify; the claim's **`verification_standard`** sets *how*. Strict-refute
+panels are right for interpretive claims but waste effort (and over-refute) on plain facts. Each claim
+carries one of three standards, recalibrated mechanically by `ingest verify --domain <d>`:
+
+| Standard | What it fits | How it's verified | Engine support |
+|---|---|---|---|
+| **descriptive** | a fact: a price, a funding amount, a measured number | **≥2-source cross-check** (agreement, not a refute panel) | wide Wilson CI until ≥2 concurring sources |
+| **evaluative** | an interpretive/strategic judgement | **diverse-lens skeptic panel** (the exhaustive Phase-D refutation) | majority-survivor + recorded dissent |
+| **predictive** | a claim about the future | **logged to `forecast_log`, Brier-scored when it resolves** | `ingest calibrate` tracks accuracy over time |
+
+`ingest verify` also computes a **Wilson 95% confidence interval** (`confidence_low/high`) from the
+agreement score and the *number* of cited sources — so a claim backed by one blog reads as `[0.1, 0.9]`
+(honestly uncertain), not a falsely-precise point — and a **freshness/decay** flag (`stale`) when a
+claim ages past its `decay_halflife_days`. Stale facts get re-verified, not silently trusted forever.
+
 ## How depth is consumed
 
 - A leaf's research session reads `depth` from `STATUS.yaml` and sizes its fan-out accordingly.
