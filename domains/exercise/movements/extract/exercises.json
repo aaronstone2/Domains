@@ -8841,6 +8841,44 @@
     ]
   },
   {
+    "id": "exercise.move.stability-ball-rollout",
+    "name": "Stability-Ball Rollout (Anti-Extension)",
+    "aliases": [
+      "swiss ball rollout"
+    ],
+    "movement_pattern_id": "exercise.pattern.anti-extension",
+    "primary_muscle_ids": [
+      "exercise.muscle.rectus-abdominis"
+    ],
+    "secondary_muscle_ids": [
+      "exercise.muscle.external-oblique",
+      "exercise.muscle.transversus-abdominis",
+      "exercise.muscle.erector-spinae"
+    ],
+    "equipment": [
+      "bodyweight",
+      "stability-ball"
+    ],
+    "is_compound": false,
+    "is_unilateral": false,
+    "force_vector": "axial",
+    "rom_notes": "forearms on the ball, roll out as far as you can keep a braced neutral spine; scale ROM to ability",
+    "grip_demand": "none",
+    "grip_pattern_tags": [],
+    "joint_stress": [
+      "lumbar-spine",
+      "shoulder"
+    ],
+    "stimulus_to_fatigue": "high",
+    "regional_bias": "whole rectus + bracing erectors (anti-extension)",
+    "default_rep_range": "8-15",
+    "default_rir": "1-3",
+    "tempo": "slow controlled",
+    "cues": "brace, posterior pelvic tilt, resist lumbar extension, roll only as far as you can hold neutral",
+    "fixed_or_dynamic": "dynamic-accessory",
+    "source_ids": []
+  },
+  {
     "id": "exercise.move.stair-calf-raise",
     "name": "Stair / Step Calf Raise (Bodyweight)",
     "aliases": [
@@ -9889,6 +9927,45 @@
     "source_ids": [
       "exercise-movements-rp-triceps"
     ]
+  },
+  {
+    "id": "exercise.move.trx-fallout",
+    "name": "TRX / Suspension Fallout (Anti-Extension)",
+    "aliases": [
+      "suspension fallout",
+      "trx rollout"
+    ],
+    "movement_pattern_id": "exercise.pattern.anti-extension",
+    "primary_muscle_ids": [
+      "exercise.muscle.rectus-abdominis"
+    ],
+    "secondary_muscle_ids": [
+      "exercise.muscle.external-oblique",
+      "exercise.muscle.transversus-abdominis",
+      "exercise.muscle.erector-spinae"
+    ],
+    "equipment": [
+      "bodyweight",
+      "trx"
+    ],
+    "is_compound": false,
+    "is_unilateral": false,
+    "force_vector": "axial",
+    "rom_notes": "straps short, lean/reach the arms overhead-forward; difficulty scaled by foot position (more horizontal = harder)",
+    "grip_demand": "low",
+    "grip_pattern_tags": [],
+    "joint_stress": [
+      "lumbar-spine",
+      "shoulder"
+    ],
+    "stimulus_to_fatigue": "high",
+    "regional_bias": "whole rectus + bracing erectors (anti-extension); harder than ball, easier than ab-wheel",
+    "default_rep_range": "8-15",
+    "default_rir": "1-3",
+    "tempo": "slow controlled",
+    "cues": "ribs down, squeeze glutes, brace, no lumbar sag; regress by standing more upright",
+    "fixed_or_dynamic": "dynamic-accessory",
+    "source_ids": []
   },
   {
     "id": "exercise.move.v-up",

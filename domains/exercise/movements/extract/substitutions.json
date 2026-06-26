@@ -34,6 +34,36 @@
     "source_ids": []
   },
   {
+    "id": "exercise.sub.ab-wheel-rollout__stability-ball-rollout",
+    "from_exercise_id": "exercise.move.ab-wheel-rollout",
+    "to_exercise_id": "exercise.move.stability-ball-rollout",
+    "reason": "capability-regression",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "stability-ball"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Capability regression: an easier anti-extension that scales toward the full ab-wheel rollout.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.ab-wheel-rollout__trx-fallout",
+    "from_exercise_id": "exercise.move.ab-wheel-rollout",
+    "to_exercise_id": "exercise.move.trx-fallout",
+    "reason": "capability-regression",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [],
+    "equipment_required": [
+      "trx"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Capability regression: an easier anti-extension that scales toward the full ab-wheel rollout.",
+    "source_ids": []
+  },
+  {
     "id": "exercise.sub.american-hip-thrust__single-leg-hip-thrust",
     "from_exercise_id": "exercise.move.american-hip-thrust",
     "to_exercise_id": "exercise.move.single-leg-hip-thrust",
@@ -1310,6 +1340,25 @@
     "source_ids": []
   },
   {
+    "id": "exercise.sub.cable-hip-abduction-tfl__side-lying-hip-abduction",
+    "from_exercise_id": "exercise.move.cable-hip-abduction-tfl",
+    "to_exercise_id": "exercise.move.side-lying-hip-abduction",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "cable"
+    ],
+    "equipment_required": [
+      "bodyweight",
+      "band",
+      "ankle-weight"
+    ],
+    "equivalence_score": 0.78,
+    "caveat": "auto-derived: same movement pattern + primary mover with simpler equipment; verify load/ROM match.",
+    "source_ids": []
+  },
+  {
     "id": "exercise.sub.cable-hip-abduction__banded-hip-abduction",
     "from_exercise_id": "exercise.move.cable-hip-abduction",
     "to_exercise_id": "exercise.move.banded-hip-abduction",
@@ -1343,25 +1392,6 @@
     ],
     "equivalence_score": 0.85,
     "caveat": "Seated bilateral version; loses the standing/functional position and single-leg loading but allows heavier, smoother glute-medius loading.",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.cable-hip-abduction-tfl__side-lying-hip-abduction",
-    "from_exercise_id": "exercise.move.cable-hip-abduction-tfl",
-    "to_exercise_id": "exercise.move.side-lying-hip-abduction",
-    "reason": "equipment-unavailable",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "cable"
-    ],
-    "equipment_required": [
-      "bodyweight",
-      "band",
-      "ankle-weight"
-    ],
-    "equivalence_score": 0.78,
-    "caveat": "auto-derived: same movement pattern + primary mover with simpler equipment; verify load/ROM match.",
     "source_ids": []
   },
   {
@@ -2427,6 +2457,42 @@
     "source_ids": []
   },
   {
+    "id": "exercise.sub.hack-squat-calf-raise__stair-calf-raise",
+    "from_exercise_id": "exercise.move.hack-squat-calf-raise",
+    "to_exercise_id": "exercise.move.stair-calf-raise",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "Keeps straight-knee gastrocnemius work with full stretch off a step, but no external load means high-rep or single-leg variations are required to approach hack-squat overload.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.hack-squat-calf-raise__standing-calf-raise-dumbbell",
+    "from_exercise_id": "exercise.move.hack-squat-calf-raise",
+    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine",
+      "plate"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Straight-knee gastrocnemius training preserved; less stable than the hack-squat shoulder pads and load is limited to a single hand-held dumbbell on one leg.",
+    "source_ids": []
+  },
+  {
     "id": "exercise.sub.hack-squat__bulgarian-split-squat-dumbbell",
     "from_exercise_id": "exercise.move.hack-squat",
     "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
@@ -2476,42 +2542,6 @@
     ],
     "equivalence_score": 0.55,
     "caveat": "bodyweight knee-dominant quad option with strong stretch on rectus femoris but no external load progression and high knee-flexion demand on the patellar tendon",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.hack-squat-calf-raise__stair-calf-raise",
-    "from_exercise_id": "exercise.move.hack-squat-calf-raise",
-    "to_exercise_id": "exercise.move.stair-calf-raise",
-    "reason": "equipment-unavailable",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "machine",
-      "plate"
-    ],
-    "equipment_required": [
-      "bodyweight"
-    ],
-    "equivalence_score": 0.72,
-    "caveat": "Keeps straight-knee gastrocnemius work with full stretch off a step, but no external load means high-rep or single-leg variations are required to approach hack-squat overload.",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.hack-squat-calf-raise__standing-calf-raise-dumbbell",
-    "from_exercise_id": "exercise.move.hack-squat-calf-raise",
-    "to_exercise_id": "exercise.move.standing-calf-raise-dumbbell",
-    "reason": "equipment-unavailable",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "machine",
-      "plate"
-    ],
-    "equipment_required": [
-      "dumbbell"
-    ],
-    "equivalence_score": 0.8,
-    "caveat": "Straight-knee gastrocnemius training preserved; less stable than the hack-squat shoulder pads and load is limited to a single hand-held dumbbell on one leg.",
     "source_ids": []
   },
   {
@@ -3049,6 +3079,40 @@
     "source_ids": []
   },
   {
+    "id": "exercise.sub.leg-extension-extended-hip__reverse-nordic-curl",
+    "from_exercise_id": "exercise.move.leg-extension-extended-hip",
+    "to_exercise_id": "exercise.move.reverse-nordic-curl",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "best home match for the rectus-femoris bias: the reclined/extended-hip position is replicated by the long lever and hip extension of the reverse Nordic; no graded load and limited by the lengthened-position strength curve",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-extension-extended-hip__sissy-squat",
+    "from_exercise_id": "exercise.move.leg-extension-extended-hip",
+    "to_exercise_id": "exercise.move.sissy-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "bodyweight"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "keeps the hip extended to bias rectus femoris while isolating the quads; bodyweight-only with no load progression and high patellar-tendon demand",
+    "source_ids": []
+  },
+  {
     "id": "exercise.sub.leg-extension__goblet-squat",
     "from_exercise_id": "exercise.move.leg-extension",
     "to_exercise_id": "exercise.move.goblet-squat",
@@ -3098,92 +3162,6 @@
     ],
     "equivalence_score": 0.7,
     "caveat": "knee-extension-dominant bodyweight option isolating the quads; loses the seated-isolated constant tension and resistance-curve control, and is hardest in the stretched position rather than at full extension",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.leg-extension-extended-hip__reverse-nordic-curl",
-    "from_exercise_id": "exercise.move.leg-extension-extended-hip",
-    "to_exercise_id": "exercise.move.reverse-nordic-curl",
-    "reason": "equipment-unavailable",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "machine"
-    ],
-    "equipment_required": [
-      "bodyweight"
-    ],
-    "equivalence_score": 0.8,
-    "caveat": "best home match for the rectus-femoris bias: the reclined/extended-hip position is replicated by the long lever and hip extension of the reverse Nordic; no graded load and limited by the lengthened-position strength curve",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.leg-extension-extended-hip__sissy-squat",
-    "from_exercise_id": "exercise.move.leg-extension-extended-hip",
-    "to_exercise_id": "exercise.move.sissy-squat",
-    "reason": "equipment-unavailable",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "machine"
-    ],
-    "equipment_required": [
-      "bodyweight"
-    ],
-    "equivalence_score": 0.7,
-    "caveat": "keeps the hip extended to bias rectus femoris while isolating the quads; bodyweight-only with no load progression and high patellar-tendon demand",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.leg-press__bulgarian-split-squat-dumbbell",
-    "from_exercise_id": "exercise.move.leg-press",
-    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
-    "reason": "equipment-unavailable",
-    "shares_pattern": false,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "machine"
-    ],
-    "equipment_required": [
-      "dumbbell"
-    ],
-    "equivalence_score": 0.72,
-    "caveat": "unilateral substitute hitting the same quad heads with high stretch; more stabilizer/balance demand and no spinal-stability bypass that the leg press offered",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.leg-press__goblet-squat",
-    "from_exercise_id": "exercise.move.leg-press",
-    "to_exercise_id": "exercise.move.goblet-squat",
-    "reason": "equipment-unavailable",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "machine"
-    ],
-    "equipment_required": [
-      "dumbbell",
-      "kettlebell"
-    ],
-    "equivalence_score": 0.75,
-    "caveat": "loses back-supported high-load capacity; goblet caps load at what the front-rack/grip can hold so quad overload is much lower and trunk fatigue may limit before quads",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.leg-press__walking-lunge-dumbbell",
-    "from_exercise_id": "exercise.move.leg-press",
-    "to_exercise_id": "exercise.move.walking-lunge-dumbbell",
-    "reason": "equipment-unavailable",
-    "shares_pattern": false,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "machine"
-    ],
-    "equipment_required": [
-      "dumbbell"
-    ],
-    "equivalence_score": 0.65,
-    "caveat": "dynamic unilateral quad loader; loses constant-tension seated overload and adds coordination demand and a glute/hamstring contribution",
     "source_ids": []
   },
   {
@@ -3253,6 +3231,58 @@
     ],
     "equivalence_score": 0.7,
     "caveat": "unilateral quad option that drops the machine; shorter loaded ROM at the top and more balance demand than the supported single-leg press",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press__bulgarian-split-squat-dumbbell",
+    "from_exercise_id": "exercise.move.leg-press",
+    "to_exercise_id": "exercise.move.bulgarian-split-squat-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.72,
+    "caveat": "unilateral substitute hitting the same quad heads with high stretch; more stabilizer/balance demand and no spinal-stability bypass that the leg press offered",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press__goblet-squat",
+    "from_exercise_id": "exercise.move.leg-press",
+    "to_exercise_id": "exercise.move.goblet-squat",
+    "reason": "equipment-unavailable",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.75,
+    "caveat": "loses back-supported high-load capacity; goblet caps load at what the front-rack/grip can hold so quad overload is much lower and trunk fatigue may limit before quads",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.leg-press__walking-lunge-dumbbell",
+    "from_exercise_id": "exercise.move.leg-press",
+    "to_exercise_id": "exercise.move.walking-lunge-dumbbell",
+    "reason": "equipment-unavailable",
+    "shares_pattern": false,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "machine"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.65,
+    "caveat": "dynamic unilateral quad loader; loses constant-tension seated overload and adds coordination demand and a glute/hamstring contribution",
     "source_ids": []
   },
   {
@@ -4182,6 +4212,41 @@
     "source_ids": []
   },
   {
+    "id": "exercise.sub.romanian-deadlift-glute-bias__dumbbell-romanian-deadlift",
+    "from_exercise_id": "exercise.move.romanian-deadlift-glute-bias",
+    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell"
+    ],
+    "equivalence_score": 0.8,
+    "caveat": "Grip-bypass: dumbbells plus straps remove the heavy barbell grip crush; same glute-biased hinge with a slightly lower top-end load.",
+    "source_ids": []
+  },
+  {
+    "id": "exercise.sub.romanian-deadlift-glute-bias__single-leg-romanian-deadlift",
+    "from_exercise_id": "exercise.move.romanian-deadlift-glute-bias",
+    "to_exercise_id": "exercise.move.single-leg-romanian-deadlift",
+    "reason": "injury-spare",
+    "shares_pattern": true,
+    "shares_primary_mover": true,
+    "equipment_removed": [
+      "barbell"
+    ],
+    "equipment_required": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "equivalence_score": 0.7,
+    "caveat": "Grip-bypass: unilateral loading with one dumbbell/kettlebell (grip moderate) drastically cuts grip load for the same glute-max hip extension; adds balance demand.",
+    "source_ids": []
+  },
+  {
     "id": "exercise.sub.romanian-deadlift__45-degree-back-extension",
     "from_exercise_id": "exercise.move.romanian-deadlift",
     "to_exercise_id": "exercise.move.45-degree-back-extension",
@@ -4215,41 +4280,6 @@
     ],
     "equivalence_score": 0.85,
     "caveat": "Grip-bypass: dumbbells (grip moderate) lower the grip crush of a heavy barbell RDL and let you use straps freely; nearly identical hamstring/glute hinge with slightly less top-end load.",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.romanian-deadlift-glute-bias__dumbbell-romanian-deadlift",
-    "from_exercise_id": "exercise.move.romanian-deadlift-glute-bias",
-    "to_exercise_id": "exercise.move.dumbbell-romanian-deadlift",
-    "reason": "injury-spare",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "barbell"
-    ],
-    "equipment_required": [
-      "dumbbell"
-    ],
-    "equivalence_score": 0.8,
-    "caveat": "Grip-bypass: dumbbells plus straps remove the heavy barbell grip crush; same glute-biased hinge with a slightly lower top-end load.",
-    "source_ids": []
-  },
-  {
-    "id": "exercise.sub.romanian-deadlift-glute-bias__single-leg-romanian-deadlift",
-    "from_exercise_id": "exercise.move.romanian-deadlift-glute-bias",
-    "to_exercise_id": "exercise.move.single-leg-romanian-deadlift",
-    "reason": "injury-spare",
-    "shares_pattern": true,
-    "shares_primary_mover": true,
-    "equipment_removed": [
-      "barbell"
-    ],
-    "equipment_required": [
-      "dumbbell",
-      "kettlebell"
-    ],
-    "equivalence_score": 0.7,
-    "caveat": "Grip-bypass: unilateral loading with one dumbbell/kettlebell (grip moderate) drastically cuts grip load for the same glute-max hip extension; adds balance demand.",
     "source_ids": []
   },
   {

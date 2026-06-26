@@ -211,3 +211,32 @@ CREATE TABLE IF NOT EXISTS {{schema}}.gym_plates (
   est        BOOLEAN,
   PRIMARY KEY (gym_id, plate_lb)
 );
+
+-- ───────────── lifter capability profile (auto-regress what you can't do YET) ─────────────
+-- A lifter's current ability per lift/exercise so the routine generator auto-selects a doable
+-- variation + realistic starting load instead of prescribing what's out of reach. Stored per lifter
+-- (multi-lifter capable) as routine/lifters/<id>.json. Composes with gyms + constraints in generation.
+CREATE TABLE IF NOT EXISTS {{schema}}.lifters (
+  id            VARCHAR PRIMARY KEY,   -- lifter.<slug>
+  name          VARCHAR,
+  bodyweight_lb DOUBLE,
+  training_age  VARCHAR,               -- novice | intermediate | advanced
+  goals         VARCHAR,
+  notes         VARCHAR,
+  is_default    BOOLEAN,
+  updated       DATE
+);
+
+CREATE TABLE IF NOT EXISTS {{schema}}.lifter_capability (
+  lifter_id              VARCHAR NOT NULL,   -- -> lifters.id
+  key                    VARCHAR NOT NULL,   -- exercise id, movement_pattern slug, or capability key (bodyweight-pull-up, ab-wheel-rollout)
+  scope                  VARCHAR,            -- exercise | pattern | lift
+  status                 VARCHAR,            -- can | working-toward | cannot | proficient
+  current                VARCHAR,            -- current best (e.g. "<8 strict pull-ups", "no kneeling ab-wheel yet", "bench ~185x5")
+  target                 VARCHAR,            -- the goal capability
+  regress_to_exercise_id VARCHAR,            -- the exercise to use WHILE status is working-toward/cannot
+  est_working_load_lb    DOUBLE,             -- best-known working load if applicable
+  notes                  VARCHAR,
+  updated                DATE,
+  PRIMARY KEY (lifter_id, key)
+);
