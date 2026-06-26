@@ -1,141 +1,52 @@
 [
   {
-    "id": "exercise.pattern.horizontal-push",
-    "name": "Horizontal Push",
-    "plane": "transverse",
-    "description": "Pressing a load away from the torso in the horizontal/transverse plane, driven by shoulder horizontal adduction and elbow extension. Prime movers: pectoralis major (sternal/clavicular heads), anterior deltoid, triceps. Exemplars: flat/incline barbell and dumbbell bench press, machine chest press, push-up, cable fly. Bench inclination shifts emphasis from sternal pec (flat) toward clavicular pec and anterior deltoid (incline).",
-    "antagonist_pattern_id": "exercise.pattern.horizontal-pull",
-    "source_ids": [
-      "exercise-movements-emg-bench-inclines",
-      "exercise-movements-trial-bench-regional",
-      "exercise-movements-trial-pec-repatterning",
-      "exercise-movements-rp-chest",
-      "exercise-movements-rp-front-delt"
-    ]
-  },
-  {
-    "id": "exercise.pattern.horizontal-pull",
-    "name": "Horizontal Pull",
-    "plane": "transverse",
-    "description": "Drawing a load toward the torso in the horizontal/transverse plane via shoulder horizontal abduction/extension and elbow flexion. Prime movers: mid-trapezius, rhomboids, posterior deltoid, latissimus dorsi, with biceps/brachialis assisting. Exemplars: barbell/dumbbell row, seated cable row, chest-supported row, prone bench pull, inverted row.",
-    "antagonist_pattern_id": "exercise.pattern.horizontal-push",
-    "source_ids": [
-      "exercise-movements-straps-bench-pull",
-      "exercise-movements-rp-back",
-      "exercise-movements-rp-rear-delt"
-    ]
-  },
-  {
-    "id": "exercise.pattern.vertical-push",
-    "name": "Vertical Push (Overhead Press)",
-    "plane": "sagittal",
-    "description": "Pressing a load overhead, primarily shoulder flexion/abduction plus upward scapular rotation and elbow extension. Prime movers: anterior and lateral deltoid, upper trapezius, serratus anterior, triceps. Exemplars: standing/seated overhead barbell press, dumbbell shoulder press, machine shoulder press, push press, Arnold press.",
-    "antagonist_pattern_id": "exercise.pattern.vertical-pull",
-    "source_ids": [
-      "exercise-movements-rp-front-delt",
-      "exercise-movements-rp-side-delt"
-    ]
-  },
-  {
-    "id": "exercise.pattern.vertical-pull",
-    "name": "Vertical Pull",
-    "plane": "sagittal",
-    "description": "Pulling a load downward from overhead toward the torso via shoulder adduction/extension, downward scapular rotation, and elbow flexion. Prime movers: latissimus dorsi, teres major, lower trapezius, rhomboids, with biceps/brachialis assisting. Exemplars: pull-up, chin-up, lat pulldown (wide/neutral/supinated), straight-arm pulldown, lat prayer.",
-    "antagonist_pattern_id": "exercise.pattern.vertical-push",
-    "source_ids": [
-      "exercise-movements-emg-lat-sperandei",
-      "exercise-movements-pullup-grip-training",
-      "exercise-movements-henselmans-lat-prayers",
-      "exercise-movements-rp-back"
-    ]
-  },
-  {
-    "id": "exercise.pattern.hip-hinge",
-    "name": "Hip Hinge",
-    "plane": "sagittal",
-    "description": "Flexing and extending at the hip with a relatively fixed, neutral spine and minimal knee travel, loading the posterior chain through a long hip moment arm. Prime movers: gluteus maximus and hamstrings (acting at the hip), with erector spinae resisting trunk flexion isometrically. Exemplars: conventional/Romanian/stiff-leg deadlift, good morning, kettlebell swing.",
-    "antagonist_pattern_id": "",
-    "source_ids": [
-      "exercise-movements-sysrev-deadlift-emg",
-      "exercise-movements-emg-rdl-variants",
-      "exercise-movements-sbs-how-to-deadlift",
-      "exercise-movements-rp-hamstrings",
-      "exercise-movements-rp-glutes"
-    ]
-  },
-  {
-    "id": "exercise.pattern.squat",
-    "name": "Squat (Knee-Dominant Bilateral)",
-    "plane": "sagittal",
-    "description": "Simultaneous hip and knee flexion/extension under axial or anterior load with the trunk relatively upright, emphasizing the quadriceps with substantial gluteus maximus and adductor contribution. Exemplars: back squat (high/low bar), front squat, hack squat, leg press, goblet squat, belt squat.",
-    "antagonist_pattern_id": "",
-    "source_ids": [
-      "exercise-movements-sbs-how-to-squat",
-      "exercise-movements-emg-squat-vs-hipthrust",
-      "exercise-movements-rp-quads",
-      "exercise-movements-rp-glutes"
-    ]
-  },
-  {
-    "id": "exercise.pattern.lunge-split-squat",
-    "name": "Lunge / Split Squat (Unilateral Knee-Dominant)",
-    "plane": "sagittal",
-    "description": "Single-leg or staggered-stance hip-and-knee flexion/extension that loads one limb at a time while demanding frontal/transverse-plane stability. Prime movers: quadriceps and gluteus maximus of the lead leg, with adductors and gluteus medius stabilizing. Exemplars: forward/reverse/walking lunge, static split squat, Bulgarian split squat, step-up.",
-    "antagonist_pattern_id": "",
-    "source_ids": [
-      "exercise-movements-rp-quads",
-      "exercise-movements-rp-glutes"
-    ]
-  },
-  {
-    "id": "exercise.pattern.knee-flexion",
-    "name": "Knee Flexion (Leg Curl)",
-    "plane": "sagittal",
-    "description": "Isolated flexion of the knee against resistance, training the hamstrings in their knee-flexor role (distinct from their hip-extensor role in the hinge). Prime movers: biceps femoris, semitendinosus, semimembranosus, with gastrocnemius and popliteus assisting. Exemplars: lying, seated, and standing leg curl; Nordic ham curl; glute-ham raise. Hip position (seated vs lying) modulates hamstring length and regional emphasis.",
-    "antagonist_pattern_id": "exercise.pattern.knee-extension",
-    "source_ids": [
-      "exercise-movements-rp-hamstrings"
-    ]
-  },
-  {
-    "id": "exercise.pattern.knee-extension",
-    "name": "Knee Extension (Leg Extension)",
-    "plane": "sagittal",
-    "description": "Isolated extension of the knee against resistance, training the quadriceps independent of the hip. Prime movers: rectus femoris, vastus lateralis, vastus medialis, vastus intermedius. Exemplars: machine leg extension; hip/torso angle and a small lengthened-position tweak can bias the rectus femoris and alter regional growth.",
-    "antagonist_pattern_id": "exercise.pattern.knee-flexion",
-    "source_ids": [
-      "exercise-movements-sbs-leg-extension",
-      "exercise-movements-rp-quads"
-    ]
-  },
-  {
-    "id": "exercise.pattern.plantarflexion-knee-straight",
-    "name": "Plantarflexion, Knee Straight (Gastrocnemius)",
-    "plane": "sagittal",
-    "description": "Ankle plantarflexion performed with the knee extended, which keeps the biarticular gastrocnemius at length and makes it the primary contributor (alongside the soleus). Exemplars: standing calf raise, leg-press calf raise (legs straight), donkey calf raise.",
+    "id": "exercise.pattern.ankle-inversion-eversion",
+    "name": "Ankle Inversion / Eversion",
+    "plane": "frontal",
+    "description": "Frontal-plane motion of the foot at the subtalar/ankle complex — inversion (sole turning inward, driven by tibialis posterior with tibialis anterior) and its antagonist eversion (sole turning outward, driven by the fibularis/peroneal group). These deep lower-leg muscles also act as dynamic medial/lateral ankle stabilizers and arch supporters during weight-bearing. Exemplars: banded ankle inversion, banded ankle eversion, and stabilizer-focused single-leg calf raises where the tibialis posterior and fibularis group control medial-lateral balance. Primarily a prehab/ankle-resilience pattern; inversion and eversion are mutual antagonists within the one pattern.",
     "antagonist_pattern_id": "",
     "source_ids": [
       "exercise-movements-rp-calves"
     ]
   },
   {
-    "id": "exercise.pattern.plantarflexion-knee-bent",
-    "name": "Plantarflexion, Knee Bent (Soleus)",
+    "id": "exercise.pattern.anti-extension",
+    "name": "Anti-Extension (Trunk Stability)",
     "plane": "sagittal",
-    "description": "Ankle plantarflexion performed with the knee flexed (~90 degrees), which shortens and slackens the gastrocnemius and shifts the load onto the monoarticular soleus. Exemplars: seated calf raise, bent-knee leg-press calf raise.",
+    "description": "Isometrically resisting lumbar extension to maintain a braced, neutral spine against a force that would arch the back, training the rectus abdominis and deep core anteriorly. Exemplars: front plank, ab-wheel rollout, body saw, hollow-body hold, dead bug. A stability pattern with no direct concentric antagonist.",
     "antagonist_pattern_id": "",
     "source_ids": [
-      "exercise-movements-rp-calves"
+      "exercise-movements-rp-abs"
     ]
   },
   {
-    "id": "exercise.pattern.elbow-flexion-supinated",
-    "name": "Elbow Flexion, Supinated (Biceps Curl)",
-    "plane": "sagittal",
-    "description": "Elbow flexion with the forearm supinated, maximizing biceps brachii involvement (which both flexes the elbow and supinates the forearm). Exemplars: barbell/dumbbell/EZ-bar curl, preacher curl, incline curl, cable curl. The neutral- and pronated-grip variants are tracked as separate patterns because they shift load toward the brachialis/brachioradialis.",
-    "antagonist_pattern_id": "exercise.pattern.elbow-extension",
+    "id": "exercise.pattern.anti-lateral-flexion",
+    "name": "Anti-Lateral-Flexion (Trunk Stability)",
+    "plane": "frontal",
+    "description": "Isometrically resisting frontal-plane side-bending to keep the trunk vertical under an asymmetric load, training the quadratus lumborum and obliques. Exemplars: suitcase carry, single-arm farmer carry, side plank, standing single-arm overhead hold. A stability pattern with no direct concentric antagonist.",
+    "antagonist_pattern_id": "",
     "source_ids": [
-      "exercise-movements-rp-biceps"
+      "exercise-movements-rp-abs"
+    ]
+  },
+  {
+    "id": "exercise.pattern.anti-rotation",
+    "name": "Anti-Rotation (Trunk Stability)",
+    "plane": "transverse",
+    "description": "Isometrically resisting an externally applied rotational (transverse-plane) torque to keep the trunk square, training the obliques and deep core as anti-rotators. Exemplars: Pallof press, anti-rotation cable hold, single-arm farmer carry (resisting twist), bird-dog. A stability pattern with no direct concentric antagonist.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-rp-abs"
+    ]
+  },
+  {
+    "id": "exercise.pattern.elbow-extension",
+    "name": "Elbow Extension (Triceps)",
+    "plane": "sagittal",
+    "description": "Extension of the elbow against resistance, isolating the triceps brachii. Shoulder position changes which head is emphasized: overhead positions lengthen and bias the long head, while arm-at-side positions favor the lateral/medial heads. Exemplars: cable pushdown, overhead extension (EZ-bar/cable/dumbbell), skull-crusher, dip, close-grip bench press, kickback.",
+    "antagonist_pattern_id": "exercise.pattern.elbow-flexion-supinated",
+    "source_ids": [
+      "exercise-movements-rp-triceps"
     ]
   },
   {
@@ -162,67 +73,13 @@
     ]
   },
   {
-    "id": "exercise.pattern.elbow-extension",
-    "name": "Elbow Extension (Triceps)",
+    "id": "exercise.pattern.elbow-flexion-supinated",
+    "name": "Elbow Flexion, Supinated (Biceps Curl)",
     "plane": "sagittal",
-    "description": "Extension of the elbow against resistance, isolating the triceps brachii. Shoulder position changes which head is emphasized: overhead positions lengthen and bias the long head, while arm-at-side positions favor the lateral/medial heads. Exemplars: cable pushdown, overhead extension (EZ-bar/cable/dumbbell), skull-crusher, dip, close-grip bench press, kickback.",
-    "antagonist_pattern_id": "exercise.pattern.elbow-flexion-supinated",
+    "description": "Elbow flexion with the forearm supinated, maximizing biceps brachii involvement (which both flexes the elbow and supinates the forearm). Exemplars: barbell/dumbbell/EZ-bar curl, preacher curl, incline curl, cable curl. The neutral- and pronated-grip variants are tracked as separate patterns because they shift load toward the brachialis/brachioradialis.",
+    "antagonist_pattern_id": "exercise.pattern.elbow-extension",
     "source_ids": [
-      "exercise-movements-rp-triceps"
-    ]
-  },
-  {
-    "id": "exercise.pattern.shoulder-abduction",
-    "name": "Shoulder Abduction (Lateral Raise)",
-    "plane": "frontal",
-    "description": "Raising the arm away from the midline in the frontal plane, training the lateral (and supraspinatus/anterior) deltoid in its abductor role. Exemplars: dumbbell/cable/machine lateral raise, leaning cable lateral raise, upright row (wider grip). Distinct from horizontal abduction, which targets the posterior deltoid.",
-    "antagonist_pattern_id": "",
-    "source_ids": [
-      "exercise-movements-rp-side-delt"
-    ]
-  },
-  {
-    "id": "exercise.pattern.shoulder-horizontal-abduction",
-    "name": "Shoulder Horizontal Abduction (Rear Delt)",
-    "plane": "transverse",
-    "description": "Moving the arm backward away from the midline in the transverse plane with the arm elevated ~90 degrees, isolating the posterior deltoid (with mid-trap/rhomboid assistance). Exemplars: reverse pec-deck, bent-over/seated rear-delt dumbbell fly, cable rear-delt fly, face pull. It is the direct opposite of the horizontal-push (shoulder horizontal adduction) action.",
-    "antagonist_pattern_id": "exercise.pattern.horizontal-push",
-    "source_ids": [
-      "exercise-movements-rp-rear-delt"
-    ]
-  },
-  {
-    "id": "exercise.pattern.shoulder-flexion",
-    "name": "Shoulder Flexion (Front Raise)",
-    "plane": "sagittal",
-    "description": "Raising the arm forward and up in the sagittal plane, training the anterior deltoid (with clavicular pec assistance) in its flexor role. Exemplars: dumbbell/barbell/cable/plate front raise. Heavily overlapped by vertical and incline pressing, so often a low-priority accessory.",
-    "antagonist_pattern_id": "",
-    "source_ids": [
-      "exercise-movements-rp-front-delt"
-    ]
-  },
-  {
-    "id": "exercise.pattern.wrist-flexion",
-    "name": "Wrist Flexion",
-    "plane": "sagittal",
-    "description": "Flexing the wrist against resistance to train the anterior forearm flexor compartment (flexor carpi radialis/ulnaris, palmaris longus, and the finger flexors). Exemplars: seated/standing wrist curl (barbell or dumbbell), behind-the-back wrist curl. Closely related to crushing grip work.",
-    "antagonist_pattern_id": "exercise.pattern.wrist-extension",
-    "source_ids": [
-      "exercise-movements-rp-forearms",
-      "exercise-movements-rp-forearm-demystified",
-      "exercise-movements-sbs-grip"
-    ]
-  },
-  {
-    "id": "exercise.pattern.wrist-extension",
-    "name": "Wrist Extension",
-    "plane": "sagittal",
-    "description": "Extending the wrist against resistance to train the posterior forearm extensor compartment (extensor carpi radialis longus/brevis, extensor carpi ulnaris, extensor digitorum). Exemplars: reverse wrist curl, wrist roller (extension phase). Often paired with reverse curls for forearm balance.",
-    "antagonist_pattern_id": "exercise.pattern.wrist-flexion",
-    "source_ids": [
-      "exercise-movements-rp-forearms",
-      "exercise-movements-rp-forearm-demystified",
-      "exercise-movements-sbs-grip"
+      "exercise-movements-rp-biceps"
     ]
   },
   {
@@ -234,6 +91,17 @@
     "source_ids": [
       "exercise-movements-rp-glutes",
       "exercise-movements-gmax-clinical"
+    ]
+  },
+  {
+    "id": "exercise.pattern.hip-adduction",
+    "name": "Hip Adduction",
+    "plane": "frontal",
+    "description": "Drawing the femur back toward (and across) the midline in the frontal plane against resistance, training the hip adductor group (adductor longus/brevis/magnus, gracilis, pectineus). Exemplars: hip-adduction machine, standing cable hip adduction, Copenhagen plank/adduction, banded standing adduction. Sumo-stance squats, wide-stance leg press, and sumo deadlifts also load the adductors heavily as a knee-and-hip compound but are catalogued under squat/hinge; this pattern captures the dedicated frontal-plane adduction work. Contributes to frontal-plane pelvic and knee stability in single-leg and change-of-direction tasks.",
+    "antagonist_pattern_id": "exercise.pattern.hip-abduction",
+    "source_ids": [
+      "exercise-movements-rp-glutes",
+      "exercise-movements-rp-quads"
     ]
   },
   {
@@ -250,6 +118,171 @@
     ]
   },
   {
+    "id": "exercise.pattern.hip-hinge",
+    "name": "Hip Hinge",
+    "plane": "sagittal",
+    "description": "Flexing and extending at the hip with a relatively fixed, neutral spine and minimal knee travel, loading the posterior chain through a long hip moment arm. Prime movers: gluteus maximus and hamstrings (acting at the hip), with erector spinae resisting trunk flexion isometrically. Exemplars: conventional/Romanian/stiff-leg deadlift, good morning, kettlebell swing.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-sysrev-deadlift-emg",
+      "exercise-movements-emg-rdl-variants",
+      "exercise-movements-sbs-how-to-deadlift",
+      "exercise-movements-rp-hamstrings",
+      "exercise-movements-rp-glutes"
+    ]
+  },
+  {
+    "id": "exercise.pattern.horizontal-pull",
+    "name": "Horizontal Pull",
+    "plane": "transverse",
+    "description": "Drawing a load toward the torso in the horizontal/transverse plane via shoulder horizontal abduction/extension and elbow flexion. Prime movers: mid-trapezius, rhomboids, posterior deltoid, latissimus dorsi, with biceps/brachialis assisting. Exemplars: barbell/dumbbell row, seated cable row, chest-supported row, prone bench pull, inverted row.",
+    "antagonist_pattern_id": "exercise.pattern.horizontal-push",
+    "source_ids": [
+      "exercise-movements-straps-bench-pull",
+      "exercise-movements-rp-back",
+      "exercise-movements-rp-rear-delt"
+    ]
+  },
+  {
+    "id": "exercise.pattern.horizontal-push",
+    "name": "Horizontal Push",
+    "plane": "transverse",
+    "description": "Pressing a load away from the torso in the horizontal/transverse plane, driven by shoulder horizontal adduction and elbow extension. Prime movers: pectoralis major (sternal/clavicular heads), anterior deltoid, triceps. Exemplars: flat/incline barbell and dumbbell bench press, machine chest press, push-up, cable fly. Bench inclination shifts emphasis from sternal pec (flat) toward clavicular pec and anterior deltoid (incline).",
+    "antagonist_pattern_id": "exercise.pattern.horizontal-pull",
+    "source_ids": [
+      "exercise-movements-emg-bench-inclines",
+      "exercise-movements-trial-bench-regional",
+      "exercise-movements-trial-pec-repatterning",
+      "exercise-movements-rp-chest",
+      "exercise-movements-rp-front-delt"
+    ]
+  },
+  {
+    "id": "exercise.pattern.knee-extension",
+    "name": "Knee Extension (Leg Extension)",
+    "plane": "sagittal",
+    "description": "Isolated extension of the knee against resistance, training the quadriceps independent of the hip. Prime movers: rectus femoris, vastus lateralis, vastus medialis, vastus intermedius. Exemplars: machine leg extension; hip/torso angle and a small lengthened-position tweak can bias the rectus femoris and alter regional growth.",
+    "antagonist_pattern_id": "exercise.pattern.knee-flexion",
+    "source_ids": [
+      "exercise-movements-sbs-leg-extension",
+      "exercise-movements-rp-quads"
+    ]
+  },
+  {
+    "id": "exercise.pattern.knee-flexion",
+    "name": "Knee Flexion (Leg Curl)",
+    "plane": "sagittal",
+    "description": "Isolated flexion of the knee against resistance, training the hamstrings in their knee-flexor role (distinct from their hip-extensor role in the hinge). Prime movers: biceps femoris, semitendinosus, semimembranosus, with gastrocnemius and popliteus assisting. Exemplars: lying, seated, and standing leg curl; Nordic ham curl; glute-ham raise. Hip position (seated vs lying) modulates hamstring length and regional emphasis.",
+    "antagonist_pattern_id": "exercise.pattern.knee-extension",
+    "source_ids": [
+      "exercise-movements-rp-hamstrings"
+    ]
+  },
+  {
+    "id": "exercise.pattern.loaded-carry",
+    "name": "Loaded Carry",
+    "plane": "multi",
+    "description": "Locomotion while holding an external load, integrating grip endurance, trunk bracing (anti-flexion/lateral-flexion/rotation depending on load placement), postural stability, and gait. Exemplars: farmer's walk, suitcase carry, front-rack carry, overhead carry, yoke walk. Whole-body in nature, so no single antagonist pattern.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-sbs-grip"
+    ]
+  },
+  {
+    "id": "exercise.pattern.lunge-split-squat",
+    "name": "Lunge / Split Squat (Unilateral Knee-Dominant)",
+    "plane": "sagittal",
+    "description": "Single-leg or staggered-stance hip-and-knee flexion/extension that loads one limb at a time while demanding frontal/transverse-plane stability. Prime movers: quadriceps and gluteus maximus of the lead leg, with adductors and gluteus medius stabilizing. Exemplars: forward/reverse/walking lunge, static split squat, Bulgarian split squat, step-up.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-rp-quads",
+      "exercise-movements-rp-glutes"
+    ]
+  },
+  {
+    "id": "exercise.pattern.plantarflexion-knee-bent",
+    "name": "Plantarflexion, Knee Bent (Soleus)",
+    "plane": "sagittal",
+    "description": "Ankle plantarflexion performed with the knee flexed (~90 degrees), which shortens and slackens the gastrocnemius and shifts the load onto the monoarticular soleus. Exemplars: seated calf raise, bent-knee leg-press calf raise.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-rp-calves"
+    ]
+  },
+  {
+    "id": "exercise.pattern.plantarflexion-knee-straight",
+    "name": "Plantarflexion, Knee Straight (Gastrocnemius)",
+    "plane": "sagittal",
+    "description": "Ankle plantarflexion performed with the knee extended, which keeps the biarticular gastrocnemius at length and makes it the primary contributor (alongside the soleus). Exemplars: standing calf raise, leg-press calf raise (legs straight), donkey calf raise.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-rp-calves"
+    ]
+  },
+  {
+    "id": "exercise.pattern.scapular-protraction",
+    "name": "Scapular Protraction / Upward Rotation (Serratus Anterior)",
+    "plane": "transverse",
+    "description": "Drawing the scapula forward around the ribcage (protraction) and rotating it upward, holding the shoulder blade flush to the thorax. Prime mover: serratus anterior (with the upper/lower trapezius co-acting as the force couple for upward rotation, and the pectoralis minor contributing to protraction/depression and scapular tilt). Exemplars: serratus punch / push-up-plus (scapular push-up), supine cable or dumbbell scapular protraction (closed- and open-chain reach-throughs), wall slide, overhead shrug. A scapular-control / prehab pattern; its antagonist is scapular retraction (the rear-delt / horizontal-pull family). Distinct from glenohumeral pressing because the elbows stay locked and the motion is pure scapular travel.",
+    "antagonist_pattern_id": "exercise.pattern.shoulder-horizontal-abduction",
+    "source_ids": [
+      "exercise-movements-rp-front-delt",
+      "exercise-movements-henselmans-exercise-selection"
+    ]
+  },
+  {
+    "id": "exercise.pattern.shoulder-abduction",
+    "name": "Shoulder Abduction (Lateral Raise)",
+    "plane": "frontal",
+    "description": "Raising the arm away from the midline in the frontal plane, training the lateral (and supraspinatus/anterior) deltoid in its abductor role. Exemplars: dumbbell/cable/machine lateral raise, leaning cable lateral raise, upright row (wider grip). Distinct from horizontal abduction, which targets the posterior deltoid.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-rp-side-delt"
+    ]
+  },
+  {
+    "id": "exercise.pattern.shoulder-external-rotation",
+    "name": "Shoulder External Rotation (Rotator Cuff)",
+    "plane": "transverse",
+    "description": "Outward rotation of the humerus about its long axis against resistance, training the posterior rotator cuff in its prime-mover role. Prime movers: infraspinatus and teres minor, with the supraspinatus assisting and (in the full-can/scaption variant) acting as an abductor at length. Exemplars: cable/band external rotation with the elbow pinned at the side, external rotation at 90-degree abduction (throwers' / 'L' position), side-lying dumbbell external rotation, full-can raise. A low-load prehab/accessory pattern that builds glenohumeral stability and balances the much stronger internal rotators.",
+    "antagonist_pattern_id": "exercise.pattern.shoulder-internal-rotation",
+    "source_ids": [
+      "exercise-movements-rp-rear-delt",
+      "exercise-movements-henselmans-exercise-selection"
+    ]
+  },
+  {
+    "id": "exercise.pattern.shoulder-flexion",
+    "name": "Shoulder Flexion (Front Raise)",
+    "plane": "sagittal",
+    "description": "Raising the arm forward and up in the sagittal plane, training the anterior deltoid (with clavicular pec assistance) in its flexor role. Exemplars: dumbbell/barbell/cable/plate front raise. Heavily overlapped by vertical and incline pressing, so often a low-priority accessory.",
+    "antagonist_pattern_id": "",
+    "source_ids": [
+      "exercise-movements-rp-front-delt"
+    ]
+  },
+  {
+    "id": "exercise.pattern.shoulder-horizontal-abduction",
+    "name": "Shoulder Horizontal Abduction (Rear Delt)",
+    "plane": "transverse",
+    "description": "Moving the arm backward away from the midline in the transverse plane with the arm elevated ~90 degrees, isolating the posterior deltoid (with mid-trap/rhomboid assistance). Exemplars: reverse pec-deck, bent-over/seated rear-delt dumbbell fly, cable rear-delt fly, face pull. It is the direct opposite of the horizontal-push (shoulder horizontal adduction) action.",
+    "antagonist_pattern_id": "exercise.pattern.horizontal-push",
+    "source_ids": [
+      "exercise-movements-rp-rear-delt"
+    ]
+  },
+  {
+    "id": "exercise.pattern.shoulder-internal-rotation",
+    "name": "Shoulder Internal Rotation (Rotator Cuff)",
+    "plane": "transverse",
+    "description": "Inward rotation of the humerus about its long axis against resistance, training the anterior rotator cuff. Prime mover: subscapularis (the largest and strongest cuff muscle), with the pectoralis major, latissimus dorsi, teres major, and anterior deltoid assisting as larger internal rotators. Exemplars: cable/band internal rotation with the elbow pinned at the side, lying dumbbell internal rotation. The direct antagonist of shoulder external rotation; typically far stronger, so trained for cuff balance and anterior-shoulder stability rather than size.",
+    "antagonist_pattern_id": "exercise.pattern.shoulder-external-rotation",
+    "source_ids": [
+      "exercise-movements-rp-rear-delt",
+      "exercise-movements-henselmans-exercise-selection"
+    ]
+  },
+  {
     "id": "exercise.pattern.spinal-flexion",
     "name": "Spinal Flexion (Trunk Flexion / Crunch)",
     "plane": "sagittal",
@@ -260,42 +293,63 @@
     ]
   },
   {
-    "id": "exercise.pattern.anti-rotation",
-    "name": "Anti-Rotation (Trunk Stability)",
-    "plane": "transverse",
-    "description": "Isometrically resisting an externally applied rotational (transverse-plane) torque to keep the trunk square, training the obliques and deep core as anti-rotators. Exemplars: Pallof press, anti-rotation cable hold, single-arm farmer carry (resisting twist), bird-dog. A stability pattern with no direct concentric antagonist.",
-    "antagonist_pattern_id": "",
-    "source_ids": [
-      "exercise-movements-rp-abs"
-    ]
-  },
-  {
-    "id": "exercise.pattern.anti-extension",
-    "name": "Anti-Extension (Trunk Stability)",
+    "id": "exercise.pattern.squat",
+    "name": "Squat (Knee-Dominant Bilateral)",
     "plane": "sagittal",
-    "description": "Isometrically resisting lumbar extension to maintain a braced, neutral spine against a force that would arch the back, training the rectus abdominis and deep core anteriorly. Exemplars: front plank, ab-wheel rollout, body saw, hollow-body hold, dead bug. A stability pattern with no direct concentric antagonist.",
+    "description": "Simultaneous hip and knee flexion/extension under axial or anterior load with the trunk relatively upright, emphasizing the quadriceps with substantial gluteus maximus and adductor contribution. Exemplars: back squat (high/low bar), front squat, hack squat, leg press, goblet squat, belt squat.",
     "antagonist_pattern_id": "",
     "source_ids": [
-      "exercise-movements-rp-abs"
+      "exercise-movements-sbs-how-to-squat",
+      "exercise-movements-emg-squat-vs-hipthrust",
+      "exercise-movements-rp-quads",
+      "exercise-movements-rp-glutes"
     ]
   },
   {
-    "id": "exercise.pattern.anti-lateral-flexion",
-    "name": "Anti-Lateral-Flexion (Trunk Stability)",
-    "plane": "frontal",
-    "description": "Isometrically resisting frontal-plane side-bending to keep the trunk vertical under an asymmetric load, training the quadratus lumborum and obliques. Exemplars: suitcase carry, single-arm farmer carry, side plank, standing single-arm overhead hold. A stability pattern with no direct concentric antagonist.",
-    "antagonist_pattern_id": "",
+    "id": "exercise.pattern.vertical-pull",
+    "name": "Vertical Pull",
+    "plane": "sagittal",
+    "description": "Pulling a load downward from overhead toward the torso via shoulder adduction/extension, downward scapular rotation, and elbow flexion. Prime movers: latissimus dorsi, teres major, lower trapezius, rhomboids, with biceps/brachialis assisting. Exemplars: pull-up, chin-up, lat pulldown (wide/neutral/supinated), straight-arm pulldown, lat prayer.",
+    "antagonist_pattern_id": "exercise.pattern.vertical-push",
     "source_ids": [
-      "exercise-movements-rp-abs"
+      "exercise-movements-emg-lat-sperandei",
+      "exercise-movements-pullup-grip-training",
+      "exercise-movements-henselmans-lat-prayers",
+      "exercise-movements-rp-back"
     ]
   },
   {
-    "id": "exercise.pattern.loaded-carry",
-    "name": "Loaded Carry",
-    "plane": "multi",
-    "description": "Locomotion while holding an external load, integrating grip endurance, trunk bracing (anti-flexion/lateral-flexion/rotation depending on load placement), postural stability, and gait. Exemplars: farmer's walk, suitcase carry, front-rack carry, overhead carry, yoke walk. Whole-body in nature, so no single antagonist pattern.",
-    "antagonist_pattern_id": "",
+    "id": "exercise.pattern.vertical-push",
+    "name": "Vertical Push (Overhead Press)",
+    "plane": "sagittal",
+    "description": "Pressing a load overhead, primarily shoulder flexion/abduction plus upward scapular rotation and elbow extension. Prime movers: anterior and lateral deltoid, upper trapezius, serratus anterior, triceps. Exemplars: standing/seated overhead barbell press, dumbbell shoulder press, machine shoulder press, push press, Arnold press.",
+    "antagonist_pattern_id": "exercise.pattern.vertical-pull",
     "source_ids": [
+      "exercise-movements-rp-front-delt",
+      "exercise-movements-rp-side-delt"
+    ]
+  },
+  {
+    "id": "exercise.pattern.wrist-extension",
+    "name": "Wrist Extension",
+    "plane": "sagittal",
+    "description": "Extending the wrist against resistance to train the posterior forearm extensor compartment (extensor carpi radialis longus/brevis, extensor carpi ulnaris, extensor digitorum). Exemplars: reverse wrist curl, wrist roller (extension phase). Often paired with reverse curls for forearm balance.",
+    "antagonist_pattern_id": "exercise.pattern.wrist-flexion",
+    "source_ids": [
+      "exercise-movements-rp-forearms",
+      "exercise-movements-rp-forearm-demystified",
+      "exercise-movements-sbs-grip"
+    ]
+  },
+  {
+    "id": "exercise.pattern.wrist-flexion",
+    "name": "Wrist Flexion",
+    "plane": "sagittal",
+    "description": "Flexing the wrist against resistance to train the anterior forearm flexor compartment (flexor carpi radialis/ulnaris, palmaris longus, and the finger flexors). Exemplars: seated/standing wrist curl (barbell or dumbbell), behind-the-back wrist curl. Closely related to crushing grip work.",
+    "antagonist_pattern_id": "exercise.pattern.wrist-extension",
+    "source_ids": [
+      "exercise-movements-rp-forearms",
+      "exercise-movements-rp-forearm-demystified",
       "exercise-movements-sbs-grip"
     ]
   }

@@ -6,8 +6,8 @@ depth: exhaustive        # scout | standard | exhaustive (see _shared/sessions/d
 phases:
   meta_research: done
   a_survey: done         # -> sources (35 in registry)
-  b_ingest: partial      # -> documents + FTS: 19/20 T0-T2 ingested (1 blocked); 15 T3 deferred
-  c_extract: partial     # -> muscles 58/58 loaded + id namespace frozen; concepts + Phase D claims pending
+  b_ingest: done         # -> 29 docs (all fetchable tiers ingested; hard-paywalled = cite-only, OA mirrors used)
+  c_extract: done        # -> muscles 58 + concepts (81 domain-wide glossary) loaded
   d_gold: done           # -> contested-anatomy claims verified (lat/calf/incline/hip-thrust/RF)
-  e_relationships: todo  # -> typed graph
-updated: 2026-06-24
+  e_relationships: done  # -> relationships graph projected (2291 typed edges domain-wide)
+updated: 2026-06-26

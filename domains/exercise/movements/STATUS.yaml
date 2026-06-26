@@ -6,8 +6,8 @@ depth: exhaustive        # scout | standard | exhaustive (see _shared/sessions/d
 phases:
   meta_research: done
   a_survey: done         # -> sources (85 in registry)
-  b_ingest: partial      # -> documents + FTS: 38/46 T0-T2 ingested (8 blocked); 39 T3 deferred
+  b_ingest: done         # -> 58 docs (all fetchable tiers ingested; hard-paywalled = cite-only)
   c_extract: done        # -> 27 patterns + 209 exercises + 292 substitutions loaded
-  d_gold: todo           # -> verified facts (the irreducible layer)
-  e_relationships: partial # -> substitutions table = the swap graph; cross-table edges pending
+  d_gold: done           # -> +24 movements regional-bias claims (46 claims total, adversarial)
+  e_relationships: done  # -> relationships graph projected (2291 typed edges incl. the swap graph)
 updated: 2026-06-25

@@ -6,8 +6,8 @@ depth: exhaustive        # scout | standard | exhaustive (see _shared/sessions/d
 phases:
   meta_research: done
   a_survey: done         # -> sources (69 in registry; 32 T0 metas + 13 T1 RCTs)
-  b_ingest: partial      # -> 50/67 T0-T2 ingested (17 paywalled-blocked, mirrors used); T3 deferred
+  b_ingest: done         # -> 53 docs (all fetchable tiers ingested; hard-paywalled = cite-only, OA mirrors used)
   c_extract: done        # -> 103 training_variables loaded (53 meta-grade)
   d_gold: done           # -> claims verified (programming share of 22; adversarial)
-  e_relationships: todo  # -> typed graph
+  e_relationships: done  # -> relationships graph projected (2291 typed edges domain-wide)
 updated: 2026-06-25

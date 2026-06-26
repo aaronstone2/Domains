@@ -1,0 +1,1249 @@
+[
+  {
+    "id": "exercise.concept.length-tension-relationship",
+    "name": "Length-tension relationship",
+    "kind": "principle",
+    "description": "A muscle's active (cross-bridge) force depends on its length: peak isometric force occurs near optimal sarcomere length where thick-thin filament overlap is maximal, declining linearly on the descending limb to zero at ~3.65 um where overlap vanishes, and falling on the ascending limb at short lengths (Gordon, Huxley & Julian 1966). Because joint angle sets muscle length, this curve predicts force from joint position during slow/quasi-isometric contractions and underlies why exercise variants that change muscle length change force capacity. Submaximal/physiological activation distorts the textbook curve via length-dependent activation factors.",
+    "source_ids": [
+      "exercise-anatomy-pmc-length-tension-understanding",
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg",
+      "exercise-anatomy-pmc-gastroc-plantarflexion-torque-angle"
+    ],
+    "aliases": [
+      "tension-length relationship",
+      "force-length curve",
+      "force-length relationship"
+    ]
+  },
+  {
+    "id": "exercise.concept.passive-insufficiency",
+    "name": "Passive insufficiency",
+    "kind": "phenomenon",
+    "description": "A functional limitation of a multi-joint muscle in which it is stretched to its maximal length across both joints it spans, so that its passive elastic tension restricts further range of motion. For rectus femoris, full knee flexion limits the hip's capacity to extend (and vice versa) because the biarticular muscle is at its longest. Passive tension from muscle and connective tissue can also contribute force at the start of a stretched-position exercise (e.g., the lengthened biceps in the incline dumbbell curl).",
+    "source_ids": [
+      "exercise-anatomy-statpearls-rectus-femoris",
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg"
+    ],
+    "aliases": [
+      "passive tension limitation"
+    ]
+  },
+  {
+    "id": "exercise.concept.active-insufficiency",
+    "name": "Active insufficiency",
+    "kind": "phenomenon",
+    "description": "A functional limitation of a multi-joint (biarticular) muscle in which it cannot generate full force at one joint because it is already maximally shortened across the other joint it spans. Classic textbook example: rectus femoris becomes a weak knee extensor when the hip is simultaneously flexed (seated), because the muscle is highly contracted at both ends. EMG corroborates this neurally as well as mechanically: rectus femoris activation is significantly smaller during hip flexion than knee extension across all regions, and the distal region in particular cannot be fully activated during hip flexion.",
+    "source_ids": [
+      "exercise-anatomy-statpearls-rectus-femoris",
+      "exercise-anatomy-pmc-rf-active-insufficiency",
+      "exercise-anatomy-pmc-gastroc-plantarflexion-torque-angle"
+    ],
+    "aliases": [
+      "active shortening insufficiency"
+    ]
+  },
+  {
+    "id": "exercise.concept.moment-arm",
+    "name": "Moment arm",
+    "kind": "metric",
+    "description": "The geometric quantity that converts muscle force into joint moment (torque = force x moment arm); equivalently the perpendicular distance from the joint's center of rotation to the muscle's line of action, or by the tendon-excursion definition the rate of change of muscle length with joint angle (r = dl/dtheta). Its sign determines whether a muscle is a flexor or extensor at a joint, and its magnitude partly determines how much activation a movement requires. Moment arm varies non-linearly with joint angle (datasets compiled across hip, knee, ankle), so the torque a muscle can produce shifts with posture even at constant force.",
+    "source_ids": [
+      "exercise-anatomy-pmc-moment-arm-systematic-review",
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg"
+    ],
+    "aliases": [
+      "lever arm",
+      "muscle moment arm"
+    ]
+  },
+  {
+    "id": "exercise.concept.moment-arm-joint-angle-relation",
+    "name": "Moment arm-joint angle relation",
+    "kind": "phenomenon",
+    "description": "Muscle moment arms are not constant but vary with joint angle because the muscle's curved path wraps around moving bony surfaces and the center of rotation migrates. A systematic review compiled 300 datasets visualizing these relations for the human hip, knee, and ankle, showing each muscle peaks at a characteristic angle. This is why an exercise's resistance torque demand and the muscle's mechanical advantage both change through the range of motion (e.g., biceps moment arm peaks near ~90 degrees elbow flexion).",
+    "source_ids": [
+      "exercise-anatomy-pmc-moment-arm-systematic-review",
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg"
+    ],
+    "aliases": [
+      "moment arm-angle curve"
+    ]
+  },
+  {
+    "id": "exercise.concept.agonist-prime-mover",
+    "name": "Agonist (prime mover)",
+    "kind": "principle",
+    "description": "The muscle principally responsible for producing a given movement; also called the prime mover. Upon activation a muscle pulls its insertion (on the moving bone) toward its origin (on the stabilized bone). For example, biceps brachii is the prime mover for elbow flexion when lifting a cup; the quadriceps femoris are the agonists of knee extension. Agonist/antagonist labels are role labels relative to a specific action, so they reverse for the opposite movement.",
+    "source_ids": [
+      "exercise-anatomy-osu-agonist-antagonist-synergist",
+      "exercise-anatomy-openstax-lever-systems-roles"
+    ],
+    "aliases": [
+      "prime mover"
+    ]
+  },
+  {
+    "id": "exercise.concept.antagonist",
+    "name": "Antagonist",
+    "kind": "principle",
+    "description": "A muscle whose action opposes that of the prime mover at a joint. Antagonists serve two key functions: maintaining body or limb position (postural holding) and controlling or checking rapid movement (decelerating a limb, as in shadow boxing). The hamstrings act as antagonists to the quadriceps during knee extension and vice versa; the role designation flips with the direction of the intended movement.",
+    "source_ids": [
+      "exercise-anatomy-osu-agonist-antagonist-synergist",
+      "exercise-anatomy-openstax-lever-systems-roles"
+    ],
+    "aliases": [
+      "antagonist muscle"
+    ]
+  },
+  {
+    "id": "exercise.concept.synergist",
+    "name": "Synergist",
+    "kind": "principle",
+    "description": "A muscle whose contraction assists a prime mover in producing an action. For example, the brachialis (and brachioradialis) act as synergists to biceps brachii during elbow flexion. During the lat pulldown the latissimus dorsi is the primary mover while the trapezius, posterior deltoid, infraspinatus, and biceps brachii act as synergists/stabilizers, so loading is distributed across the recruited synergist set rather than isolated to one muscle.",
+    "source_ids": [
+      "exercise-anatomy-osu-agonist-antagonist-synergist",
+      "exercise-anatomy-openstax-lever-systems-roles",
+      "exercise-anatomy-pmc-lat-grip-variations"
+    ],
+    "aliases": [
+      "synergist muscle"
+    ]
+  },
+  {
+    "id": "exercise.concept.fixator",
+    "name": "Fixator",
+    "kind": "principle",
+    "description": "A synergist that stabilizes (fixes) the bone serving as the attachment for the prime mover's origin, or reduces movement at another joint, so the agonist can act efficiently against a stable base. By holding the origin steady, fixators ensure the muscle's pull is expressed as the intended movement rather than dissipated into shifting the proximal segment.",
+    "source_ids": [
+      "exercise-anatomy-osu-agonist-antagonist-synergist",
+      "exercise-anatomy-openstax-lever-systems-roles"
+    ],
+    "aliases": [
+      "stabilizer"
+    ]
+  },
+  {
+    "id": "exercise.concept.biarticular-action",
+    "name": "Biarticular (two-joint) muscle action",
+    "kind": "principle",
+    "description": "Biarticular muscles cross and produce torque at two joints simultaneously, so their length, force capacity, and functional role depend jointly on both joint angles. Examples include rectus femoris (hip flexor + knee extensor), biceps femoris long head (hip extensor + knee flexor), and gastrocnemius (knee flexor + ankle plantarflexor). Traditionally modeled as single actuators with well-defined actions, biarticular muscles are now understood to be regionally controlled and are disproportionately prone to strain injury (RF, hamstrings, gastrocnemius).",
+    "source_ids": [
+      "exercise-anatomy-pmc-biarticular-hdemg-insights",
+      "exercise-anatomy-pmc-two-joint-link-model",
+      "exercise-anatomy-pmc-gastroc-plantarflexion-torque-angle",
+      "exercise-anatomy-statpearls-rectus-femoris"
+    ],
+    "aliases": [
+      "two-joint muscle",
+      "double-jointed muscle",
+      "bi-articular muscle"
+    ]
+  },
+  {
+    "id": "exercise.concept.regional-muscle-activation",
+    "name": "Regional muscle activation",
+    "kind": "phenomenon",
+    "description": "Distinct longitudinal or medio-lateral regions within a single muscle can be activated to different degrees depending on the task, contradicting the assumption that a muscle behaves as one homogeneous actuator. High-density and intramuscular EMG show rectus femoris proximal regions are preferentially recruited for hip flexion and middle/distal regions for knee extension; gastrocnemius distal regions are favored for plantarflexion; and proximal/distal biceps femoris regions respond differently across hip-hinge versus knee-flexion exercises. This regionalization is enabled by neuromuscular compartments innervated by separate nerve branches and by region-specific motor-unit territories.",
+    "source_ids": [
+      "exercise-anatomy-pmc-biarticular-hdemg-insights",
+      "exercise-anatomy-pmc-rf-active-insufficiency",
+      "exercise-anatomy-pmc-hamstring-glute-regional-emg",
+      "exercise-anatomy-pmc-lat-hdemg-regional"
+    ],
+    "aliases": [
+      "regional activation",
+      "intramuscular heterogeneity",
+      "neuromuscular compartmentalization"
+    ]
+  },
+  {
+    "id": "exercise.concept.neuromuscular-compartment",
+    "name": "Neuromuscular compartment",
+    "kind": "mechanism",
+    "description": "An anatomical subdivision of a muscle innervated by its own motor nerve branch, providing the structural basis for region-specific activation. The rectus femoris motor nerve splits from the femoral trunk into proximal and distal-middle sub-branches; biceps femoris and semitendinosus are each innervated by two branches attached at different proximal-distal sites. Because synaptic input can be modulated independently to each compartment, the CNS can recruit muscle regions selectively for different joint actions, and this organization is implicated in the strain-injury susceptibility of biarticular muscles.",
+    "source_ids": [
+      "exercise-anatomy-pmc-rf-active-insufficiency",
+      "exercise-anatomy-pmc-biarticular-hdemg-insights"
+    ],
+    "aliases": [
+      "motor compartment",
+      "muscle partition"
+    ]
+  },
+  {
+    "id": "exercise.concept.emg-amplitude-recruitment-proxy",
+    "name": "EMG amplitude as a recruitment proxy",
+    "kind": "metric",
+    "description": "Surface EMG amplitude (typically RMS) is the standard non-invasive index of how strongly a muscle is being neurally driven, used to compare 'activation' across exercises and variants. To be interpretable, the raw RMS is normalized, most often to a maximal voluntary (isometric) contraction, so values are expressed as a percent of maximum. Increasing EMG amplitude reflects greater motor-unit recruitment and firing rate (the size principle), so higher normalized EMG is taken as evidence that an exercise more strongly stimulates the target muscle.",
+    "source_ids": [
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg",
+      "exercise-anatomy-pmc-hamstring-glute-regional-emg",
+      "exercise-anatomy-pmc-lat-hdemg-regional",
+      "exercise-anatomy-pmc-lat-grip-variations"
+    ],
+    "aliases": [
+      "sEMG amplitude",
+      "RMS EMG",
+      "muscle activation (EMG)",
+      "myoelectric activity"
+    ]
+  },
+  {
+    "id": "exercise.concept.emg-amplitude-limitations",
+    "name": "Limits of EMG amplitude as a force/recruitment proxy",
+    "kind": "method",
+    "description": "EMG amplitude is influenced by many non-neural factors (electrode position relative to the innervation zone, number of fibers in the recording volume, skin impedance, crosstalk from neighboring muscles, and innervation-zone shift during dynamic contractions), so absolute amplitudes cannot be directly compared between muscles or between regions of a muscle. Normalizing to the maximal M-wave (rather than to MVC) better isolates central drive by removing peripheral influences. The sEMG-force relationship is also non-linear, recruitment strategies differ between isometric and dynamic contractions, and inter-subject variability is large (coefficient of variation 31-69% reported for biceps curls).",
+    "source_ids": [
+      "exercise-anatomy-pmc-rf-active-insufficiency",
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg",
+      "exercise-anatomy-pmc-lat-hdemg-regional"
+    ],
+    "aliases": [
+      "sEMG-force limitations",
+      "EMG crosstalk",
+      "EMG normalization caveats"
+    ]
+  },
+  {
+    "id": "exercise.concept.size-principle-recruitment",
+    "name": "Motor-unit recruitment and the size principle",
+    "kind": "mechanism",
+    "description": "Muscle force is graded by recruiting additional motor units and increasing their firing rate; under Henneman's size principle, smaller (lower-threshold) motor units are recruited before larger ones as force demand rises. This orderly recruitment is the physiological substrate measured by rising EMG amplitude. Recruitment strategy is partly reweighted in dynamic versus isometric contractions, with added motor-unit recruitment playing a larger role during dynamic force production.",
+    "source_ids": [
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg",
+      "exercise-anatomy-pmc-rf-active-insufficiency"
+    ],
+    "aliases": [
+      "size principle",
+      "Henneman's principle",
+      "motor unit recruitment"
+    ]
+  },
+  {
+    "id": "exercise.concept.lombards-paradox",
+    "name": "Lombard's paradox",
+    "kind": "phenomenon",
+    "description": "The apparent contradiction that antagonistic biarticular muscles can be co-activated to produce torque at both joints in the same functional direction, e.g., during rising/jumping the hip and knee both extend even though rectus femoris (hip flexor/knee extensor) and hamstrings (hip extensor/knee flexor) seemingly oppose each other. The resolution lies in each biarticular muscle's differing moment arms and the net joint moments required to direct an external force; co-activation of mono- and biarticular pairs controls the direction of force at the limb endpoint. The configuration is metabolically inefficient, which is why excess biarticular activity can impair movements like leg swing.",
+    "source_ids": [
+      "exercise-anatomy-pmc-two-joint-link-model",
+      "exercise-anatomy-pmc-biarticular-hdemg-insights"
+    ],
+    "aliases": [
+      "Lombard paradox"
+    ]
+  },
+  {
+    "id": "exercise.concept.mono-biarticular-coordination",
+    "name": "Mono- and biarticular muscle coordination (two-joint link model)",
+    "kind": "principle",
+    "description": "In the two-joint link model of the brachium and thigh, mono-articular muscles (e1/f1, e2/f2) and biarticular muscles (e3/f3) form coordinated antagonistic pairs whose activity switches sequentially as the direction of the endpoint force changes, producing a hexagonal distribution of output-force directions at the wrist or ankle. Biarticular muscles also transfer power from proximal to distal joints and regulate the distribution of net joint moments. This framework explains why force direction at a limb's endpoint requires a specific combination of net joint moments rather than activation of a single muscle.",
+    "source_ids": [
+      "exercise-anatomy-pmc-two-joint-link-model",
+      "exercise-anatomy-pmc-biarticular-hdemg-insights"
+    ],
+    "aliases": [
+      "two-joint link model",
+      "proximal-to-distal power transfer",
+      "force-direction control"
+    ]
+  },
+  {
+    "id": "exercise.concept.training-at-long-muscle-lengths",
+    "name": "Training at long muscle lengths (length-dependent hypertrophy)",
+    "kind": "phenomenon",
+    "description": "Resistance training performed with the target muscle in a more lengthened (stretched) position tends to produce greater hypertrophy than training the same muscle at shorter lengths. Standing (knee-extended) calf raises, which lengthen the biarticular gastrocnemius, produced markedly greater gastrocnemius and whole-triceps-surae growth than seated (knee-flexed) raises (e.g., +9-12% vs ~1% in the gastrocnemii), while the mono-articular soleus grew similarly in both. Parallel findings exist for hamstrings (seated > prone leg curl) and triceps (overhead > pushdown), making joint-position-driven muscle length a practical exercise-selection lever.",
+    "source_ids": [
+      "exercise-anatomy-pmc-triceps-surae-standing-vs-seated",
+      "exercise-anatomy-pmc-gastroc-plantarflexion-torque-angle"
+    ],
+    "aliases": [
+      "lengthened-position training",
+      "stretch-position hypertrophy",
+      "long-length training"
+    ]
+  },
+  {
+    "id": "exercise.concept.gastrocnemius-knee-angle-dependence",
+    "name": "Knee-angle dependence of gastrocnemius function",
+    "kind": "mechanism",
+    "description": "Because the gastrocnemius crosses both knee and ankle, its plantarflexion (and knee-flexion) capacity depends on both joint angles via its combined length-tension and moment-arm effects. The greatest plantarflexion moment occurs with the knee straight (extended) and the ankle dorsiflexed, which is also the muscle's longest position, an exception to the usual finding that maximal length is not optimal length. Its knee-flexion moment is largest near full knee extension and collapses once the knee is flexed beyond ~15 degrees, demonstrating active-insufficiency-type loss of function when the muscle is shortened across the knee.",
+    "source_ids": [
+      "exercise-anatomy-pmc-gastroc-plantarflexion-torque-angle",
+      "exercise-anatomy-pmc-triceps-surae-standing-vs-seated"
+    ],
+    "aliases": [
+      "gastrocnemius two-joint length-tension",
+      "knee position and calf function"
+    ]
+  },
+  {
+    "id": "exercise.concept.exercise-selection-region-targeting",
+    "name": "Exercise selection for regional/role targeting",
+    "kind": "method",
+    "description": "Because activation is task- and region-dependent, exercise choice can bias loading toward specific muscles or muscle regions. Hip-hinge movements (RDL, hip extension, step-up) preferentially load gluteus maximus and proximal/medial biceps femoris, whereas knee-flexion movements (Nordic curl, leg curl, kickback) preferentially load all biceps femoris regions, with the Nordic eliciting the highest hamstring activation. Joint-position manipulations (shoulder angle in dumbbell curls; bar path in lat pulldown) shift which muscle or region works hardest and over what range of motion, informing evidence-based program design.",
+    "source_ids": [
+      "exercise-anatomy-pmc-hamstring-glute-regional-emg",
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg",
+      "exercise-anatomy-pmc-lat-hdemg-regional"
+    ],
+    "aliases": [
+      "targeted muscle training",
+      "regional hypertrophy targeting"
+    ]
+  },
+  {
+    "id": "exercise.concept.grip-variation-lat-myth",
+    "name": "Grip variation does not reliably re-target the lats (myth)",
+    "kind": "myth",
+    "description": "The common belief that changing grip type (pronated/supinated/neutral) or width selectively shifts latissimus dorsi recruitment in the lat pulldown is not well supported: across seven grip/trunk variants, normalized EMG of the latissimus dorsi did not differ significantly between configurations, and wide vs narrow grips produce similar LD, trapezius, and biceps excitation. Bar path (front vs behind-the-neck) does modulate excitation patterns more than grip, and the main reliable grip effect was on posterior deltoid. This challenges marketing claims that grip 'targets' the lats and argues for individualized exercise selection.",
+    "source_ids": [
+      "exercise-anatomy-pmc-lat-grip-variations",
+      "exercise-anatomy-pmc-lat-hdemg-regional"
+    ],
+    "aliases": [
+      "lat pulldown grip myth",
+      "grip width muscle targeting myth"
+    ]
+  },
+  {
+    "id": "exercise.concept.movement-pattern",
+    "name": "Movement Pattern",
+    "kind": "principle",
+    "description": "A movement pattern is the fundamental joint-action signature of an exercise (e.g., hip extension, horizontal press, vertical pull, knee extension) rather than the specific tool used. Good exercise selection starts by choosing exercises that target a primary function of the muscle: the pecs share horizontal adduction (bench, fly), the lats are trained by shoulder extension and adduction, and the glutes by hip extension across hip thrusts, squats, deadlifts, and lunges. Because a complex muscle group has several functions, you generally select one or two exercises per primary function, and muscles with more functions (e.g., the back) need more distinct patterns than simple ones (e.g., the biceps).",
+    "source_ids": [
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-sysrev-gmax",
+      "exercise-movements-henselmans-lat-prayers"
+    ],
+    "aliases": [
+      "movement category",
+      "exercise function",
+      "joint action"
+    ]
+  },
+  {
+    "id": "exercise.concept.stimulus-to-fatigue-ratio",
+    "name": "Stimulus-to-Fatigue Ratio (SFR)",
+    "kind": "metric",
+    "description": "SFR is the ratio of the hypertrophy (or strength) stimulus an exercise delivers to the systemic and local fatigue it imposes; RP frames it as the single most important exercise-selection concept. High-SFR exercises stimulate growth while adding little fatigue, so they can be repeated week after week without forcing frequent deloads, whereas low-SFR exercises (e.g., heavy compounds that fatigue the low back or grip) accumulate disruptive fatigue per unit of stimulus. SFR explains why a high-fatigue compound can be a worse choice for a target muscle than a well-matched isolation movement even when both 'work' the muscle.",
+    "source_ids": [
+      "exercise-movements-rp-hypertrophy-guide",
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-sbs-compound-vs-isolation"
+    ],
+    "aliases": [
+      "SFR",
+      "stimulus to fatigue ratio"
+    ]
+  },
+  {
+    "id": "exercise.concept.mechanical-tension",
+    "name": "Mechanical Tension",
+    "kind": "mechanism",
+    "description": "Mechanical tension on the muscle fibers is regarded as the primary, and probably near-exclusive, stimulus for hypertrophy; muscle damage and metabolic stress are largely theoretical contributors with little hard supporting data. Consequently the goal of exercise selection is to maximize tension on the target musculature throughout the working range. Henselmans frames every biomechanical choice (muscle length, line of pull, resistance curve) as a means of putting the most tension on the intended muscle's fibers.",
+    "source_ids": [
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-henselmans-lat-prayers",
+      "exercise-movements-sbs-stretch-hypertrophy"
+    ],
+    "aliases": [
+      "tension-mediated hypertrophy",
+      "tension stimulus"
+    ]
+  },
+  {
+    "id": "exercise.concept.active-passive-insufficiency",
+    "name": "Active and Passive Insufficiency",
+    "kind": "phenomenon",
+    "description": "In biarticular muscles, active insufficiency occurs when the muscle is so shortened across both joints that actin-myosin overlap is excessive and it can produce little force (e.g., the triceps long head in an elbow-up kickback, or finger flexors with wrist and fingers both flexed). Passive insufficiency occurs when a muscle is stretched so far it cannot fully contract. Both positions reduce usable tension, so good exercise selection avoids training a muscle deep into either insufficiency unless the goal is deliberate passive-tension/stretch overload.",
+    "source_ids": [
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-sbs-grip"
+    ],
+    "aliases": [
+      "active insufficiency",
+      "passive insufficiency"
+    ]
+  },
+  {
+    "id": "exercise.concept.resistance-profile",
+    "name": "Resistance Profile / Strength Curve Matching",
+    "kind": "principle",
+    "description": "An exercise's resistance profile (how hard it is across the ROM, set by the external moment arm) should be matched to the muscle's strength curve so peak resistance lands where the muscle is strong and can stay loaded where it is weak. Standard dumbbell/barbell curls peak resistance at ~90 degrees and provide zero tension at the bottom (external moment arm = zero), neglecting the biceps' strongest, longest position; a Bayesian cable curl restores bottom tension. Lat prayers are designed so body movement accommodates the cable's resistance curve to the lats' strength curve, keeping high tension from full stretch to full contraction with only a mild sticking point.",
+    "source_ids": [
+      "exercise-movements-henselmans-lat-prayers",
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-sbs-strength-guide"
+    ],
+    "aliases": [
+      "strength curve",
+      "resistance curve",
+      "moment-arm profile",
+      "sticking point"
+    ]
+  },
+  {
+    "id": "exercise.concept.range-of-motion-lengthened-emphasis",
+    "name": "Range of Motion and Lengthened-Position Emphasis",
+    "kind": "principle",
+    "description": "Training a muscle at longer (more stretched) lengths tends to produce more hypertrophy than training at shorter lengths, all else equal; a meta-analysis estimated lengthened partials produced ~6.76% more growth than full ROM, and direct studies show roughly double the growth for several muscles when the lengthened half is emphasized. Because lengthening is not uniform across a ROM and biarticular muscles depend on multiple joint angles, exercise selection favors movements that load the target muscle deep into its stretched position (e.g., overhead triceps extensions over pushdowns, seated over lying leg curl, deep-stretch flies). Importantly, you do not need to reach an end-ROM 'deep stretch' to benefit.",
+    "source_ids": [
+      "exercise-movements-sbs-stretch-hypertrophy",
+      "exercise-movements-sbs-leg-extension",
+      "exercise-movements-henselmans-exercise-selection"
+    ],
+    "aliases": [
+      "lengthened partials",
+      "long-length training",
+      "full ROM"
+    ]
+  },
+  {
+    "id": "exercise.concept.stretch-mediated-hypertrophy",
+    "name": "Stretch-Mediated Hypertrophy (SMH)",
+    "kind": "phenomenon",
+    "description": "Stretch-mediated hypertrophy is muscle growth caused by stretching/lengthening of sarcomeres, classically demonstrated by weighted-wing chicken studies (up to ~170% mass increase, ~140% even in denervated muscle) and characterized by drastic mass gain, hyperplasia, and increased fiber length. In humans, dedicated stretching interventions produce only modest growth (~5-25%, and only at higher volumes/intensities). SBS argues that the greater growth seen with lengthened resistance training is therefore probably NOT true 'stretch-mediated' hypertrophy, since a few extra seconds per set at long lengths is far too little stimulus to mediate growth via stretch itself; the term is partly a misnomer that misleads people into thinking an end-ROM deep stretch is required.",
+    "source_ids": [
+      "exercise-movements-sbs-stretch-hypertrophy",
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-henselmans-lat-prayers"
+    ],
+    "aliases": [
+      "SMH",
+      "stretch hypertrophy"
+    ]
+  },
+  {
+    "id": "exercise.concept.regional-hypertrophy",
+    "name": "Regional Hypertrophy",
+    "kind": "phenomenon",
+    "description": "Regional hypertrophy is the well-established phenomenon of non-uniform growth within a muscle or muscle group, occurring both between heads (e.g., incline bench grows the clavicular/upper pec; skullcrushers favor the triceps long/medial head while bench favors the lateral head) and along the proximal-distal axis. It explains why combining several exercises yields more complete development than chasing one 'perfect' exercise, and why hip-angle tweaks on the leg extension can selectively grow the rectus femoris. Predicting regional outcomes from acute proxies remains unreliable.",
+    "source_ids": [
+      "exercise-movements-sbs-regional-hypertrophy",
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-sbs-compound-vs-isolation",
+      "exercise-movements-sbs-leg-extension",
+      "exercise-movements-trial-bench-regional"
+    ],
+    "aliases": [
+      "inhomogeneous muscle growth",
+      "non-uniform hypertrophy"
+    ]
+  },
+  {
+    "id": "exercise.concept.emg-proxy-limitation",
+    "name": "EMG as a Hypertrophy Proxy (Limitation)",
+    "kind": "myth",
+    "description": "Surface EMG amplitude is widely treated as a predictor of which exercise will grow a muscle most, but it is not a validated proxy for long-term hypertrophy. EMG measures neuromuscular excitation, and its links to actual muscle activation, cross-bridging, and growth are largely unsubstantiated, with observed correlations to hypertrophy being weak and inconsistent (r ranging roughly -0.03 to 0.5). Common normalization schemes (e.g., scaling to a region's own peak rather than MVIC) further prevent valid between-exercise comparisons, so EMG-based exercise rankings should be interpreted with heavy caution.",
+    "source_ids": [
+      "exercise-movements-sbs-regional-hypertrophy",
+      "exercise-movements-sbs-stretch-hypertrophy",
+      "exercise-movements-trial-bench-regional"
+    ],
+    "aliases": [
+      "surface EMG proxy",
+      "muscle activation proxy"
+    ]
+  },
+  {
+    "id": "exercise.concept.muscle-swelling-proxy",
+    "name": "Acute Muscle Swelling / Pump as a Proxy",
+    "kind": "phenomenon",
+    "description": "Acute muscle swelling (ultrasound-measured thickness/CSA increase, experienced as a 'pump') is sometimes used as a proxy for the hypertrophy stimulus, with the rationale that increased blood flow, edema, and metabolic activity reflect work done by specific fibers. However, swelling responses in the chest after flat vs incline bench did not match the one longitudinal regional-hypertrophy study, and a lifter on maintenance-insufficient volume can still get a big pump while losing size. Pump and swelling are at best weak, easily confounded proxies and cannot capture all variables driving growth.",
+    "source_ids": [
+      "exercise-movements-sbs-regional-hypertrophy",
+      "exercise-movements-trial-bench-regional"
+    ],
+    "aliases": [
+      "the pump",
+      "muscle swelling"
+    ]
+  },
+  {
+    "id": "exercise.concept.target-muscle-limiting-factor",
+    "name": "Target Muscle as the Limiting Factor",
+    "kind": "principle",
+    "description": "A good muscle-building exercise should have a high likelihood that the target muscle is the limiting factor (the thing that gives out and ends the set). Compound lifts present more potential bottlenecks than isolations, so something else may fail before the target muscle nears failure, which can slightly reduce their per-muscle effectiveness in the absence of a way to gauge proximity to failure. This is why a barbell row may not take the forearms or biceps as close to failure as a dedicated wrist curl or curl, and why isolation work is added to ensure a muscle is fully stimulated.",
+    "source_ids": [
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-sbs-compound-vs-isolation",
+      "exercise-movements-henselmans-exercise-selection"
+    ],
+    "aliases": [
+      "weak link",
+      "limiting muscle"
+    ]
+  },
+  {
+    "id": "exercise.concept.compound-vs-isolation",
+    "name": "Compound vs Isolation Equivalence",
+    "kind": "principle",
+    "description": "Across direct comparisons and a meta-analysis of seven studies, multi-joint (compound) and single-joint (isolation) exercises produce no consistent or statistically significant difference in hypertrophy; they are largely interchangeable per unit of effective stimulus. Compounds are highly time-efficient (training several muscles at once), so most of a program can revolve around them, but each study compares only one pairing, and not all compounds bring a given muscle equally close to failure. Isolation work is therefore added selectively to cover muscles the compounds understimulate.",
+    "source_ids": [
+      "exercise-movements-sbs-compound-vs-isolation",
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-henselmans-exercise-selection"
+    ],
+    "aliases": [
+      "single- vs multi-joint",
+      "compound exercises for hypertrophy"
+    ]
+  },
+  {
+    "id": "exercise.concept.exercise-loadability",
+    "name": "Loadability and the Effective Rep Range",
+    "kind": "principle",
+    "description": "A useful muscle-building exercise must be sufficiently loadable to land the working sets in roughly the 5-50 rep range where hypertrophy is well supported. Exercises in which the target muscle reaches a position of very poor leverage (e.g., a curl with zero moment arm at the bottom, or a triceps movement in active insufficiency) force the use of trivial 'pink weights' and waste part of the ROM. Selecting variations and tools (cables, fixed implements) that keep meaningful resistance on the muscle through the loadable range improves the exercise.",
+    "source_ids": [
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-henselmans-exercise-selection"
+    ],
+    "aliases": [
+      "loadability",
+      "rep range loadability"
+    ]
+  },
+  {
+    "id": "exercise.concept.stability-recruitment",
+    "name": "Stability and Motor-Unit Recruitment",
+    "kind": "principle",
+    "description": "An exercise should be stable enough to permit high motor-unit recruitment of the target muscle: if the lifter must spend effort balancing or stabilizing, the prime mover may not be driven hard. This is one of the core exercise-selection criteria (sufficiently stable to elicit high recruitment), and it sits in tension with the higher activation sometimes seen in free, standing variations; the right amount of stability is whatever lets the target muscle, not a stabilizer, be the limiting factor.",
+    "source_ids": [
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-henselmans-exercise-selection"
+    ],
+    "aliases": [
+      "exercise stability",
+      "recruitment",
+      "motor unit recruitment"
+    ]
+  },
+  {
+    "id": "exercise.concept.stabilizer-demand",
+    "name": "Stabilizer Demand",
+    "kind": "principle",
+    "description": "Stabilizer demand is the requirement that secondary muscles and the trunk hold position and transmit force while the prime movers do the work; it can either limit a set prematurely or, conversely, raise activation. Lat prayers and pull-ups can be limited by core/trunk stabilizers failing before the lats, which is managed by kneeling, body positioning, or going semi-unilateral. Henselmans cites a study showing greater muscle activity for standing overhead pressing than seated, attributed partly to higher stabilization requirements, illustrating that stabilizer demand is a real selection trade-off.",
+    "source_ids": [
+      "exercise-movements-henselmans-lat-prayers",
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-pullup-grip-training",
+      "exercise-movements-sbs-strength-guide"
+    ],
+    "aliases": [
+      "core stability",
+      "trunk stability",
+      "stabilizer requirement"
+    ]
+  },
+  {
+    "id": "exercise.concept.free-weight-vs-machine",
+    "name": "Free-Weight vs Machine/Cable Trade-offs",
+    "kind": "principle",
+    "description": "Free weights, machines, and cables are largely interchangeable tools, and the right choice depends on how each shapes the resistance profile, stability, and which muscle limits the set rather than on the tool being inherently superior. Fixed implements (barbells, machines) allow horizontal force production that can load the arms far more than a free dumbbell during pulls and presses, and cables can maintain tension where free weights lose it (e.g., a Bayesian curl's bottom position). For pure isolation and mind-muscle work the tool is 'relatively unimportant'; barbells, dumbbells, machines, and cables are all fine.",
+    "source_ids": [
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-sbs-strength-guide",
+      "exercise-movements-sbs-exercise-selection"
+    ],
+    "aliases": [
+      "machines vs free weights",
+      "cable vs dumbbell",
+      "fixed implement"
+    ]
+  },
+  {
+    "id": "exercise.concept.grip-limiting-factor",
+    "name": "Grip as a Limiting Factor",
+    "kind": "principle",
+    "description": "Grip strength can be the weak link that ends a set before the target muscle is fully stimulated, especially in heavy pulling movements; you are only as strong as your weakest link. Lifting straps remove grip as the limiter and reliably increase deadlift 1RM (reported gains ~10-19%) and isometric/heavy pull performance, but show null effects in lower-load pulls like the lat pulldown and prone bench pull, indicating grip only limits exercises demanding very high grip force. In forearm-targeting work, grip is the intended limiter; for back work it is usually an unwanted bottleneck to be removed.",
+    "source_ids": [
+      "exercise-movements-sbs-grip",
+      "exercise-movements-straps-review",
+      "exercise-movements-straps-bench-pull",
+      "exercise-movements-pullup-grip-training"
+    ],
+    "aliases": [
+      "grip limitation",
+      "weakest link",
+      "grip bottleneck"
+    ]
+  },
+  {
+    "id": "exercise.concept.support-vs-pinch-vs-crush-grip",
+    "name": "Support, Pinch, and Crush Grip Specificity",
+    "kind": "method",
+    "description": "Grip exercises divide into support grip (line of resistance ~perpendicular to the palm; deadlifts, rows, carries, dead hangs), pinch grip (line of resistance ~parallel to the palm; plate/dumbbell pinches), and crush grip (resistance generated by the implement; hand grippers), and adaptations are specific to the type trained. The key force producers are the finger flexors (flexor digitorum superficialis and profundus), trained best dynamically and at long lengths via finger-rolling wrist curls, fat grips, and pinch work. Crush grip is most common in research only because dynamometers are convenient, not because it dominates real lifting.",
+    "source_ids": [
+      "exercise-movements-sbs-grip",
+      "exercise-movements-pullup-grip-training"
+    ],
+    "aliases": [
+      "support grip",
+      "pinch grip",
+      "crush grip",
+      "grip specificity"
+    ]
+  },
+  {
+    "id": "exercise.concept.fat-bar-thick-grip",
+    "name": "Thick-Bar / Fat-Grip Training",
+    "kind": "method",
+    "description": "Thick bars and fat-grip attachments (commonly ~2.0-2.25 inch diameter) load the finger flexors at longer lengths and let lighter absolute loads challenge grip, but they sharply reduce usable load on grip-intensive lifts (deadlift 1RM down ~28-55%, rows next-most affected) while barely affecting presses and curls. Their main value is adding a grip stimulus to strict accessory lifts without taxing the prime movers, and decompressing demands on hand skin (no knurling). Three longitudinal studies found fat-grip-only training did not outperform conventional training for grip strength, so they are a useful supplement, not a standalone solution.",
+    "source_ids": [
+      "exercise-movements-sbs-grip"
+    ],
+    "aliases": [
+      "fat grips",
+      "axle bar",
+      "thick bar training"
+    ]
+  },
+  {
+    "id": "exercise.concept.muscle-confusion-myth",
+    "name": "Muscle-Confusion Myth",
+    "kind": "myth",
+    "description": "The 'muscle confusion' idea, that constantly switching exercises is needed to keep 'confusing' a muscle into growth, is not supported. Variety is selected deliberately to cover a muscle's different functions and regions and to promote complete, uniform development, not to surprise the muscle; at training intensities near failure, 'all hands on deck' recruitment means many fibers are worked regardless. RP warns that doing too many exercises causes 'more confusion than growth' and exhausts your stock of fresh variations, so a few well-chosen, progressively overloaded exercises per muscle per week is the right answer rather than endless rotation.",
+    "source_ids": [
+      "exercise-movements-rp-hypertrophy-guide",
+      "exercise-movements-sbs-exercise-selection",
+      "exercise-movements-henselmans-exercise-selection"
+    ],
+    "aliases": [
+      "muscle confusion principle",
+      "confusing the muscle",
+      "exercise variety myth"
+    ]
+  },
+  {
+    "id": "exercise.concept.line-of-pull-fiber-alignment",
+    "name": "Line of Pull and Fiber Alignment",
+    "kind": "mechanism",
+    "description": "Muscle activity tends to be highest when the exercise's line of pull is aligned with the orientation of the target muscle's fibers. This guides cues like internally rotating the shoulder in a Bayesian fly to align the pec fibers with the movement, leaning forward and going wide on lateral raises to align the lateral-delt fibers, and abducting the elbows on shrugs/rows to match the upper-trap fibers' near-horizontal run. Because muscles like the delt comprise many separately recruitable neuronal compartments, small changes in pulling angle bias which fibers are emphasized.",
+    "source_ids": [
+      "exercise-movements-henselmans-exercise-selection",
+      "exercise-movements-henselmans-lat-prayers"
+    ],
+    "aliases": [
+      "line of pull",
+      "fiber orientation",
+      "angle of pull"
+    ]
+  },
+  {
+    "id": "exercise.concept.progressive-overload",
+    "name": "Progressive overload",
+    "kind": "principle",
+    "description": "Progressive overload is the principle that training stress must gradually increase to keep matching adaptive capacity and drive continued gains. Classically applied by adding load, it can equally be achieved by adding reps, sets, density, or proximity-to-failure: Plotkin et al. (2022) showed load progression and rep progression at fixed load produced near-identical hypertrophy and strength over 8 weeks. Helms reframes it diagnostically — because bigger muscles are stronger, rising volume load (sets x reps x load) is a *confirmation* that overload occurred rather than something that must be forced proactively.",
+    "source_ids": [
+      "exercise-programming-plotkin-progressive-overload-rct",
+      "exercise-programming-mass-progression-framework",
+      "exercise-programming-henselmans-program-sets-progression"
+    ],
+    "aliases": [
+      "overload principle",
+      "progressive resistance"
+    ]
+  },
+  {
+    "id": "exercise.concept.overload-hierarchy",
+    "name": "Load > volume > density progression hierarchy",
+    "kind": "method",
+    "description": "A practitioner framework for *which* variable to progress to apply overload, in rough order of how reliably each maintains stimulus quality without overwhelming recovery. Increasing load or reps maintains the relative effectiveness of each existing set (keeping it near failure as strength rises) and adds modestly to volume load (~5-10% per increment), whereas adding sets is the most aggressive lever — Helms notes going 10→32 sets is a ~320% increase in work. Density (compressing rest) is a further lever but can compromise per-set volume. The implication: progress reps/load first, treat set additions as a true volume increase reserved for when reps/load plateau and recovery is intact.",
+    "source_ids": [
+      "exercise-programming-mass-progression-framework",
+      "exercise-programming-king-of-volume-metas-biolayne",
+      "exercise-programming-henselmans-program-sets-progression"
+    ],
+    "aliases": [
+      "progression hierarchy",
+      "variable progression order"
+    ]
+  },
+  {
+    "id": "exercise.concept.volume-landmarks",
+    "name": "Volume landmarks (MV/MEV/MAV/MRV)",
+    "kind": "method",
+    "description": "A Renaissance Periodization framework dividing weekly per-muscle set volume into four thresholds: Maintenance Volume (MV, ~6 sets to preserve mass), Minimum Effective Volume (MEV, the least that grows muscle and the mesocycle starting point), Maximum Adaptive Volume (MAV, the progression zone between MEV and MRV where best gains occur), and Maximum Recoverable Volume (MRV, the ceiling beyond which recovery fails). Volume is progressed week to week from MEV toward MRV using soreness and performance feedback, then reset via deload. The landmarks are framed as individual, exercise-specific starting estimates ('directions, not dogmas'), not fixed numbers.",
+    "source_ids": [
+      "exercise-programming-rp-volume-landmarks",
+      "exercise-programming-mass-progression-framework"
+    ],
+    "aliases": [
+      "MV",
+      "MEV",
+      "MAV",
+      "MRV",
+      "training volume landmarks"
+    ]
+  },
+  {
+    "id": "exercise.concept.dose-response-diminishing-returns",
+    "name": "Volume dose-response with diminishing returns",
+    "kind": "phenomenon",
+    "description": "Across meta-analyses (Schoenfeld 2017; Pelland/Zourdos 2024 meta-regression of 67 studies, 2058 subjects), both hypertrophy and strength increase as weekly set volume increases, but with diminishing returns — the marginal benefit of each added set shrinks. Diminishing returns for strength are far more pronounced than for hypertrophy; Nuckols summarizes hypertrophy as scaling ~3:2 with volume (tripling volume roughly doubles growth). Critically, diminishing returns are not *zero* returns: total gains keep rising even as per-set efficiency falls, so 'efficient' and 'maximal' volume targets diverge.",
+    "source_ids": [
+      "exercise-programming-pelland-doseresponse-sportmed",
+      "exercise-programming-king-of-volume-metas-biolayne",
+      "exercise-programming-sbs-volume-article",
+      "exercise-programming-henselmans-optimal-volume",
+      "exercise-programming-mass-progression-framework"
+    ],
+    "aliases": [
+      "dose-response curve",
+      "volume dose-response"
+    ]
+  },
+  {
+    "id": "exercise.concept.inverted-u-volume",
+    "name": "Inverted-U volume response",
+    "kind": "phenomenon",
+    "description": "Beyond simple diminishing returns, some evidence suggests the volume-hypertrophy relationship follows an inverted U: past an individual ceiling, additional sets reduce the *rate* of growth as recovery demand saps adaptive resources, and in some studies high-volume groups gained less or even lost lean mass than lower-volume comparators (e.g., German Volume Training halved; Haun's 10→32 set ramp where growth stalled mid-study). This underpins MRV and the practitioner claim that 'more is not always better' — there is a sweet-spot volume above and below which progress slows.",
+    "source_ids": [
+      "exercise-programming-mass-progression-framework",
+      "exercise-programming-henselmans-optimal-volume",
+      "exercise-programming-rp-volume-landmarks"
+    ],
+    "aliases": [
+      "inverted U",
+      "volume sweet spot"
+    ]
+  },
+  {
+    "id": "exercise.concept.junk-volume",
+    "name": "Junk volume",
+    "kind": "myth",
+    "description": "An ill-defined term used either for sets yielding strongly diminished returns or for sets yielding *no* additional growth. Nuckols argues the popular framing is largely a misconception: true diminishing returns still produce marginal gains, so 'low-value' sets are not literally worthless, and the actual upper limit of useful volume is unknown. The one scenario where volume genuinely becomes junk is effort-related — sets performed too far from failure (e.g., half-assed end-of-workout accessory sets), not additional well-executed sets per se.",
+    "source_ids": [
+      "exercise-programming-sbs-volume-article",
+      "exercise-programming-henselmans-how-close-to-failure"
+    ],
+    "aliases": [
+      "wasted sets"
+    ]
+  },
+  {
+    "id": "exercise.concept.rir",
+    "name": "Repetitions in reserve (RIR)",
+    "kind": "metric",
+    "description": "RIR is the estimated number of additional reps a lifter could complete before momentary failure, the dominant modern way to quantify proximity-to-failure and prescribe effort. Halperin's review and follow-up studies (Remmert, Refalo) find most people — regardless of sex or training status — are accurate to within ~1 rep, systematically *under*-predicting (thinking 2 left when ~3 remain). Accuracy improves later in a set and at lower rep counts (<=12), and coaches estimating RIR from video show the same ~1-rep error. Real-world solo accuracy is likely somewhat worse than supervised study conditions.",
+    "source_ids": [
+      "exercise-programming-sbs-reps-in-reserve",
+      "exercise-programming-helms-rir-rpe-scale-scj",
+      "exercise-programming-proximity-rir-accuracy-rct-jsse"
+    ],
+    "aliases": [
+      "reps in reserve",
+      "RIR"
+    ]
+  },
+  {
+    "id": "exercise.concept.rir-rpe-scale",
+    "name": "RIR-based RPE scale",
+    "kind": "method",
+    "description": "A resistance-training-specific 1-10 rating of perceived exertion scale (Zourdos 2016; Helms 2016) in which the RPE value maps directly to RIR (RPE 10 = 0 RIR/failure, RPE 9 = 1 RIR, etc.), with effort descriptors for values below 5. It corrects a key flaw of the endurance-derived Borg RPE — lifters reporting submaximal scores even at true failure — and is more valid at near-limit loads. It puts all individuals on a level playing field independent of day-to-day 1RM fluctuation; experienced lifters rate more accurately than novices, who are advised to track but not yet prescribe by it.",
+    "source_ids": [
+      "exercise-programming-helms-rir-rpe-scale-scj",
+      "exercise-programming-sbs-reps-in-reserve"
+    ],
+    "aliases": [
+      "RPE scale",
+      "RIR-based RPE",
+      "Reactive Training Systems RPE"
+    ]
+  },
+  {
+    "id": "exercise.concept.autoregulation",
+    "name": "Autoregulation",
+    "kind": "method",
+    "description": "Autoregulation is a structured system for embedding respect for individual variation by adjusting load and/or volume based on acute and chronic readiness (sleep, stress, fatigue) rather than fixed prescriptions. Methods include subjective RIR/RPE-based load selection and objective velocity-based training (VBT) and velocity-loss volume thresholds. Meta-analytic evidence (Hickmott 2022) shows autoregulated and standardized load prescription produce similar strength on average, with autoregulation's advantage emerging when it lets relative intensity better match the individual; it also aids fatigue management by avoiding unnecessary proximity to failure.",
+    "source_ids": [
+      "exercise-programming-hickmott-autoregulation-meta",
+      "exercise-programming-autoregulation-nma-2025",
+      "exercise-programming-sbs-reps-in-reserve",
+      "exercise-programming-helms-rpe-vs-pct1rm-rct",
+      "exercise-programming-henselmans-program-sets-progression"
+    ],
+    "aliases": [
+      "autoregulated training",
+      "cybernetic periodization"
+    ]
+  },
+  {
+    "id": "exercise.concept.avt",
+    "name": "Autoregulatory volume training (AVT) / benchmark and volume sets",
+    "kind": "method",
+    "description": "Henselmans' practical autoregulation scheme. Rep targets are set by lifting a %1RM for as many reps as the individual can manage, autoregulating reps to genetic strengths and preference. The first set of each exercise is a 'benchmark set' performed fresh — used as the reliable progression gauge (informing deloads and plateau detection) — while subsequent 'volume sets' have no fixed rep target, letting reps fall where they may to autoregulate accumulated fatigue and protect technique. This separates clean progression measurement from flexible volume accumulation.",
+    "source_ids": [
+      "exercise-programming-henselmans-program-sets-progression"
+    ],
+    "aliases": [
+      "AVT",
+      "benchmark set",
+      "volume sets"
+    ]
+  },
+  {
+    "id": "exercise.concept.proximity-to-failure",
+    "name": "Proximity to failure",
+    "kind": "principle",
+    "description": "How close a set is taken to momentary muscular failure, quantified as RIR, is a key programming variable with *divergent* optima for size versus strength. Robinson/Pelland's continuous meta-regression (2024) found muscle hypertrophy increases as sets are terminated closer to failure (negative RIR slope), while strength gains were similar across a wide RIR range (null slope). Practically, growth benefits from training reasonably close to failure but full failure is not required; strength does not depend on it and can be harmed by the resulting fatigue.",
+    "source_ids": [
+      "exercise-programming-robinson-proximity-metareg-sportmed",
+      "exercise-programming-refalo-proximity-meta-pmc",
+      "exercise-programming-henselmans-how-close-to-failure",
+      "exercise-programming-sbs-training-to-failure"
+    ],
+    "aliases": [
+      "proximity-to-failure",
+      "effort proximity"
+    ]
+  },
+  {
+    "id": "exercise.concept.effective-reps",
+    "name": "Effective reps (stimulating reps) model",
+    "kind": "myth",
+    "description": "A model (Beardsley, building on Fagerli) proposing that only the last ~5 reps before failure — when high-threshold motor units are fully recruited — provide the hypertrophy stimulus, explaining why 8RM and 25RM sets to failure grow muscle similarly. Nuckols and Henselmans argue the hard 5-rep cutoff is flawed: full motor unit recruitment occurs around ~80% MVC (potentially 8-12+ RIR, exercise-dependent), recruitment rises gradually rather than at a threshold, and neither published meta-analysis supports a discrete cutoff. The defensible kernel is that reps closer to failure are *somewhat* more stimulating per rep, not that only the final five count.",
+    "source_ids": [
+      "exercise-programming-henselmans-how-close-to-failure",
+      "exercise-programming-sbs-training-to-failure"
+    ],
+    "aliases": [
+      "effective reps",
+      "stimulating reps",
+      "stimulating-rep model"
+    ]
+  },
+  {
+    "id": "exercise.concept.size-principle",
+    "name": "Henneman's size principle",
+    "kind": "mechanism",
+    "description": "The neurophysiological ordering principle that motor units are recruited from smallest (type I, low-force, fatigue-resistant) to largest (type II, high-force, high growth potential) as force demand rises. It underpins why heavy loads, or lighter loads taken near failure (where accumulating fatigue forces recruitment of larger units), can both expose high-threshold fibers to tension. Henselmans notes the common oversimplification (full recruitment only at ~85% 1RM / 5 RIR) is wrong — full recruitment arises around ~80% MVC, and firing-rate increases continue to add stimulus beyond mere recruitment.",
+    "source_ids": [
+      "exercise-programming-henselmans-how-close-to-failure",
+      "exercise-programming-sbs-training-to-failure"
+    ],
+    "aliases": [
+      "size principle",
+      "motor unit recruitment",
+      "Henneman principle"
+    ]
+  },
+  {
+    "id": "exercise.concept.training-to-failure",
+    "name": "Training to muscular failure",
+    "kind": "principle",
+    "description": "Taking a set to the point where another concentric rep cannot be completed. Evidence (Grgic 2022; Vieira; Sampson) indicates failure is neither necessary nor a magic bullet for hypertrophy when volume/reps are equated — its apparent benefit comes from doing more reps. It 'idiot-proofs' effort since lifters often stop short, but it disproportionately elevates muscle damage and neuromuscular fatigue (Refalo: failure ~-25% velocity loss vs -8% at 3-RIR), can impair subsequent-set volume, and may slightly harm strength. Best reserved for final sets of low-risk isolation work.",
+    "source_ids": [
+      "exercise-programming-sbs-training-to-failure",
+      "exercise-programming-grgic-failure-jshs-meta",
+      "exercise-programming-pelland-singleset-failure-rct-sportrxiv",
+      "exercise-programming-helms-rir-rpe-scale-scj",
+      "exercise-programming-refalo-neuromuscular-fatigue-pmc"
+    ],
+    "aliases": [
+      "concentric failure",
+      "momentary muscular failure"
+    ]
+  },
+  {
+    "id": "exercise.concept.sra",
+    "name": "Stimulus-recovery-adaptation (SRA)",
+    "kind": "principle",
+    "description": "The cyclical model that a training stimulus causes fatigue, recovery restores and then super-compensates baseline performance, and adaptation accrues if the next stimulus is timed appropriately. Helms cautions that SRA is cleanest for *specific performance* adaptations (strength, endurance) where recovery = return to baseline performance is measurable, but problematic for hypertrophy, which is a structural consequence rather than a performance task — so 'recovering from the work that causes growth' is not the same as 'being able to stimulate more growth.' This decouples work-capacity recovery from true hypertrophic readiness.",
+    "source_ids": [
+      "exercise-programming-mass-progression-framework",
+      "exercise-programming-rp-volume-landmarks"
+    ],
+    "aliases": [
+      "SRA",
+      "stimulus recovery adaptation",
+      "supercompensation"
+    ]
+  },
+  {
+    "id": "exercise.concept.stimulus-fatigue-ratio",
+    "name": "Stimulus-to-fatigue ratio",
+    "kind": "principle",
+    "description": "The relationship between the adaptive stimulus a set provides and the fatigue it generates, used to choose between training styles. Fewer sets to failure are time-efficient but carry a worse stimulus-to-fatigue ratio (high fatigue per unit stimulus); more sets stopped further from failure offer a better ratio at the cost of time. Lower intra-set fatigue (e.g., velocity-loss thresholds <=25%) favors strength by preserving neuromuscular quality, while accumulating more relative volume favors hypertrophy — making the ratio a key tuning knob for fatigue management.",
+    "source_ids": [
+      "exercise-programming-henselmans-how-close-to-failure",
+      "exercise-programming-hickmott-autoregulation-meta",
+      "exercise-programming-refalo-neuromuscular-fatigue-pmc"
+    ],
+    "aliases": [
+      "SFR",
+      "stimulus to fatigue ratio"
+    ]
+  },
+  {
+    "id": "exercise.concept.fatigue-management",
+    "name": "Fatigue management",
+    "kind": "principle",
+    "description": "The programming domain concerned with keeping accumulated neuromuscular fatigue and muscle damage from degrading subsequent training quality, frequency, and adaptation. Closer proximity to failure produces greater acute velocity loss and longer recovery (Refalo: failure vs 3-RIR), which can blunt high-threshold recruitment and reduce sustainable frequency/volume. Tools include autoregulating effort (RIR/velocity-loss caps), distributing volume across sessions, reserving failure for low-risk movements, and deloads. The aim is maximizing chronic stimulus while minimizing fatigue cost.",
+    "source_ids": [
+      "exercise-programming-refalo-neuromuscular-fatigue-pmc",
+      "exercise-programming-hickmott-autoregulation-meta",
+      "exercise-programming-sbs-training-to-failure",
+      "exercise-programming-helms-rir-rpe-scale-scj"
+    ],
+    "aliases": [
+      "managing fatigue",
+      "recovery management"
+    ]
+  },
+  {
+    "id": "exercise.concept.specificity",
+    "name": "Specificity (SAID)",
+    "kind": "principle",
+    "description": "The principle of Specific Adaptation to Imposed Demands: adaptations are largely specific to the task trained. Strength is highly specific to the tested movement and load (heavy-load advantage shrinks when strength is tested on a neutral device), and specificity grows more important as trainees approach their genetic ceiling. Plotkin's load-vs-rep study confirmed directional specificity — load progression slightly favored max strength, rep progression slightly favored endurance — while hypertrophy, being non-specific, occurs across a broad loading range.",
+    "source_ids": [
+      "exercise-programming-schoenfeld-rep-continuum-pmc",
+      "exercise-programming-plotkin-progressive-overload-rct",
+      "exercise-programming-helms-rir-rpe-scale-scj"
+    ],
+    "aliases": [
+      "SAID principle",
+      "specific adaptation to imposed demands"
+    ]
+  },
+  {
+    "id": "exercise.concept.repetition-continuum",
+    "name": "Repetition continuum",
+    "kind": "principle",
+    "description": "A re-examined loading framework (Schoenfeld 2021): rather than discrete strength (1-5), hypertrophy (6-12), and endurance (15+) 'zones,' adaptations sit on a continuum. Hypertrophy is achievable across ~5-30+ reps when sets are taken near failure (debunking the strict 6-12 'hypertrophy zone'), but a strength bias persists toward heavy loads and an endurance bias toward light loads, consistent with specificity. Load is the dominant variable for maximizing 1RM; volume and proximity-to-failure dominate for size.",
+    "source_ids": [
+      "exercise-programming-schoenfeld-rep-continuum-pmc",
+      "exercise-programming-lopez-load-network-meta",
+      "exercise-programming-grgic-load-fibertype-meta",
+      "exercise-programming-henselmans-how-close-to-failure"
+    ],
+    "aliases": [
+      "rep continuum",
+      "hypertrophy rep range",
+      "strength-endurance continuum"
+    ]
+  },
+  {
+    "id": "exercise.concept.periodization",
+    "name": "Periodization (and linear/LP)",
+    "kind": "method",
+    "description": "Periodization is the planned, phasic variation of training variables (volume, intensity, focus) across micro-, meso-, and macrocycles toward goal-timed peak performance. Linear Periodization (LP), originating with Matveyev, progressively decreases volume while increasing intensity over a cycle, with a taper before competition. Nuckols' quantitative review of ~60 studies found periodized training produced small but real strength advantages over non-periodized (~22% faster gains, ES ~0.23-0.30), strongest in trained lifters.",
+    "source_ids": [
+      "exercise-programming-sbs-periodization-data",
+      "exercise-programming-williams-periodization-meta-springer",
+      "exercise-programming-afonso-periodization-umbrella",
+      "exercise-programming-grgic-lp-dup-hypertrophy-meta"
+    ],
+    "aliases": [
+      "linear periodization",
+      "LP",
+      "traditional periodization"
+    ]
+  },
+  {
+    "id": "exercise.concept.dup",
+    "name": "Daily undulating periodization (DUP)",
+    "kind": "method",
+    "description": "An undulating model where training intensity and volume fluctuate within a single training week (e.g., a heavy day and a lighter/higher-rep day for the same lift), as opposed to weekly undulating (WUP) or steadily progressing linear schemes. Nuckols' analysis found undulating periodization produced small strength advantages over linear (~17% faster overall), though differences were trivial in untrained lifters. SBS notes the daily/weekly fluctuations may be better termed 'programming' than true periodization since each unit is too short to be its own training phase.",
+    "source_ids": [
+      "exercise-programming-sbs-periodization-data",
+      "exercise-programming-sbs-daily-undulating-periodization",
+      "exercise-programming-grgic-lp-dup-hypertrophy-meta",
+      "exercise-programming-helms-rpe-vs-pct1rm-rct"
+    ],
+    "aliases": [
+      "DUP",
+      "undulating periodization",
+      "WUP",
+      "daily undulating"
+    ]
+  },
+  {
+    "id": "exercise.concept.block-periodization",
+    "name": "Block periodization",
+    "kind": "method",
+    "description": "A periodization model originally devised for athletes with multiple competitions per year, sequencing concentrated training blocks — commonly strength-endurance, then hypertrophy, then maximal strength, then power/velocity, ending in a competitive/peaking block. Nuckols notes LP, DUP, and block periodization are not truly mutually exclusive (they have been studied as rival camps largely for historical/theoretical reasons), and block-specific studies are too few for strong quantitative comparison.",
+    "source_ids": [
+      "exercise-programming-sbs-periodization-data"
+    ],
+    "aliases": [
+      "block periodization",
+      "BP",
+      "concentrated loading"
+    ]
+  },
+  {
+    "id": "exercise.concept.deload",
+    "name": "Deload",
+    "kind": "method",
+    "description": "A planned reduction in training stress — typically dropping volume toward Maintenance Volume (~6 sets/muscle) and/or intensity for a period — used to dissipate accumulated fatigue, allow super-compensation, and reset a mesocycle back toward MEV with fresh exercises. In the volume-landmark framework a deload is triggered when performance can no longer match the prior week (signaling MRV), distinguishing true fatigue accumulation from transient setbacks (poor sleep/stress) by repeating a week to confirm.",
+    "source_ids": [
+      "exercise-programming-rp-volume-landmarks",
+      "exercise-programming-henselmans-program-sets-progression",
+      "exercise-programming-mass-progression-framework"
+    ],
+    "aliases": [
+      "deload week",
+      "reactive deload",
+      "recovery week"
+    ]
+  },
+  {
+    "id": "exercise.concept.metabolic-stress",
+    "name": "Metabolic stress",
+    "kind": "mechanism",
+    "description": "The exercise-induced accumulation of metabolites (lactate, hydrogen ions, inorganic phosphate) when muscles repeatedly contract in an anaerobic, ischemic environment, proposed as a secondary hypertrophy driver via cell swelling, hypoxia, myokine production, and enhanced fiber recruitment. Moderate loads, short rests, higher reps, and continuation past initial failure (drop sets, rest-pause, supersets) elevate it. Drop-set training reliably raises acute lactate (Havers SMD 0.67) and perceived exertion, yet this elevated metabolic stress does not translate into superior chronic hypertrophy, and metabolite-driven adaptations appear to plateau relatively quickly.",
+    "source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-barbellmedicine-myoreps",
+      "exercise-techniques-rpstrength-intensity-techniques"
+    ],
+    "aliases": [
+      "metabolite accumulation",
+      "metabolic fatigue"
+    ]
+  },
+  {
+    "id": "exercise.concept.henneman-size-principle",
+    "name": "Henneman size principle",
+    "kind": "principle",
+    "description": "The orderly recruitment of motor units from smallest/lowest-threshold to largest/highest-threshold as force or fatigue demand rises (Henneman, Somjen & Carpenter, 1965). It underpins the rationale for training to failure and for fatigue-based techniques: as fatigue accumulates, progressively higher-threshold (type II) motor units must be recruited to sustain force. Taking sets to concentric failure is argued to ensure recruitment of the full motor-unit pool even at lighter loads, as in drop sets where load drops but failure is repeatedly reached.",
+    "source_ids": [
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-barbellmedicine-myoreps"
+    ],
+    "aliases": [
+      "size principle",
+      "orderly recruitment"
+    ]
+  },
+  {
+    "id": "exercise.concept.motor-unit-recruitment-under-fatigue",
+    "name": "Motor-unit recruitment under fatigue",
+    "kind": "mechanism",
+    "description": "As a set approaches failure, accumulating fatigue forces recruitment of higher-threshold motor units to maintain force, so that even light loads taken to failure can activate type II fibers. This is the proposed mechanism by which drop sets, rest-pause, and light-load-to-failure work recruit high-threshold units despite submaximal loads. An important caveat (Barbell Medicine): under dynamic conditions most motor units are recruited similarly across light and heavy loads, with the difference lying largely in rate coding, and the highest-threshold units may be unavailable late in a fatiguing high-rep set; recruitment via built-up fatigue also produces somewhat different adaptations than recruitment via heavy load.",
+    "source_ids": [
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-barbellmedicine-myoreps",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta"
+    ],
+    "aliases": [
+      "fatigue-mediated recruitment",
+      "fiber recruitment under fatigue"
+    ]
+  },
+  {
+    "id": "exercise.concept.time-under-tension",
+    "name": "Time under tension (TUT)",
+    "kind": "metric",
+    "description": "The total duration a muscle is under load during a set, a function of rep count and repetition tempo. Slower eccentric tempos extend TUT but reduce achievable reps; faster controlled tempos (~2 s) preserve time-efficiency. Although extending TUT is a proposed mechanism for techniques like drop sets and slow-tempo work, meta-analytic evidence shows similar hypertrophy across rep durations of roughly 0.5-8 s when sets are taken to failure, and super-slow (>=10 s) velocities may impair growth via suboptimal fiber stimulation. TUT is therefore a descriptive variable, not an independent growth driver.",
+    "source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-lidsen-cluster-short-review"
+    ],
+    "aliases": [
+      "TUT",
+      "time under load"
+    ]
+  },
+  {
+    "id": "exercise.concept.training-density",
+    "name": "Training density",
+    "kind": "metric",
+    "description": "The amount of training work performed per unit of time, raised by compressing or removing inter-set rest. Supersets, drop sets, and rest-pause increase density by performing more exercise in a shorter window. Higher density is the route by which set-structure techniques save time, but it comes at the cost of elevated acute fatigue, lactate, and perceived exertion, and can reduce force/velocity on subsequent demanding multi-joint work.",
+    "source_ids": [
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review"
+    ],
+    "aliases": [
+      "work density",
+      "volume per unit time"
+    ]
+  },
+  {
+    "id": "exercise.concept.time-efficiency",
+    "name": "Time-efficiency (time-saving training)",
+    "kind": "principle",
+    "description": "Designing training to achieve a given adaptation in the least time, motivated by lack of time being the most commonly reported barrier to exercise. Supersets, drop sets, and rest-pause roughly halve session time versus traditional sets while maintaining training volume (drop sets often take one-half to one-third the time; one superset RCT completed sessions in 36% less time). This is the dominant practical benefit of set-structure techniques: they are time-savers and fatigue-managers, not growth-amplifiers.",
+    "source_ids": [
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-coleman-2022-dropset-meta",
+      "exercise-techniques-superset-rct-sportrxiv-2025",
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta"
+    ],
+    "aliases": [
+      "time-efficient training",
+      "time-saving methods"
+    ]
+  },
+  {
+    "id": "exercise.concept.equivalence-at-matched-volume",
+    "name": "Equivalence at matched volume (advanced techniques rarely add growth)",
+    "kind": "principle",
+    "description": "The central finding of the set-structure literature: when training volume and effort are equated, advanced techniques (drop sets, rest-pause, supersets, cluster sets, pyramids) produce hypertrophy and strength comparable to traditional straight sets rather than superior. Meta-analyses converge on trivial-to-null between-group effects: drop sets vs traditional hypertrophy ES ~0.04-0.08; Fonseca SMD ~-0.00 in trained individuals; a Bayesian network meta-analysis found all credible intervals crossing zero with no method consistently superior. Their value is therefore time-efficiency, fatigue management, and variety, not extra muscle.",
+    "source_ids": [
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta",
+      "exercise-techniques-sportsmed-2026-bayesian-network-meta",
+      "exercise-techniques-coleman-2022-dropset-meta",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review"
+    ],
+    "aliases": [
+      "volume-equated equivalence",
+      "no hypertrophic superiority of advanced methods"
+    ]
+  },
+  {
+    "id": "exercise.concept.volume-load-effort-primacy",
+    "name": "Primacy of volume, load, and proximity to failure",
+    "kind": "principle",
+    "description": "Hypertrophy and strength are primarily governed by training volume (sets/reps), load, and proximity to failure; these are the 'main players' that set-structure techniques can deliver but not exceed. Pyramid schemes, for example, inherently cover a range of loads and rep ranges but do not supercharge gains beyond what matched volume and effort would predict. Practitioner consensus frames straight sets near failure as the foundation, with intensity techniques as supplements that cannot substitute for progressive overload, sufficient volume, and recovery.",
+    "source_ids": [
+      "exercise-techniques-sbs-pyramid",
+      "exercise-techniques-rpstrength-intensity-techniques",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta",
+      "exercise-techniques-iversen-2021-time-efficient-review"
+    ],
+    "aliases": [
+      "main drivers of growth",
+      "fundamentals over technique"
+    ]
+  },
+  {
+    "id": "exercise.concept.acute-chronic-dissociation",
+    "name": "Acute-chronic dissociation",
+    "kind": "phenomenon",
+    "description": "The observation that larger acute responses (greater metabolic stress, lactate, perceived exertion, neuromuscular fatigue) from a technique do not predict greater chronic adaptation. Drop sets acutely elevate RPE (SMD 1.62) and lactate (SMD 0.67) versus traditional sets, yet chronic hypertrophy and strength are equivalent (SMD ~0.04 and -0.04). The acute 'physiological price' paid for a technique reflects its fatigue cost and feasibility, not its growth payoff, undermining the assumption that a harder-feeling set is a more productive one.",
+    "source_ids": [
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc"
+    ],
+    "aliases": [
+      "acute response does not predict chronic adaptation"
+    ]
+  },
+  {
+    "id": "exercise.concept.drop-set",
+    "name": "Drop set",
+    "kind": "method",
+    "description": "A set taken to (near) failure at a given load, after which the load is immediately reduced (typically ~20-25%, usually 1-3 drops) and the set continued to failure with no rest. The rationale is heightened metabolic stress, extended time under tension, and recruitment of high-threshold motor units past initial failure. Chronically it matches traditional training for hypertrophy and strength while taking one-half to one-third the time; it is most practical on single-joint and machine exercises (safety concerns limit free-weight compounds).",
+    "source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-coleman-2022-dropset-meta",
+      "exercise-techniques-iversen-2021-time-efficient-review"
+    ],
+    "aliases": [
+      "dropset",
+      "descending set",
+      "breakdown set",
+      "strip set"
+    ]
+  },
+  {
+    "id": "exercise.concept.rest-pause",
+    "name": "Rest-pause training",
+    "kind": "method",
+    "description": "A set structure that segments a set into mini-sets separated by short intra-set rests (commonly ~20 s), continuing to failure until a target rep count is reached, while holding the load constant. Unlike drop sets, the short pauses allow maintenance of high load, velocity, and power. It roughly halves session time versus traditional sets and tends to favor hypertrophy at least as much as strength; evidence remains limited and equivocal, and it is intense enough to warrant training experience and machine use for compound movements.",
+    "source_ids": [
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta"
+    ],
+    "aliases": [
+      "rest-pause sets",
+      "intra-set rest"
+    ]
+  },
+  {
+    "id": "exercise.concept.myo-reps",
+    "name": "Myo-reps",
+    "kind": "method",
+    "description": "A rest-pause/cluster-style technique (coined by Borge Fagerli) using one 'activation' set to near-failure in a moderate-to-high rep range, followed by short-rest (~20-30 s) back-off mini-sets of a few reps repeated until performance drops. It accumulates effective reps and substantial volume in little time with a light load. A controlled trial found myo-reps produced hypertrophy and strength comparable to traditional protocols while reducing training duration and improving recovery and stress perception; it is best used for lower-priority supplemental lifts under time constraints, not for maximal-strength competition lifts.",
+    "source_ids": [
+      "exercise-techniques-barbellmedicine-myoreps",
+      "exercise-techniques-myoreps-thesis-liberty",
+      "exercise-techniques-rpstrength-intensity-techniques"
+    ],
+    "aliases": [
+      "myoreps",
+      "activation set with back-off sets"
+    ]
+  },
+  {
+    "id": "exercise.concept.cluster-set",
+    "name": "Cluster set",
+    "kind": "method",
+    "description": "A set structure that inserts short intra-set rest intervals (~20-60 s) between small groups of reps while keeping the inter-set rest, allowing partial phosphocreatine resynthesis. This redistributes fatigue so that velocity, power, and peak force are maintained and metabolic stress is reduced relative to traditional sets, shifting emphasis toward mechanical tension and permitting higher loads/volume per session. Chronically, cluster and traditional configurations yield equal strength, power, velocity, hypertrophy, and endurance adaptations, but cluster sets achieve them with less fatigue.",
+    "source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-jukic-2020-cluster-acute-fatigue-meta",
+      "exercise-techniques-davies-2021-cluster-chronic-meta",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta",
+      "exercise-techniques-lidsen-cluster-short-review"
+    ],
+    "aliases": [
+      "cluster sets",
+      "intra-set rest sets"
+    ]
+  },
+  {
+    "id": "exercise.concept.fatigue-redistribution",
+    "name": "Fatigue redistribution / performance maintenance",
+    "kind": "mechanism",
+    "description": "The mechanism by which cluster sets and rest-redistribution mitigate within-session fatigue: brief intra-set rests permit partial recovery of phosphocreatine, so bar velocity and power decline far less and lactate (SMD ~1.61) and perceived exertion (SMD ~0.81) are reduced versus traditional sets. Cluster sets are generally more effective than rest-redistribution because they include more total rest. This preserves repetition quality and mechanical output rather than adding a hypertrophic stimulus.",
+    "source_ids": [
+      "exercise-techniques-jukic-2020-cluster-acute-fatigue-meta",
+      "exercise-techniques-davies-2021-cluster-chronic-meta",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta"
+    ],
+    "aliases": [
+      "velocity maintenance",
+      "rest redistribution",
+      "phosphocreatine resynthesis"
+    ]
+  },
+  {
+    "id": "exercise.concept.superset-antagonist-preload",
+    "name": "Superset (antagonist preloading)",
+    "kind": "method",
+    "description": "Performing two exercises back-to-back with little or no rest; agonist-antagonist or upper-lower pairings are the time-efficient variants. The proposed mechanism for agonist-antagonist pairs is antagonist preloading, which may transiently facilitate neural activation and preserve (or raise) training volume on the second exercise. Supersets roughly halve training time while producing equivalent strength, hypertrophy, power, endurance, and body-composition changes, at the cost of higher lactate and fatigue. They are a time-efficiency tool, not a growth enhancer.",
+    "source_ids": [
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-superset-rct-sportrxiv-2025",
+      "exercise-techniques-zhang-2025-superset-meta",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review"
+    ],
+    "aliases": [
+      "paired-set training",
+      "agonist-antagonist superset",
+      "compound set"
+    ]
+  },
+  {
+    "id": "exercise.concept.pre-exhaustion",
+    "name": "Pre-exhaustion",
+    "kind": "myth",
+    "description": "Performing a single-joint isolation exercise immediately before a multi-joint compound for the same muscle, on the theory that pre-fatiguing the agonist increases its activation and growth during the compound. Evidence largely fails to support the mechanism: pre-exhaustion does not reliably increase target-muscle activation during the subsequent compound (and can decrease it as synergists compensate), reduces reps performed in the compound, and has not demonstrated superior hypertrophy. It remains a popular bodybuilding practice whose stated rationale is not borne out.",
+    "source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta"
+    ],
+    "aliases": [
+      "pre-exhaust",
+      "pre-fatigue",
+      "pre-exhaustion superset"
+    ]
+  }
+]

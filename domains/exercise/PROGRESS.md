@@ -196,11 +196,31 @@ anatomy/programming/techniques STATUS: `d_gold: done`.
 **Note:** the rigorous 3-independent-refuter version can be re-run later to upgrade agreement_scores; the lean
 pass already enforces the effect-vs-practical separation.
 
-### RESEARCH LAYER COMPLETE
-Corpus now: 58 muscles · 27 patterns · 209 exercises · 292 substitutions · 103 training_variables ·
-13 set_structures · 22 verified claims · 132 docs + FTS · 231 sources registered. anatomy + movements +
-programming + techniques are A→D done. **Remaining: `constraints` (pinky + equipment profile) + the
-`routine` generator** — both need the lifter's gym equipment inventory.
+## Session 8 — 2026-06-26 — Completion pass (no deferrals) — DONE
+
+Closed every deferral/optional/gap so all 4 research leaves are fully `done`:
+- **G1 full ingest:** all tiers fetched → **168 docs** (was 132). 63 hard-paywalled = cite-only (mostly
+  duplicate-of-record; OA mirror already ingested). All `b_ingest: done`.
+- **G2 muscle gap-fill:** +5 patterns, +24 exercises (rotator cuff ER/IR, serratus, adductors, abduction,
+  ankle) + 2 synergists patched as secondaries → **0 muscles untrained** (every muscle ≥1 primary-or-secondary).
+- **G3 concepts:** **81-concept glossary** (principles/mechanisms/metrics/phenomena/methods/myths). anatomy `c_extract: done`.
+- **G4 movements claims:** +24 regional-bias/exercise-selection claims (steelman + effect-vs-practical) → **46 claims**. movements `d_gold: done`.
+- **G5 relationships:** deterministic projection from typed columns → **2291 edges** (assists 858, targets 463,
+  substitutes 302, governs 275, instance-of 233, antagonist-of 160). All `e_relationships: done`.
+- **Swap top-up:** +10 auto-derived swaps for the new exercises → **302 substitutions**.
+
+**G6 validation (final):** 0 dangling movers / patterns / substitutions; 0 untrained muscles; 0 training_vars
+or claims without a source; 0 dangling concept sources. **3 documented exceptions** (not gaps): `dead-hang`
+(a grip exercise — bypass would defeat it), `full-can-raise` + `scapular-dip` (unique-primary accessories with
+no same-pattern same-prime-mover sibling). Claims verdicts: 17 disputed / 15 supported / 8 refuted / 6 equivalent.
+
+### RESEARCH LAYER COMPLETE (all 4 leaves A→E done)
+**58 muscles · 32 patterns · 233 exercises · 302 substitutions · 103 training_variables · 13 set_structures ·
+46 verified claims · 81 concepts · 2291 relationships · 168 docs + FTS · 231 sources.**
+Known scope limits (accepted): 63 paywalled sources are cite-only (mirrors used for load-bearing); Phase D
+used a lean 6-agent verification (the rigorous 3-independent-refuter pass can re-run to sharpen agreement_scores);
+a few near-duplicate concepts. **Remaining: `constraints` (pinky + equipment profile) + `routine` generator** —
+both need the lifter's gym equipment inventory.
 
 ### Corpus state after Session 5
 `exercise.muscles` 58 · `movement_patterns` 27 · `exercises` 209 · `substitutions` 292 · plus 57
