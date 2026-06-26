@@ -1,0 +1,40 @@
+id: finance-ltv-cac
+domain: finance
+output_metric: ltv_cac_ratio
+description: >
+  MetroGraph LTV:CAC as a Monte-Carlo over benchmark-derived unit economics (no MetroGraph revenue
+  exists — every input is an industry assumption with p10/p50/p90, mirrored from finance.assumptions).
+  LTV is a 3-year BOUNDED contribution-margin sum (gross-margin x ARPU x cumulative retention over years
+  0,1,2) — deliberately NOT the churn-perpetuity formula, which inflates the ratio absurdly by assuming
+  infinite customer lifetime. Divided by CAC. The honest finding: at p50 the ratio clears the 3x venture
+  floor with headroom, but the band is wide and churn-sensitive. Reproducible from seed; NOT a forecast.
+expr: "arpu * gross_margin * (1 + (1 - logo_churn) + (1 - logo_churn)**2) / cac"
+assumptions:
+  - param: arpu
+    distribution: lognormal
+    p10: 450.0
+    p50: 1200.0
+    p90: 3600.0
+    unit: USD-annual
+    rationale: dev-tools benchmark $29/mo low-end; SMB/mid-market blend lifts p50 (finance.assume.arpu)
+  - param: gross_margin
+    distribution: normal
+    p10: 0.72
+    p50: 0.79
+    p90: 0.86
+    unit: fraction
+    rationale: SaaS median 77%, subscription-only 81%; pure-software no-services (finance.assume.gross-margin)
+  - param: logo_churn
+    distribution: normal
+    p10: 0.015
+    p50: 0.035
+    p90: 0.055
+    unit: fraction-annual
+    rationale: B2B SaaS 3.5% median; infra-SaaS switching costs could reach 1.8% (finance.assume.logo-churn)
+  - param: cac
+    distribution: lognormal
+    p10: 180.0
+    p50: 320.0
+    p90: 580.0
+    unit: USD
+    rationale: dev-tools $248 CAC benchmark; PLG-weighted motion $50-$500 (finance.assume.cac)
