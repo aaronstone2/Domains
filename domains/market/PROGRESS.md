@@ -145,3 +145,26 @@ appendix. Made **self-auditing**: every in-body `[C:slug]` is annotated with its
 **The corpus is complete and queryable** via `duckdb -readonly _db/knowledge.duckdb` and
 `domains/market/queries/insights.sql`. Floors, not ceilings — every leaf can be deepened further; companies
 keep growing via continuous discovery; blocked sources can be re-fetched (Playwright/archive.org).
+
+## Session 5 — 2026-06-26 — Verification audit + paper honesty revision — IN PROGRESS
+
+Ran a full deterministic audit (algebra row counts, phase STATUS, citation resolution, git) +
+an **independent adversarial reviewer** of the paper. Verified: all phases done; algebra populated
+(funding_rounds + people intentionally empty); paper 22.8k words / 10 sections / 13 figures; committed
+(91f5afa). Polish commit 6382e39 fixed 14 mis-tagged citations + flipped meta_research done + removed
+two stray root scratch files.
+
+**Reviewer's key finding (acted on):** the v1 paper's §1–§9 asserted corpus-REFUTED wedge claims
+(metro-map superiority, flight-to-chat root cause, HCI-cost parity, market fragmentation) in declarative
+voice, then §10 retracted them; plus a fabricated KG figure (used refuted 31.9% vs the real 14.2%), a
+stitched $63.9B TAM, and ~46 citations using [C:] for non-claim entities. The honest, SUPPORTED thesis
+(MetroGraph as a specialized tool; wedge = the supported *unserved* features) was buried in §10.
+
+**Fix in progress:** regenerating the paper with hard verdict-discipline — assert only
+supported/equivalent claims; frame refuted ones explicitly as hypotheses pending A/B validation; anchor on
+the supported unserved-feature whitespace; verified numbers only; correct citation prefixes ([C:] claims,
+[E:] entities). Then re-assemble + re-annotate + commit.
+
+**Deferred (next):** populate funding_rounds (fix §4/§9 competitive-funding gap; people still deferred);
+backfill source_ids on the 46 unsourced claims; retry 845 blocked sources; recalibrate verification for
+interpretive claims (2-source cross-check vs strict refute-panel).
