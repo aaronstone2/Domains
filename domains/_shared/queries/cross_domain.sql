@@ -7,222 +7,302 @@ CREATE OR REPLACE VIEW meta.all_sources AS
   SELECT 'compintel' AS domain, * FROM compintel.sources UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.sources UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.sources UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.sources UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.sources UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.sources UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.sources UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.sources UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.sources UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.sources UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.sources UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.sources UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.sources UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.sources UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.sources;
+  SELECT 'product' AS domain, * FROM product.sources UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.sources UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.sources;
 
 CREATE OR REPLACE VIEW meta.all_documents AS
   SELECT 'compintel' AS domain, * FROM compintel.documents UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.documents UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.documents UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.documents UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.documents UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.documents UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.documents UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.documents UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.documents UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.documents UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.documents UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.documents UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.documents UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.documents UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.documents;
+  SELECT 'product' AS domain, * FROM product.documents UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.documents UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.documents;
 
 CREATE OR REPLACE VIEW meta.all_concepts AS
   SELECT 'compintel' AS domain, * FROM compintel.concepts UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.concepts UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.concepts UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.concepts UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.concepts UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.concepts UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.concepts UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.concepts UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.concepts UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.concepts UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.concepts UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.concepts UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.concepts UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.concepts UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.concepts;
+  SELECT 'product' AS domain, * FROM product.concepts UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.concepts UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.concepts;
 
 CREATE OR REPLACE VIEW meta.all_commands AS
   SELECT 'compintel' AS domain, * FROM compintel.commands UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.commands UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.commands UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.commands UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.commands UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.commands UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.commands UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.commands UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.commands UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.commands UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.commands UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.commands UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.commands UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.commands UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.commands;
+  SELECT 'product' AS domain, * FROM product.commands UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.commands UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.commands;
 
 CREATE OR REPLACE VIEW meta.all_config_keys AS
   SELECT 'compintel' AS domain, * FROM compintel.config_keys UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.config_keys UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.config_keys UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.config_keys UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.config_keys UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.config_keys UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.config_keys UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.config_keys UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.config_keys UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.config_keys UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.config_keys UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.config_keys UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.config_keys UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.config_keys UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.config_keys;
+  SELECT 'product' AS domain, * FROM product.config_keys UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.config_keys UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.config_keys;
 
 CREATE OR REPLACE VIEW meta.all_failure_modes AS
   SELECT 'compintel' AS domain, * FROM compintel.failure_modes UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.failure_modes UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.failure_modes UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.failure_modes UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.failure_modes UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.failure_modes UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.failure_modes UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.failure_modes UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.failure_modes UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.failure_modes UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.failure_modes UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.failure_modes UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.failure_modes UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.failure_modes UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.failure_modes;
+  SELECT 'product' AS domain, * FROM product.failure_modes UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.failure_modes UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.failure_modes;
 
 CREATE OR REPLACE VIEW meta.all_relationships AS
   SELECT 'compintel' AS domain, * FROM compintel.relationships UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.relationships UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.relationships UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.relationships UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.relationships UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.relationships UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.relationships UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.relationships UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.relationships UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.relationships UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.relationships UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.relationships UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.relationships UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.relationships UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.relationships;
+  SELECT 'product' AS domain, * FROM product.relationships UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.relationships UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.relationships;
 
 CREATE OR REPLACE VIEW meta.all_claims AS
   SELECT 'compintel' AS domain, * FROM compintel.claims UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.claims UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.claims UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.claims UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.claims UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.claims UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.claims UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.claims UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.claims UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.claims UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.claims UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claims UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claims UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claims UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.claims;
+  SELECT 'product' AS domain, * FROM product.claims UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.claims UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.claims;
 
 CREATE OR REPLACE VIEW meta.all_forecast_log AS
   SELECT 'compintel' AS domain, * FROM compintel.forecast_log UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.forecast_log UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.forecast_log UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.forecast_log UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.forecast_log UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.forecast_log UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.forecast_log UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.forecast_log UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.forecast_log UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.forecast_log UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.forecast_log UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.forecast_log UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.forecast_log UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.forecast_log UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.forecast_log;
+  SELECT 'product' AS domain, * FROM product.forecast_log UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.forecast_log UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.forecast_log;
 
 CREATE OR REPLACE VIEW meta.all_claim_evidence AS
   SELECT 'compintel' AS domain, * FROM compintel.claim_evidence UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.claim_evidence UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.claim_evidence UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.claim_evidence UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.claim_evidence UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.claim_evidence UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.claim_evidence UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.claim_evidence UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.claim_evidence UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.claim_evidence UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.claim_evidence UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claim_evidence UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claim_evidence UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claim_evidence UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.claim_evidence;
+  SELECT 'product' AS domain, * FROM product.claim_evidence UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.claim_evidence UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.claim_evidence;
 
 CREATE OR REPLACE VIEW meta.all_primary_studies AS
   SELECT 'compintel' AS domain, * FROM compintel.primary_studies UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.primary_studies UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.primary_studies UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.primary_studies UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.primary_studies UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.primary_studies UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.primary_studies UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.primary_studies UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.primary_studies UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.primary_studies UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.primary_studies UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.primary_studies UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.primary_studies UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.primary_studies UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.primary_studies;
+  SELECT 'product' AS domain, * FROM product.primary_studies UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.primary_studies UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.primary_studies;
 
 CREATE OR REPLACE VIEW meta.all_claim_history AS
   SELECT 'compintel' AS domain, * FROM compintel.claim_history UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.claim_history UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.claim_history UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.claim_history UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.claim_history UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.claim_history UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.claim_history UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.claim_history UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.claim_history UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.claim_history UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.claim_history UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claim_history UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claim_history UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claim_history UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.claim_history;
+  SELECT 'product' AS domain, * FROM product.claim_history UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.claim_history UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.claim_history;
 
 CREATE OR REPLACE VIEW meta.all_embeddings AS
   SELECT 'compintel' AS domain, * FROM compintel.embeddings UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.embeddings UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.embeddings UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.embeddings UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.embeddings UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.embeddings UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.embeddings UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.embeddings UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.embeddings UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.embeddings UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.embeddings UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.embeddings UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.embeddings UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.embeddings UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.embeddings;
+  SELECT 'product' AS domain, * FROM product.embeddings UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.embeddings UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.embeddings;
 
 CREATE OR REPLACE VIEW meta.all_derivations AS
   SELECT 'compintel' AS domain, * FROM compintel.derivations UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.derivations UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.derivations UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.derivations UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.derivations UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.derivations UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.derivations UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.derivations UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.derivations UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.derivations UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.derivations UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.derivations UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.derivations UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.derivations UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.derivations;
+  SELECT 'product' AS domain, * FROM product.derivations UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.derivations UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.derivations;
 
 CREATE OR REPLACE VIEW meta.all_model_assumptions AS
   SELECT 'compintel' AS domain, * FROM compintel.model_assumptions UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.model_assumptions UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.model_assumptions UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.model_assumptions UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.model_assumptions UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.model_assumptions UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.model_assumptions UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.model_assumptions UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.model_assumptions UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.model_assumptions UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.model_assumptions UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.model_assumptions UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.model_assumptions UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.model_assumptions UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.model_assumptions;
+  SELECT 'product' AS domain, * FROM product.model_assumptions UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.model_assumptions UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.model_assumptions;
 
 CREATE OR REPLACE VIEW meta.all_model_runs AS
   SELECT 'compintel' AS domain, * FROM compintel.model_runs UNION ALL BY NAME
   SELECT 'devin' AS domain, * FROM devin.model_runs UNION ALL BY NAME
   SELECT 'docker' AS domain, * FROM docker.model_runs UNION ALL BY NAME
+  SELECT 'ecosystem' AS domain, * FROM ecosystem.model_runs UNION ALL BY NAME
   SELECT 'ecs' AS domain, * FROM ecs.model_runs UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.model_runs UNION ALL BY NAME
+  SELECT 'finance' AS domain, * FROM finance.model_runs UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.model_runs UNION ALL BY NAME
+  SELECT 'governance' AS domain, * FROM governance.model_runs UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.model_runs UNION ALL BY NAME
   SELECT 'k8s' AS domain, * FROM k8s.model_runs UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.model_runs UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.model_runs UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.model_runs UNION ALL BY NAME
-  SELECT 'product' AS domain, * FROM product.model_runs;
+  SELECT 'product' AS domain, * FROM product.model_runs UNION ALL BY NAME
+  SELECT 'strategy' AS domain, * FROM strategy.model_runs UNION ALL BY NAME
+  SELECT 'voc' AS domain, * FROM voc.model_runs;
