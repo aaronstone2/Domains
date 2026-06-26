@@ -78,7 +78,26 @@ CREATE TABLE IF NOT EXISTS {{schema}}.relationships (
   from_id   VARCHAR NOT NULL,
   to_id     VARCHAR NOT NULL,
   rel_type  VARCHAR NOT NULL,
-  source_id VARCHAR
+  source_id VARCHAR,
+  -- Layer 5 — causal/graph-reasoning
+  confidence DOUBLE,                   -- 0..1 strength of the edge
+  derived    BOOLEAN,                  -- TRUE if produced by an inference rule (vs observed)
+  rule_id    VARCHAR,                  -- which rule derived it
+  valid_from DATE,
+  valid_to   DATE
+);
+
+-- derivations: provenance for rule-derived claims/edges (which rule, from which premises).
+CREATE TABLE IF NOT EXISTS {{schema}}.derivations (
+  id                VARCHAR PRIMARY KEY,
+  derived_claim_id  VARCHAR,
+  derived_rel       VARCHAR,           -- "from_id|rel_type|to_id" if it derived an edge
+  rule_id           VARCHAR NOT NULL,
+  premise_claim_ids VARCHAR[],
+  premise_rel_ids   VARCHAR[],
+  confidence_in     DOUBLE,
+  confidence_out    DOUBLE,
+  created_at        DATE
 );
 
 -- ───────────────────────── gold layer (promoted to base; common core) ─────────────────────────
@@ -160,6 +179,48 @@ LEFT JOIN {{schema}}.claim_evidence ce ON ce.claim_id = c.id
 LEFT JOIN {{schema}}.primary_studies ps ON ps.source_id = ce.evidence_id
 GROUP BY c.id, c.verdict;
 
+-- ───────────────────────── Layer 3 — quantitative model ─────────────────────────
+-- Parameterized Monte-Carlo: assumptions (p10/p50/p90 per param) + reproducible runs (fixed seed).
+-- Base so financial-model and market both inherit them; model defs live in _shared/models/*.yaml.
+CREATE TABLE IF NOT EXISTS {{schema}}.model_assumptions (
+  id           VARCHAR PRIMARY KEY,    -- <domain>.assume.<model>.<param>
+  model        VARCHAR,
+  param        VARCHAR,
+  distribution VARCHAR,                -- point | normal | triangular | lognormal | uniform
+  p10          DOUBLE,
+  p50          DOUBLE,
+  p90          DOUBLE,
+  unit         VARCHAR,
+  rationale    VARCHAR,
+  source_ids   VARCHAR[]
+);
+CREATE TABLE IF NOT EXISTS {{schema}}.model_runs (
+  id            VARCHAR PRIMARY KEY,   -- <domain>.run.<model>.<seed>
+  model         VARCHAR,
+  seed          INTEGER,
+  n_draws       INTEGER,
+  output_metric VARCHAR,
+  p10           DOUBLE,
+  p50           DOUBLE,
+  p90           DOUBLE,
+  mean          DOUBLE,
+  stdev         DOUBLE,
+  created_at    DATE
+);
+
+-- ───────────────────────── Layer 4 — semantic / embeddings ─────────────────────────
+-- Local fastembed vectors over documents/claims/concepts. Fixed-width FLOAT[384] for the VSS HNSW
+-- index (one model per index; dim/model recorded). Base → meta.all_embeddings (cross-domain search).
+CREATE TABLE IF NOT EXISTS {{schema}}.embeddings (
+  id           VARCHAR PRIMARY KEY,    -- <domain>.emb.<kind>.<object_id>
+  object_kind  VARCHAR,                -- document | claim | concept | …
+  object_id    VARCHAR,
+  model        VARCHAR,
+  dim          INTEGER,
+  vector       FLOAT[384],
+  content_hash VARCHAR
+);
+
 -- ───────────────────────── Layer 2 — temporal ─────────────────────────
 -- claim_history: SCD-2 closed versions of claims. Written by `ingest snapshot` when a claim's verdict
 -- or agreement changed since the last snapshot. row_json holds the full prior row (schema-drift proof).
@@ -213,3 +274,9 @@ ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS valid_from DATE;
 ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS valid_to DATE;
 ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS valid_from DATE;
 ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS valid_to DATE;
+-- Layer 5 (causal/graph-reasoning):
+ALTER TABLE {{schema}}.relationships ADD COLUMN IF NOT EXISTS confidence DOUBLE;
+ALTER TABLE {{schema}}.relationships ADD COLUMN IF NOT EXISTS derived BOOLEAN;
+ALTER TABLE {{schema}}.relationships ADD COLUMN IF NOT EXISTS rule_id VARCHAR;
+ALTER TABLE {{schema}}.relationships ADD COLUMN IF NOT EXISTS valid_from DATE;
+ALTER TABLE {{schema}}.relationships ADD COLUMN IF NOT EXISTS valid_to DATE;

@@ -154,6 +154,74 @@ def _cmd_calibrate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_model(args: argparse.Namespace) -> int:
+    """Run a Monte-Carlo model (deterministic from committed YAML + seed) into model_runs."""
+    from ingest.mc import run
+    con = open_db(read_only=False)
+    try:
+        print(f"model run: {run(con, args.domain, args.model, args.seed, args.draws)}")
+    finally:
+        con.close()
+    return 0
+
+
+def _cmd_reason(args: argparse.Namespace) -> int:
+    """Run inference rules to derive new edges/claims (speculative until verified)."""
+    from ingest.reason import reason
+    con = open_db(read_only=not args.commit)
+    try:
+        out = reason(con, args.domain, only=args.rule, dry_run=not args.commit)
+    finally:
+        con.close()
+    mode = "DERIVED" if args.commit else "would derive (dry-run)"
+    for rid, n in out.items():
+        print(f"{mode}: {rid} -> {n}")
+    return 0
+
+
+def _cmd_embed(args: argparse.Namespace) -> int:
+    """Compute local fastembed vectors for a domain's documents/claims/concepts."""
+    from ingest.embed import embed_domain
+    kinds = tuple(args.kind.split(",")) if args.kind else ("document", "claim", "concept")
+    con = open_db(read_only=False)
+    try:
+        n = embed_domain(con, args.domain, kinds)
+    finally:
+        con.close()
+    print(f"embed {args.domain}: {n} vectors ({','.join(kinds)})", file=sys.stderr)
+    print("# next: build the ANN index — duckdb _db/knowledge.duckdb < domains/_shared/queries/vss_index.sql", file=sys.stderr)
+    return 0
+
+
+def _cmd_search(args: argparse.Namespace) -> int:
+    """Hybrid BM25 + vector search over a domain's documents."""
+    from ingest.search import hybrid_search
+    con = open_db(read_only=True)
+    try:
+        for r in hybrid_search(con, args.domain, args.query, args.k):
+            print(f"{r['rrf']:.4f}  bm25={r['in_bm25']:d} vec={r['in_vector']:d}  {r['object_id']}")
+    finally:
+        con.close()
+    return 0
+
+
+def _cmd_gaps(args: argparse.Namespace) -> int:
+    """Near-duplicate + most-isolated objects (dedup + whitespace detection)."""
+    from ingest.search import gaps
+    con = open_db(read_only=True)
+    try:
+        g = gaps(con, args.domain, args.kind or "claim")
+        print("near-duplicates:")
+        for a, b, s in g["near_duplicates"]:
+            print(f"  {s}  {a}  ~  {b}")
+        print("most-isolated (whitespace candidates):")
+        for o, n in g["most_isolated"]:
+            print(f"  nearest={n}  {o}")
+    finally:
+        con.close()
+    return 0
+
+
 def _cmd_snapshot(args: argparse.Namespace) -> int:
     """Write a committed parquet snapshot of the fact tables + archive changed claims."""
     from ingest.temporal import snapshot
@@ -281,6 +349,36 @@ def main(argv: list[str] | None = None) -> int:
     p_diff.add_argument("--since", required=True)
     p_diff.add_argument("--table", default="claims")
     p_diff.set_defaults(func=_cmd_diff)
+
+    p_emb = sub.add_parser("embed", help="compute local fastembed vectors (needs the `embed` extra)")
+    p_emb.add_argument("--domain", required=True)
+    p_emb.add_argument("--kind", default=None, help="comma list: document,claim,concept")
+    p_emb.set_defaults(func=_cmd_embed)
+
+    p_search = sub.add_parser("search", help="hybrid BM25 + vector search over documents")
+    p_search.add_argument("--domain", required=True)
+    p_search.add_argument("query")
+    p_search.add_argument("-k", type=int, default=10)
+    p_search.set_defaults(func=_cmd_search)
+
+    p_gaps = sub.add_parser("gaps", help="near-duplicate + most-isolated objects (dedup + whitespace)")
+    p_gaps.add_argument("--domain", required=True)
+    p_gaps.add_argument("--kind", default="claim")
+    p_gaps.set_defaults(func=_cmd_gaps)
+
+    p_reason = sub.add_parser("reason", help="run inference rules to derive edges/claims (dry-run unless --commit)")
+    p_reason.add_argument("--domain", required=True)
+    p_reason.add_argument("--rule", default=None, help="run only this rule id")
+    p_reason.add_argument("--commit", action="store_true", help="actually write derived rows")
+    p_reason.set_defaults(func=_cmd_reason)
+
+    p_model = sub.add_parser("model", help="run a Monte-Carlo model from _shared/models/<id>.yaml")
+    p_model.add_argument("run", nargs="?", default="run")  # `ingest model run --model ...`
+    p_model.add_argument("--domain", required=True)
+    p_model.add_argument("--model", required=True)
+    p_model.add_argument("--seed", type=int, default=42)
+    p_model.add_argument("--draws", type=int, default=10000)
+    p_model.set_defaults(func=_cmd_model)
 
     args = p.parse_args(argv)
     return int(args.func(args))

@@ -134,3 +134,47 @@ CREATE OR REPLACE VIEW meta.all_claim_history AS
   SELECT 'linux' AS domain, * FROM linux.claim_history UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claim_history UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claim_history;
+
+CREATE OR REPLACE VIEW meta.all_embeddings AS
+  SELECT 'devin' AS domain, * FROM devin.embeddings UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.embeddings UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.embeddings UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.embeddings UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.embeddings UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.embeddings UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.embeddings UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.embeddings UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.embeddings;
+
+CREATE OR REPLACE VIEW meta.all_derivations AS
+  SELECT 'devin' AS domain, * FROM devin.derivations UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.derivations UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.derivations UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.derivations UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.derivations UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.derivations UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.derivations UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.derivations UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.derivations;
+
+CREATE OR REPLACE VIEW meta.all_model_assumptions AS
+  SELECT 'devin' AS domain, * FROM devin.model_assumptions UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.model_assumptions UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.model_assumptions UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.model_assumptions UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.model_assumptions UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.model_assumptions UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.model_assumptions UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.model_assumptions UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.model_assumptions;
+
+CREATE OR REPLACE VIEW meta.all_model_runs AS
+  SELECT 'devin' AS domain, * FROM devin.model_runs UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.model_runs UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.model_runs UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.model_runs UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.model_runs UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.model_runs UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.model_runs UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.model_runs UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.model_runs;

@@ -1,0 +1,31 @@
+id: market-som
+domain: market
+output_metric: som_usd
+description: >
+  MetroGraph obtainable revenue (SOM) as a Monte-Carlo over the supported addressable envelope, the
+  serviceable share, and a realistic obtained penetration. Replaces the paper's point estimate with a
+  distribution + percentiles. All inputs trace to supported market metrics (see §2); the wide bands are
+  honest about uncertainty rather than a single confident number.
+expr: "tam_usd * sam_share * som_share"
+assumptions:
+  - param: tam_usd
+    distribution: triangular
+    p10: 90.0e9
+    p50: 100.0e9
+    p90: 120.0e9
+    unit: USD
+    rationale: supported envelope = database-analytics $120.3B + low-code $44.5B + graph, overlap netted
+  - param: sam_share
+    distribution: normal
+    p10: 0.12
+    p50: 0.18
+    p90: 0.25
+    unit: fraction
+    rationale: fraction of the envelope reachable by a graph-centric specialized tool (beachhead segments)
+  - param: som_share
+    distribution: lognormal
+    p10: 0.002
+    p50: 0.005
+    p90: 0.010
+    unit: fraction
+    rationale: realistic obtained penetration of the SAM within 7-10 years (0.2%-1%)
