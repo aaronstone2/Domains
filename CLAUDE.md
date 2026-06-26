@@ -54,6 +54,15 @@ A multi-domain knowledge corpus lives in this repo: DuckDB at `_db/knowledge.duc
 
 **Starting or resuming work:** read `domains/_shared/sessions/extend-playbook.md` — the single entry point for engaging on any domain, new or partially complete. Each leaf runs a plan-mode meta-research ritual (Explore → Plan → clarify → write PLAN/STATUS → execute phases A–E in `PLAN.md`).
 
+**Strategy-OS engine layers (`ingest` subcommands beyond init-db/fetch/load).** The engine evolved from a research corpus into a strategy OS; `claims` is now a BASE table (uniform gold layer + `meta.all_claims`). New capabilities, all backward-compatible (idempotent `-- migrations` block in `schema.sql`; DB stays a regenerable artifact):
+- `load-extract --domain [--leaf]` — upsert `{table: rows}` extension-table JSON from `extract/*.json` (replaces the manual duckdb-CLI step).
+- `verify --domain` / `calibrate` — Layer 6: per-claim `verification_standard` (descriptive/evaluative/predictive), Wilson CIs (`confidence_low/high`), freshness/`stale` decay; Brier calibration via `forecast_log`.
+- `evidence --domain [--audit]` — Layer 1: `claim_evidence` junction + `primary_studies` + the `v_claim_grade` view. `is_primary_backed` is **derived, never authored** — secondary evidence can't masquerade as primary; supported-but-unbacked claims read as "supported-by-proxy" (the wedge honesty cap).
+- `snapshot --label <L>` / `diff --since <L>` — Layer 2: committed parquet history under `_shared/snapshots/` + SCD-2 `claim_history`.
+- `embed --domain` / `search --hybrid` / `gaps` — Layer 4: local fastembed vectors (`embed` extra), `base embeddings` table, HNSW via `queries/vss_index.sql`, BM25+vector RRF, dedup/whitespace.
+- `reason --domain [--commit]` — Layer 5: inference rules in `_shared/rules/*.yaml` derive edges/claims (speculative until verified) with `derivations` provenance.
+- `model run --domain --model <id>` — Layer 3: NumPy Monte-Carlo from `_shared/models/*.yaml` (fixed seed → reproducible) into `model_runs`.
+
 **Active focus:** `domains/exercise/` — a science-backed training-fact corpus that generates an optimal Push/Pull/Legs routine (static loop + dynamic mesocycle). See `domains/exercise/PLAN.md`.
 
 **Parked (not deleted):** the original interview-prep domains (`devin`, `docker`, `linux`, `ecs`, `firecracker`, `methodology`), whose context lives in `domains/_shared/sessions/PREAMBLE.md` + the per-phase `phase-*.md` docs. Still queryable and resumable through the same engine; just not the current focus.
