@@ -154,6 +154,26 @@ def _cmd_calibrate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_evidence(args: argparse.Namespace) -> int:
+    """Seed claim_evidence from claim source ids; audit supported-but-not-primary-backed claims."""
+    from ingest.verify import seed_claim_evidence, evidence_audit
+    con = open_db(read_only=False)
+    try:
+        n = seed_claim_evidence(con, args.domain)
+        proxy = evidence_audit(con, args.domain)
+        if args.audit:
+            for cid, verdict, nsup in proxy:
+                print(f"PROXY-ONLY {cid}  verdict={verdict}  supporting_evidence={nsup}  (no primary backing)")
+    finally:
+        con.close()
+    print(
+        f"evidence {args.domain}: seeded {n} claim_evidence rows; "
+        f"{len(proxy)} supported/equivalent claims are PROXY-ONLY (pending experimental validation)",
+        file=sys.stderr,
+    )
+    return 0
+
+
 def _cmd_load_extract(args: argparse.Namespace) -> int:
     """Load committed extension-table rows from domains/<domain>/[<leaf>/]extract/*.json into the DB."""
     if not args.domain:
@@ -221,6 +241,11 @@ def main(argv: list[str] | None = None) -> int:
     p_cal = sub.add_parser("calibrate", help="Brier-score resolved predictive claims")
     p_cal.add_argument("--domain", required=True)
     p_cal.set_defaults(func=_cmd_calibrate)
+
+    p_ev = sub.add_parser("evidence", help="seed claim_evidence + audit proxy-only supported claims")
+    p_ev.add_argument("--domain", required=True)
+    p_ev.add_argument("--audit", action="store_true")
+    p_ev.set_defaults(func=_cmd_evidence)
 
     args = p.parse_args(argv)
     return int(args.func(args))

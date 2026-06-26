@@ -101,3 +101,25 @@ CREATE OR REPLACE VIEW meta.all_forecast_log AS
   SELECT 'linux' AS domain, * FROM linux.forecast_log UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.forecast_log UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.forecast_log;
+
+CREATE OR REPLACE VIEW meta.all_claim_evidence AS
+  SELECT 'devin' AS domain, * FROM devin.claim_evidence UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.claim_evidence UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.claim_evidence UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.claim_evidence UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.claim_evidence UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.claim_evidence UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.claim_evidence UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.claim_evidence UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.claim_evidence;
+
+CREATE OR REPLACE VIEW meta.all_primary_studies AS
+  SELECT 'devin' AS domain, * FROM devin.primary_studies UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.primary_studies UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.primary_studies UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.primary_studies UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.primary_studies UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.primary_studies UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.primary_studies UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.primary_studies UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.primary_studies;

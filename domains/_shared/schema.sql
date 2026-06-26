@@ -20,7 +20,10 @@ CREATE TABLE IF NOT EXISTS {{schema}}.sources (
   fetched_at    TIMESTAMP,
   content_hash  VARCHAR,
   parser        VARCHAR,
-  notes         VARCHAR
+  notes         VARCHAR,
+  -- Layer 1 — primary-evidence tier
+  evidence_class VARCHAR,             -- primary | secondary | tertiary | synthetic (what KIND of evidence this is)
+  primary_kind   VARCHAR              -- ab-test | pref-test | usability | review-mining | telemetry | interview | survey (when evidence_class='primary')
 );
 
 CREATE TABLE IF NOT EXISTS {{schema}}.documents (
@@ -107,6 +110,56 @@ CREATE TABLE IF NOT EXISTS {{schema}}.claims (
   forecast_actual          VARCHAR                -- the resolved outcome (for calibration)
 );
 
+-- ───────────────────────── Layer 1 — primary-evidence tier ─────────────────────────
+-- claim_evidence: a gradeable junction generalizing supporting/contradicting_source_ids. Each row ties
+-- a claim to one piece of evidence with a stance + weight + the evidence's class. Base → meta.all_claim_evidence.
+CREATE TABLE IF NOT EXISTS {{schema}}.claim_evidence (
+  id             VARCHAR PRIMARY KEY,   -- <domain>.ce.<claim-slug>.<n>
+  claim_id       VARCHAR NOT NULL,
+  evidence_id    VARCHAR,               -- a sources.id OR a primary_studies.source_id
+  evidence_class VARCHAR,               -- primary | secondary | tertiary | synthetic (snapshot of the source's class)
+  stance         VARCHAR,               -- supports | contradicts | contextual
+  weight         DOUBLE,                -- 0..1 strength of this evidence for the claim
+  is_primary     BOOLEAN,               -- convenience: evidence_class = 'primary'
+  note           VARCHAR
+);
+
+-- primary_studies: real behavioral/empirical evidence (A/B, preference, usability, review-mining, telemetry).
+-- The ONLY place 'experimental'/'primary' grade can originate. `is_dormant`=TRUE marks a framework placeholder
+-- (the intake exists; no real data yet) so the wedge cannot be quietly upgraded to experimental grade. Base.
+CREATE TABLE IF NOT EXISTS {{schema}}.primary_studies (
+  source_id   VARCHAR PRIMARY KEY,       -- the study, registered as a sources.id (evidence_class='primary')
+  study_type  VARCHAR,                   -- ab-test | pref-test | usability-task | review-mining | telemetry | survey | interview
+  subject_id  VARCHAR,                   -- product/feature/segment under test
+  n           INTEGER,
+  population  VARCHAR,
+  metric      VARCHAR,
+  effect_size DOUBLE,
+  ci_low      DOUBLE,
+  ci_high     DOUBLE,
+  p_value     DOUBLE,
+  direction   VARCHAR,                   -- favors-us | favors-them | neutral
+  raw_path    VARCHAR,                   -- gitignored raw capture
+  captured_at DATE,
+  methodology VARCHAR,
+  is_dormant  BOOLEAN,                   -- TRUE = placeholder framework row, NOT real evidence
+  source_ids  VARCHAR[]
+);
+
+-- Honesty guard (mechanized): is_primary_backed is DERIVED, never authored — synthetic/secondary
+-- evidence can't masquerade as primary. The synthesis reads THIS view, not an author-set flag.
+CREATE OR REPLACE VIEW {{schema}}.v_claim_grade AS
+SELECT
+  c.id AS claim_id,
+  c.verdict,
+  COALESCE(BOOL_OR(ce.stance = 'supports' AND ce.evidence_class = 'primary'
+                   AND NOT COALESCE(ps.is_dormant, FALSE)), FALSE) AS is_primary_backed,
+  COUNT(*) FILTER (WHERE ce.stance = 'supports') AS n_supporting_evidence
+FROM {{schema}}.claims c
+LEFT JOIN {{schema}}.claim_evidence ce ON ce.claim_id = c.id
+LEFT JOIN {{schema}}.primary_studies ps ON ps.source_id = ce.evidence_id
+GROUP BY c.id, c.verdict;
+
 -- forecast_log — predictive-claim calibration (Brier scoring). Base so meta.all_forecast_log exists.
 CREATE TABLE IF NOT EXISTS {{schema}}.forecast_log (
   id              VARCHAR PRIMARY KEY,
@@ -135,3 +188,6 @@ ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS decay_halflife_days INTEG
 ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS stale BOOLEAN;
 ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS forecast_resolved BOOLEAN;
 ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS forecast_actual VARCHAR;
+-- Layer 1 (primary-evidence tier):
+ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS evidence_class VARCHAR;
+ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS primary_kind VARCHAR;

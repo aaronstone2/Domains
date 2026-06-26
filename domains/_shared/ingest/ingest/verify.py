@@ -95,6 +95,51 @@ def recalibrate(con: duckdb.DuckDBPyConnection, domain: str) -> dict[str, int]:
     return {"standards_assigned": assigned, "stale": stale, **{f"std:{k}": v for k, v in by_std.items()}}
 
 
+def seed_claim_evidence(con: duckdb.DuckDBPyConnection, domain: str) -> int:
+    """Backfill claim_evidence from each claim's supporting/contradicting_source_ids.
+
+    Idempotent (deterministic row ids + ON CONFLICT DO NOTHING). Also defaults any NULL
+    sources.evidence_class to 'secondary' (analyst/docs/blogs are not behavioral evidence).
+    """
+    con.execute(f"UPDATE {domain}.sources SET evidence_class = 'secondary' WHERE evidence_class IS NULL")
+    cls = dict(
+        con.execute(f"SELECT id, COALESCE(evidence_class,'secondary') FROM {domain}.sources").fetchall()
+    )
+    rows = con.execute(
+        f"SELECT id, supporting_source_ids, contradicting_source_ids FROM {domain}.claims"
+    ).fetchall()
+    ins = 0
+    for cid, sup, contra in rows:
+        for stance, lst in (("supports", sup or []), ("contradicts", contra or [])):
+            for i, sid in enumerate(lst):
+                ec = cls.get(sid, "secondary")
+                ceid = f"{cid}.ce.{stance[:3]}.{i}"
+                con.execute(
+                    f"INSERT INTO {domain}.claim_evidence "
+                    f"(id, claim_id, evidence_id, evidence_class, stance, weight, is_primary, note) "
+                    f"VALUES (?,?,?,?,?,?,?,?) ON CONFLICT (id) DO NOTHING",
+                    [ceid, cid, sid, ec, stance, 0.5, ec == "primary", "seeded from claim source ids"],
+                )
+                ins += 1
+    return ins
+
+
+def evidence_audit(con: duckdb.DuckDBPyConnection, domain: str) -> list[tuple]:
+    """Claims asserted supported/equivalent but NOT primary-backed → these are 'supported-by-proxy'.
+
+    This is the honesty cap mechanized: such claims (the MetroGraph wedge among them) can never read
+    as experimentally proven until a real primary_studies row backs them. Returns the offending claims.
+    """
+    return con.execute(
+        f"""
+        SELECT c.id, c.verdict, g.n_supporting_evidence
+        FROM {domain}.claims c JOIN {domain}.v_claim_grade g ON g.claim_id = c.id
+        WHERE c.verdict IN ('supported','equivalent') AND NOT g.is_primary_backed
+        ORDER BY c.id
+        """
+    ).fetchall()
+
+
 def calibrate(con: duckdb.DuckDBPyConnection, domain: str) -> dict[str, float]:
     """Score resolved predictive claims (Brier) and report mean calibration."""
     con.execute(

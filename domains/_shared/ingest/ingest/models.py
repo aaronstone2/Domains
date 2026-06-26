@@ -5,6 +5,10 @@ from pydantic import BaseModel, ConfigDict, Field
 
 Tier = Literal["T0", "T1", "T2", "T3"]
 License = Literal["redistribute-ok", "reference-only", "unknown"]
+EvidenceClass = Literal["primary", "secondary", "tertiary", "synthetic"]
+PrimaryKind = Literal[
+    "ab-test", "pref-test", "usability", "telemetry", "review-mining", "interview", "survey"
+]
 
 
 class Source(BaseModel):
@@ -23,6 +27,10 @@ class Source(BaseModel):
     fetched_at: datetime | None = None
     content_hash: str | None = None
     notes: str = ""
+    # Layer 1 — primary-evidence tier. Default 'secondary': analyst/docs/blogs are not behavioral
+    # evidence. Only real captures (review-mining, A/B, usability, telemetry) are 'primary'.
+    evidence_class: EvidenceClass = "secondary"
+    primary_kind: PrimaryKind | None = None
 
 
 class Document(BaseModel):

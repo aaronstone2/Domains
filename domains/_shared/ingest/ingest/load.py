@@ -29,6 +29,8 @@ BASE_TABLES: tuple[str, ...] = (
     "relationships",
     "claims",
     "forecast_log",
+    "claim_evidence",
+    "primary_studies",
 )
 
 
@@ -133,6 +135,8 @@ def stage_source(src: Source) -> None:
         "content_hash": src.content_hash,
         "parser": src.parser,
         "notes": src.notes,
+        "evidence_class": src.evidence_class,
+        "primary_kind": src.primary_kind,
     }
     with src_p.open("a", encoding="utf-8") as f:
         f.write(json.dumps(row) + "\n")
