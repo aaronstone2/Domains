@@ -9,6 +9,7 @@ from ingest.fetch import fetch
 from ingest.load import (
     clear_staging,
     init_db,
+    load_extract,
     load_staged,
     open_db,
     stage_document,
@@ -120,6 +121,23 @@ def _cmd_load(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_load_extract(args: argparse.Namespace) -> int:
+    """Load committed extension-table rows from domains/<domain>/[<leaf>/]extract/*.json into the DB."""
+    if not args.domain:
+        print("load-extract: --domain is required", file=sys.stderr)
+        return 1
+    con = open_db(read_only=False)
+    try:
+        counts = load_extract(con, args.domain, args.leaf)
+    finally:
+        con.close()
+    total = sum(n for n in counts.values() if n >= 0)
+    for table, n in sorted(counts.items()):
+        print(f"  {table}: {n}")
+    print(f"load-extract: {total} rows across {len(counts)} tables into {args.domain}.*", file=sys.stderr)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="ingest")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -153,6 +171,14 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_load.add_argument("--domain", required=True)
     p_load.set_defaults(func=_cmd_load)
+
+    p_lx = sub.add_parser(
+        "load-extract",
+        help="upsert extension-table rows from domains/<domain>/[<leaf>/]extract/*.json",
+    )
+    p_lx.add_argument("--domain", required=True)
+    p_lx.add_argument("--leaf", default=None)
+    p_lx.set_defaults(func=_cmd_load_extract)
 
     args = p.parse_args(argv)
     return int(args.func(args))

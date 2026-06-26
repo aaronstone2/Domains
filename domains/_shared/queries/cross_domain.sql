@@ -79,3 +79,14 @@ CREATE OR REPLACE VIEW meta.all_relationships AS
   SELECT 'linux' AS domain, * FROM linux.relationships UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.relationships UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.relationships;
+
+CREATE OR REPLACE VIEW meta.all_claims AS
+  SELECT 'devin' AS domain, * FROM devin.claims UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.claims UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.claims UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.claims UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.claims UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.claims UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.claims UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.claims UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.claims;

@@ -400,23 +400,9 @@ CREATE TABLE IF NOT EXISTS {{schema}}.theory_concepts (
 -- category is a controlled vocab PARTITIONED PER LEAF (cross-leaf contract C4) so parallel
 -- writers never collide on PKs. `paper` is read-only on this table and must never re-flatten a
 -- verdict (the conflation guard).
-CREATE TABLE IF NOT EXISTS {{schema}}.claims (
-  id                       VARCHAR PRIMARY KEY,  -- market.claim.users-abandon-ui-for-chat
-  statement                VARCHAR NOT NULL,
-  category                 VARCHAR,              -- market | competition | pricing | ux | hci | theory | segment | demand | feature | gtm | funding | integration
-  claim_type               VARCHAR,              -- empirical | strategic | theoretical | quantitative
-  verdict                  VARCHAR,              -- supported | equivalent | disputed | refuted | speculative
-  nuance                   VARCHAR,              -- the recorded dissent / what evidence ACTUALLY shows
-  evidence_grade           VARCHAR,              -- analyst-report | survey | peer-reviewed | g2-aggregate | vendor-claim | review-mining | expert | anecdote
-  population               VARCHAR,              -- segment/persona scope
-  agreement_score          DOUBLE,              -- fraction of independent verifiers that did NOT refute (0..1)
-  confidence               DOUBLE,              -- 0..1
-  affected_ids             VARCHAR[],            -- companies/products/features/segments/personas governed
-  supporting_source_ids    VARCHAR[],
-  contradicting_source_ids VARCHAR[],
-  theory_concept_ids       VARCHAR[],            -- grounding (powers the theory-grounding-of-claims query)
-  last_verified            DATE
-);
+-- claims is now a BASE table (domains/_shared/schema.sql). market adds one grounding extra.
+-- (category vocab for market: market | competition | pricing | ux | hci | theory | segment | demand | feature | gtm | funding | integration)
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS theory_concept_ids VARCHAR[];  -- grounding (powers the theory-grounding-of-claims query)
 
 -- ───────────────── reports: analyst / survey / G2 / case-study (mirrors exercise.studies)
 -- source_id is the PK → first-writer-wins on upsert. The place every NUMBER in the paper resolves to.

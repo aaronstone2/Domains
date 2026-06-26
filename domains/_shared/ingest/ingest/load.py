@@ -8,6 +8,7 @@ from ingest.models import Document, Source
 from ingest.paths import (
     DB_DIR,
     DB_PATH,
+    DOMAINS_DIR,
     DOMAIN_SCHEMAS,
     SHARED_QUERIES,
     SHARED_SCHEMA_SQL,
@@ -17,6 +18,7 @@ from ingest.paths import (
 
 # Base tables every domain gets from schema.sql; the only ones unioned into the meta.* views.
 # Per-domain schema-extension tables stay domain-local (queried directly, not cross-domain).
+# `claims` was promoted from per-domain to base so the gold layer is uniform and meta.all_claims exists.
 BASE_TABLES: tuple[str, ...] = (
     "sources",
     "documents",
@@ -25,6 +27,7 @@ BASE_TABLES: tuple[str, ...] = (
     "config_keys",
     "failure_modes",
     "relationships",
+    "claims",
 )
 
 
@@ -157,6 +160,52 @@ def load_staged(con: duckdb.DuckDBPyConnection, domain: str) -> tuple[int, int]:
     s_n = _load_jsonl(con, src_p, f"{domain}.sources")
     d_n = _load_jsonl(con, doc_p, f"{domain}.documents")
     return s_n, d_n
+
+
+def load_extract(
+    con: duckdb.DuckDBPyConnection, domain: str, leaf: str | None = None
+) -> dict[str, int]:
+    """Upsert committed extension-table rows from domains/<domain>/[<leaf>/]extract/*.json.
+
+    Convention: each JSON file is either {table_name: [rows], ...} (top-level keys name target
+    tables) or a bare [rows] list (table = file stem). Only keys matching an EXISTING table in
+    the domain schema are loaded — non-table keys (e.g. a figure's name/caption/sql) are skipped,
+    so mixed extract/ dirs are safe. Each table loads via the same _load_jsonl ON CONFLICT path as
+    sources/documents. Returns {table: rows_loaded}; a per-table failure is reported, not fatal.
+    """
+    base = DOMAINS_DIR / domain
+    files = (
+        sorted((base / leaf / "extract").glob("*.json"))
+        if leaf
+        else sorted(base.glob("*/extract/*.json"))
+    )
+    existing = {
+        r[0]
+        for r in con.execute(
+            "SELECT table_name FROM information_schema.tables WHERE table_schema = ?", [domain]
+        ).fetchall()
+    }
+    counts: dict[str, int] = {}
+    STAGING_DIR.mkdir(parents=True, exist_ok=True)
+    for path in files:
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        groups = data if isinstance(data, dict) else {path.stem: data}
+        for table, rows in groups.items():
+            if table not in existing or not isinstance(rows, list) or not rows:
+                continue
+            tmp = STAGING_DIR / f"{domain}.{table}.extract.jsonl"
+            with tmp.open("w", encoding="utf-8") as f:
+                for r in rows:
+                    f.write(json.dumps(r, default=str) + "\n")
+            try:
+                n = _load_jsonl(con, tmp, f"{domain}.{table}")
+                counts[table] = counts.get(table, 0) + n
+            except Exception as e:  # noqa: BLE001
+                counts[f"{table} (FAILED: {type(e).__name__})"] = -1
+    return counts
 
 
 def _pk_columns(con: duckdb.DuckDBPyConnection, schema: str, table: str) -> list[str]:
