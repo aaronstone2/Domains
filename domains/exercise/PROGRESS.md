@@ -166,6 +166,42 @@ are now realized data.
 
 `movements` STATUS: `c_extract: done` (patterns + exercises + substitutions); `e_relationships: partial`.
 
+## Session 6 — 2026-06-25 — programming + techniques A→C — DONE
+
+- **Phase A:** swept + merged 111 sources (programming 69 incl. 32 T0 metas + 13 T1 RCTs; techniques 42).
+- **Phase B:** ingested T0–T2 → programming 50 docs, techniques 25 docs (31 paywalled blocked; load-bearing
+  metas came via PMC/SportRxiv/repository mirrors). Corpus now 132 docs + FTS.
+- **Phase C:** 6 variable-agents + 1 set-structure agent (bounded; journal recovery + Python merge) →
+  **103 training_variables** (frequency 19, weekly_sets 18, rir 15, rest 14, load 13, overload 12, rep_range 5,
+  session_sets 3, meso 2, deload 2; grades: 53 meta-analysis / 32 expert / 16 RCT / 2 mechanistic) +
+  **13 set_structures** (RPT, pyramids, drop/rest-pause/myo-reps/cluster, supersets). 0 unresolved citations.
+
+programming + techniques STATUS: `c_extract: done`. Next: Phase D `claims` (adversarial verification).
+
+## Session 7 — 2026-06-26 — Phase D: adversarially-verified `claims` — DONE
+
+3 generators produced 22 contested claims (across programming/techniques/contested-anatomy). The full
+3-refuter-per-claim design (80 agents) hit the session rate-limit twice; recovered the 22 candidates from
+the journal and ran a **lean verification** (6 agents × ~4 claims, steelman both sides + the effect-vs-practical
+rule). Loaded into `exercise.claims` (`techniques/extract/claims.json`).
+
+**Verdict distribution (the payoff): 9 disputed · 6 equivalent · 5 refuted · 2 supported** (avg agreement
+0.27; grades 14 meta-analysis / 6 RCT / 2 mechanistic). The deep-research doc's "X is superior" claims were
+systematically downgraded with the dissent recorded — frequency & advanced-techniques → equivalent at matched
+volume; rest-pause/volume-monotonicity/hip-thrust-glute/lengthened-partials → disputed (one flagged a corpus
+evidence-gap honestly). This is the auditable evidence base the whole project exists to produce.
+
+anatomy/programming/techniques STATUS: `d_gold: done`.
+
+**Note:** the rigorous 3-independent-refuter version can be re-run later to upgrade agreement_scores; the lean
+pass already enforces the effect-vs-practical separation.
+
+### RESEARCH LAYER COMPLETE
+Corpus now: 58 muscles · 27 patterns · 209 exercises · 292 substitutions · 103 training_variables ·
+13 set_structures · 22 verified claims · 132 docs + FTS · 231 sources registered. anatomy + movements +
+programming + techniques are A→D done. **Remaining: `constraints` (pinky + equipment profile) + the
+`routine` generator** — both need the lifter's gym equipment inventory.
+
 ### Corpus state after Session 5
 `exercise.muscles` 58 · `movement_patterns` 27 · `exercises` 209 · `substitutions` 292 · plus 57
 ingested docs + BM25 FTS. Remaining: `programming` + `techniques` (A→D), Phase D `claims`

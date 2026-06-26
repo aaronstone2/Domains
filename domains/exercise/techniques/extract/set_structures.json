@@ -1,0 +1,212 @@
+[
+  {
+    "id": "exercise.tech.straight-sets",
+    "name": "Straight sets (double progression)",
+    "family": "straight-set",
+    "mechanism": "Reference/control structure: fixed load and rep target across sets to failure or near-failure, with full inter-set rest. Drives hypertrophy and strength via the established primary levers (mechanical tension, volume = sets x reps, proximity to failure). Double progression = add reps within a rep range, then add load once the top of the range is hit. All advanced set structures are benchmarked against this; volume-equated meta-analyses repeatedly find no other structure superior to it for growth.",
+    "fatigue_cost": "low",
+    "best_for": "compound-strength",
+    "contraindications": "None — appropriate for all populations and exercises. The default backbone of any program; advanced techniques only supplement it.",
+    "evidence_grade": "meta-analysis",
+    "source_ids": [
+      "exercise-techniques-sportsmed-2026-bayesian-network-meta",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-rpstrength-intensity-techniques",
+      "exercise-techniques-iversen-2021-time-efficient-review"
+    ]
+  },
+  {
+    "id": "exercise.tech.crescent-pyramid",
+    "name": "Crescent / ascending pyramid",
+    "family": "pyramid",
+    "mechanism": "Load increases (and reps decrease) across successive sets within one exercise. Spans a range of loads/rep ranges in a single exercise, but when total volume is equated it produces the SAME strength, hypertrophy and muscle-architecture changes as traditional sets — Angleri (volume-equated within-subject RCT): CSA +7.5% CP vs +7.6% TRAD; leg-press 1RM +25.9% both. The Cardozo narrative review found no superior acute or chronic response. Value is variety / spanning rep ranges, NOT more growth.",
+    "fatigue_cost": "moderate",
+    "best_for": "isolation-hypertrophy",
+    "contraindications": "Higher accumulated fatigue from load/rep variation makes it suboptimal for pure 1RM strength peaking/tapering; early ascending sets pre-fatigue the top (heaviest) set, reducing peak force output.",
+    "evidence_grade": "RCT",
+    "source_ids": [
+      "exercise-techniques-angleri-2017-crescent-pyramid-dropset-eajp",
+      "exercise-techniques-sbs-pyramid",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta"
+    ]
+  },
+  {
+    "id": "exercise.tech.reverse-pyramid",
+    "name": "Reverse-pyramid training (RPT)",
+    "family": "pyramid",
+    "mechanism": "Heaviest, lowest-rep top set performed FIRST while fresh, then load is dropped on subsequent back-off sets to extend reps. The rationale is order/freshness: putting the maximal-tension set first maximises force output and neural recruitment for that set, unlike crescent pyramids where the heavy set is pre-fatigued. No direct volume-equated trial in this corpus; pyramid-family evidence (Angleri, Cardozo, Fonseca) shows pyramidal loading is equivalent to traditional for growth, so RPT's edge is theoretical strength/time efficiency, not greater hypertrophy.",
+    "fatigue_cost": "moderate",
+    "best_for": "compound-strength",
+    "contraindications": "Requires a thorough warm-up before the heavy first set or injury risk rises; not ideal for novices who lack the load tolerance/skill to open with a near-maximal set. Equivalence to traditional means no growth benefit to justify it over straight sets.",
+    "evidence_grade": "expert",
+    "source_ids": [
+      "exercise-techniques-sbs-pyramid",
+      "exercise-techniques-angleri-2017-crescent-pyramid-dropset-eajp",
+      "exercise-techniques-iversen-2021-time-efficient-review"
+    ]
+  },
+  {
+    "id": "exercise.tech.drop-set",
+    "name": "Drop set",
+    "family": "intensity-technique",
+    "mechanism": "Set taken to/near concentric failure, then load is immediately reduced (~10-25%) and the set continued with no rest, often repeated 2-3 times. Accumulates training volume and high metabolic stress in a short time. Volume-equated meta-analyses show EQUIVALENT growth and strength to traditional sets (Coleman ES 0.08 hypertrophy / 0.07 strength, both trivial, I2=0%; Sodal SMD 0.155 ns; Havers chronic hypertrophy SMD 0.04 ns, strength -0.04 ns). The value is TIME-EFFICIENCY — some drop-set protocols take 1/2 to 1/3 the time for equal hypertrophy — not more muscle.",
+    "fatigue_cost": "high",
+    "best_for": "time-efficiency",
+    "contraindications": "Acutely raises session RPE, blood lactate and neuromuscular fatigue more than traditional sets (Havers, Fink) — poor for strength peaking/tapering. Best on stable, low-skill isolation/machine moves (curls, extensions, lateral raises); avoid on heavy barbell squat/deadlift/bench where fatigue degrades technique. A supplement, not a standalone method; long-term 1RM may favour traditional sets.",
+    "evidence_grade": "meta-analysis",
+    "source_ids": [
+      "exercise-techniques-coleman-2022-dropset-meta",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-sbs-dropsets",
+      "exercise-techniques-angleri-2017-crescent-pyramid-dropset-eajp",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-brookbush-dropset-review"
+    ]
+  },
+  {
+    "id": "exercise.tech.rest-pause",
+    "name": "Rest-pause",
+    "family": "intensity-technique",
+    "mechanism": "A set is taken to failure, then after a short intra-set rest (~20s) the SAME load is used for further mini-sets to failure until a preplanned rep total is reached. Unlike drop sets, load is held constant — the brief rest allows phosphocreatine partial resynthesis so high loads, concentric velocity and power are maintained while accumulating volume quickly. Volume/effort-equated evidence shows similar strength and hypertrophy to traditional sets (Prestes: similar strength, ~35 vs 57 min); one study and the Tsartsapakis aggregate hint at a modest hypertrophy edge, but this is not robust volume-equated support, so framed as a TIME-EFFICIENT route to equivalent gains.",
+    "fatigue_cost": "high",
+    "best_for": "time-efficiency",
+    "contraindications": "Repeated to-failure mini-sets create high local and perceptual fatigue; poor for tapering/strength peaking. Best on stable single-/machine exercises; risky on heavy free-weight compounds under accumulated fatigue. The claimed hypertrophy advantage rests on limited, non-volume-equated data — do not assume more growth than well-equated straight sets.",
+    "evidence_grade": "RCT",
+    "source_ids": [
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta",
+      "exercise-techniques-lidsen-cluster-short-review",
+      "exercise-techniques-rpstrength-intensity-techniques",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta"
+    ]
+  },
+  {
+    "id": "exercise.tech.myo-reps",
+    "name": "Myo-reps",
+    "family": "intensity-technique",
+    "mechanism": "A cluster-style technique: one higher-rep 'activation' set to near-failure (RPE ~8, ~12-30 reps) primes motor-unit recruitment, then several short-rest (20-30s) 'back-off' mini-sets (3-5 reps) keep the muscle near failure to accumulate effective reps efficiently. Probably does not recruit MORE motor units than other to-failure work (rate coding accounts for the late-set output). A trained-male RCT (Liberty thesis) found COMPARABLE hypertrophy and strength to traditional protocols with reduced training duration and better recovery/stress perception — value is time-efficiency and fatigue management, not greater growth.",
+    "fatigue_cost": "moderate",
+    "best_for": "time-efficiency",
+    "contraindications": "Not optimal for maximal/competition lifts (task demands differ from heavy low-rep work). Best on stable, low-skill, smaller-muscle and machine movements where setup stays consistent; less suited to high-skill barbell compounds. Should not be the only stimulus — high-threshold MUs still need regular heavy exposure.",
+    "evidence_grade": "RCT",
+    "source_ids": [
+      "exercise-techniques-myoreps-thesis-liberty",
+      "exercise-techniques-barbellmedicine-myoreps",
+      "exercise-techniques-rpstrength-intensity-techniques"
+    ]
+  },
+  {
+    "id": "exercise.tech.cluster-set",
+    "name": "Cluster set",
+    "family": "intensity-technique",
+    "mechanism": "Short intra-set rest intervals (~20-60s) are inserted between reps or small rep-blocks within a set. Exploits fast-phase phosphocreatine resynthesis to MAINTAIN bar velocity, force and power, allowing higher mechanical output / more total volume at a given (often heavy) load with LESS within-set fatigue. Chronic meta-analysis (Davies): cluster and traditional configurations are EQUALLY effective for muscular/neuromuscular adaptation, but clusters achieve them with less fatigue development. Acute meta (Jukic): clusters reduce mechanical, metabolic and perceptual fatigue. Value = fatigue management and velocity/power maintenance, not more hypertrophy.",
+    "fatigue_cost": "low",
+    "best_for": "compound-strength",
+    "contraindications": "Lower metabolic stress than traditional sets, so if a metabolite-driven hypertrophy stimulus is the goal it is not the obvious choice. Adds setup complexity and lengthens the per-set timeline (more intra-set pauses); benefits are clearest for power/strength and velocity maintenance rather than maximising growth.",
+    "evidence_grade": "meta-analysis",
+    "source_ids": [
+      "exercise-techniques-davies-2021-cluster-chronic-meta",
+      "exercise-techniques-jukic-2020-cluster-acute-fatigue-meta",
+      "exercise-techniques-lidsen-cluster-short-review",
+      "exercise-techniques-cluster-hypertrophy-volume-effort-matched-rct",
+      "exercise-techniques-cluster-fatigue-maintenance-pmc",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-sportsmed-2026-bayesian-network-meta"
+    ]
+  },
+  {
+    "id": "exercise.tech.antagonist-superset",
+    "name": "Antagonist (agonist-antagonist / reciprocal) superset",
+    "family": "superset",
+    "mechanism": "Two exercises for OPPOSING muscle groups (e.g. bench press + bench pull, or leg extension + leg curl) performed back-to-back with little rest, then a shared rest period. Each muscle effectively rests while its antagonist works, so per-exercise performance and volume are preserved (some data show equal or higher volume than traditional order). A volume-equated 8-week RCT (SportRxiv) found the SAME muscle-thickness, strength, power, endurance and body-composition gains as traditional training while completing sessions in 36% LESS time; the Zhang meta-analysis frames supersets as a time-efficient alternative. Value is TIME-EFFICIENCY, not greater growth.",
+    "fatigue_cost": "low",
+    "best_for": "time-efficiency",
+    "contraindications": "Pairs must use compatible stations/equipment (logistics in busy gyms). Acutely raises cardiovascular/perceptual demand within the cluster; less suitable for maximal-load barbell compounds where between-exercise interference or shared systemic fatigue could blunt peak force. No hypertrophy advantage over traditional sets to justify it beyond saving time.",
+    "evidence_grade": "RCT",
+    "source_ids": [
+      "exercise-techniques-superset-rct-sportrxiv-2025",
+      "exercise-techniques-zhang-2025-superset-meta",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-rpstrength-intensity-techniques",
+      "exercise-techniques-iversen-2021-time-efficient-review"
+    ]
+  },
+  {
+    "id": "exercise.tech.agonist-superset-preexhaust",
+    "name": "Compound / agonist superset (pre-exhaustion)",
+    "family": "superset",
+    "mechanism": "Two exercises for the SAME muscle done back-to-back; the classic form is pre-exhaustion — a single-joint isolation move (e.g. dumbbell fly, leg extension) performed immediately before a compound (bench press, squat) to fatigue the target agonist first. Theory claims this drives greater agonist activation/hypertrophy, but EMG evidence does NOT support it: pre-exhaustion did not increase target-muscle activity in untrained (Fujita) or change pectoralis activation in trained men (Golas), and it REDUCES the reps/load achievable on the subsequent compound. So it cuts volume and offers no demonstrated growth benefit — mechanistically weak; mainly a time-efficiency/variety tool.",
+    "fatigue_cost": "moderate",
+    "best_for": "isolation-hypertrophy",
+    "contraindications": "Pre-fatiguing the agonist lowers performance and total load on the compound (Wallace, Soares), reducing mechanical-tension volume on the main lift — counterproductive when the compound is the priority. The activation/hypertrophy rationale is not supported by EMG data. Avoid on heavy compounds where the load drop matters most.",
+    "evidence_grade": "RCT",
+    "source_ids": [
+      "exercise-techniques-fujita-2022-preexhaust-emg-untrained",
+      "exercise-techniques-preexhaust-trained-men-emg",
+      "exercise-techniques-preexhaust-narrative-review",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta"
+    ]
+  },
+  {
+    "id": "exercise.tech.giant-set",
+    "name": "Giant set",
+    "family": "superset",
+    "mechanism": "Three or more exercises performed consecutively with minimal rest, typically for one muscle group or region. An extension of the superset principle that maximises training density and local metabolic stress per unit time. Falls under the superset/advanced-density family that is time-efficient but, per the broader advanced-techniques and superset evidence (Zhang, Krzysztofik, sportsmed NMA), produces hypertrophy/strength comparable to traditional volume-matched training rather than superior growth. No giant-set-specific volume-equated trial in this corpus, so the claim is the family-level one: efficiency and metabolic stress, not more muscle.",
+    "fatigue_cost": "high",
+    "best_for": "time-efficiency",
+    "contraindications": "Very high local and perceptual fatigue compresses performance across the later exercises, lowering load/volume on each; poor for strength and for high-skill compounds. Best reserved for isolation/machine work late in a session or block. No evidence of growth superiority over equated straight-set volume.",
+    "evidence_grade": "expert",
+    "source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-zhang-2025-superset-meta",
+      "exercise-techniques-rpstrength-intensity-techniques",
+      "exercise-techniques-iversen-2021-time-efficient-review"
+    ]
+  },
+  {
+    "id": "exercise.tech.mechanical-drop-set",
+    "name": "Mechanical drop set",
+    "family": "intensity-technique",
+    "mechanism": "Instead of reducing the load, the EXERCISE/leverage is switched to a mechanically easier variation at failure (e.g. incline-to-flat curl, stiff-bar to close-grip) to extend the set with the same weight. Like load drop sets, it accumulates extra reps and metabolic stress in a fatigued state without raising peak mechanical tension beyond the first failure point. Drop-set-family evidence (Coleman, Sodal, Havers) shows volume-equated equivalence to traditional sets, so the rationale is time-efficient volume accumulation and exhausting a muscle across strength curves, not greater hypertrophy. No mechanical-drop-set-specific trial in this corpus (extrapolated from the drop-set family).",
+    "fatigue_cost": "high",
+    "best_for": "isolation-hypertrophy",
+    "contraindications": "High accumulated fatigue and reps under degraded leverage raise technique-breakdown/injury risk; restrict to stable isolation/dumbbell or machine moves where the variation switch is quick and safe. Avoid on heavy compounds. No demonstrated growth advantage over equated straight sets.",
+    "evidence_grade": "expert",
+    "source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-coleman-2022-dropset-meta",
+      "exercise-techniques-brookbush-dropset-review",
+      "exercise-techniques-rpstrength-intensity-techniques"
+    ]
+  },
+  {
+    "id": "exercise.tech.lengthened-partials",
+    "name": "Partials / lengthened partials",
+    "family": "intensity-technique",
+    "mechanism": "Reps performed over a partial range of motion; the lengthened-partials variant keeps the muscle in the stretched (lengthened) portion of the ROM, where stretch-mediated tension is proposed to be a potent hypertrophy stimulus and where reps can be continued after full-ROM failure to extend a set. In this corpus partials are only referenced as a generic intensity/extended-set tool (RP guide); there is no volume-equated chronic trial here, so the supported claim is conservative — a way to extend a set and bias the lengthened position, with growth benefit over full-ROM not established by the sources read.",
+    "fatigue_cost": "moderate",
+    "best_for": "isolation-hypertrophy",
+    "contraindications": "Partial ROM sacrifices the strength/architecture benefits of full-ROM training; stretched-position loading can be highly fatiguing and joint-stressful, so keep to stable, low-skill, well-supported movements. Should supplement, not replace, full-ROM work. Evidence here does not support a 'more growth' claim.",
+    "evidence_grade": "expert",
+    "source_ids": [
+      "exercise-techniques-rpstrength-intensity-techniques",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review"
+    ]
+  },
+  {
+    "id": "exercise.tech.21s",
+    "name": "21s",
+    "family": "intensity-technique",
+    "mechanism": "A fixed partial+full-ROM set scheme: 7 reps in the lower (lengthened) half of the ROM, 7 in the upper half, then 7 full-ROM reps (21 total), extending time-under-tension and metabolic stress at a sub-maximal load. A specific, named application of the partial-rep / extended-set concept used mainly for isolation work (curls, extensions). No 21s-specific or volume-equated study exists in this corpus; under the partial-rep and advanced-technique evidence it functions as a metabolic-stress/variety finisher, with no demonstrated hypertrophy superiority over equated straight sets.",
+    "fatigue_cost": "moderate",
+    "best_for": "isolation-hypertrophy",
+    "contraindications": "Requires sub-maximal load (the 21-rep count forces a lighter weight), so it does not provide a high-mechanical-tension or strength stimulus; the partial reps reduce full-ROM exposure. A novelty/variety finisher for isolation muscles, not a primary growth driver, and unsuitable for heavy compounds.",
+    "evidence_grade": "expert",
+    "source_ids": [
+      "exercise-techniques-rpstrength-intensity-techniques",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review"
+    ]
+  }
+]

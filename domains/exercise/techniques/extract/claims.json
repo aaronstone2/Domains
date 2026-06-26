@@ -1,0 +1,582 @@
+[
+  {
+    "id": "exercise.claim.19-heavy-load-required-for-hypertrophy",
+    "statement": "Heavy loads (>~60-65% 1RM, low reps) are required to maximize muscle hypertrophy; light loads / high reps grow much less muscle because they fail to recruit and stimulate high-threshold motor units.",
+    "category": "programming/load",
+    "verdict": "refuted",
+    "nuance": "EFFECT claim is contradicted: when sets are taken to (or near) failure, hypertrophy is largely LOAD-INDEPENDENT across a wide spectrum (~30% to ~85% 1RM). Lopez 2021 network meta-analysis (28 studies, n=747, all to volitional failure) found NO hypertrophy difference between low/moderate/high loads (P=0.113-0.469, I2=0%, SMDs ~ -0.09 to 0.20), holding even in best-quality studies. Grgic & Schoenfeld 2020 fiber-type meta found no significant difference for type I (SMD 0.28, ns) or type II (SMD 0.30, ns) fibers. Currier 2023 BJSM Bayesian NMA (119 hypertrophy studies): 'all prescriptions comparably promoted muscle hypertrophy.' Schoenfeld rep-continuum review and SBS concur there is no special 'hypertrophy load zone.' The stated MECHANISM is specifically falsified: by Henneman's size principle, a low-load set carried to failure progressively recruits high-threshold motor units, so HTMU recruitment is NOT exclusive to heavy load (Morton 2019 showed motor-unit activation unaffected by load at task failure). The claim's threshold framing has only a kernel of truth at the extreme low end: growth is roughly halved at ~20% 1RM (a true lower bound), and light-load-to-failure causes more discomfort/time, so practitioners still favor moderate-heavy loads for EFFICIENCY/adherence — a PRACTICAL reason, not a growth-magnitude one. Critically, the claim conflates strength with size: strength IS load-dependent (Lopez high-vs-low SMD 0.60; Currier higher loads top-ranked for strength), but the statement asserts this for HYPERTROPHY, where it does not hold. Verdict refuted because the size claim as stated (heavy 'required', light grows 'much less') is contradicted by the highest-tier evidence; population caveat: untrained show slightly larger low-load responses, trained may need more sessions.",
+    "evidence_grade": "meta-analysis",
+    "population": "healthy untrained-to-recreationally-trained adults; sets taken to or near failure; lower-body biopsy data predominate (limited upper-body and elite-athlete data)",
+    "agreement_score": 0.08,
+    "affected_ids": [
+      "exercise.var.load-pct-1rm.global.hypertrophy.general",
+      "exercise.var.load-pct-1rm.global.hypertrophy.minimum-threshold.general",
+      "exercise.var.rep-range.global.hypertrophy.general",
+      "exercise.var.rir.global.hypertrophy.general.lowload",
+      "exercise.var.load-pct-1rm.lift-type.hypertrophy.fiber-type-i.general",
+      "exercise.var.load-pct-1rm.lift-type.hypertrophy.fiber-type-ii.general"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-programming-lopez-load-network-meta",
+      "exercise-programming-grgic-load-fibertype-meta",
+      "exercise-programming-schoenfeld-rep-continuum-pmc",
+      "exercise-programming-sbs-hypertrophy-rep-range",
+      "exercise-programming-currier-bayesian-nma-bjsm"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.20-long-rest-grows-more-than-short-rest",
+    "statement": "Longer rest intervals (~3 minutes) produce more muscle hypertrophy than short rest (~1 minute); short rest periods compromise growth.",
+    "category": "programming/rest-intervals",
+    "verdict": "equivalent",
+    "nuance": "The honest finding is NO ceiling difference once volume is allowed to compensate. EFFECT claim is partly true but overstated as framed. Per a MATCHED number of sets, longer rests (>=2 min) produce somewhat more hypertrophy than short rests (~1 min) — chiefly attributed to the Schoenfeld et al. 2016 RCT (longer inter-set rest enhanced strength and hypertrophy in trained men), cited by both Weightology (Krieger) and SBS. The leading mechanism: short rests on compound lifts cause central fatigue that can suppress high-threshold motor-unit recruitment and reduce per-set quality, and short rest lowers per-set training load. BUT 'short rest compromises growth' is NOT how the data net out: Krieger's meta-regression shows the per-set deficit of short rest is FULLY COMPENSABLE by doing roughly DOUBLE the sets — maximal achievable hypertrophy is about the SAME with short or long rest (volume needs just shift from ~6-8 to ~15-16 sets/session). So the true between-protocol relationship is volume-dependent EQUIVALENCE at the growth ceiling, not an inherent penalty. The genuine PRACTICAL reasons to rest longer are time-efficiency (fewer sets needed for the same growth) and maintaining load/technique on heavy compounds — not that short rest caps growth. Therefore the claim overstates a real but compensable per-set effect into a categorical 'short rest compromises growth.' Evidence base for the dedicated rest comparison is thinner/lower-tier than for load or volume (largely practitioner syntheses of a small RCT body), so confidence in the strong version is low.",
+    "evidence_grade": "RCT",
+    "population": "resistance-trained and untrained young men; effect most pronounced on multi-joint/compound lifts; isolation lifts tolerate shorter rests better",
+    "agreement_score": 0.3,
+    "affected_ids": [
+      "exercise.var.rest-seconds.global.hypertrophy.general",
+      "exercise.var.rest-seconds.global.hypertrophy.short-rest-volume-penalty",
+      "exercise.var.rest-seconds.global.hypertrophy.mps-mechanism",
+      "exercise.var.rest-seconds.exercise.hypertrophy.general-compound",
+      "exercise.var.rest-seconds.exercise.hypertrophy.general-isolation",
+      "exercise.var.rest-seconds.global.hypertrophy.failure-equivalence"
+    ],
+    "supporting_source_ids": [
+      "exercise-programming-weightology-set-volume-bible",
+      "exercise-programming-sbs-volume-article"
+    ],
+    "contradicting_source_ids": [
+      "exercise-programming-weightology-set-volume-bible"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.21-periodization-superior-even-when-matched",
+    "statement": "Periodized resistance training is superior to non-periodized training for strength (and hypertrophy) even when total volume and intensity are matched; planned systematic variation (e.g., DUP/linear) outperforms a constant program of equal workload.",
+    "category": "programming/periodization",
+    "verdict": "disputed",
+    "nuance": "Mixed/insufficient once confounds are accounted for; the 'even when volume AND intensity are matched' clause is the weak point. EFFECT claim for STRENGTH has meta-analytic support: Williams 2017 (18 studies, 81 effects) found periodized > non-periodized for 1RM (ES=0.43, P<0.001), undulating favored; SBS's independent 60-study analysis agrees (periodized ~22% faster strength gains, small ES 0.23-0.30; slightly larger/more consistent in trained, ES 0.31-0.47; UP>LP in trained only). HOWEVER two strong critiques undercut the 'matched' framing: (1) Afonso 2019 umbrella review shows the periodization metas compared periodized only vs. CONSTANT programs — never vs. non-periodized VARIED programs — so the evidence supports VARIATION, not periodized variation per se; and several pooled studies were not matched comparisons at all (e.g., Marx: low-volume non-periodized vs. high-volume periodized; Storer: supervised vs. unsupervised), inflating the apparent periodization effect. (2) The strength advantage is largely a PEAK-INTENSITY/SPECIFICITY confound: typical non-periodized arms stay at moderate loads while periodized arms also train near-1RM, so they get more 1RM-specific practice; the single study matching volume, AVERAGE intensity, AND peak intensity (cited by SBS) found NO strength difference. For HYPERTROPHY the honest finding is EQUIVALENCE: periodization/periodization-style does not meaningfully affect growth when volume is equated (Grgic LP-vs-DUP hypertrophy meta and SBS). PRACTICAL value of periodization (variation to mitigate the repeated-bout effect, manage fatigue, peak for competition, sustain long-term progress in trained lifters) remains reasonable, but the literature is short-duration, lacks highly-trained subjects, and rarely matches peak intensity. Verdict disputed: a modest strength benefit of variation is plausible, but the specific assertion 'superior even when volume AND intensity are matched, for strength AND hypertrophy' is not established and is contradicted for hypertrophy.",
+    "evidence_grade": "meta-analysis",
+    "population": "mostly untrained-to-recreationally-trained young adults, strength as primary outcome; short studies (6-16 wk); little data on highly-trained lifters or long-term/hypertrophy-primary designs",
+    "agreement_score": 0.35,
+    "affected_ids": [
+      "exercise.var.overload-method.global.strength.general-dup-vs-linear",
+      "exercise.var.overload-method.global.strength.trained",
+      "exercise.var.overload-method.global.hypertrophy.general",
+      "exercise.var.mesocycle-length.global.strength.trained",
+      "exercise.var.rep-range.global.hypertrophy.spectrum-distribution.general"
+    ],
+    "supporting_source_ids": [
+      "exercise-programming-williams-periodization-meta-springer",
+      "exercise-programming-sbs-periodization-data",
+      "exercise-programming-sbs-daily-undulating-periodization"
+    ],
+    "contradicting_source_ids": [
+      "exercise-programming-afonso-periodization-umbrella",
+      "exercise-programming-grgic-lp-dup-hypertrophy-meta",
+      "exercise-programming-sbs-periodization-data"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.16-higher-frequency-more-growth-and-strength",
+    "statement": "Higher training frequency produces more muscle growth (and more strength) than lower frequency: training a muscle 3-6x/week beats 1-2x/week.",
+    "category": "programming/frequency",
+    "verdict": "equivalent",
+    "nuance": "EFFECT (volume-equated): When weekly set volume is held constant, frequency has little to no independent effect on HYPERTROPHY. Pelland 2026 (T0 dose-response meta-regression, 67 studies) found the posterior probability of a positive frequency-hypertrophy slope was <100% and 'compatible with negligible effects'; Grgic 2018 (T0) found the volume-equated subgroup had NO significant frequency effect on STRENGTH (p=0.421) and stated frequency effects are 'primarily driven by training volume'; SBS's reanalysis found direct-measure hypertrophy differences trivial/non-significant. The one robustly supported piece is the FLOOR: Schoenfeld 2016 (T0) shows >=2x/week beats 1x/week for hypertrophy, but 3x vs 2x and higher remains undetermined. For STRENGTH there is a genuine but small frequency benefit even when volume-matched (Pelland 2026 posterior 100% but with pronounced diminishing returns; SBS ~20% faster gains, concentrated in upper-body pressing, near-zero for lower body). PRACTICAL: Higher frequency is valuable mainly as a VEHICLE TO ADD VOLUME and distribute it (lower per-session fatigue, higher per-set quality, more MPS stimulations) — not as an independent growth driver at matched volume. So the claim conflates 'frequency lets you do more volume, which grows more' (true) with 'frequency itself grows more at equal volume' (largely false for hypertrophy). The sweeping '3-6x beats 1-2x' overstates; the honest finding is matched-volume equivalence for growth above ~2x/week, with a small diminishing strength benefit.",
+    "evidence_grade": "meta-analysis",
+    "population": "Healthy young/non-elderly adults, predominantly untrained-to-intermediate trained men; fewer data in highly trained lifters; both sexes (frequency-strength effect somewhat larger in women and in untrained).",
+    "agreement_score": 0.25,
+    "affected_ids": [
+      "exercise.var.frequency.muscle.hypertrophy.general.matched-volume-equivalence",
+      "exercise.var.frequency.muscle.hypertrophy.trained.matched-volume-similar",
+      "exercise.var.frequency.muscle.hypertrophy.general.min-twice-weekly",
+      "exercise.var.frequency.muscle.hypertrophy.general.add-frequency-to-add-volume",
+      "exercise.var.frequency.lift-type.strength.general.matched-volume-equivalence",
+      "exercise.var.weekly-sets.muscle.hypertrophy.trained.frequency-equivalence-matched"
+    ],
+    "supporting_source_ids": [
+      "exercise-programming-schoenfeld-frequency-meta-2016",
+      "exercise-programming-sbs-frequency-strength"
+    ],
+    "contradicting_source_ids": [
+      "exercise-programming-pelland-doseresponse-sportmed",
+      "exercise-programming-grgic-frequency-strength-meta-springer",
+      "exercise-programming-schoenfeld-volfreq-trained-ijspp",
+      "exercise-programming-sbs-frequency-muscle"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.17-failure-required-to-maximize-growth-and-strength",
+    "statement": "Training sets to momentary muscular failure is required to maximize muscle hypertrophy and strength; stopping short of failure leaves gains on the table.",
+    "category": "programming/training-to-failure",
+    "verdict": "refuted",
+    "nuance": "The word 'required' is the falsifiable core, and it is contradicted. EFFECT (volume-equated): Grgic 2022 (T0 meta-analysis, 15 studies) found NO significant failure-vs-non-failure difference for strength (ES=-0.09) or hypertrophy (ES=0.22, ns), and in the volume-equated strength subgroup the effect was essentially zero (ES=0.01). Robinson 2024 (T0 meta-regression) found strength is similar across a wide RIR range (negligible slope), so failure is clearly NOT required for strength — if anything continuing to failure adds neuromuscular fatigue that can blunt strength/RFD. Multiple trained-population RCTs (Ruple 2023 0-1 vs 4-6 RIR; Martikainen 2025 RIR1 vs RIR1-4; Pelland/Robinson 2025 single-set FAIL vs 2-RIR) show similar strength and hypertrophy when stopping short of failure. PRACTICAL: A genuine kernel survives — you must train reasonably CLOSE to failure (Robinson 2024 shows hypertrophy does increase as RIR decreases; Refalo/Grgic show non-failure underperforms only when volume isn't equated, i.e. far-from-failure low-volume training underperforms). Failure also 'idiot-proofs' effort because lifters chronically underestimate proximity to failure (SBS/Henselmans). But 'required to MAXIMIZE' and 'short of failure leaves gains on the table' overstate: you can leave ~1-3 reps in reserve and match growth, and for strength failure is not beneficial and may be mildly counterproductive. Caveat: for resistance-TRAINED individuals Grgic's small subgroup hinted failure may modestly aid hypertrophy (ES=0.15), keeping this short of a clean equivalence but not rescuing 'required.'",
+    "evidence_grade": "meta-analysis",
+    "population": "Young healthy adults (untrained and trained); moderate-to-high loads (60-90% 1RM). Failure may matter more at very low loads (~30% 1RM) and possibly slightly more for hypertrophy in well-trained lifters; data sparse in older/highly elite populations.",
+    "agreement_score": 0.12,
+    "affected_ids": [
+      "exercise.var.rir.global.hypertrophy.general",
+      "exercise.var.rir.global.strength.general",
+      "exercise.var.rir.lift-type.fatigue-cost.failure.general",
+      "exercise.var.rir.global.hypertrophy.trained",
+      "exercise.tech.straight-sets"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-programming-grgic-failure-jshs-meta",
+      "exercise-programming-robinson-proximity-metareg-sportmed",
+      "exercise-programming-ruple-nearfailure-rct-physrep",
+      "exercise-programming-pelland-singleset-failure-rct-sportrxiv",
+      "exercise-programming-sbs-training-to-failure",
+      "exercise-programming-henselmans-how-close-to-failure"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.18-zero-rir-beats-low-rir-closer-is-more-growth",
+    "statement": "Training to 0 RIR (failure) produces meaningfully more hypertrophy than training at 1-3 RIR; the closer to failure you stop, the more you grow, so 0 RIR beats leaving any reps in reserve.",
+    "category": "programming/proximity-to-failure-rir",
+    "verdict": "disputed",
+    "nuance": "This claim has a partially-supported continuous component and a refuted threshold component, so the evidence is genuinely mixed. SUPPORTED part (EFFECT): Robinson 2024 (T0 meta-regression, SportRxiv + Sports Med) found a NEGATIVE RIR-hypertrophy slope whose CI excluded null — muscle size does tend to increase as sets terminate closer to failure — so 'closer to failure = somewhat more growth' has meta-regression support for hypertrophy specifically (and notably NOT for strength, where the slope was null/possibly favoring leaving reps). REFUTED part (the THRESHOLD framing '0 RIR meaningfully beats 1-3 RIR'): (1) The curve flattens — most of the hypertrophy benefit is already captured by ~1-3 RIR, with little marginal gain from the last 1-3 reps, and Henselmans/Nuckols note the steep-near-failure curve may be a between-study statistical artifact of the multilevel model not well controlling volume; the published Refalo meta concluded 'no evidence that training to momentary failure is superior to non-failure for hypertrophy.' (2) Direct RCTs contradict 0-RIR superiority: Robinson IUSCA 2025 (0 RIR vs 1-3 RIR vs 4-6 RIR) found 0-RIR and 0-3-RIR groups SLIGHTLY INFERIOR for strength and hypertrophy 'unclear due to variability'; Martikainen 2025 (RIR1 vs RIR1-4) and Ruple 2023 (0-1 vs 4-6 RIR) found similar hypertrophy with no 0-RIR advantage. (3) For STRENGTH, 0 RIR is the same or worse, not better. PRACTICAL: 1-3 RIR delivers nearly the full hypertrophy stimulus at much lower fatigue/soreness/RPE cost (Refalo fatigue data, Martikainen lower session RPE), making 1-3 RIR the better risk-adjusted choice. So 'the closer you stop the more you grow' is weakly true as a hypertrophy trend, but 'meaningfully more than 1-3 RIR' and 'beats leaving any reps in reserve' is not supported and is contradicted for strength — net verdict disputed.",
+    "evidence_grade": "meta-analysis",
+    "population": "Young healthy resistance-trained men and women, moderate loads; hypertrophy trend strongest from RIR data on direct-measure outcomes; strength conclusions robust across trained samples. RIR-estimation accuracy is acceptable in trained lifters, which underpins applying these to real programs.",
+    "agreement_score": 0.3,
+    "affected_ids": [
+      "exercise.var.rir.global.hypertrophy.general",
+      "exercise.var.rir.global.hypertrophy.trained",
+      "exercise.var.rir.lift-type.hypertrophy.trained.compound-lastset",
+      "exercise.var.rir.exercise.hypertrophy.intermediate.isolation",
+      "exercise.var.rir.global.hypertrophy.intermediate.autoregulation"
+    ],
+    "supporting_source_ids": [
+      "exercise-programming-robinson-proximity-metareg-sportmed",
+      "exercise-programming-robinson-proximity-metareg-sportrxiv"
+    ],
+    "contradicting_source_ids": [
+      "exercise-programming-refalo-proximity-meta-pmc",
+      "exercise-programming-robinson-proximity-rct-iusca",
+      "exercise-programming-proximity-rir-accuracy-rct-jsse",
+      "exercise-programming-pelland-singleset-failure-rct-sportrxiv",
+      "exercise-programming-ruple-nearfailure-rct-physrep"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.0-grip-orientation-regional-lat-targeting",
+    "statement": "Grip type, grip width, and forearm orientation on the lat pulldown meaningfully bias which region of the latissimus dorsi is trained, so a lifter can 'target' the lat differently (e.g., wide vs narrow, pronated vs supinated, neutral) to drive region-specific lat development.",
+    "category": "contested-anatomy-mechanics",
+    "verdict": "refuted",
+    "nuance": "EFFECT claim: The only direct study on this exact question (Brusco/lat-grip-variations, 40 trained men, 7 variants at 70% 1RM) found NO significant difference in latissimus dorsi activation across grip type, width, or forearm orientation (LD held ~45-62% MVC regardless), explicitly stating the data 'challenge the assumption that grip effectiveness targets this muscle.' LD is the stable prime mover across all grips; what changes is synergist activation (posterior deltoid higher with wide-pronated + 30 deg lean). PRACTICAL claim: Grip choice does change which SYNERGISTS (delts, biceps, traps) get loaded and affects comfort/joint safety/leverage, so variation is still reasonable for those reasons. But the specific assertion that grip steers REGION-SPECIFIC LAT DEVELOPMENT is unsupported: no hypertrophy or regional-growth study exists, and the acute EMG evidence that would be its prerequisite shows equivalence in total LD activation. (The separate front-vs-back HD-EMG paper found only tiny LD centroid shifts, a different variable, and centroid shift is not demonstrated regional hypertrophy.) The claim conflates 'feels different / loads synergists differently' with 'grows different lat regions' and overstates equivalent activation as differential targeting.",
+    "evidence_grade": "RCT",
+    "population": "resistance-trained men (acute EMG, 70% 1RM); no hypertrophy data",
+    "agreement_score": 0.15,
+    "affected_ids": [
+      "exercise-lat-pulldown",
+      "muscle-latissimus-dorsi",
+      "training_variable-grip-width",
+      "training_variable-grip-orientation",
+      "set_structure-exercise-selection"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-anatomy-pmc-lat-grip-variations",
+      "exercise-anatomy-pmc-lat-hdemg-regional"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.1-front-vs-behind-neck-lat-pulldown",
+    "statement": "The front (to-chest) lat pulldown produces greater latissimus dorsi recruitment/activation than the behind-the-neck lat pulldown, making it the superior variation for building the lats.",
+    "category": "contested-anatomy-mechanics",
+    "verdict": "disputed",
+    "nuance": "EFFECT claim: Recruitment differs by PHASE and is confounded, not uniformly greater for front. The HD-EMG study (14 trained men, 8-RM) found front-LPD LD excitation greater only in the descending/concentric phase (ES 0.97), while back-LPD LD excitation was greater in the ascending/eccentric phase (ES 0.63) — a reversal, not a clean win. Critically, the front-LPD used ~18% greater ABSOLUTE load (70.0 vs 59.3 kg) and greater bar displacement, which the authors flag as inflating front-LPD EMG amplitude; older work (Sperandei 2009) found no LD difference and Signorile 2002 favored front, so the prior literature is itself mixed. PRACTICAL claim: Front-LPD does allow heavier loading and is safer for most shoulders (back-LPD needs greater glenohumeral mobility, may increase instability), so it is a defensible default — but the study authors conclude BOTH variations should be programmed for varied spatial stimulus, NOT that front is 'superior for building lats.' There is no hypertrophy data; jumping from confounded acute EMG to a growth/superiority verdict is exactly the unsupported leap the claim makes. 'Greater recruitment' is partly true (descending phase, but load-confounded); 'superior for building the lats' is unsupported.",
+    "evidence_grade": "RCT",
+    "population": "resistance-trained men (acute HD-EMG, 8-RM); no hypertrophy data",
+    "agreement_score": 0.3,
+    "affected_ids": [
+      "exercise-lat-pulldown-front",
+      "exercise-lat-pulldown-behind-neck",
+      "muscle-latissimus-dorsi",
+      "set_structure-exercise-selection"
+    ],
+    "supporting_source_ids": [
+      "exercise-anatomy-pmc-lat-hdemg-regional"
+    ],
+    "contradicting_source_ids": [
+      "exercise-anatomy-pmc-lat-hdemg-regional"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.2-standing-vs-seated-calf-raise-gastroc",
+    "statement": "Standing (knee-extended) calf raises grow the gastrocnemius more than seated (knee-flexed) calf raises, because the biarticular gastrocnemius is trained at a longer muscle length when the knee is straight; the soleus grows similarly either way.",
+    "category": "contested-anatomy-mechanics",
+    "verdict": "supported",
+    "nuance": "This is a genuine MORE-GROWTH finding (not equivalence), so 'supported' is warranted. EFFECT claim: A direct 12-week within-person MRI hypertrophy intervention (Kinoshita 2023, n=14 untrained; one leg standing/knee-extended, other seated/knee-90-flexed, both at 70% 1RM, volume-matched) found gastrocnemius growth far greater standing than seated: lateral gastroc +12.4% vs +1.7%, medial gastroc +9.2% vs +0.6% (large effects d=1.53-1.58, p<=0.002); seated gastroc growth was non-significant. Whole triceps surae +5.6% vs +2.1%. Soleus grew similarly regardless of knee angle (+2.1% vs +2.9%, n.s., trivial d=0.2) — both halves of the claim confirmed. MECHANISM is sound and corroborated: the biarticular gastroc is lengthened with knee extended, and the torque-angle study shows it produces its greatest plantarflexion moment (and is at greatest length) with knee straight + ankle dorsiflexed; this is the same long-length-promotes-hypertrophy pattern seen in hamstrings and triceps. PRACTICAL caveats lowering confidence from ~1.0: single study, untrained subjects, n=14, no functional/control group, and the muscle-length mechanism (not knee position per se) is the operative variable. Still, the claim holds AS STATED.",
+    "evidence_grade": "RCT",
+    "population": "untrained adults (within-person 12-wk MRI intervention); mechanism from biomechanics",
+    "agreement_score": 0.85,
+    "affected_ids": [
+      "exercise-standing-calf-raise",
+      "exercise-seated-calf-raise",
+      "muscle-gastrocnemius",
+      "muscle-soleus",
+      "muscle-triceps-surae",
+      "training_variable-muscle-length",
+      "set_structure-exercise-selection"
+    ],
+    "supporting_source_ids": [
+      "exercise-anatomy-pmc-triceps-surae-standing-vs-seated",
+      "exercise-anatomy-pmc-gastroc-plantarflexion-torque-angle"
+    ],
+    "contradicting_source_ids": [],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.3-incline-press-clavicular-pec-bias",
+    "statement": "The incline barbell/dumbbell press preferentially biases (and preferentially grows) the clavicular/upper head of the pectoralis major relative to the flat bench press, because the inclined arm path shifts mechanical and neural emphasis to the upper pec fascicles.",
+    "category": "contested-anatomy-mechanics",
+    "verdict": "supported",
+    "nuance": "Supported in direction but LOW confidence given the weak candidate sources actually provided (none is a direct flat-vs-incline pec study; the biceps shoulder-position paper and OpenStax/LibreTexts thorax anatomy only support the general joint-angle/muscle-length-changes-activation mechanism). EFFECT/biasing claim is the better-grounded half: the pectoralis major is partitioned (clavicular vs sternocostal heads) with distinct lines of pull, and regional EMG work referenced in this corpus (Cabral 2022, 'Non-uniform excitation of the pectoralis major during flat and inclined bench press,' cited by the lat HD-EMG paper) confirms inclining shifts excitation toward upper/cranial fascicles; broader external EMG literature (Rodriguez-Ridao 2020, Chaves) agrees incline (~30-45 deg) raises clavicular-head activation vs flat. The GROWTH half ('preferentially grows the upper head') is plausible and directionally supported by at least one direct hypertrophy RCT outside this corpus (Costa et al. showing greater clavicular-head growth with incline added), but the effect is MODEST and not all studies isolate it, so this should not be stated as strongly as the calf claim. Methodological caveat: do not let 'higher upper-pec EMG' alone stand in for 'more upper-pec growth' — activation predicts but does not equal regional hypertrophy; the unusually clean regional partitioning of the pec (unlike the lat in claim 0) is why this survives where claim 0 does not. PRACTICAL: incline is a defensible tool to emphasize upper chest, but flat bench still trains the clavicular head substantially, so 'incline for upper pec' is an emphasis, not an exclusive requirement. Candidate source_ids should be upgraded to a direct flat-vs-incline EMG/hypertrophy source (e.g., a Cabral-2022-type paper) which is currently missing from the corpus.",
+    "evidence_grade": "mechanistic",
+    "population": "resistance-trained men (regional EMG); modest direct hypertrophy evidence (external)",
+    "agreement_score": 0.6,
+    "affected_ids": [
+      "exercise-incline-bench-press",
+      "exercise-flat-bench-press",
+      "muscle-pectoralis-major",
+      "muscle-pectoralis-major-clavicular-head",
+      "training_variable-arm-path",
+      "set_structure-exercise-selection"
+    ],
+    "supporting_source_ids": [
+      "exercise-anatomy-pmc-lat-hdemg-regional",
+      "exercise-anatomy-pmc-biceps-shoulder-position-emg"
+    ],
+    "contradicting_source_ids": [],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.12-preexhaustion-superset-activation-hypertrophy",
+    "statement": "Pre-exhaustion supersets (isolation move immediately before a compound for the same muscle) increase target-muscle activation and hypertrophy versus normal exercise order.",
+    "category": "techniques",
+    "verdict": "refuted",
+    "nuance": "Both prongs of the claim fail. ACTIVATION (effect): EMG studies do not support increased target-muscle activation in the subsequent compound. Fujita et al. 2022 is titled and concludes 'The Pre-Exhaustion Method Does Not Increase Muscle Activity in Target Muscle During Strength Training in Untrained Individuals.' Golas et al. (reported in Krzysztofik 2019) found a pre-exhaustion incline dumbbell fly did NOT change pectoralis major activity during the subsequent flat bench press; if anything it raised activity of synergists (triceps/anterior deltoid), the opposite of the intended 'target the prime mover' rationale. HYPERTROPHY (effect): the only pre-exhaustion chronic trial in the Fonseca 2023 meta-analysis (Fisher 2014) showed no significant hypertrophy difference vs traditional order, and the whole advanced-paradigm class (including pre-exhaustion) was equivalent to traditional (SMD ~= 0.00). PRACTICAL: pre-exhaustion reliably REDUCES the number of reps/load achievable in the following compound (Soares et al.; Krzysztofik 2019), i.e. it tends to lower effective volume on the compound rather than raise stimulus. There is no volume-/effort-equated evidence that it increases either activation of the prime mover or muscle growth; the honest finding contradicts the claim as stated. Evidence is limited (small acute EMG studies plus one chronic RCT pooled in a meta-analysis), so confidence in the direction is moderate-high but the body of work is thin.",
+    "evidence_grade": "meta-analysis",
+    "population": "untrained and recreationally trained adults (18-45y); acute EMG work in both untrained and trained men, chronic data only in a single PE RCT pooled in a trained-population meta-analysis",
+    "agreement_score": 0.1,
+    "affected_ids": [
+      "exercise.tech.agonist-superset-preexhaust",
+      "exercise.tech.antagonist-superset",
+      "exercise.var.rep-range.global.hypertrophy.general",
+      "exercise.var.weekly-sets.muscle.hypertrophy.general.dose-response"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-techniques-fujita-2022-preexhaust-emg-untrained",
+      "exercise-techniques-preexhaust-trained-men-emg",
+      "exercise-techniques-preexhaust-narrative-review",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.13-advanced-techniques-class-vs-volume-equated-straight-sets",
+    "statement": "Advanced set-intensity techniques as a class (drop sets, rest-pause, supersets, pyramids, cluster sets) produce greater muscle hypertrophy than volume-equated traditional straight-set training.",
+    "category": "techniques",
+    "verdict": "equivalent",
+    "nuance": "The honest finding is NO MEANINGFUL HYPERTROPHY DIFFERENCE when volume/effort are matched; the claim overstates equivalence as superiority. Three meta-analyses converge: Fonseca et al. 2023 pooled drop-sets, rest-pause, supersets, pyramids, GVT, eccentric overload, super-slow and pre-exhaustion vs traditional in trained individuals and found no difference (all-measures SMD = -0.00, 95% CI -0.15 to 0.14; I2 = 0%; GRADE moderate). Tsartsapakis et al. 2026 hypertrophy-specific meta in recreationally trained adults: g = 0.046 (95% CI -0.057 to 0.149, p = 0.370) -- no aggregate hypertrophic advantage (only rest-pause showed a small method-specific edge). The Sports Medicine 2026 Bayesian network meta-analysis found no resistance-training method consistently superior for hypertrophy. EFFECT vs PRACTICAL: when volume is equated, growth is equivalent; the legitimate reasons to use these techniques are (a) STRENGTH -- Tsartsapakis found a moderate, significant strength advantage for advanced systems overall (g = 0.351, driven by rest-pause/VBT/eccentric overload), (b) TIME-EFFICIENCY / training density (drop sets, supersets, cluster sets let you compress or add volume per unit time), and (c) variety/plateau-breaking. None of these is 'more growth at matched volume.' So the claim conflates equal growth with better growth and must be downgraded to equivalent.",
+    "evidence_grade": "meta-analysis",
+    "population": "healthy recreationally/resistance-trained adults ~18-50y (Fonseca: trained; Tsartsapakis: recreationally trained 18-45y; Sports Med NMA: untrained-to-moderately-trained)",
+    "agreement_score": 0.15,
+    "affected_ids": [
+      "exercise.tech.drop-set",
+      "exercise.tech.rest-pause",
+      "exercise.tech.antagonist-superset",
+      "exercise.tech.crescent-pyramid",
+      "exercise.tech.cluster-set",
+      "exercise.tech.straight-sets",
+      "exercise.var.weekly-sets.muscle.hypertrophy.general.dose-response"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta",
+      "exercise-techniques-sportsmed-2026-bayesian-network-meta",
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.14-more-volume-always-more-growth-monotonic",
+    "statement": "More weekly volume always means more muscle growth: hypertrophy increases monotonically with weekly set volume, so adding sets keeps adding growth (commonly stretched to 'just keep adding sets to grow more').",
+    "category": "programming/volume-dose-response",
+    "verdict": "disputed",
+    "nuance": "A genuine positive dose-response EXISTS, but the word 'always' / 'keeps adding' overstates it. EFFECT (supported part): Pelland et al. 2026 meta-regression (67 studies, 2,058 participants) found the posterior probability that the volume->hypertrophy slope exceeds zero was 100% -- more weekly sets do tend to mean more growth across the studied range, and no inflection/plateau point was detected within the data (Nuckols/SBS notes the apparent strength 'plateau' at low volume is mostly a measurement/specificity mirage and that growth keeps rising past 25 and possibly 45 weekly sets). OVERSTATED part (why not 'supported'): (1) BOTH best-fit models show DIMINISHING RETURNS -- each added set yields less, so 'keeps adding growth' in the naive linear/unbounded sense is false; (2) volume-equated comparisons show no further benefit beyond ~12-20 sets/muscle/week for quadriceps (p=0.19) and biceps (p=0.59) in Baz-Valle 2022 (only triceps benefited from >20); (3) the relationship cannot be monotone forever -- an inverted-U is assumed at some high volume, it simply has not been located yet (data sparse beyond ~25 sets). PRACTICAL: volume is a real progressive-overload lever -- if growth stalls, adding sets (or frequency) is a valid tool -- but the correct statement is 'more volume tends to mean more growth WITH DIMINISHING RETURNS, up to a still-uncertain ceiling,' not 'always more.' Hence disputed (true core, false absolutism).",
+    "evidence_grade": "meta-analysis",
+    "population": "trained and untrained young-to-middle-aged adults (Pelland: 79% male, mean age ~25y; Baz-Valle: trained men 18-35y)",
+    "agreement_score": 0.3,
+    "affected_ids": [
+      "exercise.var.weekly-sets.muscle.hypertrophy.general.dose-response",
+      "exercise.var.weekly-sets.muscle.hypertrophy.trained.high-volume-ceiling",
+      "exercise.var.weekly-sets.muscle.hypertrophy.trained.bazvalle-optimum",
+      "exercise.var.weekly-sets.muscle.hypertrophy.general.efficiency-low-volume"
+    ],
+    "supporting_source_ids": [
+      "exercise-programming-pelland-doseresponse-sportmed",
+      "exercise-programming-pelland-doseresponse-sportrxiv",
+      "exercise-programming-sbs-volume-article",
+      "exercise-programming-king-of-volume-metas-biolayne"
+    ],
+    "contradicting_source_ids": [
+      "exercise-programming-bazvalle-volume-review-2022",
+      "exercise-programming-weightology-set-volume-bible"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.15-per-week-junk-volume-ceiling-mrv",
+    "statement": "There is a per-week 'junk-volume' ceiling for hypertrophy (roughly ~5 hard sets per muscle per session, or an MRV around ~10-20 sets/week) beyond which additional sets stop producing any extra growth and become wasted 'junk volume.'",
+    "category": "programming/volume-ceiling-junk-volume",
+    "verdict": "disputed",
+    "nuance": "The claim mixes one defensible idea with one largely unsupported one, so it cannot stand as stated. DEFENSIBLE PART (per-SESSION diminishing returns): Krieger/Weightology synthesizes acute MPS and per-session dose-response data showing hypertrophy increases up to ~8 sets/session with long rest (or ~15-16 sets/session with short rest), beyond which extra within-session sets add little -- 'junk volume' has a reasonable PER-SESSION basis, which is also the rationale for splitting high weekly volume across more frequent sessions. UNSUPPORTED PART (a hard per-WEEK ceiling / fixed MRV ~10-20): Pelland 2026 detected NO weekly plateau within the data (slope positive to 100% posterior probability, diminishing but not vanishing returns); Nuckols/SBS argues the low-volume weekly 'plateau' is mostly a mirage and that the weekly 'limit' appears to exceed 25 and possibly 45 sets, recommending caution above ~25 sets only because of data sparsity, not because growth demonstrably stops; Baz-Valle's no-extra-benefit finding was specifically ~12-20 sets for quads/biceps (triceps still benefited from >20), i.e. a soft optimum, not a hard junk cutoff. The MRV/RP volume-landmark numbers are practitioner heuristics (Israetel/RP, lower-tier) framed around recovery, and even that source opens with 'the answer isn't as simple as more is better.' EFFECT vs PRACTICAL: extra weekly sets show diminishing returns and rising fatigue/time cost (a real practical reason to cap volume), but 'additional sets stop producing ANY extra growth and become wasted' is not established at the weekly level. Hence disputed: per-session junk volume plausible; a fixed ~10-20-set/week hard ceiling overstated.",
+    "evidence_grade": "meta-analysis",
+    "population": "trained and untrained young men predominantly; MRV landmarks generalized by practitioners to lifters of varying experience",
+    "agreement_score": 0.35,
+    "affected_ids": [
+      "exercise.var.weekly-sets.muscle.hypertrophy.trained.high-volume-ceiling",
+      "exercise.var.weekly-sets.muscle.hypertrophy.intermediate.mrv-ceiling",
+      "exercise.var.session-sets.muscle.hypertrophy.general.per-session-ceiling",
+      "exercise.var.session-sets.muscle.hypertrophy.general.junk-volume-effort",
+      "exercise.var.weekly-sets.muscle.hypertrophy.trained.biceps-rct-9to27",
+      "exercise.var.weekly-sets.muscle.hypertrophy.trained.triceps-highvolume"
+    ],
+    "supporting_source_ids": [
+      "exercise-programming-weightology-set-volume-bible",
+      "exercise-programming-bazvalle-volume-review-2022",
+      "exercise-programming-rp-volume-landmarks"
+    ],
+    "contradicting_source_ids": [
+      "exercise-programming-sbs-volume-article",
+      "exercise-programming-pelland-doseresponse-sportmed",
+      "exercise-programming-king-of-volume-metas-biolayne"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.4-hip-thrust-superior-glute-growth",
+    "statement": "The barbell hip thrust produces greater gluteus maximus activation than the back squat and is therefore the superior exercise for growing the glutes.",
+    "category": "contested-anatomy-mechanics",
+    "verdict": "disputed",
+    "nuance": "The claim is a conjunction of a SUPPORTED premise and an UNSUPPORTED conclusion, and must be split. EFFECT claim (activation): supported — the barbell hip thrust elicits higher gluteus maximus surface EMG than the back squat. Contreras et al. 2015 (13 trained women, ~10RM) found hip thrust beat back squat for mean (69.5% vs 29.4%) and peak (172% vs 84.9%) upper GMax and mean (86.8% vs 45.4%) lower GMax; Neto et al. 2020 (T0 systematic review, 16 studies) pooled hip thrust variations at ~75% MVIC vs back squat ~53% MVIC. PRACTICAL/GROWTH claim ('therefore superior for growing the glutes'): NOT supported by the corpus. Three problems: (1) EMG is an acute activation index that does not reliably predict chronic hypertrophy — Contreras 2015 itself states 'Longitudinal training studies are needed to determine if this enhanced activation correlates with increased strength, hypertrophy, and performance,' and Neto 2020 flags EMG's 'limitations and common misinterpretations' (Vigotsky). (2) The corpus contains NO volume-/effort-equated hypertrophy trial showing the hip thrust grows the glutes more than the squat; the broader literature (Contreras's own later RCTs) shows squat and hip thrust produce similar GMax hypertrophy when matched, each with region-specific biases. (3) The hip thrust is not even the highest-EMG glute exercise — step-up variations exceed both (~125% MVIC). So 'more EMG' is real, but 'more/better growth' does not follow. Honest finding: the hip thrust is an excellent, possibly preferable glute exercise for practical reasons (high glute tension at short muscle lengths, low spinal/systemic fatigue, easy to load and progress, strong mind-muscle connection), but it is not established as superior to the squat for glute hypertrophy. The candidate anatomy sources (hamstring-glute regional EMG, openstax lower limb, moment-arm review, agonist/antagonist text) do not actually test hip thrust vs squat — the regional-EMG study has neither exercise; the comparison lives in movements-domain sources.",
+    "evidence_grade": "RCT",
+    "population": "Resistance-trained adults (EMG data largely in trained women; activation review pooled trained men and women); hypertrophy comparison evidence sparse/absent in corpus",
+    "agreement_score": 0.2,
+    "affected_ids": [
+      "exercise-hip-thrust",
+      "exercise-back-squat",
+      "muscle-gluteus-maximus",
+      "training_variable-resistance-profile",
+      "set_structure-exercise-selection"
+    ],
+    "supporting_source_ids": [
+      "exercise-movements-emg-squat-vs-hipthrust",
+      "exercise-movements-sysrev-gmax"
+    ],
+    "contradicting_source_ids": [
+      "exercise-movements-emg-squat-vs-hipthrust",
+      "exercise-movements-sysrev-gmax",
+      "exercise-movements-rp-glutes",
+      "exercise-anatomy-pmc-hamstring-glute-regional-emg"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.5-rectus-femoris-active-insufficiency-distal-untrainable",
+    "statement": "The rectus femoris is hard to target/develop because, as a biarticular muscle, it suffers active insufficiency: it cannot be fully activated for knee extension when the hip is flexed (e.g., seated leg extension), so much of the muscle (especially the distal region) is never strongly recruited in common quad exercises.",
+    "category": "contested-anatomy-mechanics",
+    "verdict": "disputed",
+    "nuance": "The claim mixes a real phenomenon with a mechanistic detail that the cited literature contradicts, so it cannot stand as stated. SUPPORTED parts: (a) The RF is biarticular and exhibits active insufficiency in the classic length-tension sense — it becomes a weaker knee extensor when the hip is flexed/shortened (StatPearls: 'the rectus femoris becomes a weak knee extensor in the sitting position when the hip is flexed'). (b) RF is task-dependently and regionally controlled — Miyamoto et al. 2012 found RF EMG was significantly LOWER during hip-flexion MVC than knee-extension MVC in all regions, and the DISTAL region in particular could not be fully activated DURING HIP FLEXION. REFUTED part (the load-bearing detail): the claim's specific assertion that 'the distal region is never strongly recruited in common quad exercises' is BACKWARDS. The biarticular-HDEMG review and Miyamoto show the opposite — the distal/middle RF preferentially contributes to KNEE EXTENSION (the action in leg extensions, squats, leg presses), while it is the PROXIMAL region that is biased to hip flexion and that under-activates during knee extension. Direct training data confirm distal RF is well-recruited and grows: Narici et al. and Blazevich et al. found knee-extension training produced GREATER hypertrophy in the DISTAL RF than proximal. So in seated leg extension (knee extension, hip flexed) the distal RF is exactly the region that IS strongly driven. The grain of truth the claim distorts: because RF crosses the hip, its overall knee-extension contribution is partly blunted when the hip is flexed/shortened (favoring a more extended-hip position, e.g., standing/lunging or hip-extended knee extension, for fuller RF stimulus), and the muscle is genuinely strain-prone and somewhat awkward to fully load. But 'distal region never strongly recruited' is contradicted. EFFECT vs PRACTICAL: the practical takeaway (RF benefits from being trained in less hip-flexed positions and may lag with hip-flexed-only work) is defensible; the stated mechanism is not.",
+    "evidence_grade": "mechanistic",
+    "population": "Healthy adults (Miyamoto: 12 untrained/moderately active men, isometric MVC; HDEMG review synthesizes mixed healthy cohorts); training-hypertrophy inferences from knee-extension RCTs",
+    "agreement_score": 0.25,
+    "affected_ids": [
+      "muscle-rectus-femoris",
+      "exercise-leg-extension",
+      "exercise-squat",
+      "training_variable-hip-angle",
+      "training_variable-active-insufficiency",
+      "set_structure-exercise-selection"
+    ],
+    "supporting_source_ids": [
+      "exercise-anatomy-pmc-rf-active-insufficiency",
+      "exercise-anatomy-statpearls-rectus-femoris",
+      "exercise-anatomy-pmc-length-tension-understanding",
+      "exercise-anatomy-pmc-two-joint-link-model"
+    ],
+    "contradicting_source_ids": [
+      "exercise-anatomy-pmc-biarticular-hdemg-insights",
+      "exercise-anatomy-pmc-rf-active-insufficiency"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.6-reverse-pyramid-more-muscle-than-straight-sets",
+    "statement": "Reverse-pyramid training (heaviest top set first, then load drops) builds more muscle than equal-volume straight sets.",
+    "category": "techniques",
+    "verdict": "equivalent",
+    "nuance": "The honest finding is no meaningful difference, so the claim overstates. The directly relevant volume-equated evidence is on pyramid-class loading schemes rather than a reverse-pyramid-labeled protocol, and it converges on equivalence. Angleri et al. 2017 (within-subject RCT, well-trained men, total training volume equalized, 12 wk) found crescent pyramid produced statistically identical gains to traditional straight sets in muscle CSA (7.5% vs 7.6%), leg-press and leg-extension 1RM, pennation angle, and fascicle length — concluding pyramid 'does not promote greater gains in strength, muscle hypertrophy.' Fonseca et al. 2023 (T0 meta-analysis, GRADE moderate, I-squared = 0%) found advanced paradigms as a class (including pyramid) did not differ from traditional training for hypertrophy (overall SMD ~ -0.00, 95% CI -0.15 to 0.14). The Cardozo narrative review (via Stronger By Science) reached the same conclusion: pyramid 'effectively increased strength and hypertrophy, but showed no greater benefits than traditional training.' EFFECT claim ('more muscle'): not supported — growth is equivalent when volume/effort are matched, because the actual drivers are volume, load, and proximity to failure, all of which a straight-set program supplies equally. PRACTICAL angle: reverse pyramid can be a legitimate, time-efficient, autoregulatory way to organize loading (a fresh heavy top set, then lighter back-off work as fatigue accrues) and may suit some lifters' preferences/recovery, but it does not add hypertrophy over equal-volume straight sets. Caveat: no RCT in the corpus specifically tests 'reverse' (descending) pyramid for hypertrophy, so direct evidence is by extension from crescent-pyramid and pooled advanced-technique data — hence equivalent rather than flatly refuted.",
+    "evidence_grade": "meta-analysis",
+    "population": "Resistance-trained and recreationally trained adults (Angleri: well-trained men; Fonseca meta: recreationally/previously trained individuals)",
+    "agreement_score": 0.15,
+    "affected_ids": [
+      "exercise.tech.reverse-pyramid",
+      "exercise.tech.crescent-pyramid",
+      "exercise.tech.straight-sets",
+      "exercise.var.weekly-sets.muscle.hypertrophy.general.dose-response",
+      "exercise.var.rir.global.hypertrophy.general"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-techniques-angleri-2017-crescent-pyramid-dropset-eajp",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta",
+      "exercise-techniques-sbs-pyramid",
+      "exercise-techniques-iversen-2021-time-efficient-review"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.7-pyramid-superior-to-straight-sets",
+    "statement": "Pyramid training (varying load and reps across sets within one exercise) is superior to traditional straight sets for hypertrophy and strength.",
+    "category": "techniques",
+    "verdict": "equivalent",
+    "nuance": "The honest finding is parity, not superiority, so the claim overstates on both outcomes. HYPERTROPHY: equivalent. Angleri et al. 2017 (volume-equated within-subject RCT, well-trained men) found crescent pyramid matched traditional straight sets for CSA and muscle architecture; Fonseca et al. 2023 (T0 meta, GRADE moderate, I-squared = 0%) found no difference between advanced paradigms (including pyramid) and traditional training for muscle thickness, lean mass, or CSA (SMDs ~ 0). STRENGTH: also equivalent at best, and if anything traditional straight sets may be mildly preferable for pure strength. Angleri found identical leg-press and leg-extension 1RM gains across pyramid and traditional. The Cardozo review (Stronger By Science) concluded pyramid 'stands on par with traditional training for muscle and strength gains' and noted that for pure strength, 'traditional set structures that allow for maximal force production may be more optimal,' because pyramid protocols accumulate more fatigue from the load/rep variation. EFFECT claim ('superior for hypertrophy AND strength'): refuted as a superiority statement — neither outcome favors pyramid when volume is equated; the apparent benefit of 'covering multiple rep ranges/loads' is already captured by volume, load, and proximity to failure, which straight sets deliver equally. PRACTICAL angle: pyramid is a viable, enjoyable way to add variety, naturally spans loading zones, and can save time; it is a legitimate organizational tool, just not a magnitude-of-gains upgrade. Verdict equivalent (the claim conflates 'equal/at-par' with 'superior'); the strength half tips slightly toward straight sets, reinforcing that no superiority exists.",
+    "evidence_grade": "meta-analysis",
+    "population": "Resistance-trained and recreationally trained adults (Angleri: well-trained men; Fonseca meta: recreationally/previously trained); some pyramid data also in older adults",
+    "agreement_score": 0.12,
+    "affected_ids": [
+      "exercise.tech.crescent-pyramid",
+      "exercise.tech.reverse-pyramid",
+      "exercise.tech.straight-sets",
+      "exercise.var.rep-range.global.hypertrophy.general",
+      "exercise.var.load-pct-1rm.global.hypertrophy.general"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-techniques-angleri-2017-crescent-pyramid-dropset-eajp",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta",
+      "exercise-techniques-sbs-pyramid"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.8-drop-sets-more-muscle",
+    "statement": "Drop sets build more muscle than equal-volume straight sets.",
+    "category": "techniques",
+    "verdict": "equivalent",
+    "nuance": "EFFECT claim is false as stated: three independent meta-analyses converge on no meaningful between-group hypertrophy difference vs traditional/straight sets. Coleman 2022 (5 studies, 13 comparisons): hypertrophy ES = 0.08 (95% CI -0.08 to 0.24), I2=0%. Sodal 2023 (5 studies pooled): SMD = 0.155 (95% CI -0.199 to 0.509), p=0.392, I2=0%; with the non-volume-equated study removed it falls to 0.08 (p=0.701). Havers 2026 (largest, 9 chronic studies, n=274): chronic hypertrophy SMD = 0.04 (95% CI -0.29 to 0.36), p=0.813 — and crucially the volume-equated subgroup was SMD = -0.05 (NS) and the non-equated subgroup -0.02 (NS), so equating volume does not reverse the null. The honest finding is EQUIVALENCE. The real (PRACTICAL) advantage is time-efficiency: drop sets reached the same growth in roughly half-to-one-third of the training time (e.g., Fink ~145s vs ~316s; Ozaki ~2min vs ~7min). A secondary practical nuance: a single within-subject study (Varovic) suggests drop sets may add regional rectus-femoris hypertrophy, and Havers shows drop sets acutely raise RPE and lactate (higher fatigue cost). Reporting 'equal growth, less time' as 'more growth' is the exact effect/practical conflation this claim commits.",
+    "evidence_grade": "meta-analysis",
+    "population": "healthy adults, mostly resistance-trained young men (some untrained; single-joint/upper- and lower-body); 6-12 wk interventions",
+    "agreement_score": 0.1,
+    "affected_ids": [
+      "exercise.tech.drop-set",
+      "exercise.tech.straight-sets",
+      "exercise.tech.mechanical-drop-set",
+      "exercise.var.weekly-sets.muscle.hypertrophy.general.dose-response",
+      "exercise.var.rir.global.hypertrophy.general"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-techniques-coleman-2022-dropset-meta",
+      "exercise-techniques-sodal-2023-dropset-meta-pmc",
+      "exercise-techniques-havers-2026-dropset-acute-chronic-meta",
+      "exercise-techniques-sbs-dropsets",
+      "exercise-techniques-angleri-2017-crescent-pyramid-dropset-eajp",
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.9-rest-pause-myo-reps-more-muscle-per-time",
+    "statement": "Rest-pause and myo-rep training grow more muscle per unit of training time than traditional straight sets.",
+    "category": "techniques",
+    "verdict": "disputed",
+    "nuance": "Must be split. The ABSOLUTE-GROWTH effect claim is equivalence, not superiority: total hypertrophy from rest-pause/myo-reps is comparable to straight sets when volume/effort are matched (Schwarz 2024 myo-rep thesis: MYO vs TRAD 'comparable hypertrophic and strength adaptations'; Fonseca 2023 advanced-vs-traditional meta: all-measures SMD = -0.00, 95% CI -0.15 to 0.14; Tsartsapakis 2026 hypertrophy pooled g = 0.046, p=0.370 NS — though rest-pause was the single method with a small SIGNIFICANT positive hypertrophy coefficient, a cautious method-specific signal on thin data). The PER-UNIT-TIME (efficiency) framing is the defensible part: these methods deliver that comparable growth in markedly less time (Iversen 2021: rest-pause/supersets 'roughly halve training time while maintaining training volume'; Prestes RCT: 35 vs 57 min/session; myo-rep thesis: reduced duration + better recovery/stress perception). So per training-minute the yield is plausibly higher. BUT the claim is overstated/insecure because: (1) longitudinal evidence is sparse (essentially one rest-pause RCT, n=8 myo-rep thesis); (2) the one rest-pause hypertrophy edge (Prestes, thigh +11% vs +1%) is confounded — the rest-pause group did more reps/effort than the TRAD group's prescribed 6 reps, and Fonseca attributes it to effort + muscle-thickness measurement limits; (3) 'per unit of time' is rarely the metric studies actually equate. So 'equivalent growth in less time' is well supported; 'grows MORE muscle' is not. Net: efficiency-supported, growth-superiority disputed.",
+    "evidence_grade": "meta-analysis",
+    "population": "recreationally/resistance-trained young adults (rest-pause RCTs and a small n=8 myo-rep thesis); 6-8 wk; limited longitudinal data",
+    "agreement_score": 0.4,
+    "affected_ids": [
+      "exercise.tech.rest-pause",
+      "exercise.tech.myo-reps",
+      "exercise.tech.cluster-set",
+      "exercise.tech.straight-sets",
+      "exercise.var.rest-seconds.global.hypertrophy.general",
+      "exercise.var.weekly-sets.muscle.hypertrophy.general.efficiency-low-volume"
+    ],
+    "supporting_source_ids": [
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-myoreps-thesis-liberty",
+      "exercise-techniques-tsartsapakis-2026-advanced-systems-meta"
+    ],
+    "contradicting_source_ids": [
+      "exercise-techniques-fonseca-2023-advanced-vs-traditional-meta",
+      "exercise-techniques-lidsen-cluster-short-review"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.10-lengthened-partials-more-than-full-rom",
+    "statement": "Lengthened partials (reps biased to the stretched portion of the range of motion) produce more muscle growth than full range-of-motion training.",
+    "category": "techniques",
+    "verdict": "disputed",
+    "nuance": "Two-layer problem. (1) Evidence gap in the cited corpus: none of the three candidate sources actually contains lengthened-partials-vs-full-ROM data. RP Strength/Israetel lists 'partial reps' only in passing as a generic intensity technique and never claims ROM-position superiority; Krzysztofik 2019 reviews eccentric tempo, AEL, drop sets, BFR, supersets, clusters — NOT ROM-position partials; the Sportsmed 2026 Bayesian NMA does not analyze ROM/range-of-motion at all (its conditions are AEL, flywheel, dropsets, complexes, rest-redistribution, supersets, accommodating resistance). So as cited here the claim is unsubstantiated. (2) On the broader literature this verdict references but the corpus does not include (Wolf et al. 2025 lengthened-partials meta; Pedrosa 2022; Kassiano 2023; Maeo 2021/2023; Schoenfeld/Grgic ROM work), the honest reading is: training at LONG muscle lengths (incl. lengthened partials and full-ROM-into-stretch) tends to match or modestly beat short-length/full-ROM-overall training, with effects that are typically SMALL, muscle/region-specific (e.g., distal quads, biceps long head, triceps long head), and partly confounded by effort and load. That is far weaker and more qualified than the blanket 'more growth than full ROM' asserted here, and importantly lengthened partials are usually compared to short partials or to full ROM that omits the stretch — not to a full ROM that already trains the stretched portion (against which the edge often disappears). Verdict disputed: the effect-direction has some support in the wider literature but is small/conditional and is NOT demonstrated by the sources attached to this claim. Practical: lengthened partials are a time/volume add-on that may help lagging regions, not a universal upgrade over quality full-ROM training.",
+    "evidence_grade": "meta-analysis",
+    "population": "mostly trained/recreationally-trained young adults; isolation-exercise and single-muscle regional studies; corpus-cited sources are general technique reviews, not ROM trials",
+    "agreement_score": 0.35,
+    "affected_ids": [
+      "exercise.tech.lengthened-partials",
+      "exercise.tech.21s",
+      "exercise.var.rep-range.global.hypertrophy.general",
+      "exercise.var.load-pct-1rm.global.hypertrophy.general"
+    ],
+    "supporting_source_ids": [
+      "exercise-techniques-rpstrength-intensity-techniques"
+    ],
+    "contradicting_source_ids": [
+      "exercise-techniques-krzysztofik-2019-advanced-techniques-review",
+      "exercise-techniques-sportsmed-2026-bayesian-network-meta"
+    ],
+    "last_verified": "2026-06-26"
+  },
+  {
+    "id": "exercise.claim.11-supersets-compromise-hypertrophy",
+    "statement": "Supersets (back-to-back sets with little rest) compromise hypertrophy relative to traditional straight sets.",
+    "category": "techniques",
+    "verdict": "refuted",
+    "nuance": "The asserted hypertrophy PENALTY is not supported; the EFFECT finding is equivalence. The only volume-matched superset hypertrophy RCT in the corpus (Burke et al. 2025, 'Less time, same gains', n=43 resistance-trained M/F, 8 wk, agonist-antagonist supersets, sets to failure) found the SAME average muscle-thickness gains across all assessed muscle groups (Bayes factors favoring the null) AND the same strength, power, endurance, and body-composition changes — while supersets cut session time by 36%. The Sportsmed 2026 Bayesian NMA reports supersets had too few studies (n=3) to enter the meta-analysis, but all superset studies showed no significant strength difference vs traditional and the review classes supersets as a 'time-effective' method with no hypertrophy decrement (and García-Orea showed equal countermovement-jump adaptation). Iversen 2021 concludes supersets roughly halve training time WHILE MAINTAINING training volume (antagonist supersets can even raise volume via antagonist preloading). So the honest verdict is: hypertrophy is NOT compromised — it is equivalent — provided weekly volume is preserved. The legitimate caveats (which the claim wrongly inflates into 'compromise'): (a) AGONIST/same-muscle supersets acutely reduce reps and volume per session and could under-stimulate if that lost volume is not made up; (b) supersets raise acute fatigue, lactate, and RPE and may need longer recovery (Iversen, Sportsmed 2026). These are practical fatigue/volume-management cautions, not a demonstrated chronic growth penalty for the common antagonist/different-muscle superset. Claim refuted as stated.",
+    "evidence_grade": "RCT",
+    "population": "resistance-trained young men and women (Burke RCT); NMA pooled untrained-to-moderately-trained healthy adults; agonist-antagonist/different-muscle supersets to failure, 8 wk",
+    "agreement_score": 0.15,
+    "affected_ids": [
+      "exercise.tech.antagonist-superset",
+      "exercise.tech.agonist-superset-preexhaust",
+      "exercise.tech.giant-set",
+      "exercise.tech.straight-sets",
+      "exercise.var.rest-seconds.global.hypertrophy.general"
+    ],
+    "supporting_source_ids": [],
+    "contradicting_source_ids": [
+      "exercise-techniques-superset-rct-sportrxiv-2025",
+      "exercise-techniques-zhang-2025-superset-meta",
+      "exercise-techniques-sportsmed-2026-bayesian-network-meta",
+      "exercise-techniques-iversen-2021-time-efficient-review",
+      "exercise-techniques-rpstrength-intensity-techniques"
+    ],
+    "last_verified": "2026-06-26"
+  }
+]
