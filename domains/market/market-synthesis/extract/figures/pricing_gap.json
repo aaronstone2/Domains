@@ -1,0 +1,37 @@
+{
+  "name": "pricing_gap",
+  "caption": "Pricing-model mix + free-tier prevalence.",
+  "sql": "SELECT model_type, COUNT(*) n, SUM(CASE WHEN has_free_tier THEN 1 ELSE 0 END) with_free_tier FROM market.pricing_models GROUP BY 1 ORDER BY 2 DESC",
+  "rows": [
+    {
+      "model_type": "usage-based",
+      "n": 6,
+      "with_free_tier": 6
+    },
+    {
+      "model_type": "seat-based",
+      "n": 6,
+      "with_free_tier": 4
+    },
+    {
+      "model_type": "freemium",
+      "n": 5,
+      "with_free_tier": 5
+    },
+    {
+      "model_type": "open-core",
+      "n": 3,
+      "with_free_tier": 3
+    },
+    {
+      "model_type": "flat",
+      "n": 1,
+      "with_free_tier": 0
+    },
+    {
+      "model_type": "hybrid",
+      "n": 1,
+      "with_free_tier": 1
+    }
+  ]
+}

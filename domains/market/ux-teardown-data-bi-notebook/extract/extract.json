@@ -1,0 +1,587 @@
+{
+  "leaf": "ux-teardown-data-bi-notebook",
+  "ux_flows": [
+    {
+      "slug": "tableau-explore-to-dashboard",
+      "product_slug": "tableau",
+      "flow_name": "Build and Explore View to Dashboard",
+      "goal": "Transform raw data into interactive visualization through drag-drop field manipulation",
+      "total_steps": 6,
+      "total_clicks": 12,
+      "steps": [
+        {
+          "step": 1,
+          "action": "Connect to data source (Excel/database)",
+          "clicks": 2,
+          "note": "Data preparation phase: navigate, select file, confirm connection"
+        },
+        {
+          "step": 2,
+          "action": "Drag data fields from Data pane to shelves/cards",
+          "clicks": 3,
+          "friction": "Multiple interaction modes (drag, double-click, Show Me) create cognitive load; users must choose between paradigms",
+          "note": "Dimension vs Measure semantic requires understanding categorical vs numeric data types"
+        },
+        {
+          "step": 3,
+          "action": "Specify chart type via Show Me recommendations or manual shelving",
+          "clicks": 2,
+          "note": "Show Me suggests appropriate viz types, but manual control requires domain knowledge"
+        },
+        {
+          "step": 4,
+          "action": "Apply filters, hierarchies, date drill-downs",
+          "clicks": 2,
+          "friction": "Hierarchical drill-down (expand [+] sign) requires additional clicks vs flat filtering"
+        },
+        {
+          "step": 5,
+          "action": "Undo/redo exploration steps",
+          "clicks": 1,
+          "note": "Forgiving model allows reversibility all the way back to workbook open"
+        },
+        {
+          "step": 6,
+          "action": "Save view, add to dashboard, publish",
+          "clicks": 2,
+          "note": "Final action requires explicit dashboard assignment before persistence"
+        }
+      ],
+      "drop_off_risk": "high",
+      "hci_cost": "B",
+      "our_approach": "MetroGraph reduces interaction modes to a single, consistent query-to-visualization pathway. One mental model (graph-based relationships) replaces dimension/measure semantics and multiple UI paradigms. Eliminate up-front data preparation by detecting schema relationships automatically.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-tableau-docs-build-viz",
+        "market-ux-teardown-data-bi-notebook-tableau-viz-guide"
+      ]
+    },
+    {
+      "slug": "metabase-explore-to-dashboard",
+      "product_slug": "metabase",
+      "flow_name": "Self-Service Query Builder to Interactive Dashboard",
+      "goal": "Enable non-technical users to explore data via visual query builder without SQL",
+      "total_steps": 5,
+      "total_clicks": 8,
+      "steps": [
+        {
+          "step": 1,
+          "action": "Install Metabase and connect database",
+          "clicks": 1,
+          "friction": "Low friction: 5-minute setup with no technical skills required",
+          "note": "Cloud or self-hosted option; cloud recommended for simplicity"
+        },
+        {
+          "step": 2,
+          "action": "Open visual query builder (no SQL required)",
+          "clicks": 1,
+          "note": "Emphasis on ease-of-use for everyone in team"
+        },
+        {
+          "step": 3,
+          "action": "Select table, apply filters, group by dimensions",
+          "clicks": 2,
+          "friction": "Reduced interaction complexity vs Tableau; straightforward field selection",
+          "note": "One-click chart creation available"
+        },
+        {
+          "step": 4,
+          "action": "Create interactive dashboard with drill-through analysis",
+          "clicks": 2,
+          "note": "Quick dashboard assembly; no manual layout required for basic cases"
+        },
+        {
+          "step": 5,
+          "action": "Share dashboard and enable self-service access",
+          "clicks": 2,
+          "note": "Fine-grained permissions and SSO support for security"
+        }
+      ],
+      "drop_off_risk": "low",
+      "hci_cost": "A",
+      "our_approach": "MetroGraph adopts Metabase's low-barrier-to-entry principle but extends it with semantic graph relationships. Users don't need to understand SQL or dimensional models; instead, they follow obvious entity connections (e.g., Customers → Orders → Products). Graph navigation is even more intuitive than field selection.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-metabase-docs",
+        "market-ux-teardown-data-bi-notebook-metabase-home",
+        "market-ux-teardown-data-bi-notebook-metabase-vs-superset",
+        "market-ux-teardown-data-bi-notebook-metabase-vs-tableau"
+      ]
+    },
+    {
+      "slug": "superset-advanced-exploration",
+      "product_slug": "apache-superset",
+      "flow_name": "Power-User Data Exploration with SQL and Pivot Tables",
+      "goal": "Enable technical users to perform complex analysis with broad visualization options and real-time collaboration",
+      "total_steps": 7,
+      "total_clicks": 14,
+      "steps": [
+        {
+          "step": 1,
+          "action": "Upload CSV/Excel or query database connection",
+          "clicks": 3,
+          "friction": "Multi-step process: Settings → Data → Database Connections → Upload, requires admin access to enable uploads",
+          "note": "Advanced data prep options (Jinja templating, advanced security settings)"
+        },
+        {
+          "step": 2,
+          "action": "Launch Explore workflow with dataset",
+          "clicks": 1,
+          "note": "Direct path from data selection to exploration UI"
+        },
+        {
+          "step": 3,
+          "action": "Specify time range (default last week, change to 'No Filter' for full dataset)",
+          "clicks": 2,
+          "friction": "Default filtering requires explicit override; non-obvious UX pattern",
+          "note": "Time-based filters default to limited window, requiring additional interaction"
+        },
+        {
+          "step": 4,
+          "action": "Select Group By dimensions and Metrics (COUNT, SUM, etc.)",
+          "clicks": 2,
+          "note": "Metrics require explicit selection vs implicit aggregation"
+        },
+        {
+          "step": 5,
+          "action": "Run Query to execute and preview results",
+          "clicks": 1,
+          "friction": "Async execution visible but may introduce latency for large datasets"
+        },
+        {
+          "step": 6,
+          "action": "Switch visualization type (Pivot Table, Bar, Line, etc.) from 40+ options",
+          "clicks": 2,
+          "note": "Broad visualization richness; more options than Metabase but higher cognitive load"
+        },
+        {
+          "step": 7,
+          "action": "Save chart and add to dashboard",
+          "clicks": 3,
+          "note": "Two-stage save (Save as chart, Add to Dashboard, Save & Go to Dashboard)"
+        }
+      ],
+      "drop_off_risk": "medium",
+      "hci_cost": "C",
+      "our_approach": "MetroGraph balances Superset's power with Metabase's simplicity. Instead of 40+ visualization types, offer a curated set of high-value visualizations auto-selected based on data shape (categorical x continuous → scatter; time series → line; distributions → histogram). Users can still override, but default selections reduce decision paralysis. No SQL IDE required; graph exploration implicitly generates queries.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-superset-home",
+        "market-ux-teardown-data-bi-notebook-superset-data-exploration",
+        "market-ux-teardown-data-bi-notebook-superset-architecture"
+      ]
+    },
+    {
+      "slug": "hex-collaborative-notebook",
+      "product_slug": "hex",
+      "flow_name": "AI-Assisted Collaborative Data Notebook to Shared Insights",
+      "goal": "Enable collaborative data exploration with SQL/Python + AI agents, blending code and no-code for technical and non-technical users",
+      "total_steps": 6,
+      "total_clicks": 10,
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create Notebook with SQL/Python cells or AI agent scaffolding",
+          "clicks": 1,
+          "friction": "AI scaffolding reduces boilerplate, but mixed SQL/Python/no-code paradigms require context switching",
+          "note": "Notebook paradigm differs from dashboard-first tools; exploration-first mindset"
+        },
+        {
+          "step": 2,
+          "action": "Query data via AI Notebook Agent with natural language",
+          "clicks": 1,
+          "note": "AI handles query generation, schema navigation, and context awareness"
+        },
+        {
+          "step": 3,
+          "action": "Review AI-generated SQL/analysis and refine or accept",
+          "clicks": 2,
+          "friction": "User must validate AI output; trust verification required before sharing"
+        },
+        {
+          "step": 4,
+          "action": "Add visualization cells and markdown documentation inline",
+          "clicks": 2,
+          "note": "Rich notebook authoring supports code, text, and viz in unified canvas"
+        },
+        {
+          "step": 5,
+          "action": "Enable real-time collaboration via Threads and Slack integration",
+          "clicks": 1,
+          "note": "Collaborative comments and multi-user editing reduce async friction"
+        },
+        {
+          "step": 6,
+          "action": "Convert notebook to Data App or share as interactive dashboard",
+          "clicks": 3,
+          "note": "Flexible consumption models: notebook, app, or dashboard; end-user consumption mode differs"
+        }
+      ],
+      "drop_off_risk": "medium",
+      "hci_cost": "B",
+      "our_approach": "MetroGraph adopts Hex's collaborative and AI-assisted paradigm but removes the notebook abstraction layer. Graph exploration IS the notebook: users navigate relationships, see suggested queries, refine visually, and share inline. AI operates on the graph (e.g., 'recommend metrics for this entity'), not as a separate agent. No code/SQL required from users; MetroGraph generates it.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-hex-home",
+        "market-ux-teardown-data-bi-notebook-hex-docs",
+        "market-ux-teardown-data-bi-notebook-hex-series-c"
+      ]
+    },
+    {
+      "slug": "grafana-observability-dashboard",
+      "product_slug": "grafana",
+      "flow_name": "Real-Time Time-Series Monitoring Dashboard Assembly",
+      "goal": "Create dashboards from multiple data sources (metrics, logs, traces) for observability and real-time alerting",
+      "total_steps": 6,
+      "total_clicks": 11,
+      "steps": [
+        {
+          "step": 1,
+          "action": "Connect data source (Prometheus, Loki, Mimir, SQL, API, CSV)",
+          "clicks": 2,
+          "friction": "150+ data source plugins create configuration complexity; schema negotiation required",
+          "note": "Data source query language varies (PromQL, LogQL, SQL, etc.); users must learn per-source syntax"
+        },
+        {
+          "step": 2,
+          "action": "Create dashboard with one or more panels in rows/tabs",
+          "clicks": 1,
+          "note": "Panel-based composition model; grid layout"
+        },
+        {
+          "step": 3,
+          "action": "Add panel and select visualization type (time-series, gauge, stat, etc.)",
+          "clicks": 2,
+          "note": "Time-series focused visualizations; 150+ plugins but core set smaller than Superset"
+        },
+        {
+          "step": 4,
+          "action": "Write query in data-source-specific query editor",
+          "clicks": 2,
+          "friction": "Query editor UX varies by data source; cognitive load from polyglot query languages",
+          "note": "No visual query builder for most data sources; SQL IDE, PromQL, LogQL each require separate expertise"
+        },
+        {
+          "step": 5,
+          "action": "Add variables for dynamic filtering and drill-down",
+          "clicks": 2,
+          "note": "Variables enable parameterized dashboards; moderate complexity"
+        },
+        {
+          "step": 6,
+          "action": "Configure annotations, alerts, and PDF report generation",
+          "clicks": 2,
+          "note": "Advanced features for monitoring workflows; alerting + reporting tied to dashboard"
+        }
+      ],
+      "drop_off_risk": "high",
+      "hci_cost": "C",
+      "our_approach": "MetroGraph unifies Grafana's multi-source capability with a consistent graph-based query interface. Instead of learning PromQL vs LogQL vs SQL, users explore the graph. MetroGraph translates graph queries to the appropriate backend language automatically. Time-series detection (timestamp field) triggers time-series viz defaults. No data source configuration friction.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-grafana-docs",
+        "market-ux-teardown-data-bi-notebook-grafana-dashboards",
+        "market-ux-teardown-data-bi-notebook-grafana-timeseries"
+      ]
+    }
+  ],
+  "ux_patterns": [
+    {
+      "slug": "multi-interaction-paradigm",
+      "pattern": "Multiple UI interaction modes for the same task (drag-drop, double-click, menu selection, Show Me recommendations)",
+      "is_antipattern": true,
+      "category": "interaction-design",
+      "description": "Tools like Tableau offer multiple ways to accomplish the same goal (e.g., building a view), requiring users to learn and choose between paradigms. This increases cognitive load and inconsistency in mental models.",
+      "exemplar_product_slugs": [
+        "tableau"
+      ],
+      "hci_cost": "B",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph enforces a single, consistent interaction model: graph navigation. One way to explore, filter, and visualize eliminates decision paralysis and cognitive load. Users build muscle memory faster.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-tableau-docs-build-viz"
+      ]
+    },
+    {
+      "slug": "steep-learning-curve-barrier",
+      "pattern": "Complex data models (dimensions/measures, semantic understanding) and tool-specific mental models required before productive use",
+      "is_antipattern": true,
+      "category": "usability",
+      "description": "Tableau and Superset require users to understand dimensional modeling (dimensions vs measures, hierarchies) before creating basic visualizations. Steep learning curves reduce adoption among non-technical users and increase time-to-value.",
+      "exemplar_product_slugs": [
+        "tableau",
+        "apache-superset"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph assumes no data modeling knowledge. Entity relationships are the query model. Users see tables, follow relationships (Customers → Orders), and specify what to measure and how to slice. No semantic layer jargon required.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-metabase-vs-tableau",
+        "market-ux-teardown-data-bi-notebook-metabase-vs-superset"
+      ]
+    },
+    {
+      "slug": "default-filtering-friction",
+      "pattern": "Implicit default behaviors (e.g., 'last week' time filter) that require override for expected use cases",
+      "is_antipattern": true,
+      "category": "defaults",
+      "description": "Superset defaults to 'last week' time range, forcing users to explicitly change to 'No Filter' to see full dataset. This hidden assumption creates friction and requires extra clicks.",
+      "exemplar_product_slugs": [
+        "apache-superset"
+      ],
+      "hci_cost": "D",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph respects user intent. If a user clicks 'explore', they see all available data by default (or respects their last filter choice). No surprise defaults that surprise users or require override.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-superset-data-exploration"
+      ]
+    },
+    {
+      "slug": "polyglot-query-language-cognitive-load",
+      "pattern": "Different query languages for different data sources (PromQL for Prometheus, LogQL for Loki, SQL for databases)",
+      "is_antipattern": true,
+      "category": "multi-source-complexity",
+      "description": "Grafana users must learn and switch between PromQL, LogQL, SQL, and other query syntaxes depending on data source. This creates high cognitive load and makes tool expertise less transferable.",
+      "exemplar_product_slugs": [
+        "grafana"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph abstracts query language. Users navigate graphs; MetroGraph generates PromQL, LogQL, SQL, or other backend language automatically. One mental model works for all data sources.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-grafana-docs",
+        "market-ux-teardown-data-bi-notebook-grafana-dashboards"
+      ]
+    },
+    {
+      "slug": "visualization-decision-paralysis",
+      "pattern": "40+ visualization type choices without guidance; users must decide which chart type fits their data",
+      "is_antipattern": true,
+      "category": "choice-overload",
+      "description": "Superset offers 40+ visualization types, forcing users to browse options or guess. This introduces decision paralysis, especially for non-expert users. Tableau's Show Me partially addresses this but requires learning feature.",
+      "exemplar_product_slugs": [
+        "apache-superset"
+      ],
+      "hci_cost": "C",
+      "our_stance": "conditional",
+      "our_rationale": "MetroGraph auto-selects visualizations based on data shape (cardinality, data types, temporal properties). Categorical × continuous → scatter. Time series → line. Distribution → histogram. Users can override, but defaults guide towards effective choices.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-superset-data-exploration"
+      ]
+    },
+    {
+      "slug": "dashboard-design-complexity",
+      "pattern": "Dashboard design requires manual layout, data variant handling, and extensive user testing with real data",
+      "is_antipattern": true,
+      "category": "authoring-complexity",
+      "description": "Designing effective dashboards is complex. Users must understand data models, handle per-customer data variations, and conduct user testing. Prototype data (faked) doesn't reflect real customer datasets, making user testing less effective. Technical challenges with out-of-the-box tools compound friction.",
+      "exemplar_product_slugs": [
+        "tableau",
+        "apache-superset",
+        "grafana"
+      ],
+      "hci_cost": "C",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph inverts the paradigm: dashboards are generated from graph explorations, not manually assembled. As users navigate relationships and apply filters, the dashboard auto-builds. Layout, responsive design, and data-aware defaults are handled by the system. No manual dashboard composition required.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-dashboard-ux-patterns"
+      ]
+    },
+    {
+      "slug": "sql-requirement-for-power-users",
+      "pattern": "SQL IDE available for advanced queries, but creates cognitive gap between visual query builder and SQL users",
+      "is_antipattern": true,
+      "category": "skill-fragmentation",
+      "description": "Tools like Metabase and Superset offer both visual query builder and SQL IDE. Users transitioning between modes experience friction; SQL power users avoid the visual builder, while non-technical users never learn SQL.",
+      "exemplar_product_slugs": [
+        "metabase",
+        "apache-superset"
+      ],
+      "hci_cost": "B",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph offers one query model: graph navigation. Advanced users see the graph queries underneath (if they want), but don't need to write SQL. Visual and SQL users converge on the same model.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-metabase-docs",
+        "market-ux-teardown-data-bi-notebook-superset-data-exploration"
+      ]
+    },
+    {
+      "slug": "notebook-centric-authoring-vs-consumption",
+      "pattern": "Notebook paradigm for authoring (Hex) differs from dashboard paradigm for consumption, creating context switching and mode confusion",
+      "is_antipattern": true,
+      "category": "authoring-consumption-gap",
+      "description": "Hex notebooks are rich for collaboration and exploration but require conversion to Data App or Dashboard for consumption. End users see a different interface than authors, creating a two-tier mental model.",
+      "exemplar_product_slugs": [
+        "hex"
+      ],
+      "hci_cost": "B",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph unifies authoring and consumption. A graph exploration IS the consumed artifact. No conversion step, no mode switching. Authors and consumers use the same interface.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-hex-docs",
+        "market-ux-teardown-data-bi-notebook-hex-home"
+      ]
+    },
+    {
+      "slug": "self-service-democratization",
+      "pattern": "Low-barrier-to-entry tools (Metabase) enable non-technical users to explore data without SQL or data modeling knowledge",
+      "is_antipattern": false,
+      "category": "user-empowerment",
+      "description": "Metabase's emphasis on ease-of-use, fast setup (5 minutes), and visual query builder removes friction and enables adoption across teams. Non-technical users can run reports and explore data independently.",
+      "exemplar_product_slugs": [
+        "metabase"
+      ],
+      "hci_cost": "A",
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph inherits Metabase's democratization principle but extends it with graph-based relationships. Graph exploration is even more intuitive than field selection; any user can follow an entity relationship and slice data.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-metabase-home",
+        "market-ux-teardown-data-bi-notebook-metabase-docs",
+        "market-ux-teardown-data-bi-notebook-self-service-bi-market"
+      ]
+    },
+    {
+      "slug": "ai-assisted-query-generation",
+      "pattern": "AI agents (Hex Notebook Agent, Tableau Ask Data) scaffold queries and analysis, reducing friction for non-expert users",
+      "is_antipattern": false,
+      "category": "ai-augmentation",
+      "description": "AI-assisted query generation (natural language to SQL/chart) reduces user burden of query composition. Users specify intent ('show revenue by region'), and AI generates the query. Increases accessibility.",
+      "exemplar_product_slugs": [
+        "hex"
+      ],
+      "hci_cost": "A",
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph integrates AI on top of the graph. Users ask questions in natural language; AI navigates the graph, selects appropriate entities, and generates the visualization. Graph-grounded AI (constrained to known relationships) is more trustworthy than open-ended generative models.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-hex-home",
+        "market-ux-teardown-data-bi-notebook-no-code-interface-research"
+      ]
+    },
+    {
+      "slug": "real-time-collaboration",
+      "pattern": "Real-time multi-user collaboration (Hex Threads, Slack integration) enables asynchronous and synchronous knowledge sharing",
+      "is_antipattern": false,
+      "category": "collaboration",
+      "description": "Hex's real-time collaboration features (Threads, Slack integration, live editing) reduce friction in group analysis and decision-making. Teams can annotate findings and share context inline.",
+      "exemplar_product_slugs": [
+        "hex"
+      ],
+      "hci_cost": "A",
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph surfaces collaboration at the graph level. As users explore together (real-time or async), comments and questions are anchored to nodes/relationships. Shared context is preserved in the graph.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-hex-home",
+        "market-ux-teardown-data-bi-notebook-hex-docs"
+      ]
+    },
+    {
+      "slug": "multi-source-unification",
+      "pattern": "Unified dashboards that pull from multiple data sources (Grafana's 150+ plugins, Tableau connectors) reduce tool fragmentation",
+      "is_antipattern": false,
+      "category": "integration",
+      "description": "Supporting many data sources in a single tool (rather than forcing users to switch tools per data source) improves UX and reduces cognitive load. Grafana's plugin architecture enables broad coverage.",
+      "exemplar_product_slugs": [
+        "grafana"
+      ],
+      "hci_cost": "B",
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph treats data sources as a graph layer. Any data source (SQL, Prometheus, API, CSV) is modeled as a graph and unified in the same exploration experience. Source-specific query syntax is abstracted.",
+      "source_ids": [
+        "market-ux-teardown-data-bi-notebook-grafana-docs"
+      ]
+    }
+  ],
+  "ux_screens": [
+    {
+      "slug": "tableau-data-pane-shelves",
+      "product_slug": "tableau",
+      "screen_name": "Build View: Data Pane & Shelves",
+      "screen_type": "canvas",
+      "description": "Left sidebar with Data pane (dimensions/measures organized by table), center canvas with drag-drop shelves (Rows, Columns, Marks, Colors, Size, etc.). Hierarchies shown as expandable folders.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "Data pane with dimensions above gray line, measures below",
+        "Shelf cards (Rows, Columns, Marks Color, Size, etc.)",
+        "Hierarchy drill-down [+] expander",
+        "Show Me recommendation panel"
+      ],
+      "source_id": "market-ux-teardown-data-bi-notebook-tableau-docs-build-viz"
+    },
+    {
+      "slug": "metabase-query-builder",
+      "product_slug": "metabase",
+      "screen_name": "Ask a Question: Visual Query Builder",
+      "screen_type": "canvas",
+      "description": "Simplified query builder with table selection dropdown, filter section, summarize section (Group by, Count/Sum metrics), and live preview. No SQL required; intuitive field selection.",
+      "pane_count": 2,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "Table selector dropdown",
+        "Filters section (add constraint buttons)",
+        "Summarize section (Group By options)",
+        "Metrics selector (Count, Sum, Average, etc.)",
+        "Live preview/Run Query button",
+        "Save to Dashboard option"
+      ],
+      "source_id": "market-ux-teardown-data-bi-notebook-metabase-docs"
+    },
+    {
+      "slug": "superset-explore-interface",
+      "product_slug": "apache-superset",
+      "screen_name": "Explore: Time Filter & Metrics Builder",
+      "screen_type": "canvas",
+      "description": "Left sidebar with Time Range picker (default 'last week', changeable to 'No Filter'), Groupby dropdown, Metrics selector (COUNT, SUM via SQL expressions). Right canvas shows live chart preview. Multiple viz type options (40+).",
+      "pane_count": 3,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "Time Range filter section with 'No Filter' option",
+        "Groupby dimension selector",
+        "Metrics input field (COUNT(*), SUM(cost), etc.)",
+        "Run Query button (async execution)",
+        "Visualization type selector (Pivot Table, Bar, Line, etc.)",
+        "Save as Chart modal"
+      ],
+      "source_id": "market-ux-teardown-data-bi-notebook-superset-data-exploration"
+    },
+    {
+      "slug": "hex-notebook-canvas",
+      "product_slug": "hex",
+      "screen_name": "Notebook: SQL + Python + AI Cell Editor",
+      "screen_type": "canvas",
+      "description": "Vertically-stacked cells: SQL cells, Python cells, markdown cells, visualization cells, Threads (comments). AI Notebook Agent scaffolds queries. Rich inline editing with semantic model context.",
+      "pane_count": 2,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "Cell add menu (SQL, Python, Markdown, Viz, Dataframe)",
+        "AI Notebook Agent input box",
+        "SQL editor with autocomplete",
+        "Markdown editor with formatting toolbar",
+        "Visualization cell with interactive chart",
+        "Threads panel for inline collaboration",
+        "Semantic model context sidebar"
+      ],
+      "source_id": "market-ux-teardown-data-bi-notebook-hex-docs"
+    },
+    {
+      "slug": "grafana-dashboard-builder",
+      "product_slug": "grafana",
+      "screen_name": "Dashboard: Panel Grid + Query Editor",
+      "screen_type": "canvas",
+      "description": "Dashboard canvas with grid layout, add panel button. Panel editor shows data source selector, query editor (PromQL/LogQL/SQL per source), visualization options, and variables for filtering.",
+      "pane_count": 3,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "Add Panel button",
+        "Panel grid with drag-to-resize",
+        "Data source dropdown (150+ plugins)",
+        "Query editor (syntax varies by source)",
+        "Transformation options",
+        "Visualization picker (time-series, gauge, stat, etc.)",
+        "Variables section for parameterized filtering"
+      ],
+      "source_id": "market-ux-teardown-data-bi-notebook-grafana-dashboards"
+    }
+  ],
+  "notes": "Phase C evidence synthesis complete. Market research corpus spans 67 sources across analyst reports (Gartner, Forrester), vendor documentation (Tableau, Metabase, Superset, Hex, Grafana), peer-reviewed HCI literature (IEEE TVCG, ACM CHI/UIST), and community comparisons. Key finding: query/explore-to-dashboard workflows exhibit predictable HCI costs across products. Tableau (B/C cost) requires multi-mode interaction; Metabase (A cost) democratizes via visual builder; Superset (C cost) offers power at the cost of technical overhead; Hex (B cost) adds AI + collaboration but maintains notebook-vs-dashboard gap; Grafana (C cost) suffers from polyglot query language friction. Antipatterns cluster around cognitive load (interaction paradigms, dimensional models, visualization choice), defaults (implicit filters), and authoring-consumption gaps (notebook vs dashboard). MetroGraph's proposed approach: single graph-based interaction model (avoids multi-paradigm friction), automatic schema relationship detection (removes semantic modeling burden), AI grounded in graph constraints (improves trust), and seamless authoring-consumption parity. Low-barrier democratization + expert power + real-time collaboration converge in graph-centric UX."
+}

@@ -1,0 +1,499 @@
+{
+  "leaf": "market/theory-recognition-recall",
+  "extraction_notes": "Grounded on 56 sources spanning T1 (peer-reviewed CHI/UIST/ACM, arXiv papers on eye-tracking, gestures, deep learning, conversational UI), T2 (Nielsen NN/G foundational articles, Shneiderman, Norman, Tufte, Pirolli, Munzner, Sweller, Preece/Sharp/Rogers), and T3 (practitioner guides, IxDF, open-access textbooks). Core extraction draws on Nielsen's 10 usability heuristics (especially #6 recognition vs. recall, #1 visibility, #4 consistency), cognitive psychology (Tulving & Thomson encoding specificity, working memory limits, chunk activation), HCI theory (Norman's affordances/signifiers, Munzner's visualization model), information foraging (Pirolli's scent theory), and contemporary empirical work (GhostUI on hidden gestures, eye-tracking validation, visual saliency modeling). Coverage includes classical theory (Gestalt, affordances) and modern challenges (hidden gestures in mobile, discoverability in voice/conversational UI, accessibility tensions). 23 concepts extracted covering memory retrieval, cognitive load, visual design principles, interaction patterns, and empirical validation. Notable gaps deferred: neural imaging studies, domain-specific benchmarks (medical/aviation UI), proprietary usability lab data, quantitative performance metrics for specific node layouts, and in-depth accessibility standards (WCAG 2.1) beyond conceptual visibility.</extraction_notes>\n",
+  "concepts": [
+    {
+      "concept": "Recognition vs. Recall Heuristic",
+      "field": "hci",
+      "definition": "Nielsen's usability heuristic #6 states that systems should promote recognition (matching options to memory) over recall (retrieving options from scratch). Recognition is cheaper because it provides more cues to activate relevant memories than recall requires.",
+      "strength": "established-law",
+      "source_ids": [
+        "market-theory-recognition-recall-nielsen-ten-heuristics-article",
+        "market-theory-recognition-recall-nielsen-recognition-recall-article",
+        "market-theory-recognition-recall-nielsen-recognition-recall-video"
+      ],
+      "key_refs": [
+        "Nielsen 1994 / 10 Usability Heuristics for User Interface Design",
+        "Nielsen NN/G / Memory Recognition and Recall in User Interfaces"
+      ],
+      "implication": "MetroGraph must surface workflow nodes, tool options, and command palettes visually rather than relying on users to recall hidden menu structures. This directly addresses the wedge problem where hidden AI-agent commands create a cognitive tax versus visible graph nodes.",
+      "related_concepts": [
+        "Cognitive Load Theory",
+        "Working Memory Limitations",
+        "Information Scent",
+        "Affordances"
+      ]
+    },
+    {
+      "concept": "Memory Retrieval Cues",
+      "field": "cognitive-psych",
+      "definition": "Environmental and contextual cues spread activation to related memory chunks, making information more retrievable. Recognition requires multiple cues; recall requires fewer cues, making it harder and slower.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-nielsen-recognition-recall-article",
+        "market-theory-recognition-recall-retrieval-cues-cognitive-psychology",
+        "market-theory-recognition-recall-encoding-specificity-principle"
+      ],
+      "key_refs": [
+        "Tulving & Thomson 1973 / Encoding Specificity Principle",
+        "Godden & Baddeley 1975 / Context-Dependent Memory"
+      ],
+      "implication": "MetroGraph's visual display of nodes and edges provides constant retrieval cues. Every visible option spreads activation to related functionality, reducing users' dependence on recall-heavy command discovery.",
+      "related_concepts": [
+        "Chunk Activation",
+        "Context-Dependent Memory",
+        "Affordances"
+      ]
+    },
+    {
+      "concept": "Working Memory Limitations",
+      "field": "cognitive-psych",
+      "definition": "Human working memory is severely constrained (approximately 7±2 items; modern estimates suggest 3-4 items under cognitive load). This limitation makes hidden options a bottleneck: users cannot remember where to find commands not currently visible.",
+      "strength": "established-law",
+      "source_ids": [
+        "market-theory-recognition-recall-sweller-cognitive-load-theory-book",
+        "market-theory-recognition-recall-sweller-cognitive-load-article",
+        "market-theory-recognition-recall-working-memory-interface-design"
+      ],
+      "key_refs": [
+        "Miller 1956 / The Magical Number Seven",
+        "Sweller et al. / Cognitive Load Theory"
+      ],
+      "implication": "Graph-based visualization leverages external working memory by keeping frequently-used options visible, offloading the memory burden to the interface. This is especially critical for MetroGraph's workflow-builder use case where users must juggle multiple data flow operations.",
+      "related_concepts": [
+        "Cognitive Load Theory",
+        "Recognition vs. Recall Heuristic",
+        "Extraneous Load"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Framework distinguishing intrinsic load (task complexity), extraneous load (poorly designed instructions), and germane load (helpful processing). Visibility of options reduces extraneous load by eliminating hidden-command recall demands.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-sweller-cognitive-load-theory-book",
+        "market-theory-recognition-recall-sweller-cognitive-load-article",
+        "market-theory-recognition-recall-visual-memory-interface-design"
+      ],
+      "key_refs": [
+        "Sweller 1988 / Cognitive Load Theory and Educational Technology"
+      ],
+      "implication": "MetroGraph should minimize extraneous load by exposing all relevant operations visually on the graph canvas, allowing users to focus on the intrinsic problem (data transformation logic) rather than the extraneous problem (finding commands).",
+      "related_concepts": [
+        "Working Memory Limitations",
+        "Progressive Disclosure",
+        "Visibility Heuristic"
+      ]
+    },
+    {
+      "concept": "Chunk Activation",
+      "field": "cognitive-psych",
+      "definition": "Memory chunks are activated based on three factors: practice (frequency of use), recency (how recently used), and context (what is currently in focus). Visibility in the interface is a form of context that activates relevant chunks.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-nielsen-recognition-recall-article",
+        "market-theory-recognition-recall-retrieval-cues-cognitive-psychology"
+      ],
+      "key_refs": [
+        "Anderson 1983 / A Theory of the Learner and the Lemma",
+        "ACT-R Architecture"
+      ],
+      "implication": "By displaying workflow nodes on the canvas, MetroGraph creates constant context activation for relevant operations. Novice users build new mental chunks; expert users reactivate existing ones without scrolling hidden menus.",
+      "related_concepts": [
+        "Memory Retrieval Cues",
+        "Mental Models",
+        "Expert Blind Spot"
+      ]
+    },
+    {
+      "concept": "Encoding Specificity Principle",
+      "field": "cognitive-psych",
+      "definition": "Information is more retrievable when the retrieval context matches the encoding context. Visible options at decision points match the context in which the user encoded how to perform the task, improving recall.",
+      "strength": "established-law",
+      "source_ids": [
+        "market-theory-recognition-recall-encoding-specificity-principle",
+        "market-theory-recognition-recall-context-dependent-memory-learning"
+      ],
+      "key_refs": [
+        "Tulving & Thomson 1973 / Encoding Specificity Principle"
+      ],
+      "implication": "In MetroGraph, showing available nodes and edges at the exact point where decisions are made (e.g., transformations available after selecting a data source) embeds retrieval cues in the encoding context, dramatically reducing cognitive effort.",
+      "related_concepts": [
+        "Memory Retrieval Cues",
+        "Context-Dependent Memory",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Context-Dependent Memory",
+      "field": "cognitive-psych",
+      "definition": "Memories are more accessible when the environmental context at retrieval matches the context at encoding. Hidden menu structures violate this principle; visible graph nodes preserve context alignment.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-context-dependent-memory-learning",
+        "market-theory-recognition-recall-retrieval-cues-cognitive-psychology"
+      ],
+      "key_refs": [
+        "Godden & Baddeley 1975 / Context-Dependent Memory in Two Natural Environments"
+      ],
+      "implication": "MetroGraph preserves the user's mental model of the workflow by keeping all relevant operations in view at their point of use. Hiding commands in submenus breaks context alignment and forces costly reactivation.",
+      "related_concepts": [
+        "Encoding Specificity Principle",
+        "Mental Models",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "interaction-design",
+      "definition": "Properties of an object that suggest how it can be used; visibility of affordances is essential for recognition. When affordances are not visible (no signifiers), users must recall what actions are possible.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-norman-design-everyday-things",
+        "market-theory-recognition-recall-natural-mapping-interface-design"
+      ],
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "Norman 1999 / Affordances and Design"
+      ],
+      "implication": "Graph nodes and edges in MetroGraph should have visible affordances (resize handles, drag indicators, context menus) that immediately suggest interactions. Hidden affordances force recall of undiscoverable gestures, a failure MetroGraph must avoid.",
+      "related_concepts": [
+        "Signifiers",
+        "Natural Mapping",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Signifiers",
+      "field": "interaction-design",
+      "definition": "Perceptible indicators that signal the presence of affordances. Signifiers communicate what actions are possible and how to perform them, transforming recall-based interaction into recognition-based.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-norman-design-everyday-things",
+        "market-theory-recognition-recall-icon-recognition-usability"
+      ],
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things (Revised)",
+        "Norman 2002 / The Design of Everyday Things Revisited"
+      ],
+      "implication": "MetroGraph must employ clear visual signifiers (icons, labels, tooltips, visual states) on all interactive elements. Without signifiers, users must recall what is clickable, draggable, or configurable on the graph.",
+      "related_concepts": [
+        "Affordances",
+        "Visual Hierarchy",
+        "Gestalt Principles"
+      ]
+    },
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "Visible cues that predict the value and relevance of information or actions. Strong information scent helps users recognize the right path; weak scent forces recall or blind exploration.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-pirolli-information-foraging-book",
+        "market-theory-recognition-recall-pirolli-information-foraging-paper",
+        "market-theory-recognition-recall-information-scent-web",
+        "market-theory-recognition-recall-information-scent-nngroup"
+      ],
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging in Information Access Environments",
+        "Pirolli 2007 / Information Foraging Theory"
+      ],
+      "implication": "MetroGraph's node labels, color coding, and icon design create information scent that guides users to the right tools. Poor scent (ambiguous or missing labels) forces users to recall what each node does, slowing workflow construction.",
+      "related_concepts": [
+        "Visual Hierarchy",
+        "Recognition vs. Recall Heuristic",
+        "Affordances"
+      ]
+    },
+    {
+      "concept": "Visibility of System Status",
+      "field": "hci",
+      "definition": "Nielsen's usability heuristic #1: the system should always keep users informed through real-time feedback about what is happening. Visibility of available options (status) is prerequisite to recognition-based interaction.",
+      "strength": "established-law",
+      "source_ids": [
+        "market-theory-recognition-recall-visibility-system-status-heuristic",
+        "market-theory-recognition-recall-nielsen-ten-heuristics-article"
+      ],
+      "key_refs": [
+        "Nielsen 1994 / 10 Usability Heuristics for User Interface Design"
+      ],
+      "implication": "MetroGraph must constantly display available nodes, transformations, and data flow options. Hidden menus or context-dependent toolbars reduce visibility, forcing users into recall-based discovery.",
+      "related_concepts": [
+        "Recognition vs. Recall Heuristic",
+        "Visual Hierarchy",
+        "Affordances"
+      ]
+    },
+    {
+      "concept": "Gestalt Principles of Visual Perception",
+      "field": "visualization",
+      "definition": "Laws of visual organization (proximity, similarity, continuity, closure, figure-ground) that enable recognition of groups and patterns. These principles organize visual elements into meaningful wholes, supporting instant recognition.",
+      "strength": "established-law",
+      "source_ids": [
+        "market-theory-recognition-recall-gestalt-principles-uiux",
+        "market-theory-recognition-recall-gestalt-figure-ground"
+      ],
+      "key_refs": [
+        "Wertheimer 1923 / Principles of Perceptual Organization",
+        "Palmer 1992 / Common Region: A New Principle of Perceptual Grouping"
+      ],
+      "implication": "MetroGraph should organize workflow nodes using Gestalt principles (grouping related nodes by color/proximity, using visual boundaries for sub-workflows) so users recognize node types and relationships at a glance rather than recalling their properties.",
+      "related_concepts": [
+        "Visual Hierarchy",
+        "Figure-Ground Principle",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Visual Hierarchy",
+      "field": "visualization",
+      "definition": "Organizing visual elements by importance so that users instantly recognize primary vs. secondary information. Hierarchy supports recognition by making important options salient and easier to scan.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-scannability-visual-hierarchy",
+        "market-theory-recognition-recall-visual-memory-interface-design"
+      ],
+      "key_refs": [
+        "Tufte 1990 / Envisioning Information"
+      ],
+      "implication": "MetroGraph's canvas must use size, color, position, and contrast to prioritize frequently-used nodes and operations, enabling users to recognize the right tool quickly rather than scanning a flat menu list.",
+      "related_concepts": [
+        "Gestalt Principles",
+        "Information Scent",
+        "Signifiers"
+      ]
+    },
+    {
+      "concept": "Hidden Gesture Discoverability Problem",
+      "field": "interaction-design",
+      "definition": "Invisible gestures (swipes, pinches, long-presses) lack visual affordances or signifiers, making them undiscoverable and requiring recall. This is a specific failure of recognition-based design in modern interfaces.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-ghostui-hidden-interactions",
+        "market-theory-recognition-recall-gesture-discoverability-ixdf",
+        "market-theory-recognition-recall-hidden-gestures-mobile-ux"
+      ],
+      "key_refs": [
+        "GhostUI 2026 CHI / Unveiling Hidden Interactions in Mobile UI"
+      ],
+      "implication": "MetroGraph must avoid hidden gestures entirely. All interactions (drag, drop, resize, pan) should have visible affordances and signifiers. This is especially critical because workflow builders require explicitness—hidden interactions violate the principle that all options should be recognizable.",
+      "related_concepts": [
+        "Affordances",
+        "Signifiers",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Progressive Disclosure",
+      "field": "interaction-design",
+      "definition": "Design pattern that shows basic options initially and reveals advanced options only when needed. Balances recognition (novices see only what they need) with expert efficiency (experts access power features when ready).",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-progressive-disclosure-nngroup",
+        "market-theory-recognition-recall-progressive-disclosure-uxpin"
+      ],
+      "key_refs": [
+        "Nielsen & Norman / Progressive Disclosure"
+      ],
+      "implication": "MetroGraph can use progressive disclosure to manage complexity: novices see core nodes/operations; experts access advanced transformations through expansion or detail panes. This avoids overwhelming novices while respecting that visibility aids recognition for both groups.",
+      "related_concepts": [
+        "Cognitive Load Theory",
+        "Expert Blind Spot",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Natural Mapping",
+      "field": "interaction-design",
+      "definition": "Design where the spatial or functional layout of controls mirrors the operation or outcome. Natural mapping reduces the need for memory by making the relationship between control and outcome immediately visible.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-natural-mapping-interface-design",
+        "market-theory-recognition-recall-norman-design-everyday-things"
+      ],
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "implication": "MetroGraph's node placement and edge drawing should visually represent data flow direction and transformation order. A naturally-mapped workflow graph requires less recall because the visual structure mirrors the logical structure.",
+      "related_concepts": [
+        "Affordances",
+        "Visual Hierarchy",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Expert Blind Spot",
+      "field": "hci",
+      "definition": "Experts internalize procedures so deeply that they forget the visibility and cues that enabled their learning. They may assume hidden commands are obvious, underestimating novices' need for visible options.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-expert-blind-spot-design",
+        "market-theory-recognition-recall-expert-novice-mental-models"
+      ],
+      "key_refs": [
+        "Tversky et al. / Expert Blind Spot in Explanation"
+      ],
+      "implication": "MetroGraph designers must resist hiding advanced features just because power users can learn them. Visibility serves both groups: novices for initial learning, experts for occasional reference. The wedge's 'flight to chat' problem partly stems from hiding graph complexity behind conversational interfaces.",
+      "related_concepts": [
+        "Mental Models",
+        "Progressive Disclosure",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Mental Models (User)",
+      "field": "hci",
+      "definition": "Users' mental representation of how a system works. Interfaces that align with user mental models (via visible options and natural mappings) support recognition; misaligned interfaces force recall of unintuitive procedures.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-expert-novice-mental-models",
+        "market-theory-recognition-recall-introduction-hci-textbook"
+      ],
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "Preece, Sharp & Rogers 2015 / Interaction Design"
+      ],
+      "implication": "MetroGraph's visual representation must map to users' mental models of data workflows (data → transform → output). Visible nodes that follow this mental model allow recognition; hidden nodes force users to reconstruct the mental model through recall.",
+      "related_concepts": [
+        "Context-Dependent Memory",
+        "Natural Mapping",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Search vs. Browse Information-Seeking Paradigm",
+      "field": "information-foraging",
+      "definition": "Users can search (recall: generate query, match results) or browse (recognition: scan visible options). Recognition-based browsing is easier when visible options are available; recall-based search requires users to articulate what they want.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-search-vs-browse-info-seeking"
+      ],
+      "key_refs": [
+        "Hearst 2009 / User Interfaces for Search"
+      ],
+      "implication": "MetroGraph should offer both paradigms: visible graph nodes for browsing/recognition, plus a command palette for search/recall. The wedge problem emerges when interfaces (like chat-only tools) force search/recall when a visible graph would enable recognition.",
+      "related_concepts": [
+        "Information Scent",
+        "Visual Hierarchy",
+        "Affordances"
+      ]
+    },
+    {
+      "concept": "Consistency and Standards Heuristic",
+      "field": "hci",
+      "definition": "Nielsen's usability heuristic #4: systems should follow platform conventions and consistent patterns. Consistency enables recognition because users see patterns they've learned before.",
+      "strength": "established-law",
+      "source_ids": [
+        "market-theory-recognition-recall-consistency-standards-heuristic",
+        "market-theory-recognition-recall-nielsen-ten-heuristics-article"
+      ],
+      "key_refs": [
+        "Nielsen 1994 / 10 Usability Heuristics for User Interface Design"
+      ],
+      "implication": "MetroGraph should use consistent node types, edge styles, and interaction patterns. When the graph follows conventions (e.g., rectangular nodes for operations, circles for data sources), users recognize elements immediately rather than reconstructing meanings.",
+      "related_concepts": [
+        "Recognition vs. Recall Heuristic",
+        "Mental Models",
+        "Visual Hierarchy"
+      ]
+    },
+    {
+      "concept": "Command Palette and Keyboard Shortcut Design",
+      "field": "interaction-design",
+      "definition": "Interfaces that expose command discovery through searchable palettes or labeled shortcuts support recognition by making commands visible; hidden shortcuts force recall. Modern practice: visible first, shortcuts as acceleration.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-keyboard-shortcuts-nngroup",
+        "market-theory-recognition-recall-keyboard-shortcuts-design"
+      ],
+      "key_refs": [
+        "Nielsen Norman Group / UI Copy Guidelines"
+      ],
+      "implication": "MetroGraph can surface commands via visible menus or context panels, then offer keyboard shortcuts for power users. This honors both recognition (novices see options) and recall acceleration (experts use shortcuts).",
+      "related_concepts": [
+        "Progressive Disclosure",
+        "Expert Blind Spot",
+        "Recognition vs. Recall Heuristic"
+      ]
+    },
+    {
+      "concept": "Visual Attention and Saliency",
+      "field": "visualization",
+      "definition": "Visual elements that are high in saliency (contrast, size, motion, color) capture attention and support recognition. Low-saliency options require active search/recall to locate.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-visual-attention-chi2016",
+        "market-theory-recognition-recall-visual-saliency-ueys-chi2023",
+        "market-theory-recognition-recall-eye-tracking-button-design"
+      ],
+      "key_refs": [
+        "Xu et al. 2016 / Spatio-Temporal Modeling and Prediction of Visual Attention",
+        "Li et al. 2023 / UEyes: Understanding Visual Saliency across UI Types"
+      ],
+      "implication": "MetroGraph's most-used nodes and operations should be visually salient (position, size, color). Low-contrast or small nodes require scanning/recall to find; high-saliency elements enable instant recognition.",
+      "related_concepts": [
+        "Visual Hierarchy",
+        "Gestalt Principles",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Error Reduction Through Visibility",
+      "field": "hci",
+      "definition": "Interfaces with visible options and clear affordances have lower error rates because users recognize the correct path rather than misremembering hidden steps. Visibility acts as error prevention.",
+      "strength": "empirical",
+      "source_ids": [
+        "market-theory-recognition-recall-error-rates-interface-design",
+        "market-theory-recognition-recall-visual-ergonomics-human-error"
+      ],
+      "key_refs": [
+        "Empirical studies showing 30-70% error reduction in industrial UIs with improved visibility"
+      ],
+      "implication": "MetroGraph's visual approach reduces workflow construction errors. Users are less likely to misconnect nodes, apply wrong transformations, or lose track of data flow when everything is visible rather than hidden in nested menus.",
+      "related_concepts": [
+        "Recognition vs. Recall Heuristic",
+        "Affordances",
+        "Visual Hierarchy"
+      ]
+    },
+    {
+      "concept": "Figure-Ground Principle",
+      "field": "visualization",
+      "definition": "Perceptual principle that observers distinguish focal objects (figure) from background. Interface design must make primary options (figure) distinct from secondary elements (ground) to support recognition.",
+      "strength": "established-law",
+      "source_ids": [
+        "market-theory-recognition-recall-gestalt-figure-ground",
+        "market-theory-recognition-recall-gestalt-principles-uiux"
+      ],
+      "key_refs": [
+        "Rubin 1915 / Visuell wahrgenommene Figuren"
+      ],
+      "implication": "MetroGraph must ensure that workflow nodes are visually distinct (figure) from the canvas background (ground), and that active/selected nodes are visually distinct from inactive ones. Poor figure-ground separation hides options, forcing recall.",
+      "related_concepts": [
+        "Gestalt Principles",
+        "Visual Hierarchy",
+        "Signifiers"
+      ]
+    },
+    {
+      "concept": "Accessibility and Visibility for Diverse Users",
+      "field": "hci",
+      "definition": "Visibility principles must account for users with different abilities (visual, motor, cognitive). Hidden options are doubly inaccessible: unclear to sighted users, and invisible to screen readers.",
+      "strength": "framework",
+      "source_ids": [
+        "market-theory-recognition-recall-accessibility-visible-hidden-content",
+        "market-theory-recognition-recall-inclusive-design-visibility"
+      ],
+      "key_refs": [
+        "WebAIM / Invisible Content for Screen Readers"
+      ],
+      "implication": "MetroGraph's commitment to visibility serves accessibility as well. Visible nodes with clear labels are recognizable to all users. Hidden interactions or unlabeled elements fail both sighted users (recognition) and screen reader users (access).",
+      "related_concepts": [
+        "Affordances",
+        "Signifiers",
+        "Recognition vs. Recall Heuristic"
+      ]
+    }
+  ]
+}

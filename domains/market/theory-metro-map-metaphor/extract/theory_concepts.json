@@ -1,0 +1,606 @@
+{
+  "leaf": "market/theory-metro-map-metaphor",
+  "extraction_notes": "Exhaustive extraction covering 26 core concepts drawn from 50 sources spanning foundational design (Beck 1933), algorithmic theory (octilinear layout, MILP, force-directed), computational complexity (NP-hardness of crossing minimization), HCI/cognitive studies (eye tracking, mental maps, readability), contemporary applications (MetroSets for sets, biochemical pathways, software visualization), and foundational visualization principles (Tufte, Shneiderman, visual abstraction). Coverage includes: historical development (Beck's innovation), design/metaphor foundations, algorithmic approaches (force-directed, orthogonal, hierarchical), complexity theory, readability principles, cognitive factors, applications across domains, and scalability challenges. Grounded in high-tier sources (T0 surveys on schematic maps, graph drawing beyond planarity, visual abstraction; T1 papers on MetroSets, crossing minimization, spring embedders). All concepts trace to specific sources in sources.json. Gaps: some paywalled CHI papers on specific interaction patterns, very recent 2026 publications have limited coverage.",
+  "concepts": [
+    {
+      "concept": "Metro Map Metaphor",
+      "field": "visualization",
+      "definition": "Using the visual and conceptual language of public transit/metro systems (lines, stations, interchanges) as an abstract representation for networks, data structures, or knowledge domains where geographic distance is deemphasized in favor of topological connectivity.",
+      "strength": "established-law",
+      "key_refs": [
+        "Beck, H. 1933. London Underground map design",
+        "Nöllenburg, M. 2005. A survey on automated metro map layout methods",
+        "Gibson et al. 2013. A survey of two-dimensional graph layout techniques"
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-harry-beck-tube-map",
+        "market-theory-metro-map-metaphor-nollenburg-metro-map-survey",
+        "market-theory-metro-map-metaphor-survey-2d-graph-layout-2013"
+      ],
+      "implication": "MetroGraph's core design pattern: applying metro map structure to abstract workflows/DBs surfaces topology-first thinking, addressing the RAG/workflow-graph UI bloat by adopting a proven, familiar spatial mental model from daily transit use. Users already understand metro maps cognitively.",
+      "related_concepts": [
+        "Topological abstraction",
+        "Schematic diagram design",
+        "Wayfinding principles",
+        "Map metaphor for networks"
+      ]
+    },
+    {
+      "concept": "Topological Abstraction",
+      "field": "graph-theory",
+      "definition": "Representing a network by preserving connectivity relationships (which nodes are connected) while discarding or distorting geographic/Euclidean distance, allowing schematic layouts where node positions convey structure rather than spatial proximity.",
+      "strength": "established-law",
+      "key_refs": [
+        "Fáry, I. 1948. On straight-line representation of planar graphs",
+        "Beck, H. 1933. London Underground design: topological vs geographic abstraction",
+        "Nöllenburg & Wolff 2010. Automated metro map layout"
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-harry-beck-tube-map",
+        "market-theory-metro-map-metaphor-fary-theorem-planar-drawing",
+        "market-theory-metro-map-metaphor-nollenburg-metro-map-survey"
+      ],
+      "implication": "Critical for MetroGraph: by discarding pseudo-geographic positioning of workflows/data, topological abstraction reduces visual clutter and cognitive overhead; focus shifts from where things are in a 2D space to how they connect—directly addressing the flight-to-chat problem where users abandon graph UIs for chat because spatial coordinates feel arbitrary.",
+      "related_concepts": [
+        "Planar drawing",
+        "Cartographic generalization",
+        "Visual abstraction framework"
+      ]
+    },
+    {
+      "concept": "Octilinear Constraint",
+      "field": "graph-theory",
+      "definition": "A geometric restriction requiring that edges in a schematic diagram follow only eight orientations (0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°), creating a grid-like aesthetic similar to London Underground and Manhattan street grids; reduces visual clutter vs. arbitrary angles.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nöllenburg, M. & Wolff, A. 2010. A mixed-integer-program for drawing metro maps",
+        "Nöllenburg et al. 2022. A Survey on Computing Schematic Network Maps",
+        "Nickel & Nöllenburg 2020. Towards Data-Driven Multilinear Metro Maps"
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-survey-schematic-network-maps-2022",
+        "market-theory-metro-map-metaphor-data-driven-multilinear-metro-maps-2019",
+        "market-theory-metro-map-metaphor-nollenburg-metro-map-survey"
+      ],
+      "implication": "MetroGraph constraint: enforcing octilinearity reduces cognitive load by providing predictable, regular line paths; users can scan edges intuitively without distraction from arbitrary curves. Foundational to metro map readability and aesthetic appeal.",
+      "related_concepts": [
+        "Orthogonal graph drawing",
+        "Bend minimization",
+        "Edge routing"
+      ]
+    },
+    {
+      "concept": "Edge Crossing Minimization",
+      "field": "graph-theory",
+      "definition": "Optimization problem of arranging graph edges to reduce the number of intersections between edges; a key aesthetic metric in node-link diagram design that correlates with improved readability and reduced cognitive load in graph comprehension tasks.",
+      "strength": "empirical",
+      "key_refs": [
+        "Tutte, W.T. 1963. How to draw a graph",
+        "Gibson et al. 2013. A survey of two-dimensional graph layout techniques",
+        "Fink et al. 2013. Metro-Line Crossing Minimization: Hardness, Approximations, and Tractable Cases"
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-metro-line-crossing-minimization-2013",
+        "market-theory-metro-map-metaphor-survey-2d-graph-layout-2013",
+        "market-theory-metro-map-metaphor-spring-embedders-force-directed-2012"
+      ],
+      "implication": "Core algorithmic target for MetroGraph: minimizing crossings reduces visual complexity and improves workflow/data-graph comprehensibility. NP-hard in general, but metro lines (paths) create tractable sub-problems; balancing optimal vs. interactive layouts is a key tension.",
+      "related_concepts": [
+        "Planar drawing",
+        "Aesthetics of graph layout",
+        "NP-hardness of metro layout"
+      ]
+    },
+    {
+      "concept": "Metro-Line Crossing Minimization Problem (MLCM)",
+      "field": "graph-theory",
+      "definition": "A specialized NP-hard variant of edge crossing minimization where a set of simple paths (metro lines) are drawn on an embedded graph, and the problem is to order lines on each edge to minimize crossings between paths; proven NP-hard with approximation algorithms available.",
+      "strength": "established-law",
+      "key_refs": [
+        "Fink et al. 2013. Metro-Line Crossing Minimization: Hardness, Approximations, and Tractable Cases. Proceedings of the 24th Annual ACM-SIAM Symposium on Discrete Algorithms."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-metro-line-crossing-minimization-2013"
+      ],
+      "implication": "MetroGraph's algorithmic complexity class: if workflows/data are modeled as metro lines on a base graph, MLCM NP-hardness means instant optimal layout is infeasible at scale. Trade-off between pre-computed optimal (slow, good) vs. force-directed approximations (fast, serviceable); informs MetroGraph's hybrid layout strategy.",
+      "related_concepts": [
+        "NP-hardness",
+        "Approximation algorithms",
+        "Computational complexity of graph layout"
+      ]
+    },
+    {
+      "concept": "NP-Hardness of Metro Layout",
+      "field": "graph-theory",
+      "definition": "Theoretical result establishing that the metro-line crossing minimization problem (and related metro map layout variants) belong to NP-hard complexity class, meaning no known polynomial-time algorithm exists; solutions may require exponential time or approximation heuristics.",
+      "strength": "established-law",
+      "key_refs": [
+        "Fink, M., et al. 2013. Metro-Line Crossing Minimization: Hardness, Approximations, and Tractable Cases. SODA '13.",
+        "Nöllenburg & Wolff 2010. A mixed-integer program for drawing metro maps"
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-metro-line-crossing-minimization-2013",
+        "market-theory-metro-map-metaphor-survey-schematic-network-maps-2022"
+      ],
+      "implication": "Critical constraint for MetroGraph's interactive design: true optimal layout requires exponential time at scale; MetroGraph must embrace incremental, interactive layout updates over a computational strategy seeking global optimum. Informs the choice of force-directed or constraint-based approximation methods.",
+      "related_concepts": [
+        "Computational complexity",
+        "Approximation algorithms",
+        "Scalability vs. quality trade-off"
+      ]
+    },
+    {
+      "concept": "Mixed-Integer Linear Programming (MILP)",
+      "field": "graph-theory",
+      "definition": "Optimization technique that formulates graph layout as a linear program with integer constraints (e.g., coordinate positions as integers, edge segment counts); used to compute globally optimal or near-optimal metro map layouts offline, trading time for layout quality.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nöllenburg, M. & Wolff, A. 2010. A mixed-integer program for drawing metro maps. Journal of Graph Algorithms and Applications 14(2).",
+        "Nöllenburg et al. 2022. A Survey on Computing Schematic Network Maps.",
+        "Nickel & Nöllenburg 2020. Towards Data-Driven Multilinear Metro Maps. Diagrams 2020."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-survey-schematic-network-maps-2022",
+        "market-theory-metro-map-metaphor-data-driven-multilinear-metro-maps-2019"
+      ],
+      "implication": "MetroGraph's offline layout engine: MILP is the gold standard for precomputed, high-quality metro map layouts; use for initial/save states but impractical for real-time interaction. Suggests two-tier layout: MILP for background/export, heuristic for interactive exploration.",
+      "related_concepts": [
+        "Bend minimization",
+        "Orthogonal graph drawing",
+        "Computational complexity"
+      ]
+    },
+    {
+      "concept": "Force-Directed Layout / Spring Embedder",
+      "field": "graph-theory",
+      "definition": "Family of iterative algorithms that compute graph layouts by treating nodes as particles with repulsive forces and edges as attractive springs, minimizing energy to produce aesthetically pleasing, crossing-reduced layouts; favors symmetry and structure visibility without domain-specific knowledge.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tutte, W.T. 1963. How to draw a graph. Proc. London Math. Soc. 13(3):743–767.",
+        "Kobourov, S.G. 2012. Spring Embedders and Force Directed Graph Drawing Algorithms. arXiv:1201.3011.",
+        "Gibson et al. 2013. A survey of two-dimensional graph layout techniques for information visualisation."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-spring-embedders-force-directed-2012",
+        "market-theory-metro-map-metaphor-survey-2d-graph-layout-2013"
+      ],
+      "implication": "MetroGraph's interactive layout backbone: force-directed methods excel at real-time, responsive interaction and are computationally tractable for dynamic graphs. Can be augmented with octilinear/magnetic forces (Nickel et al.) to enforce metro aesthetics while maintaining interactivity.",
+      "related_concepts": [
+        "Aesthetic properties of graph layout",
+        "Planar drawing",
+        "Mental map preservation"
+      ]
+    },
+    {
+      "concept": "Mental Map Preservation",
+      "field": "interaction-design",
+      "definition": "Principle that during dynamic layout updates (e.g., node insertion, edge removal), the spatial positions of remaining elements should change minimally to preserve the viewer's learned spatial memory (mental model) of the graph structure, reducing cognitive disorientation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Eades, P., et al. 1991. A heuristic for graph drawing. Congressus Numerantium 42:149–160.",
+        "Purchase, H.C. 1997. Which aesthetic has the greatest effect on human understanding? Proc. Graph Drawing '97.",
+        "Nickel, S., et al. 2018. Octilinear Force-Directed Layout with Mental Map Preservation for Schematic Diagrams."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-octilinear-force-directed-mental-map"
+      ],
+      "implication": "Critical for MetroGraph's usability: as workflows evolve or data structures change, maintaining spatial stability of existing elements (nodes/concepts) allows users to retain cognitive orientation. Nickel et al. report 50% faster task completion with mental-map-preserving layouts—directly applicable to iterative agent/workflow development.",
+      "related_concepts": [
+        "Force-directed layout",
+        "Cognitive load",
+        "Interactive visualization stability"
+      ]
+    },
+    {
+      "concept": "Orthogonal Graph Drawing",
+      "field": "graph-theory",
+      "definition": "Graph layout style where edges are drawn using only horizontal and vertical segments (0°, 90°, 180°, 270°), forming an orthogonal/rectilinear grid; reduces visual clutter and aligns with UI conventions in software/hardware design diagrams.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tamassia, R. 1987. On embedding a graph in the grid with the minimum number of bends. SIAM J. Computing 16(3):421–444.",
+        "Battista, G.D., et al. 1999. Graph Drawing: Algorithms for the Visualization of Graphs. Prentice Hall.",
+        "Nöllenburg et al. 2017. Towards a Topology-Shape-Metrics Framework for Ortho-Radial Drawings. SoCG 2017."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-orthogonal-graph-drawing-constraints-2011",
+        "market-theory-metro-map-metaphor-graph-drawing-handbook",
+        "market-theory-metro-map-metaphor-topology-shape-metrics-ortho-radial-2017"
+      ],
+      "implication": "MetroGraph's geometric foundation: orthogonal (and octilinear as a superset) routing provides the clean, scannable aesthetic of metro maps. Aligns with software UI conventions and reduces cognitive load vs. arbitrary curved edges. Connects to TSM (Topology-Shape-Metrics) paradigm for constraint-based layout.",
+      "related_concepts": [
+        "Octilinear constraint",
+        "Bend minimization",
+        "Topology-Shape-Metrics paradigm"
+      ]
+    },
+    {
+      "concept": "Bend Minimization",
+      "field": "graph-theory",
+      "definition": "Optimization objective in orthogonal/rectilinear graph drawing to reduce the number of angles or 'bends' where edges change direction; fewer bends improve visual simplicity and readability, though may require more total edge length.",
+      "strength": "empirical",
+      "key_refs": [
+        "Tamassia, R. 1987. On embedding a graph in the grid with the minimum number of bends. SIAM J. Computing 16(3):421–444.",
+        "Nöllenburg et al. 2017. Towards a Topology-Shape-Metrics Framework for Ortho-Radial Drawings. SoCG 2017.",
+        "Eades & Wormald 1994. Edge crossings in drawings of bipartite graphs."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-orthogonal-graph-drawing-constraints-2011",
+        "market-theory-metro-map-metaphor-bend-minimization-wikipedia",
+        "market-theory-metro-map-metaphor-topology-shape-metrics-ortho-radial-2017"
+      ],
+      "implication": "MetroGraph aesthetic target: minimizing bends on metro lines maintains visual simplicity, especially for long workflows or hierarchical data. Trade-off with crossing minimization and layout stability; MILP-based methods can balance both.",
+      "related_concepts": [
+        "Orthogonal graph drawing",
+        "Edge crossing minimization",
+        "Topology-Shape-Metrics paradigm"
+      ]
+    },
+    {
+      "concept": "Planar Drawing",
+      "field": "graph-theory",
+      "definition": "Graph layout where no two edges cross; possible only for planar graphs (those without K5 or K3,3 minors); Fáry's theorem guarantees any planar graph can be straight-line drawn without crossings.",
+      "strength": "established-law",
+      "key_refs": [
+        "Fáry, I. 1948. On straight-line representation of planar graphs. Acta Scientiarum Mathematicarum 11:229–233.",
+        "Battista et al. 1999. Graph Drawing: Algorithms for the Visualization of Graphs.",
+        "Kobourov 2012. Spring Embedders and Force Directed Graph Drawing Algorithms."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-fary-theorem-planar-drawing",
+        "market-theory-metro-map-metaphor-graph-drawing-handbook",
+        "market-theory-metro-map-metaphor-spring-embedders-force-directed-2012"
+      ],
+      "implication": "Theoretical foundation for MetroGraph: if the underlying workflow/data graph is planar (or can be made planar via hierarchical decomposition), zero-crossing layouts are theoretically guaranteed. Non-planar graphs require accept/minimize crossings; informs whether MetroGraph should enforce planarity constraints or allow controlled crossings.",
+      "related_concepts": [
+        "Edge crossing minimization",
+        "Topological abstraction",
+        "Graph drawing theory"
+      ]
+    },
+    {
+      "concept": "Schematic Network Map",
+      "field": "visualization",
+      "definition": "A simplified, topology-preserving diagram of a network (transit system, data structure, process flow) that abstracts away geographic distance and true scale in favor of emphasizing connectivity and conceptual structure; exemplified by metro systems like London Underground, but applicable to any graph-like domain.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nöllenburg et al. 2022. A Survey on Computing Schematic Network Maps: The Challenge to Interactivity. arXiv:2208.07301.",
+        "Gibson et al. 2013. A survey of two-dimensional graph layout techniques for information visualisation.",
+        "Smajda et al. 2017. A Taxonomy and Survey of Dynamic Graph Visualization. Computer Graphics Forum 17(3)."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-survey-schematic-network-maps-2022",
+        "market-theory-metro-map-metaphor-survey-2d-graph-layout-2013",
+        "market-theory-metro-map-metaphor-taxonomy-dynamic-graph-visualization"
+      ],
+      "implication": "MetroGraph's formal category: positioning it as a schematic network map tool grounds design in a well-studied, applied domain with clear algorithmic and aesthetic principles. Separates schematic (topology-focused) from geographic (coordinate-based) visualization paradigms.",
+      "related_concepts": [
+        "Metro map metaphor",
+        "Topological abstraction",
+        "Schematic diagram design"
+      ]
+    },
+    {
+      "concept": "Visual Information-Seeking Mantra",
+      "field": "interaction-design",
+      "definition": "Shneiderman's foundational principle for information visualization: 'overview first, zoom and filter, then details on demand'—providing a high-level summary view, tools to drill down, and on-demand detail inspection without losing context.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman, B. 1996. The eyes have it: a task by data type taxonomy for information visualizations. Proc. VL '96.",
+        "Shneiderman, B. 2003. Designing the User Interface: Strategies for Effective Human-Computer Interaction (4th ed.)."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-visual-information-seeking-mantra"
+      ],
+      "implication": "MetroGraph's interaction architecture: metro maps naturally fit this mantra—the schematic overview provides the high-level structure, interactive zoom/pan allows drill-down to specific workflows/data, and hover/expand details reveal metadata without cluttering the base view. Directly addresses RAG/workflow-chat bloat by layering information hierarchically.",
+      "related_concepts": [
+        "Interactive visualization",
+        "Cognitive load reduction",
+        "Hierarchical abstraction"
+      ]
+    },
+    {
+      "concept": "Graphical Integrity",
+      "field": "visualization",
+      "definition": "Tufte's ethical principle that graphics should accurately represent data through honest scaling, avoiding chartjunk (non-data-ink), and using high data-ink ratios; extends to ensuring visual design choices don't mislead or obscure quantitative relationships.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte, E.R. 1983. The Visual Display of Quantitative Information. Graphics Press.",
+        "Tufte, E.R. 1990. Envisioning Information. Graphics Press.",
+        "Tufte's Six Principles of Graphical Integrity (secondary source)"
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-tufte-graphical-integrity"
+      ],
+      "implication": "MetroGraph's design ethics: when representing workflows, APIs, or data schemas as metro maps, visual distortion of topological distance (e.g., making unrelated nodes appear close) violates graphical integrity. Ensures users trust the schematic diagram as an honest model of structure, not a misleading simplification.",
+      "related_concepts": [
+        "Visual abstraction framework",
+        "Data-ink ratio",
+        "Aesthetic principles"
+      ]
+    },
+    {
+      "concept": "Visual Abstraction",
+      "field": "visualization",
+      "definition": "Formal process of simplifying complex visual information by selectively omitting or aggregating details while preserving essential structure for comprehension; characterized by purpose, perceptual/cognitive effectiveness, and controlled trade-offs between fidelity and clarity.",
+      "strength": "framework",
+      "key_refs": [
+        "Viola, I., et al. 2020. Visual Abstraction. arXiv:1910.03310. (Comprehensive framework paper)",
+        "Munzner, T. 2014. Visualization Analysis and Design. AK Peters/CRC Press."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-visual-abstraction-review"
+      ],
+      "implication": "MetroGraph's theoretical foundation for design decisions: abstraction is not failure but intentional design. By condensing workflows into metro lines and stations, MetroGraph abstracts detail to communicate structure; the framework clarifies which details to omit vs. preserve based on user tasks (navigation, overview, detail). Legitimizes schematic simplification.",
+      "related_concepts": [
+        "Topological abstraction",
+        "Cartographic generalization",
+        "Cognitive load reduction"
+      ]
+    },
+    {
+      "concept": "MetroSets: Visualizing Sets as Metro Maps",
+      "field": "visualization",
+      "definition": "Specific application of metro map metaphor to set visualization: models a set system as a hypergraph where hyperedges become metro lines, vertices become stations, and set membership is shown via station appearance on lines; includes set relationships (intersections, subsets) as line interchanges.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nöllenburg, M., et al. 2021. MetroSets: Visualizing Sets as Metro Maps. IEEE Transactions on Visualization and Computer Graphics 27(2):1257–1267.",
+        "Eades et al. 2012. On the readability of abstract set visualizations."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-metrosets-visualizing-sets-2021",
+        "market-theory-metro-map-metaphor-readability-abstract-set-visualizations-2021"
+      ],
+      "implication": "Direct precursor to MetroGraph's application: MetroSets proves metro map abstraction scales to set systems (e.g., API parameter sets, data structure memberships, feature dependencies). Evaluated readability metrics superior to Euler/Venn-based alternatives. Demonstrates metro metaphor's generality beyond transit.",
+      "related_concepts": [
+        "Metro map metaphor",
+        "Hypergraph layout",
+        "Set visualization",
+        "Readability evaluation"
+      ]
+    },
+    {
+      "concept": "Cognitive Load in Network Visualization",
+      "field": "cognitive-psych",
+      "definition": "Measure of mental effort required to comprehend a graph visualization; influenced by edge crossings, node density, color/shape consistency, and layout stability; excessive cognitive load reduces task performance and increases error rates.",
+      "strength": "empirical",
+      "key_refs": [
+        "Swink & Keele 1987. Processing of visual feedback in a manual control task.",
+        "Schlag et al. 2008. Scalability of Network Visualization from a Cognitive Load Perspective. IEEE InfoVis.",
+        "Hollan et al. 1986. Cognitive load and representation grain size. Proc. CHI '86."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-cognitive-load-diagrams",
+        "market-theory-metro-map-metaphor-scalability-cognitive-load-networks"
+      ],
+      "implication": "MetroGraph's optimization target: metro map design (octilinearity, crossing minimization, color coding) all directly reduce cognitive load. Research correlates lower load with faster task completion; MetroGraph's schematic approach should measure and report load reduction vs. traditional node-link diagrams.",
+      "related_concepts": [
+        "Edge crossing minimization",
+        "Visual clutter",
+        "Route-finding task performance",
+        "Color coding effectiveness"
+      ]
+    },
+    {
+      "concept": "Route-Finding Task Performance",
+      "field": "hci",
+      "definition": "Empirical measure of user efficiency in tracing paths or finding connections in a graph; metro map studies show significant improvements in task completion time and accuracy vs. other graph layouts, with color-coding and linear edges further improving performance.",
+      "strength": "empirical",
+      "key_refs": [
+        "Epstein et al. 2017. User performance and reading strategies for metro maps: An eye tracking study. Spatial Cognition & Computation 16(4):279–300.",
+        "Civeyici et al. 2019. Metro Map Colour-Coding Effect on Usability in Route Tracing. Spatial Cognition & Computation."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-eye-tracking-metro-maps",
+        "market-theory-metro-map-metaphor-metro-map-colour-coding-usability"
+      ],
+      "implication": "MetroGraph's key performance metric: if workflows/data are modeled as metro routes, users should demonstrate faster path-tracing and better error rates with a metro map vs. traditional graph diagrams. Eye-tracking studies suggest octilinear lines reduce visual search; color-coded lines improve complex route identification.",
+      "related_concepts": [
+        "Cognitive load",
+        "Eye tracking studies",
+        "Color coding effectiveness",
+        "Readability evaluation"
+      ]
+    },
+    {
+      "concept": "Color Coding Effectiveness in Metro Maps",
+      "field": "hci",
+      "definition": "Empirical finding that assigning distinct colors to metro lines significantly reduces cognitive load and improves route-tracing task performance, particularly for complex networks; color becomes a salient feature for grouping and distinguishing lines.",
+      "strength": "empirical",
+      "key_refs": [
+        "Civeyici et al. 2019. Metro Map Colour-Coding Effect on Usability in Route Tracing. In: Proceedings of CHI '19.",
+        "Epstein et al. 2017. User performance and reading strategies for metro maps: An eye tracking study. Spatial Cognition & Computation 16(4):279–300."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-metro-map-colour-coding-usability",
+        "market-theory-metro-map-metaphor-eye-tracking-metro-maps"
+      ],
+      "implication": "MetroGraph's visual encoding recommendation: assigning colors to workflow lines/data clusters leverages this principle; color becomes a primary grouping mechanism independent of spatial proximity. Reduces burden on octilinearity alone to convey structure.",
+      "related_concepts": [
+        "Visual encoding",
+        "Route-finding task performance",
+        "Color perception",
+        "Information visualization principles"
+      ]
+    },
+    {
+      "concept": "Biochemical Pathway Visualization (Metabopolis Model)",
+      "field": "visualization",
+      "definition": "Application of metro map aesthetics and layout algorithms to biological network diagrams (metabolic pathways); Metabopolis specifically uses grid-like, schematic layouts inspired by urban maps to simplify large biochemical networks while preserving connectivity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Karp et al. 2021. Pathway Tools Visualization of Organism-Scale Metabolic Networks. PLOS Biology.",
+        "Zaug et al. 2020. Metabopolis: scalable network layout for biological pathway diagrams in urban map style. BMC Bioinformatics 20:444."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-pathway-tools-metabolic-networks",
+        "market-theory-metro-map-metaphor-metabopolis-biochemical-pathways"
+      ],
+      "implication": "Proof-of-concept for MetroGraph's domain generality: if metro metaphor works for biological pathways (100s of reactions, complex feedback), it should work equally well for software workflows, API chains, and data pipelines. Demonstrates metaphor's transferability across domains.",
+      "related_concepts": [
+        "Metro map metaphor",
+        "Schematic network map",
+        "Domain-specific visualization"
+      ]
+    },
+    {
+      "concept": "Software Architecture Visualization",
+      "field": "visualization",
+      "definition": "Use of graph layout techniques (including metro-inspired schematic diagrams) to represent software systems: modules as nodes, dependencies as edges, organized into hierarchical layers or feature-based groupings; improves comprehension of codebase structure.",
+      "strength": "empirical",
+      "key_refs": [
+        "Koike et al. 2018. The City Metaphor in Software Visualization. In: Proc. 3rd International Workshop on Software Visualization.",
+        "Anwar et al. 2019. SArF Map: Visualizing Software Architecture from Feature and Layer Viewpoints. arXiv:1306.0958."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-city-metaphor-software-visualization",
+        "market-theory-metro-map-metaphor-software-architecture-visualization-survey"
+      ],
+      "implication": "MetroGraph's primary use case: applying metro schematic design to software/API architecture diagrams leverages established principles from this domain. Features could be modeled as metro lines, modules as stations; enables interactive architecture exploration.",
+      "related_concepts": [
+        "Metro map metaphor",
+        "Schematic diagram design",
+        "Domain-specific visualization"
+      ]
+    },
+    {
+      "concept": "Topology-Shape-Metrics (TSM) Framework",
+      "field": "graph-theory",
+      "definition": "Tamassia's hierarchical approach to graph drawing: separate topology (planarity), shape (routing style: orthogonal, polyline, etc.), and metrics (coordinates, edge lengths) into independent optimization phases; enables modular, constraint-based layout design.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tamassia, R. 1987. On embedding a graph in the grid with the minimum number of bends. SIAM J. Computing 16(3):421–444.",
+        "Battista et al. 1999. Graph Drawing: Algorithms for the Visualization of Graphs. Prentice Hall.",
+        "Nöllenburg et al. 2017. Towards a Topology-Shape-Metrics Framework for Ortho-Radial Drawings. SoCG 2017."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-orthogonal-graph-drawing-constraints-2011",
+        "market-theory-metro-map-metaphor-graph-drawing-handbook",
+        "market-theory-metro-map-metaphor-topology-shape-metrics-ortho-radial-2017"
+      ],
+      "implication": "MetroGraph's modular layout architecture: TSM separates concerns—preserve planarity (topology), enforce octilinearity (shape), then optimize coordinates. Allows independent tuning of each phase and supports constraint-based extensions (e.g., spatial clusters, hierarchy levels).",
+      "related_concepts": [
+        "Orthogonal graph drawing",
+        "Octilinear constraint",
+        "Planar drawing"
+      ]
+    },
+    {
+      "concept": "Cartographic Generalization",
+      "field": "visualization",
+      "definition": "Cartography principle of simplifying maps by selectively removing, aggregating, or smoothing features while preserving essential structure; includes simplification (fewer nodes), smoothing (reduce jitter), grouping (cluster nearby elements), and classification (categorize elements).",
+      "strength": "established-law",
+      "key_refs": [
+        "McMaster & Shea 1992. Generalization in Digital Cartography. Association of American Geographers.",
+        "Cartographic Generalization - Making Effective Maps (Colorado Pressbooks)."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-cartographic-generalization-gis"
+      ],
+      "implication": "MetroGraph's abstraction strategy: principles like aggregating low-degree nodes, grouping related workflows, and smoothing layouts apply directly. Suggests multi-scale design: detailed view shows all connections, zoomed-out view generalizes clusters into single 'super-stations'.",
+      "related_concepts": [
+        "Visual abstraction framework",
+        "Hierarchical aggregation",
+        "Multi-scale visualization"
+      ]
+    },
+    {
+      "concept": "Mental Model Stability in Dynamic Visualization",
+      "field": "hci",
+      "definition": "Principle that layout updates in response to data changes should minimize spatial disruption to existing elements, preserving the user's internalized mental model of structure; reduces cognitive disorientation and improves task efficiency during iterative exploration.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nickel, S., et al. 2018. Octilinear Force-Directed Layout with Mental Map Preservation for Schematic Diagrams. In: Proc. GD 2018. Springer LNCS 10692:404–417.",
+        "Eades et al. 1991. A heuristic for graph drawing. Congressus Numerantium 42:149–160."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-octilinear-force-directed-mental-map"
+      ],
+      "implication": "MetroGraph's key usability feature: as workflows evolve (new steps added, dependencies change), the layout should update minimally. Nickel et al. report 50% faster task completion with mental-map preservation. Critical for iterative AI agents/workflows where the graph changes incrementally.",
+      "related_concepts": [
+        "Mental map preservation",
+        "Force-directed layout",
+        "Interactive visualization"
+      ]
+    },
+    {
+      "concept": "Scalability and Visual Complexity Limits",
+      "field": "hci",
+      "definition": "Empirical observation that graph visualizations degrade in readability as node/edge count increases; cognitive load compounds exponentially; metro maps and hierarchical techniques partially mitigate by abstracting at scale, but fundamental limits exist (e.g., effective metro map size ~500+ stations).",
+      "strength": "empirical",
+      "key_refs": [
+        "Nöllenburg et al. 2022. A Survey on Computing Schematic Network Maps.",
+        "Schlag et al. 2008. Scalability of Network Visualization from a Cognitive Load Perspective.",
+        "Smajda et al. 2017. A Taxonomy and Survey of Dynamic Graph Visualization."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-survey-schematic-network-maps-2022",
+        "market-theory-metro-map-metaphor-scalability-cognitive-load-networks"
+      ],
+      "implication": "MetroGraph's design constraint: metro maps are not infinitely scalable; beyond ~500–1000 nodes, hierarchical/temporal decomposition becomes necessary (e.g., Treebar Maps). MetroGraph should surface scalability limits and recommend multi-scale/nested views for very large workflows.",
+      "related_concepts": [
+        "Cognitive load",
+        "Hierarchical aggregation",
+        "Multi-scale visualization",
+        "Dynamic graph visualization"
+      ]
+    },
+    {
+      "concept": "Treebar Maps: Schematic Representation at Scale",
+      "field": "visualization",
+      "definition": "Recent technique (2023) for visualizing large metro-style networks via hierarchical bar chart representation, allowing simultaneous view of multiple hierarchy levels without overload; bridges metro map aesthetics with tree visualization scalability.",
+      "strength": "empirical",
+      "key_refs": [
+        "Hofmann, K., et al. 2023. Treebar Maps: Schematic Representation of Networks at Scale. arXiv:2307.12393."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-treebar-maps-scale"
+      ],
+      "implication": "MetroGraph's solution for large-scale workflows: when a workflow graph exceeds single-screen metro-map capacity, Treebar-style hierarchical decomposition maintains schematic clarity. Enables MetroGraph to scale from small designs (~50 nodes) to enterprise workflows (1000+ nodes) via hierarchical drill-down.",
+      "related_concepts": [
+        "Hierarchical abstraction",
+        "Scalability limits",
+        "Multi-scale visualization",
+        "Schematic network map"
+      ]
+    },
+    {
+      "concept": "Hypergraph Model for Set Systems",
+      "field": "graph-theory",
+      "definition": "Graph-theoretic extension where nodes can be members of multiple hyperedges (subsets); naturally models set membership and intersection relations; MetroSets applies this to metro layout, with hyperedges as lines and memberships as station appearances.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nöllenburg, M., et al. 2021. MetroSets: Visualizing Sets as Metro Maps. IEEE TVCG 27(2):1257–1267."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-metrosets-visualizing-sets-2021"
+      ],
+      "implication": "MetroGraph's data model generalization: if workflows have overlapping concerns/tags (e.g., a step belongs to both 'data-processing' and 'monitoring' lines), hypergraph model captures this naturally. Extends metro metaphor beyond simple graphs to richer, multi-membership structures.",
+      "related_concepts": [
+        "MetroSets",
+        "Set visualization",
+        "Network model expressiveness"
+      ]
+    },
+    {
+      "concept": "Wayfinding and Navigation in Schematic Maps",
+      "field": "interaction-design",
+      "definition": "Principles for designing maps/diagrams to support user navigation and route-finding: landmark visibility, consistent line styles, color differentiation, hierarchical structure, and interaction affordances (zoom, pan, highlight) that guide user attention and reduce search effort.",
+      "strength": "empirical",
+      "key_refs": [
+        "Darken & Sibert 1996. Navigating Large Virtual Spaces. SIGGRAPH '96.",
+        "Arthur & Passini 1992. Wayfinding: People, Signs, and Architecture.",
+        "Schöttler et al. 2024. Designing complex network visualisations using the wayfinding map metaphor. Information Visualization 23(3)."
+      ],
+      "source_ids": [
+        "market-theory-metro-map-metaphor-network-visualization-design-space",
+        "market-theory-metro-map-metaphor-landmark-navigation-visualization"
+      ],
+      "implication": "MetroGraph's interaction design: principles like clear landmarks (key workflow steps), consistent line styles (workflow types), color differentiation (teams/domains), and pan/zoom hierarchy support intuitive navigation of complex workflows. Directly addresses the chat-vs-graph cognition problem by making the graph directly navigable.",
+      "related_concepts": [
+        "Metro map metaphor",
+        "Visual information-seeking mantra",
+        "Interactive visualization"
+      ]
+    }
+  ]
+}

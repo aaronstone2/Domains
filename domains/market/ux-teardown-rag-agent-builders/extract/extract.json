@@ -1,0 +1,696 @@
+{
+  "leaf": "market/ux-teardown-rag-agent-builders",
+  "notes": "Phase C extraction for agent-builder UX teardown (Flowise, Langflow, Dify, Gumloop, Coze). Focus: agent-vs-graph-chat UX confusion antipattern. Evidence grounded in 38 T0-T3 sources spanning official product pages, documentation, GitHub repos, practitioner analyses (Elestio production-ready, Toolhalla comparison, Hatchworks agent patterns), and academic HCI studies. Metrics sourced from: (1) official UI/UX documentation (Dify workflow nodes, Langflow visual editor, Flowise canvas), (2) practitioner teardowns noting pane/click patterns, (3) agent design pattern literature (Luke Wroblewski on orchestration UI, Agentic Design Patterns library, RAGExplorer visual analytics). Row targets per PLAN: ~25 screens, 5 flows, ~12 patterns. Coverage: up to 5 products × ~1-2 screens + ~1-2 flows per product, plus shared antipatterns.",
+  "ux_screens": [
+    {
+      "slug": "flowise-canvas-workflow-editor",
+      "product_slug": "flowise",
+      "screen_name": "Workflow Canvas Editor",
+      "screen_type": "canvas",
+      "description": "Primary drag-and-drop node-based editor for composing LLM chains. Displays multiple nodes (LLM, retrieval, tools) connected via edges on an infinite canvas. Left sidebar contains component palette; right inspector pane shows node configuration.",
+      "pane_count": 3,
+      "click_depth": 4,
+      "hci_cost": "B",
+      "ui_elements": [
+        "node-palette-sidebar",
+        "canvas-viewport",
+        "property-inspector-pane",
+        "connection-handles",
+        "minimap"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-flowise-official-product"
+    },
+    {
+      "slug": "flowise-agent-orchestration-issue",
+      "product_slug": "flowise",
+      "screen_name": "Agent Configuration Panel",
+      "screen_type": "modal",
+      "description": "Modal overlay for configuring agent behavior (tools, memory, reasoning loops). Lacks clear indication of agent-vs-query execution mode; conflates chat-style interactions with orchestration planning.",
+      "pane_count": 2,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "agent-config-form",
+        "tool-selection-checklist",
+        "memory-options-dropdown"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-elestio-production-ready-comparison"
+    },
+    {
+      "slug": "langflow-visual-editor-canvas",
+      "product_slug": "langflow",
+      "screen_name": "Component Graph Editor",
+      "screen_type": "canvas",
+      "description": "Node-and-edge visual programming interface for building LangChain workflows. Component library tree on left, large canvas center with real-time execution preview. Requires extensive clicking to configure node parameters.",
+      "pane_count": 3,
+      "click_depth": 5,
+      "hci_cost": "C",
+      "ui_elements": [
+        "component-tree-sidebar",
+        "graph-canvas",
+        "flow-controls",
+        "parameter-editor"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-langflow-documentation"
+    },
+    {
+      "slug": "langflow-code-execution-pane",
+      "product_slug": "langflow",
+      "screen_name": "Code & Test Execution Panel",
+      "screen_type": "inspector-pane",
+      "description": "Multi-paned debugging interface showing code preview, test output, and logs. Agent step-through results mixed with function call traces; unclear distinction between plan-then-execute vs conversational agent patterns.",
+      "pane_count": 4,
+      "click_depth": 4,
+      "hci_cost": "D",
+      "ui_elements": [
+        "code-preview-pane",
+        "test-output-pane",
+        "execution-logs",
+        "error-inspector"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-zenml-langflow-alternatives"
+    },
+    {
+      "slug": "dify-workflow-node-editor",
+      "product_slug": "dify",
+      "screen_name": "Workflow Node Editor",
+      "screen_type": "canvas",
+      "description": "Comprehensive node-based workflow builder with typed nodes (LLM, knowledge retrieval, code execution, conditionals). Clear node I/O contracts. Canvas emphasizes data flow over chat; supports branching and loops.",
+      "pane_count": 3,
+      "click_depth": 3,
+      "hci_cost": "A",
+      "ui_elements": [
+        "node-library-panel",
+        "workflow-canvas",
+        "node-inspector",
+        "execution-monitor"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-dify-documentation"
+    },
+    {
+      "slug": "dify-rag-knowledge-base-config",
+      "product_slug": "dify",
+      "screen_name": "Knowledge Base Configuration",
+      "screen_type": "settings",
+      "description": "Multi-step wizard for RAG pipeline setup (embedding model, chunking strategy, retrieval parameters). Modal dialogs with form validation; 2-3 clicks per configuration decision.",
+      "pane_count": 2,
+      "click_depth": 3,
+      "hci_cost": "B",
+      "ui_elements": [
+        "embedding-model-selector",
+        "chunking-config-form",
+        "retrieval-settings",
+        "test-query-input"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-dify-enterprise-deployment-guide"
+    },
+    {
+      "slug": "gumloop-automation-builder",
+      "product_slug": "gumloop",
+      "screen_name": "Automation Workflow Builder",
+      "screen_type": "canvas",
+      "description": "Drag-and-drop module-based builder emphasizing AI-first automation. Modules (API calls, AI steps, conditionals) arranged linearly or in decision trees. Integration palette on left; execution preview on right.",
+      "pane_count": 3,
+      "click_depth": 4,
+      "hci_cost": "B",
+      "ui_elements": [
+        "module-palette",
+        "workflow-canvas",
+        "integration-settings-pane",
+        "test-run-panel"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-gumloop-official-product"
+    },
+    {
+      "slug": "gumloop-agent-deploy-channel",
+      "product_slug": "gumloop",
+      "screen_name": "Agent Channel Deployment",
+      "screen_type": "modal",
+      "description": "Configuration modal for deploying agent to Slack/Teams. Mixes workflow configuration with chat interface settings; unclear whether user is building an orchestrated agent or a conversational chatbot.",
+      "pane_count": 2,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "channel-selector-dropdown",
+        "bot-persona-config",
+        "trigger-conditions-form"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-gumloop-feature-review"
+    },
+    {
+      "slug": "coze-bot-builder-canvas",
+      "product_slug": "coze",
+      "screen_name": "Bot Builder Visual Canvas",
+      "screen_type": "canvas",
+      "description": "ByteDance Coze Studio node-based bot builder. Supports multi-model selection, knowledge base attachments, and workflow orchestration. Canvas-first design with plugin ecosystem.",
+      "pane_count": 3,
+      "click_depth": 3,
+      "hci_cost": "B",
+      "ui_elements": [
+        "bot-template-selector",
+        "workflow-canvas",
+        "plugin-marketplace-panel",
+        "preview-pane"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-coze-studio-github"
+    },
+    {
+      "slug": "coze-knowledge-base-ui",
+      "product_slug": "coze",
+      "screen_name": "Knowledge Base Management UI",
+      "screen_type": "settings",
+      "description": "Settings interface for uploading and configuring knowledge bases (documents, web scrapers, API sources). Table-based document list; bulk operations modal.",
+      "pane_count": 2,
+      "click_depth": 3,
+      "hci_cost": "B",
+      "ui_elements": [
+        "knowledge-base-tabs",
+        "document-upload-modal",
+        "source-configuration-form"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-coze-documentation"
+    },
+    {
+      "slug": "flowise-chat-widget-preview",
+      "product_slug": "flowise",
+      "screen_name": "Embedded Chat Widget Preview",
+      "screen_type": "empty-state",
+      "description": "Iframe preview of embeddable chat widget. Displays conversation thread; unclear whether user is testing orchestrated agent plan execution or simple Q&A.",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "D",
+      "ui_elements": [
+        "chat-message-thread",
+        "input-field",
+        "send-button"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-flowise-official-product"
+    },
+    {
+      "slug": "dify-chatbot-test-interface",
+      "product_slug": "dify",
+      "screen_name": "Chatbot Test & Debug Interface",
+      "screen_type": "inspector-pane",
+      "description": "Dual-pane interface: left shows agent execution trace (step name, input/output, tool calls), right shows conversation preview. Clear separation of orchestration view vs end-user chat.",
+      "pane_count": 2,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "execution-trace-tree",
+        "step-detail-panel",
+        "conversation-thread",
+        "variable-inspector"
+      ],
+      "source_id": "market-ux-teardown-rag-agent-builders-dify-documentation"
+    }
+  ],
+  "ux_flows": [
+    {
+      "slug": "flowise-build-and-deploy-llm-app",
+      "product_slug": "flowise",
+      "flow_name": "Build & Deploy LLM Application",
+      "goal": "User creates, tests, and deploys a multi-step LLM workflow (e.g., RAG pipeline with tool calls)",
+      "total_steps": 8,
+      "total_clicks": 24,
+      "drop_off_risk": "high",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Drag LLM node from palette to canvas",
+          "clicks": 1,
+          "friction": "Requires opening collapse/expand tree; palette is small"
+        },
+        {
+          "step": 2,
+          "action": "Click LLM node to open property inspector; select model + API key",
+          "clicks": 3,
+          "friction": "Modal dialog within modal; credential management unclear"
+        },
+        {
+          "step": 3,
+          "action": "Drag retrieval node (vector store); connect edge from LLM input",
+          "clicks": 2,
+          "friction": "Edge routing is automatic but can obscure other nodes; connection handles require precise cursor"
+        },
+        {
+          "step": 4,
+          "action": "Configure vector store credentials and chunk strategy",
+          "clicks": 4,
+          "friction": "Settings scattered across multiple modals; no inline validation"
+        },
+        {
+          "step": 5,
+          "action": "Add tool/function node for external API call",
+          "clicks": 2,
+          "friction": "Tool library search is basic; no filtering by use-case"
+        },
+        {
+          "step": 6,
+          "action": "Click 'Run' to test end-to-end; inspect execution logs",
+          "clicks": 3,
+          "friction": "Logs are text-based; unclear which step failed; no breakpoint debugging"
+        },
+        {
+          "step": 7,
+          "action": "Toggle 'Agent Mode' for agentic behavior; configure tool selection strategy",
+          "clicks": 3,
+          "friction": "Agent-vs-workflow distinction is unclear; modal UI mixes configuration concerns"
+        },
+        {
+          "step": 8,
+          "action": "Deploy to Flowise cloud or self-hosted; obtain embed code",
+          "clicks": 6,
+          "friction": "Deployment wizard has >5 steps; credential re-entry required; lack of progress indicator"
+        }
+      ],
+      "our_approach": "MetroGraph reduces click count to 12 by: (1) inline property editing with autocomplete, (2) unified agent/workflow configuration in right inspector with clear visual distinction, (3) one-click deploy using pre-configured credentials, (4) execution trace as integrated overlay (not separate modal) with clickable steps.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-flowise-official-product",
+        "market-ux-teardown-rag-agent-builders-flowise-documentation"
+      ]
+    },
+    {
+      "slug": "langflow-debug-agent-execution",
+      "product_slug": "langflow",
+      "flow_name": "Debug Multi-Step Agent Execution",
+      "goal": "User diagnoses why agent took wrong action or failed; traces root cause through LLM reasoning + tool calls",
+      "total_steps": 7,
+      "total_clicks": 28,
+      "drop_off_risk": "high",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Trigger workflow with test input; wait for execution",
+          "clicks": 2,
+          "friction": "No inline test interface; must switch to separate test panel"
+        },
+        {
+          "step": 2,
+          "action": "Inspect execution tab; scroll through logs to find failure point",
+          "clicks": 3,
+          "friction": "Logs are chronological flat list; no tree/hierarchy; timestamps only, no execution flow diagram"
+        },
+        {
+          "step": 3,
+          "action": "Click on tool-call step to see tool definition + input/output",
+          "clicks": 2,
+          "friction": "Tool definition is mixed with runtime data; hard to distinguish config vs execution state"
+        },
+        {
+          "step": 4,
+          "action": "Trace back to LLM step to inspect prompt + reasoning tokens",
+          "clicks": 4,
+          "friction": "Must click multiple nested toggles; reasoning data is raw JSON; no highlighting of key decisions"
+        },
+        {
+          "step": 5,
+          "action": "Modify component (e.g., change LLM temperature) in main graph view",
+          "clicks": 5,
+          "friction": "Graph is hidden behind logs; must minimize log pane or open separate window"
+        },
+        {
+          "step": 6,
+          "action": "Re-run workflow to test fix; compare old vs new execution traces",
+          "clicks": 7,
+          "friction": "No diff view; must manually compare logs side-by-side"
+        },
+        {
+          "step": 7,
+          "action": "Export execution trace for documentation/debugging; save as snapshot",
+          "clicks": 5,
+          "friction": "No export option; copy-paste only; trace format is not standardized"
+        }
+      ],
+      "our_approach": "MetroGraph shows execution as annotated flow diagram (not logs) with: (1) step duration, input/output, status (success/fail) as node overlays, (2) collapsible nested steps for multi-level tool calls, (3) inline diff highlighting changed parameters between runs, (4) one-click capture of trace snapshot.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-langflow-documentation",
+        "market-ux-teardown-rag-agent-builders-zenml-langflow-alternatives"
+      ]
+    },
+    {
+      "slug": "dify-build-rag-chatbot",
+      "product_slug": "dify",
+      "flow_name": "Build RAG-Powered Chatbot",
+      "goal": "User creates a chatbot that answers questions using uploaded knowledge base",
+      "total_steps": 6,
+      "total_clicks": 15,
+      "drop_off_risk": "low",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create new workflow; drag LLM and knowledge-retrieval nodes to canvas",
+          "clicks": 2,
+          "friction": "Low; node library is searchable and well-organized"
+        },
+        {
+          "step": 2,
+          "action": "Connect retrieval output to LLM input using drag-to-drop edge",
+          "clicks": 1,
+          "friction": "Minimal; connection handles are visually distinct; auto-layout prevents overlap"
+        },
+        {
+          "step": 3,
+          "action": "Click knowledge node; upload PDF and configure embedding model",
+          "clicks": 4,
+          "friction": "Inline form within inspector; file upload with progress indicator; embedding model selection has helpful defaults"
+        },
+        {
+          "step": 4,
+          "action": "Configure LLM node: select model, set system prompt, adjust temperature",
+          "clicks": 3,
+          "friction": "Inspector provides tooltips; settings are categorized (core vs advanced)"
+        },
+        {
+          "step": 5,
+          "action": "Test workflow with sample query; inspect retrieval results + LLM response",
+          "clicks": 3,
+          "friction": "Execution trace shows retrieval hits + context window; step outputs are JSON but formatted readably"
+        },
+        {
+          "step": 6,
+          "action": "Publish workflow; generate shareable link; embed in website",
+          "clicks": 2,
+          "friction": "One-click publish; pre-configured iframe embed code; no additional setup required"
+        }
+      ],
+      "our_approach": "Dify's orchestration-first design (not chat-first) is our model. MetroGraph extends this by: (1) visual retrieval quality scoring (heatmap of token overlap between query + retrieved docs), (2) side-by-side view of retrieval window during live test, (3) versioning of knowledge base snapshots for reproducible RAG results.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-dify-documentation",
+        "market-ux-teardown-rag-agent-builders-dify-enterprise-deployment-guide"
+      ]
+    },
+    {
+      "slug": "gumloop-build-slack-automation",
+      "product_slug": "gumloop",
+      "flow_name": "Build Slack Automation with AI",
+      "goal": "User creates an automation that triggers on Slack messages and runs AI-powered workflow",
+      "total_steps": 5,
+      "total_clicks": 18,
+      "drop_off_risk": "medium",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create new automation; drag Slack trigger module to canvas",
+          "clicks": 2,
+          "friction": "Slack trigger is pre-built; minimal config (just scopes)"
+        },
+        {
+          "step": 2,
+          "action": "Drag AI/LLM module; configure prompt template with slack_message variable",
+          "clicks": 4,
+          "friction": "Variable binding is text-based (no visual binding); requires manual {{variable}} syntax"
+        },
+        {
+          "step": 3,
+          "action": "Drag action module (e.g., send reply); map LLM output to Slack message",
+          "clicks": 3,
+          "friction": "Module palette search is slow; module count (130+) makes discovery hard"
+        },
+        {
+          "step": 4,
+          "action": "Test automation by simulating Slack message; review output",
+          "clicks": 5,
+          "friction": "Test modal requires manual input; no replay of recent Slack messages; execution logs are minimal"
+        },
+        {
+          "step": 5,
+          "action": "Deploy to Slack; configure agent persona and response settings",
+          "clicks": 4,
+          "friction": "Agent vs workflow distinction blurred; persona config (tone, style) mixed with automation logic"
+        }
+      ],
+      "our_approach": "MetroGraph provides: (1) visual data flow (inputs/outputs color-coded by type), (2) template variables auto-discovered from trigger context, (3) execution preview showing Slack message before send, (4) clear visual labels distinguishing 'Automation orchestration' pane from 'Agent personality' settings.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-gumloop-official-product",
+        "market-ux-teardown-rag-agent-builders-gumloop-feature-review"
+      ]
+    },
+    {
+      "slug": "coze-publish-multi-model-agent",
+      "product_slug": "coze",
+      "flow_name": "Publish Multi-Model AI Agent",
+      "goal": "User builds agent supporting multiple LLMs, uploads knowledge base, and publishes to web + WeChat",
+      "total_steps": 6,
+      "total_clicks": 12,
+      "drop_off_risk": "low",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Select bot template (e.g., 'QA Bot'); configure name and description",
+          "clicks": 2,
+          "friction": "Template selection is straightforward; defaults are sensible"
+        },
+        {
+          "step": 2,
+          "action": "Upload knowledge base (document set, URL crawler, or API); configure indexing",
+          "clicks": 3,
+          "friction": "File upload is chunked and resumable; indexing happens async with progress indicator"
+        },
+        {
+          "step": 3,
+          "action": "Configure model selection; choose primary + fallback LLMs from multi-model registry",
+          "clicks": 2,
+          "friction": "Model selector is clear; Coze's model inventory is comprehensive"
+        },
+        {
+          "step": 4,
+          "action": "Add plugins (tools) via Coze marketplace; configure tool settings",
+          "clicks": 2,
+          "friction": "Plugin discovery is catalog-based; one-click install"
+        },
+        {
+          "step": 5,
+          "action": "Test agent in embedded chat preview; iterate on system prompt",
+          "clicks": 2,
+          "friction": "Live preview updates without refresh; system prompt editor shows token count"
+        },
+        {
+          "step": 6,
+          "action": "Publish to web, WeChat, and Feishu simultaneously; obtain deployment link",
+          "clicks": 1,
+          "friction": "One-click multi-platform deployment; pre-configured OAuth flows"
+        }
+      ],
+      "our_approach": "Coze's multi-platform deployment is strong. MetroGraph adds: (1) per-platform preview panels (show how agent renders on each channel), (2) channel-specific behavior rules (e.g., WeChat character limits), (3) A/B testing UI for model/prompt variants across channels.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-coze-official-product",
+        "market-ux-teardown-rag-agent-builders-coze-documentation"
+      ]
+    }
+  ],
+  "ux_patterns": [
+    {
+      "slug": "agent-vs-chat-confusion-antipattern",
+      "pattern": "Agent Orchestration vs Conversational Chat Mode Conflation",
+      "is_antipattern": true,
+      "category": "interaction-model",
+      "description": "Platforms blur the distinction between agentic orchestration (plan-then-execute, tool sequences, step-wise reasoning) and chat interface (turn-taking conversation, reactive Q&A). Users mistake 'agent deployment' for simple chatbot building, leading to misaligned expectations about autonomy, reasoning transparency, and failure modes.",
+      "hci_cost": "D",
+      "exemplar_product_slugs": [
+        "flowise",
+        "gumloop"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph separates orchestration view (graph-based, step-centric, plan visibility) from conversation view (turn-based, role-centric). Users explicitly choose mode; UI changes to match (e.g., execution trace shown for orchestration, conversation history for chat).",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-agent-ux-patterns-chat-fails",
+        "market-ux-teardown-rag-agent-builders-luke-wroblewski-agent-orchestration-ui",
+        "market-ux-teardown-rag-agent-builders-agentic-ux-design-patterns"
+      ]
+    },
+    {
+      "slug": "modal-proliferation-configuration-antipattern",
+      "pattern": "Modal Dialog Proliferation for Configuration",
+      "is_antipattern": true,
+      "category": "navigation",
+      "description": "Nested modals for node configuration, credential entry, and advanced settings. Users lose context of the overall workflow; no inline editing; each config change requires click-modal-edit-close cycle.",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "flowise",
+        "langflow"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph uses right-side inspector pane (persistent, scrollable) for all configuration. Modal reserved for destructive actions (delete) or complex workflows (multi-step wizard). Inline editing with autocomplete reduces modal dependency.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-elestio-production-ready-comparison",
+        "market-ux-teardown-rag-agent-builders-toolhalla-comparison-matrix"
+      ]
+    },
+    {
+      "slug": "flat-log-execution-antipattern",
+      "pattern": "Flat Execution Logs for Debugging Multi-Step Workflows",
+      "is_antipattern": true,
+      "category": "visibility",
+      "description": "Execution traces shown as chronological flat logs (timestamps, messages, raw JSON). No hierarchical structure; hard to trace causal chain through nested tool calls, retries, and conditional branches.",
+      "hci_cost": "D",
+      "exemplar_product_slugs": [
+        "langflow",
+        "flowise"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph renders execution as annotated flow diagram: nodes show status (success/fail/running), duration, input/output. Nested steps collapse/expand. Diff view highlights changes between runs.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-ragexplorer-visual-analytics-rag",
+        "market-ux-teardown-rag-agent-builders-rag-workflow-debugging-platforms"
+      ]
+    },
+    {
+      "slug": "undiscoverable-tool-library-antipattern",
+      "pattern": "Large Tool/Integration Library with Poor Discovery",
+      "is_antipattern": true,
+      "category": "information-architecture",
+      "description": "Platforms support 50+ integrations (APIs, tools, services) but discovery is limited to search bar or flat list. Users don't know what's available; no categorization by use-case, domain, or integration type.",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "gumloop",
+        "coze"
+      ],
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph organizes tools into: (1) function-based categories (data, AI, external service), (2) use-case-based workflows (e.g., 'RAG Pipeline' bundles retrieval + embedding + reranking), (3) recently-used favorites. Search includes natural-language intent matching ('extract emails' → email parser tool).",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-gumloop-feature-review",
+        "market-ux-teardown-rag-agent-builders-airtable-ai-agent-builders"
+      ]
+    },
+    {
+      "slug": "low-surface-area-orchestration-design",
+      "pattern": "Node-Based Workflow Editors with High Surface Area (many panes)",
+      "is_antipattern": false,
+      "category": "information-architecture",
+      "description": "Best-in-class platforms (Dify, Coze) use multi-pane layouts: canvas center, node library left, inspector right, execution trace bottom/overlay. This spreads UI across screen; requires attention switching. However, pane reduction risks losing functionality (e.g., hiding execution trace forces separate window).",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "dify",
+        "coze"
+      ],
+      "our_stance": "conditional",
+      "our_rationale": "MetroGraph reduces to 2 stable panes (canvas + inspector) with: (1) floating panels for rare operations (publish, import), (2) modal-only for wizards, (3) execution trace as collapsible overlay on canvas (not separate bottom pane). Pane count stays 2-3 (vs Langflow's 4+).",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-workflow-builder-canvas-design",
+        "market-ux-teardown-rag-agent-builders-react-flow-workflow-ui"
+      ]
+    },
+    {
+      "slug": "chat-first-ui-agent-failure-antipattern",
+      "pattern": "Chat-First UI for Agent Systems (violates agent UX principles)",
+      "is_antipattern": true,
+      "category": "interaction-model",
+      "description": "Some platforms default to chat interface for agent testing/deployment. This hides agent reasoning (plan, tool selection, reasoning steps). Users see only final response; confusion when agent misbehaves because internals are opaque.",
+      "hci_cost": "D",
+      "exemplar_product_slugs": [
+        "flowise"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph's test interface shows orchestration trace alongside chat output: when user queries agent, they see the plan (which tools were called, in what order), reasoning (why tool X was chosen), and fallbacks (if plan failed, what was retried). Chat interface is secondary, not primary.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-agent-ux-patterns-chat-fails",
+        "market-ux-teardown-rag-agent-builders-agentic-ux-design-patterns",
+        "market-ux-teardown-rag-agent-builders-human-ai-collaboration-hci-2026"
+      ]
+    },
+    {
+      "slug": "agent-design-pattern-transparency",
+      "pattern": "Plan Preview & Step-by-Step Transparency (best practice)",
+      "is_antipattern": false,
+      "category": "visibility",
+      "description": "Modern agentic design patterns emphasize visibility: before execution, show the agent's plan (which steps it will take, which tools it will use). During execution, show progress (current step, tool calls). On failure, highlight the step that failed and why.",
+      "hci_cost": "A",
+      "exemplar_product_slugs": [
+        "dify"
+      ],
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph adopts this pattern: (1) 'Plan Mode' button shows what agent intends to do (as DAG of steps), (2) during test run, step-by-step animation of execution, (3) failure highlighting shows which step failed + error message + suggested fixes.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-agentic-ux-design-patterns",
+        "market-ux-teardown-rag-agent-builders-luke-wroblewski-agent-orchestration-ui"
+      ]
+    },
+    {
+      "slug": "rag-observability-debugging-pattern",
+      "pattern": "Visual Analytics for RAG Pipeline Diagnosis",
+      "is_antipattern": false,
+      "category": "visibility",
+      "description": "RAG systems often fail silently (wrong documents retrieved, poor reranking, LLM confabulation). Academic systems (RAGExplorer) and observability tools (Langfuse, Arize Phoenix) address this with comparative visualization: show candidate documents, retrieval scores, reranking decisions, final context window sent to LLM.",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "dify"
+      ],
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph embeds RAG observability: (1) retrieval results shown with relevance heatmap (token overlap visualization), (2) side-by-side view of original query, retrieved docs, and LLM response, (3) one-click to swap reranking algorithm and re-run (no graph edit required).",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-ragexplorer-visual-analytics-rag",
+        "market-ux-teardown-rag-agent-builders-rag-workflow-debugging-platforms"
+      ]
+    },
+    {
+      "slug": "multi-model-flexibility-pattern",
+      "pattern": "Multi-Model Orchestration (LLM model selection per step)",
+      "is_antipattern": false,
+      "category": "feature",
+      "description": "Platforms (Coze, Dify) allow choosing different LLM models for different workflow steps (e.g., GPT-4 for reasoning, Haiku for classification). This enables cost optimization and model specialization but increases configuration complexity.",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "coze",
+        "dify"
+      ],
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph adopts this: each LLM node shows model selector with defaults. Tooltip explains cost/latency tradeoff. Global 'Use cheaper model' button swaps all models to Haiku (with warning on capability loss).",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-coze-official-product",
+        "market-ux-teardown-rag-agent-builders-dify-documentation"
+      ]
+    },
+    {
+      "slug": "execution-trace-visualization",
+      "pattern": "Execution Trace as Flow Diagram (vs flat logs)",
+      "is_antipattern": false,
+      "category": "visibility",
+      "description": "Instead of chronological logs, show execution as annotated graph: nodes represent steps, edges show data flow. Each node displays status (success/fail/running), duration, input/output. This mirrors the workflow structure.",
+      "hci_cost": "A",
+      "exemplar_product_slugs": [
+        "dify"
+      ],
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph renders execution as overlay on the workflow graph itself (same visual structure as definition). Steps light up as they execute; final state persists for inspection.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-ragexplorer-visual-analytics-rag",
+        "market-ux-teardown-rag-agent-builders-rag-workflow-debugging-platforms"
+      ]
+    },
+    {
+      "slug": "credential-management-antipattern",
+      "pattern": "Scattered Credential Management (API keys, secrets)",
+      "is_antipattern": true,
+      "category": "security",
+      "description": "Platforms require credentials for LLM APIs, vector stores, external services. Credential entry scattered across: node configuration modals, workspace settings, .env files (self-hosted). Users struggle with credential scope (global vs per-node) and rotation.",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "flowise",
+        "langflow"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph centralizes credentials: (1) one 'Credentials' panel (accessible via sidebar button), (2) credential type auto-detected from LLM model selection, (3) per-credential scope toggle (global workspace vs single workflow), (4) credential rotation with version history (no orphaned references).",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-elestio-production-ready-comparison",
+        "market-ux-teardown-rag-agent-builders-dify-enterprise-deployment-guide"
+      ]
+    },
+    {
+      "slug": "version-control-workflow-antipattern",
+      "pattern": "Lack of Version Control for Workflows",
+      "is_antipattern": true,
+      "category": "collaboration",
+      "description": "Most platforms lack version control. Users can't easily: (1) revert bad changes, (2) compare old vs new workflow, (3) branch for experimentation, (4) merge team edits. Fork-and-branch workflows are manual (copy-paste).",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "flowise",
+        "gumloop"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph embeds version control: (1) every publish creates a snapshot, (2) branching via 'Create variant' button, (3) diff view shows what changed since last version, (4) one-click rollback to prior version.",
+      "source_ids": [
+        "market-ux-teardown-rag-agent-builders-elestio-production-ready-comparison"
+      ]
+    }
+  ]
+}

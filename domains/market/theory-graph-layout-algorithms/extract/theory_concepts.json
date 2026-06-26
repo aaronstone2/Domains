@@ -1,0 +1,645 @@
+{
+  "leaf": "market/theory-graph-layout-algorithms",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Spring Embedder Model",
+      "field": "graph-theory",
+      "definition": "A foundational heuristic for graph layout that models vertices as physical objects (steel rings) connected by springs (edges), allowing the system to settle into minimum energy states through iterative force simulation.",
+      "strength": "established-law",
+      "key_refs": [
+        "Eades 1984 / A heuristic for graph drawing",
+        "Fruchterman & Reingold 1991 / Graph drawing by force-directed placement"
+      ],
+      "related_concepts": [
+        "Force-Directed Layout",
+        "Stress Minimization",
+        "Energy Minimization",
+        "Physical Simulation"
+      ],
+      "implication": "MetroGraph must support spring-based layout as core algorithm option; critical for organic, readable layouts of moderate-sized knowledge graphs where users benefit from emergent structure discovery.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-eades-1984-spring-embedder",
+        "market-theory-graph-layout-algorithms-fruchterman-reingold-1991"
+      ]
+    },
+    {
+      "concept": "Force-Directed Layout",
+      "field": "graph-theory",
+      "definition": "A family of graph layout algorithms that iteratively applies attractive forces between adjacent nodes and repulsive forces between all node pairs, converging toward aesthetically pleasing layouts with uniform edge lengths and good symmetry.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fruchterman & Reingold 1991 / Graph drawing by force-directed placement",
+        "Kobourov / Force-Directed Drawing Algorithms"
+      ],
+      "related_concepts": [
+        "Spring Embedder Model",
+        "Convergence Properties",
+        "Parameterization",
+        "Energy Minimization",
+        "Velocity Verlet Integration"
+      ],
+      "implication": "Essential for MetroGraph's layout engine; enables responsive, user-directed graph exploration. Needs configurable parameters (spring strength, repulsion, iteration counts) and convergence monitoring to avoid surface-area bloat in dense graphs.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-fruchterman-reingold-1991",
+        "market-theory-graph-layout-algorithms-kobourov-force-directed-chapter"
+      ]
+    },
+    {
+      "concept": "Hierarchical Layered Layout",
+      "field": "graph-theory",
+      "definition": "A five-phase algorithmic framework (cycle removal, layer assignment, crossing minimization, coordinate assignment, edge routing) that produces layered drawings suitable for directed graphs with clear hierarchical structure.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sugiyama, Tagawa & Toda 1981 / Methods for visual understanding of hierarchical system structures",
+        "Di Battista et al. 1999 / Graph Drawing: Algorithms for the Visualization of Graphs"
+      ],
+      "related_concepts": [
+        "Edge Crossing Minimization",
+        "Layer Assignment",
+        "Upward Planarity",
+        "Barycenter Method"
+      ],
+      "implication": "Critical for MetroGraph when visualizing workflow graphs, DAGs, and hierarchical knowledge structures. Enables clear top-down task/intent flows. Reduces cognitive load for understanding causal/dependency relationships.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-sugiyama-1981-hierarchical",
+        "market-theory-graph-layout-algorithms-di-battista-1999-graph-drawing"
+      ]
+    },
+    {
+      "concept": "Edge Crossing Minimization",
+      "field": "graph-theory",
+      "definition": "A fundamental NP-hard optimization problem in graph drawing where the goal is to minimize edge intersections; central to layout quality and human readability. Exact solutions exist only for restricted graph classes; heuristics include barycenter method and parameterized algorithms.",
+      "strength": "established-law",
+      "key_refs": [
+        "Di Battista et al. 1999 / Graph Drawing Algorithms",
+        "Edge Crossing Minimization in Graphs - A Survey / Aftab Hussain"
+      ],
+      "related_concepts": [
+        "Planarity Testing",
+        "Planar Graphs",
+        "NP-Hardness",
+        "Heuristic Algorithms",
+        "Aesthetic Criteria"
+      ],
+      "implication": "MetroGraph must employ crossing minimization as primary aesthetic goal; excessive crossings create visual clutter and impede information foraging. Guides algorithm selection: use hierarchical layout for DAGs, force-directed for general graphs with moderate density.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-crossing-minimization-survey",
+        "market-theory-graph-layout-algorithms-battista-crossing-algorithms"
+      ]
+    },
+    {
+      "concept": "Aesthetic Criteria and Metrics",
+      "field": "visualization",
+      "definition": "Quantitative measures for evaluating graph layout quality including edge crossings, bends, edge length variance, drawing area, symmetry, and angular resolution; enables empirical comparison and objective optimization of layout algorithms.",
+      "strength": "empirical",
+      "key_refs": [
+        "Metrics for Graph Drawing Aesthetics / Purchase et al.",
+        "Tamassia 2013 / Handbook of Graph Drawing and Visualization"
+      ],
+      "related_concepts": [
+        "Visual Effectiveness",
+        "User Task Performance",
+        "Design Trade-offs",
+        "Drawing Quality Assessment"
+      ],
+      "implication": "MetroGraph must implement measurable aesthetic criteria for layout quality; enables automated assessment and user feedback on graph readability. Supports adaptive layout selection based on graph structure (density, hierarchy, size).",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-aesthetic-criteria-metrics",
+        "market-theory-graph-layout-algorithms-tamassia-2013-handbook"
+      ]
+    },
+    {
+      "concept": "Planar Graphs and Planarity Testing",
+      "field": "graph-theory",
+      "definition": "Graphs drawable without edge crossings in the plane; characterized by forbidden minors K5 (complete graph on 5 vertices) and K3,3 (complete bipartite graph). Linear-time planarity testing via Hopcroft-Tarjan algorithm enables strategic layout algorithm selection.",
+      "strength": "established-law",
+      "key_refs": [
+        "Hopcroft & Tarjan 1974 / Path-Addition Method for Planarity Testing",
+        "Di Battista et al. 1999 / Graph Drawing Algorithms"
+      ],
+      "related_concepts": [
+        "Kuratowski's Theorem",
+        "Forbidden Minors",
+        "Planar Embedding",
+        "Non-Planar Graphs"
+      ],
+      "implication": "MetroGraph should detect graph planarity to guide layout strategy. Planar subgraphs can achieve zero-crossing layouts (optimal readability); for non-planar graphs, confluent drawing or crossing minimization heuristics provide fallback strategies.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-planar-testing-hopcroft",
+        "market-theory-graph-layout-algorithms-di-battista-1999-graph-drawing"
+      ]
+    },
+    {
+      "concept": "Orthogonal Drawing",
+      "field": "graph-theory",
+      "definition": "A drawing style where edges run only horizontally or vertically (octilinear extensions allow 45-degree angles); uses topology-shape-metrics approach to minimize bends and area while preserving planar structure. Essential for UML diagrams and circuit layouts.",
+      "strength": "empirical",
+      "key_refs": [
+        "Duncan / Planar Orthogonal and Polyline Drawing Algorithms",
+        "Gutwenger / A better heuristic for orthogonal graph drawings"
+      ],
+      "related_concepts": [
+        "Polyline Routing",
+        "Bend Minimization",
+        "Topology-Shape-Metrics",
+        "Area Minimization"
+      ],
+      "implication": "Important for MetroGraph when visualizing structured data (schemas, workflows, system architectures) where rectilinear edges improve scannability. Less suitable for exploratory knowledge graphs where organic layouts reduce cognitive friction.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-duncan-orthogonal-chapter",
+        "market-theory-graph-layout-algorithms-gutwenger-rectilinear"
+      ]
+    },
+    {
+      "concept": "Tree Layout (Reingold-Tilford Algorithm)",
+      "field": "graph-theory",
+      "definition": "A linear O(n) algorithm for tidy tree drawing that positions parents centered above children, achieving compact, symmetric layouts with good visual hierarchy. Widely used for organizational charts and hierarchical data.",
+      "strength": "established-law",
+      "key_refs": [
+        "Reingold & Tilford 1981 / Tidy Drawings of Trees",
+        "D3.js implementation / d3-hierarchy"
+      ],
+      "related_concepts": [
+        "Hierarchical Layout",
+        "Compact Drawing",
+        "Symmetry",
+        "Parent-Child Positioning"
+      ],
+      "implication": "MetroGraph should integrate tree layout for hierarchical data subsets. Enables clear parent-child relationships; useful for taxonomy browsing and structured exploration within larger graph contexts.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-reingold-tilford-tree"
+      ]
+    },
+    {
+      "concept": "Confluent Drawing",
+      "field": "graph-theory",
+      "definition": "A novel drawing technique that merges non-crossing edges into 'tracks' (locally-monotone bundled paths), allowing non-planar graphs to be visualized without edge crossings. Applies to K5, K3,3, and other non-planar structures.",
+      "strength": "empirical",
+      "key_refs": [
+        "Dickerson et al. 2002 / Confluent Drawings: Visualizing Non-planar Diagrams in a Planar Way",
+        "Holten 2009 / Force-Directed Edge Bundling"
+      ],
+      "related_concepts": [
+        "Edge Bundling",
+        "Hierarchical Edge Bundling",
+        "Non-Planar Graph Visualization",
+        "Track Merging"
+      ],
+      "implication": "Powerful technique for MetroGraph to handle dense, non-planar knowledge graphs without visual clutter. Helps surface agent relationships and workflow interactions without cross-clutter confusion. Balances readability with information density.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-confluent-drawings",
+        "market-theory-graph-layout-algorithms-holten-2009-edge-bundling"
+      ]
+    },
+    {
+      "concept": "Spectral Layout",
+      "field": "graph-theory",
+      "definition": "Graph layout methods using eigenvectors and eigenvalues of the Laplacian or adjacency matrix (Fiedler vector approach) to compute node positions; provides rapid, non-iterative layout computation without convergence issues inherent to force-directed methods.",
+      "strength": "empirical",
+      "key_refs": [
+        "Spectral layout / HandWiki overview",
+        "Koren et al. / Graphs Drawing with High-Degree Vertices"
+      ],
+      "related_concepts": [
+        "Linear Algebra",
+        "Eigenvalue Problems",
+        "Graph Laplacian",
+        "Spectral Methods"
+      ],
+      "implication": "MetroGraph could leverage spectral layout for large graphs where force-directed convergence is slow. Deterministic computation (no randomness, no iteration) provides reproducible layouts; suitable for initial layout generation before user interaction.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-spectral-layout-survey"
+      ]
+    },
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "A cognitive concept from animal foraging behavior (Pirolli & Card) describing how users follow visual and informational cues ('scent') to navigate information spaces. Strong information scent enables rapid, confident exploration; weak scent causes disorientation and cognitive load.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging: A Theory of How People Navigate on the Web",
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "related_concepts": [
+        "Information Foraging",
+        "Cognitive Load",
+        "Navigation Patterns",
+        "User Engagement",
+        "Visual Hierarchy"
+      ],
+      "implication": "Core to MetroGraph's wedge solution: graph layout must provide strong information scent (visual proximity, color coding, hierarchy) to guide users through complex agent/workflow structures without resorting to AI chat. Bridges UI and AI.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-pirolli-information-foraging",
+        "market-theory-graph-layout-algorithms-munzner-2014-visualization"
+      ]
+    },
+    {
+      "concept": "Mark-Channel Theory",
+      "field": "visualization",
+      "definition": "Munzner's foundational theory mapping visual marks (points, lines, areas) to data attributes via channels (position, size, color, opacity, shape); channels vary in effectiveness (accuracy, discriminability) depending on data type and task.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis and Design - Chapters 5-6",
+        "Bertin 1983 / Semiology of Graphics"
+      ],
+      "related_concepts": [
+        "Visual Encoding",
+        "Effectiveness Principles",
+        "Gestalt Laws",
+        "Perceptual Accuracy"
+      ],
+      "implication": "Essential for MetroGraph node/edge encoding: position conveys graph structure (via layout); size/color encode node importance; edge width encodes relationship strength. Effective encoding reduces cognitive load compared to AI chat explanation.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-munzner-2014-visualization"
+      ]
+    },
+    {
+      "concept": "Nested Model of Visualization Design",
+      "field": "visualization",
+      "definition": "Munzner's multilevel validation framework (domain task abstraction, visualization abstraction, visual encoding design, algorithm design) for reasoning about visualization effectiveness; enables systematic evaluation and debugging.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis and Design - Chapter 4"
+      ],
+      "related_concepts": [
+        "Design Validation",
+        "Task Analysis",
+        "Abstraction",
+        "Effectiveness Evaluation"
+      ],
+      "implication": "Guides MetroGraph design: understand user tasks (explore agent relations, trace workflow), abstract to graph operations (filter, sort, highlight), choose encodings (layout, color, grouping) that support those operations efficiently.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-munzner-2014-visualization"
+      ]
+    },
+    {
+      "concept": "Mental Map Preservation",
+      "field": "hci",
+      "definition": "In dynamic graph visualization, maintaining relative positions and structure of previously visible nodes/edges as the graph evolves; preserves user's mental model of graph organization and reduces disorientation in temporal/interactive updates.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Taxonomy and Survey of Dynamic Graph Visualization",
+        "Brandes & Wagner 2001 / A Quality Metric for Visualizations"
+      ],
+      "related_concepts": [
+        "Dynamic Graph Visualization",
+        "Layout Stability",
+        "Temporal Coherence",
+        "User Orientation"
+      ],
+      "implication": "Critical for MetroGraph when agents modify graph structure (add/remove edges). Layout incremental updates must minimize node movement while maintaining clarity; supports continuous graph exploration without disorientation.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-dynamic-graph-survey"
+      ]
+    },
+    {
+      "concept": "Convergence Properties of Force-Directed Algorithms",
+      "field": "graph-theory",
+      "definition": "Mathematical and empirical characterization of when iterative force-directed algorithms reach stable equilibrium, how fast they converge, and parameter sensitivity (spring constant, repulsion strength, cooling rate) affecting final layout quality.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kobourov / Force-Directed Drawing Algorithms",
+        "Fruchterman & Reingold 1991 / Graph drawing by force-directed placement"
+      ],
+      "related_concepts": [
+        "Iteration Convergence",
+        "Energy Minimization",
+        "Parameter Tuning",
+        "Stability Analysis"
+      ],
+      "implication": "MetroGraph layout engine must include convergence monitoring and early stopping to prevent infinite iteration; critical for real-time responsiveness in web apps. Adaptive parameter selection based on graph density improves efficiency.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-kobourov-force-directed-chapter",
+        "market-theory-graph-layout-algorithms-fruchterman-reingold-1991"
+      ]
+    },
+    {
+      "concept": "Constraint-Based Spring-Embedder Layout",
+      "field": "graph-theory",
+      "definition": "Extension of force-directed methods allowing user-specified constraints (node position fixing, distance preservation, alignment) while maintaining energy minimization; balances automatic layout quality with user control.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kamps & Kleinz / Constraint-Based Spring-Model Algorithm for Graph Layout",
+        "Dwyer et al. / Stress Minimization with Constraints"
+      ],
+      "related_concepts": [
+        "Force-Directed Layout",
+        "User Control",
+        "Constraint Satisfaction",
+        "Interactive Refinement"
+      ],
+      "implication": "Enables MetroGraph users to manually position important agents/concepts while letting algorithm auto-organize remaining graph. Bridges automated layout (AI) with user intent (human understanding), reducing AI-chat dependency.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-constraints-spring-model"
+      ]
+    },
+    {
+      "concept": "Upward Planarity",
+      "field": "graph-theory",
+      "definition": "Drawing style for directed acyclic graphs where edges are monotonic upward curves without crossings, making causal/temporal flow visually explicit. NP-complete in general; polynomial-time solvable with prescribed y-coordinates.",
+      "strength": "established-law",
+      "key_refs": [
+        "Di Battista et al. 1999 / Graph Drawing Algorithms",
+        "Upward planar drawing / Wikipedia"
+      ],
+      "related_concepts": [
+        "Directed Graphs",
+        "Planar Embedding",
+        "Hierarchical Layout",
+        "Acyclic Graphs"
+      ],
+      "implication": "Ideal for MetroGraph when visualizing agent intent/workflow DAGs. Upward edge direction immediately communicates causality and execution order, reducing need for explicit annotations.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-upward-planarity"
+      ]
+    },
+    {
+      "concept": "Hierarchical Edge Bundling",
+      "field": "visualization",
+      "definition": "Holten's technique for compound graphs combining hierarchical structure with cross-hierarchy associations; bundles edges using B-splines along hierarchy levels, reducing clutter while preserving connectivity information.",
+      "strength": "empirical",
+      "key_refs": [
+        "Holten 2009 / Force-Directed Edge Bundling for Graph Visualization",
+        "Hierarchical edge bundling / data-to-viz.com"
+      ],
+      "related_concepts": [
+        "Edge Bundling",
+        "Compound Graphs",
+        "Clutter Reduction",
+        "B-Spline Curves"
+      ],
+      "implication": "Powerful for MetroGraph to handle heterogeneous data: bundle edges within agent groups, highlight cross-group relations. Scales to larger knowledge graphs without overwhelming visual complexity.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-holten-2009-edge-bundling",
+        "market-theory-graph-layout-algorithms-hierarchical-edge-bundling"
+      ]
+    },
+    {
+      "concept": "Node-Link Diagram Effectiveness",
+      "field": "visualization",
+      "definition": "Empirical evidence (via user studies) showing node-link diagrams excel at connectivity/topology tasks compared to adjacency matrices and bipartite layouts; adding node groups doesn't degrade performance. Validates node-link primacy for graph visualization.",
+      "strength": "empirical",
+      "key_refs": [
+        "Node, Node-Link, and Node-Link-Group Diagrams: An Evaluation / 2014 study",
+        "Comparative Evaluation of Bipartite, Node-Link, and Matrix Representations / 2022 study"
+      ],
+      "related_concepts": [
+        "Visualization Evaluation",
+        "Task Performance",
+        "User Studies",
+        "Visual Representation Trade-offs"
+      ],
+      "implication": "Justifies MetroGraph's choice of node-link diagrams for agent/workflow visualization; validated by empirical research. Supports decision to avoid pure matrix/table representations; supports hierarchical grouping enhancements.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-battery-bipartite-evaluation",
+        "market-theory-graph-layout-algorithms-node-link-evaluation"
+      ]
+    },
+    {
+      "concept": "Large-Scale Graph Visualization Strategies",
+      "field": "visualization",
+      "definition": "Practical techniques for visualizing graphs with thousands to millions of nodes/edges: level-of-detail filtering, abstraction/clustering, aggregation, focus+context interaction, performance optimization for real-time rendering.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cambridge Intelligence / Graph visualization at scale: strategies that work",
+        "Tamassia 2013 / Handbook of Graph Drawing and Visualization"
+      ],
+      "related_concepts": [
+        "Scalability",
+        "Filtering",
+        "Abstraction",
+        "Focus+Context",
+        "Performance Optimization"
+      ],
+      "implication": "Critical for MetroGraph to handle enterprise-scale knowledge graphs. Must implement progressive rendering, dynamic filtering (show/hide nodes), clustering (aggregate related agents), and focus+context interaction (zooming/panning with stable mental map).",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-large-scale-graph-strategies"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Theory of how working memory processes information; excessive visual complexity (edge crossings, node occlusion, small text) increases extraneous cognitive load, reducing available capacity for meaningful task reasoning.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller 1988 / Cognitive Load Theory",
+        "Tufte 2001 / The Visual Display of Quantitative Information"
+      ],
+      "related_concepts": [
+        "Working Memory",
+        "Visual Complexity",
+        "Data-Ink Ratio",
+        "Chartjunk"
+      ],
+      "implication": "Directly addresses MetroGraph's core wedge: poor graph layouts (high cognitive load) push users to AI chat for explanation. Effective layout reduces cognitive friction, enabling direct graph exploration and understanding.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-tufte-2001-visual-display"
+      ]
+    },
+    {
+      "concept": "Data-Ink Ratio and Visual Efficiency",
+      "field": "visualization",
+      "definition": "Tufte's principle that the proportion of visualization ink devoted to data (vs. decorative/redundant elements) should be maximized; reduces cognitive load by eliminating chartjunk and focusing attention on meaningful information.",
+      "strength": "empirical",
+      "key_refs": [
+        "Tufte 2001 / The Visual Display of Quantitative Information"
+      ],
+      "related_concepts": [
+        "Visual Encoding Efficiency",
+        "Minimalism",
+        "Information Density",
+        "Clutter Reduction"
+      ],
+      "implication": "MetroGraph should minimize decorative node styling, avoid redundant edge rendering, and eliminate gridlines/axis clutter. Focus visual real estate on essential graph structure, reducing cognitive load vs. AI chat explanations.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-tufte-2001-visual-display"
+      ]
+    },
+    {
+      "concept": "Human-Centered Design Principles",
+      "field": "interaction-design",
+      "definition": "Don Norman's foundational approach emphasizing user understanding, iterative design, and alignment with human cognition/psychology; advocates observable, predictable interfaces that match users' mental models.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman / Principles of Human-Centered Design",
+        "Norman 2013 / The Design of Everyday Things"
+      ],
+      "related_concepts": [
+        "User Research",
+        "Iteration",
+        "Mental Models",
+        "Affordances",
+        "User Testing"
+      ],
+      "implication": "MetroGraph design must prioritize user research with FDE practitioners to understand agent/workflow mental models. Layout, interaction, and annotation choices should map to user expectations, reducing need for AI chat explanation.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-norman-design-principles"
+      ]
+    },
+    {
+      "concept": "Visualization Mantra and Interactive Exploration",
+      "field": "interaction-design",
+      "definition": "Shneiderman's interactive exploration paradigm: 'Overview first, zoom and filter, details on demand.' Enables scalable information seeking by progressively refining views rather than static presentation.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman 1996 / The Eyes Have It: A Task by Data Type Taxonomy",
+        "Shneiderman 2002 / Designing the User Interface"
+      ],
+      "related_concepts": [
+        "Interactive Systems",
+        "Progressive Refinement",
+        "Focus+Context",
+        "Filtering and Aggregation"
+      ],
+      "implication": "MetroGraph interaction must follow this paradigm: initial full-graph overview (hierarchical or force-directed), interactive zooming/panning (stable mental map), filtering by agent type/skill, details-on-demand (hover tooltips, expandable nodes).",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-shneiderman-information-visualization"
+      ]
+    },
+    {
+      "concept": "Graph Neural Networks and Learned Layout Representations",
+      "field": "graph-theory",
+      "definition": "Recent work integrating machine learning embeddings with traditional layout algorithms; GNNs learn semantic node representations that guide layout initialization, improving convergence and final quality. Bridges classical graph drawing with learned structure.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Graph Exploration with Embedding-Guided Layouts / arXiv 2022",
+        "Explainability in Graph Neural Networks / arXiv 2020"
+      ],
+      "related_concepts": [
+        "Graph Embeddings",
+        "Machine Learning",
+        "Semantic Similarity",
+        "Hybrid Approaches"
+      ],
+      "implication": "Future opportunity for MetroGraph: use GNNs to learn agent/skill embeddings, initialize force-directed layout with semantic proximity. Could improve layout quality while maintaining interpretability vs. pure AI-driven explanations.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-graph-exploration-embedding",
+        "market-theory-graph-layout-algorithms-gnn-visualization-interpretability"
+      ]
+    },
+    {
+      "concept": "Accessibility in Graph Visualization",
+      "field": "hci",
+      "definition": "Inclusive design practices ensuring graph visualizations are accessible to people with visual/cognitive disabilities: color-blind-friendly palettes, keyboard navigation, screen reader compatibility, high-contrast modes, cognitive simplification.",
+      "strength": "empirical",
+      "key_refs": [
+        "Our Stories, Our Data: Co-designing Visualizations with People with IDD / arXiv 2024",
+        "WebAIM / Graph and Chart Accessibility"
+      ],
+      "related_concepts": [
+        "Universal Design",
+        "Assistive Technology",
+        "Color Science",
+        "User Diversity"
+      ],
+      "implication": "MetroGraph must prioritize accessibility: color-blind-safe node coloring, keyboard shortcuts for navigation, semantic HTML/ARIA labels for screen readers, option to switch to high-contrast/simplified layouts.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-accessibility-visualization"
+      ]
+    },
+    {
+      "concept": "Knowledge Graph Visualization Challenges",
+      "field": "graph-theory",
+      "definition": "Specialized techniques for RDF/semantic graphs: schema-centered visualization (ontology structure), entity-relationship layouts, scalability challenges of millions of triples, semantic similarity grouping, knowledge base exploration.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Survey on the Visual Analytics of Knowledge Graph / 2024",
+        "yFiles / Guide to Creating Knowledge Graph Visualizations"
+      ],
+      "related_concepts": [
+        "RDF Graphs",
+        "Semantic Web",
+        "Ontology Visualization",
+        "Entity-Relationship Diagrams",
+        "Schema Visualization"
+      ],
+      "implication": "MetroGraph for RAG/knowledge base use cases must handle semantic schema visualization (agent types, skill hierarchies) and large entity graphs. Requires specialized layout strategies combining hierarchical ontology views with instance-level graphs.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-knowledge-graph-visualization-survey",
+        "market-theory-graph-layout-algorithms-yfiles-layout"
+      ]
+    },
+    {
+      "concept": "Temporal and Dynamic Graph Visualization",
+      "field": "visualization",
+      "definition": "Techniques for visualizing time-varying graphs: animation-based (morphing between frames) vs. timeline-based (parallel views of snapshots). Critical challenges: mental map preservation, temporal coherence, scalability to many time steps.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Taxonomy and Survey of Dynamic Graph Visualization / 2016",
+        "HOTVis: Higher-Order Time-Aware Visualisation of Dynamic Graphs / 2019"
+      ],
+      "related_concepts": [
+        "Animation",
+        "Time Series",
+        "Temporal Coherence",
+        "Event Sequences",
+        "Layout Stability"
+      ],
+      "implication": "For MetroGraph when visualizing agent interaction logs or evolving workflows: incremental layout updates (preserve mental map), optional timeline view (show graph snapshots), filtering by time range.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-dynamic-graph-survey",
+        "market-theory-graph-layout-algorithms-temporal-network-visualization"
+      ]
+    },
+    {
+      "concept": "Hypergraph Visualization",
+      "field": "graph-theory",
+      "definition": "Extension of node-link diagrams to hyperedges (edges connecting >2 nodes); structure-aware simplification maintains semantic properties while reducing visual clutter. Relevant for multi-agent interactions and group relationships.",
+      "strength": "empirical",
+      "key_refs": [
+        "Structure-Aware Simplification for Hypergraph Visualization / arXiv 2024"
+      ],
+      "related_concepts": [
+        "Hyperedges",
+        "Multi-Agent Interactions",
+        "Group Relationships",
+        "Clutter Reduction"
+      ],
+      "implication": "Useful for MetroGraph when modeling multi-agent workflows or collective actions; enables representation of 'collaborations' (3+ agents working together) without edge explosion.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-hypergraph-visualization"
+      ]
+    },
+    {
+      "concept": "PageRank-Guided Layout Initialization",
+      "field": "graph-theory",
+      "definition": "Using centrality measures (PageRank, betweenness, degree) to initialize force-directed layouts; positions important/central nodes near graph center, improving convergence speed and layout quality compared to random initialization.",
+      "strength": "empirical",
+      "key_refs": [
+        "Effective and Efficient PageRank-based Positioning for Graph Visualization / arXiv 2021"
+      ],
+      "related_concepts": [
+        "Node Centrality",
+        "Network Analysis",
+        "Layout Initialization",
+        "Convergence Acceleration"
+      ],
+      "implication": "MetroGraph layout engine should use PageRank or similar centrality to guide initial node positioning, improving both convergence speed and visual hierarchy (important agents naturally central).",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-stochastic-gradient-layout"
+      ]
+    },
+    {
+      "concept": "Interaction Patterns for Graph Exploration",
+      "field": "interaction-design",
+      "definition": "UI/interaction idioms enabling efficient graph navigation: pan/zoom with stable mental map, node/edge filtering, attribute-based selection, community detection highlighting, degree-of-interest coloring, context-sensitive toolbars.",
+      "strength": "empirical",
+      "key_refs": [
+        "D3.js force simulation / d3-force documentation",
+        "Graphviz interaction patterns / GraphvizOnline"
+      ],
+      "related_concepts": [
+        "Interactive Systems",
+        "User Interface Design",
+        "Real-Time Responsiveness",
+        "Visual Feedback"
+      ],
+      "implication": "MetroGraph interface must support intuitive navigation: zoom with arrow keys, double-click to expand agent details, right-click context menus, search/highlight agent names, color by skill/type. Reduces friction vs. AI chat.",
+      "source_ids": [
+        "market-theory-graph-layout-algorithms-d3-force-simulation",
+        "market-theory-graph-layout-algorithms-graphviz-documentation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,734 @@
+{
+  "leaf": "market/ux-teardown-db-schema-modeling",
+  "ux_screens": [
+    {
+      "slug": "azimutt-database-explorer-canvas",
+      "product_slug": "azimutt",
+      "screen_name": "Database Explorer Canvas",
+      "screen_type": "canvas",
+      "description": "Main visualization surface showing database schema with searchable, draggable table cards. Tables display column names and types with inline foreign key indicators. Supports zoom, pan, and multi-select. Search bar at top with everywhere-search capability for tables/columns.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "table cards",
+        "search bar",
+        "relationship lines",
+        "zoom controls",
+        "layout presets"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-azimutt-official-site"
+    },
+    {
+      "slug": "azimutt-path-finding-panel",
+      "product_slug": "azimutt",
+      "screen_name": "Path-Finding & Relationship Panel",
+      "screen_type": "inspector-pane",
+      "description": "Right-side panel showing relationship paths between selected tables, with connection strength visualization and suggested JOINs. Generated SQL preview for identified relationships. Toggleable relationship complexity.",
+      "pane_count": 2,
+      "click_depth": 1,
+      "hci_cost": "A",
+      "ui_elements": [
+        "path list",
+        "SQL preview",
+        "relationship strength indicator",
+        "JOIN suggestions"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-azimutt-use-cases-design"
+    },
+    {
+      "slug": "azimutt-aml-editor",
+      "product_slug": "azimutt",
+      "screen_name": "AML Editor (Code-First Mode)",
+      "screen_type": "canvas",
+      "description": "Text editor for Azimutt Markup Language (AML) with real-time diagram rendering on right side. Syntax highlighting for table definitions, column types, constraints. Live preview updates as code is edited.",
+      "pane_count": 2,
+      "click_depth": 1,
+      "hci_cost": "A",
+      "ui_elements": [
+        "code editor",
+        "live preview",
+        "syntax highlighting",
+        "error messages"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-azimutt-aml-language-docs"
+    },
+    {
+      "slug": "chartdb-import-dialog",
+      "product_slug": "chartdb",
+      "screen_name": "Database Import Dialog",
+      "screen_type": "modal",
+      "description": "Modal dialog allowing users to paste SQL DDL, select database type (PostgreSQL/MySQL/SQL Server/SQLite), or provide connection string for live import. Shows real-time schema preview (15 seconds claimed). Option to select specific tables to import.",
+      "pane_count": 1,
+      "click_depth": 3,
+      "hci_cost": "B",
+      "ui_elements": [
+        "SQL input textarea",
+        "database type selector",
+        "import button",
+        "preview pane",
+        "table filter"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-chartdb-official-site"
+    },
+    {
+      "slug": "chartdb-ai-diagram-generation",
+      "product_slug": "chartdb",
+      "screen_name": "AI Diagram Generation from Natural Language",
+      "screen_type": "modal",
+      "description": "Conversational prompt input for describing database requirements in natural language. AI generates ERD with table structure, relationships, and suggested columns (timestamps, soft deletes, indexes). Generated diagram is editable inline.",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "C",
+      "ui_elements": [
+        "prompt input",
+        "AI response display",
+        "edit controls",
+        "accept/reject buttons"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-chartdb-ai-features"
+    },
+    {
+      "slug": "chartdb-diagram-editor-canvas",
+      "product_slug": "chartdb",
+      "screen_name": "ERD Editor Canvas",
+      "screen_type": "canvas",
+      "description": "Central drag-and-drop canvas for creating/editing ERDs. Tables appear as boxes with columns listed inside. Relationship lines connect tables via foreign keys. Right sidebar shows table properties, left sidebar shows import/collaboration options. Supports inline table editing.",
+      "pane_count": 4,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "table boxes",
+        "relationship lines",
+        "left sidebar (nav)",
+        "right sidebar (properties)",
+        "toolbar"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-chartdb-official-site"
+    },
+    {
+      "slug": "chartdb-collaboration-sidebar",
+      "product_slug": "chartdb",
+      "screen_name": "Real-Time Collaboration Sidebar",
+      "screen_type": "inspector-pane",
+      "description": "Left sidebar showing active users, presence indicators (colored cursors), and sharing/permissions settings. Shows diagram list for project navigation. Cloud-only feature with sync status indicator.",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "user list",
+        "presence indicators",
+        "diagram list",
+        "share button",
+        "permissions dropdown"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-chartdb-official-site"
+    },
+    {
+      "slug": "dbdiagram-editor-two-pane",
+      "product_slug": "dbdiagram",
+      "screen_name": "DBML Editor (Left) + Diagram (Right)",
+      "screen_type": "canvas",
+      "description": "Two-pane interface: left pane contains DBML code editor with syntax highlighting; right pane shows real-time visual diagram. Minimal UI, split-view layout. Code-first paradigm where users type DBML and diagram updates live.",
+      "pane_count": 2,
+      "click_depth": 1,
+      "hci_cost": "A",
+      "ui_elements": [
+        "code editor",
+        "diagram viewer",
+        "vertical splitter",
+        "syntax highlighting"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-dbdiagram-official-site"
+    },
+    {
+      "slug": "dbdiagram-export-dialog",
+      "product_slug": "dbdiagram",
+      "screen_name": "SQL Export Dialog",
+      "screen_type": "modal",
+      "description": "Modal allowing export of DBML to SQL (MySQL, PostgreSQL, etc.), PDF, PNG, or DBML file. Database type selector with customizable SQL generation options.",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "database type selector",
+        "format selector",
+        "export button",
+        "SQL preview"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-dbml-syntax-docs"
+    },
+    {
+      "slug": "dbschema-welcome-pane",
+      "product_slug": "dbschema",
+      "screen_name": "Welcome/Connection Dialog",
+      "screen_type": "onboarding",
+      "description": "Initial dialog presenting three options: (1) Connect to existing database, (2) Design from scratch with blank canvas, (3) Import from SQL/CSV/SQLite file. Shows database type selector with 70+ options. Auto-downloads JDBC drivers.",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "option buttons",
+        "database type selector",
+        "driver manager",
+        "recent projects list"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-dbschema-documentation"
+    },
+    {
+      "slug": "dbschema-canvas-with-inspector",
+      "product_slug": "dbschema",
+      "screen_name": "Visual Design Canvas + Inspector Pane",
+      "screen_type": "canvas",
+      "description": "Large central canvas showing diagram with tables. Right sidebar shows table/column properties. Tables can be expanded to show/hide columns, data types, constraints. Double-click opens inline editor for quick changes. Top toolbar with layout options (compact, expanded headers, show/hide foreign keys).",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "diagram canvas",
+        "table boxes",
+        "property inspector",
+        "toolbar",
+        "column tree"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-dbschema-documentation"
+    },
+    {
+      "slug": "dbschema-relational-data-explorer",
+      "product_slug": "dbschema",
+      "screen_name": "Relational Data Explorer",
+      "screen_type": "dashboard",
+      "description": "Multi-table view for browsing rows across related tables in single surface. Shows primary table with rows, related tables visible as expandable columns. Supports inline filtering, sorting, and cell editing. Maintains referential integrity visually.",
+      "pane_count": 5,
+      "click_depth": 2,
+      "hci_cost": "C",
+      "ui_elements": [
+        "table grid",
+        "expandable columns",
+        "filter controls",
+        "sort controls",
+        "related table panes"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-dbschema-documentation"
+    },
+    {
+      "slug": "dbschema-schema-sync-wizard",
+      "product_slug": "dbschema",
+      "screen_name": "Schema Synchronization Wizard",
+      "screen_type": "wizard",
+      "description": "Multi-step dialog for comparing design model (.dbs file) against live database and generating migration SQL. Step 1: select target database. Step 2: shows diff (added/modified/removed tables). Step 3: preview generated SQL. Step 4: execute on target.",
+      "pane_count": 1,
+      "click_depth": 4,
+      "hci_cost": "C",
+      "ui_elements": [
+        "database selector",
+        "diff viewer",
+        "SQL preview",
+        "execute button",
+        "step indicators"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-dbschema-schema-sync-docs"
+    },
+    {
+      "slug": "prisma-studio-database-browser",
+      "product_slug": "prisma",
+      "screen_name": "Prisma Studio Database Browser",
+      "screen_type": "dashboard",
+      "description": "Web-based GUI (localhost:5555) showing list of Prisma models from schema.prisma file in left sidebar. Center pane shows table records in grid view. Supports filtering, pagination, CRUD operations (Create, Read, Update, Delete). Relationship navigation via expandable columns.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "model list sidebar",
+        "data grid",
+        "filter bar",
+        "pagination",
+        "action buttons"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-prisma-studio-docs"
+    },
+    {
+      "slug": "prisma-studio-record-editor",
+      "product_slug": "prisma",
+      "screen_name": "Record Create/Edit Modal",
+      "screen_type": "modal",
+      "description": "Modal dialog for creating new or editing existing database records. Shows form fields for each model property with type-appropriate inputs (text, number, date picker, select for enums, relationship picker). Save and cancel buttons at bottom. Inline validation feedback.",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "form fields",
+        "type-specific inputs",
+        "relationship picker",
+        "save button",
+        "validation messages"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-prisma-studio-docs"
+    },
+    {
+      "slug": "prisma-studio-relationship-expansion",
+      "product_slug": "prisma",
+      "screen_name": "Inline Relationship Expansion",
+      "screen_type": "canvas",
+      "description": "Expandable columns in data grid showing related records from foreign key relationships. Click to expand shows nested table with records from related model. Supports nested CRUD operations and back-navigation.",
+      "pane_count": 2,
+      "click_depth": 3,
+      "hci_cost": "B",
+      "ui_elements": [
+        "expand button",
+        "nested grid",
+        "relationship indicator",
+        "breadcrumb"
+      ],
+      "source_id": "market-ux-teardown-db-schema-modeling-prisma-studio-docs"
+    }
+  ],
+  "ux_flows": [
+    {
+      "slug": "azimutt-explore-existing-db",
+      "product_slug": "azimutt",
+      "flow_name": "Explore Existing Database Schema",
+      "goal": "Developer onboarding to a new database to understand schema structure and relationships",
+      "total_steps": 5,
+      "total_clicks": 8,
+      "drop_off_risk": "low",
+      "our_approach": "MetroGraph loads full schema in context graph at entry; search+pin reduces clicks from 8→3; relationship path always visible, no separate panel",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Launch CLI: npx azimutt explore $db_url",
+          "clicks": 1,
+          "friction": "minimal"
+        },
+        {
+          "step": 2,
+          "action": "Browser opens, Azimutt parses schema (automatic—no user action)",
+          "clicks": 0,
+          "friction": "none"
+        },
+        {
+          "step": 3,
+          "action": "Search for table name (e.g., 'users') using top search bar",
+          "clicks": 1,
+          "friction": "low—everywhere-search is discoverable"
+        },
+        {
+          "step": 4,
+          "action": "Click table result to focus on users table; Azimutt auto-layouts related tables",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 5,
+          "action": "Hover over relationship lines to see JOIN details; optionally click 'Follow' to navigate to related table",
+          "clicks": 2,
+          "friction": "medium—relationship semantics require visual parsing"
+        },
+        {
+          "step": 6,
+          "action": "Use path-finding panel (right sidebar) to see multi-hop relationships and pre-generated SQL JOINs",
+          "clicks": 2,
+          "friction": "medium—extra pane adds cognitive load; requires awareness of panel"
+        },
+        {
+          "step": 7,
+          "action": "Save current layout to personal workspace for future reference",
+          "clicks": 1,
+          "friction": "low"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-azimutt-official-site",
+        "market-ux-teardown-db-schema-modeling-azimutt-github-repo"
+      ]
+    },
+    {
+      "slug": "chartdb-import-and-edit-schema",
+      "product_slug": "chartdb",
+      "flow_name": "Import Existing DB and Edit ERD",
+      "goal": "Visualize and modify an existing database schema, then export changes",
+      "total_steps": 6,
+      "total_clicks": 9,
+      "drop_off_risk": "medium",
+      "our_approach": "MetroGraph: import dialog auto-detects DB type; no need for manual SQL pasting. Graph diff shows changes inline before export—no separate preview step",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Login to ChartDB Cloud (or launch self-hosted)",
+          "clicks": 1,
+          "friction": "low—cloud removes friction vs self-hosting"
+        },
+        {
+          "step": 2,
+          "action": "Click 'New Diagram' → select 'Import from Database' option",
+          "clicks": 2,
+          "friction": "low"
+        },
+        {
+          "step": 3,
+          "action": "Paste SQL DDL (CREATE TABLE statements) or connection string into modal dialog; select target DB type (PostgreSQL/MySQL/etc)",
+          "clicks": 1,
+          "friction": "medium—requires manual SQL copy/paste vs direct connection; UX differs from Prisma's direct .prisma schema access"
+        },
+        {
+          "step": 4,
+          "action": "ChartDB parses and generates ERD (15 seconds claimed)",
+          "clicks": 0,
+          "friction": "none—automatic, but wait time creates perception issue"
+        },
+        {
+          "step": 5,
+          "action": "Drag table boxes on canvas; add new table via '+Table' button; define relationships by clicking foreign key",
+          "clicks": 3,
+          "friction": "medium—multi-step for relationship creation; visual dragging reduces tension vs form-based tools"
+        },
+        {
+          "step": 6,
+          "action": "Export as SQL DDL via 'Export' menu; select target DB type; copy generated SQL",
+          "clicks": 2,
+          "friction": "low"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-chartdb-official-site",
+        "market-ux-teardown-db-schema-modeling-logrocket-chartdb-tutorial"
+      ]
+    },
+    {
+      "slug": "dbdiagram-design-schema-with-dbml",
+      "product_slug": "dbdiagram",
+      "flow_name": "Design Schema from Scratch Using DBML",
+      "goal": "Rapidly prototype a new database schema using text-first code paradigm",
+      "total_steps": 5,
+      "total_clicks": 5,
+      "drop_off_risk": "low",
+      "our_approach": "MetroGraph preserves dbdiagram's code-first paradigm but eliminates context-switching: schema and graph are same object, no separate 'import' step",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Go to dbdiagram.io; start new diagram",
+          "clicks": 1,
+          "friction": "very low—no signup required for free tier"
+        },
+        {
+          "step": 2,
+          "action": "Type DBML table definitions in left pane (table name, columns, types, constraints)",
+          "clicks": 0,
+          "friction": "none—text entry; live preview on right updates as user types"
+        },
+        {
+          "step": 3,
+          "action": "Define relationships using DBML relationship syntax (e.g., 'Ref: users.id < posts.user_id')",
+          "clicks": 0,
+          "friction": "low—DBML syntax is intuitive for developers; visual feedback immediate"
+        },
+        {
+          "step": 4,
+          "action": "Iterate: make typos, see real-time error feedback on diagram, fix inline",
+          "clicks": 1,
+          "friction": "very low—tight feedback loop eliminates save/refresh cycle"
+        },
+        {
+          "step": 5,
+          "action": "Export: click 'Export' → select format (SQL, PDF, PNG, DBML); copy/download",
+          "clicks": 2,
+          "friction": "low"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-dbdiagram-official-site",
+        "market-ux-teardown-db-schema-modeling-dev-dbdiagram-tutorial"
+      ]
+    },
+    {
+      "slug": "dbschema-live-db-sync-workflow",
+      "product_slug": "dbschema",
+      "flow_name": "Live Database Synchronization Workflow",
+      "goal": "Sync offline design model changes to a live database with migration review",
+      "total_steps": 7,
+      "total_clicks": 12,
+      "drop_off_risk": "medium",
+      "our_approach": "MetroGraph: graph-based diff shows schema delta as relationship changes, not table diffs; one-click promote to all environments (dev→test→prod)",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open DbSchema and load .dbs design model file",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 2,
+          "action": "Modify schema: double-click table to inline-edit columns, add/remove relationships",
+          "clicks": 2,
+          "friction": "low—inline editing faster than modal-based competitors"
+        },
+        {
+          "step": 3,
+          "action": "Right-click canvas → 'Synchronize with Database' → select target database connection",
+          "clicks": 2,
+          "friction": "medium—requires pre-configured DB connection"
+        },
+        {
+          "step": 4,
+          "action": "DbSchema compares design model to live schema; generates diff report (added/modified/dropped tables/columns)",
+          "clicks": 0,
+          "friction": "none—automatic, but may take seconds for large schemas"
+        },
+        {
+          "step": 5,
+          "action": "Review migration SQL in 'Preview' tab; optionally edit SQL before applying",
+          "clicks": 1,
+          "friction": "medium—SQL text requires deep database knowledge for confidence"
+        },
+        {
+          "step": 6,
+          "action": "Select execution mode: dry-run vs live; click 'Apply' button",
+          "clicks": 2,
+          "friction": "medium—no explicit confirmation dialog increases accidental-change risk"
+        },
+        {
+          "step": 7,
+          "action": "DbSchema shows result: migration applied, schema now in sync",
+          "clicks": 0,
+          "friction": "none"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-dbschema-documentation",
+        "market-ux-teardown-db-schema-modeling-dbschema-schema-sync-docs"
+      ]
+    },
+    {
+      "slug": "prisma-studio-live-db-crud",
+      "product_slug": "prisma",
+      "flow_name": "Live Database CRUD Operations via Prisma Studio",
+      "goal": "Browse and edit live database records through ORM-integrated UI without writing SQL",
+      "total_steps": 6,
+      "total_clicks": 10,
+      "drop_off_risk": "medium",
+      "our_approach": "MetroGraph: Studio paradigm is data-only, not schema. MetroGraph includes schema-aware record browser: filter by relationship properties, bulk edit with type safety, audit trail integration",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Run 'npx prisma studio' in CLI; Prisma Studio launches at localhost:5555",
+          "clicks": 1,
+          "friction": "very low—CLI invocation is developer-native"
+        },
+        {
+          "step": 2,
+          "action": "Left sidebar shows list of Prisma models from schema.prisma (users, posts, comments, etc)",
+          "clicks": 0,
+          "friction": "none—list is auto-generated from schema"
+        },
+        {
+          "step": 3,
+          "action": "Click model name (e.g., 'users') to view all records in paginated grid",
+          "clicks": 1,
+          "friction": "very low"
+        },
+        {
+          "step": 4,
+          "action": "Search/filter records: click 'Filter' button → select field → enter value; Studio queries live DB",
+          "clicks": 2,
+          "friction": "medium—filter UI requires extra modal step vs inline filter-as-you-type"
+        },
+        {
+          "step": 5,
+          "action": "Edit record: click row → modal opens with form fields; modify values; click 'Update'",
+          "clicks": 3,
+          "friction": "medium—modal adds context-switching; form validation is inline (type-safe via Prisma schema)"
+        },
+        {
+          "step": 6,
+          "action": "Create new record: click '+Create' button → fill modal form → click 'Create'",
+          "clicks": 2,
+          "friction": "low—explicit create reduces accidental modifications"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-prisma-studio-docs",
+        "market-ux-teardown-db-schema-modeling-achromatic-prisma-studio-guide"
+      ]
+    }
+  ],
+  "ux_patterns": [
+    {
+      "slug": "high-pane-count-antipattern",
+      "pattern": "Surface-Area Explosion: Multi-Pane Layouts (4+ simultaneous panes/panels)",
+      "is_antipattern": true,
+      "category": "information-architecture",
+      "description": "Tools like DbSchema and Azimutt display diagram canvas, property inspector, sidebar, and toolbar simultaneously, fragmenting attention. Users must track state across multiple surfaces. Each pane adds visual noise and increases cognitive load.",
+      "exemplar_product_slugs": [
+        "dbschema",
+        "azimutt"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph: single unified surface where canvas IS the graph; properties surface inline on selection; panels are modal or drawer-based, not permanent. Reduces pane_count to 1-2, lowering cognitive overhead for complex schemas.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-stephanie-walter-data-tables",
+        "market-ux-teardown-db-schema-modeling-ibm-design-data-viz"
+      ]
+    },
+    {
+      "slug": "flight-to-chat-antipattern",
+      "pattern": "Flight-to-Chat: AI Prompting Without Graph Context",
+      "is_antipattern": true,
+      "category": "interaction-pattern",
+      "description": "ChartDB and TalkingSchema offer natural-language schema generation, but lose user context. User types prompt → AI generates disconnected ERD → user must manually integrate with existing schema. No semantic connection between prompt and graph state; encourages context-switching to conversation mode rather than staying in design mode.",
+      "exemplar_product_slugs": [
+        "chartdb",
+        "talkingschema"
+      ],
+      "hci_cost": "D",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph: AI augmentation is graph-aware. User right-clicks table → 'Suggest Related Tables' → AI adds nodes to graph, maintaining visual context. Prompt history is attached to specific graph regions, not a separate chat. Keeps user in design flow, reduces context thrashing.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-chartdb-ai-features",
+        "market-ux-teardown-db-schema-modeling-talkingschema-official-site"
+      ]
+    },
+    {
+      "slug": "modal-dialog-antipattern",
+      "pattern": "Modal-Heavy Workflows: Multi-Step Forms in Dialogs",
+      "is_antipattern": true,
+      "category": "interaction-pattern",
+      "description": "Prisma Studio, DbSchema sync wizard, and ChartDB import use modal dialogs for multi-step operations (select DB → paste SQL → review → export). Each dialog requires user focus shift, block main interaction. Wizard-style dialogs create perception of friction and 'heavyweight' operations.",
+      "exemplar_product_slugs": [
+        "prisma",
+        "dbschema",
+        "chartdb"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph: operations are inlined into graph surface. Sync becomes a sidebar toggle: show delta visualization on canvas, click 'apply' without leaving diagram. Import is drag-and-drop SQL file onto canvas, auto-parsing inline. Reduces modal nesting and context-switching.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-mailchimp-cognitive-overload",
+        "market-ux-teardown-db-schema-modeling-aufaitux-cognitive-load"
+      ]
+    },
+    {
+      "slug": "code-paste-friction",
+      "pattern": "Manual Code Pasting: SQL/DBML Copy-Paste for Schema Input",
+      "is_antipattern": true,
+      "category": "onboarding",
+      "description": "ChartDB requires users to paste SQL DDL into a modal; dbdiagram requires typing DBML manually. No direct file upload or IDE integration. Users must leave their editor, find schema file, copy, switch to browser, paste. High friction for first-time users.",
+      "exemplar_product_slugs": [
+        "chartdb",
+        "dbdiagram"
+      ],
+      "hci_cost": "B",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph: (1) drag-and-drop SQL files directly onto canvas, (2) VS Code extension auto-loads from open schema.prisma/.sql file, (3) IDE command palette command ('Show Schema in MetroGraph') maintains editor context. Zero copy-paste overhead.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-medium-chartdb-comparison",
+        "market-ux-teardown-db-schema-modeling-dev-dbdiagram-tutorial"
+      ]
+    },
+    {
+      "slug": "relationship-visualization-cognitive-load",
+      "pattern": "Relationship Complexity: Hairball Diagram from Dense Relationships",
+      "is_antipattern": false,
+      "category": "visualization",
+      "description": "All tools struggle with >50 tables and >200 relationships: relationship lines overlap, cross entire canvas, obscure table content. User must manually pan/zoom to trace relationships. Cognitive load spikes exponentially with relationship density. Schema becomes 'unreadable hairball'.",
+      "exemplar_product_slugs": [
+        "azimutt",
+        "dbschema",
+        "chartdb"
+      ],
+      "hci_cost": "D",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph: (1) Relationship lines are semantic, not visual—show only on hover/selection, reducing visual clutter. (2) Automatic clustering by domain/module (via tags or schema namespaces), showing collapsed groups. (3) Spectral ordering of tables to minimize line crossings (Sugiyama layering). (4) Multi-level focus: zoom shows summary view → detail view → code view. Maintains readability at any scale.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-uxmatters-data-viz",
+        "market-ux-teardown-db-schema-modeling-arxiv-patternsight"
+      ]
+    },
+    {
+      "slug": "offline-online-sync-confusion",
+      "pattern": "Offline vs. Online Mode Cognitive Split",
+      "is_antipattern": true,
+      "category": "mental-model",
+      "description": "DbSchema separates offline design model (.dbs file) from live DB. ChartDB Cloud vs Self-Hosted are different products. Prisma schema is declarative but Studio is data-only (read/write without schema edit). Users must manage multiple mental models: design vs. live, local vs. cloud, schema vs. data. Confusion about 'which tool am I in?' leads to errors (editing design model but forgetting to sync, etc).",
+      "exemplar_product_slugs": [
+        "dbschema",
+        "chartdb",
+        "prisma"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph: single unified model. Canvas is always 'live'—if offline, shows cached schema; on reconnect, shows delta between local and server. No separate 'sync' mode; all changes are auto-persisted (with explicit 'publish' to move to production). Eliminates dual-model confusion.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-aufaitux-cognitive-load",
+        "market-ux-teardown-db-schema-modeling-ux-database-cognitive-load"
+      ]
+    },
+    {
+      "slug": "path-finding-as-afterthought",
+      "pattern": "Path-Finding Panel: Relationship Navigation as Secondary Feature",
+      "is_antipattern": true,
+      "category": "information-retrieval",
+      "description": "Azimutt's path-finding is a right sidebar that users must explicitly open. Most users miss it. Relationship queries ('show me all tables between X and Y', 'suggest JOIN for these columns') are available but require awareness and extra clicks. Violates progressive disclosure—advanced queries should be discoverable.",
+      "exemplar_product_slugs": [
+        "azimutt"
+      ],
+      "hci_cost": "B",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph: right-click on table → 'Find Path to...' or 'Related Tables' is primary interaction, not sidebar. Suggested relationships appear as ghost nodes (low contrast) until user hovers. All path-finding is integrated into the canvas, not a separate surface.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-azimutt-official-site"
+      ]
+    },
+    {
+      "slug": "code-first-learning-curve",
+      "pattern": "Code-First Paradigm: DBML/AML Syntax Requires Developer Literacy",
+      "is_antipattern": false,
+      "category": "onboarding",
+      "description": "dbdiagram (DBML) and Azimutt (AML) are powerful for developers but have syntax learning curves. New users struggle with DBML relationship syntax or AML constraint notation. Designers/PMs who don't code cannot use tool. Trades accessibility for expressiveness.",
+      "exemplar_product_slugs": [
+        "dbdiagram",
+        "azimutt"
+      ],
+      "hci_cost": "B",
+      "our_stance": "conditional",
+      "our_rationale": "MetroGraph: support both paradigms. Visual drag-and-drop for non-coders (tables, columns, relationships via UI). Code view option for developers—show underlying schema-as-code (Prisma-like DSL) for advanced users. Toggle between modes. Best-of-both: accessibility + expressiveness.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-azimutt-aml-feature-page",
+        "market-ux-teardown-db-schema-modeling-dev-dbdiagram-tutorial"
+      ]
+    },
+    {
+      "slug": "schema-immutability-studio",
+      "pattern": "Studio Data-Only, No Schema Editing",
+      "is_antipattern": true,
+      "category": "feature-scope",
+      "description": "Prisma Studio is excellent for browsing/editing live data but cannot modify schema. Users must switch to code editor + CLI for schema changes. Violates single-tool paradigm; fragments workflow between schema design and data management.",
+      "exemplar_product_slugs": [
+        "prisma"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph: schema and data are integrated. Edit table structure inline on canvas; changes are auto-detected against live DB. Data browser is same tool as schema designer. No context-switching to IDE for schema changes.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-prisma-studio-docs"
+      ]
+    },
+    {
+      "slug": "wait-time-perception",
+      "pattern": "Latency Opacity: Long Processing Time Without Progress Feedback",
+      "is_antipattern": true,
+      "category": "feedback",
+      "description": "ChartDB claims '15 seconds to import', DbSchema may take seconds to sync a large schema, dbdiagram may lag on large DBML files. No explicit progress bar or cancellation. Users perceive tool as 'frozen' and may reload, causing data loss or confusion.",
+      "exemplar_product_slugs": [
+        "chartdb",
+        "dbschema"
+      ],
+      "hci_cost": "B",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph: (1) streaming schema import—show tables as they load, not all-at-once after delay. (2) explicit progress indicator with ETA. (3) cancellation button to stop long operations. (4) use Web Workers/async loading to prevent main thread blocking.",
+      "source_ids": [
+        "market-ux-teardown-db-schema-modeling-chartdb-official-site"
+      ]
+    }
+  ]
+}

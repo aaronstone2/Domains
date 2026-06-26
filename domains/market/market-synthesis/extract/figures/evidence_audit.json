@@ -1,0 +1,27 @@
+{
+  "name": "evidence_audit",
+  "caption": "Claims by verdict + average agreement (the gold-layer audit).",
+  "sql": "SELECT verdict, COUNT(*) n, ROUND(AVG(agreement_score),2) avg_agreement FROM market.claims GROUP BY 1 ORDER BY 2 DESC",
+  "rows": [
+    {
+      "verdict": "supported",
+      "n": 80,
+      "avg_agreement": 0.85
+    },
+    {
+      "verdict": "refuted",
+      "n": 49,
+      "avg_agreement": 0.0
+    },
+    {
+      "verdict": "disputed",
+      "n": 31,
+      "avg_agreement": 0.33
+    },
+    {
+      "verdict": "equivalent",
+      "n": 1,
+      "avg_agreement": 0.67
+    }
+  ]
+}

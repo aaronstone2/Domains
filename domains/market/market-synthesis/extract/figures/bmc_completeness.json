@@ -1,0 +1,43 @@
+{
+  "name": "bmc_completeness",
+  "caption": "The 9 BMC blocks for MetroGraph + item counts.",
+  "sql": "SELECT block, len(items) n_items FROM market.bmc_blocks ORDER BY block",
+  "rows": [
+    {
+      "block": "channels",
+      "n_items": 8
+    },
+    {
+      "block": "cost-structure",
+      "n_items": 8
+    },
+    {
+      "block": "customer-relationships",
+      "n_items": 8
+    },
+    {
+      "block": "customer-segments",
+      "n_items": 8
+    },
+    {
+      "block": "key-activities",
+      "n_items": 8
+    },
+    {
+      "block": "key-partnerships",
+      "n_items": 10
+    },
+    {
+      "block": "key-resources",
+      "n_items": 7
+    },
+    {
+      "block": "revenue-streams",
+      "n_items": 8
+    },
+    {
+      "block": "value-propositions",
+      "n_items": 8
+    }
+  ]
+}

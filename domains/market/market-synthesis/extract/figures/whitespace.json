@@ -1,0 +1,102 @@
+{
+  "name": "whitespace",
+  "caption": "High-pain features no competitor executes above grade C (the gap MetroGraph can own).",
+  "sql": "SELECT f.name, f.pain_score, COALESCE(MAX(qg(pf.quality_grade)),0) best_competitor_q FROM market.features f LEFT JOIN market.product_features pf ON pf.feature_id=f.id LEFT JOIN market.products p ON pf.product_id=p.id AND p.is_self=false WHERE f.pain_score>=0.7 GROUP BY 1,2 HAVING COALESCE(MAX(qg(pf.quality_grade)),0)<=3 ORDER BY f.pain_score DESC",
+  "rows": [
+    {
+      "name": "LLM Agent Node",
+      "pain_score": 0.85,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Agentic Loop Visualization",
+      "pain_score": 0.85,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Recursive Inspect & JSON Drill-Down",
+      "pain_score": 0.82,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Infinite Canvas with Regions",
+      "pain_score": 0.82,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Live Data Preview & Sample Data",
+      "pain_score": 0.82,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Transform & Processing Nodes",
+      "pain_score": 0.82,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Live Data-Defined & JSON Components",
+      "pain_score": 0.82,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Data Source Nodes",
+      "pain_score": 0.8,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Publish, Version-Lock & Rollback",
+      "pain_score": 0.78,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Focus Mode & Subgraph Navigation",
+      "pain_score": 0.78,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Edge Data Preview & Sampling",
+      "pain_score": 0.78,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Data Protection (Encryption, Masking, RLS)",
+      "pain_score": 0.78,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Visual Expression & Variable Editor",
+      "pain_score": 0.78,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Vector Store & Embedding Support",
+      "pain_score": 0.78,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Decision & Branching Nodes",
+      "pain_score": 0.75,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "RAG & Vector Retrieval Visualization",
+      "pain_score": 0.74,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Edge Labeling & Styling",
+      "pain_score": 0.74,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Output & Sink Nodes",
+      "pain_score": 0.72,
+      "best_competitor_q": 0
+    },
+    {
+      "name": "Type-Aware Edge & Port Validation",
+      "pain_score": 0.7,
+      "best_competitor_q": 0
+    }
+  ]
+}

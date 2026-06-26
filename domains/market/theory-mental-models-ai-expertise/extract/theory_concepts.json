@@ -1,0 +1,466 @@
+{
+  "leaf": "market/theory-mental-models-ai-expertise",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Mental Model",
+      "field": "cognitive-psych",
+      "definition": "An internal cognitive representation that users construct about how a system works, its capabilities, constraints, and behavior patterns. Mental models guide interaction strategies and error recovery.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "Norman Affordances and Design"
+      ],
+      "implication": "MetroGraph must surface system capabilities (multi-agent coordination, graph structure) transparently so users develop accurate mental models rather than underestimating or overestimating what the tool can do. Mismatch between user mental models and actual tool design causes the HCI failure MetroGraph aims to fix.",
+      "related_concepts": [
+        "Affordances",
+        "System Image",
+        "Design Model"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-norman-1988-design-everyday-things",
+        "market-theory-mental-models-ai-expertise-norman-affordances-design"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "hci",
+      "definition": "Perceived and real action possibilities that an interface or object offers. Perceived affordances are culturally shaped cues that signal what actions are possible; real affordances reflect actual system capabilities.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman / Affordances and Design"
+      ],
+      "implication": "MetroGraph's visual design (node/edge metaphors, drag-drop interactions) must communicate affordances clearly. Users with prior database/graph experiences will perceive affordances differently; explicit visual signaling prevents functional fixedness where users apply old mental models (SQL queries, SERP browsing) to new graph tools.",
+      "related_concepts": [
+        "Perceived Affordances",
+        "Design Patterns",
+        "Visibility"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-norman-affordances-design",
+        "market-theory-mental-models-ai-expertise-design-patterns-conventions-affordances"
+      ]
+    },
+    {
+      "concept": "Sensemaking",
+      "field": "information-foraging",
+      "definition": "The active process of constructing meaningful representations from complex, ambiguous information. Core loop of information foraging (seeking) and synthesis (organizing). Users develop mental models through iterative hypothesis formation and revision.",
+      "strength": "established-law",
+      "key_refs": [
+        "Pirolli & Card / A Functional Model of Sensemaking",
+        "Pirolli / Information Foraging"
+      ],
+      "implication": "MetroGraph users engage in sensemaking loops when exploring agent workflows or query results. Explicit visualization of agent states and dependencies supports rapid iteration between hypothesis (\"what should happen\") and observation (\"what did happen\"). Poor sensemaking support causes users to blame UI rather than understanding actual system behavior.",
+      "related_concepts": [
+        "Information Foraging",
+        "Data/Frame Theory",
+        "Cognitive Biases"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-pirolli-sensemaking",
+        "market-theory-mental-models-ai-expertise-pirolli-information-foraging"
+      ]
+    },
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "Users' perception of how relevant or promising an information source or action appears based on visible cues. Users navigate systems by following information scent, adjusting mental models when scent does not match expected relevance.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card / Information Foraging",
+        "Information scent and web navigation"
+      ],
+      "implication": "In MetroGraph, node labels, edge annotations, and visual hierarchy must provide high information scent so users immediately understand whether a node represents an agent, a subgoal, or a data state. Low scent forces users to explore blindly, degrading mental model accuracy.",
+      "related_concepts": [
+        "Sensemaking",
+        "Navigation",
+        "Visual Hierarchy"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-pirolli-information-foraging",
+        "market-theory-mental-models-ai-expertise-information-scent-web-navigation"
+      ]
+    },
+    {
+      "concept": "Mental Model Shifts in LLM Interaction",
+      "field": "ai-ux",
+      "definition": "Documented empirical phenomenon where users' mental models of LLM capabilities and limitations evolve through repeated interaction, often becoming more accurate but sometimes diverging from actual system behavior.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mental model shifts in human-LLM interactions / Journal of Intelligent Information Systems 2025"
+      ],
+      "implication": "MetroGraph users' mental models of multi-agent orchestration will shift as they interact. System must track and surface mental model accuracy (via explanations, feedback loops) to prevent users from settling into inaccurate stabilized models that later cause surprises or blame attribution.",
+      "related_concepts": [
+        "Trust Calibration",
+        "User Adaptation",
+        "Expertise Development"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-mental-model-shifts-llm"
+      ]
+    },
+    {
+      "concept": "Mental State Attribution to AI",
+      "field": "cognitive-psych",
+      "definition": "Users' folk-psychological tendency to attribute consciousness, emotions, reasoning, and intent to AI systems, independent of whether those systems possess such capacities. Attributions split into two dimensions: agency (reasoning) and experience (emotion/consciousness).",
+      "strength": "empirical",
+      "key_refs": [
+        "The influence of mental state attributions on trust in large language models / PMC 2024"
+      ],
+      "implication": "Users may blame 'intentional' agent failures differently than 'accidental' ones, or trust systems more when they attribute reasoning but not consciousness. MetroGraph must avoid anthropomorphic language that invites incorrect mental state attributions; clear naming (\"orchestrator agent\", \"subprocess\") prevents users from misunderstanding autonomy levels.",
+      "related_concepts": [
+        "Anthropomorphism",
+        "Stance Attribution",
+        "Responsibility Attribution"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-mental-state-attribution-llm"
+      ]
+    },
+    {
+      "concept": "Stance Attribution in AI Failures",
+      "field": "cognitive-psych",
+      "definition": "When AI systems fail, users attribute failures either to design (unintentional system limitation) or intent (the system chose not to do something). Stance attribution affects blame assignment and subsequent trust decisions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Intentional or Designed? The Impact of Stance Attribution on Cognitive Processing / Brain Sciences 2024"
+      ],
+      "implication": "MetroGraph users will attribute agent failures differently based on whether they perceive a deliberate choice vs. a capability limit. Transparent logging (\"agent did not attempt step X because constraint Y\") supports accurate stance attribution and prevents users from blaming UI when blame belongs elsewhere.",
+      "related_concepts": [
+        "Responsibility Attribution",
+        "Causal Attribution",
+        "Trust Calibration"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-stance-attribution-ai-failures"
+      ]
+    },
+    {
+      "concept": "Expert vs. Novice Mental Models",
+      "field": "cognitive-psych",
+      "definition": "Experts and novices construct qualitatively different mental models: experts organize knowledge around deep principles and constraints; novices rely on surface features and memorized patterns. Expert mental models are richer but require different interface support.",
+      "strength": "established-law",
+      "key_refs": [
+        "Expert and Novice User Differences and Implications for Product Design / CHI",
+        "Dreyfus Model of Skill Acquisition"
+      ],
+      "implication": "MetroGraph must support both novice users (who think in terms of simple agent sequences) and expert users (who reason about dependency graphs and constraint propagation). Progressive disclosure and optional advanced visualizations address this gap without overwhelming either group.",
+      "related_concepts": [
+        "Skill Acquisition",
+        "Cognitive Load",
+        "Design for Multiple Expertise Levels"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-expert-novice-differences-hci",
+        "market-theory-mental-models-ai-expertise-dreyfus-skill-acquisition"
+      ]
+    },
+    {
+      "concept": "Trust Calibration",
+      "field": "hci",
+      "definition": "The degree to which a user's trust in a system matches the system's actual reliability. Over-trust (reliance exceeds reliability) and under-trust (reliance below reliability) both degrade performance. Accurate mental models enable calibration.",
+      "strength": "empirical",
+      "key_refs": [
+        "Trust in AI: progress, challenges, and future directions / Nature 2024",
+        "Calibrating Trust, Reliance and Dependence in Variable-Reliability Automation"
+      ],
+      "implication": "MetroGraph users must develop accurate mental models of when agents are reliable vs. when human oversight is essential. Inconsistent system behavior, opaque decision-making, or misleading confidence signals will cause miscalibration; visual transparency and explicit uncertainty communication support proper calibration.",
+      "related_concepts": [
+        "Trust",
+        "Reliance",
+        "Mental Model Accuracy"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-trust-calibration-ai",
+        "market-theory-mental-models-ai-expertise-trust-reliance-automation-nature",
+        "market-theory-mental-models-ai-expertise-calibrating-trust-reliance-automation"
+      ]
+    },
+    {
+      "concept": "Functional Fixedness in LLM Interaction",
+      "field": "cognitive-psych",
+      "definition": "A cognitive bias where users constrain their interaction strategies with LLMs to familiar patterns from prior tools (search engines, command-line interfaces, virtual assistants), preventing exploration of the system's fuller capabilities.",
+      "strength": "empirical",
+      "key_refs": [
+        "Trapped by Expectations: Functional Fixedness in LLM-Enabled Chat Search / ACM 2025"
+      ],
+      "implication": "MetroGraph users with database or search-engine backgrounds will try to use MetroGraph like a query interface. Functional fixedness prevents them from discovering graph visualization affordances or multi-agent orchestration features. Progressive scaffolding (tutorial, contextual hints) and explicit affordance signaling help overcome this bias.",
+      "related_concepts": [
+        "Mental Models",
+        "Affordances",
+        "User Adaptation"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-functional-fixedness-llm-chat"
+      ]
+    },
+    {
+      "concept": "Explanation and Explainability (XAI)",
+      "field": "hci",
+      "definition": "System-provided reasoning traces or decision justifications intended to help users understand AI behavior and correct their mental models. However, explanations can destabilize (polarize) existing mental models if they contradict prior expectations.",
+      "strength": "empirical",
+      "key_refs": [
+        "Human-centered evaluation of explainable AI applications / PMC 2024",
+        "Explainable AI from a user perspective / ScienceDirect",
+        "Polarizing Effects of Algorithmic Transparency / arXiv 2018"
+      ],
+      "implication": "MetroGraph explanations of agent decisions must be calibrated to user expertise and expectations. Overly detailed traces can increase cognitive load and confusion; inadequate explanations leave users guessing. Dialogue-based explanation (user asks why, system responds) supports active mental model construction better than one-way explanations.",
+      "related_concepts": [
+        "Transparency",
+        "Interactive AI",
+        "Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-xai-user-understanding-systematic",
+        "market-theory-mental-models-ai-expertise-xai-user-perspective-synthesis",
+        "market-theory-mental-models-ai-expertise-polarizing-effects-algorithmic-transparency"
+      ]
+    },
+    {
+      "concept": "Interactive Clarification vs. One-Way Explanation",
+      "field": "hci",
+      "definition": "Shift from passive explanation (system tells user) to interactive dialogue where users ask questions and systems respond. Interactive modalities support dynamic mental model construction and grounding better than static explanations.",
+      "strength": "framework",
+      "key_refs": [
+        "From Explainable to Interactive AI: A Literature Review on Current Trends / arXiv 2024"
+      ],
+      "implication": "MetroGraph should support users asking 'why did this agent fail?' rather than only showing pre-generated explanations. Interactive drill-down into subgoal states and agent decisions enables users to actively construct mental models of system behavior.",
+      "related_concepts": [
+        "Dialogue",
+        "Grounding",
+        "Common Ground"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-from-explainable-interactive-ai"
+      ]
+    },
+    {
+      "concept": "Common Ground and Grounding in Dialogue",
+      "field": "cognitive-psych",
+      "definition": "In dialogue, participants develop shared understanding (common ground) through collaborative acknowledgment and repair. For human-AI systems, robust mental models require clear grounding that user understanding matches system semantics.",
+      "strength": "established-law",
+      "key_refs": [
+        "Common ground, cooperation, and recipient design in human-computer interactions / Clark & Brennan"
+      ],
+      "implication": "MetroGraph requires explicit grounding mechanisms (confirm goal parsing before execution, ask clarifying questions about constraints) so users and the system align on what multi-agent orchestration entails. Misalignment is a primary source of blame attribution.",
+      "related_concepts": [
+        "Mental Models",
+        "Communication",
+        "Dialogue"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-clark-brennan-grounding"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Theory that human working memory has limited capacity. Interface complexity (extraneous load) competes with task reasoning (intrinsic load). Reducing extraneous load via clear visual design enables users to develop accurate mental models.",
+      "strength": "established-law",
+      "key_refs": [
+        "User interface design in mobile learning applications: measuring learners' extraneous cognitive load"
+      ],
+      "implication": "MetroGraph's hierarchical visualization (goals at top level, task details on demand) reduces cognitive load so users can focus on understanding multi-agent dependencies rather than parsing visual clutter. Surface-area bloat (a wedge problem) directly increases cognitive load and harms mental model accuracy.",
+      "related_concepts": [
+        "Information Design",
+        "Visualization",
+        "Progressive Disclosure"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-cognitive-load-interface-design"
+      ]
+    },
+    {
+      "concept": "Responsibility Attribution in Human-AI Collaboration",
+      "field": "cognitive-psych",
+      "definition": "When failures occur in human-AI systems, users distribute blame among human choice, AI design, and AI autonomy based on their mental models of who (human or system) had control and responsibility at each step.",
+      "strength": "empirical",
+      "key_refs": [
+        "Responsibility Attribution in Human Interactions with Everyday AI Systems / CHI 2025",
+        "When AI Fails, Who Do We Blame? / IEEE ITTS"
+      ],
+      "implication": "If users misunderstand whether an agent autonomously made a decision or followed human guidance, they will blame the wrong party. MetroGraph must clearly surface which decisions humans made (goal setting, constraint specification) vs. which agents made (execution choices) so blame attribution is accurate.",
+      "related_concepts": [
+        "Stance Attribution",
+        "Causal Models",
+        "Autonomy Levels"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-responsibility-attribution-human-ai",
+        "market-theory-mental-models-ai-expertise-when-ai-fails-who-blame"
+      ]
+    },
+    {
+      "concept": "Meaningful Human Control",
+      "field": "hci",
+      "definition": "Framework defining when and how humans should exert intentional control over AI systems. Requires users to have mental models of autonomy levels (from full override to advisory) and clear interfaces for expressing control intent.",
+      "strength": "framework",
+      "key_refs": [
+        "Meaningful human control: actionable properties for AI system development"
+      ],
+      "implication": "MetroGraph's autonomy levels (from fully human-supervised to fully autonomous agents) must be visually signaled and adjustable so users maintain appropriate mental models of control boundaries. Undefined autonomy levels breed confusion and blame attribution errors.",
+      "related_concepts": [
+        "Autonomy",
+        "Responsibility",
+        "Control"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-meaningful-human-control-ai"
+      ]
+    },
+    {
+      "concept": "Levels of Autonomy",
+      "field": "hci",
+      "definition": "Structured taxonomy distinguishing degrees of agent autonomy from operator (human controls all) to observer (AI executes with no human input). Users require accurate mental models of which level applies to each agent or subgoal.",
+      "strength": "framework",
+      "key_refs": [
+        "Levels of Autonomy for AI Agents Working Paper / arXiv 2025"
+      ],
+      "implication": "MetroGraph must label each agent or subgoal with its autonomy level (human-supervised vs. independent). Without this, users will construct inconsistent mental models and be surprised by failures.",
+      "related_concepts": [
+        "Control",
+        "Responsibility",
+        "Transparency"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-levels-autonomy-ai-agents"
+      ]
+    },
+    {
+      "concept": "Visible Reasoning and Chain-of-Thought Artifacts",
+      "field": "ai-ux",
+      "definition": "Displaying intermediate reasoning steps (chain-of-thought) or planning artifacts that show how an AI system is solving a problem. Users perceive systems with visible reasoning as more intelligent and trustworthy, but reasoning traces can also trigger miscalibration if users over-interpret intermediate steps.",
+      "strength": "empirical",
+      "key_refs": [
+        "Watching AI Think: User Perceptions of Visible Thinking in Chatbots / arXiv 2026"
+      ],
+      "implication": "MetroGraph can display agent planning and subgoal decomposition to support user mental models, but must guard against users becoming over-confident in intermediate outputs that may still fail.",
+      "related_concepts": [
+        "Explanation",
+        "Transparency",
+        "Trust"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-watching-ai-think-visible-reasoning"
+      ]
+    },
+    {
+      "concept": "Multi-Agent Mental Models",
+      "field": "ai-ux",
+      "definition": "User mental models of multi-agent systems are qualitatively different from single-agent models: users must track inter-agent dependencies, communication, and failure propagation. Early adopters of multi-agent tools develop mental models of teams (divide-and-conquer), whereas transparency limitations block accurate models.",
+      "strength": "empirical",
+      "key_refs": [
+        "Exploring Human-AI Collaboration Using Mental Models of Early Adopters of Multi-Agent Generative AI Tools / arXiv 2024"
+      ],
+      "implication": "MetroGraph's core problem is surfacing multi-agent interactions so users develop accurate mental models. Qualitative research shows that transparency about agent roles and task dependencies is essential; visualizing OrchVis-style hierarchical goals directly addresses this need.",
+      "related_concepts": [
+        "Mental Models",
+        "Transparency",
+        "Agent Orchestration"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-mental-models-early-adopters-multi-agent"
+      ]
+    },
+    {
+      "concept": "Hierarchical Goal Decomposition and User Mental Models",
+      "field": "hci",
+      "definition": "When complex tasks are decomposed into hierarchical goals (abstract to concrete), users develop mental models organized around goal satisfaction rather than action sequences. Explicit goal visualization supports accurate models.",
+      "strength": "empirical",
+      "key_refs": [
+        "OrchVis: Hierarchical Multi-Agent Orchestration for Human Oversight / arXiv 2025"
+      ],
+      "implication": "MetroGraph's hierarchical goal-agent mapping directly supports accurate user mental models. Users focus on whether goals are met (outcome) rather than micromanaging task steps. This reduces surface-area bloat and supports expert oversight.",
+      "related_concepts": [
+        "Sensemaking",
+        "Task Analysis",
+        "Goal-Oriented Design"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-ordvis-human-oversight-multi-agent"
+      ]
+    },
+    {
+      "concept": "Visualization and Mental Model Formation",
+      "field": "visualization",
+      "definition": "Visual representations shape how users construct mental models from data. Effective visualizations reduce the mismatch between user expectations and actual system behavior by highlighting structure, dependencies, and state changes.",
+      "strength": "established-law",
+      "key_refs": [
+        "Visualization Analysis and Design / Munzner",
+        "The Visual Display of Quantitative Information / Tufte",
+        "Iceberg Sensemaking: A Process Model for Critical Data Analysis and Visualization"
+      ],
+      "implication": "MetroGraph's metro-map-style visualization must be designed to highlight agent roles, state flow, and dependencies. Poor visualization design (inadequate distinction between node types, unclear edge semantics) causes mental model errors.",
+      "related_concepts": [
+        "Visual Design",
+        "Sensemaking",
+        "Graph Comprehension"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-munzner-visualization-analysis",
+        "market-theory-mental-models-ai-expertise-tufte-visual-display",
+        "market-theory-mental-models-ai-expertise-data-visualization-sensemaking"
+      ]
+    },
+    {
+      "concept": "Cognitive Biases in AI-Assisted Decision Making",
+      "field": "cognitive-psych",
+      "definition": "Users' cognitive biases (confirmation bias, anchoring, representativeness heuristic) interact with AI systems to distort mental models. Users selectively weight evidence that confirms current hypotheses and resist revising beliefs even with strong contrary evidence.",
+      "strength": "empirical",
+      "key_refs": [
+        "The Role of Cognitive Biases in AI-assisted Decision-making",
+        "Bias in the Loop: How Humans Evaluate AI-Generated Suggestions"
+      ],
+      "implication": "MetroGraph users will be prone to anchoring on first-seen goal decomposition and confirmation bias toward hypotheses that early agent outputs support. Actively eliciting alternative explanations and constraint violations helps counter these biases.",
+      "related_concepts": [
+        "Mental Models",
+        "Decision Making",
+        "User Adaptation"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-cognitive-biases-ai-decision-making",
+        "market-theory-mental-models-ai-expertise-bias-in-loop-human-ai"
+      ]
+    },
+    {
+      "concept": "Prompting Behavior and Mental Model Adaptation",
+      "field": "ai-ux",
+      "definition": "Users develop and refine mental models of LLM/AI systems through iterative prompting strategies. Training in LLM mechanics improves mental model accuracy and prompting effectiveness. Users adapt prompting based on observed system responses.",
+      "strength": "empirical",
+      "key_refs": [
+        "Understanding Learner-LLM Chatbot Interactions and the Impact of Prompting Guidelines / arXiv 2024",
+        "How understanding large language models can inform the use of ChatGPT in physics education"
+      ],
+      "implication": "MetroGraph users will develop prompting/interaction strategies for the orchestration UI. Explicit guidance on how to set goals, specify constraints, and interpret results accelerates mental model development.",
+      "related_concepts": [
+        "Mental Model Shifts",
+        "Training",
+        "User Adaptation"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-user-prompting-behavior-adaptation",
+        "market-theory-mental-models-ai-expertise-prompting-guidelines-instruction-comprehension"
+      ]
+    },
+    {
+      "concept": "Transparency Requirements and Regulatory Mandates",
+      "field": "regulatory",
+      "definition": "Emerging regulations (EU AI Act Article 13, etc.) mandate that AI systems provide transparent documentation of capabilities, limitations, and decision-making to users. This is a legal requirement, not just a UX best practice.",
+      "strength": "established-law",
+      "key_refs": [
+        "EU AI Act Article 13: Transparency and Provision of Information to Deployers",
+        "Transparency and explainability in AI systems: global perspectives and regulation in Australia (2025)"
+      ],
+      "implication": "MetroGraph's transparency features (goal parsing, agent status, failure reasons) are not optional; regulatory landscape increasingly requires them. This directly addresses the wedge: MetroGraph can't be a simple tool; it must surface transparency to meet legal obligations for user understanding.",
+      "related_concepts": [
+        "Compliance",
+        "Transparency",
+        "User Understanding"
+      ],
+      "source_ids": [
+        "market-theory-mental-models-ai-expertise-eu-ai-act-transparency",
+        "market-theory-mental-models-ai-expertise-ai-transparency-regulations-2025"
+      ]
+    }
+  ]
+}

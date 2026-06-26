@@ -1,0 +1,544 @@
+{
+  "self_product_features": [
+    {
+      "feature_id": "market.feature.ai-ui-parity",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Core wedge: canvas/chat mirror same state. No capability cliff.",
+      "notes": "Best-of-both differentiator; unified source of truth."
+    },
+    {
+      "feature_id": "market.feature.canvas",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Angular 17 + SignalDB; metro-map metaphor reduces intrinsic load.",
+      "notes": "Node-edge surface; live-editable JSON components."
+    },
+    {
+      "feature_id": "market.feature.nodes",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "JSON properties edit canvas and data simultaneously.",
+      "notes": "Flexible node model; every node is editable JSON."
+    },
+    {
+      "feature_id": "market.feature.edges",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Schema semantics visualization reduces text overload.",
+      "notes": "Relationship rendering with cardinality labels."
+    },
+    {
+      "feature_id": "market.feature.graph-layout",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Metro-map auto-layout; familiar geographic metaphor reduces cognitive load.",
+      "notes": "Auto-layout + manual refinement."
+    },
+    {
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Visual traversal reduces query-debug cycles via progressive disclosure.",
+      "notes": "Interactive relationship and neighborhood exploration."
+    },
+    {
+      "feature_id": "market.feature.schema-introspection",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Auto-discovery eliminates manual schema documentation.",
+      "notes": "Auto-discover from SQL/NoSQL/APIs."
+    },
+    {
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Dual modality (tree+canvas) matches user intent.",
+      "notes": "Visual browser with column types, constraints, samples."
+    },
+    {
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "ER diagram rendering with metro-map layout.",
+      "notes": "Automatic ERD from schema introspection."
+    },
+    {
+      "feature_id": "market.feature.query-building",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Dual-mode (visual+code) reduces friction for both novice and expert.",
+      "notes": "Visual builder + code editor with live preview."
+    },
+    {
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Drag-drop reduces syntax barrier for non-technical users.",
+      "notes": "No-code query construction for analysts."
+    },
+    {
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Schema-aware autocomplete reduces articulatory distance.",
+      "notes": "SQL/Cypher/jq with IDE-quality affordances."
+    },
+    {
+      "feature_id": "market.feature.query-building-parameterization",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Named parameters bound to workflow context; injection-safe.",
+      "notes": "Runtime variable binding and input forms."
+    },
+    {
+      "feature_id": "market.feature.query-building-result-preview",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Live preview + multiple views match user intent.",
+      "notes": "Table/JSON/grid inspection with export."
+    },
+    {
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "beta",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "In-canvas copilot keeps users on visual tool.",
+      "notes": "NL graph generation, node explanation, transform suggestion."
+    },
+    {
+      "feature_id": "market.feature.ai-assist-nl-to-graph",
+      "support_level": "beta",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Rapid prototyping eliminates blank-canvas friction.",
+      "notes": "Describe workflow in English; LLM generates nodes."
+    },
+    {
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "beta",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Transform from English reduces articulatory distance.",
+      "notes": "SQL/jq/Python generation from NL description."
+    },
+    {
+      "feature_id": "market.feature.ai-assist-chat-copilot",
+      "support_level": "beta",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Context-aware sidebar mirrors canvas changes.",
+      "notes": "Graph-aware sidebar chat with auto-documentation."
+    },
+    {
+      "feature_id": "market.feature.data-binding",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "SignalDB local-first eliminates wait-state friction.",
+      "notes": "Reactive data layer with offline-first support."
+    },
+    {
+      "feature_id": "market.feature.extensibility",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "JSON+React component model avoids SDK lock-in.",
+      "notes": "User-defined node types and custom layouts."
+    },
+    {
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Low surface area respects working-memory limits.",
+      "notes": "Theming, keyboard control, accessibility."
+    },
+    {
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Semantic coloring aids schema comprehension.",
+      "notes": "Light/dark/high-contrast with data-flow coloring."
+    },
+    {
+      "feature_id": "market.feature.ux-chrome-keyboard",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Command palette + shortcuts enable keyboard-first workflow.",
+      "notes": "Cmd/Ctrl-K palette with custom keybindings."
+    },
+    {
+      "feature_id": "market.feature.ux-chrome-accessibility",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "WCAG 2.1 AA reduces talent friction via inclusive design.",
+      "notes": "Screen-reader support, keyboard nav, contrast."
+    },
+    {
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Git-style enables safe iteration without merge pain.",
+      "notes": "Snapshots, commit history, branching, visual diff."
+    },
+    {
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Auto-save timeline enables quick-jump revert.",
+      "notes": "Automatic snapshots with timeline navigation."
+    },
+    {
+      "feature_id": "market.feature.versioning-diff",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Visual diff easier than text diffs for graphs.",
+      "notes": "Side-by-side node/edge comparison."
+    },
+    {
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "planned",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Phase 2: Git integration for team version control.",
+      "notes": "Commit to repository with branch/merge workflows."
+    },
+    {
+      "feature_id": "market.feature.collaboration",
+      "support_level": "planned",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Phase 2: Real-time co-editing with SignalDB sync.",
+      "notes": "Shared workspaces and permissions (planned)."
+    },
+    {
+      "feature_id": "market.feature.onboarding",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Progressive disclosure eliminates blank-canvas friction.",
+      "notes": "Templates, tutorials, in-context help."
+    },
+    {
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "One-click imports reduce blank-page paralysis.",
+      "notes": "Pre-built patterns for common tasks."
+    },
+    {
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Guided tours with sandbox enable <5min first success.",
+      "notes": "Interactive walkthroughs with sample data."
+    },
+    {
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "planned",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Phase 2: RBAC and audit logging for enterprise trust.",
+      "notes": "SSO, RBAC, audit, data-protection (planned)."
+    },
+    {
+      "feature_id": "market.feature.data-source-graph-db",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Multi-DB eliminates vendor lock-in.",
+      "notes": "Neo4j, ArangoDB, Memgraph, Kuzu support."
+    },
+    {
+      "feature_id": "market.feature.import-export",
+      "support_level": "planned",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Phase 2: Figma/Drive integrations bridge design/collab tools.",
+      "notes": "Figma and Google Drive integration (planned)."
+    }
+  ],
+  "value_map": [
+    {
+      "jpg_id": "market.jpg.database-schema-and-relationship-complexity-creates-modeling",
+      "our_relief": "Visual schema exploration + metro-map layout eliminates manual documentation; graph-exploration discovers relationships without SQL.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.schema-introspection",
+        "market.feature.schema-introspection-explorer",
+        "market.feature.schema-introspection-erd",
+        "market.feature.graph-layout",
+        "market.feature.graph-exploration",
+        "market.feature.onboarding-templates"
+      ],
+      "theory_concept_ids": [
+        "market.theory.cognitive-load",
+        "market.theory.schema-acquisition",
+        "market.theory.information-architecture",
+        "market.theory.progressive-disclosure"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.data-quality-fears-dominate-71-fear-bad-data-60-abandon-ai-i",
+      "our_relief": "Visual semantic layer + real-time result preview enable data-quality inspection; version history provides audit trail.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.query-building-result-preview",
+        "market.feature.data-binding",
+        "market.feature.versioning-history",
+        "market.feature.ai-assist-debugging"
+      ],
+      "theory_concept_ids": [
+        "market.theory.transparency-as-double-edged-explainability-backfire",
+        "market.theory.knowledge-in-the-world-vs-knowledge-in-the-head",
+        "market.theory.audit-trail-action-accountability"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.talent-shortage-and-hiring-difficulty-80-cdos-hiring-new-roles",
+      "our_relief": "Low-overhead viz + AI copilot + onboarding enable teams to scale without specialists; AI-UI parity reduces tool-switching.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.ai-assist",
+        "market.feature.ai-ui-parity",
+        "market.feature.onboarding-tutorials",
+        "market.feature.onboarding-templates",
+        "market.feature.ux-chrome-keyboard"
+      ],
+      "theory_concept_ids": [
+        "market.theory.cognitive-load",
+        "market.theory.progressive-disclosure",
+        "market.theory.worked-examples-effect",
+        "market.theory.articulatory-distance"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.ai-adoption-trust-declining-82-use-ai-daily-but-developer-tr",
+      "our_relief": "AI-UI parity prevents transparency backfire; every suggestion visible on canvas and manually editable, restoring user agency.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.ai-ui-parity",
+        "market.feature.ai-assist-chat-copilot",
+        "market.feature.canvas",
+        "market.feature.versioning-diff"
+      ],
+      "theory_concept_ids": [
+        "market.theory.transparency-as-double-edged-explainability-backfire",
+        "market.theory.user-agency-and-locus-of-control-in-error-correction",
+        "market.theory.automation-bias-and-over-reliance-persistence",
+        "market.theory.distributed-cognition-in-human-ai-error-recovery-teams"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.analytics-engineering-modeling-under-pressure-51-lack-clear-",
+      "our_relief": "Graph visualization of lineage + visual diff provide ownership clarity and downstream-impact visibility; safe iteration under pressure.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.graph-exploration",
+        "market.feature.query-building",
+        "market.feature.versioning-diff",
+        "market.feature.versioning-history",
+        "market.feature.ai-assist-debugging"
+      ],
+      "theory_concept_ids": [
+        "market.theory.situation-awareness-and-error-detection-in-complex-state",
+        "market.theory.knowledge-in-the-world-vs-knowledge-in-the-head",
+        "market.theory.cascade-failure-and-error-propagation-in-long-workflows"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.multiple-tool-proliferation-50-etl-tools-dozens-of-bi-platfo",
+      "our_relief": "Unified canvas consolidates viz, query-building, workflow modeling; eliminates switching between schema-viewer, query-editor, BI.",
+      "relief_strength": "moderate",
+      "addressed_by_feature_ids": [
+        "market.feature.canvas",
+        "market.feature.query-building",
+        "market.feature.schema-introspection",
+        "market.feature.graph-exploration",
+        "market.feature.data-binding"
+      ],
+      "theory_concept_ids": [
+        "market.theory.cognitive-load",
+        "market.theory.split-attention-effect",
+        "market.theory.information-architecture"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.database-observability-and-incident-response-data-observabil",
+      "our_relief": "Real-time schema introspection + graph exploration enable rapid root-cause identification; visual lineage shows bottlenecks.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.schema-introspection",
+        "market.feature.graph-exploration",
+        "market.feature.query-building-result-preview",
+        "market.feature.graph-layout"
+      ],
+      "theory_concept_ids": [
+        "market.theory.situation-awareness-and-error-detection-in-complex-state",
+        "market.theory.knowledge-in-the-world-vs-knowledge-in-the-head",
+        "market.theory.feedback-modality-and-error-accessibility"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.startup-rapid-iteration-with-limited-team-nosql-startups-239",
+      "our_relief": "Low surface-area UI + local-first SignalDB (offline) + AI copilot enable solo founders to iterate without DevOps overhead.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.ux-chrome",
+        "market.feature.data-binding",
+        "market.feature.ai-assist",
+        "market.feature.onboarding-templates",
+        "market.feature.query-building-visual-builder"
+      ],
+      "theory_concept_ids": [
+        "market.theory.working-memory-capacity",
+        "market.theory.progressive-disclosure",
+        "market.theory.cognitive-load-in-error-correction-loops"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.reduce-time-to-insight-40-60-direct-visual-database-explorat",
+      "our_relief": "Visual query-building + result preview eliminate query-debug cycles; schema explorer enables non-technical self-serve.",
+      "relief_strength": "strong",
+      "addressed_by_feature_ids": [
+        "market.feature.query-building-visual-builder",
+        "market.feature.query-building-result-preview",
+        "market.feature.schema-introspection-explorer",
+        "market.feature.graph-exploration",
+        "market.feature.ai-assist-nl-to-graph"
+      ],
+      "theory_concept_ids": [
+        "market.theory.articulatory-distance",
+        "market.theory.split-attention-effect",
+        "market.theory.modality-principle"
+      ]
+    },
+    {
+      "jpg_id": "market.jpg.enable-graph-database-adoption-and-knowledge-driven-rag-prov",
+      "our_relief": "Visual query builder + NL-to-graph copilot eliminate Cypher syntax barrier; unified interface bridges graph/relational adoption.",
+      "relief_strength": "moderate",
+      "addressed_by_feature_ids": [
+        "market.feature.query-building-visual-builder",
+        "market.feature.ai-assist-nl-to-graph",
+        "market.feature.data-source-graph-db",
+        "market.feature.schema-introspection-explorer"
+      ],
+      "theory_concept_ids": [
+        "market.theory.cognitive-load",
+        "market.theory.articulatory-distance",
+        "market.theory.schema-acquisition"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from_id": "market.feature.canvas",
+      "to_id": "market.theory.cognitive-load",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.canvas",
+      "to_id": "market.theory.information-architecture",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.graph-layout",
+      "to_id": "market.theory.cognitive-load",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.graph-layout",
+      "to_id": "market.theory.schema-acquisition",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.ai-ui-parity",
+      "to_id": "market.theory.split-attention-effect",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.ai-ui-parity",
+      "to_id": "market.theory.modality-principle",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.ai-ui-parity",
+      "to_id": "market.theory.transparency-as-double-edged-explainability-backfire",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.ai-assist",
+      "to_id": "market.theory.automation-bias-and-over-reliance-persistence",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.ux-chrome",
+      "to_id": "market.theory.working-memory-capacity",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.ux-chrome",
+      "to_id": "market.theory.progressive-disclosure",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.query-building-visual-builder",
+      "to_id": "market.theory.articulatory-distance",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.onboarding",
+      "to_id": "market.theory.worked-examples-effect",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.feature.versioning-history",
+      "to_id": "market.theory.audit-trail-action-accountability",
+      "rel_type": "grounded_in"
+    },
+    {
+      "from_id": "market.company.us",
+      "to_id": "market.product.neo4j-bloom",
+      "rel_type": "substitute_for"
+    },
+    {
+      "from_id": "market.company.us",
+      "to_id": "market.product.linkurious-enterprise",
+      "rel_type": "substitute_for"
+    },
+    {
+      "from_id": "market.company.us",
+      "to_id": "market.product.memgraph-lab",
+      "rel_type": "substitute_for"
+    },
+    {
+      "from_id": "market.company.us",
+      "to_id": "market.product.graphistry-gpu-analytics",
+      "rel_type": "substitute_for"
+    }
+  ],
+  "notes": "MetroGraph Phase C extraction: 35 core features across canvas/layout/exploration (core viz), query-building/schema-introspection (enablement), AI-assist (copilot), UX chrome/versioning (polish), onboarding/auth (team). A-grade HCI cost on wedge: AI-UI parity (eliminates capability cliff and transparency backfire), metro-map layout (reduces intrinsic cognitive load), data-binding (optimistic UI eliminates wait-state friction). Gaps: agent-orchestration (out-of-scope for DB-viz), advanced deployment (Phase 2). Value map addresses 10/40 major jpg items with 9 strong reliefs and 1 moderate. Theory groundings cover cognitive-load, modality-principle, transparency paradox, user agency, schema-acquisition, working-memory limits. Product relationships identify neo4j-bloom, linkurious, memgraph-lab, graphistry as substitute_for competitors. Data source: C:/Users/adsto/git/domains/_db/knowledge.duckdb; features table (110 total), jobs_pains_gains table (40 items), theory_concepts (773 concepts). Relationships table empty (Phase E); substitutes inferred from competitor feature coverage and market positioning in graph-db-visualization category."
+}

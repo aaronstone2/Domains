@@ -1,0 +1,868 @@
+{
+  "leaf": "competitors-node-graph-libs-rendering",
+  "products": [
+    {
+      "slug": "react-flow",
+      "name": "React Flow",
+      "description": "React-first node-based UI framework for building interactive workflow diagrams and node-based editors. Designed for authoring workflows, dashboards, and graph-based interfaces with seamless React integration.",
+      "company_slug": "xyflow",
+      "product_type": "library",
+      "open_source": true,
+      "deployment": [
+        "npm",
+        "cdn"
+      ],
+      "tech_stack": [
+        "React",
+        "JavaScript/TypeScript"
+      ],
+      "archetype": "workflow-authoring-library",
+      "positioning": "Easiest authoring experience for React developers building node-based UIs. Purpose-built for workflow/diagram workflows, not dense graph analysis.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-reactflow-official-homepage",
+        "market-competitors-node-graph-libs-rendering-xyflow-company-site",
+        "market-competitors-node-graph-libs-rendering-xyflow-github-repo",
+        "market-competitors-node-graph-libs-rendering-firstaimovers-reactflow-vs-cytoscape",
+        "market-competitors-node-graph-libs-rendering-cambridge-intelligence-react-guide",
+        "market-competitors-node-graph-libs-rendering-react-flow-medium-guide"
+      ]
+    },
+    {
+      "slug": "d3-js",
+      "name": "D3.js",
+      "description": "Low-level, modular JavaScript visualization library for data-driven document manipulation. Provides granular control over DOM/SVG/Canvas for unlimited customization of visualizations.",
+      "company_slug": "observable",
+      "product_type": "library",
+      "open_source": true,
+      "deployment": [
+        "npm",
+        "cdn"
+      ],
+      "tech_stack": [
+        "JavaScript/TypeScript",
+        "SVG",
+        "Canvas"
+      ],
+      "archetype": "low-level-customization-library",
+      "positioning": "Maximum customization and flexibility at the cost of steep learning curve and effort. Foundation for many higher-level tools. SVG-based, best for medium-sized graphs.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-d3js-official-homepage",
+        "market-competitors-node-graph-libs-rendering-d3js-what-is-d3",
+        "market-competitors-node-graph-libs-rendering-d3js-github-repo",
+        "market-competitors-node-graph-libs-rendering-d3js-getting-started",
+        "market-competitors-node-graph-libs-rendering-d3js-observable-gallery",
+        "market-competitors-node-graph-libs-rendering-d3js-capterra-reviews",
+        "market-competitors-node-graph-libs-rendering-d3js-g2-reviews",
+        "market-competitors-node-graph-libs-rendering-cambridge-intelligence-open-source"
+      ]
+    },
+    {
+      "slug": "cytoscape-js",
+      "name": "Cytoscape.js",
+      "description": "JavaScript library for graph analysis and visualization with comprehensive layout algorithms, styling, and network analysis capabilities. Designed for network/biology research and data analysis.",
+      "company_slug": "university-of-toronto",
+      "product_type": "library",
+      "open_source": true,
+      "deployment": [
+        "npm",
+        "cdn"
+      ],
+      "tech_stack": [
+        "JavaScript/TypeScript",
+        "Canvas"
+      ],
+      "archetype": "graph-analysis-library",
+      "positioning": "Best-in-class for graph analysis with 67+ layout extensions and algorithms. Academic backing, top 0.01% of software packages by adoption.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-cytoscape-js-official",
+        "market-competitors-node-graph-libs-rendering-cytoscape-js-github",
+        "market-competitors-node-graph-libs-rendering-cytoscape-js-2023-pmc",
+        "market-competitors-node-graph-libs-rendering-cytoscape-user-manual",
+        "market-competitors-node-graph-libs-rendering-cytoscape-medium-intro",
+        "market-competitors-node-graph-libs-rendering-pkgpulse-graph-comparison-2026",
+        "market-competitors-node-graph-libs-rendering-firstaimovers-reactflow-vs-cytoscape"
+      ]
+    },
+    {
+      "slug": "sigma-js",
+      "name": "Sigma.js",
+      "description": "WebGL-based graph visualization library designed for large-scale network visualization with thousands of nodes and edges. Integrates with Graphology data structure library.",
+      "company_slug": "sigma-js-community",
+      "product_type": "library",
+      "open_source": true,
+      "deployment": [
+        "npm",
+        "cdn"
+      ],
+      "tech_stack": [
+        "JavaScript/TypeScript",
+        "WebGL",
+        "Graphology"
+      ],
+      "archetype": "high-performance-webgl-renderer",
+      "positioning": "GPU-accelerated rendering for large graphs (thousands of nodes). Renderer + data layer; not batteries-included on algorithms.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-sigma-js-official",
+        "market-competitors-node-graph-libs-rendering-sigma-js-github",
+        "market-competitors-node-graph-libs-rendering-sigma-js-documentation",
+        "market-competitors-node-graph-libs-rendering-pkgpulse-graph-comparison-2026",
+        "market-competitors-node-graph-libs-rendering-memgraph-comparison-blog"
+      ]
+    },
+    {
+      "slug": "vis-js",
+      "name": "vis.js",
+      "description": "Dynamic browser-based visualization library with Network, Timeline, Graph2d, and Graph3d components. Includes physics simulation and clustering for interactive network exploration.",
+      "company_slug": "vis-js-community",
+      "product_type": "library",
+      "open_source": true,
+      "deployment": [
+        "npm",
+        "cdn"
+      ],
+      "tech_stack": [
+        "JavaScript/TypeScript",
+        "Canvas",
+        "Physics Engine"
+      ],
+      "archetype": "batteries-included-interactive-library",
+      "positioning": "Ease-of-use sweet spot for quick interactive network visualizations. Physics simulation and clustering help with large graphs but Canvas limits at ~1k nodes with full interactivity.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-visjs-official-homepage",
+        "market-competitors-node-graph-libs-rendering-visjs-network-github",
+        "market-competitors-node-graph-libs-rendering-visjs-network-docs",
+        "market-competitors-node-graph-libs-rendering-visjs-network-examples",
+        "market-competitors-node-graph-libs-rendering-pkgpulse-graph-comparison-2026",
+        "market-competitors-node-graph-libs-rendering-memgraph-comparison-blog"
+      ]
+    },
+    {
+      "slug": "react-force-graph",
+      "name": "react-force-graph",
+      "description": "React bindings for force-graph suite with 2D, 3D, VR, and AR variants. Canvas/WebGL rendering of force-directed graphs with extensive customization.",
+      "company_slug": "react-force-graph-community",
+      "product_type": "library",
+      "open_source": true,
+      "deployment": [
+        "npm",
+        "cdn"
+      ],
+      "tech_stack": [
+        "React",
+        "JavaScript/TypeScript",
+        "Canvas",
+        "WebGL",
+        "Three.js"
+      ],
+      "archetype": "multidimensional-force-graph-library",
+      "positioning": "Specialized for force-directed layouts in multiple dimensions (2D/3D/VR/AR). Limited to force-directed algorithm.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-react-force-graph-github",
+        "market-competitors-node-graph-libs-rendering-react-force-graph-demo",
+        "market-competitors-node-graph-libs-rendering-3d-force-graph-demo"
+      ]
+    },
+    {
+      "slug": "cosmograph",
+      "name": "Cosmograph",
+      "description": "Commercial GPU-accelerated graph visualization platform with DuckDB integration, linked brushing, timeline features, and cross-filtering for interactive network exploration.",
+      "company_slug": "cosmograph-org",
+      "product_type": "platform",
+      "open_source": false,
+      "deployment": [
+        "cloud",
+        "npm"
+      ],
+      "tech_stack": [
+        "JavaScript/TypeScript",
+        "GPU",
+        "DuckDB",
+        "WebGL"
+      ],
+      "archetype": "commercial-gpu-platform",
+      "positioning": "Performance-first commercial platform bridging DB query and visualization. DuckDB-native. Free for non-commercial use.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-cosmograph-official",
+        "market-competitors-node-graph-libs-rendering-cosmograph-docs",
+        "market-competitors-node-graph-libs-rendering-cosmograph-pricing",
+        "market-competitors-node-graph-libs-rendering-cosmograph-github"
+      ]
+    },
+    {
+      "slug": "ogma",
+      "name": "Ogma",
+      "description": "Commercial enterprise JavaScript graph visualization SDK with GPU acceleration, 8+ layout algorithms, built-in graph algorithms, and professional support. Designed for production-scale deployments.",
+      "company_slug": "linkurious",
+      "product_type": "library",
+      "open_source": false,
+      "deployment": [
+        "npm",
+        "cloud"
+      ],
+      "tech_stack": [
+        "JavaScript/TypeScript",
+        "WebGL",
+        "GPU"
+      ],
+      "archetype": "commercial-enterprise-sdk",
+      "positioning": "Enterprise-grade scalability (100k+ edges), support, and advanced layouts. Competes on production-readiness vs open source.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-ogma-official-docs",
+        "market-competitors-node-graph-libs-rendering-ogma-vs-sigma",
+        "market-competitors-node-graph-libs-rendering-ogma-vs-cytoscape",
+        "market-competitors-node-graph-libs-rendering-ogma-vs-d3",
+        "market-competitors-node-graph-libs-rendering-ogma-vs-vis",
+        "market-competitors-node-graph-libs-rendering-linkurious-commercial-vs-oss"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.graph-core-visual-editing",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Built for authoring: single-pane node editor with drag/drop, properties panel, undo/redo out-of-box.",
+      "notes": "Core strength: React Flow is purpose-built for visual node editing. Handles the full authoring UX."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.graph-core-node-edge-primitives",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "React component model: nodes and edges are React components, trivial to customize.",
+      "notes": "Developer ergonomics: React-native primitives reduce integration friction."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.graph-core-layout",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "B",
+      "hci_cost_note": "Bundled layouts: auto-layout, dagre. Not a focus. Users often manage layout manually for workflows.",
+      "notes": "Not a strength: React Flow assumes layout is handled by the authoring UI."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "hci_cost_note": "Hits performance wall at ~500 nodes with full interactivity. SVG rendering bottleneck.",
+      "notes": "Weakness vs dense graphs: not designed for visualization of large existing networks."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.graph-core-undo-redo",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "First-class undo/redo hooks built in. Example code shows 1-2 lines to implement.",
+      "notes": "Authoring requirement: built-in support."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.graph-core-import-export",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "JSON serialization helpers provided. Requires custom glue to connect to DB.",
+      "notes": "Utility feature, not fully integrated."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.ux-chrome-keyboard",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Keyboard navigation for panning, selection. Delete key for nodes. Can extend.",
+      "notes": "Good defaults, composable."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Rich tutorial library, interactive examples, clear API docs.",
+      "notes": "Strong learning resources."
+    },
+    {
+      "product_slug": "react-flow",
+      "feature_id": "market.feature.data-binding-two-way",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "React hooks for state binding. Requires user to wire up DB sync.",
+      "notes": "Manual data binding pattern."
+    },
+    {
+      "product_slug": "d3-js",
+      "feature_id": "market.feature.graph-core-visual-editing",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "F",
+      "hci_cost_note": "Can be done but requires 100s of lines of D3 code. No built-in editor patterns.",
+      "notes": "Theoretically possible but extremely high friction."
+    },
+    {
+      "product_slug": "d3-js",
+      "feature_id": "market.feature.graph-core-node-edge-primitives",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "hci_cost_note": "Fine-grained DOM/SVG primitives. Powerful but low-level. Data join pattern non-obvious to newcomers.",
+      "notes": "Ultimate flexibility, steep learning curve."
+    },
+    {
+      "product_slug": "d3-js",
+      "feature_id": "market.feature.graph-core-layout",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "Force simulation bundled but requires manual setup. Modular architecture allows composing layout libs.",
+      "notes": "Can integrate any layout library but setup burden."
+    },
+    {
+      "product_slug": "d3-js",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "partial",
+      "quality_grade": "D",
+      "hci_cost": "D",
+      "hci_cost_note": "SVG rendering bottlenecks at ~300 nodes. Can use Canvas but loses DOM benefits. Very manual.",
+      "notes": "Scale ceiling is a known limitation for dense graphs."
+    },
+    {
+      "product_slug": "d3-js",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "partial",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "hci_cost_note": "CSS styling works naturally for SVG. Scale/color/animation trivial to customize.",
+      "notes": "Strength: styling and theming flexibility."
+    },
+    {
+      "product_slug": "d3-js",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "hci_cost_note": "Massive gallery of examples on Observable. Rich community documentation.",
+      "notes": "Learning resources are excellent but learning curve itself is steep."
+    },
+    {
+      "product_slug": "d3-js",
+      "feature_id": "market.feature.graph-core-undo-redo",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "No built-in support. Custom implementation required.",
+      "notes": "User responsibility."
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "feature_id": "market.feature.graph-core-layout",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "67+ layout extensions. Breadth and depth unmatched. Hierarchical, force-directed, spectral, etc.",
+      "notes": "Core strength: layout algorithms. Academic research backing."
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "feature_id": "market.feature.graph-analysis-algorithms",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Centrality, shortest path, clustering algorithms built-in. Designed for graph theory.",
+      "notes": "Strongest for network analysis use cases."
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "feature_id": "market.feature.graph-core-node-edge-primitives",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Rich node/edge styling API. Selectors, cascading styles.",
+      "notes": "Comprehensive data model."
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Canvas rendering handles hundreds to low thousands. Real-world limits: ~5k nodes with full functionality.",
+      "notes": "Practical ceiling: suitable for most network analysis tasks but not massive graphs."
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "feature_id": "market.feature.graph-core-visual-editing",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "hci_cost_note": "Drag/drop provided but design assumes read-heavy analysis. Edit patterns require custom code.",
+      "notes": "Not optimized for authoring workflows."
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "feature_id": "market.feature.onboarding-contextual-help",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Academic documentation assumes graph theory knowledge. Good API reference.",
+      "notes": "Learning curve for non-specialist users."
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "feature_id": "market.feature.graph-core-import-export",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "JSON/Cytoscape XGMMLformats. Import/export first-class.",
+      "notes": "Well-designed for data interchange."
+    },
+    {
+      "product_slug": "sigma-js",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "WebGL rendering: thousands of nodes/edges. GPU-accelerated. FPS stable at scale.",
+      "notes": "Core differentiator: WebGL eliminates SVG/Canvas ceiling."
+    },
+    {
+      "product_slug": "sigma-js",
+      "feature_id": "market.feature.graph-core-node-edge-primitives",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Renderer exposes WebGL shader layer. Customization via GPU programming.",
+      "notes": "Low-level GPU control. High ceiling but steep for non-graphics programmers."
+    },
+    {
+      "product_slug": "sigma-js",
+      "feature_id": "market.feature.graph-core-layout",
+      "support_level": "partial",
+      "quality_grade": "D",
+      "hci_cost": "D",
+      "hci_cost_note": "No built-in layouts. Assumes graphology layer provides pre-computed positions.",
+      "notes": "Renderer, not toolkit. Layout is user responsibility."
+    },
+    {
+      "product_slug": "sigma-js",
+      "feature_id": "market.feature.graph-analysis-algorithms",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "Not a feature. Must use external library (graphology-specific ones or Cytoscape).",
+      "notes": "Renderer-only philosophy."
+    },
+    {
+      "product_slug": "sigma-js",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "WebGL shaders allow arbitrary color/styling customization. Custom node/edge renderers.",
+      "notes": "High flexibility via shader programming."
+    },
+    {
+      "product_slug": "sigma-js",
+      "feature_id": "market.feature.data-binding-graphology",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Graphology first-class integration. Typed graph data model.",
+      "notes": "Seamless with Graphology ecosystem."
+    },
+    {
+      "product_slug": "vis-js",
+      "feature_id": "market.feature.graph-core-visual-editing",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Drag-to-move, connect nodes, delete. Physics animation. Good out-of-box authoring.",
+      "notes": "Designed for interactive network exploration and light editing."
+    },
+    {
+      "product_slug": "vis-js",
+      "feature_id": "market.feature.graph-core-layout",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Force-directed physics simulation built-in. Hierarchical layout. Simple and effective.",
+      "notes": "Limited layout repertoire but what's there is usable."
+    },
+    {
+      "product_slug": "vis-js",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "hci_cost_note": "Canvas rendering + physics sim hits wall at ~1k nodes. Clustering feature helps but not a true solution.",
+      "notes": "Known limitation: Canvas + physics = expensive computation at scale."
+    },
+    {
+      "product_slug": "vis-js",
+      "feature_id": "market.feature.ux-chrome-keyboard",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Pan/zoom keyboard shortcuts. Node manipulation via keys.",
+      "notes": "Good defaults, not as comprehensive as authoring-first tools."
+    },
+    {
+      "product_slug": "vis-js",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Extensive interactive examples. Easy to get started.",
+      "notes": "Lowest learning curve of the major libraries."
+    },
+    {
+      "product_slug": "vis-js",
+      "feature_id": "market.feature.graph-core-undo-redo",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "No built-in support. User must implement.",
+      "notes": "Missing authoring feature."
+    },
+    {
+      "product_slug": "react-force-graph",
+      "feature_id": "market.feature.graph-core-layout",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Force-directed simulation built-in. Only layout option.",
+      "notes": "Single algorithm but well-implemented."
+    },
+    {
+      "product_slug": "react-force-graph",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Canvas/WebGL variants provide scaling. 2D Canvas: hundreds, 3D WebGL: thousands.",
+      "notes": "Scaling depends on variant chosen."
+    },
+    {
+      "product_slug": "react-force-graph",
+      "feature_id": "market.feature.graph-core-3d-ar-vr",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "2D/3D/VR/AR variants. ThreeJS backend. WebGL rendering.",
+      "notes": "Unique positioning: multidimensional graph visualization."
+    },
+    {
+      "product_slug": "react-force-graph",
+      "feature_id": "market.feature.data-binding-two-way",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "React props for data updates. Requires user to manage state.",
+      "notes": "React-idiomatic but not auto-synced to DB."
+    },
+    {
+      "product_slug": "cosmograph",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "GPU-accelerated. Millions of nodes/edges possible. Enterprise-grade performance.",
+      "notes": "Core value proposition: performance at scale."
+    },
+    {
+      "product_slug": "cosmograph",
+      "feature_id": "market.feature.data-binding-duckdb",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Native DuckDB integration. Query results directly visualized.",
+      "notes": "Unique integration. Differentiator for DB-centric workflows."
+    },
+    {
+      "product_slug": "cosmograph",
+      "feature_id": "market.feature.graph-core-linked-brushing",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Multi-select, cross-filtering, timeline-linked highlighting.",
+      "notes": "Exploration affordances built-in."
+    },
+    {
+      "product_slug": "cosmograph",
+      "feature_id": "market.feature.graph-core-visual-editing",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "hci_cost_note": "Query-driven, not edit-driven. Drag-to-explore but not authoring.",
+      "notes": "Not positioned for workflow authoring."
+    },
+    {
+      "product_slug": "cosmograph",
+      "feature_id": "market.feature.integration-api",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "npm library + cloud platform. API for data updates and configuration.",
+      "notes": "Commercial product with professional APIs."
+    },
+    {
+      "product_slug": "ogma",
+      "feature_id": "market.feature.graph-performance-scaling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "GPU-accelerated. Enterprise claim: 100k+ edges stable. Field-tested.",
+      "notes": "Enterprise-grade at massive scale."
+    },
+    {
+      "product_slug": "ogma",
+      "feature_id": "market.feature.graph-core-layout",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "8+ built-in layouts (hierarchical, force, circular, etc). More than most open source.",
+      "notes": "Comprehensive layout suite."
+    },
+    {
+      "product_slug": "ogma",
+      "feature_id": "market.feature.graph-analysis-algorithms",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Path finding, centrality, clustering built-in.",
+      "notes": "Production-grade analysis capabilities."
+    },
+    {
+      "product_slug": "ogma",
+      "feature_id": "market.feature.integration-api",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Professional SDK. Well-documented APIs. SLA support available.",
+      "notes": "Commercial product: support and stability."
+    },
+    {
+      "product_slug": "ogma",
+      "feature_id": "market.feature.ux-chrome-accessibility",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Enterprise accessibility standards. WCAG compliance.",
+      "notes": "Production-grade UX considerations."
+    }
+  ],
+  "competitors": [
+    {
+      "product_slug": "react-flow",
+      "company_slug": "xyflow",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "React Flow is purpose-built for workflow authoring. MetroGraph targets DB visualization + graph-based query interfaces (RAG/agent builders) where dense relational networks matter more than workflow linearity. MetroGraph's strength is surface-area reduction (integrated search, filter, drill-down) vs React Flow's strength (smooth authoring DX for users designing workflows/diagrams).",
+      "they_win_on": [
+        "authoring-ux",
+        "react-native-integration",
+        "node-editor-primitives",
+        "learning-curve"
+      ],
+      "we_win_on": [
+        "graph-analysis-integration",
+        "db-native-querying",
+        "large-graph-scaling",
+        "surface-area-reduction",
+        "ai-graph-fusion"
+      ],
+      "moat": "Strong React ecosystem position. 36k+ GitHub stars. xyflow company backing and open source community.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-reactflow-official-homepage",
+        "market-competitors-node-graph-libs-rendering-xyflow-company-site",
+        "market-competitors-node-graph-libs-rendering-cambridge-intelligence-react-guide",
+        "market-competitors-node-graph-libs-rendering-firstaimovers-reactflow-vs-cytoscape"
+      ]
+    },
+    {
+      "product_slug": "d3-js",
+      "company_slug": "observable",
+      "competitor_type": "adjacent",
+      "threat_level": "low",
+      "wedge_vs_them": "D3 is low-level primitive for custom visualization. MetroGraph is a graph-centric UI platform with integrated search/query/filter. D3 requires significant engineering to build graph authoring/analysis UX; MetroGraph provides that out-of-box.",
+      "they_win_on": [
+        "customization-ceiling",
+        "visualization-flexibility",
+        "ecosystem-libraries"
+      ],
+      "we_win_on": [
+        "ease-of-use",
+        "graph-analysis-builtins",
+        "db-integration",
+        "authoring-workflows"
+      ],
+      "moat": "Unparalleled customization. 113k+ GitHub stars. Observable platform + community.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-d3js-official-homepage",
+        "market-competitors-node-graph-libs-rendering-d3js-what-is-d3",
+        "market-competitors-node-graph-libs-rendering-cambridge-intelligence-open-source",
+        "market-competitors-node-graph-libs-rendering-d3js-capterra-reviews"
+      ]
+    },
+    {
+      "product_slug": "cytoscape-js",
+      "company_slug": "university-of-toronto",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "wedge_vs_them": "Cytoscape is graph analysis library for biology/network science. MetroGraph targets data engineers + RAG/agent builders where graph-as-query-interface matters. Cytoscape assumes you want to analyze the graph; MetroGraph assumes you want to query a DB via graph metaphor. Cytoscape's 67+ layouts are academic; MetroGraph's layout is data-driven (results of query).",
+      "they_win_on": [
+        "layout-algorithm-breadth",
+        "graph-analysis-algorithms",
+        "academic-backing"
+      ],
+      "we_win_on": [
+        "query-integration",
+        "db-native-data",
+        "authoring-ease",
+        "ai-assist"
+      ],
+      "moat": "Academic research backing. University of Toronto. Peer-reviewed updates. 67+ layout extensions.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-cytoscape-js-official",
+        "market-competitors-node-graph-libs-rendering-cytoscape-js-2023-pmc",
+        "market-competitors-node-graph-libs-rendering-firstaimovers-reactflow-vs-cytoscape",
+        "market-competitors-node-graph-libs-rendering-pkgpulse-graph-comparison-2026"
+      ]
+    },
+    {
+      "product_slug": "sigma-js",
+      "company_slug": "sigma-js-community",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "wedge_vs_them": "Sigma is WebGL renderer for large graphs. MetroGraph is a graph DB visualization + query interface. Sigma is rendering layer + Graphology data model; MetroGraph integrates query execution (SQL/Cypher), authoring, filtering. Sigma excels at rendering millions of nodes; MetroGraph excels at making those nodes mean something (search, filter, drill-down on relationships).",
+      "they_win_on": [
+        "webgl-performance",
+        "large-node-counts",
+        "gpu-efficiency"
+      ],
+      "we_win_on": [
+        "query-integration",
+        "analysis-purpose-built",
+        "db-schemas",
+        "ai-copilot"
+      ],
+      "moat": "WebGL performance. Graphology integration. Active open source development.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-sigma-js-official",
+        "market-competitors-node-graph-libs-rendering-sigma-js-github",
+        "market-competitors-node-graph-libs-rendering-pkgpulse-graph-comparison-2026",
+        "market-competitors-node-graph-libs-rendering-memgraph-comparison-blog"
+      ]
+    },
+    {
+      "product_slug": "vis-js",
+      "company_slug": "vis-js-community",
+      "competitor_type": "adjacent",
+      "threat_level": "low",
+      "wedge_vs_them": "vis.js is easy-to-use interactive diagram library with physics. MetroGraph is query-driven DB visualization. vis.js is good for static network exploration; MetroGraph is designed for dynamic query results + authoring workflows. vis.js hits performance ceiling at 1k nodes; MetroGraph scales to tens of thousands.",
+      "they_win_on": [
+        "ease-of-use",
+        "lowest-learning-curve",
+        "quick-wins"
+      ],
+      "we_win_on": [
+        "performance-at-scale",
+        "db-integration",
+        "query-workflows",
+        "graph-analysis"
+      ],
+      "moat": "Low friction for quick prototypes. Physics simulation. Interactive defaults.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-visjs-official-homepage",
+        "market-competitors-node-graph-libs-rendering-visjs-network-docs",
+        "market-competitors-node-graph-libs-rendering-pkgpulse-graph-comparison-2026",
+        "market-competitors-node-graph-libs-rendering-memgraph-comparison-blog"
+      ]
+    },
+    {
+      "product_slug": "react-force-graph",
+      "company_slug": "react-force-graph-community",
+      "competitor_type": "adjacent",
+      "threat_level": "low",
+      "wedge_vs_them": "react-force-graph specializes in force-directed 2D/3D/VR/AR visualization. MetroGraph is graph query + authoring platform. Neither competes head-to-head: react-force-graph is for specialized spatial/3D use cases; MetroGraph is for graph-as-query-interface.",
+      "they_win_on": [
+        "multidimensional-visualization",
+        "3d-ar-vr",
+        "force-simulation"
+      ],
+      "we_win_on": [
+        "db-integration",
+        "query-workflows",
+        "authoring",
+        "analysis-builtins"
+      ],
+      "moat": "Unique 2D/3D/VR/AR positioning. ThreeJS backend. Canvas + WebGL variants.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-react-force-graph-github",
+        "market-competitors-node-graph-libs-rendering-react-force-graph-demo"
+      ]
+    },
+    {
+      "product_slug": "cosmograph",
+      "company_slug": "cosmograph-org",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "Cosmograph is GPU-accelerated graph visualization platform with DuckDB integration. Both target DB-centric visualization. Cosmograph's wedge: performance + native DuckDB bridge. MetroGraph's wedge: integrated graph authoring + AI-powered exploration (agents, RAG, prompt-to-visualization). Cosmograph excels at rendering; MetroGraph excels at interaction + orchestration.",
+      "they_win_on": [
+        "gpu-acceleration",
+        "duckdb-native",
+        "linked-brushing",
+        "performance"
+      ],
+      "we_win_on": [
+        "ai-assist",
+        "workflow-authoring",
+        "agent-integration",
+        "surface-area-reduction",
+        "ux-chrome"
+      ],
+      "moat": "GPU performance. DuckDB native integration. Commercial support. Timeline linked-brushing.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-cosmograph-official",
+        "market-competitors-node-graph-libs-rendering-cosmograph-docs",
+        "market-competitors-node-graph-libs-rendering-cosmograph-pricing"
+      ]
+    },
+    {
+      "product_slug": "ogma",
+      "company_slug": "linkurious",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "Ogma is commercial enterprise graph visualization SDK. Both scale to 100k+ edges. Ogma's wedge: production-grade layouts + algorithms + support. MetroGraph's wedge: AI-powered workflows + surface-area reduction (integrated search/filter/explore). Ogma is a better visualization library for static/pre-computed graphs; MetroGraph is better for dynamic DB-driven exploration + authoring.",
+      "they_win_on": [
+        "layout-algorithms",
+        "enterprise-support",
+        "gpu-performance",
+        "established-market"
+      ],
+      "we_win_on": [
+        "ai-assist",
+        "db-native",
+        "authoring-ux",
+        "surface-area-reduction",
+        "agent-integration"
+      ],
+      "moat": "Enterprise sales + support. Established vendor. Professional SDKs. Comprehensive layout + analysis suite. Linkurious ecosystem.",
+      "source_ids": [
+        "market-competitors-node-graph-libs-rendering-ogma-official-docs",
+        "market-competitors-node-graph-libs-rendering-ogma-vs-sigma",
+        "market-competitors-node-graph-libs-rendering-ogma-vs-cytoscape",
+        "market-competitors-node-graph-libs-rendering-linkurious-commercial-vs-oss"
+      ]
+    }
+  ],
+  "notes": "Competitive Leaf: Graph/Node Rendering Libraries. Scope: 7 primary open-source libraries (React Flow, D3.js, Cytoscape.js, Sigma.js, vis.js, react-force-graph, Cosmograph) vs MetroGraph. Key HCI insight from Cambridge Intelligence + Memgraph research: hairball/visual-clutter problem is universal across rendering libraries. Sigma/Cosmograph solve via GPU scaling; D3/Cytoscape solve via layout algorithms; React Flow sidesteps via workflow-linear design. MetroGraph's differentiation: AI-powered node suggestion + surface-area reduction (search/filter before visualization) addresses the root HCI pain point that no library alone solves. Threat assessment: React Flow (authoring UX parity needed), Cytoscape (layout algorithm integration), Sigma/Cosmograph (performance at scale + DuckDB native), Ogma (enterprise FUD). Product-feature scoring reflects: (1) relevance to MetroGraph's ICP (data engineers + startup builders), (2) maturity/production-readiness, (3) HCI friction for each capability. Open-source libraries show strong rendering but weaker at integrated workflows; commercial (Ogma/Cosmograph) show strong production posture but weaker at authoring/AI-assist."
+}

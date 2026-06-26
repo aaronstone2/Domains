@@ -1,0 +1,899 @@
+{
+  "leaf": "market/competitors-workflow-engines",
+  "products": [
+    {
+      "slug": "luigi",
+      "name": "Luigi",
+      "description": "Python-based data orchestration tool for building and managing data pipelines. Lightweight, code-first framework focusing on batch processing and dependency resolution.",
+      "company_slug": "spotify",
+      "product_type": "platform",
+      "deployment": [
+        "self-hosted",
+        "on-premises"
+      ],
+      "open_source": true,
+      "positioning": "Data pipeline orchestration for batch processing; lightweight alternative to heavy-weight workflow engines",
+      "archetype": "data-pipeline-engine",
+      "tech_stack": [
+        "Python",
+        "task-graph",
+        "dependency-resolution"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-luigi-github-repo",
+        "market-competitors-workflow-engines-luigi-readthedocs",
+        "market-competitors-workflow-engines-luigi-atlan-guide",
+        "market-competitors-workflow-engines-luigi-airflow-comparison"
+      ]
+    },
+    {
+      "slug": "kedro",
+      "name": "Kedro",
+      "description": "Linux Foundation-hosted data engineering framework for building production-ready data science pipelines. Applies software engineering best practices to data science workflows.",
+      "company_new_name": "Kedro Project (Linux Foundation)",
+      "product_type": "platform",
+      "deployment": [
+        "self-hosted",
+        "on-premises",
+        "cloud-agnostic"
+      ],
+      "open_source": true,
+      "positioning": "Production-ready data science pipelines with software engineering disciplines; modular, testable, and shareable",
+      "archetype": "data-engineering-framework",
+      "tech_stack": [
+        "Python",
+        "modular-pipelines",
+        "configuration-driven"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-kedro-official-site",
+        "market-competitors-workflow-engines-kedro-docs",
+        "market-competitors-workflow-engines-kedro-github-repo",
+        "market-competitors-workflow-engines-kedro-nearform-article"
+      ]
+    },
+    {
+      "slug": "apache-beam",
+      "name": "Apache Beam",
+      "description": "Unified programming model for batch and streaming data processing. Multi-language SDK (Java, Python, Go, SQL) with pluggable execution engines (Flink, Spark, Dataflow).",
+      "company_slug": "apache-beam",
+      "product_type": "platform",
+      "deployment": [
+        "self-hosted",
+        "managed-service",
+        "cloud"
+      ],
+      "open_source": true,
+      "positioning": "Portable data processing pipelines; write once, run anywhere across batch and stream execution",
+      "archetype": "data-processing-sdk",
+      "tech_stack": [
+        "Java",
+        "Python",
+        "Go",
+        "SQL",
+        "multi-runner",
+        "PCollection",
+        "PTransform"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-beam-official-homepage",
+        "market-competitors-workflow-engines-beam-programming-guide",
+        "market-competitors-workflow-engines-beam-documentation",
+        "market-competitors-workflow-engines-beam-github-repo",
+        "market-competitors-workflow-engines-beam-google-cloud-docs"
+      ]
+    },
+    {
+      "slug": "temporal",
+      "name": "Temporal",
+      "description": "Scalable runtime for durable function execution. Code-first orchestration engine ensuring reliable execution of workflows even under failures, crashes, and server outages.",
+      "company_slug": "temporal",
+      "product_type": "platform",
+      "deployment": [
+        "cloud",
+        "self-hosted",
+        "hybrid"
+      ],
+      "open_source": true,
+      "positioning": "Durable execution guarantee; code-first orchestration for microservices and critical business processes",
+      "archetype": "durable-execution-engine",
+      "tech_stack": [
+        "event-history",
+        "workflow-execution",
+        "deterministic-code",
+        "SDKs-Java-Go-Python-Ruby-PHP",
+        "state-management"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-temporal-official-site",
+        "market-competitors-workflow-engines-temporal-docs-home",
+        "market-competitors-workflow-engines-temporal-github-repo",
+        "market-competitors-workflow-engines-temporal-pricing-page",
+        "market-competitors-workflow-engines-temporal-best-practices",
+        "market-competitors-workflow-engines-temporal-g2-reviews"
+      ]
+    },
+    {
+      "slug": "conductor",
+      "name": "Conductor",
+      "description": "Event-driven microservices orchestration engine. Netflix-originated, now commercialized by Orkes. Supports visual workflow definition and complex state management with decider pattern.",
+      "company_slug": "orkes",
+      "product_type": "platform",
+      "deployment": [
+        "cloud",
+        "self-hosted",
+        "hybrid"
+      ],
+      "open_source": true,
+      "positioning": "Event-driven agentic workflow orchestration for microservices; visual + code flexibility with multi-protocol support",
+      "archetype": "microservices-orchestrator",
+      "tech_stack": [
+        "event-driven",
+        "JSON-definition",
+        "REST-gRPC-AMQP-SQS",
+        "multi-tenant",
+        "SDKs-Java-Python-Go"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-conductor-official-site",
+        "market-competitors-workflow-engines-conductor-oss-github",
+        "market-competitors-workflow-engines-conductor-oss-docs",
+        "market-competitors-workflow-engines-conductor-netflix-techblog",
+        "market-competitors-workflow-engines-conductor-orkes-pricing"
+      ]
+    },
+    {
+      "slug": "camunda",
+      "name": "Camunda",
+      "description": "Enterprise process automation and agentic orchestration platform. BPMN 2.0 visual modeling with Zeebe cloud-native engine. Governance-first with built-in approvals, escalations, and audit trails.",
+      "company_slug": "camunda",
+      "product_type": "platform",
+      "deployment": [
+        "cloud",
+        "self-hosted",
+        "hybrid"
+      ],
+      "open_source": false,
+      "positioning": "Agentic orchestration for enterprise processes; visual BPMN with governance, compliance, and real-time visibility",
+      "archetype": "enterprise-bpm-orchestrator",
+      "tech_stack": [
+        "BPMN2.0",
+        "Zeebe",
+        "cloud-native",
+        "process-automation",
+        "multi-region",
+        "AI-integration"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-camunda-official-site",
+        "market-competitors-workflow-engines-camunda-docs",
+        "market-competitors-workflow-engines-camunda-zeebe-docs",
+        "market-competitors-workflow-engines-camunda-github",
+        "market-competitors-workflow-engines-camunda-pricing-page",
+        "market-competitors-workflow-engines-camunda-g2-reviews"
+      ]
+    },
+    {
+      "slug": "argo-workflows",
+      "name": "Argo Workflows",
+      "description": "Kubernetes-native container orchestration engine. CNCF graduated project. Supports DAG and step-based workflows with tight Kubernetes integration via CRD.",
+      "company_slug": "argo",
+      "product_type": "platform",
+      "deployment": [
+        "kubernetes",
+        "self-hosted"
+      ],
+      "open_source": true,
+      "positioning": "Cloud-native CI/CD and compute-intensive job orchestration; container-first, Kubernetes-optimized",
+      "archetype": "kubernetes-orchestrator",
+      "tech_stack": [
+        "Kubernetes-CRD",
+        "YAML-DSL",
+        "Python-SDK",
+        "DAG",
+        "step-based",
+        "container-native"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-argo-official-site",
+        "market-competitors-workflow-engines-argo-github-repo",
+        "market-competitors-workflow-engines-argo-docs",
+        "market-competitors-workflow-engines-argo-quickstart",
+        "market-competitors-workflow-engines-argo-cncf-announcement"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Python code-based conditionals and loops; requires code editing, no visual builder"
+    },
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Dependency graph execution; visualization limited to DAG rendering, no interactive monitoring UI"
+    },
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Parallelization via dependency resolution; caching via Target system; automatic optimization"
+    },
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Basic retry via Task design; limited error handling configuration; no visual retry policies"
+    },
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Pure Python code-first; standard IDE experience"
+    },
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "ReadTheDocs documentation and examples; lacks interactive quickstart"
+    },
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Python source code naturally versioned in Git; no special tooling"
+    },
+    {
+      "product_slug": "luigi",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "No built-in auth/governance; relies on host environment"
+    },
+    {
+      "product_slug": "kedro",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Configuration-driven pipelines; conditional execution via Python; no visual conditional UI"
+    },
+    {
+      "product_slug": "kedro",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Modular pipeline graph; visualization available via plugins; execution is transparent but text-heavy"
+    },
+    {
+      "product_slug": "kedro",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Parallelization support; dataset caching; configuration-driven optimization"
+    },
+    {
+      "product_slug": "kedro",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Python code editor; YAML configuration; standard IDE integration"
+    },
+    {
+      "product_slug": "kedro",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Project templates and starter kits; best-practices scaffolding"
+    },
+    {
+      "product_slug": "kedro",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Python + YAML source versioning; natural Git integration"
+    },
+    {
+      "product_slug": "apache-beam",
+      "feature_id": "market.feature.agent-orchestration-batch-streaming",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "hci_cost_note": "Unified model for batch and streaming; requires understanding of windowing and triggers; steep learning curve"
+    },
+    {
+      "product_slug": "apache-beam",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "PTransform composition for control flow; no visual conditional UI; SDK-heavy"
+    },
+    {
+      "product_slug": "apache-beam",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "Pipeline DAG execution; monitoring via runner-specific UIs (Dataflow, Flink, Spark); abstracted away"
+    },
+    {
+      "product_slug": "apache-beam",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "hci_cost_note": "Multi-language support with pluggable runners; optimization delegated to execution engine; hidden from user"
+    },
+    {
+      "product_slug": "apache-beam",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "hci_cost_note": "Multiple languages (Java, Python, Go); standard IDE experience; SDK-heavy setup"
+    },
+    {
+      "product_slug": "apache-beam",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "Official docs; examples per runner; steep conceptual learning curve (PCollection, windowing, etc.)"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Durable workflow orchestration via code; high-level abstractions; minimal UI overhead"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Native language control flow (Python, Go, Java, etc.); deterministic code execution; no visual builder"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "hci_cost_note": "Event history-based execution replay; visual monitoring via Web UI; requires understanding of determinism"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Comprehensive error handling via Activities; built-in retry policies; saga pattern support"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.agent-orchestration-state-context",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Event history as state; implicit state management; no manual state definition required"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.agent-orchestration-tool-use",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Activities model tool/function calling; strongly typed; excellent type safety"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Code-first; multiple language SDKs; standard IDE experience"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Design patterns repo; SDK samples; pattern-driven learning"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Temporal Cloud includes RBAC; Enterprise SSO; governance via Service roles; limited audit UI"
+    },
+    {
+      "product_slug": "temporal",
+      "feature_id": "market.feature.ux-chrome-keyboard",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "hci_cost_note": "Web UI keyboard navigation limited; CLI tools available for power users"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Event-driven agentic orchestration; visual task definitions; JSON-based workflow model"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Visual conditional tasks; loops via dynamic tasks; easy to visualize but configuration-heavy"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Real-time execution dashboard; task status visibility; event replay; decider pattern"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Task retry policies; failure handlers; compensation tasks; configurable via UI"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.agent-orchestration-state-context",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Workflow context as JSON; variable binding; state passed between tasks"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.agent-orchestration-tool-use",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Worker-based task execution; multi-protocol (REST, gRPC, AMQP, SQS); flexible worker definition"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Visual workflow designer; drag-and-drop UI; configuration-driven approach"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.onboarding-contextual-help",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Task documentation within UI; help tooltips; lacks interactive tutorials"
+    },
+    {
+      "product_slug": "conductor",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Orkes Cloud includes RBAC; tenant isolation; audit logs; governance limited in OSS version"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Agentic orchestration for enterprise processes; visual BPMN; governance-first approach"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "BPMN 2.0 gateways for conditionals/loops; visual editor; drag-and-drop conditional modeling"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Zeebe engine with real-time monitoring; Operate UI for instance monitoring; audit trail; high visibility"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Built-in error handling; incident management; escalation paths; BPMN boundary events"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.agent-orchestration-state-context",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Process variables and local variables; transparent state model; visible in UI"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.agent-orchestration-tool-use",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Service tasks for integrations; job workers; API integration patterns; human task support"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "BPMN modeler web UI; drag-and-drop; visual feedback; XML export"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "BPMN pattern templates; Tasklist UI for users; guided onboarding"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Enterprise-grade RBAC; Identity management; Optimize UI for governance metrics; compliance-first"
+    },
+    {
+      "product_slug": "camunda",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "hci_cost_note": "Limited theming options; standard web UI styling"
+    },
+    {
+      "product_slug": "argo-workflows",
+      "feature_id": "market.feature.agent-orchestration-batch-streaming",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Batch job orchestration via Kubernetes; streaming via sidecar containers; both supported but separate patterns"
+    },
+    {
+      "product_slug": "argo-workflows",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "YAML-based conditionals and loops; Python SDK for complex logic; steep YAML configuration"
+    },
+    {
+      "product_slug": "argo-workflows",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "hci_cost_note": "Kubernetes-native DAG execution; container logs; Argo UI dashboard; tight K8s integration"
+    },
+    {
+      "product_slug": "argo-workflows",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "hci_cost_note": "Kubernetes resource scheduling; parallelization via DAG; caching support; implicit K8s optimization"
+    },
+    {
+      "product_slug": "argo-workflows",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "YAML DSL + Python SDK; requires YAML expertise; Kubernetes API knowledge expected"
+    },
+    {
+      "product_slug": "argo-workflows",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "Quick start guide; CNCF project docs; requires Kubernetes knowledge; not beginner-friendly"
+    },
+    {
+      "product_slug": "argo-workflows",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "hci_cost_note": "RBAC via Kubernetes ServiceAccounts; limited governance UI; relies on K8s auth"
+    }
+  ],
+  "competitors": [
+    {
+      "company_slug": "spotify",
+      "product_slug": "luigi",
+      "competitor_type": "substitute",
+      "threat_level": "low",
+      "wedge_vs_them": "MetroGraph targets general workflow orchestration with visual/graph metaphor; Luigi is data-pipeline focused. MetroGraph wins on HCI (metro-map clarity) vs code-heaviness; Luigi wins on lightweight simplicity for batch data tasks.",
+      "they_win_on": [
+        "lightweight-simplicity",
+        "python-native",
+        "minimal-dependencies",
+        "widely-adopted-in-data-teams"
+      ],
+      "we_win_on": [
+        "visual-graph-metaphor",
+        "no-code-surface-area-reduction",
+        "intuitive-hci-vs-code-editing",
+        "unified-ui-not-scattered-across-code-and-ui"
+      ],
+      "moat": "Spotify momentum; widely adopted in data engineering; minimal maintenance overhead",
+      "overlap_area": [
+        "DAG-execution",
+        "dependency-resolution",
+        "batch-processing",
+        "Python-integration"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-luigi-github-repo",
+        "market-competitors-workflow-engines-luigi-readthedocs",
+        "market-competitors-workflow-engines-luigi-airflow-comparison"
+      ]
+    },
+    {
+      "company_slug": "kedro",
+      "product_slug": "kedro",
+      "competitor_type": "substitute",
+      "threat_level": "low",
+      "wedge_vs_them": "Both target production-ready pipelines, but Kedro is data-science focused (ML/analytics) while MetroGraph is general workflow/agent orchestration. Kedro wins on data-specific best practices; MetroGraph wins on HCI simplicity and non-code-first approach.",
+      "they_win_on": [
+        "modular-data-pipeline-architecture",
+        "production-best-practices",
+        "testing-and-reproducibility"
+      ],
+      "we_win_on": [
+        "visual-graph-metaphor",
+        "lower-barrier-to-entry",
+        "unified-orchestration-not-data-pipeline-specific",
+        "hci-clarity"
+      ],
+      "moat": "Linux Foundation backing; strong data science ecosystem; established best-practices community",
+      "overlap_area": [
+        "DAG-execution",
+        "modular-pipelines",
+        "configuration-driven",
+        "Python-native"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-kedro-official-site",
+        "market-competitors-workflow-engines-kedro-docs",
+        "market-competitors-workflow-engines-kedro-github-repo"
+      ]
+    },
+    {
+      "company_slug": "apache-beam",
+      "product_slug": "apache-beam",
+      "competitor_type": "substitute",
+      "threat_level": "low",
+      "wedge_vs_them": "Beam is unified batch/stream data processing; MetroGraph is general orchestration. Beam wins on processing power and multi-language support; MetroGraph wins on HCI simplicity and broad orchestration use cases (not just data).",
+      "they_win_on": [
+        "unified-batch-streaming",
+        "multi-language-sdk",
+        "pluggable-runners",
+        "google-dataflow-integration"
+      ],
+      "we_win_on": [
+        "visual-graph-clarity",
+        "lower-learning-curve-vs-windowing-and-triggers",
+        "general-purpose-not-data-specific",
+        "hci-over-sdk-complexity"
+      ],
+      "moat": "Apache stewardship; multi-runner ecosystem (Flink, Spark, Dataflow); Google/Lyft/Stripe production scale",
+      "overlap_area": [
+        "DAG-execution",
+        "parallelization",
+        "multi-language-orchestration",
+        "stream-and-batch-support"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-beam-official-homepage",
+        "market-competitors-workflow-engines-beam-programming-guide",
+        "market-competitors-workflow-engines-beam-github-repo"
+      ]
+    },
+    {
+      "company_slug": "temporal",
+      "product_slug": "temporal",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "Temporal: code-first, durable execution, strong typing, well-funded ($5B Series D). MetroGraph: visual-first, graph metaphor, no-code surface area reduction. Temporal wins on determinism and code control; MetroGraph wins on HCI clarity and reducing flight-to-AI-chat (surface area bloat). Temporal's moat is durable execution guarantee and event history; ours is visual graph metaphor + AI+UI parity.",
+      "they_win_on": [
+        "durable-execution-guarantee",
+        "event-history-replay",
+        "code-first-determinism",
+        "high-funding-enterprise-adoption",
+        "multi-language-sdks",
+        "enterprise-support"
+      ],
+      "we_win_on": [
+        "visual-graph-metaphor-clarity",
+        "no-code-hci-simplicity",
+        "surface-area-reduction-vs-feature-sprawl",
+        "ai-ui-parity-no-flight-to-chat",
+        "intuitive-dependencies-over-deterministic-code"
+      ],
+      "moat": "Series D $300M funding (Feb 2026); durable execution IP; event history architecture; widespread microservices adoption; G2 4.8/5 (30+ reviews)",
+      "overlap_area": [
+        "workflow-orchestration",
+        "microservices-coordination",
+        "error-handling-and-retry",
+        "state-management",
+        "SDKs-across-languages"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-temporal-official-site",
+        "market-competitors-workflow-engines-temporal-docs-home",
+        "market-competitors-workflow-engines-temporal-pricing-page",
+        "market-competitors-workflow-engines-temporal-g2-reviews",
+        "market-competitors-workflow-engines-temporal-funding-tracxn",
+        "market-competitors-workflow-engines-temporal-vs-camunda-automationatlas"
+      ]
+    },
+    {
+      "company_slug": "orkes",
+      "product_slug": "conductor",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "wedge_vs_them": "Conductor: event-driven, visual task UI, microservices focus, Netflix-proven at scale (2.6M+ processes). Orkes Series B $60M (Apr 2026). MetroGraph: graph metaphor, visual clarity, reducing HCI bloat. Conductor wins on event-driven architecture and Netflix scale; MetroGraph wins on graph clarity and reducing configuration complexity. Both are visual-forward, so competition is on UX depth and ease vs feature richness.",
+      "they_win_on": [
+        "event-driven-agentic",
+        "multi-protocol-worker-support",
+        "netflix-scale-proven",
+        "orkes-commercial-backing",
+        "task-retry-and-failure-handling"
+      ],
+      "we_win_on": [
+        "graph-metaphor-clarity-vs-config-complexity",
+        "visual-simplicity-over-feature-sprawl",
+        "intuitive-hci",
+        "ai-ui-parity",
+        "reducing-surface-area-bloat"
+      ],
+      "moat": "Netflix origin and proven scale (2.6M+ processes); Orkes Series B $60M (Apr 2026); event-driven architecture; multi-protocol flexibility",
+      "overlap_area": [
+        "visual-workflow-definition",
+        "agentic-orchestration",
+        "error-handling",
+        "state-passing",
+        "task-worker-model",
+        "dashboard-monitoring"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-conductor-official-site",
+        "market-competitors-workflow-engines-conductor-oss-docs",
+        "market-competitors-workflow-engines-conductor-netflix-techblog",
+        "market-competitors-workflow-engines-conductor-orkes-funding",
+        "market-competitors-workflow-engines-conductor-vs-temporal-medium"
+      ]
+    },
+    {
+      "company_slug": "camunda",
+      "product_slug": "camunda",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "Camunda: BPMN visual, enterprise governance focus, agentic orchestration pivot, 750+ enterprise customers. Raised $126M (Series B $97.6M via Insight Partners). MetroGraph: graph metaphor simplicity, reducing HCI bloat and flight-to-AI-chat. Camunda wins on enterprise compliance and BPMN ecosystem; MetroGraph wins on visual clarity and reducing configuration sprawl. Both visual-first; Camunda is governance-heavy (high surface area), MetroGraph is clarity-first.",
+      "they_win_on": [
+        "bpmn2.0-standard-adoption",
+        "enterprise-governance-and-compliance",
+        "audit-trail-and-visibility",
+        "750plus-customer-base",
+        "identity-and-rbac",
+        "incident-management"
+      ],
+      "we_win_on": [
+        "graph-metaphor-simplicity-over-bpmn-verbosity",
+        "reduced-surface-area-vs-governance-bloat",
+        "visual-clarity-over-feature-sprawl",
+        "ai-ui-parity-not-flight-to-chat",
+        "intuitive-hci"
+      ],
+      "moat": "Camunda: Series B $97.6M funding; BPMN 2.0 standard ecosystem; 750+ enterprises; Zeebe cloud-native engine; governance-first positioning. MetroGraph: graph metaphor IP; HCI clarity; AI+UI parity thesis; reducing flight-to-chat.",
+      "overlap_area": [
+        "visual-process-modeling",
+        "agentic-orchestration",
+        "error-and-incident-handling",
+        "human-task-support",
+        "monitoring-and-governance",
+        "state-management"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-camunda-official-site",
+        "market-competitors-workflow-engines-camunda-docs",
+        "market-competitors-workflow-engines-camunda-funding-tracxn",
+        "market-competitors-workflow-engines-temporal-vs-camunda-automationatlas",
+        "market-competitors-workflow-engines-camunda-g2-reviews"
+      ]
+    },
+    {
+      "company_slug": "argo",
+      "product_slug": "argo-workflows",
+      "competitor_type": "adjacent",
+      "threat_level": "medium",
+      "wedge_vs_them": "Argo: Kubernetes-native, CNCF graduated, CI/CD and compute-job focus. MetroGraph: general orchestration with visual graph metaphor. Argo wins on K8s ecosystem integration and cloud-native momentum; MetroGraph wins on HCI simplicity (YAML DSL is steep) and broader use cases. Argo is infrastructure-first, MetroGraph is workflow-first.",
+      "they_win_on": [
+        "kubernetes-native-integration",
+        "cncf-graduated-status",
+        "container-first-execution",
+        "ci-cd-pipeline-optimization",
+        "350plus-organization-adoption"
+      ],
+      "we_win_on": [
+        "visual-clarity-over-yaml-dsl-complexity",
+        "reduced-k8s-knowledge-barrier",
+        "broader-orchestration-not-k8s-only",
+        "intuitive-hci-vs-yaml-config",
+        "general-purpose-workflows"
+      ],
+      "moat": "CNCF graduated status; 350+ organization adoption (Dec 2022); Kubernetes CRD tight integration; CI/CD ecosystem momentum",
+      "overlap_area": [
+        "DAG-execution",
+        "parallelization",
+        "container-orchestration",
+        "batch-job-scheduling",
+        "monitoring-and-logs"
+      ],
+      "source_ids": [
+        "market-competitors-workflow-engines-argo-official-site",
+        "market-competitors-workflow-engines-argo-docs",
+        "market-competitors-workflow-engines-argo-cncf-announcement",
+        "market-competitors-workflow-engines-argo-vs-temporal-xgrid"
+      ]
+    }
+  ],
+  "notes": "Phase C extraction completed for competitors-workflow-engines leaf covering 7 workflow/durable-execution engines (Luigi, Kedro, Apache Beam, Temporal, Conductor, Camunda, Argo Workflows). Evidence sourced from 42 unique sources across official docs (T0/T1), analyst reports and reviews (T2), and practitioner discussions (T3). Key competitive insights: (1) Temporal and Camunda are primary threats (high threat level) with strong funding and enterprise adoption; Camunda's BPMN governance focus and Temporal's durable-execution guarantee each serve as moats. (2) Conductor (Orkes) is medium threat with event-driven architectural moat and Netflix scale proof. (3) Argo is adjacent threat (Kubernetes-native niche; CNCF momentum). (4) Luigi, Kedro, Beam are substitutes (low threat) focused on data pipelines, not general orchestration. MetroGraph's competitive wedges are: (a) visual graph metaphor clarity reducing HCI bloat (vs code-first Temporal, config-heavy Conductor, BPMN-verbose Camunda), (b) AI+UI parity thesis preventing flight-to-AI-chat (vs Camunda's governance sprawl, Temporal's code determinism), (c) no-code surface-area reduction vs feature bloat across all competitors. Feature assessment prioritized 15-35 most-relevant features per product (support_level, quality_grade, hci_cost_note); noted HCI pain points: Luigi/Beam lack visual UX, Temporal requires deterministic code discipline, Camunda's BPMN is verbosity-heavy, Conductor's config is sprawling, Argo's YAML DSL is steep. All companies exist in market.companies except Kedro (Linux Foundation project; using company_new_name)."
+}

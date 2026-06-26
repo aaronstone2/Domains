@@ -1,0 +1,55 @@
+{
+  "name": "company_landscape",
+  "caption": "Companies by category (the market map).",
+  "sql": "SELECT category, COUNT(*) n_companies FROM market.companies GROUP BY 1 ORDER BY 2 DESC",
+  "rows": [
+    {
+      "category": "data-orchestration",
+      "n_companies": 34
+    },
+    {
+      "category": "",
+      "n_companies": 30
+    },
+    {
+      "category": "internal-tools-lowcode",
+      "n_companies": 25
+    },
+    {
+      "category": "rag-agent-builders",
+      "n_companies": 20
+    },
+    {
+      "category": "diagramming",
+      "n_companies": 18
+    },
+    {
+      "category": "data-bi-notebook",
+      "n_companies": 18
+    },
+    {
+      "category": "graph-db-visualization",
+      "n_companies": 16
+    },
+    {
+      "category": "node-graph-libraries",
+      "n_companies": 14
+    },
+    {
+      "category": "db-schema-modeling",
+      "n_companies": 13
+    },
+    {
+      "category": "graph-databases",
+      "n_companies": 12
+    },
+    {
+      "category": "workflow-automation",
+      "n_companies": 12
+    },
+    {
+      "category": "db-viz",
+      "n_companies": 1
+    }
+  ]
+}

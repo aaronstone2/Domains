@@ -1,0 +1,690 @@
+{
+  "leaf": "competitors-data-transformation-quality",
+  "products": [
+    {
+      "slug": "dbt",
+      "name": "dbt (Data Build Tool)",
+      "description": "Open-source + cloud data transformation framework; SQL-first, modular, tested, version-controlled. Ecosystem-dominant with 4000+ packages. Fivetran merger (Oct 2025) creates 600M ARR data infrastructure platform.",
+      "company_slug": "dbt-labs",
+      "archetype": "Transform & Orchestration Platform",
+      "positioning": "Build data pipelines like software engineers build apps—modular, tested, version-controlled with interactive lineage and automatic refactoring.",
+      "deployment": [
+        "cloud",
+        "self-hosted",
+        "open-source"
+      ],
+      "open_source": true,
+      "tech_stack": [
+        "Python",
+        "SQL",
+        "Rust (Fusion engine)",
+        "YAML"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-dbt-official-homepage",
+        "market-competitors-data-transformation-quality-dbt-release-notes-2025-2026",
+        "market-competitors-data-transformation-quality-dbt-pricing-page",
+        "market-competitors-data-transformation-quality-dbt-fivetran-merger-announcement"
+      ]
+    },
+    {
+      "slug": "sqlmesh",
+      "name": "SQLMesh",
+      "description": "High-performance open-source data transformation framework. 9x faster than dbt Core, features column-level lineage, virtual environments (free in dev), incremental-by-default models, smart plan execution. Acquired by Fivetran (Sept 2025), donated to Linux Foundation (March 2026).",
+      "company_slug": "sqlmesh",
+      "archetype": "Transform & Optimization Platform",
+      "positioning": "Modern data transformation with virtual environments and intelligent planning—optimize cost and speed without complexity.",
+      "deployment": [
+        "cloud",
+        "self-hosted",
+        "open-source"
+      ],
+      "open_source": true,
+      "tech_stack": [
+        "Python",
+        "SQL"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-sqlmesh-official-homepage",
+        "market-competitors-data-transformation-quality-sqlmesh-documentation",
+        "market-competitors-data-transformation-quality-dbt-vs-sqlmesh-performance"
+      ]
+    },
+    {
+      "slug": "great-expectations",
+      "name": "Great Expectations",
+      "description": "Python-first data quality framework (open-source + GX Cloud). Community-driven (11k+ Slack) with flexible approach to testing, validation, and profiling. Series B $40M (total $65M). Perpetual open-source under Apache 2.0.",
+      "company_slug": "great-expectations",
+      "archetype": "Data Quality & Testing Framework",
+      "positioning": "Create a shared point of view on data quality with a flexible, community-driven toolset. Python-first with orchestrator integration and automated actions.",
+      "deployment": [
+        "cloud",
+        "self-hosted",
+        "open-source"
+      ],
+      "open_source": true,
+      "tech_stack": [
+        "Python",
+        "JSON",
+        "YAML"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-great-expectations-official-homepage",
+        "market-competitors-data-transformation-quality-great-expectations-documentation",
+        "market-competitors-data-transformation-quality-great-expectations-github"
+      ]
+    },
+    {
+      "slug": "soda",
+      "name": "Soda",
+      "description": "AI-native data quality monitoring platform (SaaS + Soda Core open-source). Advanced ML with peer-reviewed research (NeurIPS, JAIR, ACML). YAML/SQL-friendly approach. Record-level anomaly detection. €11.5M Series A (2023), €12.9M Series B (2024), total $40.9M.",
+      "company_slug": "soda",
+      "archetype": "Data Quality & Observability Platform",
+      "positioning": "Stop data incidents before they hit production with AI-native detection, automatic fix recommendations, and collaborative data contracts.",
+      "deployment": [
+        "cloud",
+        "self-hosted"
+      ],
+      "open_source": true,
+      "tech_stack": [
+        "Python",
+        "YAML",
+        "SQL",
+        "AI/ML"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-soda-official-homepage",
+        "market-competitors-data-transformation-quality-soda-documentation",
+        "market-competitors-data-transformation-quality-soda-funding-series-a"
+      ]
+    },
+    {
+      "slug": "monte-carlo",
+      "name": "Monte Carlo",
+      "description": "Cloud-only data observability platform with unified data + agent observability. ML-driven anomaly detection, #1 G2 leader (8 quarters). Forrester study: 375% ROI, 80% reduced downtime. Series D $135M (2024, $1.6B valuation), total $236M.",
+      "company_slug": "monte-carlo",
+      "archetype": "Data Observability & Monitoring Platform",
+      "positioning": "Agent trust platform that unifies data and agent observability to monitor, troubleshoot, and improve production AI systems.",
+      "deployment": [
+        "cloud"
+      ],
+      "open_source": false,
+      "tech_stack": [
+        "Proprietary",
+        "ML/AI",
+        "Agent-aware integrations"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-monte-carlo-official-homepage",
+        "market-competitors-data-transformation-quality-monte-carlo-documentation",
+        "market-competitors-data-transformation-quality-monte-carlo-series-d-funding"
+      ]
+    },
+    {
+      "slug": "elementary",
+      "name": "Elementary",
+      "description": "Data observability & control plane (dbt-native, open-source + cloud). Code-first observability with AI-first governance. Unifies quality, governance, observability, discovery. Seamless dbt integration via dbt package hub. Well-funded ($10M+ seed/Series A).",
+      "company_slug": "elementary",
+      "archetype": "Data Control Plane & Observability",
+      "positioning": "Trusted data control plane for the AI era—unified governance, quality, observability, and discovery in code, powered by AI agents.",
+      "deployment": [
+        "cloud",
+        "self-hosted"
+      ],
+      "open_source": true,
+      "tech_stack": [
+        "Python",
+        "YAML",
+        "SQL",
+        "dbt-integrated"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-elementary-official-homepage",
+        "market-competitors-data-transformation-quality-elementary-documentation",
+        "market-competitors-data-transformation-quality-elementary-github-repository"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Git-first workflow; native branch/merge, PR-based deployments in dbt Cloud. Deep integration with GitHub/GitLab.",
+      "hci_cost_note": "Single source of truth: commit to see diffs; no special UI needed beyond git diff"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.versioning-diff",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Visual diffs of model changes; automatic refactoring shows all downstream impacts before commit.",
+      "hci_cost_note": "Built-in preview pane; zero clicks to compare versions"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.graph-exploration-lineage-tracing",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Interactive lineage DAG with column-level tracing (2025 release); filter by model type/materialization. Visual drill-down.",
+      "hci_cost_note": "Requires click to expand graph; column lineage is 2-3 clicks deep (multi-pane interface)"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "SQL-first; IDE-like dbt Cloud editor with auto-complete, syntax highlighting, local validation.",
+      "hci_cost_note": "Native IDE experience; keyboard-focused"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Metadata catalog (dbt Catalog) shows column descriptions, tests, upstream/downstream. Not a visual schema browser.",
+      "hci_cost_note": "Text-based metadata pane; 2-3 clicks to navigate hierarchy"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "dbt Cloud run logs; execution timing, SQL output, test results. Discoverable but scattered across UI.",
+      "hci_cost_note": "Logs buried in run details; requires scrolling through multi-pane interface"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Role-based access control, service accounts, IP restrictions in dbt Cloud Enterprise tier.",
+      "hci_cost_note": "Settings scattered; 3-5 clicks to configure roles"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "beta",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Emerging: dbt Copilot (beta, 2025) generates SQL from natural language; assists with model generation.",
+      "hci_cost_note": "Modal interface; requires prompt engineering for complex transforms"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Fusion engine (Rust-based, 2025) adds smart execution: automatic DAG optimization, 30% compute savings, stateful incremental logic.",
+      "hci_cost_note": "Automatic; zero user configuration needed"
+    },
+    {
+      "product_slug": "dbt",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Control flow via dbt-core macros (if/for loops) but not visually represented; requires YAML + Jinja2 coding.",
+      "hci_cost_note": "Text-based macros; no visual loop editor; 5+ clicks to debug conditional"
+    },
+    {
+      "product_slug": "sqlmesh",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Python + SQL hybrid; SQL models with Python transformations. Supports multiple SQL dialects. IDE-friendly.",
+      "hci_cost_note": "Code-first; keyboard navigation"
+    },
+    {
+      "product_slug": "sqlmesh",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Git-native; supports branching and virtual environments (free in dev, no compute cost).",
+      "hci_cost_note": "Git workflow; transparent cost model"
+    },
+    {
+      "product_slug": "sqlmesh",
+      "feature_id": "market.feature.graph-exploration-lineage-tracing",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Column-level lineage by default (differentiator vs dbt). Plan visualization shows impact analysis.",
+      "hci_cost_note": "Visual plan; 2-3 clicks to expand lineage"
+    },
+    {
+      "product_slug": "sqlmesh",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Smart plan execution: automatic incremental, virtual environments, intelligent backfilling. 9x faster than dbt Core (Tobiko benchmark).",
+      "hci_cost_note": "Automatic; no tuning needed"
+    },
+    {
+      "product_slug": "sqlmesh",
+      "feature_id": "market.feature.observability-metrics",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Plan execution timing, compute costs per model. Not comprehensive; limited real-time metrics.",
+      "hci_cost_note": "Basic metrics pane; static view"
+    },
+    {
+      "product_slug": "great-expectations",
+      "feature_id": "market.feature.observability-alerting",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Expectations trigger automated actions (alerts, blocks, notifications) on test failures. Orchestrator-integrated (Airflow, dbt Cloud, etc).",
+      "hci_cost_note": "Action chains require UI + code; 3-4 pane interactions"
+    },
+    {
+      "product_slug": "great-expectations",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Data docs auto-generated; test run history with pass/fail counts, profiling summaries. HTML reports.",
+      "hci_cost_note": "Static HTML; 2 clicks to navigate run history"
+    },
+    {
+      "product_slug": "great-expectations",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Python-based expectation definitions; support for SQL queries in batch validators.",
+      "hci_cost_note": "Requires Python knowledge; IDE dependency"
+    },
+    {
+      "product_slug": "great-expectations",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Column profiling; auto-generated expectations from data analysis. Data docs show schema structure.",
+      "hci_cost_note": "Profiling UI is 2-pane; exploration requires HTML navigation"
+    },
+    {
+      "product_slug": "great-expectations",
+      "feature_id": "market.feature.ai-assist-debugging",
+      "support_level": "beta",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Emerging: GX Assistant (beta) explains test failures and suggests fixes via LLM.",
+      "hci_cost_note": "Chat modal; requires interpretation of suggestions"
+    },
+    {
+      "product_slug": "great-expectations",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "GX Cloud has RBAC; open-source lacks granular governance. No column-level access control.",
+      "hci_cost_note": "Settings scattered; requires API calls for programmatic RBAC"
+    },
+    {
+      "product_slug": "soda",
+      "feature_id": "market.feature.observability-alerting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "AI-native anomaly detection (vs rule-based GX). SodaCL defines checks in YAML. Alerts include root cause explanation.",
+      "hci_cost_note": "YAML-friendly; 2-3 clicks to tune thresholds in UI"
+    },
+    {
+      "product_slug": "soda",
+      "feature_id": "market.feature.observability-metrics",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Metrics monitoring with adaptive thresholds; record-level anomaly detection. Interactive visualizations.",
+      "hci_cost_note": "Dashboard UI; 1-2 clicks to drill down"
+    },
+    {
+      "product_slug": "soda",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Soda Co-Pilot (AI-native): generates full SodaCL checks and data contracts from plain English. One-click data contract generation.",
+      "hci_cost_note": "Natural language input; minimal clicks"
+    },
+    {
+      "product_slug": "soda",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "YAML-based SodaCL (declarative); SQL support for custom checks. YAML editor with validation.",
+      "hci_cost_note": "YAML syntax vs Python; familiar for data engineers"
+    },
+    {
+      "product_slug": "soda",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "AI-native platform: ML-powered metric thresholds, root cause analysis, automated data contract suggestions. Peer-reviewed research (NeurIPS, JAIR, ACML).",
+      "hci_cost_note": "AI reasoning is automatic; user interprets suggestions"
+    },
+    {
+      "product_slug": "monte-carlo",
+      "feature_id": "market.feature.observability-alerting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "ML-driven anomaly detection; autonomous alerting with 80% reduced downtime. Field health monitoring.",
+      "hci_cost_note": "Fully automatic; minimal tuning needed"
+    },
+    {
+      "product_slug": "monte-carlo",
+      "feature_id": "market.feature.observability-metrics",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Comprehensive metrics: freshness, volume, distribution anomalies across data warehouse. Real-time monitoring.",
+      "hci_cost_note": "Automatic metric collection; 1-click alerting"
+    },
+    {
+      "product_slug": "monte-carlo",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Lineage-linked run logs; execution traces tied to data freshness/quality issues. Integration with orchestrators.",
+      "hci_cost_note": "Log UI is integrated; 1-2 clicks to correlate issues"
+    },
+    {
+      "product_slug": "monte-carlo",
+      "feature_id": "market.feature.graph-exploration-lineage-tracing",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Impact lineage analysis; shows which data assets are affected by failures. Integrated with dbt, Airflow, Fivetran.",
+      "hci_cost_note": "Graph UI; 2-3 clicks to navigate lineage"
+    },
+    {
+      "product_slug": "monte-carlo",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "AI/ML core: autonomous anomaly detection, root cause analysis, incident triage. Trained on 400+ enterprise environments.",
+      "hci_cost_note": "ML-powered; zero manual configuration"
+    },
+    {
+      "product_slug": "monte-carlo",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "RBAC, service accounts, audit logs (SOC 2 Type II). Data asset ownership & governance.",
+      "hci_cost_note": "Settings UI is comprehensive; 2-3 clicks per role"
+    },
+    {
+      "product_slug": "elementary",
+      "feature_id": "market.feature.graph-exploration-lineage-tracing",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Full lineage across ingestion, transformation, semantic layers, BI, AI. Renders actual dbt lineage graph with column-level detail.",
+      "hci_cost_note": "Integrated with dbt DAG; 2 clicks to expand columns"
+    },
+    {
+      "product_slug": "elementary",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Code-first observability: tests, rules, metadata in dbt packages (YAML/SQL). Version controlled like dbt models.",
+      "hci_cost_note": "Git-native; no special UI needed"
+    },
+    {
+      "product_slug": "elementary",
+      "feature_id": "market.feature.observability-alerting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "dbt test integration + custom rules; alerts on quality degradation, schema changes, freshness. No alert fatigue (real issues only).",
+      "hci_cost_note": "Automatic; configured in dbt YAML"
+    },
+    {
+      "product_slug": "elementary",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "AI-first: context engine powers governance, discovery, quality recommendations. AI agents operate with shared metadata.",
+      "hci_cost_note": "Automatic reasoning; user reads summaries"
+    },
+    {
+      "product_slug": "elementary",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Test definitions in dbt YAML (SQL tests); metadata in code. Uses dbt's native test syntax.",
+      "hci_cost_note": "Familiar dbt syntax; IDE-based"
+    },
+    {
+      "product_slug": "elementary",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Cloud tier includes RBAC; open-source lacks granular controls. Inherits dbt Cloud permissions.",
+      "hci_cost_note": "Settings in Cloud UI; 2-3 clicks for role assignment"
+    }
+  ],
+  "competitors": [
+    {
+      "company_slug": "dbt-labs",
+      "product_slug": "dbt",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "ecosystem dominance (4000+ packages)",
+        "engineering-first culture & community",
+        "SQL-native transformation workflow",
+        "Fivetran merger (600M ARR data infrastructure)",
+        "git-first versioning with multi-warehouse support"
+      ],
+      "we_win_on": [
+        "metro-map visualization (vs DAG lists)",
+        "unified graph spanning transformation + quality + governance",
+        "AI+UI parity (avoid flight to chat)",
+        "database-agnostic (noSQL/SQL support)",
+        "lower learning curve for non-engineers"
+      ],
+      "wedge_vs_them": "Visual graph collaboration + agentic intelligence for data teams who want transformation + observability in one interface, not fragmented engineering-only tooling",
+      "moat": "Massive open-source ecosystem (4000+ packages), engineering culture lock-in, post-merger data infrastructure consolidation with Fivetran",
+      "overlap_area": [
+        "data lineage visualization",
+        "version control integration",
+        "data quality testing (post-merger)",
+        "observability"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-dbt-fivetran-merger-announcement",
+        "market-competitors-data-transformation-quality-dbt-alternatives-comparison",
+        "market-competitors-data-transformation-quality-dbt-ui-usability-lineage"
+      ]
+    },
+    {
+      "company_slug": "sqlmesh",
+      "product_slug": "sqlmesh",
+      "competitor_type": "direct",
+      "threat_level": "low",
+      "they_win_on": [
+        "9x performance vs dbt Core",
+        "column-level lineage by default",
+        "virtual environments (free in dev)",
+        "smart incremental execution",
+        "cost optimization"
+      ],
+      "we_win_on": [
+        "visual graph narrative (vs optimization focus)",
+        "unified UI across transformation + quality",
+        "AI-first agents (vs SQL-focused)",
+        "broader feature set (governance, discovery)",
+        "lower barrier to non-technical users"
+      ],
+      "wedge_vs_them": "MetroGraph's metro-map + agents offer richer data storytelling beyond performance optimization; tackles data governance & discovery, not just faster SQL",
+      "moat": "Technical performance (9x), Linux Foundation stewardship (post-Fivetran donation), but limited brand & ecosystem vs dbt",
+      "overlap_area": [
+        "data transformation",
+        "lineage tracing",
+        "version control"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-dbt-vs-sqlmesh-performance",
+        "market-competitors-data-transformation-quality-sqlmesh-vs-dbt-comparison"
+      ]
+    },
+    {
+      "company_slug": "great-expectations",
+      "product_slug": "great-expectations",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "community (11k+ Slack, 9.1k GitHub stars)",
+        "Python-first flexibility for data teams",
+        "orchestrator integration (Airflow, dbt Cloud, etc)",
+        "perpetual open-source (Apache 2.0)",
+        "test-driven data quality culture"
+      ],
+      "we_win_on": [
+        "unified transformation + quality graph (vs point solution)",
+        "visual interface (vs Python-only)",
+        "AI+agentic capabilities (GX is rule-based)",
+        "database-agnostic support",
+        "lower learning curve (non-Python teams)"
+      ],
+      "wedge_vs_them": "MetroGraph's visual + agent-first approach solves the surface-area problem that fragments GX with orchestrator glue; unified graph for discovery, governance, quality",
+      "moat": "Community network effects, Python ecosystem integration, perpetual open-source trust",
+      "overlap_area": [
+        "data quality testing",
+        "validation rules",
+        "data profiling",
+        "observability"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-soda-vs-great-expectations",
+        "market-competitors-data-transformation-quality-data-quality-tools-comparison-soda-great-expectations"
+      ]
+    },
+    {
+      "company_slug": "soda",
+      "product_slug": "soda",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "AI-native anomaly detection (NeurIPS/JAIR/ACML research)",
+        "YAML/SQL-friendly (vs Python-only GX)",
+        "70% fewer false positives than Prophet",
+        "record-level anomaly detection",
+        "AI Co-Pilot for data contract generation"
+      ],
+      "we_win_on": [
+        "unified graph (transformation + quality + governance)",
+        "visual metro-map (vs YAML config-driven)",
+        "database-agnostic support",
+        "end-to-end lineage (Soda is quality-only)",
+        "cost transparency (vs consumption-based pricing)"
+      ],
+      "wedge_vs_them": "MetroGraph's visual storytelling + unified graph solves Soda's point-solution problem; non-engineers see the full data story, not just quality alerts",
+      "moat": "Proprietary ML models, peer-reviewed research, EU-based trust positioning, €12.9M Series B",
+      "overlap_area": [
+        "data quality monitoring",
+        "anomaly detection",
+        "alerting",
+        "observability"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-soda-official-homepage",
+        "market-competitors-data-transformation-quality-soda-vs-great-expectations"
+      ]
+    },
+    {
+      "company_slug": "monte-carlo",
+      "product_slug": "monte-carlo",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "#1 G2 leader (8 consecutive quarters)",
+        "ML-driven autonomous detection (375% ROI, Forrester study)",
+        "agent-aware architecture (unifies data + agent observability)",
+        "unicorn status ($1.6B valuation)",
+        "80% reduced data downtime"
+      ],
+      "we_win_on": [
+        "lower total cost of ownership (vs consumption-based pricing)",
+        "simpler mental model (metro-map vs complex ML tuning)",
+        "customizable data models (not vendor-locked)",
+        "unified transformation + quality + governance (MC is observability-only)",
+        "better for smaller/mid-market orgs"
+      ],
+      "wedge_vs_them": "MetroGraph competes on simplicity, customization, & total cost; targets startups/mid-market overwhelmed by MC's complexity & pricing; visual + code-first approach appeals to non-specialists",
+      "moat": "ML/AI core competency, market leadership (G2 #1), Forrester validation, $236M raised, agent-first positioning",
+      "overlap_area": [
+        "data observability",
+        "anomaly detection",
+        "alerting",
+        "incident management",
+        "lineage"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-monte-carlo-official-homepage",
+        "market-competitors-data-transformation-quality-monte-carlo-g2-leader-recognition",
+        "market-competitors-data-transformation-quality-monte-carlo-vs-competitors"
+      ]
+    },
+    {
+      "company_slug": "elementary",
+      "product_slug": "elementary",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "dbt-native integration (package-based, zero extra infrastructure)",
+        "code-first observability (observability as code)",
+        "AI-first governance (shared context engine)",
+        "full lineage across stack (ingestion → BI → AI)",
+        "control plane positioning"
+      ],
+      "we_win_on": [
+        "database-agnostic (not dbt-locked)",
+        "visual graph (Elementary is YAML-centric)",
+        "unified transformation + quality + governance in one visual story",
+        "agent architecture (Elementary is dbt-native but single-platform)",
+        "easier for non-engineers & non-dbt shops"
+      ],
+      "wedge_vs_them": "MetroGraph's metro-map + agents work for any data platform (not dbt-only); visual + collaborative interface appeals to orgs wanting UI alongside code",
+      "moat": "dbt ecosystem lock-in (package hub integration), strategic position in dbt expansion (post-Fivetran merger), well-funded ($10M+)",
+      "overlap_area": [
+        "data observability",
+        "quality testing",
+        "lineage tracing",
+        "governance",
+        "AI agents"
+      ],
+      "source_ids": [
+        "market-competitors-data-transformation-quality-elementary-official-homepage",
+        "market-competitors-data-transformation-quality-elementary-documentation"
+      ]
+    }
+  ],
+  "notes": "Phase C extraction complete for competitors-data-transformation-quality leaf. Coverage: 6 products (dbt, SQLMesh, Great Expectations, Soda, Monte Carlo, Elementary) spanning transformation (dbt, SQLMesh) and quality/observability (GX, Soda, MC, Elementary). Feature assessment focuses on 14-16 most relevant features per product from the 110-feature taxonomy; mapped against MetroGraph's HCI-first, graph-based, database-agnostic positioning. Key competitive insights: (1) dbt & Monte Carlo are high-threat due to ecosystem dominance & market leadership; (2) MetroGraph's wedge is HCI focus (metro-map visualization + AI parity) + database agnosticism vs vendor lock-in; (3) Transformation tools (dbt/SQLMesh) focus on versioning/lineage; quality tools (GX/Soda/MC/Elementary) focus on alerting/observability; Elementary is the only other dbt-native platform; Soda differentiates on AI/YAML-friendly approach. Sources: T0 official pages, T1 documentation/GitHub, T2 G2/Forrester, T3 practitioner comparisons. Market context: dbt-Fivetran merger (600M ARR, mid-late 2026), SQLMesh donated to Linux Foundation (March 2026), Monte Carlo unicorn ($1.6B, $236M raised), Soda $40.9M Series AB."
+}

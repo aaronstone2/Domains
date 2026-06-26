@@ -1,0 +1,477 @@
+{
+  "leaf": "market/theory-agent-observability-workflow",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Nested Model of Visualization Design",
+      "field": "visualization",
+      "definition": "Munzner's foundational framework decomposing visualization design into four nested layers: problem domain characterization (understanding the task), data/task abstraction (mapping domain to abstract forms), visual encoding/interaction design (choosing marks and channels), and algorithm selection. Provides systematic approach to designing workflow visualizations.",
+      "strength": "established-law",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-visualization-analysis-design-munzner"
+      ],
+      "related_concepts": [
+        "Information Encoding Effectiveness",
+        "Visual Encoding Design"
+      ],
+      "implication": "MetroGraph must apply Munzner's layers to agent workflow: (1) Problem: understand what users need to see about agent execution (2) Data: abstract agent traces into execution steps, dependencies, latencies (3) Visual encoding: choose whether DAG, Sankey, or timeline best communicates step relationships and temporal flow (4) Algorithms: select layout algorithms appropriate for dynamic workflow graphs."
+    },
+    {
+      "concept": "Overview First, Zoom and Filter, Then Details on Demand",
+      "field": "hci",
+      "definition": "Shneiderman's foundational interaction principle for navigating large information spaces: present a high-level overview to establish context, enable filtering/zooming to focus on regions of interest, and provide detailed views for selected elements. Reduces cognitive load by progressively revealing information.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1996 / Treemaps for space-constrained visualization"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-treemaps-space-filling-visualization-shneiderman"
+      ],
+      "related_concepts": [
+        "Hierarchical Abstraction",
+        "Cognitive Load Management",
+        "Level-of-Detail Rendering"
+      ],
+      "implication": "MetroGraph should support three-level agent workflow exploration: (1) Overview shows entire DAG with per-step latencies aggregated (2) Zoom/filter on subgraphs (e.g., by agent, by tool type, by time range) (3) Detail view shows specific step state, inputs, outputs, intermediate values when clicked. Reduces cognitive overload for complex multi-step agent traces."
+    },
+    {
+      "concept": "Visibility of System State",
+      "field": "hci",
+      "definition": "Norman's principle that systems must make their state visible and perceivable to users; feedback should be immediate and appropriate. In observability contexts, users must be able to see what the system is doing at all times.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-design-everyday-things-norman"
+      ],
+      "related_concepts": [
+        "Feedback Mechanisms",
+        "Mental Models",
+        "Observability"
+      ],
+      "implication": "Agent workflow visualization must never hide execution state; every step must show real-time status (running, completed, failed, blocked) with clear visual feedback (color, animation, icon states). This directly addresses the MetroGraph wedge: RAG/agent tools hide execution details in text chat, causing user confusion—MetroGraph makes state continuously visible."
+    },
+    {
+      "concept": "Information Foraging and Information Scent",
+      "field": "information-foraging",
+      "definition": "Pirolli and Card's theory that users navigate information spaces by following 'scent'—cues suggesting valuable information lies in a particular direction. Users make local decisions based on these cues, seeking to maximize value-per-unit-effort in finding target information.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging: A Theory of How People Navigate on the Web"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-information-foraging-theory-pirolli"
+      ],
+      "related_concepts": [
+        "Visual Attention",
+        "Interaction Design",
+        "Cognitive Load"
+      ],
+      "implication": "Workflow visualization must provide clear visual scent to guide users toward understanding agent behavior: step labels with status, latency indicators (color intensity), error markers, and tool icons should all signal relevant information density. Design should help users quickly identify anomalous or critical steps (high latency, errors) without exhaustive reading."
+    },
+    {
+      "concept": "Data-Ink Ratio and Minimizing Chartjunk",
+      "field": "visualization",
+      "definition": "Tufte's principle that effective visualization maximizes the proportion of visual effort devoted to representing data (data-ink) versus decorative elements (chartjunk). Reduces cognitive load and improves readability.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte 1983 / The Visual Display of Quantitative Information"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-data-visualization-principles-tufte"
+      ],
+      "related_concepts": [
+        "Visual Clutter",
+        "Information Density",
+        "Gestalt Principles"
+      ],
+      "implication": "Agent workflow visualization should strip away decorative borders, unnecessary labels, and redundant encodings. Every pixel should communicate execution data: step names, latencies, dependencies, status. Avoid 3D effects, gradients, or animations that distract from the core workflow structure and timing information."
+    },
+    {
+      "concept": "Temporal Event Sequence Visualization",
+      "field": "visualization",
+      "definition": "Design space for visualizing sequences of discrete events over time, balancing temporal relationships, event attributes, and occurrence patterns. Key challenge: rendering dense sequences at multiple levels of granularity (individual events, clusters, trends) without losing detail or context.",
+      "strength": "framework",
+      "key_refs": [
+        "Brehmer & Munzner 2013 / A multi-level typology of abstract visualization tasks"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-survey-visual-analysis-event-sequences"
+      ],
+      "related_concepts": [
+        "Hierarchical Aggregation",
+        "Temporal Abstraction",
+        "Multi-scale Analysis"
+      ],
+      "implication": "Agent execution traces are inherently temporal event sequences (tool calls, LLM outputs, function returns). MetroGraph should adopt event sequence visualization techniques: allow users to view sequences at coarse granularity (5 steps per second) or fine granularity (per millisecond), with interactive transition between scales."
+    },
+    {
+      "concept": "EventBox Visual Encoding",
+      "field": "visualization",
+      "definition": "A novel visual encoding combining spatial position (temporal sequence), categorical attributes (event types, agent names), and quantitative attributes (durations, parameter values) within bounded rectangular containers. Enables multivariate event analysis through coordinated marks and channels.",
+      "strength": "empirical",
+      "key_refs": [
+        "Montana et al. 2025 / EventBox: A Novel Visual Encoding for Interactive Analysis of Temporal and Multivariate Attributes in Event Sequences"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-eventbox-temporal-event-visualization"
+      ],
+      "related_concepts": [
+        "Multivariate Visualization",
+        "Temporal Encoding",
+        "Interaction Mechanics"
+      ],
+      "implication": "MetroGraph's workflow step visualization could adopt EventBox encoding: represent each agent step as a box whose width encodes duration, color encodes status (running/completed/error), and internal layout shows input parameters and outputs. Enables rapid pattern recognition across many steps."
+    },
+    {
+      "concept": "Multilevel Temporal Abstraction with Hierarchical Aggregation",
+      "field": "visualization",
+      "definition": "Technique for rendering temporal sequences at multiple levels of abstraction by recursively grouping events into clusters and re-representing clusters at higher levels. Users can drill down from summary (cluster view) to detail (individual events) through interactive navigation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Magallanes et al. 2021 / Sequen-C: A Multilevel Overview of Temporal Event Sequences"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-sequen-c-multilevel-event-visualization"
+      ],
+      "related_concepts": [
+        "Level-of-Detail Rendering",
+        "Overview First Principle",
+        "Cluster-based Aggregation"
+      ],
+      "implication": "Agent workflows with hundreds of steps benefit from hierarchical abstraction: show high-level tool chains (LLM call → parser → tool invoke → result process) at top level, then drill into sub-steps and intermediate values. Align-Score-Simplify pattern from Sequen-C is directly applicable to agent workflow summarization."
+    },
+    {
+      "concept": "Workflow Provenance Visualization and Data Lineage",
+      "field": "visualization",
+      "definition": "Representation of data provenance graphs showing how data was generated and transformed through multi-step workflows. Challenges include scalability (large provenance graphs), abstraction (balancing detail with overview), and interactive exploration (navigating complex dependency structures).",
+      "strength": "empirical",
+      "key_refs": [
+        "Stitz et al. 2016 / AVOCADO: Visualization of Workflow-Derived Data Provenance for Reproducible Biomedical Research"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-avocado-workflow-provenance-visualization"
+      ],
+      "related_concepts": [
+        "DAG Visualization",
+        "Hierarchical Abstraction",
+        "Interactive Exploration"
+      ],
+      "implication": "Agent execution traces are provenance graphs: each step depends on prior steps' outputs. MetroGraph should visualize this lineage structure, showing how data flows through the agent workflow. AVOCADO's approach to aggregating provenance nodes at different scales applies directly to agent step visualization."
+    },
+    {
+      "concept": "Per-Step Latency Visualization",
+      "field": "visualization",
+      "definition": "Visual encoding of execution time per workflow step, enabling identification of performance bottlenecks and slowdowns. Techniques include bar charts (absolute time per step), heat maps (relative duration), and waterfall diagrams (cumulative time).",
+      "strength": "empirical",
+      "key_refs": [
+        "Montana et al. 2025 / EventBox (temporal encoding of event durations)",
+        "Brehmer & Munzner 2013 / Temporal Analysis Tasks"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-eventbox-temporal-event-visualization",
+        "market-theory-agent-observability-workflow-analyzing-time-attributes-sequences"
+      ],
+      "related_concepts": [
+        "Performance Monitoring",
+        "Quantitative Encoding",
+        "Anomaly Detection"
+      ],
+      "implication": "Critical for MetroGraph: users need to understand why agent workflows are slow. Per-step latency visualization (step 1: 50ms, step 2: 3200ms ← bottleneck, step 3: 150ms) enables rapid bottleneck identification. Should support both absolute durations and relative comparisons across similar workflows."
+    },
+    {
+      "concept": "Human-in-the-Loop Agentic Systems",
+      "field": "hci",
+      "definition": "Systems that combine autonomous AI agent execution with human oversight, control, and decision-making at key points. Enables humans to guide agent behavior, correct mistakes, and maintain safety/alignment without fully automating all tasks.",
+      "strength": "framework",
+      "key_refs": [
+        "Mozannar et al. 2025 / Magentic-UI: Towards Human-in-the-loop Agentic Systems"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-magentic-ui-human-in-loop-agents"
+      ],
+      "related_concepts": [
+        "Interruption Points",
+        "Human Oversight",
+        "Agentic Control"
+      ],
+      "implication": "MetroGraph must support human interruption and oversight: visualization should highlight decision points where human input is needed or where the agent is uncertain. Interaction mechanisms (co-planning, co-tasking, action guards from Magentic-UI) should be surfaced through clear UI affordances at the step level."
+    },
+    {
+      "concept": "Interruption Points and Human Oversight",
+      "field": "hci",
+      "definition": "Predefined locations in an agentic workflow where execution pauses to allow human review, approval, or correction before proceeding. Formal treatment views interruptions as first-class computation constructs with well-defined semantics.",
+      "strength": "framework",
+      "key_refs": [
+        "Macke et al. 2017 / Formalizing Interruptible Algorithms for Human over-the-loop Analytics"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-formalizing-interruptible-algorithms"
+      ],
+      "related_concepts": [
+        "Human-in-the-Loop Systems",
+        "Control Flow",
+        "Safety Mechanisms"
+      ],
+      "implication": "MetroGraph should visualize interruption points as explicit affordances: pause icons, confirmation dialogs, or highlighted decision nodes where humans can intervene. Formal semantics (blocking vs. non-blocking, confirmation required vs. optional) should be visually encoded to clarify when human input is mandatory."
+    },
+    {
+      "concept": "Mixed-Initiative Visual Analytics",
+      "field": "hci",
+      "definition": "Systems combining human-directed exploration with automated computational suggestions and analysis. Users remain in control (mixed) while automation handles computational heavy-lifting, creating hybrid intelligence that leverages human intuition and machine processing.",
+      "strength": "framework",
+      "key_refs": [
+        "Bach et al. 2025 / A Scoping Review of Mixed Initiative Visual Analytics in the Automation Renaissance"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-scoping-review-mixed-initiative-visual-analytics"
+      ],
+      "related_concepts": [
+        "Human-in-the-Loop Systems",
+        "Automated Analysis",
+        "User Control"
+      ],
+      "implication": "MetroGraph is inherently mixed-initiative: the agent performs work autonomously while humans monitor and guide. Visualization should combine automated anomaly detection (highlight slow steps, error states) with human-driven exploration (filtering, drill-down, comparison). Neither humans nor automation should dominate."
+    },
+    {
+      "concept": "Coordinated Multiple Views",
+      "field": "visualization",
+      "definition": "Design pattern where multiple linked visualizations of the same dataset are presented side-by-side, with interactions in one view automatically updating others. Enables complementary perspectives on complex data.",
+      "strength": "empirical",
+      "key_refs": [
+        "Magallanes et al. 2021 / Sequen-C uses three coordinated views: summary, cluster, detail",
+        "Brehmer & Munzner 2013 / Coordination and multiplicity"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-sequen-c-multilevel-event-visualization"
+      ],
+      "related_concepts": [
+        "Multi-view Interaction",
+        "Linked Brushing",
+        "Complementary Perspectives"
+      ],
+      "implication": "MetroGraph should support coordinated views: (1) Timeline view showing step execution over time, (2) DAG view showing dependencies, (3) Detail panel showing current step state. Selecting a step in timeline highlights it in DAG and updates detail panel; filtering by agent type updates all views."
+    },
+    {
+      "concept": "DAG Layout Algorithms",
+      "field": "graph-theory",
+      "definition": "Algorithms for laying out directed acyclic graphs (DAGs) to minimize edge crossings, maximize readability, and show hierarchical structure. Includes hierarchical layouts (Sugiyama), layered approaches, and force-directed methods adapted for DAGs.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sugiyama et al. 1981 / Methods for Visual Understanding of Hierarchical System Structures"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-geospatial-networks-survey"
+      ],
+      "related_concepts": [
+        "Graph Visualization",
+        "Hierarchical Visualization",
+        "Layout Constraints"
+      ],
+      "implication": "Agent workflow DAGs are inherently hierarchical (sequence of steps, branching on conditionals). MetroGraph should apply Sugiyama layering to position steps left-to-right (chronologically) while minimizing edge crossings. Dynamic workflows with loops need specialized handling (cycle breaking, feedback edge marking)."
+    },
+    {
+      "concept": "Sankey Diagram Representation",
+      "field": "visualization",
+      "definition": "Visualization technique showing flow of quantities through a process, with band width proportional to flow magnitude. Commonly used for showing data distribution or energy/resource flow through transformation steps.",
+      "strength": "empirical",
+      "key_refs": [
+        "D3.js Sankey / Bostock et al."
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-geospatial-networks-survey"
+      ],
+      "related_concepts": [
+        "Flow Visualization",
+        "Quantitative Encoding",
+        "Sequential Process Visualization"
+      ],
+      "implication": "Sankey overlays on agent workflows could show token flow through steps: band width represents token count at each step (narrow after filtering, wide after expansion). Useful for visualizing data cardinality changes through multi-step workflows."
+    },
+    {
+      "concept": "Annotation and Labeling in Visualization",
+      "field": "visualization",
+      "definition": "Techniques for adding textual and visual annotations to visualizations to provide context, explain patterns, highlight insights. Annotations can be manual or automatically generated, and should be positioned to avoid clutter while remaining visible.",
+      "strength": "empirical",
+      "key_refs": [
+        "Echtler et al. 2024 / A Survey on Annotations in Information Visualization"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-survey-annotations-information-visualization"
+      ],
+      "related_concepts": [
+        "Information Encoding",
+        "Clutter Management",
+        "User Guidance"
+      ],
+      "implication": "Agent workflow visualization should support annotations on critical steps: automated callouts for bottlenecks ('LLM call: 3.2s'), manual user notes ('this step sometimes fails'), explanatory labels for step purpose. Annotations should not overwhelm the view but should be accessible on demand."
+    },
+    {
+      "concept": "Cognitive Load and Complexity Management",
+      "field": "cognitive-psych",
+      "definition": "Cognitive load theory (Sweller) posits that working memory has limited capacity; effective visualization and interaction design must manage extraneous cognitive load (unnecessary effort), intrinsic load (task complexity), and germane load (useful effort toward understanding).",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller 1988 / Cognitive load during problem solving"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-interaction-design-preece-rogers-sharp"
+      ],
+      "related_concepts": [
+        "Mental Effort",
+        "Information Density",
+        "Interaction Complexity"
+      ],
+      "implication": "Large agent workflows (100+ steps) rapidly exceed working memory. MetroGraph must manage cognitive load through: (1) extraneous: remove visual clutter, (2) intrinsic: use hierarchical abstraction to reduce perceived complexity, (3) germane: guide attention to critical patterns through color/size coding."
+    },
+    {
+      "concept": "Real-Time and Streaming Visualization",
+      "field": "visualization",
+      "definition": "Visualization techniques for data arriving continuously or in real-time, requiring incremental rendering, efficient updates, and handling of temporal locality (recent events more relevant than old ones). Challenges include memory management and responsiveness.",
+      "strength": "empirical",
+      "key_refs": [
+        "Andrienko & Andrienko 2013 / Visual analytics of movement"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-largenetvis-temporal-network-exploration"
+      ],
+      "related_concepts": [
+        "Streaming Data",
+        "Incremental Rendering",
+        "Temporal Locality"
+      ],
+      "implication": "Agent workflows are inherently streaming: steps complete in real-time. MetroGraph must render new steps incrementally (append to timeline), update latencies as steps complete, and keep the view responsive. Should support both live streaming and historical replay of completed workflows."
+    },
+    {
+      "concept": "Animated Transition Between Representations",
+      "field": "visualization",
+      "definition": "Using smooth animation to transition between different visual representations (e.g., node-link to parallel coordinates), helping users maintain mental continuity and understand the relationship between views.",
+      "strength": "empirical",
+      "key_refs": [
+        "Heer & Robertson 2007 / Animated Transitions in Statistical Data Graphics",
+        "Chen et al. 2025 / Animated Transition between Node-Link and Parallel Coordinates Visualizations"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-animated-transitions-node-link-coordinates"
+      ],
+      "related_concepts": [
+        "Visual Continuity",
+        "View Switching",
+        "Interaction Smoothness"
+      ],
+      "implication": "MetroGraph could support smooth transitions between workflow representations: DAG → timeline → Sankey flow. Animation helps users track identity of elements across views, reducing disorientation. Particularly useful when toggling between structural view (dependencies) and temporal view (execution order)."
+    },
+    {
+      "concept": "LLM Agent Provenance and Observable Traces",
+      "field": "rag",
+      "definition": "Systems and techniques for capturing, storing, and querying the complete execution trace of LLM-powered agents, including: prompts sent, LLM outputs, tool calls made, tool results received, and intermediate reasoning steps. Enables post-hoc analysis and real-time observability.",
+      "strength": "empirical",
+      "key_refs": [
+        "Souza et al. 2025 / LLM Agents for Interactive Workflow Provenance"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-llm-agents-interactive-workflow-provenance"
+      ],
+      "related_concepts": [
+        "Agent Observability",
+        "Execution Tracing",
+        "System Monitoring"
+      ],
+      "implication": "MetroGraph must capture complete agent provenance: every LLM call with full prompt + output, every tool invocation with args + results, every decision point and branching. This data becomes the input to visualization; Magentic-UI and other systems show this can be queried interactively in natural language via agents themselves."
+    },
+    {
+      "concept": "Multi-Agent Workflow Coordination",
+      "field": "visualization",
+      "definition": "Visualization of systems where multiple autonomous agents work together, showing inter-agent communication, task delegation, synchronization points, and specialization patterns. Adds complexity of showing both individual agent traces and collective workflow.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bansal et al. 2025 / CoDA: Agentic Systems for Collaborative Data Visualization"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-coda-collaborative-data-visualization-agents"
+      ],
+      "related_concepts": [
+        "Agent Collaboration",
+        "Communication Patterns",
+        "Workflow Orchestration"
+      ],
+      "implication": "Future agent systems will likely use multi-agent orchestration. MetroGraph should support visualization of agent pools: show which agent performed each step, highlight communication between agents (messages, data handoffs), reveal bottlenecks in agent-to-agent coordination."
+    },
+    {
+      "concept": "Exploratory Visual Analytics Workflow",
+      "field": "visualization",
+      "definition": "Interaction pattern combining visualization, interaction, and computational analysis to support open-ended exploration and hypothesis formation. User-visualization interaction loop enables iterative refinement of understanding.",
+      "strength": "empirical",
+      "key_refs": [
+        "Andrienko & Andrienko 2006 / Exploratory geovisualization"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-user-based-visual-analytics-workflow"
+      ],
+      "related_concepts": [
+        "Interactive Analysis",
+        "Iterative Refinement",
+        "Hypothesis Testing"
+      ],
+      "implication": "MetroGraph users need to explore agent behavior iteratively: filter to specific agents or tool types, sort by latency, drill into failures, compare across runs. Each interaction should update views and suggest next analytical steps. Should support saving/sharing exploration paths."
+    },
+    {
+      "concept": "Uncertainty Visualization in Probabilistic Systems",
+      "field": "visualization",
+      "definition": "Techniques for visually representing uncertainty, confidence intervals, and probabilistic outcomes in visualizations. Relevant when displaying agent confidence scores, probabilistic decision outputs, or uncertainty in predictions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kay & Hullman 2025 / A General Approach to Visualizing Uncertainty in Statistical Graphics"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-uncertainty-visualization-statistical"
+      ],
+      "related_concepts": [
+        "Probabilistic Visualization",
+        "Confidence Representation",
+        "Risk Encoding"
+      ],
+      "implication": "LLM agents often produce probabilistic outputs and confidence estimates. MetroGraph should support displaying agent uncertainty: show confidence bands around latency estimates, visualize probability distributions for multi-choice decision points, indicate model uncertainty with visual texture/opacity."
+    },
+    {
+      "concept": "Knowledge Graph and Reasoning Graph Visualization",
+      "field": "visualization",
+      "definition": "Visualization of knowledge graphs and reasoning chains showing entities, relationships, and inference steps. Challenges include managing scale (thousands of nodes/edges) and clarity of relationships.",
+      "strength": "empirical",
+      "key_refs": [
+        "Zhu et al. 2024 / Visualization of Knowledge Graphs with Embeddings"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-knowledge-graphs-embeddings-visualization"
+      ],
+      "related_concepts": [
+        "Graph Layout",
+        "Semantic Relationships",
+        "Reasoning Chains"
+      ],
+      "implication": "Agent reasoning often involves knowledge retrieval and chain-of-thought. MetroGraph could surface agent reasoning graphs: show which facts/documents were retrieved, how they connect to form reasoning chain, which entities are central to the decision. Graph visualization techniques directly applicable."
+    },
+    {
+      "concept": "Interaction Design for Complex Systems",
+      "field": "interaction-design",
+      "definition": "Principles for designing interaction techniques (selection, filtering, drilling, linking) for complex information-rich systems. Should minimize cognitive load while maximizing expressiveness and responsiveness.",
+      "strength": "empirical",
+      "key_refs": [
+        "Preece, Rogers & Sharp 2015 / Interaction Design: Beyond Human-Computer Interaction"
+      ],
+      "source_ids": [
+        "market-theory-agent-observability-workflow-interaction-design-preece-rogers-sharp"
+      ],
+      "related_concepts": [
+        "User Control",
+        "Feedback Mechanisms",
+        "Affordances"
+      ],
+      "implication": "MetroGraph's interaction model must support: (1) filtering (by agent, tool type, status), (2) selection (individual step or step range), (3) navigation (overview/detail, temporal scroll, dependency follow), (4) annotation (note-taking on interesting steps). All interactions should provide immediate feedback and maintain context."
+    }
+  ]
+}

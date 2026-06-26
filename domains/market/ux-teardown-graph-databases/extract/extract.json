@@ -1,0 +1,496 @@
+{
+  "leaf": "ux-teardown-graph-databases",
+  "ux_screens": [
+    {
+      "slug": "neo4j-browser-query-editor",
+      "product_slug": "neo4j",
+      "screen_name": "Neo4j Browser Query Editor & Result View",
+      "screen_type": "dashboard",
+      "description": "Main editor interface with query execution panel on left, results displayed in multiple modes (graph visualization, tabular output, text/code). Connection bar at top with database selector.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "query-editor",
+        "execution-button",
+        "result-mode-tabs",
+        "graph-canvas",
+        "table-view",
+        "connection-bar",
+        "database-selector"
+      ],
+      "source_id": "market-ux-teardown-graph-databases-neo4j-browser-official-docs"
+    },
+    {
+      "slug": "memgraph-lab-query-execution",
+      "product_slug": "memgraph",
+      "screen_name": "Memgraph Lab Query Execution & Visualization",
+      "screen_type": "dashboard",
+      "description": "Left sidebar with Query execution tab, central graph canvas for visualization, results panel. Supports custom styling, monitoring, and collaboration features.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "left-sidebar",
+        "query-tab",
+        "run-query-button",
+        "graph-canvas",
+        "result-panel",
+        "monitoring-dashboard",
+        "style-panel"
+      ],
+      "source_id": "market-ux-teardown-graph-databases-memgraph-lab-docs"
+    },
+    {
+      "slug": "tigergraph-graphstudio-visual-builder",
+      "product_slug": "tigergraph",
+      "screen_name": "TigerGraph GraphStudio Visual Query Builder",
+      "screen_type": "canvas",
+      "description": "Drag-and-drop visual query construction interface. Schema design on left, canvas for pattern drawing, query preview/execution. Supports no-code graph analytics for non-technical users.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "schema-panel",
+        "drag-drop-canvas",
+        "visual-query-builder",
+        "pattern-preview",
+        "execution-controls",
+        "layout-options"
+      ],
+      "source_id": "market-ux-teardown-graph-databases-tigergraph-nocode-analytics"
+    },
+    {
+      "slug": "nebulagraph-studio-console",
+      "product_slug": "nebulagraph",
+      "screen_name": "NebulaGraph Studio Console & Visualization",
+      "screen_type": "dashboard",
+      "description": "Console-based query interface with syntax highlighting. Results displayed in graph visualization panel below. Data import and schema management panels available.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "C",
+      "ui_elements": [
+        "console-editor",
+        "syntax-highlighter",
+        "execute-button",
+        "viz-panel",
+        "import-panel",
+        "schema-browser"
+      ],
+      "source_id": "market-ux-teardown-graph-databases-nebulagraph-studio-docs"
+    },
+    {
+      "slug": "puppygraph-query-ide",
+      "product_slug": "puppygraph",
+      "screen_name": "PuppyGraph Query IDE with Visualization",
+      "screen_type": "dashboard",
+      "description": "Zero-ETL graph query interface. Query editor supporting both SQL and graph query languages (Cypher, Gremlin). Visualization via PixiJS or integrated gdotv. Supports real-time multi-hop queries.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "query-editor",
+        "language-selector",
+        "result-visualizer",
+        "data-source-panel",
+        "performance-metrics",
+        "export-controls"
+      ],
+      "source_id": "market-ux-teardown-graph-databases-puppygraph-official"
+    }
+  ],
+  "ux_flows": [
+    {
+      "slug": "neo4j-query-to-explore-flow",
+      "product_slug": "neo4j",
+      "flow_name": "Neo4j: Execute Query and Explore Results",
+      "goal": "Run a Cypher query and explore results in graph visualization",
+      "total_steps": 5,
+      "total_clicks": 8,
+      "drop_off_risk": "medium",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Click in query editor pane",
+          "clicks": 1,
+          "friction": "None"
+        },
+        {
+          "step": 2,
+          "action": "Type or paste Cypher query",
+          "clicks": 0,
+          "friction": "Requires Cypher knowledge"
+        },
+        {
+          "step": 3,
+          "action": "Click Run button or press Ctrl+Enter",
+          "clicks": 1,
+          "friction": "Button is accessible"
+        },
+        {
+          "step": 4,
+          "action": "Results appear in default mode (graph), may need to click result mode tabs to switch views",
+          "clicks": 3,
+          "friction": "Multiple tabs to explore; graph mode may be cluttered (hairball antipattern)"
+        },
+        {
+          "step": 5,
+          "action": "Click on nodes or use filters to explore relationships",
+          "clicks": 3,
+          "friction": "Requires understanding of filtering, zooming, and layout algorithms"
+        }
+      ],
+      "our_approach": "MetroGraph reduces this to 3-4 clicks: unified query-to-viz in single surface, automatic layout optimization, semantic filtering integrated into initial query construction, no mode-switching friction.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-neo4j-browser-official-docs",
+        "market-ux-teardown-graph-databases-cambridge-graph-viz-ux"
+      ]
+    },
+    {
+      "slug": "memgraph-query-and-share-flow",
+      "product_slug": "memgraph",
+      "flow_name": "Memgraph Lab: Query, Style, and Share Results",
+      "goal": "Execute query, customize visualization styling, and share with team",
+      "total_steps": 6,
+      "total_clicks": 11,
+      "drop_off_risk": "medium",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open Memgraph Lab on localhost:3000",
+          "clicks": 1,
+          "friction": "Low; web-based access"
+        },
+        {
+          "step": 2,
+          "action": "Click 'Query execution' tab in left sidebar",
+          "clicks": 1,
+          "friction": "Sidebar navigation clear"
+        },
+        {
+          "step": 3,
+          "action": "Type or paste Cypher query, click 'Run query' button",
+          "clicks": 2,
+          "friction": "Requires Cypher syntax knowledge"
+        },
+        {
+          "step": 4,
+          "action": "Results display in graph canvas; click on Graph Style Script (GSS) panel to customize styling",
+          "clicks": 2,
+          "friction": "GSS syntax learning curve for non-experts"
+        },
+        {
+          "step": 5,
+          "action": "Click sharing button to share query or styling with team",
+          "clicks": 2,
+          "friction": "Sharing feature requires enterprise version"
+        },
+        {
+          "step": 6,
+          "action": "Team member accesses shared query via link or history",
+          "clicks": 1,
+          "friction": "Collaboration features strong; improves team workflow"
+        }
+      ],
+      "our_approach": "MetroGraph embeds sharing and styling in the main query construction, eliminating separate GSS panel. Collaborative styles are version-controlled alongside queries. No enterprise paywall for core sharing.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-memgraph-lab-docs",
+        "market-ux-teardown-graph-databases-memgraph-lab-features"
+      ]
+    },
+    {
+      "slug": "tigergraph-nocode-pattern-builder",
+      "product_slug": "tigergraph",
+      "flow_name": "TigerGraph: Visual Query Builder (No-Code Pattern)",
+      "goal": "Build and execute a graph query using drag-and-drop visual pattern matching",
+      "total_steps": 4,
+      "total_clicks": 6,
+      "drop_off_risk": "low",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open GraphStudio and navigate to Visual Query Builder tab",
+          "clicks": 1,
+          "friction": "Tab navigation clear"
+        },
+        {
+          "step": 2,
+          "action": "Drag vertex types from schema panel onto canvas to define pattern nodes",
+          "clicks": 2,
+          "friction": "Drag-and-drop is intuitive; reduces Cypher knowledge barrier"
+        },
+        {
+          "step": 3,
+          "action": "Draw edges between vertices to define relationships; configure filters and limits",
+          "clicks": 2,
+          "friction": "Edge creation is visual but filter panel may feel cramped"
+        },
+        {
+          "step": 4,
+          "action": "Click 'Execute' button; results display in visualization below",
+          "clicks": 1,
+          "friction": "Low; immediate visual feedback"
+        }
+      ],
+      "our_approach": "MetroGraph extends this with unified data/relationship palette (not separate schema panel), inline filter suggestions based on query semantics, and instant query-plan visualization showing estimated rows per hop—enabling non-experts to optimize without trial-and-error.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-tigergraph-nocode-analytics",
+        "market-ux-teardown-graph-databases-tigergraph-graphstudio-page"
+      ]
+    },
+    {
+      "slug": "puppygraph-sql-to-graph-query",
+      "product_slug": "puppygraph",
+      "flow_name": "PuppyGraph: Zero-ETL SQL-to-Graph Query",
+      "goal": "Query relational data as a unified graph without prior ETL; support both SQL and Gremlin/Cypher",
+      "total_steps": 4,
+      "total_clicks": 5,
+      "drop_off_risk": "low",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Connect data source (PostgreSQL, Iceberg, Redshift) via connection string or UI form",
+          "clicks": 1,
+          "friction": "Low if connection credentials pre-configured"
+        },
+        {
+          "step": 2,
+          "action": "Click 'Auto-map relational schema to graph' or manually define entity/edge mapping",
+          "clicks": 1,
+          "friction": "Auto-mapping is powerful; manual mapping adds complexity"
+        },
+        {
+          "step": 3,
+          "action": "Type SQL or Gremlin/Cypher query in unified editor; query language selector visible",
+          "clicks": 1,
+          "friction": "Query language switching is explicit but clear"
+        },
+        {
+          "step": 4,
+          "action": "Execute query; results visualized in PixiJS canvas or exported; performance metrics displayed",
+          "clicks": 1,
+          "friction": "Real-time query execution with sub-second latency is major advantage; visualization is lightweight"
+        }
+      ],
+      "our_approach": "MetroGraph formalizes the SQL↔graph translation as a first-class UI construct: SQL query builder paired with visual pattern matcher, bidirectional mapping inspector, and explicit 'query cost' indicators showing which parts of the pattern are expensive in the relational substrate—eliminating hidden N+1 surprises.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-puppygraph-official",
+        "market-ux-teardown-graph-databases-puppygraph-blog-visualization"
+      ]
+    },
+    {
+      "slug": "nebulagraph-data-import-explore",
+      "product_slug": "nebulagraph",
+      "flow_name": "NebulaGraph: Data Import and Interactive Console Query",
+      "goal": "Import data files, define schema, and execute nGQL queries interactively",
+      "total_steps": 5,
+      "total_clicks": 9,
+      "drop_off_risk": "high",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open NebulaGraph Studio; click Import Data tab",
+          "clicks": 1,
+          "friction": "Low; sidebar navigation"
+        },
+        {
+          "step": 2,
+          "action": "Upload CSV/JSON file or select remote data source; map columns to vertex/edge types",
+          "clicks": 3,
+          "friction": "High friction: schema mapping is modal and text-heavy; no drag-and-drop column mapper"
+        },
+        {
+          "step": 3,
+          "action": "Review mapping, configure import parameters, click Import",
+          "clicks": 2,
+          "friction": "Import queue may be opaque; no progress feedback"
+        },
+        {
+          "step": 4,
+          "action": "Navigate to Console tab; type nGQL query",
+          "clicks": 1,
+          "friction": "nGQL syntax not as widely known as Cypher"
+        },
+        {
+          "step": 5,
+          "action": "Execute query; results appear in table below; click Visualization tab to see graph",
+          "clicks": 2,
+          "friction": "Results split across two separate views; mode-switching required"
+        }
+      ],
+      "our_approach": "MetroGraph combines import + query in a single unified environment: live schema preview as you map (not a separate modal), incremental import feedback with row counts, and query results with inline visualization toggle (not separate tab)—reducing mode switches and hiding latency with progressive rendering.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-nebulagraph-studio-docs",
+        "market-ux-teardown-graph-databases-nebulagraph-studio-github"
+      ]
+    }
+  ],
+  "ux_patterns": [
+    {
+      "slug": "separate-query-viz-modes",
+      "pattern": "Separate Query-Result Modes (Tabs/Toggles)",
+      "is_antipattern": true,
+      "category": "Navigation & Context Switching",
+      "description": "User must click tabs or toggle buttons to switch between query editor, graph visualization, table view, and text output. Each mode hides the others, forcing context loss.",
+      "exemplar_product_slugs": [
+        "neo4j",
+        "nebulagraph"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "Mode-switching creates cognitive load and breaks flow. MetroGraph surfaces query editor + graph canvas + result metadata simultaneously in a single pane, with inline toggles only for density control—not primary navigation.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-cambridge-graph-viz-ux",
+        "market-ux-teardown-graph-databases-neo4j-browser-manual"
+      ]
+    },
+    {
+      "slug": "cypher-required-knowledge",
+      "pattern": "Query Language Barrier (Cypher/nGQL/SQL Required)",
+      "is_antipattern": true,
+      "category": "Expertise & Accessibility",
+      "description": "All five products require learning a specialized query language (Cypher, nGQL, SQL, Gremlin) to interact with graphs. Non-technical users hit a wall immediately.",
+      "exemplar_product_slugs": [
+        "neo4j",
+        "memgraph",
+        "nebulagraph"
+      ],
+      "hci_cost": "D",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph's visual query builder (inspired by TigerGraph's approach) is the default path, with Cypher/SQL as an optional advanced mode. Semantic suggestions auto-complete patterns based on schema + prior queries, reducing barrier from 'memorize syntax' to 'recognize shapes.'",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-tigergraph-nocode-analytics",
+        "market-ux-teardown-graph-databases-cambridge-graph-viz-ux"
+      ]
+    },
+    {
+      "slug": "hairball-visualization-clutter",
+      "pattern": "Hairball Effect (Overconnected Graphs, Layout Clutter)",
+      "is_antipattern": true,
+      "category": "Data Visualization & Cognitive Load",
+      "description": "When showing heavily connected graphs, the visualization becomes an unreadable tangle of nodes and edges. Users see cognitive overload, not insight. Compounds with large result sets from unbounded queries.",
+      "exemplar_product_slugs": [
+        "neo4j",
+        "memgraph",
+        "tigergraph"
+      ],
+      "hci_cost": "D",
+      "our_stance": "conditional",
+      "our_rationale": "MetroGraph detects high-degree nodes and dense regions at query-time, auto-grouping them into collapsed 'super-nodes' with expandable detail. Enables overview-zoom-filter-detail (Shneiderman principle) without post-hoc cleanup. Paired with result limit suggestions in the query panel.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-cambridge-graph-viz-ux",
+        "market-ux-teardown-graph-databases-puppygraph-blog-visualization",
+        "market-ux-teardown-graph-databases-arxiv-graph-viz-limits"
+      ]
+    },
+    {
+      "slug": "external-styling-scripts",
+      "pattern": "External Styling Language (CSS/GSS/Custom JSON)",
+      "is_antipattern": true,
+      "category": "Customization & Workflow",
+      "description": "Visualization styling is controlled via external Graph Style Script (Memgraph/Neo4j) or JSON configs (NebulaGraph), requiring a second language and separate panel. Styling is decoupled from query definition.",
+      "exemplar_product_slugs": [
+        "memgraph",
+        "neo4j"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph unifies query + styling in a single domain language. Inline style hints (e.g., 'high-risk nodes = red') are suggested alongside filters and aggregations. Styles are part of the query artifact, versioned together, not separated into a parallel stylesheet.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-memgraph-lab-docs",
+        "market-ux-teardown-graph-databases-neo4j-browser-manual"
+      ]
+    },
+    {
+      "slug": "flight-to-chat",
+      "pattern": "Flight-to-Chat (LLM Query Generation without Visual Validation)",
+      "is_antipattern": true,
+      "category": "AI-Assisted Query & Trust",
+      "description": "When query builders or consoles offer LLM-assisted query generation (Memgraph's GraphChat, etc.), users may skip visual pattern validation and execute LLM-generated queries without understanding them, leading to wrong results or performance disasters.",
+      "exemplar_product_slugs": [
+        "memgraph"
+      ],
+      "hci_cost": "D",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph uses LLM as a pattern *suggester*, not a query generator. LLM outputs are shown as visual patterns (drag-drop nodes + edges) that users can validate, edit, and refine *before* execution. Query plan + estimated cost displayed before run. Eliminates blind trust; keeps human in the loop.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-memgraph-lab-docs",
+        "market-ux-teardown-graph-databases-arxiv-graph-query-nlp"
+      ]
+    },
+    {
+      "slug": "modal-schema-mapping",
+      "pattern": "Modal Schema Mapping (Data Import in Separate Dialog)",
+      "is_antipattern": true,
+      "category": "Data Onboarding & Workflow Context",
+      "description": "Data import (NebulaGraph, TigerGraph) is hidden in a modal or separate tab. Users lose sight of the main query builder. Mapping columns to entities requires text entry or clumsy dropdown chains.",
+      "exemplar_product_slugs": [
+        "nebulagraph",
+        "tigergraph"
+      ],
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph shows data sources and schema inline with the query builder. Import flows are progressive: preview → sample rows → confirm mapping → go—all in one surface. Column-to-entity mapping is drag-drop, with visual feedback showing how many rows will become nodes.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-nebulagraph-studio-docs"
+      ]
+    },
+    {
+      "slug": "performance-blindness",
+      "pattern": "Performance Blindness (No Query Cost Visibility Before Execution)",
+      "is_antipattern": true,
+      "category": "Query Planning & Feedback",
+      "description": "Users can execute complex multi-hop queries (e.g., 5+ hops, millions of intermediate results) without any indication of cost, latency, or row explosion. Leads to long-running queries, timeouts, frustration.",
+      "exemplar_product_slugs": [
+        "neo4j",
+        "memgraph",
+        "nebulagraph"
+      ],
+      "hci_cost": "D",
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph shows estimated query cost alongside the visual pattern: rows per hop, memory footprint, predicted execution time. Users can interactively adjust limits (LIMIT, filter predicates) and see cost update in real time. For external data sources (PuppyGraph use case), shows which parts of the pattern are relational vs. computed.",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-cambridge-graph-viz-ux",
+        "market-ux-teardown-graph-databases-puppygraph-blog-visualization"
+      ]
+    },
+    {
+      "slug": "multi-pane-surface-area",
+      "pattern": "Large Multi-Pane Layouts (3+ Panes, Narrow Columns)",
+      "is_antipattern": false,
+      "category": "Surface Area & Information Density",
+      "description": "Neo4j Browser, Memgraph Lab, TigerGraph use 3-pane layouts: query editor (left), graph canvas (center), result panel (right). Works for desktop but creates friction on laptops and tablets. Panes compete for width.",
+      "exemplar_product_slugs": [
+        "neo4j",
+        "memgraph",
+        "tigergraph"
+      ],
+      "hci_cost": "B",
+      "our_stance": "conditional",
+      "our_rationale": "3-pane layout is justified on large screens (24\"+) but breaks on 13–15\" laptops. MetroGraph uses responsive stacking: on small screens, collapses to 2-pane (query + viz) with right-sidebar toggles for result metadata. On large screens, expands to 3-pane. Pane widths adjust based on content density (e.g., large result sets widen result panel automatically).",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-cambridge-graph-viz-ux"
+      ]
+    },
+    {
+      "slug": "limited-result-set-defaults",
+      "pattern": "Unbounded Query Results (No Default Limit, Large Clutter)",
+      "is_antipattern": true,
+      "category": "Query Defaults & Visualization",
+      "description": "Queries often return thousands or millions of rows, visualized with all nodes shown, creating hairball effect and browser lag. No sensible default limit (e.g., LIMIT 100 for exploration mode).",
+      "exemplar_product_slugs": [
+        "neo4j",
+        "memgraph",
+        "nebulagraph"
+      ],
+      "hci_cost": "C",
+      "our_stance": "adopt",
+      "our_rationale": "MetroGraph defaults to LIMIT 50 for exploration, with a prominent warning if query is unrestricted. Results are streamed progressively; user sees first 50 instantly, can load more in batches. Aggregation + sampling options shown inline ('show 100 most central nodes' vs. 'show all').",
+      "source_ids": [
+        "market-ux-teardown-graph-databases-cambridge-graph-viz-ux",
+        "market-ux-teardown-graph-databases-puppygraph-blog-visualization"
+      ]
+    }
+  ],
+  "notes": "Phase C extraction focuses on 5 target products (Neo4j Browser, Memgraph Lab, TigerGraph GraphStudio, NebulaGraph Studio, PuppyGraph). Quantified metrics (pane_count, click_depth, total_clicks, hci_cost) are derived from official documentation, GitHub repositories, and UX research (Cambridge Intelligence, PuppyGraph blog, academic papers on graph visualization). No proprietary Gartner reports or closed usability studies were available; all findings are from publicly documented interfaces. MetroGraph's 'lower-friction approach' reflects best practices from Ben Shneiderman (overview-zoom-filter-detail), Tamara Munzner (visualization task taxonomy), and modern design patterns (visual query builders from Timbuctoo, Graphistry). Flight-to-chat antipattern reflects emerging concern about LLM-assisted queries without validation (cited in GraphChat, Memgraph docs). All source_ids are traceable to sources.json."
+}

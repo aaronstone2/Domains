@@ -1,0 +1,632 @@
+{
+  "leaf": "market/theory-direct-manipulation",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Direct Manipulation",
+      "field": "hci",
+      "definition": "An interaction paradigm where users perceive continuous visual representation of objects and act on them via physical reversible gestures rather than command syntax, with immediate visible feedback. Core principle: interface semantics align with user intention (low semantic distance) and physical form matches meaning (low articulatory distance).",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Hutchins Hollan Norman 1985 / Direct Manipulation Interfaces",
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "related_concepts": [
+        "Continuous Representation",
+        "Reversible Actions",
+        "Immediate Feedback",
+        "Affordances",
+        "Directness"
+      ],
+      "implication": "MetroGraph's graph interaction must enable direct visual object manipulation (nodes/edges) with reversible gestures, not require menu navigation or LLM prompts, to reduce cognitive load and restore user agency—addressing the 'flight to AI chat' failure in workflow-graph tools.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1982-future-interactive",
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step",
+        "market-theory-direct-manipulation-hutchins-hollan-norman-1985-direct"
+      ]
+    },
+    {
+      "concept": "Continuous Representation",
+      "field": "visualization",
+      "definition": "Visual persistence of manipulated objects throughout interaction: users see the data/object on screen at all times, enabling perception of dynamic state changes and immediate assessment of action outcomes. Contrasts with command-line paradigm where typed commands vanish from focus.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Tufte 1983 / The Visual Display of Quantitative Information"
+      ],
+      "related_concepts": [
+        "Visual Encoding",
+        "Information Scent",
+        "Immediate Feedback"
+      ],
+      "implication": "Graph nodes/edges must remain visible and semantically clear during all query/transform operations; hiding intermediate states or requiring modal dialogs breaks the continuous representation principle, forcing users to rely on memory rather than perception.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1982-future-interactive",
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step",
+        "market-theory-direct-manipulation-tufte-1983-visual-display"
+      ]
+    },
+    {
+      "concept": "Reversible Actions",
+      "field": "interaction-design",
+      "definition": "Interaction design principle: user actions (drag, drop, delete, modify) must be undoable without penalty or loss of state. Reversibility reduces psychological friction by enabling safe exploration and error recovery, core to novice learnability and intermittent-user retention.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Nielsen 1995 / 10 Usability Heuristics for User Interface Design"
+      ],
+      "related_concepts": [
+        "Undo-Redo",
+        "Error Recovery",
+        "User Agency"
+      ],
+      "implication": "Every graph operation (node creation, edge deletion, property edit) must have immediate undo/redo; irreversible destructive actions require explicit multi-step confirmation, not automatic AI action.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step",
+        "market-theory-direct-manipulation-nelson-2023-point-of-no-undo",
+        "market-theory-direct-manipulation-nielsen-1995-usability-heuristics"
+      ]
+    },
+    {
+      "concept": "Immediate Feedback",
+      "field": "hci",
+      "definition": "Visual and temporal response to user action: interface state updates synchronously (< 100ms perceptual latency) and visibly reflects the semantic meaning of the action. Includes animation, highlighting, state updates, and confirmation cues that maintain user's mental model of object state.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Ni et al. 1994 / Animating Direct Manipulation Interfaces",
+        "Thomas et al. 2000 / Applying Cartoon Animation Techniques to Graphical User Interfaces"
+      ],
+      "related_concepts": [
+        "Animation",
+        "Responsiveness",
+        "State Visibility"
+      ],
+      "implication": "Graph UI must visually animate transitions (node appearing/disappearing, edge routing changes, property updates) with smooth motion to bridge semantic gaps; delayed or silent updates create perception of broken causality.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step",
+        "market-theory-direct-manipulation-ni-1994-animating-direct",
+        "market-theory-direct-manipulation-thomas-2000-cartoon-animation"
+      ]
+    },
+    {
+      "concept": "Directness (Semantic Distance)",
+      "field": "cognitive-psych",
+      "definition": "Gap between user's intention and the interface meaning representing that intention. Low semantic distance: interface objects directly embody the conceptual domain (dragging a node 'feels' like moving it in logical space). Measured as cognitive steps required to translate intention into interface semantics.",
+      "strength": "framework",
+      "key_refs": [
+        "Hutchins Hollan Norman 1985 / Direct Manipulation Interfaces",
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "related_concepts": [
+        "Articulatory Distance",
+        "Mental Models",
+        "Gulf of Execution"
+      ],
+      "implication": "Graph query operations must map naturally to user intent: e.g., 'show nodes where X=Y' should not require LLM translation to parameterized query syntax; direct visual filtering/highlighting reduces semantic distance.",
+      "source_ids": [
+        "market-theory-direct-manipulation-hutchins-hollan-norman-1985-direct"
+      ]
+    },
+    {
+      "concept": "Directness (Articulatory Distance)",
+      "field": "interaction-design",
+      "definition": "Gap between intention's semantic representation and physical/gestural form required to express it. Low articulatory distance: physical action (drag, click, gesture) closely matches the semantics of the operation. Example: dragging a node to move it has low articulatory distance; typing SQL has high articulatory distance for the same intent.",
+      "strength": "framework",
+      "key_refs": [
+        "Hutchins Hollan Norman 1985 / Direct Manipulation Interfaces"
+      ],
+      "related_concepts": [
+        "Physical Gestures",
+        "Affordances",
+        "Motor Control"
+      ],
+      "implication": "Graph interactions should privilege drag, drop, and click gestures over text input; constraint-based node positioning should enable direct manipulation, not menu-driven constraint editing.",
+      "source_ids": [
+        "market-theory-direct-manipulation-hutchins-hollan-norman-1985-direct"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "cognitive-psych",
+      "definition": "Perceived action possibilities that an object or interface element offers relative to an agent's capabilities. Rooted in Gibson's ecological psychology: environment's structures directly communicate available interactions (e.g., a button affords pressing, a draggable object appears graspable). Perceived affordances differ from real affordances and are shaped by visual design, color, texture, shape.",
+      "strength": "empirical",
+      "key_refs": [
+        "Gibson 1979 / The Ecological Approach to Visual Perception",
+        "Norman 1988 / The Design of Everyday Things",
+        "Norman 1990 / Affordance, Conventions, and Design"
+      ],
+      "related_concepts": [
+        "Visual Cues",
+        "Gestalt Principles",
+        "Signifiers"
+      ],
+      "implication": "Graph nodes, edges, and interaction targets must visually signal affordances: draggable nodes should appear 'graspable' (color, shadow, cursor change), connectable edges should show 'snap zones', interactive properties should be visually distinct from read-only elements.",
+      "source_ids": [
+        "market-theory-direct-manipulation-gibson-1979-ecological-approach",
+        "market-theory-direct-manipulation-norman-1986-psychology-everyday",
+        "market-theory-direct-manipulation-norman-affordances-conventions-design"
+      ]
+    },
+    {
+      "concept": "Gulf of Execution",
+      "field": "cognitive-psych",
+      "definition": "Cognitive distance between user's goal and the means to express it in the interface. Measured by: (1) how many steps required, (2) how obvious the path is, (3) how much system knowledge is required. Direct manipulation reduces the gulf by aligning physical action with goal semantics; command-syntax or wizard-driven interfaces increase it.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "related_concepts": [
+        "Semantic Distance",
+        "Articulatory Distance",
+        "User Control"
+      ],
+      "implication": "MetroGraph must minimize execution gulf: users with goal 'connect these two nodes' should accomplish it via 1-2 direct gestures (drag-to-connect), not multi-step menu navigation or LLM prompt refinement.",
+      "source_ids": [
+        "market-theory-direct-manipulation-norman-1986-psychology-everyday"
+      ]
+    },
+    {
+      "concept": "Gulf of Evaluation",
+      "field": "cognitive-psych",
+      "definition": "Cognitive distance between interface state and the user's ability to assess whether that state matches their intent. Direct manipulation reduces this gulf by making results immediately visible and semantically transparent; high gulfs occur when system state is hidden, abstract (raw query results without visual summary), or requires specialized domain knowledge to interpret.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "related_concepts": [
+        "Immediate Feedback",
+        "Continuous Representation",
+        "Visual Encoding"
+      ],
+      "implication": "Query results in MetroGraph must be immediately rendered as visual graph state (highlighted nodes, edge colors), not as text tables or log output; users must perceive result meaning without translation step.",
+      "source_ids": [
+        "market-theory-direct-manipulation-norman-1986-psychology-everyday"
+      ]
+    },
+    {
+      "concept": "Cognitive Load",
+      "field": "cognitive-psych",
+      "definition": "Total mental effort required to perform a task: composed of intrinsic load (task complexity), extraneous load (interface friction, memory demands), and germane load (productive thinking). Direct manipulation reduces extraneous load by eliminating command recall, syntax overhead, and intermediate abstraction layers; leaves more cognitive capacity for domain-level problem-solving.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Norman 1990 / Affordance, Conventions, and Design"
+      ],
+      "related_concepts": [
+        "Working Memory",
+        "Novice Learnability",
+        "Expert Speed"
+      ],
+      "implication": "Graph interface must minimize visual clutter, require minimal menu navigation, avoid requiring users to hold multiple intermediate states in working memory; direct object manipulation preserves cognitive capacity for query reasoning.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step",
+        "market-theory-direct-manipulation-norman-affordances-conventions-design"
+      ]
+    },
+    {
+      "concept": "Motor Control & Fitts's Law",
+      "field": "cognitive-psych",
+      "definition": "Quantitative principle predicting human pointing movement time as MT = a + b·log₂(D/W+1), where D=distance to target, W=target width. Fundamental law of motor control governing direct-manipulation interface efficiency: larger buttons, closer targets, and wider interaction zones reduce movement time and error rates.",
+      "strength": "established-law",
+      "key_refs": [
+        "Fitts 1954 / The Information Capacity of the Human Motor System in Controlling the Amplitude of Movement",
+        "Keim 2025 / A Systematic Review of Fitts' Law in 3D Extended Reality"
+      ],
+      "related_concepts": [
+        "Motor Efficiency",
+        "Gesture Ergonomics",
+        "Interaction Efficiency"
+      ],
+      "implication": "Graph node and edge interaction zones must be sized and spaced to minimize pointing movement; small nodes, dense layouts, or tiny drag-handle zones create high motor cost; layout should respect Fitts law via appropriately-sized interactive targets.",
+      "source_ids": [
+        "market-theory-direct-manipulation-fitts-1954-information-capacity",
+        "market-theory-direct-manipulation-keim-2020-systematic-review-fitts"
+      ]
+    },
+    {
+      "concept": "Novice Learnability",
+      "field": "hci",
+      "definition": "Interface learning curve for first-time users: directness correlates strongly with rapid learnability. Direct manipulation interfaces show shallow learning curves because physical gestures map to real-world affordances (dragging feels like moving); command-syntax interfaces require memorization and show steep curves. Measured by time-to-first-task and error rates for new users.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages"
+      ],
+      "related_concepts": [
+        "Skill Acquisition",
+        "Intuitive Design",
+        "Familiarity"
+      ],
+      "implication": "Graph visualization and interaction should be learnable within minutes for users unfamiliar with database tools; dragging to explore, clicking to inspect, visual filtering must feel natural without training manuals or LLM guidance.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step"
+      ]
+    },
+    {
+      "concept": "Expert Speed",
+      "field": "hci",
+      "definition": "Efficiency advantage for experienced users: direct-manipulation interfaces enable expert users to work faster via fluent gesture mastery, keyboard shortcuts, and predictable state feedback. Contrast with command-line where expert speed requires syntax memorization and complex command composition.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages"
+      ],
+      "related_concepts": [
+        "Skill Acquisition",
+        "Flow State",
+        "Gesture Fluency"
+      ],
+      "implication": "MetroGraph should support expert gesture fluency: hotkeys for common operations, drag-and-drop primitives, visual shortcuts that scale from novice (click-based) to expert (multi-action gestures) workflows.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step"
+      ]
+    },
+    {
+      "concept": "Intermittent-User Retention",
+      "field": "hci",
+      "definition": "Interface usability for infrequent users who return after gaps: direct manipulation supports retention because physical gestures are recognizable even after memory decay; expert syntax-heavy interfaces exhibit high forgetting and require relearning.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages"
+      ],
+      "related_concepts": [
+        "Learnability",
+        "Gesture Familiarity"
+      ],
+      "implication": "Graph interface must support intermittent usage: users returning monthly/quarterly should require no re-onboarding; UI gestures should be discoverable via visual inspection (affordances).",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step"
+      ]
+    },
+    {
+      "concept": "Undo-Redo Mechanism",
+      "field": "interaction-design",
+      "definition": "Persistent interaction history enabling users to reverse prior actions and re-apply them. Undo-redo is essential implementation of reversibility principle; enables safe exploration, error recovery, and experimentation. Nielsen heuristic #3 emphasizes undo/redo as key to user control.",
+      "strength": "established-law",
+      "key_refs": [
+        "Nielsen 1995 / 10 Usability Heuristics for User Interface Design",
+        "Prabaker 2024 / Utilizing Provenance as an Attribute for Visual Data Analysis"
+      ],
+      "related_concepts": [
+        "Reversible Actions",
+        "Error Recovery",
+        "Provenance Tracking"
+      ],
+      "implication": "MetroGraph's undo-redo stack must be unbounded and visible (optional history panel); users must trust that any destructive operation is recoverable within reasonable history depth (100+ steps minimum).",
+      "source_ids": [
+        "market-theory-direct-manipulation-nielsen-1995-usability-heuristics",
+        "market-theory-direct-manipulation-prabaker-2024-interactive-data-visual-exploration"
+      ]
+    },
+    {
+      "concept": "Error Recovery & Error Messages",
+      "field": "interaction-design",
+      "definition": "System design minimizing errors and enabling rapid recovery: direct manipulation reduces error rate via visual clarity and reversibility; when errors occur, system should diagnose root cause, explain it in plain language (not programmer jargon), and suggest specific recovery steps. Contrasts with command-driven systems that produce cryptic syntax errors.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Nielsen 1995 / 10 Usability Heuristics for User Interface Design"
+      ],
+      "related_concepts": [
+        "User Feedback",
+        "Reversibility",
+        "System Transparency"
+      ],
+      "implication": "Graph queries that fail should provide visual highlighting of problematic nodes/edges and natural-language error messages ('Node X has no outgoing edges', not 'SQL parse error at line 3').",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1983-direct-manipulation-step",
+        "market-theory-direct-manipulation-nielsen-1995-usability-heuristics"
+      ]
+    },
+    {
+      "concept": "Physical Gestures & Natural Semantics",
+      "field": "interaction-design",
+      "definition": "User actions mapped to real-world physics metaphors: dragging mimics object movement, pinching mimics scaling, swiping mimics paging. Natural gesture semantics reduce cognitive load by leveraging implicit motor knowledge and real-world expectations. Contrast with abstract menu selections or arbitrary keyboard chords.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1982 / The Future of Interactive Systems and the Emergence of Direct Manipulation",
+        "Wigdor et al. 2009 / Designing User Interfaces for Multi-Touch and Gesture Devices"
+      ],
+      "related_concepts": [
+        "Affordances",
+        "Embodied Interaction",
+        "Motor Control"
+      ],
+      "implication": "Graph manipulation should privilege gestures: dragging nodes to reposition, dragging canvas to pan, swiping to navigate graph layers; avoid arbitrary menu commands like 'Move Node Forward' that require menu search.",
+      "source_ids": [
+        "market-theory-direct-manipulation-shneiderman-1982-future-interactive",
+        "market-theory-direct-manipulation-wigdor-2009-multitouch-gesture"
+      ]
+    },
+    {
+      "concept": "Visibility & Feedback",
+      "field": "hci",
+      "definition": "Principle: interface must show current state clearly and provide immediate, visible feedback to all user actions. Lack of visibility creates uncertainty; users cannot assess if actions had intended effect. Direct manipulation requires high visibility: all objects/state visible, all changes animated, all results immediately rendered.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "related_concepts": [
+        "Continuous Representation",
+        "Immediate Feedback",
+        "System Transparency"
+      ],
+      "implication": "MetroGraph must avoid hidden state: all nodes/edges visible (with panning/zooming if needed, not hiding), all property changes immediately rendered, all query results immediately graphed (not delayed or paginated).",
+      "source_ids": [
+        "market-theory-direct-manipulation-norman-1986-psychology-everyday"
+      ]
+    },
+    {
+      "concept": "Constraints & Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "Combination of constraint-based reasoning with direct manipulation: system enforces semantic rules (e.g., node layout constraints, edge connectivity rules) while permitting fluent object manipulation. Advanced DM that enables constrained interaction without requiring explicit constraint editing via menus.",
+      "strength": "framework",
+      "key_refs": [
+        "Borning & Duisberg 1986 / Constraint-Based Tools for Building User Interfaces",
+        "Zeidler 2013 / Evaluating Direct Manipulation Operations for Constraint-Based Layout"
+      ],
+      "related_concepts": [
+        "Constraint Solving",
+        "Semantic Constraints",
+        "Interaction Fluency"
+      ],
+      "implication": "MetroGraph graph operations should enforce schema constraints silently: e.g., if node type X cannot connect to type Y, dragging to create such edges should fail gracefully with visual feedback (red highlight), not open a constraint-editing dialog.",
+      "source_ids": [
+        "market-theory-direct-manipulation-borning-1986-constraint-tools",
+        "market-theory-direct-manipulation-zeidler-2013-evaluating-constraint-layout"
+      ]
+    },
+    {
+      "concept": "Instrumental Interaction",
+      "field": "interaction-design",
+      "definition": "Beaudouin-Lafon's generalization of direct manipulation: user manipulates domain objects (e.g., graph nodes) via interaction instruments (e.g., drag handle, selection lasso). Instrument selection is often implicit (e.g., cursor entering a node automatically enables dragging). Extends DM to multi-handed, tangible, and post-WIMP contexts.",
+      "strength": "framework",
+      "key_refs": [
+        "Beaudouin-Lafon 2000 / Instrumental Interaction: An Interaction Model for Designing Post-WIMP User Interfaces"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "Post-WIMP Paradigm",
+        "Gesture Design"
+      ],
+      "implication": "MetroGraph interaction should use implicit instruments: hovering over a node reveals drag handles; selecting an edge implicitly enables bend-point editing; no need for mode-switching (e.g., 'Enter Edit Mode').",
+      "source_ids": [
+        "market-theory-direct-manipulation-beaudouin-lafon-2000-instrumental"
+      ]
+    },
+    {
+      "concept": "Reality-Based Interaction",
+      "field": "interaction-design",
+      "definition": "Post-WIMP design framework: interaction grounded in real-world physical and spatial metaphors (touch, gesture, tangible, embodied). Four dimensions: naive physics (e.g., gravity, inertia), body awareness (proprioception), environmental awareness (spatial reasoning), social interaction (collaborative). Direct manipulation is foundation; RBI extends it beyond desktop WIMP.",
+      "strength": "framework",
+      "key_refs": [
+        "Dourish et al. 2008 / Reality-Based Interaction: A Framework for Post-WIMP Interfaces"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "Tangible Interaction",
+        "Embodied Interaction"
+      ],
+      "implication": "MetroGraph should support multi-touch, gesture, and tablet interaction via RBI: pinch-to-zoom respects inertia; dragging nodes respects momentum; swiping feels weight-appropriate; environmental awareness enables spatial clustering.",
+      "source_ids": [
+        "market-theory-direct-manipulation-dourish-horn-2008-reality-based"
+      ]
+    },
+    {
+      "concept": "Post-WIMP Paradigm",
+      "field": "hci",
+      "definition": "Evolution beyond classic Windows-Icons-Menus-Pointer (WIMP) interface: includes multitouch, gesture, speech, tangible, VR/AR, embodied interaction. Post-WIMP does not abandon DM principles; rather, extends them to new input modalities (touch, hand gesture) and output modalities (3D, immersive).",
+      "strength": "framework",
+      "key_refs": [
+        "Beaudouin-Lafon 2000 / Instrumental Interaction: An Interaction Model for Designing Post-WIMP User Interfaces",
+        "Dourish et al. 2008 / Reality-Based Interaction: A Framework for Post-WIMP Interfaces"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "Gesture-Based Input",
+        "Tangible Interaction"
+      ],
+      "implication": "MetroGraph should not be confined to mouse-and-keyboard; design should extend to tablet touch, gesture, and future modalities while preserving DM core: continuous representation, reversibility, immediate feedback.",
+      "source_ids": [
+        "market-theory-direct-manipulation-beaudouin-lafon-2000-instrumental",
+        "market-theory-direct-manipulation-dourish-horn-2008-reality-based"
+      ]
+    },
+    {
+      "concept": "Tangible & Embodied Interaction",
+      "field": "interaction-design",
+      "definition": "Direct manipulation using physical objects as interface elements: tangible UIs bridge digital and physical (e.g., RFID-tagged blocks controlling digital processes); embodied interaction leverages body movement and proprioception (e.g., gesture-based control). Both extend DM principle of physical action to real-world tangibility.",
+      "strength": "empirical",
+      "key_refs": [
+        "Hornecker 2005 / A Design Theme for Tangible Interaction: Embodied Facilitation",
+        "O'Brien 2008 / The Role of Physicality in Tangible and Embodied Interactions"
+      ],
+      "related_concepts": [
+        "Physical Gestures",
+        "Reality-Based Interaction",
+        "Motor Knowledge"
+      ],
+      "implication": "Future MetroGraph could leverage tangible input (e.g., physical tokens representing nodes) or embodied gesture (AR hand tracking); current design should prepare for such extensions while maintaining desktop DM foundations.",
+      "source_ids": [
+        "market-theory-direct-manipulation-hornecker-2005-tangible-embodied",
+        "market-theory-direct-manipulation-o-brien-2008-tangible-role-physicality"
+      ]
+    },
+    {
+      "concept": "3D & VR Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "Extension of DM to 3D immersive environments: Fitts's Law applies to 3D pointing; grab metaphors extend dragging to 6DOF manipulation; dual-hand interaction enables two-handed DM. VR/AR amplifies DM power via natural spatial reasoning and haptic feedback.",
+      "strength": "empirical",
+      "key_refs": [
+        "Keim 2025 / A Systematic Review of Fitts' Law in 3D Extended Reality",
+        "User-Elicited 2018 / User-Elicited Dual-Hand Interactions for Manipulating 3D Objects in Virtual Reality Environments",
+        "Lin 2024 / Can I Touch This?: Survey of Virtual Reality Interactions via Haptic Solutions"
+      ],
+      "related_concepts": [
+        "Motor Control",
+        "Spatial Reasoning",
+        "Embodied Interaction"
+      ],
+      "implication": "Future MetroGraph 3D graph visualization should support VR-grade DM: hand-tracked grab-to-manipulate, dual-hand rotation, spatial clustering that respects proprioceptive learning; haptic feedback for edge snap points.",
+      "source_ids": [
+        "market-theory-direct-manipulation-keim-2020-systematic-review-fitts",
+        "market-theory-direct-manipulation-user-elicited-2018-vr-manipulation",
+        "market-theory-direct-manipulation-lin-2024-haptic-vr-manipulation"
+      ]
+    },
+    {
+      "concept": "Information Foraging & Visual Scent",
+      "field": "information-foraging",
+      "definition": "Theory of how users navigate information spaces: users follow 'information scent' (cues suggesting relevant information). Direct-manipulation visualization enhances foraging: visual prominence, color, highlighting, and interactive feedback serve as scent cues; immediate result visualization (not delayed query execution) enables rapid scent assessment.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging Theory: Adaptive Interaction with Information"
+      ],
+      "related_concepts": [
+        "Visual Encoding",
+        "Interactive Exploration",
+        "Immediate Feedback"
+      ],
+      "implication": "MetroGraph query results must provide strong visual scent: filtered nodes should be highlighted distinctly (color, size, saturation), edge patterns should emerge from visualization (not require reading text results), enabling users to rapidly decide next exploration steps.",
+      "source_ids": [
+        "market-theory-direct-manipulation-pirolli-card-1999-information-foraging"
+      ]
+    },
+    {
+      "concept": "Visual Encoding & Graphical Integrity",
+      "field": "visualization",
+      "definition": "Principles for mapping data to visual properties (color, size, position, shape) such that perception matches data semantics. Tufte's graphical integrity: avoid lie factor (ratio of effect size in graphic to actual data); use data-ink ratio (proportion of display showing data vs decoration). Effective visual encoding enables DM: users perceive query results immediately without decoding step.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte 1983 / The Visual Display of Quantitative Information",
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "related_concepts": [
+        "Continuous Representation",
+        "Information Scent",
+        "Perception"
+      ],
+      "implication": "MetroGraph graph layout and node/edge visual encoding must follow graphical integrity: node position encodes graph structure (via layout algorithm); color should encode meaningful property (not decoration); size/shape should match data semantics; avoid visual lie factors.",
+      "source_ids": [
+        "market-theory-direct-manipulation-tufte-1983-visual-display",
+        "market-theory-direct-manipulation-munzner-2014-visualization-analysis"
+      ]
+    },
+    {
+      "concept": "Gestalt Principles & Perceptual Grouping",
+      "field": "cognitive-psych",
+      "definition": "Laws of perceptual organization (proximity, similarity, continuity, closure, figure-ground): users automatically group visual elements based on these principles. DM UI design leverages Gestalt to signal interaction targets: related nodes grouped by proximity; interactive elements differentiated by color/shape; figure-ground contrast makes interactive elements salient.",
+      "strength": "established-law",
+      "key_refs": [
+        "IxDF / Gestalt Principles: How the Brain Organizes Visual Information",
+        "Figma Resource Library / Gestalt Principles in Design"
+      ],
+      "related_concepts": [
+        "Affordances",
+        "Visual Hierarchy",
+        "Interaction Targets"
+      ],
+      "implication": "MetroGraph node clustering should respect Gestalt proximity; related nodes grouped spatially; interactive elements (drag handles, context menus) should stand out via similarity/contrast; reduce visual noise to clarify figure-ground relationships.",
+      "source_ids": [
+        "market-theory-direct-manipulation-ixdf-gestalt-principles",
+        "market-theory-direct-manipulation-figma-gestalt-resources"
+      ]
+    },
+    {
+      "concept": "Query-by-Example (QBE) & Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "Query specification via direct manipulation of visual examples rather than text syntax: users click/drag to specify query constraints on example data. QBE is a DM paradigm for database queries: users see data, directly indicate desired subset (e.g., highlight rows), system infers query.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fisher et al. 2016 / Expressive Query Construction through Direct Manipulation of Nested Relational Results",
+        "IFQ / IFQ: A Visual Query Interface and Query Generator for Object-Based Media Retrieval"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "Visual Analytics",
+        "Query Authoring"
+      ],
+      "implication": "MetroGraph query builder should support QBE: users directly highlight example nodes/edges matching criteria, system translates to query; avoids SQL syntax, reduces semantic/articulatory distance.",
+      "source_ids": [
+        "market-theory-direct-manipulation-fisher-2016-expressive-query-construction",
+        "market-theory-direct-manipulation-iifq-visual-query"
+      ]
+    },
+    {
+      "concept": "Data Wrangling via Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "Interactive data transformation using direct-manipulation UIs: users see data tables/views, directly manipulate (reorder columns, filter rows, split cells), system infers transformation pipeline. Wrangler and similar tools show DM effectiveness for data cleaning: visual preview + undo/redo enables rapid iterative transformation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kandel 2013 / Interactive Systems for Data Transformation and Assessment",
+        "Toledo 2024 / Towards Scalable Visual Data Wrangling via Direct Manipulation"
+      ],
+      "related_concepts": [
+        "Query-by-Example",
+        "Visual Analytics",
+        "Interactive Exploration"
+      ],
+      "implication": "MetroGraph graph transformation (schema evolution, edge rerouting, node property updates) should support direct manipulation like data wrangling: visual preview of result, undo-redo for safe iteration, inference of transformation rules.",
+      "source_ids": [
+        "market-theory-direct-manipulation-kandel-2013-interactive-systems-data",
+        "market-theory-direct-manipulation-toledo-2024-scalable-wrangling"
+      ]
+    },
+    {
+      "concept": "DirectGPT: Direct Manipulation for LLM Interaction",
+      "field": "hci",
+      "definition": "Contemporary reapplication of Shneiderman's DM principles to LLM interfaces: users manipulate prompt elements visually (drag-reorder, drop-combine), see continuous preview of model output, undo-redo prior states. Empirical study shows 50% faster task completion, 72% shorter prompts vs ChatGPT chat interface.",
+      "strength": "empirical",
+      "key_refs": [
+        "Masson & Casiez 2024 / DirectGPT: A Direct Manipulation Interface to Interact with Large Language Models"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "AI-Assisted Interfaces",
+        "Workflow Orchestration"
+      ],
+      "implication": "MetroGraph graph-query/agent workflows should adopt DirectGPT lesson: enable direct manipulation of node operations (drag-to-connect tasks, visual parameter editing), not chat-based task specification; empirical advantage: faster, more user-controlled interactions.",
+      "source_ids": [
+        "market-theory-direct-manipulation-masson-casiez-2024-directgpt"
+      ]
+    },
+    {
+      "concept": "Hybrid Multimodal Interaction",
+      "field": "interaction-design",
+      "definition": "Combining multiple input modalities (direct manipulation, natural language, gesture) in single interface: DM provides precision/control, NL provides expressiveness. Contemporary systems (Liger, InterChat) show multimodal integration: users can drag to position elements, speak to filter, gestures to refine.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sinha 2024 / Liger: Combining Interaction Paradigms for Visual Analysis",
+        "InterChat 2024 / InterChat: Enhancing Generative Visual Analytics using Multimodal Interactions"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "Natural Language Interfaces",
+        "Gesture-Based Input"
+      ],
+      "implication": "MetroGraph should support multimodal queries: drag nodes to filter, type regex patterns for text properties, speak to refine; DM as primary interaction layer, NL as secondary expressiveness mechanism; best-of-both vs AI-chat-only.",
+      "source_ids": [
+        "market-theory-direct-manipulation-sinha-2024-liger-combining-paradigms",
+        "market-theory-direct-manipulation-interchat-2024-multimodal-analytics"
+      ]
+    },
+    {
+      "concept": "Modelessness & Consistency",
+      "field": "interaction-design",
+      "definition": "Interface design principle: minimize modes (e.g., 'edit mode' vs 'view mode') requiring explicit activation; instead, provide consistent interaction semantics across contexts. Raskin's humane interface emphasizes modelessness. Direct manipulation naturally supports modelessness: users directly act on objects without mode-switching.",
+      "strength": "framework",
+      "key_refs": [
+        "Raskin 2000 / The Humane Interface: New Directions for Designing Interactive Systems"
+      ],
+      "related_concepts": [
+        "Consistency",
+        "User Agency",
+        "Cognitive Load"
+      ],
+      "implication": "MetroGraph should avoid modes: nodes are always draggable, properties always editable inline, queries always incrementally refinable; no 'lock/unlock graph', 'enter query mode', etc. Consistent gesture semantics reduce cognitive load.",
+      "source_ids": [
+        "market-theory-direct-manipulation-raskin-2000-humane-interface"
+      ]
+    }
+  ]
+}

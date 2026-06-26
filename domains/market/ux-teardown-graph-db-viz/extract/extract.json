@@ -1,0 +1,641 @@
+{
+  "leaf": "market/ux-teardown-graph-db-viz",
+  "notes": "Phase C UX teardown covering 5 graph DB viz products: Neo4j Bloom, Linkurious Enterprise, Kineviz GraphXR, Memgraph Lab, Gephi. Evidence sourced from 16 documents including official docs, user manuals, release notes, and feature comparisons. HCI cost ratings assigned based on pane_count, click_depth, interface complexity, and surface area analysis. MetroGraph's wedge positioning emphasizes low surface area UI with minimal panes and high-leverage actions to avoid the flight-to-chat trap visible in competitor tools.",
+  "ux_screens": [
+    {
+      "slug": "bloom-search-to-visualization",
+      "product_slug": "neo4j-bloom",
+      "screen_name": "Search-to-Visualization Canvas",
+      "screen_type": "canvas",
+      "description": "Primary graph visualization canvas accessed via natural language or Cypher search. Central workspace displaying nodes/edges with interactive exploration. Supports scene saving and role-based perspective sharing.",
+      "pane_count": 4,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "search bar",
+        "canvas",
+        "perspective drawer",
+        "settings drawer",
+        "legend panel"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-neo4j-bloom-visual-tour"
+    },
+    {
+      "slug": "bloom-perspective-drawer",
+      "product_slug": "neo4j-bloom",
+      "screen_name": "Perspective Configuration Drawer",
+      "screen_type": "inspector-pane",
+      "description": "Right-side drawer for managing Bloom Perspectives (role-based views). Controls search phrases, visualization settings, and access control. Persistent across sessions when stored in database.",
+      "pane_count": 2,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "perspective list",
+        "search phrase editor",
+        "role selector",
+        "save button",
+        "share controls"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-neo4j-bloom-official-docs"
+    },
+    {
+      "slug": "linkurious-workspace-visualization",
+      "product_slug": "linkurious-enterprise",
+      "screen_name": "Workspace Visualization Dashboard",
+      "screen_type": "dashboard",
+      "description": "Three-tier web app: central graph canvas with left-side workspace navigator and right-side property inspector. Supports local filtering, search on nodes/edges, and collaborative annotations (comments, tags).",
+      "pane_count": 5,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "workspace navigator",
+        "canvas",
+        "property inspector",
+        "filter panel",
+        "search controls",
+        "collaboration sidebar"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-linkurious-user-manual"
+    },
+    {
+      "slug": "linkurious-role-management",
+      "product_slug": "linkurious-enterprise",
+      "screen_name": "User Role Management Interface",
+      "screen_type": "settings",
+      "description": "Admin interface for role-based access control without requiring technical knowledge. Straightforward UI for defining user roles (administrators, analysts, alert reviewers). Contrast with Bloom's Cypher-based approach.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "role list",
+        "permissions matrix",
+        "user assignment panel",
+        "save/apply buttons"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-linkurious-admin-manual"
+    },
+    {
+      "slug": "graphxr-3d-canvas",
+      "product_slug": "kineviz-graphxr",
+      "screen_name": "3D Graph Exploration Canvas",
+      "screen_type": "canvas",
+      "description": "Virtual 3D workspace for graph exploration. Supports multiple layout algorithms (Tree, Ring, Sphere, etc.). Project panel with Views tab showing saved data views as thumbnails or list with search/sort/filter capabilities.",
+      "pane_count": 5,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "3D canvas",
+        "project panel",
+        "views tab",
+        "view thumbnails",
+        "layout menu",
+        "category panel",
+        "toolbar"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-kineviz-graphxr-docs-overview"
+    },
+    {
+      "slug": "graphxr-views-manager",
+      "product_slug": "kineviz-graphxr",
+      "screen_name": "Data Views Manager (2.17.0+)",
+      "screen_type": "inspector-pane",
+      "description": "New UI for managing saved data views with thumbnail previews or list layout. Supports filtering by name, sorting by date/name, view annotations (Remarks field), and quick actions (share, delete, rename) without opening views.",
+      "pane_count": 2,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "view thumbnails",
+        "view list",
+        "search bar",
+        "sort dropdown",
+        "view info window",
+        "action icons"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-kineviz-graphxr-2-17-release"
+    },
+    {
+      "slug": "memgraph-lab-query-editor",
+      "product_slug": "memgraph-lab",
+      "screen_name": "Query Execution Editor",
+      "screen_type": "canvas",
+      "description": "Main Cypher editor with split view: code on left, tabular/graph results on right. Supports query parameterization, Graph Style Script (GSS) editing for visualization customization, and query sharing.",
+      "pane_count": 4,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "code editor",
+        "parameter panel",
+        "run button",
+        "results tabs",
+        "graph view",
+        "table view",
+        "query summary"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-memgraph-lab-querying"
+    },
+    {
+      "slug": "memgraph-lab-graphchat",
+      "product_slug": "memgraph-lab",
+      "screen_name": "GraphChat Natural Language Interface",
+      "screen_type": "modal",
+      "description": "Natural language query interface for users without Cypher knowledge. Accepts text input and generates/executes appropriate queries. Accessible from multiple Lab sections.",
+      "pane_count": 2,
+      "click_depth": 1,
+      "hci_cost": "A",
+      "ui_elements": [
+        "text input field",
+        "send button",
+        "chat history",
+        "query preview",
+        "execute button"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-memgraph-lab-features"
+    },
+    {
+      "slug": "gephi-overview-workspace",
+      "product_slug": "gephi-desktop",
+      "screen_name": "Overview Workspace with Multiple Panels",
+      "screen_type": "dashboard",
+      "description": "Desktop app (Windows/Mac/Linux) with multi-pane workspace: central graph canvas, left sidebar with interaction tools (select, drag, color), right sidebar with Appearance/Layout/Statistics/Filters panels, bottom toolbar for rendering controls.",
+      "pane_count": 6,
+      "click_depth": 4,
+      "hci_cost": "D",
+      "ui_elements": [
+        "graph canvas",
+        "left toolbar",
+        "appearance panel",
+        "layout panel",
+        "statistics panel",
+        "filters panel",
+        "preview tab",
+        "data laboratory tab",
+        "rendering controls"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-gephi-quickstart"
+    },
+    {
+      "slug": "gephi-data-laboratory",
+      "product_slug": "gephi-desktop",
+      "screen_name": "Data Laboratory Tabular View",
+      "screen_type": "dashboard",
+      "description": "Tabular view for inspecting and editing node/edge data. Accessible via tab at top. Supports sorting, filtering, and column operations. Separate tables for nodes and edges.",
+      "pane_count": 4,
+      "click_depth": 2,
+      "hci_cost": "C",
+      "ui_elements": [
+        "nodes/edges buttons",
+        "data table",
+        "filter field",
+        "column operations",
+        "sort headers"
+      ],
+      "source_id": "market-ux-teardown-graph-db-viz-gephi-quickstart"
+    }
+  ],
+  "ux_flows": [
+    {
+      "slug": "bloom-search-explore-share",
+      "product_slug": "neo4j-bloom",
+      "flow_name": "Search, Explore, Share Perspective",
+      "goal": "User discovers a pattern in graph data and shares findings with role-based access control",
+      "total_steps": 6,
+      "total_clicks": 8,
+      "drop_off_risk": "medium",
+      "our_approach": "MetroGraph reduces friction by combining search and perspective binding in a single modal, eliminating the drawer-based context switch. Natural language search autocompletes directly on the canvas.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open Bloom, click search bar",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 2,
+          "action": "Enter natural language or Cypher search phrase",
+          "clicks": 0,
+          "friction": "low"
+        },
+        {
+          "step": 3,
+          "action": "Click to execute search, wait for canvas update",
+          "clicks": 1,
+          "friction": "medium - may need to wait for query execution"
+        },
+        {
+          "step": 4,
+          "action": "Explore results by clicking nodes/edges on canvas",
+          "clicks": 2,
+          "friction": "low"
+        },
+        {
+          "step": 5,
+          "action": "Open Perspective Drawer (right sidebar)",
+          "clicks": 1,
+          "friction": "medium - requires knowing drawer location"
+        },
+        {
+          "step": 6,
+          "action": "Configure perspective settings, assign roles, save",
+          "clicks": 3,
+          "friction": "high - role assignment requires Cypher knowledge in some contexts"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-graph-db-viz-neo4j-bloom-product-page",
+        "market-ux-teardown-graph-db-viz-neo4j-bloom-visual-tour"
+      ]
+    },
+    {
+      "slug": "linkurious-import-visualize-filter",
+      "product_slug": "linkurious-enterprise",
+      "flow_name": "Import Data, Create Visualization, Apply Filters",
+      "goal": "User loads graph data from database and creates a filtered visualization with team collaboration",
+      "total_steps": 7,
+      "total_clicks": 12,
+      "drop_off_risk": "high",
+      "our_approach": "MetroGraph combines import, visualization creation, and filtering into a unified progressive disclosure modal, avoiding the multi-pane fatigue of Linkurious' three-tier web app with side panels.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Click Workspace navigator (left sidebar)",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 2,
+          "action": "Select or create new workspace",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 3,
+          "action": "Navigate to data source selection panel",
+          "clicks": 1,
+          "friction": "medium - requires finding data source UI"
+        },
+        {
+          "step": 4,
+          "action": "Connect to graph database and load data",
+          "clicks": 2,
+          "friction": "medium - credentials entry, connection validation"
+        },
+        {
+          "step": 5,
+          "action": "Nodes/edges appear on canvas; access search panel (left side)",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 6,
+          "action": "Enter search query to find specific nodes",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 7,
+          "action": "Apply local filters via filter panel, add team comment/tag",
+          "clicks": 4,
+          "friction": "high - filter syntax, sidebar navigation complexity"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-graph-db-viz-linkurious-user-manual",
+        "market-ux-teardown-graph-db-viz-linkurious-vs-bloom-comparison"
+      ]
+    },
+    {
+      "slug": "graphxr-load-view-export",
+      "product_slug": "kineviz-graphxr",
+      "flow_name": "Load View, Customize Layout, Export Result",
+      "goal": "User opens a saved data view, applies a layout algorithm, and exports visualization for reporting",
+      "total_steps": 5,
+      "total_clicks": 7,
+      "drop_off_risk": "medium",
+      "our_approach": "MetroGraph replaces GraphXR's multi-panel layout control (right-click Quick Layout menu + Layout panel) with a single integrated layout selector directly on the canvas, reducing toggle burden.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open Project panel, click Views tab",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 2,
+          "action": "Search or scroll to find saved view by name",
+          "clicks": 1,
+          "friction": "low - improved in 2.17.0 with search/sort"
+        },
+        {
+          "step": 3,
+          "action": "Click view thumbnail or list item to load",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 4,
+          "action": "Access layout options: right-click menu OR Layout panel OR toolbar menu",
+          "clicks": 2,
+          "friction": "high - three different locations for same feature (discovery friction, redundancy)"
+        },
+        {
+          "step": 5,
+          "action": "Select layout (Tree, Ring, Sphere), wait for recalculation, export via Project menu",
+          "clicks": 2,
+          "friction": "medium - layout recalculation wait time"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-graph-db-viz-kineviz-graphxr-docs-overview",
+        "market-ux-teardown-graph-db-viz-kineviz-graphxr-2-17-release"
+      ]
+    },
+    {
+      "slug": "memgraph-lab-query-to-viz",
+      "product_slug": "memgraph-lab",
+      "flow_name": "Write Query, Execute, Customize Visualization",
+      "goal": "User composes Cypher query, executes it, and customizes graph rendering via Graph Style Script",
+      "total_steps": 5,
+      "total_clicks": 6,
+      "drop_off_risk": "low",
+      "our_approach": "MetroGraph preserves Memgraph's strength (split view editor/results) but adds natural language fallback without leaving the canvas (vs. GraphChat modal). Inline GSS hints replace manual style editing.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Click Query execution tab in left sidebar",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 2,
+          "action": "Type Cypher query in code editor (left pane)",
+          "clicks": 0,
+          "friction": "low"
+        },
+        {
+          "step": 3,
+          "action": "Click Run query button",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 4,
+          "action": "Results appear in right pane; toggle between Table/Graph view",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 5,
+          "action": "Edit Graph Style Script (GSS) to customize node/edge appearance",
+          "clicks": 3,
+          "friction": "high - GSS syntax requires learning (no WYSIWYG color picker available by default)"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-graph-db-viz-memgraph-lab-querying",
+        "market-ux-teardown-graph-db-viz-memgraph-lab-features"
+      ]
+    },
+    {
+      "slug": "memgraph-lab-graphchat-nl-query",
+      "product_slug": "memgraph-lab",
+      "flow_name": "Natural Language Query via GraphChat",
+      "goal": "Non-technical user asks question in plain English and gets results without writing Cypher",
+      "total_steps": 3,
+      "total_clicks": 3,
+      "drop_off_risk": "low",
+      "our_approach": "MetroGraph bakes natural language query directly into the main search bar on canvas, eliminating the modal context switch required by Memgraph Lab's separate GraphChat modal.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open GraphChat modal (from Query execution or other Lab sections)",
+          "clicks": 1,
+          "friction": "medium - modal is separate component"
+        },
+        {
+          "step": 2,
+          "action": "Type natural language question (e.g., 'Find users who like Memgraph')",
+          "clicks": 0,
+          "friction": "low"
+        },
+        {
+          "step": 3,
+          "action": "GraphChat generates query, shows preview, user confirms execution",
+          "clicks": 2,
+          "friction": "low - good affordance with preview step"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-graph-db-viz-memgraph-lab-features"
+      ]
+    },
+    {
+      "slug": "gephi-import-layout-filter-export",
+      "product_slug": "gephi-desktop",
+      "flow_name": "Import Dataset, Apply Layout, Filter, Create Preview",
+      "goal": "User loads network data, runs force-directed layout, filters by degree, exports publication-quality visualization",
+      "total_steps": 9,
+      "total_clicks": 18,
+      "drop_off_risk": "high",
+      "our_approach": "MetroGraph consolidates Gephi's 6-pane scattered layout (Appearance, Layout, Statistics, Filters, Preview) into a single context-aware sidebar, eliminating repeated eye-scanning and panel switching. Single click per action vs. multi-step drawer access.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "File > Open or drag CSV into Welcome window",
+          "clicks": 2,
+          "friction": "low"
+        },
+        {
+          "step": 2,
+          "action": "Import report dialog appears; click OK",
+          "clicks": 1,
+          "friction": "low - validation dialog"
+        },
+        {
+          "step": 3,
+          "action": "Click Data Laboratory tab, review nodes/edges tables",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 4,
+          "action": "Click Overview tab to return to canvas",
+          "clicks": 1,
+          "friction": "low"
+        },
+        {
+          "step": 5,
+          "action": "Click Layout panel (right side), select ForceAtlas2",
+          "clicks": 2,
+          "friction": "medium - panel location may not be obvious"
+        },
+        {
+          "step": 6,
+          "action": "Adjust Scaling and Prevent Overlap settings, click Run",
+          "clicks": 3,
+          "friction": "high - requires tweaking multiple parameters; watch layout compute"
+        },
+        {
+          "step": 7,
+          "action": "Click Filters panel, select Topology > Degree Rank",
+          "clicks": 2,
+          "friction": "high - nested folder structure, panel switching"
+        },
+        {
+          "step": 8,
+          "action": "Drag Degree slider to filter nodes, click Filter button",
+          "clicks": 2,
+          "friction": "medium - slider interaction, separate filter action"
+        },
+        {
+          "step": 9,
+          "action": "Click Preview tab, enable labels, export PNG",
+          "clicks": 3,
+          "friction": "medium - tab switching, export dialog navigation"
+        }
+      ],
+      "source_ids": [
+        "market-ux-teardown-graph-db-viz-gephi-quickstart"
+      ]
+    }
+  ],
+  "ux_patterns": [
+    {
+      "slug": "multi-pane-fatigue",
+      "pattern": "Multiple persistent panes (3-6 simultaneous panels/sidebars) forcing user eye-scanning and context-switching between controls and canvas",
+      "is_antipattern": true,
+      "category": "surface-area",
+      "hci_cost": "D",
+      "exemplar_product_slugs": [
+        "gephi-desktop",
+        "linkurious-enterprise",
+        "kineviz-graphxr"
+      ],
+      "description": "Gephi Desktop exemplifies this with 6 concurrent panes (Appearance, Layout, Statistics, Filters, Preview tabs + canvas), requiring 4+ clicks to switch between related controls. Linkurious adds workspace navigator + canvas + property inspector + filter panel. GraphXR has 3D canvas + Project panel + Category panel + toolbar + layout menus. Users experience cognitive load from distributed attention.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph uses a single high-leverage sidebar that contextually reveals only controls relevant to the user's current action (e.g., when user selects a node, show properties inspector; when user clicks layout, show layout options). No competing visual elements. Reduces hci_cost to A-B."
+    },
+    {
+      "slug": "cypher-barrier-to-entry",
+      "pattern": "Graph query language (Cypher, GQL, Gremlin) required to perform advanced operations, blocking non-technical users",
+      "is_antipattern": true,
+      "category": "accessibility",
+      "hci_cost": "D",
+      "exemplar_product_slugs": [
+        "neo4j-bloom",
+        "memgraph-lab",
+        "kineviz-graphxr"
+      ],
+      "description": "Neo4j Bloom's Perspective role assignment requires Cypher knowledge in some contexts. Memgraph Lab forces users to write GSS (Graph Style Script) for customization instead of WYSIWYG color pickers. GraphXR offers visual no-code query builder but defaults users to Cypher. Barrier blocks business users from self-service analytics.",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph provides WYSIWYG styling panel and natural language fallback for all queries. No Cypher required. Query builder visually represents logic (nodes, edges, filters) as draggable entities. Cypher surface only for power users in expert mode."
+    },
+    {
+      "slug": "layout-control-scattered",
+      "pattern": "Layout algorithm access fragmented across multiple UI locations (right-click menu, dedicated panel, toolbar menu, separate dialog)",
+      "is_antipattern": true,
+      "category": "discoverability",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "kineviz-graphxr",
+        "gephi-desktop"
+      ],
+      "description": "GraphXR 2.17.0 offers layout selection via right-click context menu, Quick Layout toolbar menu, AND Layout panel in sidebar—three discoverable locations for one feature. Gephi requires users to locate Layout panel in right sidebar, then find ForceAtlas2 dropdown. Users unsure where to find the feature, creating friction.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph surface layout selector as first-class canvas toolbar button. Single, obvious location. Hover preview shows result of each layout before committing."
+    },
+    {
+      "slug": "import-connection-friction",
+      "pattern": "Database connection/credential entry requires multi-step modal flows with separate validation dialogs",
+      "is_antipattern": true,
+      "category": "workflow",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "linkurious-enterprise",
+        "kineviz-graphxr"
+      ],
+      "description": "Linkurious requires users to navigate workspace > data source panel > enter credentials > validate > load data across multiple screens. GraphXR requires project creation then data source selection. Each step is a separate UI context.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph offers connection wizard as a single modal with progressive disclosure: inline credential input, live connection status indicator (vs. separate validation), one-click data load. Users see feedback immediately; no separate validation modal needed."
+    },
+    {
+      "slug": "flight-to-chat",
+      "pattern": "Natural language AI features (GraphChat, etc.) implemented as separate modal or sidebar pane, forcing context switch away from main workflow",
+      "is_antipattern": true,
+      "category": "interaction",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "memgraph-lab"
+      ],
+      "description": "Memgraph Lab's GraphChat implemented as separate modal window. User must leave Query execution view, open GraphChat modal, type question, confirm results, then navigate back to main editor. Context is lost; user manually re-frames mental model of graph after modal closes.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph integrates natural language search directly into main search bar on canvas. No modal. No context switch. User types plain English, gets ranked results, selects one, and remains on canvas to explore. Chat remains contextually bound to the visible graph."
+    },
+    {
+      "slug": "perspective-storage-asymmetry",
+      "pattern": "Different storage backends for saved views/perspectives depending on deployment (local client vs. in-database), causing inconsistent experience and loss of work when switching devices",
+      "is_antipattern": true,
+      "category": "state-management",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "neo4j-bloom"
+      ],
+      "description": "Neo4j Bloom Basic free tier stores Perspectives locally in client, causing loss of access on new device. Enterprise tier stores in database. Users experience jarring difference in behavior: what works on laptop is invisible on tablet. No warning about storage mode.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph always stores user queries, filters, and visualizations in the backend graph database (accessible from any device) with optional offline cache for fast local access. Single, transparent storage model regardless of plan tier."
+    },
+    {
+      "slug": "role-based-access-ui-divergence",
+      "pattern": "Role and permission management interfaces differ radically between products (Bloom uses Cypher-based perspectives vs. Linkurious uses no-code admin UI), blocking knowledge transfer and increasing training burden",
+      "is_antipattern": true,
+      "category": "consistency",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "neo4j-bloom",
+        "linkurious-enterprise"
+      ],
+      "description": "Bloom admin must assign roles by writing or understanding Cypher-based Perspective definitions. Linkurious offers a traditional admin panel with role matrix UI. Users switching tools must relearn access control model each time.",
+      "our_stance": "conditional",
+      "our_rationale": "MetroGraph uses unified RBAC admin UI (matrix-based like Linkurious) across all deployment models. Admins configure roles once; Cypher-based filtering is applied automatically on the backend without requiring admin-level Cypher fluency."
+    },
+    {
+      "slug": "layout-algorithm-preview-missing",
+      "pattern": "Users apply layout changes (ForceAtlas2, Tree, Ring) without preview, forced to commit and wait for re-computation, unable to compare side-by-side or roll back quickly",
+      "is_antipattern": true,
+      "category": "feedback",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "gephi-desktop",
+        "kineviz-graphxr"
+      ],
+      "description": "Gephi: user clicks Run on ForceAtlas2, waits for layout to compute, sees result, realizes it's not optimal, manually tweaks settings, waits again. No before/after comparison. GraphXR similarly requires users to run layout, observe, adjust. No live preview as user explores parameter space.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph shows instant thumbnail preview of each layout algorithm as user hovers over layout selector buttons. User can compare 5 layout options side-by-side before committing. Computation happens in background only when user selects."
+    },
+    {
+      "slug": "data-laboratory-context-loss",
+      "pattern": "Switching between tabular (Data Laboratory) and visual (Overview/Canvas) views requires full tab switch, losing canvas positioning and selection state",
+      "is_antipattern": true,
+      "category": "navigation",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "gephi-desktop"
+      ],
+      "description": "Gephi user exploring canvas, spots a node, wants to inspect its raw data attributes. Must click Data Laboratory tab (full context switch), view the table, then click back to Overview tab. Canvas positioning is reset; any selection is lost. User must re-navigate to the node.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph shows properties inspector as inline right-side pane (no tab switch required). Select node on canvas → inspect panel immediately shows all attributes with inline editing. User never loses canvas context."
+    },
+    {
+      "slug": "search-phrase-syntax-friction",
+      "pattern": "Custom search phrase syntax (Cypher, domain-specific language) requires user training and reference documentation lookup, slowing query composition",
+      "is_antipattern": true,
+      "category": "accessibility",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "neo4j-bloom"
+      ],
+      "description": "Bloom's search phrases are Cypher-based, requiring users to learn Cypher syntax (MATCH, RETURN, WHERE clauses). Saved search phrases are reusable but composition is not self-evident. Non-technical users must consult documentation or ask analysts to author phrase.",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph uses visual node/edge/property selectors (no syntax). Users drag entities into a logical AND/OR tree. Generated Cypher is visible but optional. Natural language fallback for users unfamiliar with the visual builder."
+    }
+  ]
+}

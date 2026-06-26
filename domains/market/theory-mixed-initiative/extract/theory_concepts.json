@@ -1,0 +1,877 @@
+{
+  "leaf": "market/theory-mixed-initiative",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Mixed-Initiative Interaction",
+      "field": "interaction-design",
+      "definition": "A collaborative paradigm where control and initiative dynamically alternate between human and AI based on competencies, task context, and expected utility. The system proactively assists but respects user authority; the user can always override or take direct control.",
+      "strength": "established-law",
+      "key_refs": [
+        "Horvitz 1999 / Principles of Mixed-Initiative User Interfaces",
+        "Horvitz / Uncertainty, Action, and Interaction: In Pursuit of Mixed-Initiative Computing"
+      ],
+      "related_concepts": [
+        "Expected Utility Framework",
+        "Initiative Transfer",
+        "Mode Switching",
+        "Direct Manipulation"
+      ],
+      "implication": "MetroGraph must enable dynamic shifts in control: visual manipulation (direct mode) ↔ AI-suggested actions (AI mode). Users need clear affordances for taking/ceding control without friction.",
+      "source_ids": [
+        "market-theory-mixed-initiative-horvitz-chi99-principles",
+        "market-theory-mixed-initiative-horvitz-mixedinit-overview"
+      ]
+    },
+    {
+      "concept": "Expected Utility Framework",
+      "field": "cognitive-psych",
+      "definition": "A decision-theoretic model for determining when the system should take action: the system acts when expected utility of proactive intervention exceeds utility of waiting for user initiative, accounting for uncertainty and user cost of manual action.",
+      "strength": "established-law",
+      "key_refs": [
+        "Horvitz 1999 / Principles of Mixed-Initiative User Interfaces"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Proactive Systems",
+        "Intervention Timing",
+        "Uncertainty Quantification"
+      ],
+      "implication": "MetroGraph should only surface AI suggestions (like auto-layouts, query recommendations, visual refinements) when system confidence is high and user effort is substantial; avoid low-value interruptions that reduce engagement.",
+      "source_ids": [
+        "market-theory-mixed-initiative-horvitz-chi99-principles"
+      ]
+    },
+    {
+      "concept": "Initiative Transfer",
+      "field": "interaction-design",
+      "definition": "The dynamic process of exchanging control and responsibility between human and AI during collaborative work; characterized by explicit or implicit negotiation of who drives the current task, with fluid transitions based on need.",
+      "strength": "empirical",
+      "key_refs": [
+        "Large-scale mixed-initiative in information-seeking dialogues",
+        "Nargund 2025 / Understanding Mode Switching in Human-AI Collaboration"
+      ],
+      "related_concepts": [
+        "Mode Switching",
+        "Mixed-Initiative Interaction",
+        "Control Allocation"
+      ],
+      "implication": "MetroGraph must signal which entity (user or system) currently 'owns' an action; transitions should be visible and predictable (e.g., shifting from user-drawn nodes to system-suggested connections with one-click acceptance).",
+      "source_ids": [
+        "market-theory-mixed-initiative-large-scale-mixed-initiative-2104",
+        "market-theory-mixed-initiative-nargund-mode-switching-2509"
+      ]
+    },
+    {
+      "concept": "Mode Switching",
+      "field": "interaction-design",
+      "definition": "The ability of users to dynamically switch between interaction modes (e.g., direct manipulation ↔ AI-guided assistance) based on task state, confidence, or preference. Both predictable switching rules and user-initiated mode changes.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nargund 2025 / Understanding Mode Switching in Human-AI Collaboration: Behavioral Insights and Predictive Modeling"
+      ],
+      "related_concepts": [
+        "Initiative Transfer",
+        "Direct Manipulation",
+        "Control Allocation",
+        "User Agency"
+      ],
+      "implication": "MetroGraph must provide explicit UI controls to switch modes (e.g., 'Let AI layout this graph' → 'Show me step-by-step') and auto-detect when a user naturally needs a different modality, triggering predictive switches without disruption.",
+      "source_ids": [
+        "market-theory-mixed-initiative-nargund-mode-switching-2509"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "A foundational HCI principle where users directly control interface objects via continuous, rapid, reversible operations with immediate visual feedback. Emphasizes user control, low cognitive load, and low-viscosity undo/redo.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: Definition and Principles"
+      ],
+      "related_concepts": [
+        "User Agency",
+        "Locus of Control",
+        "Interface Agents",
+        "Mixed-Initiative Interaction"
+      ],
+      "implication": "MetroGraph's node/edge visual manipulation (drag, resize, color) must feel direct; AI suggestions should never override direct manipulation. Users need immediate, reversible feedback; auto-suggestions must be cancellable at any point.",
+      "source_ids": [
+        "market-theory-mixed-initiative-shneiderman-direct-manipulation"
+      ]
+    },
+    {
+      "concept": "Interface Agents vs. Direct Control Debate",
+      "field": "interaction-design",
+      "definition": "The historical HCI tension between delegating work to autonomous agents (Maes) versus preserving user directness (Shneiderman); resolved by mixed-initiative: agents assist but don't override, users remain in control.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman & Maes 1997 / Direct Manipulation vs. Interface Agents: The Debate"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Direct Manipulation",
+        "Interface Agents",
+        "User Agency"
+      ],
+      "implication": "MetroGraph must NOT be a pure agent (auto-generating graphs without user input). Instead: agent proposes layouts/connections → user accepts/rejects/modifies → agent learns. This preserves the best of both paradigms.",
+      "source_ids": [
+        "market-theory-mixed-initiative-shneiderman-maes-debate-1997"
+      ]
+    },
+    {
+      "concept": "Interface Agents",
+      "field": "interaction-design",
+      "definition": "Autonomous software entities that observe user behavior, learn preferences, and proactively perform tasks on behalf of users. Characterized by personalization, proactivity, and delegation-based architecture.",
+      "strength": "framework",
+      "key_refs": [
+        "Maes / Interface Agents: A Review of the Field"
+      ],
+      "related_concepts": [
+        "Proactive Systems",
+        "User Modeling",
+        "Delegation",
+        "Mixed-Initiative Interaction"
+      ],
+      "implication": "MetroGraph's AI components (suggesting node clusters, auto-grouping related data) should act as 'soft agents': observing user patterns, learning what graph structures the user prefers, and suggesting similar structures without taking control.",
+      "source_ids": [
+        "market-theory-mixed-initiative-maes-interface-agents"
+      ]
+    },
+    {
+      "concept": "Levels of Autonomy (LOA)",
+      "field": "interaction-design",
+      "definition": "A formal spectrum ranging from full human control (LOA-1) to full system autonomy (LOA-10), with intermediate levels capturing degrees of automation, advice, recommendation, and override capability. Defines decision authority at each level.",
+      "strength": "framework",
+      "key_refs": [
+        "Levels of Autonomy for AI Agents (2506 working paper)",
+        "Knight First Amendment Institute / Levels of Autonomy for AI Agents",
+        "Cloud Security Alliance 2026 / Autonomy Levels for Agentic AI"
+      ],
+      "related_concepts": [
+        "Control Allocation",
+        "Variable Autonomy",
+        "Shared Control",
+        "Decision Authority"
+      ],
+      "implication": "MetroGraph should support users selecting an LOA for each feature: low LOA for critical graph structures (users decide), high LOA for aesthetic suggestions (system decides); expose the LOA choice in settings and per-action.",
+      "source_ids": [
+        "market-theory-mixed-initiative-levels-autonomy-ai-agents-2506",
+        "market-theory-mixed-initiative-levels-autonomy-knight-institute",
+        "market-theory-mixed-initiative-levels-autonomy-csa-2026"
+      ]
+    },
+    {
+      "concept": "Variable Autonomy",
+      "field": "interaction-design",
+      "definition": "The dynamic adjustment of system autonomy during task execution based on context, workload, user expertise, and task phase. System autonomy increases when safe/beneficial, decreases when high-stakes or uncertain.",
+      "strength": "empirical",
+      "key_refs": [
+        "Chiou 2019 / Mixed-Initiative Variable Autonomy for Remotely Operated Mobile Robots",
+        "Hierarchical Variable Autonomy Mixed-Initiative Framework for Human-Robot Teaming (2211)"
+      ],
+      "related_concepts": [
+        "Levels of Autonomy",
+        "Cognitive Load",
+        "Proactive Systems",
+        "Context Awareness"
+      ],
+      "implication": "MetroGraph should reduce autonomy when: user is actively editing (high control), task is critical (tight tolerances), system confidence is low. Increase autonomy when: user is reviewing/validating, task is routine, system confidence is high.",
+      "source_ids": [
+        "market-theory-mixed-initiative-chiou-variable-autonomy-robots-1911",
+        "market-theory-mixed-initiative-hierarchical-variable-autonomy-2211"
+      ]
+    },
+    {
+      "concept": "Shared Control / Shared Autonomy",
+      "field": "interaction-design",
+      "definition": "A blended autonomy model where human and system simultaneously influence the same action or output. Neither party has unilateral control; both contribute continuously, with smooth arbitration of conflicting commands.",
+      "strength": "empirical",
+      "key_refs": [
+        "General Arbitration Model for Robust Human-Robot Shared Control (2003)",
+        "AI-enhanced Shared Control for Assistive Robotic Arm (2306)",
+        "Shared control for autonomous robotic navigation: A review (2026)"
+      ],
+      "related_concepts": [
+        "Variable Autonomy",
+        "Control Allocation",
+        "Mixed-Initiative Interaction",
+        "Collaborative Design"
+      ],
+      "implication": "MetroGraph could enable shared control for layout refinement: user drags nodes, system applies physics-based attraction/repulsion simultaneously, yielding co-authored layouts. Neither user nor system fully determines result.",
+      "source_ids": [
+        "market-theory-mixed-initiative-general-arbitration-shared-control-2003",
+        "market-theory-mixed-initiative-ai-enhanced-shared-control-robotics-2306",
+        "market-theory-mixed-initiative-shared-control-robots-review-2026"
+      ]
+    },
+    {
+      "concept": "Control Allocation",
+      "field": "interaction-design",
+      "definition": "The formal problem of deciding which decisions/actions belong to humans vs. AI in a collaborative system. Factors include task criticality, system capability, user expertise, time pressure, and safety requirements.",
+      "strength": "framework",
+      "key_refs": [
+        "Allocation of Decision Authority to Human and Artificial Intelligence (Stanford SIEPR 2020)",
+        "AI-Augmented Decision Rights: Redesigning Authority in Human-Machine Organizations"
+      ],
+      "related_concepts": [
+        "Levels of Autonomy",
+        "Decision Authority",
+        "Shared Control",
+        "User Agency"
+      ],
+      "implication": "MetroGraph must explicitly allocate decisions: Human owns (node semantics, graph semantics), AI recommends (layout, visual encoding), User+AI co-decide (performance vs. clarity tradeoffs). Make allocation visible in UX.",
+      "source_ids": [
+        "market-theory-mixed-initiative-allocation-decision-authority-2020",
+        "market-theory-mixed-initiative-ai-augmented-decision-rights"
+      ]
+    },
+    {
+      "concept": "Proactive Systems",
+      "field": "interaction-design",
+      "definition": "Systems that take unsolicited initiative to offer help, suggestions, or actions before users explicitly request them. Characterized by anticipation, context-awareness, and expected-utility-based triggering.",
+      "strength": "empirical",
+      "key_refs": [
+        "Horvitz / Uncertainty, Action, and Interaction",
+        "Proactive AI Adoption can be Threatening (2509)",
+        "Knowing Isn't Understanding (2602)"
+      ],
+      "related_concepts": [
+        "Intervention Timing",
+        "User Modeling",
+        "Interruption Management",
+        "Expected Utility"
+      ],
+      "implication": "MetroGraph should proactively suggest: missing relationships based on inferred domain semantics, cluster refinements, query optimizations. But timing is critical: suggest during review phases, not during active editing.",
+      "source_ids": [
+        "market-theory-mixed-initiative-horvitz-mixedinit-overview",
+        "market-theory-mixed-initiative-proactive-ai-adoption-2509",
+        "market-theory-mixed-initiative-wang-knowing-not-understanding-2602"
+      ]
+    },
+    {
+      "concept": "Intervention Timing",
+      "field": "cognitive-psych",
+      "definition": "The problem of determining when to interrupt a user with proactive help: too early disrupts flow, too late misses opportunity. Depends on task state, user cognitive load, confidence level, and interruption cost.",
+      "strength": "empirical",
+      "key_refs": [
+        "Assistance or Disruption? (2502)",
+        "YETI: Proactive Interventions by Multimodal AI Agents (2501)",
+        "Precision Proactivity: Measuring Cognitive Load (2505)"
+      ],
+      "related_concepts": [
+        "Cognitive Load",
+        "Proactive Systems",
+        "Interruption Management",
+        "Context Awareness"
+      ],
+      "implication": "MetroGraph must detect cognitive load (eye tracking, interaction velocity, pause patterns) and suppress proactive help when user is in flow; trigger help during natural pause points or on-demand.",
+      "source_ids": [
+        "market-theory-mixed-initiative-assistance-or-disruption-2502",
+        "market-theory-mixed-initiative-yeti-proactive-ar-2501",
+        "market-theory-mixed-initiative-precision-proactivity-2505"
+      ]
+    },
+    {
+      "concept": "Cognitive Load",
+      "field": "cognitive-psych",
+      "definition": "The amount of mental effort required to perform a task, spanning intrinsic (task difficulty), extraneous (interface design), and germane (learning) load. Measured via NASA-TLX, response time, error rates, physiological signals.",
+      "strength": "established-law",
+      "key_refs": [
+        "Cognitive Workload Survey (ACM 2024)",
+        "Continuous Assessment of Mental Workload (2024)"
+      ],
+      "related_concepts": [
+        "Bounded Rationality",
+        "Intervention Timing",
+        "Variable Autonomy",
+        "User Modeling"
+      ],
+      "implication": "MetroGraph should keep intrinsic load fixed (graph task complexity), minimize extraneous load (clear UI, sensible defaults), support germane load (progressive disclosure of relationships). Measure and adapt based on detected load.",
+      "source_ids": [
+        "market-theory-mixed-initiative-cognitive-workload-survey-acm-2024",
+        "market-theory-mixed-initiative-continuous-assessment-workload-2024"
+      ]
+    },
+    {
+      "concept": "Trust in AI Systems",
+      "field": "hci",
+      "definition": "The subjective belief that an AI system will perform its intended function reliably and transparently. Distinct from compliance (following AI recommendations) and reliance (depending on AI). Built through predictability, consistency, and demonstrated competence.",
+      "strength": "empirical",
+      "key_refs": [
+        "Trust, distrust, and appropriate reliance in (X)AI (2312)",
+        "Developing trustworthy AI: insights from research on interpersonal, human-automation, and human-AI trust (2024)"
+      ],
+      "related_concepts": [
+        "Appropriate Reliance",
+        "Transparency",
+        "Mental Models of AI",
+        "Explainability"
+      ],
+      "implication": "MetroGraph users must trust that suggestions are based on valid reasoning, not random. Show the basis for suggestions (data patterns, user history), acknowledge limitations, maintain consistency so behavior becomes predictable.",
+      "source_ids": [
+        "market-theory-mixed-initiative-trust-distrust-reliance-xai-2312",
+        "market-theory-mixed-initiative-developing-trustworthy-ai-2024"
+      ]
+    },
+    {
+      "concept": "Appropriate Reliance",
+      "field": "hci",
+      "definition": "The correct calibration of dependence on AI: users over-rely on high-confidence AI recommendations (automation bias) or under-rely due to low trust. Appropriate reliance matches user dependence to actual system capability.",
+      "strength": "empirical",
+      "key_refs": [
+        "Appropriate Reliance on AI-Based Decision Support Systems (2025)",
+        "Adjust for Trust: Mitigating Trust-Induced Inappropriate Reliance (2502)",
+        "Over-Relying on Reliance: Towards Realistic Evaluations (2504)"
+      ],
+      "related_concepts": [
+        "Trust in AI",
+        "Mental Models of AI",
+        "Transparency",
+        "Uncertainty Communication"
+      ],
+      "implication": "MetroGraph must calibrate reliance: show confidence scores, explain when AI might be wrong, provide human validation mechanisms (edge review before applying bulk suggestions). Users should neither ignore good suggestions nor blindly accept bad ones.",
+      "source_ids": [
+        "market-theory-mixed-initiative-appropriate-reliance-expertise-trust-2025",
+        "market-theory-mixed-initiative-adjust-for-trust-2502",
+        "market-theory-mixed-initiative-over-relying-reliance-eval-2504"
+      ]
+    },
+    {
+      "concept": "Mental Models of AI",
+      "field": "cognitive-psych",
+      "definition": "Users' internal, often inaccurate beliefs about how an AI system works, what it can do, and when it will fail. Gaps between users' models and actual system behavior lead to misuse, over-reliance, and frustration.",
+      "strength": "empirical",
+      "key_refs": [
+        "Understanding Uncertainty: How Lay Decision-makers Perceive Uncertainty in Human-AI Decision Making (IUI 2023)"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Explainability",
+        "Trust in AI",
+        "Appropriate Reliance"
+      ],
+      "implication": "MetroGraph should help users build accurate mental models: explain what the layout engine sees (entity counts, relationship types), when it struggles (sparse graphs, cycles), and how user actions influence its suggestions.",
+      "source_ids": [
+        "market-theory-mixed-initiative-understanding-uncertainty-decision-making-iui23"
+      ]
+    },
+    {
+      "concept": "Transparency",
+      "field": "interaction-design",
+      "definition": "The degree to which a system's behavior, reasoning, and limitations are made visible and understandable to users. Includes system state, decision factors, confidence, and failure modes.",
+      "strength": "empirical",
+      "key_refs": [
+        "Establishing Appropriate Trust in AI through Transparency and Explainability (CHI 2024)",
+        "Improving Human-AI Collaboration With Descriptions of AI Behavior (2301)"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "Mental Models of AI",
+        "Trust in AI",
+        "Affordances"
+      ],
+      "implication": "MetroGraph should expose: which rules determined a suggestion, why a node was grouped with others, what data the layout algorithm is using, what assumptions it made. Use visual affordances (color, annotation) to signal confidence, derivation, and constraints.",
+      "source_ids": [
+        "market-theory-mixed-initiative-establishing-trust-transparency-chi24",
+        "market-theory-mixed-initiative-improving-human-ai-descriptions-2301"
+      ]
+    },
+    {
+      "concept": "Explainability (XAI)",
+      "field": "hci",
+      "definition": "Methods for making AI decisions and reasoning interpretable to humans. Ranges from feature importance explanations to contrastive explanations (why this vs. that) to causal reasoning about system recommendations.",
+      "strength": "framework",
+      "key_refs": [
+        "From Explainable to Interactive AI: A Literature Review (2405)",
+        "Interpretability and Explainability: A Machine Learning Zoo Mini-tour (2012)"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Mental Models of AI",
+        "Trust in AI",
+        "Interactive Machine Learning"
+      ],
+      "implication": "MetroGraph should provide contrastive explanations for suggestions: 'This node is grouped here because [patterns] similar to [past user decisions]. Alternative: [other possibility with reasons].' Not just 'trust the algorithm.'",
+      "source_ids": [
+        "market-theory-mixed-initiative-from-explainable-interactive-ai-2405",
+        "market-theory-mixed-initiative-interpretability-explainability-2012"
+      ]
+    },
+    {
+      "concept": "Uncertainty Quantification in AI",
+      "field": "hci",
+      "definition": "Methods for representing, computing, and communicating the confidence/uncertainty of AI predictions. Enables humans to calibrate trust and decide when to verify or override AI suggestions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Using AI Uncertainty Quantification to Improve Human Decision-Making (2309)",
+        "Beyond Quantification: Navigating Uncertainty in Professional AI Systems (2509)",
+        "'The AI is uncertain, so am I': Navigating Shortcomings of Uncertainty Representations (2023)"
+      ],
+      "related_concepts": [
+        "Appropriate Reliance",
+        "Mental Models of AI",
+        "Transparency",
+        "Expected Utility"
+      ],
+      "implication": "MetroGraph should show confidence on every suggestion: layout alternatives ranked by confidence, relationship proposals with probability scores, node positions with uncertainty ellipses. Let users see where the system is confident vs. guessing.",
+      "source_ids": [
+        "market-theory-mixed-initiative-lin-understanding-uncertainty-2309",
+        "market-theory-mixed-initiative-beyond-quantification-uncertainty-2509",
+        "market-theory-mixed-initiative-ai-uncertain-capability-guidance-2023"
+      ]
+    },
+    {
+      "concept": "User Modeling",
+      "field": "hci",
+      "definition": "The system's internal representation of user characteristics (expertise, preferences, goals, behavior patterns). Used to personalize interactions, predict needs, and adapt autonomy levels.",
+      "strength": "established-law",
+      "key_refs": [
+        "User Modeling in Human-Computer Interaction (2000)",
+        "Creating General User Models from Computer Use (2505)"
+      ],
+      "related_concepts": [
+        "Personalization",
+        "Context Awareness",
+        "Proactive Systems",
+        "Variable Autonomy"
+      ],
+      "implication": "MetroGraph should learn user patterns: Do they prefer hierarchical or network-style layouts? Do they validate suggestions before applying? Build implicit user models (interaction logs) and explicit (preference settings) to improve suggestions.",
+      "source_ids": [
+        "market-theory-mixed-initiative-user-modeling-hci-2000",
+        "market-theory-mixed-initiative-general-user-models-2505"
+      ]
+    },
+    {
+      "concept": "Personalization and Adaptation",
+      "field": "interaction-design",
+      "definition": "The dynamic customization of system behavior (UI, suggestions, autonomy levels) to match individual user characteristics, preferences, and context. Balances model accuracy with perceived relevance.",
+      "strength": "empirical",
+      "key_refs": [
+        "The Personalization Paradox (2103)",
+        "Learning User Preferences via Reinforcement Learning (1902)"
+      ],
+      "related_concepts": [
+        "User Modeling",
+        "Variable Autonomy",
+        "Context Awareness",
+        "Proactive Systems"
+      ],
+      "implication": "MetroGraph should personalize incrementally: after 2-3 user corrections to suggestions, reweight the suggestion model. Let users explicitly set preferences (layout style, suggestion aggressiveness). But avoid over-personalizing; some users want consistency.",
+      "source_ids": [
+        "market-theory-mixed-initiative-personalization-paradox-2103",
+        "market-theory-mixed-initiative-learning-preferences-rl-1902"
+      ]
+    },
+    {
+      "concept": "Context Awareness",
+      "field": "interaction-design",
+      "definition": "The system's ability to perceive and reason about contextual information (user location, task state, time, available resources, social setting) and adapt its behavior accordingly.",
+      "strength": "framework",
+      "key_refs": [
+        "Context-Awareness in Ambient Intelligence (2010)",
+        "Mixed-Initiative Context: Structuring and Managing Context for Human-AI Collaboration (2604)"
+      ],
+      "related_concepts": [
+        "Proactive Systems",
+        "Variable Autonomy",
+        "User Modeling",
+        "Ambient Intelligence"
+      ],
+      "implication": "MetroGraph should track context: Is this a new graph or familiar data? Is user in edit mode or review mode? Are they at a decision point or mid-action? Use context to decide what type of help to offer and when.",
+      "source_ids": [
+        "market-theory-mixed-initiative-context-awareness-ambient-intel-2010",
+        "market-theory-mixed-initiative-mixed-initiative-context-2604"
+      ]
+    },
+    {
+      "concept": "Interactive Machine Learning",
+      "field": "hci",
+      "definition": "A paradigm where users iteratively teach ML models through feedback (corrections, labels, examples), and the system improves with each interaction. Tight human-AI feedback loops enable incremental learning.",
+      "strength": "framework",
+      "key_refs": [
+        "Leveraging Explanations in Interactive Machine Learning (2023)",
+        "Soliciting Human-in-the-Loop User Feedback for IML (2008)"
+      ],
+      "related_concepts": [
+        "Human-in-the-Loop",
+        "User Modeling",
+        "Feedback Mechanisms",
+        "Co-creation"
+      ],
+      "implication": "MetroGraph could implement active learning: 'Is this relationship important?' feedback trains the ranking model. Each correction refines suggestions. Show the learning progress (accuracy improvements) to users to build trust.",
+      "source_ids": [
+        "market-theory-mixed-initiative-interactive-ml-explanations-2023",
+        "market-theory-mixed-initiative-arenas-interactive-ml-feedback-2008"
+      ]
+    },
+    {
+      "concept": "Human-in-the-Loop (HITL)",
+      "field": "hci",
+      "definition": "An ML/AI system design where humans iteratively validate, correct, or refine system outputs; human feedback is used to improve model quality. Combines human judgment with algorithmic scalability.",
+      "strength": "framework",
+      "key_refs": [
+        "Human-in-the-Loop Artificial Intelligence: A Systematic Review (2025)",
+        "Toward Neurodivergent-Aware Productivity: HITL Framework (2507)"
+      ],
+      "related_concepts": [
+        "Interactive Machine Learning",
+        "Control Allocation",
+        "Appropriate Reliance",
+        "Feedback Mechanisms"
+      ],
+      "implication": "MetroGraph should embed HITL: batch AI suggestions (e.g., 10 layout alternatives) → user reviews & picks best → system learns from pick → refines future suggestions. Combine human judgment with algorithmic breadth.",
+      "source_ids": [
+        "market-theory-mixed-initiative-human-in-the-loop-systematic-review-2025",
+        "market-theory-mixed-initiative-toward-neurodivergent-productivity-2507"
+      ]
+    },
+    {
+      "concept": "Feedback Mechanisms",
+      "field": "interaction-design",
+      "definition": "Channels by which users communicate preferences, corrections, and judgments back to the system (explicit: rated feedback; implicit: behavior logs). Critical for closing human-in-the-loop learning loops.",
+      "strength": "empirical",
+      "key_refs": [
+        "Interactive Machine Learning Explanations (2023)",
+        "Design Considerations for Human Oversight of AI (2510)"
+      ],
+      "related_concepts": [
+        "Interactive Machine Learning",
+        "Human-in-the-Loop",
+        "User Modeling",
+        "Transparency"
+      ],
+      "implication": "MetroGraph should support low-friction feedback: thumbs up/down on suggestions, drag-to-correct (implicit feedback), bulk accept/reject. Make it clear that feedback trains the system, building user investment.",
+      "source_ids": [
+        "market-theory-mixed-initiative-interactive-ml-explanations-2023",
+        "market-theory-mixed-initiative-design-oversight-insights-2510"
+      ]
+    },
+    {
+      "concept": "Locus of Control",
+      "field": "cognitive-psych",
+      "definition": "A psychological trait reflecting whether users believe outcomes result from their own actions (internal) or external forces (external). In AI contexts: users with high internal locus prefer direct control; external locus more comfortable delegating.",
+      "strength": "empirical",
+      "key_refs": [
+        "Trust, Shared Understanding and Locus of Control in Mixed-Initiative Robotic Systems (2107)",
+        "Application of Experiential Locus of Control to User Judgment (2015)"
+      ],
+      "related_concepts": [
+        "User Agency",
+        "Direct Manipulation",
+        "Variable Autonomy",
+        "Mental Models"
+      ],
+      "implication": "MetroGraph's UI should respect locus-of-control differences: offer 'full control' profiles (direct drag, minimal AI) and 'trust the system' profiles (AI-driven with spot corrections). Don't assume all users want the same autonomy level.",
+      "source_ids": [
+        "market-theory-mixed-initiative-trust-shared-understanding-locus-control-2107",
+        "market-theory-mixed-initiative-locus-control-ai-experience-2015"
+      ]
+    },
+    {
+      "concept": "User Agency and Autonomy",
+      "field": "interaction-design",
+      "definition": "The degree to which users perceive themselves as able to influence outcomes and make meaningful choices in a system. High agency when users feel control is effective and choices matter.",
+      "strength": "empirical",
+      "key_refs": [
+        "What's So Human about Human-AI Collaboration (2503)",
+        "Human-Centered Artificial Intelligence: Foundations and Approaches (2601)"
+      ],
+      "related_concepts": [
+        "Locus of Control",
+        "Direct Manipulation",
+        "User Control",
+        "Meaningful Human Control"
+      ],
+      "implication": "MetroGraph must preserve user agency: every suggestion is a proposal, never an override. Undo/redo at all levels. Show that user edits influence future suggestions (reinforcement loop). Users should feel they drive the outcome.",
+      "source_ids": [
+        "market-theory-mixed-initiative-what-so-human-hc-ai-2503",
+        "market-theory-mixed-initiative-amershi-human-centered-ai-foundations-2601"
+      ]
+    },
+    {
+      "concept": "Meaningful Human Control",
+      "field": "hci",
+      "definition": "The legal/ethical requirement that humans retain meaningful control over consequential AI decisions. Not just nominal authority, but substantive understanding, ability to override, and responsibility for outcomes.",
+      "strength": "empirical",
+      "key_refs": [
+        "Human-controllable AI: Meaningful Human Control (2512)"
+      ],
+      "related_concepts": [
+        "User Agency",
+        "Transparency",
+        "Explainability",
+        "Decision Authority"
+      ],
+      "implication": "MetroGraph's graph structures often represent organizational/data models; users must meaningfully control them. Cannot auto-apply suggestions; must require explicit approval for structural changes. Maintain audit trail of who approved what.",
+      "source_ids": [
+        "market-theory-mixed-initiative-human-controllable-ai-control-2512"
+      ]
+    },
+    {
+      "concept": "Visual Analytics and Collaborative Visualization",
+      "field": "visualization",
+      "definition": "Interactive systems where humans and AI collaborate to explore, analyze, and communicate insights from data. Combines automated data processing with human visual perception and domain reasoning.",
+      "strength": "empirical",
+      "key_refs": [
+        "Human-Computer Collaboration for Visual Analytics (2304)",
+        "Automating the Path: HCAI and Visualization (2504)"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Information Visualization",
+        "Interactive Analysis",
+        "Exploratory Data Analysis"
+      ],
+      "implication": "MetroGraph is itself a visual analytics tool. Apply collaborative visualization principles: AI suggests hypotheses (potential clusters), users validate via visual inspection, system refines based on inspection patterns.",
+      "source_ids": [
+        "market-theory-mixed-initiative-human-computer-collaboration-visual-analytics-2304",
+        "market-theory-mixed-initiative-automating-path-hcai-visualization-2504"
+      ]
+    },
+    {
+      "concept": "Information Visualization Principles",
+      "field": "visualization",
+      "definition": "Design principles for representing abstract data visually (e.g., Munzner's abstraction-based framework, Tufte's data-ink ratio, grammar of graphics). Ensures information is comprehensible and actionable.",
+      "strength": "established-law",
+      "key_refs": [
+        "Munzner / Visualization Analysis and Design",
+        "Tufte / The Visual Display of Quantitative Information"
+      ],
+      "related_concepts": [
+        "Visual Analytics",
+        "Direct Manipulation",
+        "Information Foraging",
+        "Gestalt Principles"
+      ],
+      "implication": "MetroGraph's visual encoding (node size, color, position, edge thickness) must follow vis principles: no chartjunk, maximize data-ink ratio, use color perceptually. AI-driven suggestions must respect these principles.",
+      "source_ids": [
+        "market-theory-mixed-initiative-munzner-visualization-analysis-design",
+        "market-theory-mixed-initiative-tufte-information-design"
+      ]
+    },
+    {
+      "concept": "Information Foraging Theory",
+      "field": "information-foraging",
+      "definition": "A cognitive theory modeling information-seeking as an adaptive search process: users assess 'patches' (info sources) and decide whether to continue within a patch or move to another, balancing search cost vs. gain.",
+      "strength": "established-law",
+      "key_refs": [
+        "Pirolli / Information Foraging Theory: Adaptive Interaction with Information"
+      ],
+      "related_concepts": [
+        "Exploratory Data Analysis",
+        "Cognitive Load",
+        "Information Architecture",
+        "Search Cost"
+      ],
+      "implication": "MetroGraph users forage through graph structure (patches = subgraphs, clusters). AI should reduce search cost: highlight promising patches, collapse less-relevant regions, surface high-value relationships. Match visuals to foraging patterns.",
+      "source_ids": [
+        "market-theory-mixed-initiative-pirolli-information-foraging"
+      ]
+    },
+    {
+      "concept": "Human-AI Team Performance",
+      "field": "hci",
+      "definition": "Empirical findings on when human-AI teams outperform human-only or AI-only: varies by task type (decision vs. creative), domain, team composition, and quality of collaboration mechanisms.",
+      "strength": "empirical",
+      "key_refs": [
+        "Vaccaro 2024 / When combinations of humans and AI are useful: meta-analysis of 106 studies, 370 effect sizes"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Control Allocation",
+        "Collaboration Patterns",
+        "Task Type Moderation"
+      ],
+      "implication": "MetroGraph's effectiveness depends on matching task and collaboration mode: decision tasks (Is this relationship real?) → AI proposes, human verifies. Creative tasks (What graph structure best represents this?) → human leads, AI assists.",
+      "source_ids": [
+        "market-theory-mixed-initiative-vaccaro-when-combinations-2024"
+      ]
+    },
+    {
+      "concept": "Decision Task vs. Creative Task in Collaboration",
+      "field": "hci",
+      "definition": "Meta-analytic finding that human-AI teams excel at judgment/decision tasks (validating, filtering) but may underperform at open-ended creative tasks without careful collaboration design.",
+      "strength": "empirical",
+      "key_refs": [
+        "Vaccaro 2024 / When combinations of humans and AI are useful"
+      ],
+      "related_concepts": [
+        "Human-AI Team Performance",
+        "Task Type",
+        "Control Allocation",
+        "Mode Switching"
+      ],
+      "implication": "MetroGraph should detect task type: decision task (Does this relationship exist? Is this node important?) → trust AI scores. Creative task (How should this data be grouped?) → let user lead, AI suggests alternatives.",
+      "source_ids": [
+        "market-theory-mixed-initiative-vaccaro-when-combinations-2024"
+      ]
+    },
+    {
+      "concept": "Collaboration Patterns in Human-AI Cocreation",
+      "field": "interaction-design",
+      "definition": "Empirical taxonomy of how humans and AI exchange control during collaborative creation: sequential (human then AI), parallel (simultaneous), nested (one within the other), and dynamic switching.",
+      "strength": "empirical",
+      "key_refs": [
+        "Exploring Collaboration Patterns in Human-AI Co-creation (CHI/PACM 2024)",
+        "Prototypical Human-AI Collaboration Behaviors in LLM-Assisted Writing (2505)"
+      ],
+      "related_concepts": [
+        "Mode Switching",
+        "Initiative Transfer",
+        "Mixed-Initiative Interaction",
+        "Agency"
+      ],
+      "implication": "MetroGraph should support multiple patterns: sequential (user sketches layout → AI refines), parallel (user colors while AI repositions), nested (AI processes bulk relationships; user refines specific ones). Expose patterns in tutorial/help.",
+      "source_ids": [
+        "market-theory-mixed-initiative-collaboration-patterns-human-ai-cocreation-2024",
+        "market-theory-mixed-initiative-prototypical-human-ai-collaboration-2505"
+      ]
+    },
+    {
+      "concept": "Bounded Rationality",
+      "field": "cognitive-psych",
+      "definition": "Simon's theory that humans are not fully rational: they satisfice (seek 'good enough' rather than optimal), have limited memory, and make heuristic-based decisions. Foundation for understanding why humans need AI assistance.",
+      "strength": "established-law",
+      "key_refs": [
+        "Bounded Rationality (Wikipedia overview of Simon's work)"
+      ],
+      "related_concepts": [
+        "Cognitive Load",
+        "User Modeling",
+        "Proactive Systems",
+        "Expected Utility"
+      ],
+      "implication": "MetroGraph users are boundedly rational: they can't explore all possible graph layouts, won't check all relationships. AI augments by expanding search space, identifying far options. Design for satisficing, not optimization.",
+      "source_ids": [
+        "market-theory-mixed-initiative-bounded-rationality-simon"
+      ]
+    },
+    {
+      "concept": "Designing for Human-Centered AI (HCAI)",
+      "field": "hci",
+      "definition": "A design methodology prioritizing human autonomy, values, and control in AI systems. Iterative process: define human values, allocate decision authority, design feedback loops, evaluate for human outcomes.",
+      "strength": "framework",
+      "key_refs": [
+        "HCAI Methodological Framework (2311)",
+        "Human-Centered Human-AI Collaboration (HCHAC) Framework (2505)",
+        "UX 3.0 Paradigm Framework for Human-Centered AI (2506)"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "User Agency",
+        "Control Allocation",
+        "Meaningful Human Control"
+      ],
+      "implication": "MetroGraph's design must be grounded in HCAI: explicitly define which decisions users control (graph semantics), which AI recommends (layout), which are shared (performance tradeoffs). Iterate on human values, not just system performance.",
+      "source_ids": [
+        "market-theory-mixed-initiative-hcai-methodological-framework-2311",
+        "market-theory-mixed-initiative-hchac-framework-2505",
+        "market-theory-mixed-initiative-ux-3-0-paradigm-extended-2506"
+      ]
+    },
+    {
+      "concept": "Agentic AI and Agent-based Interaction",
+      "field": "interaction-design",
+      "definition": "A newer paradigm where AI systems are framed as semi-autonomous agents that take initiative, learn from context, and engage in multi-turn interactions. Contrasts with tool-like or conversational-only interfaces.",
+      "strength": "empirical",
+      "key_refs": [
+        "Contemporary Agent Technology (2509)",
+        "Levels of Autonomy for AI Agents (2506)",
+        "Agentic Web: Weaving the Next Web with AI Agents (2507)"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Proactive Systems",
+        "Variable Autonomy",
+        "Agency"
+      ],
+      "implication": "MetroGraph's AI layer should be agentic: proposes multi-step actions (cluster nodes, infer relationships, adjust layout), monitors outcomes, refines. But always reversible and transparent to preserve user control.",
+      "source_ids": [
+        "market-theory-mixed-initiative-contemporary-agent-tech-2509",
+        "market-theory-mixed-initiative-levels-autonomy-ai-agents-2506",
+        "market-theory-mixed-initiative-agentic-web-2507"
+      ]
+    },
+    {
+      "concept": "Design Principles for Generative AI Applications",
+      "field": "interaction-design",
+      "definition": "Contemporary best practices for UI/UX with generative AI: artifact optimization (refining outputs), possibility exploration (showing alternatives), integration with workflows, transparency, and human oversight.",
+      "strength": "empirical",
+      "key_refs": [
+        "Design Principles for Generative AI Applications (CHI 2024)"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Feedback Mechanisms",
+        "Transparency",
+        "Collaborative Design"
+      ],
+      "implication": "MetroGraph should follow generative AI principles: show multiple layout options (possibility exploration), let users refine suggestions (artifact optimization), integrate suggestions into workflow (not separate), surface confidence and reasoning.",
+      "source_ids": [
+        "market-theory-mixed-initiative-easley-design-principles-genai-2024"
+      ]
+    },
+    {
+      "concept": "Confirmation Bias and Oversight Challenges",
+      "field": "cognitive-psych",
+      "definition": "The human tendency to seek/favor information confirming existing beliefs. In AI oversight: users may uncritically accept suggestions that fit their prior assumptions, missing errors. Scalable oversight challenges.",
+      "strength": "empirical",
+      "key_refs": [
+        "Confirmation bias: A challenge for scalable oversight (2507)"
+      ],
+      "related_concepts": [
+        "Appropriate Reliance",
+        "Mental Models of AI",
+        "User Modeling",
+        "Cognitive Biases"
+      ],
+      "implication": "MetroGraph must combat confirmation bias: deliberately surface alternative graph structures, ask for justifications before accepting bulk suggestions, log accepted-then-reverted suggestions to detect bias patterns.",
+      "source_ids": [
+        "market-theory-mixed-initiative-confirmation-bias-oversight-2507"
+      ]
+    },
+    {
+      "concept": "Conversational Interfaces and Dialogue-Based Control",
+      "field": "interaction-design",
+      "definition": "Using natural language dialogue as the primary control interface for systems; agent understands user intent, asks clarifying questions, and takes actions. Blurs line between chat and graphical manipulation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Conversational Information Seeking (2201)",
+        "DiscussLLM: Teaching Large Language Models When to Speak (2508)",
+        "Mixed-Initiative Dialog for Human-Robot Collaborative Manipulation (2508)"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Natural Language Processing",
+        "Mode Switching",
+        "Initiative Transfer"
+      ],
+      "implication": "MetroGraph could supplement visual editing with conversational commands ('Group these three nodes,' 'Find relationships to Product?'). Dialogue and visual editing coexist; system detects mode preference and adapts.",
+      "source_ids": [
+        "market-theory-mixed-initiative-conversational-information-seeking-2201",
+        "market-theory-mixed-initiative-discuss-llm-when-to-speak-2508",
+        "market-theory-mixed-initiative-mixed-initiative-dialog-robots-2508"
+      ]
+    },
+    {
+      "concept": "Fostering Human Learning in Human-AI Collaboration",
+      "field": "cognitive-psych",
+      "definition": "Evidence that human-AI synergy requires users to learn how to work with the AI: its strengths, weaknesses, and reasoning. Systems that teach users (transparency, examples, progressive disclosure) yield better collaboration.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fostering human learning is crucial for boosting human-AI synergy (2512)"
+      ],
+      "related_concepts": [
+        "Mental Models of AI",
+        "Transparency",
+        "Explainability",
+        "User Modeling"
+      ],
+      "implication": "MetroGraph should include onboarding: show how layout algorithm thinks, explain what makes a good suggestion, provide guided tours of AI capabilities. Users who understand the system collaborate better.",
+      "source_ids": [
+        "market-theory-mixed-initiative-fostering-human-learning-synergy-2512"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "name": "hci_cost_ranking",
+  "caption": "Highest-friction competitor flows (clicks + drop-off).",
+  "sql": "SELECT p.name product, fl.flow_name, fl.total_clicks, fl.drop_off_risk, fl.hci_cost FROM market.ux_flows fl JOIN market.products p ON fl.product_id=p.id WHERE p.is_self=false ORDER BY fl.total_clicks DESC NULLS LAST LIMIT 20",
+  "rows": [
+    {
+      "product": "n8n",
+      "flow_name": "Build Advanced Workflow with Nested Flows, Error Handling & Parallel Execution",
+      "total_clicks": 52,
+      "drop_off_risk": "high",
+      "hci_cost": "F"
+    },
+    {
+      "product": "Appsmith",
+      "flow_name": "Evaluate Appsmith vs Retool for Startup Internal Tools",
+      "total_clicks": 45,
+      "drop_off_risk": "medium",
+      "hci_cost": null
+    },
+    {
+      "product": "Make",
+      "flow_name": "Create a Multi-Step Scenario with Conditional Logic",
+      "total_clicks": 41,
+      "drop_off_risk": "medium",
+      "hci_cost": "C"
+    },
+    {
+      "product": "Node-RED",
+      "flow_name": "Wire IoT Sensors → Processing → Database with Visual Node Flow",
+      "total_clicks": 35,
+      "drop_off_risk": "high",
+      "hci_cost": "D"
+    },
+    {
+      "product": "Retool",
+      "flow_name": "Build & Deploy Custom Internal Tool",
+      "total_clicks": 34,
+      "drop_off_risk": "high",
+      "hci_cost": null
+    },
+    {
+      "product": "Latenode",
+      "flow_name": "AI-Powered Workflow with LLM Integration & Dynamic Field Mapping",
+      "total_clicks": 31,
+      "drop_off_risk": "medium",
+      "hci_cost": "C"
+    },
+    {
+      "product": "Airtable",
+      "flow_name": "Set Up Record Approval Workflow",
+      "total_clicks": 28,
+      "drop_off_risk": "high",
+      "hci_cost": null
+    },
+    {
+      "product": "Langflow",
+      "flow_name": "Debug Multi-Step Agent Execution",
+      "total_clicks": 28,
+      "drop_off_risk": "high",
+      "hci_cost": null
+    },
+    {
+      "product": "Miro",
+      "flow_name": "Brainstorm Ideas, Cluster, Convert to Kanban Board",
+      "total_clicks": 24,
+      "drop_off_risk": "high",
+      "hci_cost": null
+    },
+    {
+      "product": "Flowise",
+      "flow_name": "Build & Deploy LLM Application",
+      "total_clicks": 24,
+      "drop_off_risk": "high",
+      "hci_cost": null
+    },
+    {
+      "product": "Zapier",
+      "flow_name": "Create & Deploy a Basic Two-Step Zap",
+      "total_clicks": 20,
+      "drop_off_risk": "low",
+      "hci_cost": "A"
+    },
+    {
+      "product": "Gumloop",
+      "flow_name": "Build Slack Automation with AI",
+      "total_clicks": 18,
+      "drop_off_risk": "medium",
+      "hci_cost": null
+    },
+    {
+      "product": "Gephi Desktop",
+      "flow_name": "Import Dataset, Apply Layout, Filter, Create Preview",
+      "total_clicks": 18,
+      "drop_off_risk": "high",
+      "hci_cost": null
+    },
+    {
+      "product": "Lucidchart",
+      "flow_name": "Create Data-Linked Org Chart from CSV",
+      "total_clicks": 18,
+      "drop_off_risk": "medium",
+      "hci_cost": null
+    },
+    {
+      "product": "NocoDB",
+      "flow_name": "Hit NocoDB Scale Limits → Migrate to Alternative",
+      "total_clicks": 18,
+      "drop_off_risk": "high",
+      "hci_cost": null
+    },
+    {
+      "product": "Dify",
+      "flow_name": "Build RAG-Powered Chatbot",
+      "total_clicks": 15,
+      "drop_off_risk": "low",
+      "hci_cost": null
+    },
+    {
+      "product": "FigJam",
+      "flow_name": "Design Sprint: Crazy Eights → Vote → Link to Figma Prototype",
+      "total_clicks": 14,
+      "drop_off_risk": "medium",
+      "hci_cost": null
+    },
+    {
+      "product": "Apache Superset",
+      "flow_name": "Power-User Data Exploration with SQL and Pivot Tables",
+      "total_clicks": 14,
+      "drop_off_risk": "medium",
+      "hci_cost": "C"
+    },
+    {
+      "product": "Budibase",
+      "flow_name": "Build Simple CRUD Dashboard",
+      "total_clicks": 12,
+      "drop_off_risk": "low",
+      "hci_cost": null
+    },
+    {
+      "product": "Coze",
+      "flow_name": "Publish Multi-Model AI Agent",
+      "total_clicks": 12,
+      "drop_off_risk": "low",
+      "hci_cost": null
+    }
+  ]
+}

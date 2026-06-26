@@ -1,0 +1,790 @@
+{
+  "leaf": "market/theory-working-memory",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Magical Number Seven Plus or Minus Two",
+      "field": "cognitive-psych",
+      "definition": "Miller's foundational observation (1956) that immediate memory span for randomly ordered, meaningful items (chunks) is approximately 7±2 items, establishing the first quantified upper bound on working memory capacity via absolute judgment and span-of-attention tasks.",
+      "strength": "established-law",
+      "key_refs": [
+        "Miller 1956 / The Magical Number Seven, Plus or Minus Two: Some Limits on Our Capacity for Processing Information",
+        "Psychological Review 63(2):81-97"
+      ],
+      "related_concepts": [
+        "Chunking",
+        "Central Storage Capacity",
+        "Working Memory Span",
+        "Meaningful Items"
+      ],
+      "implication": "MetroGraph's simultaneous visible control count must respect the ~7-item baseline, though modern research (Cowan) shows effective practical limit is lower when task-dependent strategies are controlled.",
+      "source_ids": [
+        "market-theory-working-memory-miller-magical-number-seven-1956"
+      ]
+    },
+    {
+      "concept": "Central Storage Capacity (3-5 Items)",
+      "field": "cognitive-psych",
+      "definition": "Nelson Cowan's revised capacity limit (2010) distinguishing between task-dependent span (influenced by rehearsal and grouping strategies) and fundamental central storage capacity, which holds only 3–5 meaningful items in young adults under boundary conditions that prevent processing strategies.",
+      "strength": "established-law",
+      "key_refs": [
+        "Cowan 2010 / The Magical Mystery Four: How is Working Memory Capacity Limited, and Why?",
+        "Current Directions in Psychological Science 19(1):51-57"
+      ],
+      "related_concepts": [
+        "Working Memory Span",
+        "Chunking Effects",
+        "Running Span Procedures",
+        "Storage-Specific vs. Processing-Related Capacity"
+      ],
+      "implication": "The 3–5 item core limit is the critical hard constraint for MetroGraph UI: visible simultaneous controls, nodes, or information items should rarely exceed this threshold without progressive disclosure or external offloading.",
+      "source_ids": [
+        "market-theory-working-memory-cowan-magical-mystery-four-2010"
+      ]
+    },
+    {
+      "concept": "Chunking",
+      "field": "cognitive-psych",
+      "definition": "Cognitive strategy of grouping multiple discrete items into larger meaningful units (chunks) to increase apparent working memory capacity; effective span depends on prior knowledge and the ability to organize information into familiar patterns.",
+      "strength": "established-law",
+      "key_refs": [
+        "Miller 1956 / The Magical Number Seven, Plus or Minus Two",
+        "Cowan 2010 / The Magical Mystery Four"
+      ],
+      "related_concepts": [
+        "Schema Theory",
+        "Prior Knowledge",
+        "Meaningful Items",
+        "Central Capacity Limits"
+      ],
+      "implication": "MetroGraph can increase effective capacity through domain-specific visual chunking (e.g., grouped nodes, semantic clustering) but must not rely on chunking alone to exceed the 3–5 core limit under novel or high-cognitive-load conditions.",
+      "source_ids": [
+        "market-theory-working-memory-miller-magical-number-seven-1956",
+        "market-theory-working-memory-cowan-magical-mystery-four-2010",
+        "market-theory-working-memory-schema-theory-knowledge-representation"
+      ]
+    },
+    {
+      "concept": "Multicomponent Model of Working Memory",
+      "field": "cognitive-psych",
+      "definition": "Baddeley & Hitch's foundational 1974 model positing working memory consists of a central executive controlling task management, a phonological loop for verbal information, a visuospatial sketchpad for visual-spatial information, and (later) an episodic buffer for integrated representations.",
+      "strength": "established-law",
+      "key_refs": [
+        "Baddeley & Hitch 1974 / Working Memory Model",
+        "Hitch, Allen & Baddeley 2025 / The Multicomponent Model of Working Memory Fifty Years On, Quarterly Journal of Experimental Psychology"
+      ],
+      "related_concepts": [
+        "Central Executive",
+        "Phonological Loop",
+        "Visuospatial Sketchpad",
+        "Episodic Buffer"
+      ],
+      "implication": "MetroGraph, as a visual system, primarily engages the visuospatial sketchpad; design must respect that both visual and verbal processing compete for the central executive, and multimodal presentations (graph + text + annotations) can create interference.",
+      "source_ids": [
+        "market-theory-working-memory-baddeley-hitch-working-memory-1974"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Sweller's framework distinguishing intrinsic load (inherent task difficulty), extraneous load (poorly designed instruction/interface), and germane load (task-supporting cognitive effort); establishes that learning and task performance cannot exceed working memory capacity.",
+      "strength": "framework",
+      "key_refs": [
+        "Sweller 2005 / Cognitive Load Theory of Multimedia Learning, Cambridge Handbook chapter",
+        "Sweller, van Merriënboer & Paas 1998 / Cognitive Architecture and Instructional Design, Educational Psychology Review"
+      ],
+      "related_concepts": [
+        "Intrinsic Load",
+        "Extraneous Load",
+        "Germane Load",
+        "Working Memory Capacity Limits"
+      ],
+      "implication": "MetroGraph must minimize extraneous load (UI clutter, poor information architecture) and maximize germane load (task-aligned visualizations), recognizing that total load cannot exceed the fundamental 3–5 core capacity in novel tasks.",
+      "source_ids": [
+        "market-theory-working-memory-sweller-cognitive-load-theory",
+        "market-theory-working-memory-paas-merrienboer-sweller-cognitive-architecture"
+      ]
+    },
+    {
+      "concept": "Attentional Blink",
+      "field": "cognitive-psych",
+      "definition": "Temporal attention bottleneck (~500ms duration) where the second of two rapidly presented targets (RSVP paradigm) cannot be reported; arises from working memory encoding bottleneck and demonstrates hard capacity limits under task interference conditions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Raymond, Shapiro & Arnell 1992 / Temporary Suppression of Visual Processing in an RSVP Task",
+        "Fischler et al. 2012 / Functional Imaging Reveals Working Memory and Attention Interact to Produce the Attentional Blink, fMRI evidence"
+      ],
+      "related_concepts": [
+        "Attention Bottleneck",
+        "Task-Irrelevant Stimulus Processing",
+        "Working Memory Encoding Interference",
+        "Temporal Attention"
+      ],
+      "implication": "Rapid sequential information changes in MetroGraph (e.g., fast node transitions, rapid query results) risk triggering attentional blink; design should pace information revelation to allow working memory consolidation (~500ms minimum inter-event intervals).",
+      "source_ids": [
+        "market-theory-working-memory-attentional-blink-working-memory"
+      ]
+    },
+    {
+      "concept": "Dual-Task Working Memory Interference",
+      "field": "cognitive-psych",
+      "definition": "Concurrent visual working memory tasks interfere at the storage stage when combined set size exceeds capacity; encoding and retrieval processes are minimally affected, indicating the bottleneck is in maintenance of simultaneous items.",
+      "strength": "empirical",
+      "key_refs": [
+        "Woodman, Vogel & Luck 2012 / Drag-to-select but not click-to-select creates similarity-based interference in working memory, Journal of Neuroscience",
+        "Morey & Cowan 2005 / When visual and verbal memories compete"
+      ],
+      "related_concepts": [
+        "Central Storage Bottleneck",
+        "Concurrent Task Load",
+        "Encoding vs. Storage vs. Retrieval Stages",
+        "Capacity Limits"
+      ],
+      "implication": "MetroGraph interactions that require simultaneous visual attention to multiple elements (e.g., comparing node attributes, tracking edge relationships while filtering) can exceed capacity and fail; sequential or progressive disclosure patterns are necessary.",
+      "source_ids": [
+        "market-theory-working-memory-dual-task-interference-working-memory"
+      ]
+    },
+    {
+      "concept": "Perceptual Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Lavie's framework showing that task-irrelevant distractors are processed only when perceptual load is low and spare capacity remains unused; high perceptual load consumes available resources, reducing distraction but increasing load.",
+      "strength": "empirical",
+      "key_refs": [
+        "Lavie 2005 / Load Theory of Selective Attention and Cognitive Control, Psychological Review"
+      ],
+      "related_concepts": [
+        "Perceptual Capacity",
+        "Attentional Resources",
+        "Task-Irrelevant Processing",
+        "Feature Distraction"
+      ],
+      "implication": "MetroGraph must carefully balance perceptual load: too many simultaneous visual elements consume attention (high load, reduced distraction tolerance) while insufficient load leaves the user vulnerable to missing relevant information; the 3–5 item sweet spot minimizes cognitive strain while maintaining focus.",
+      "source_ids": [
+        "market-theory-working-memory-lavie-perceptual-load-theory"
+      ]
+    },
+    {
+      "concept": "Multiple Resources Theory",
+      "field": "cognitive-psych",
+      "definition": "Wickens's framework showing that workload depends not only on task difficulty but on competition for specific resource pools (visual, auditory, cognitive, motor); performance degrades when simultaneous tasks compete for the same resource type.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wickens 2008 / Multiple Resources and Mental Workload, Ergonomics 51(5):584-595"
+      ],
+      "related_concepts": [
+        "Resource Competition",
+        "Task Interference",
+        "Workload Assessment",
+        "Resource Pools"
+      ],
+      "implication": "MetroGraph should exploit resource separation: pair visual graph navigation with verbal annotations, or alternate between visual search and motor interaction, to reduce competition on the same limited pool and effectively increase perceived capacity.",
+      "source_ids": [
+        "market-theory-working-memory-wickens-multiple-resources-workload"
+      ]
+    },
+    {
+      "concept": "Subitizing",
+      "field": "cognitive-psych",
+      "definition": "Automatic, accurate enumeration of 3–4 objects without counting; accuracy breaks down beyond this range due to reliance on visuospatial working memory. Reflects the core capacity limit in visual object tracking.",
+      "strength": "empirical",
+      "key_refs": [
+        "Trick & Pylyshyn 1994 / Why Are Variants of Visual Search Asymmetric?",
+        "Kaufman et al. 1949 / The Discrimination of Visual Number"
+      ],
+      "related_concepts": [
+        "Visual Working Memory Capacity",
+        "Object Tracking",
+        "Enumeration",
+        "Visuospatial Sketchpad"
+      ],
+      "implication": "Counting or tracking visible nodes/controls in MetroGraph becomes effortful and error-prone beyond ~4 items; this directly maps to the hard bound on simultaneously manageable elements in a graph visualization.",
+      "source_ids": [
+        "market-theory-working-memory-subitizing-numerosity-working-memory"
+      ]
+    },
+    {
+      "concept": "Change Blindness",
+      "field": "cognitive-psych",
+      "definition": "Failure to detect changes in a visual display when those changes occur during a saccade, blink, or visual interruption; reveals limits on distributed attention and transient working memory for changes not in focal attention.",
+      "strength": "empirical",
+      "key_refs": [
+        "Simons & Rensink 2005 / Change Blindness: Past, Present, and Future, Trends in Cognitive Sciences 9(1):16-20"
+      ],
+      "related_concepts": [
+        "Inattentional Blindness",
+        "Attentional Resource Limits",
+        "Visual Attention",
+        "Working Memory for Changes"
+      ],
+      "implication": "Animated or gradual transitions in MetroGraph reduce change blindness risk; sudden or large updates outside the focal area may be missed, requiring explicit feedback mechanisms and reduced information density to ensure critical changes are perceived.",
+      "source_ids": [
+        "market-theory-working-memory-inattentional-blindness-change-blindness"
+      ]
+    },
+    {
+      "concept": "Inattentional Blindness",
+      "field": "cognitive-psych",
+      "definition": "Failure to notice unexpected objects or events in the visual field when attention is focused elsewhere, even when the stimulus is in clear view; demonstrates selective attention allocation limits.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mack & Rock 1998 / Inattentional Blindness",
+        "Simons & Chabris 1999 / Gorilla Experiment"
+      ],
+      "related_concepts": [
+        "Selective Attention",
+        "Attentional Capture",
+        "Visual Awareness",
+        "Attention Allocation"
+      ],
+      "implication": "MetroGraph must make critical UI elements salient (notifications, alerts, key results) to overcome inattentional blindness; relying on subtle visual cues in a dense graph risks critical information being completely unnoticed.",
+      "source_ids": [
+        "market-theory-working-memory-inattentional-blindness-change-blindness"
+      ]
+    },
+    {
+      "concept": "External Cognition / Computational Offloading",
+      "field": "hci",
+      "definition": "Scaife & Rogers's principle that well-designed external representations (diagrams, visualizations, written displays) reduce the working memory burden by externalizing information and allowing spatial/temporal constraint to guide reasoning.",
+      "strength": "framework",
+      "key_refs": [
+        "Scaife & Rogers 1996 / External Cognition: How Do Graphical Representations Work?, International Journal of Human-Computer Studies 45:185-213",
+        "Norman 1993 / Things That Make Us Smart"
+      ],
+      "related_concepts": [
+        "Distributed Cognition",
+        "Representation Design",
+        "Information Architecture",
+        "Cognitive Artifacts"
+      ],
+      "implication": "MetroGraph's core value is externalizing database relationships as a visual graph, offloading working memory by allowing spatial and visual relationships to replace mental holding of abstract connections; effective design maximizes this offloading via clear layout and visual hierarchy.",
+      "source_ids": [
+        "market-theory-working-memory-scaife-rogers-external-cognition"
+      ]
+    },
+    {
+      "concept": "Sensemaking Loops (Foraging & Synthesis)",
+      "field": "information-foraging",
+      "definition": "Pirolli & Card's functional model of analytical sensemaking as iterative cycles of information foraging (search, gather, filter) and synthesis (integrate, model, represent); external information architecture reduces working memory burden across iteration.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli & Card 2005 / A Functional Model of Sensemaking in a Neurocognitive Architecture, International Journal of Human-Computer Studies 65(6):415-419"
+      ],
+      "related_concepts": [
+        "Information Foraging",
+        "Analytical Reasoning",
+        "External Representation",
+        "Iterative Analysis"
+      ],
+      "implication": "MetroGraph should support fast foraging-synthesis loops: visual exploration and filtering keep working memory focused on the current analysis state, then explicit save/represent actions (e.g., node selection, subgraph snapshots) externalize intermediate conclusions to free capacity for the next cycle.",
+      "source_ids": [
+        "market-theory-working-memory-pirolli-card-sensemaking"
+      ]
+    },
+    {
+      "concept": "Information Overload and Decision Degradation",
+      "field": "hci",
+      "definition": "Empirical finding that information exceeding working memory capacity degrades decision accuracy by 22–28%; visible information density beyond ~3–5 items actively harms task performance rather than merely failing to improve it.",
+      "strength": "empirical",
+      "key_refs": [
+        "Speier et al. 1999 / The Impact of Time Pressure on Judgment and Decision Quality",
+        "2016 SIGHCI Study / InfoVis: The Impact of Information Overload on Decision Making Outcome in High Complexity Settings"
+      ],
+      "related_concepts": [
+        "Cognitive Load",
+        "Decision Making",
+        "Visual Complexity",
+        "Performance Degradation"
+      ],
+      "implication": "MetroGraph's value proposition includes reducing information overload harm: by carefully limiting visible elements and using progressive disclosure, it avoids the 22–28% performance degradation that unconstrained graph display causes in complex analytical tasks.",
+      "source_ids": [
+        "market-theory-working-memory-information-overload-decision-making"
+      ]
+    },
+    {
+      "concept": "Context Switching Cognitive Cost",
+      "field": "hci",
+      "definition": "Empirical evidence showing context switching between tasks incurs ~23 minute re-engagement time and causes working memory overload via concurrent task loading; resumption lag and attentional recalibration require substantial recovery.",
+      "strength": "empirical",
+      "key_refs": [
+        "Iqbal & Bailey 2008 / Effects of Interruptions on Task Performance, Frustration, and Cognitive Workload",
+        "2024 PMC Study / Examining the Cognitive Processes Underlying Resumption Costs in Task-Interruption Contexts"
+      ],
+      "related_concepts": [
+        "Task Interruption",
+        "Resumption Lag",
+        "Attentional Recalibration",
+        "Working Memory Refresh"
+      ],
+      "implication": "MetroGraph should minimize context switches between graph exploration and external tools/documentation; integrated analysis environment keeps working memory focused on the domain model, avoiding the 23-minute recovery cost when switching to chat, terminal, or other apps.",
+      "source_ids": [
+        "market-theory-working-memory-context-switching-cognitive-cost"
+      ]
+    },
+    {
+      "concept": "Visualization Analysis & Design Framework",
+      "field": "visualization",
+      "definition": "Munzner's comprehensive framework for visualization design analyzing idioms (graphical encodings) against perceptual and cognitive constraints, including working memory and attention limits in mark-channel encoding.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis & Design, CRC Press (2500+ citations)"
+      ],
+      "related_concepts": [
+        "Mark-Channel Encoding",
+        "Perceptual Effectiveness",
+        "Cognitive Load in Visualization",
+        "Idiom Analysis"
+      ],
+      "implication": "MetroGraph's visual encoding (node-link diagram) must be evaluated against Munzner's framework to ensure mark-channel choices (color, size, position, shape) respect working memory limits; effective encodings reduce the cognitive burden of interpretation.",
+      "source_ids": [
+        "market-theory-working-memory-munzner-visualization-analysis-design"
+      ]
+    },
+    {
+      "concept": "Information Design & Visual Perception",
+      "field": "visualization",
+      "definition": "Tufte's principles for effective visualization establishing that cognitive effectiveness depends on minimizing visual noise, maximizing data-ink ratio, and respecting perceptual grouping; design within human perceptual and memory constraints.",
+      "strength": "framework",
+      "key_refs": [
+        "Tufte 1983 / The Visual Display of Quantitative Information",
+        "Tufte 1990 / Envisioning Information"
+      ],
+      "related_concepts": [
+        "Data-Ink Ratio",
+        "Visual Hierarchy",
+        "Perceptual Grouping",
+        "Cognitive Load"
+      ],
+      "implication": "MetroGraph should apply Tufte's principles to graph visualization: every visible node or edge should carry necessary information; decorative or redundant elements waste the scarce resource of working memory attention.",
+      "source_ids": [
+        "market-theory-working-memory-tufte-information-design-visual-perception"
+      ]
+    },
+    {
+      "concept": "Progressive Disclosure",
+      "field": "interaction-design",
+      "definition": "UI design pattern introduced by Nielsen (1995) revealing information gradually rather than all at once; directly addresses working memory constraints by reducing simultaneous visible controls and allowing staged cognitive processing.",
+      "strength": "framework",
+      "key_refs": [
+        "Nielsen 1995 / Progressive Disclosure",
+        "IxDF / Progressive Disclosure in UX Design"
+      ],
+      "related_concepts": [
+        "Information Architecture",
+        "Layered Disclosure",
+        "Cognitive Load Management",
+        "UI Density Control"
+      ],
+      "implication": "Progressive disclosure is a primary design pattern for MetroGraph: filters, advanced options, and drill-down functionality should be hidden until needed, keeping the initial visible control count at or below 3–5 core items.",
+      "source_ids": [
+        "market-theory-working-memory-progressive-disclosure-ui-design"
+      ]
+    },
+    {
+      "concept": "Visibility of System Status (Usability Heuristic #1)",
+      "field": "interaction-design",
+      "definition": "Nielsen & Norman foundational heuristic: system feedback and visible state must be continuous and immediate, derived from working memory limitations requiring constant reinforcement and recognition (not recall) of system status.",
+      "strength": "framework",
+      "key_refs": [
+        "Nielsen & Norman 1994 / 10 Usability Heuristics for User Interface Design",
+        "NN/g Article / Visibility of System Status"
+      ],
+      "related_concepts": [
+        "Feedback Design",
+        "System State Representation",
+        "Recognition vs. Recall",
+        "Usability Heuristics"
+      ],
+      "implication": "MetroGraph must maintain visible, real-time feedback of query state, filter status, and navigation context; relying on user recall of previous states exceeds working memory capacity and causes navigation errors.",
+      "source_ids": [
+        "market-theory-working-memory-visibility-feedback-interaction-design",
+        "market-theory-working-memory-norman-design-principles-affordances"
+      ]
+    },
+    {
+      "concept": "Spatial Memory in UI Design",
+      "field": "interaction-design",
+      "definition": "Nielsen's finding that spatial/visual location of UI elements is remembered better than labels or text; users navigate via spatial memory (where things are) rather than linguistic recall (what things are called).",
+      "strength": "empirical",
+      "key_refs": [
+        "Nielsen & Norman 1994 / NN/g Article / Spatial Memory: Why It Matters for UX Design"
+      ],
+      "related_concepts": [
+        "Visuospatial Sketchpad",
+        "Spatial Cognition",
+        "Landmark Recognition",
+        "Navigation"
+      ],
+      "implication": "MetroGraph's interface should use consistent spatial locations for critical controls (toolbar position, legend placement, filter sidebar); this reduces working memory load by leveraging spatial memory, making the interface feel familiar and reducing navigation uncertainty.",
+      "source_ids": [
+        "market-theory-working-memory-nielsen-spatial-memory-ux"
+      ]
+    },
+    {
+      "concept": "Gestalt Principles in Visual Perception",
+      "field": "visual-programming",
+      "definition": "Early 20th-century perceptual grouping laws (proximity, similarity, closure, continuance) showing how the brain minimizes working memory load via automatic pattern recognition and figure-ground segregation.",
+      "strength": "established-law",
+      "key_refs": [
+        "Wertheimer 1923 / Untersuchungen zur Lehre von der Gestalt",
+        "Gestalt Psychology principles"
+      ],
+      "related_concepts": [
+        "Perceptual Grouping",
+        "Figure-Ground Segregation",
+        "Pattern Recognition",
+        "Visual Organization"
+      ],
+      "implication": "MetroGraph's visual design should apply Gestalt principles to automatically organize nodes and edges into meaningful groups; proximity and similarity can reduce the effective count of distinct items users must hold in working memory.",
+      "source_ids": [
+        "market-theory-working-memory-gestalt-principles-visual-perception"
+      ]
+    },
+    {
+      "concept": "Dual-Process Theory (System 1 vs. System 2)",
+      "field": "cognitive-psych",
+      "definition": "Kahneman & Tversky's framework distinguishing fast, intuitive System 1 thinking from slow, deliberate System 2 thinking; working memory limitations force reliance on System 1 heuristics under high cognitive load, increasing bias and error.",
+      "strength": "framework",
+      "key_refs": [
+        "Kahneman & Tversky 1974 / Judgment Under Uncertainty: Heuristics and Biases, Science",
+        "Kahneman 2011 / Thinking, Fast and Slow"
+      ],
+      "related_concepts": [
+        "Cognitive Biases",
+        "Heuristics",
+        "Cognitive Load",
+        "Decision Making"
+      ],
+      "implication": "MetroGraph should design for System 1 cognition at the working memory boundary: clear visual affordances, intuitive interactions, and reduced control density allow fast, accurate decisions; overload pushes users to unreliable heuristics and increases analytical errors.",
+      "source_ids": [
+        "market-theory-working-memory-kahneman-thinking-fast-slow"
+      ]
+    },
+    {
+      "concept": "Visual Complexity in Interface Design",
+      "field": "hci",
+      "definition": "Empirical measure of UI cognitive load based on element count, spatial distribution, and visual clutter; recent studies establish direct correlation between visible control density and working memory demands in mobile and web interfaces.",
+      "strength": "empirical",
+      "key_refs": [
+        "2024 MDPI Study / A Measurement Model for Visual Complexity in HCI: Focusing on Visual Elements in Mobile GUI Design, Electronics 14(5):942"
+      ],
+      "related_concepts": [
+        "Control Density",
+        "Visual Clutter",
+        "Cognitive Load",
+        "Interface Density Metrics"
+      ],
+      "implication": "MetroGraph should quantify visual complexity of the graph display (node count, edge density, visual clutter) and maintain it below thresholds documented in the literature; high visual complexity directly impairs working memory performance in graph comprehension tasks.",
+      "source_ids": [
+        "market-theory-working-memory-visual-complexity-interface-design"
+      ]
+    },
+    {
+      "concept": "Node-Link vs. Adjacency Matrix Trade-offs",
+      "field": "visualization",
+      "definition": "Empirical comparison showing node-link diagrams are intuitive for sparse graphs but demand high working memory for dense connectivity tracking, while adjacency matrices scale better but require more abstract interpretation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ghoniem, Fekete & Castagliola 2005 / Matrices or Node-Link Diagrams: Which Visual Representation is Better for Visualising Connectivity Models?, Information Visualization 5:1-13"
+      ],
+      "related_concepts": [
+        "Graph Visualization Idioms",
+        "Visual Representation",
+        "Scalability",
+        "Task Efficiency"
+      ],
+      "implication": "MetroGraph's choice of node-link encoding is appropriate for databases with moderate connectivity; for dense or very large graphs, hybrid or matrix views should be available to manage working memory demands as edge count increases.",
+      "source_ids": [
+        "market-theory-working-memory-node-link-diagram-comprehension"
+      ]
+    },
+    {
+      "concept": "Graph Visualization Complexity Limits",
+      "field": "visualization",
+      "definition": "Survey evidence documenting empirical cognitive thresholds in graph visualization comprehension: node count, edge crossing, and visual density all degrade performance; effective working memory management requires limiting simultaneous visible items.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Survey of Empirical Studies on Graph Visualisation / Exploring the Limits of Complexity, ScienceDirect 2018"
+      ],
+      "related_concepts": [
+        "Node Count Limits",
+        "Edge Crossing Minimization",
+        "Visual Density",
+        "Comprehension Thresholds"
+      ],
+      "implication": "MetroGraph's design should respect documented graph visualization limits: aim for <20 visible nodes in initial views, minimize edge crossings, and use filtering/progressive revelation for larger datasets; these directly map to working memory constraints.",
+      "source_ids": [
+        "market-theory-working-memory-graph-visualization-limits-complexity"
+      ]
+    },
+    {
+      "concept": "Visual Search Guided by Working Memory",
+      "field": "cognitive-psych",
+      "definition": "Working memory content actively guides attention during visual search via feature matching; search efficiency depends on working memory holding task-relevant features, which competes with processing visual information.",
+      "strength": "empirical",
+      "key_refs": [
+        "Soto & Humphreys 2016 / Visual Working Memory Simultaneously Guides Facilitation and Inhibition During Visual Search, Attention, Perception, & Psychophysics"
+      ],
+      "related_concepts": [
+        "Attentional Guidance",
+        "Feature Matching",
+        "Search Efficiency",
+        "Working Memory Load"
+      ],
+      "implication": "MetroGraph's search and filter features should support explicit query formulation (keeping search criteria in working memory) and visual highlighting of matching results; reducing the user's need to mentally track search targets improves performance.",
+      "source_ids": [
+        "market-theory-working-memory-visual-search-working-memory"
+      ]
+    },
+    {
+      "concept": "Feature Creep and UI Bloat",
+      "field": "interaction-design",
+      "definition": "Practitioner observation that 30–50% of software features provide marginal value; feature bloat increases UI control density directly beyond working memory capacity thresholds, reducing usability and causing 'surface-area bloat' (core wedge issue).",
+      "strength": "hypothesis",
+      "key_refs": [
+        "2024 QAT Industry Analysis / Feature Creep in Software Development – Avoid Common Pitfalls"
+      ],
+      "related_concepts": [
+        "Control Density",
+        "Usability Decay",
+        "Feature Prioritization",
+        "Surface Area Bloat"
+      ],
+      "implication": "MetroGraph's design must resist feature creep: every visible control, button, and menu item consumes scarce working memory capacity; the wedge's core problem (RAG/agent-builder UI bloat) is fundamentally a feature-creep issue exacerbated by ignoring capacity limits.",
+      "source_ids": [
+        "market-theory-working-memory-feature-creep-ui-complexity"
+      ]
+    },
+    {
+      "concept": "The Keyhole Effect (Chat Interfaces vs. Simultaneous Visibility)",
+      "field": "hci",
+      "definition": "Contemporary finding (arXiv 2602) that sequential chat interfaces (one control visible at a time) fail at data analysis vs. simultaneous visibility; the 'keyhole' one-message-at-a-time paradigm trades control visibility for information density in the worst possible way.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bubble/MIT 2026 / The Keyhole Effect: Why Chat Interfaces Fail at Data Analysis, arXiv:2602.00947"
+      ],
+      "related_concepts": [
+        "Interface Paradigms",
+        "Chat vs. UI Trade-offs",
+        "Information Density",
+        "Analytical Interface Design"
+      ],
+      "implication": "MetroGraph's core value is solving the keyhole effect: by showing multiple nodes, edges, and controls simultaneously (within working memory limits), it avoids the sequential bottleneck of chat-only interfaces while remaining cognitively manageable.",
+      "source_ids": [
+        "market-theory-working-memory-keyhole-effect-chat-interfaces"
+      ]
+    },
+    {
+      "concept": "Cognitive Divergence: LLM Context Windows vs. Human Working Memory",
+      "field": "rag",
+      "definition": "Emerging divergence between LLM context window growth (100K+ tokens) and human working memory capacity (3–5 items); creates delegation feedback loop where AI-delegation patterns train users to expect information beyond their cognitive capacity.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Bubble/MIT 2026 / The Cognitive Divergence: AI Context Windows, Human Attention Decline, and the Delegation Feedback Loop, arXiv:2603.26707"
+      ],
+      "related_concepts": [
+        "LLM Context Limits",
+        "Human-AI Asymmetry",
+        "UI Delegation Patterns",
+        "Attention Allocation"
+      ],
+      "implication": "MetroGraph addresses cognitive divergence by providing a UI that respects human working memory while leveraging LLM context for backend analysis; the visualization layer acts as a cognitive stabilizer, preventing attention decline from AI-UI mismatch.",
+      "source_ids": [
+        "market-theory-working-memory-cognitive-divergence-ai-attention"
+      ]
+    },
+    {
+      "concept": "LLM Context Window as Working Memory Analogy",
+      "field": "rag",
+      "definition": "Contemporary analytical framing (2026) treating LLM context windows as functional analogues to human working memory; both have hard capacity limits, both require management of information flow, and both degrade performance when overloaded.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Atlan 2026 / Working Memory in LLMs: Context Window Deep Dive",
+        "Baddeley & Hitch 1974 / Working Memory Model (theoretical foundation)"
+      ],
+      "related_concepts": [
+        "LLM Capacity Limits",
+        "Token Limits",
+        "Information Flow",
+        "Cognitive Architecture"
+      ],
+      "implication": "MetroGraph can bridge human-AI cognitive systems by treating both as capacity-limited: the visualization externally represents relationships that LLMs process internally, and the interface helps users manage their own working memory within the limits that systems they collaborate with impose.",
+      "source_ids": [
+        "market-theory-working-memory-llm-context-window-working-memory"
+      ]
+    },
+    {
+      "concept": "RAG UI Cognitive Load Design",
+      "field": "rag",
+      "definition": "Emerging focus in RAG system design (GROUSER framework) on UI as key component for managing cognitive load across retrieval, synthesis, and user interaction; recognizes that information abundance without UI guidance exceeds user working memory.",
+      "strength": "framework",
+      "key_refs": [
+        "Mao et al. 2506 / RAG+: Enhancing Retrieval-Augmented Generation with Application-Aware Reasoning, arXiv:2506.11555"
+      ],
+      "related_concepts": [
+        "RAG Architecture",
+        "Information Synthesis",
+        "Cognitive Load Management",
+        "UI Integration"
+      ],
+      "implication": "MetroGraph's design for RAG contexts should actively manage cognitive load: retrieved information should be visualized with progressive disclosure, filtering, and hierarchical organization to keep working memory load within 3–5 items per decision point.",
+      "source_ids": [
+        "market-theory-working-memory-rag-ui-cognitive-load-design"
+      ]
+    },
+    {
+      "concept": "Visualization Complexity Metrics",
+      "field": "visualization",
+      "definition": "Recent computational approaches (arXiv 2512) proposing objective measures of visualization complexity via visual feature analysis (element count, color, text, spatial distribution); aims to predict subjective cognitive load from objective visual properties.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bubble/MIT 2512 / Eye of the Beholder: Towards Measuring Visualization Complexity, arXiv:2512.05536"
+      ],
+      "related_concepts": [
+        "Visual Feature Analysis",
+        "Cognitive Load Prediction",
+        "Visualization Metrics",
+        "Complexity Assessment"
+      ],
+      "implication": "MetroGraph should employ complexity metrics (node count, edge density, text labels, color variation) as design targets; maintaining metrics below empirically-derived thresholds ensures visualizations stay within working memory bounds.",
+      "source_ids": [
+        "market-theory-working-memory-eye-of-beholder-visualization-complexity"
+      ]
+    },
+    {
+      "concept": "Information Visualization with Working Memory Metrics",
+      "field": "visualization",
+      "definition": "Established practice of evaluating visualization effectiveness using working memory metrics; shows quantifiable relationship between verbal and visual working memory capacity and chart type preference.",
+      "strength": "empirical",
+      "key_refs": [
+        "OSTI 1110579 / Evaluating Information Visualizations with Working Memory Metrics"
+      ],
+      "related_concepts": [
+        "Visualization Evaluation",
+        "Working Memory Metrics",
+        "Chart Comprehension",
+        "Cognitive Load Assessment"
+      ],
+      "implication": "MetroGraph's effectiveness should be evaluated against working memory metrics: time to comprehension, error rate in node/edge relationships, and cognitive effort should all reflect the optimization for 3–5 item capacity.",
+      "source_ids": [
+        "market-theory-working-memory-information-visualization-working-memory-metrics"
+      ]
+    },
+    {
+      "concept": "Perception-Based Visualization Studies",
+      "field": "visualization",
+      "definition": "Comprehensive survey of perception research in visualization documenting perceptual and cognitive capacity constraints including working memory limits on task performance; establishes empirical task-performance thresholds.",
+      "strength": "empirical",
+      "key_refs": [
+        "2021 arXiv Survey / A Survey of Perception-Based Visualization Studies by Task, arXiv:2107.07477"
+      ],
+      "related_concepts": [
+        "Perception in Visualization",
+        "Task Performance",
+        "Cognitive Constraints",
+        "Visualization Effectiveness"
+      ],
+      "implication": "MetroGraph design decisions (color, shape, spatial layout) should be grounded in the perception literature; documented task-performance thresholds provide quantitative targets for control density and visual encoding complexity.",
+      "source_ids": [
+        "market-theory-working-memory-survey-perception-visualization"
+      ]
+    },
+    {
+      "concept": "Schema Theory and Knowledge Representation",
+      "field": "cognitive-psych",
+      "definition": "Bartlett & Rumelhart's framework showing that working memory interacts with long-term memory schemas; chunking via prior knowledge structures reduces memory load, but novel domains require explicit schema scaffolding.",
+      "strength": "framework",
+      "key_refs": [
+        "Rumelhart 1980 / Schemata: The Building Blocks of Cognition",
+        "Bartlett 1932 / Remembering: A Study in Experimental and Social Psychology"
+      ],
+      "related_concepts": [
+        "Prior Knowledge",
+        "Schema Formation",
+        "Chunking via Schemas",
+        "Knowledge Structures"
+      ],
+      "implication": "MetroGraph should support schema formation for domain-specific structures (e.g., SQL table hierarchies, knowledge graph ontologies); visual patterns that align with user mental models reduce effective working memory load via chunking.",
+      "source_ids": [
+        "market-theory-working-memory-schema-theory-knowledge-representation"
+      ]
+    },
+    {
+      "concept": "Mental Models in Interface Design",
+      "field": "interaction-design",
+      "definition": "UI design principle requiring interfaces to align with user's cognitive mental model (internal representation of system behavior); misalignment between interface and mental model increases working memory burden as users maintain dual models.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "ScienceDirect / User Mental Models in Interface Design"
+      ],
+      "related_concepts": [
+        "Conceptual Model",
+        "User Model",
+        "Affordances",
+        "Cognitive Gap"
+      ],
+      "implication": "MetroGraph's interface should minimize the gap between the actual database model and the user's mental model; direct visual representation of table relationships and data dependencies leverages alignment to reduce working memory load.",
+      "source_ids": [
+        "market-theory-working-memory-mental-models-interface-design"
+      ]
+    },
+    {
+      "concept": "Saliency and Attentional Capture",
+      "field": "cognitive-psych",
+      "definition": "Research on stimulus salience showing that visually salient features (color contrast, motion, size, flicker) capture attention independently of task goals; can override working memory-guided visual search.",
+      "strength": "empirical",
+      "key_refs": [
+        "Journal of Vision 2014 / Saliency, Attention, and Visual Search: An Information Theoretic Approach"
+      ],
+      "related_concepts": [
+        "Attentional Capture",
+        "Bottom-up Attention",
+        "Visual Salience",
+        "Task Goals vs. Stimulus Properties"
+      ],
+      "implication": "MetroGraph should carefully manage visual salience: critical nodes/edges should be salient (color, size), but decorative salience should be minimal; unconstrained salience competes with working memory-guided analysis and causes distraction.",
+      "source_ids": [
+        "market-theory-working-memory-attention-capture-saliency-visual-search"
+      ]
+    },
+    {
+      "concept": "Attentional Bottleneck in Visual Processing",
+      "field": "cognitive-psych",
+      "definition": "PLOS ONE evidence for a capacity-limited bottleneck in visual attention independent of stimulus encoding and retrieval; limits simultaneous processing of multiple information sets regardless of their perceptual separability.",
+      "strength": "empirical",
+      "key_refs": [
+        "PLOS ONE 2014 / A Bottleneck Model of Set-Specific Capture, PLoS ONE 9(1):e88313"
+      ],
+      "related_concepts": [
+        "Attention Limits",
+        "Processing Bottleneck",
+        "Capacity Constraints",
+        "Visual Processing Stages"
+      ],
+      "implication": "Even perceptually distinct graph elements (different colors, sizes) face an attentional bottleneck when their count exceeds ~3–5 items; visual separation alone cannot overcome fundamental capacity limits, requiring interaction design to manage attention.",
+      "source_ids": [
+        "market-theory-working-memory-attention-bottleneck-visual-processing"
+      ]
+    },
+    {
+      "concept": "Cognitive Load in Web Interface Design",
+      "field": "hci",
+      "definition": "Empirical study establishing quantifiable relationship between visual complexity (element density, spatial distribution) and task difficulty on working memory demands in web interfaces; provides measurement framework for control density.",
+      "strength": "empirical",
+      "key_refs": [
+        "ResearchGate 2024 / Cognitive Load in Web Interface Design: A Study Based on Visual Complexity and Task Difficulty"
+      ],
+      "related_concepts": [
+        "Visual Complexity",
+        "Task Difficulty",
+        "Cognitive Load Assessment",
+        "Interface Design Metrics"
+      ],
+      "implication": "MetroGraph's control density should be benchmarked against web interface standards; visual complexity measurement (element count, layout density) provides objective targets for progressive disclosure thresholds.",
+      "source_ids": [
+        "market-theory-working-memory-cognitive-load-web-interface-study"
+      ]
+    }
+  ]
+}

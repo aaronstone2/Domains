@@ -1,0 +1,490 @@
+{
+  "leaf": "market/theory-agentic-ux-patterns",
+  "extraction_notes": "Grounding: Extracted from 70+ peer-reviewed and practitioner sources across five major HCI/agent-UX dimensions: (1) Agent transparency measurement and architecture (TOROS scale, H-XAI framework, architectural decisions); (2) Safe interruption mechanisms (virtualization approach, InterruptBench); (3) UI-based governance (regulatory potential analysis); (4) Mental model formation and predictability (Stanford study on compact+available+aligned); (5) Mixed-initiative control handoff (Allen's foundational framework, contemporary empirical work). Key seminal references: Lee & See (trust calibration 2004), Shneiderman & Norman (direct manipulation/visibility), Pirolli (information foraging), Allen (mixed-initiative 1999), Parasuraman & Riley (automation misuse/disuse). Contemporary empirical studies: fine-grained reliance (2501), InterruptBench (2604), TOROS measurement (2408/2025), H-XAI (2508), architectural analysis (2604), user mental models (2501/2602), proactive timing (2602/2309), team dynamics (2024). Coverage: exhaustive across leaf scope (interruptibility, step-by-step logs, approve/veto, control handoff). Notable gaps: limited formal verification of transparency claims; limited rollback/state-restoration patterns; limited agent-specific UI testing frameworks from academic venues.",
+  "concepts": [
+    {
+      "concept": "Agent Transparency",
+      "field": "hci",
+      "definition": "A multidimensional construct encompassing explainability (why agent chose action), legibility (observability of state/intent), and predictability (user ability to forecast behavior); measured empirically via TOROS scale across three factors.",
+      "strength": "established-law",
+      "key_refs": [
+        "TOROS Scale (2025) - Nature Scientific Reports / arXiv 2408.16865",
+        "Measuring Transparency in Intelligent Robots (2025)"
+      ],
+      "implication": "MetroGraph wedge must expose agent state changes, action rationales, and next-step constraints through layered disclosure (overview+details), not buried in logs. Transparency becomes a regulatory lever for governance.",
+      "related_concepts": [
+        "Explainability",
+        "Legibility",
+        "Predictability",
+        "Mental Model Formation",
+        "Information Scent"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-measuring-transparency-robots-arxiv",
+        "market-theory-agentic-ux-patterns-measuring-transparency-robots-scientific-reports"
+      ]
+    },
+    {
+      "concept": "Legibility",
+      "field": "hci",
+      "definition": "Immediate perceivability of an agent's current state, capabilities, and constraints; a dimension of transparency that enables users to observe (without full explanation) what an agent is doing and why in real time.",
+      "strength": "empirical",
+      "key_refs": [
+        "TOROS Measurement Framework (Scheutz et al., HRI)",
+        "Measuring Transparency in Intelligent Robots (2025)"
+      ],
+      "implication": "MetroGraph must support real-time state visualization (e.g., which tool is active, what context is in scope, which approval gates are pending) so users can answer 'what is happening now' without cognitive effort.",
+      "related_concepts": [
+        "Agent Transparency",
+        "Predictability",
+        "Status Visibility",
+        "Progress Feedback"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-measuring-transparency-robots-arxiv",
+        "market-theory-agentic-ux-patterns-transparency-through-explanations-justifications-hri"
+      ]
+    },
+    {
+      "concept": "Predictability",
+      "field": "hci",
+      "definition": "User's ability to accurately forecast agent behavior in novel situations; depends on algorithms being available (inspectable), compact (comprehensible), and aligned (behavior matches stated intent); enables users to form accurate mental models.",
+      "strength": "empirical",
+      "key_refs": [
+        "People Can Accurately Predict Behavior of Complex Algorithms (Popowski et al., Stanford 2601.18966)",
+        "TOROS Scale (2025)"
+      ],
+      "implication": "MetroGraph's agent interactions must be compact (step decomposition, not opaque multi-step rollups), available (showing intermediate states), and aligned (agent action matches stated next step); users can then trust step-by-step logs as prediction anchors.",
+      "related_concepts": [
+        "Agent Transparency",
+        "Mental Model Formation",
+        "Appropriate Reliance",
+        "Compact Representation"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-predict-complex-algorithm-behavior",
+        "market-theory-agentic-ux-patterns-measuring-transparency-robots-arxiv"
+      ]
+    },
+    {
+      "concept": "Explainability",
+      "field": "hci",
+      "definition": "User-facing communication of *why* an agent took an action or reached a conclusion; spectrum from static contrastive explanations (why X not Y) to interactive hypothesis-driven query systems where users test counterfactuals and explore model behavior.",
+      "strength": "framework",
+      "key_refs": [
+        "Holistic Explainable AI (H-XAI) (Lakkaraju et al., 2508.05792)",
+        "Explaining Explanations in AI (2811.01439)",
+        "One Explanation Does Not Fit All (2001.09734)"
+      ],
+      "implication": "MetroGraph should shift from static 'reasoning logs' toward interactive explanation dashboards where users can query *why* an agent paused, what assumptions it made, and what would change its decision; enables both comprehension and appropriate skepticism.",
+      "related_concepts": [
+        "Agent Transparency",
+        "Interactive Explanation",
+        "Mental Model Formation",
+        "Contrastive Explanation"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-holistic-xai-extending-transparency",
+        "market-theory-agentic-ux-patterns-one-explanation-does-not-fit-interactive",
+        "market-theory-agentic-ux-patterns-explaining-explanations-ai"
+      ]
+    },
+    {
+      "concept": "Mental Model Formation",
+      "field": "cognitive-psych",
+      "definition": "User's internal representation of how an agent works; accurate mental models are formed when agent behavior is visible, consistent, and comprehensible; users with poor mental models misunderstand agent capabilities and make inappropriate reliance decisions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Users' Mental Models of Generative AI Chatbot Ecosystems (Huang et al., ACM IUI 2025, 2501.19211)",
+        "Building Appropriate Mental Models (Mao et al., ACM IUI)"
+      ],
+      "implication": "MetroGraph must surface agent architecture visibly (e.g., 'approval gates → tool invocation → result review') so users build correct models of what agent can/cannot do; reduce 'black box' perception that leads to both over-reliance and under-reliance.",
+      "related_concepts": [
+        "Predictability",
+        "Transparency",
+        "Appropriate Reliance",
+        "User Understanding"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-mental-models-genai-chatbot-ecosystems",
+        "market-theory-agentic-ux-patterns-building-appropriate-mental-models-chatbot"
+      ]
+    },
+    {
+      "concept": "Appropriate Reliance",
+      "field": "hci",
+      "definition": "Calibration of human trust in agent capabilities to actual system capability; users over-rely (ignore valid warnings) or under-rely (distrust sound recommendations) when transparency is poor; achieved through visibility of agent limitations, confidence signals, and audit trails.",
+      "strength": "established-law",
+      "key_refs": [
+        "Trust in Automation: Designing for Appropriate Reliance (Lee & See, 2004, Human Factors 46.1)",
+        "Fine-Grained Appropriate Reliance with Multi-Step Transparent Decision Workflow (2501.10909)"
+      ],
+      "implication": "MetroGraph's wedge directly addresses reliance calibration: step-by-step visibility + confidence ratings + explainability dashboards enable users to distinguish 'agent knows this well' from 'agent is extrapolating'.",
+      "related_concepts": [
+        "Trust Calibration",
+        "Transparency",
+        "Explainability",
+        "Confidence Signals"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-fine-grained-reliance-multistep-transparent",
+        "market-theory-agentic-ux-patterns-trust-transparency-explainable-ai"
+      ]
+    },
+    {
+      "concept": "Interruptibility",
+      "field": "hci",
+      "definition": "User's ability to halt agent execution mid-task and redirect it; requires safe interruption mechanisms (virtualization, sandbox execution, or state rollback) to prevent agent learning to disable kill switches or resist interruption.",
+      "strength": "framework",
+      "key_refs": [
+        "Enter the Matrix: Safely Interruptible Autonomous Systems via Virtualization (Riedl & Harrison, 1703.10284)",
+        "When Users Change Their Mind: Evaluating Interruptible Agents in Long-Horizon Web Navigation (arXiv 2604.00892)"
+      ],
+      "implication": "MetroGraph must support pause/resume patterns with clear state capture; users perceive 'interruption is safe and cheap' only if they see agent can be paused at any step, state preserved, and resumed without unexpected side effects.",
+      "related_concepts": [
+        "User Control",
+        "Safety",
+        "State Management",
+        "Task Resumption"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-safely-interruptible-autonomous-systems-virtualization",
+        "market-theory-agentic-ux-patterns-when-users-change-mind-interruption-agents"
+      ]
+    },
+    {
+      "concept": "Approval Gates & Veto Patterns",
+      "field": "interaction-design",
+      "definition": "UI mechanisms for user to accept/reject agent actions before execution (approval before) or after review (post-execution veto); examples: step-by-step confirmation, batch approval with rollback, confidence thresholds triggering human review.",
+      "strength": "framework",
+      "key_refs": [
+        "On the Regulatory Potential of User Interfaces for AI Agent Governance (Feng et al., 2512.00742)",
+        "4 UX Design Principles for Autonomous Multi-Agent AI Systems (Dibia, 2024)"
+      ],
+      "implication": "MetroGraph's core interaction pattern: every high-risk agent action (data modification, tool invocation) shows a clear decision point where user can see what agent proposes, why, and approve/reject/modify before commit.",
+      "related_concepts": [
+        "User Control",
+        "Agency",
+        "Transparency",
+        "Risk Management"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-regulatory-potential-ui-agent-governance",
+        "market-theory-agentic-ux-patterns-ux-design-principles-multiagent-systems"
+      ]
+    },
+    {
+      "concept": "Control Handoff",
+      "field": "interaction-design",
+      "definition": "Transition of initiative between human and agent; spectrum from agent-initiated proposals (user approves/rejects) to human-initiated requests (agent executes autonomously), with explicit visibility of who owns current task step.",
+      "strength": "framework",
+      "key_refs": [
+        "Mixed-initiative interaction (Allen, 1999, IEEE Intelligent Systems)",
+        "Adaptive Human-Agent Teaming (2504.10918)",
+        "Human-Centered Human-AI Collaboration (HCHAC) Framework (2505.22477)"
+      ],
+      "implication": "MetroGraph must visualize control flow: when user is directing (e.g., 'approve this action'), when agent is proposing (e.g., 'next step: call API'), when human review is required. Ambiguity about who owns the task creates disorientation.",
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "User Control",
+        "Agency",
+        "Collaboration Patterns"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-allen-mixed-initiative-interaction-1999",
+        "market-theory-agentic-ux-patterns-adaptive-human-agent-teaming",
+        "market-theory-agentic-ux-patterns-human-centered-collaboration-hchac"
+      ]
+    },
+    {
+      "concept": "Mixed-Initiative Interaction",
+      "field": "interaction-design",
+      "definition": "Collaboration model where both agent and human can initiate actions and propose next steps; requires clear negotiation of who has initiative, what actions each can take unilaterally, and when consensus is required.",
+      "strength": "established-law",
+      "key_refs": [
+        "Mixed-initiative interaction (Allen, 1999)",
+        "How Users Perceive Mixed-Initiative AI (Huang et al., ACM IUI 2025, 2602.01481)"
+      ],
+      "implication": "MetroGraph's interaction model should embrace mixed-initiative: agent can propose steps, user can modify/redirect, but system makes clear at each moment who is 'in control' and what actions are currently available.",
+      "related_concepts": [
+        "Control Handoff",
+        "User Agency",
+        "Transparency",
+        "Collaboration Patterns"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-allen-mixed-initiative-interaction-1999",
+        "market-theory-agentic-ux-patterns-how-users-perceive-mixed-initiative"
+      ]
+    },
+    {
+      "concept": "Step-by-Step Execution Visibility",
+      "field": "visualization",
+      "definition": "User interface displaying agent decomposition of a task into discrete, sequenced steps; shows current step, completion status, and intermediate results; enables user to verify agent reasoning and catch errors early.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fine-Grained Appropriate Reliance with Multi-Step Transparent Decision Workflow (2501.10909)",
+        "From Plan to Action: How Well Do Agents Follow the Plan? (2604.12147)",
+        "Anteater: Interactive Visualization of Program Execution (1907.02872)"
+      ],
+      "implication": "MetroGraph's primary UX pattern: step-by-step logs must be *interactive* (not passive), showing agent state transitions, tool outputs, and decision points; users should be able to drill into any step, see why agent chose it, and approve/reject before moving to next.",
+      "related_concepts": [
+        "Status Visibility",
+        "Progress Feedback",
+        "Transparency",
+        "Interactive Explanation"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-fine-grained-reliance-multistep-transparent",
+        "market-theory-agentic-ux-patterns-from-plan-to-action-compliance",
+        "market-theory-agentic-ux-patterns-anteater-program-execution-visualization"
+      ]
+    },
+    {
+      "concept": "Status Visibility & Progress Feedback",
+      "field": "visualization",
+      "definition": "Continuous communication of agent state (idle, planning, executing, waiting for approval) and task progress (steps completed, current bottleneck); prevents user disorientation and enables opportune intervention.",
+      "strength": "empirical",
+      "key_refs": [
+        "Designing a Dashboard for Transparency and Control of Conversational AI (2406.07882)",
+        "Visualizing Confidence in Delivery Robots (CHI 2025, 3706599.3719695)",
+        "The effects of cues on task interruption recovery (Nature SR 2025, 2025-09358)"
+      ],
+      "implication": "MetroGraph should surface agent state continuously: 'thinking', 'waiting for tool response', 'blocked on approval', 'complete'; also show confidence/error rates to help users assess reliability.",
+      "related_concepts": [
+        "Step-by-Step Visibility",
+        "Transparency",
+        "Legibility",
+        "User Control"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-dashboard-transparency-conversational-ai",
+        "market-theory-agentic-ux-patterns-visualizing-confidence-delivery-robots-chi",
+        "market-theory-agentic-ux-patterns-cues-task-interruption-recovery-multitasking"
+      ]
+    },
+    {
+      "concept": "Audit Trail & Action Accountability",
+      "field": "hci",
+      "definition": "Persistent, queryable record of agent actions (what did it do, when, why, what were inputs/outputs); supports post-hoc verification, debugging, compliance, and user trust building.",
+      "strength": "framework",
+      "key_refs": [
+        "On the Regulatory Potential of User Interfaces for AI Agent Governance (2512.00742)",
+        "Interpreting Agentic Systems: Beyond Model Explanations to System-Level Accountability (2601.17168)"
+      ],
+      "implication": "MetroGraph must log agent decisions with sufficient detail for replay/audit: what data was accessed, which rules applied, what confidence was assigned; enables regulatory compliance and user debugging.",
+      "related_concepts": [
+        "Transparency",
+        "Accountability",
+        "Agency",
+        "Trust Building"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-regulatory-potential-ui-agent-governance",
+        "market-theory-agentic-ux-patterns-interpreting-agentic-systems-accountability"
+      ]
+    },
+    {
+      "concept": "Task Resumption & Interruption Recovery",
+      "field": "cognitive-psych",
+      "definition": "User's ability to resume interrupted task efficiently; depends on interface cues that restore context (what was task state? what was I doing?), minimize working-memory load, and signal resumption-relevant information.",
+      "strength": "empirical",
+      "key_refs": [
+        "Resuming a Dynamic Task Following Long Interruptions (PMC8247645)",
+        "The effects of cues on task interruption recovery in multitasking (Nature SR 2025)",
+        "Examining cognitive processes underlying resumption costs (PMC10896823)"
+      ],
+      "implication": "When MetroGraph user pauses an agent mid-task, UI must preserve and re-surface: prior steps completed, current state of data being modified, next pending steps; reduces cognitive load on resumption.",
+      "related_concepts": [
+        "Interruptibility",
+        "Context Preservation",
+        "Status Visibility",
+        "User Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-resuming-dynamic-task-interruption-reconstruction",
+        "market-theory-agentic-ux-patterns-cues-task-interruption-recovery-multitasking",
+        "market-theory-agentic-ux-patterns-resumption-costs-interruption-working-memory"
+      ]
+    },
+    {
+      "concept": "Sensemaking Through Interactive Visualization",
+      "field": "visualization",
+      "definition": "Process of building understanding of complex agent behavior through exploratory interaction with visual representations; users query, filter, drill-down, and compare visualized agent state/decisions to form coherent mental models.",
+      "strength": "framework",
+      "key_refs": [
+        "Sensemaking with Interactive Data Visualization (ResearchGate)",
+        "On Sense Making and Knowledge Generation in Visual Analytics (MDPI 2813-2203)",
+        "Semantic Interaction for Narrative Map Sensemaking (2603.29651)"
+      ],
+      "implication": "MetroGraph's visualization should enable exploratory sensemaking: users can ask 'what decisions did agent make?', 'where did it get stuck?', 'what assumptions underlay step X?' through interactive, narrative-driven views, not static logs.",
+      "related_concepts": [
+        "Explainability",
+        "Visualization",
+        "Mental Model Formation",
+        "User Understanding"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-sensemaking-interactive-data-visualization",
+        "market-theory-agentic-ux-patterns-semantic-interaction-narrative-sensemaking",
+        "market-theory-agentic-ux-patterns-sense-making-knowledge-visual-analytics"
+      ]
+    },
+    {
+      "concept": "Confidence Signaling & Risk Calibration",
+      "field": "hci",
+      "definition": "Agent's communication of its own uncertainty (e.g., 'high confidence' vs. 'uncertain'); enables users to calibrate trust and apply scrutiny proportional to risk; reduces both complacency (ignoring agent output) and automation bias (over-trusting).",
+      "strength": "empirical",
+      "key_refs": [
+        "Overcoming Algorithm Aversion with Transparency (2508.03168)",
+        "Visualizing Confidence in Delivery Robots (CHI 2025)",
+        "Consumer Autonomy in Generative AI Services (NCBI 2024)"
+      ],
+      "implication": "MetroGraph should show agent confidence/uncertainty alongside each decision: e.g., 'found record (high confidence)' vs. 'inferred relationship (low confidence)'; helps users decide when to inspect closely or override.",
+      "related_concepts": [
+        "Transparency",
+        "Appropriate Reliance",
+        "User Trust",
+        "Risk Perception"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-overcoming-algorithm-aversion-transparency",
+        "market-theory-agentic-ux-patterns-visualizing-confidence-delivery-robots-chi",
+        "market-theory-agentic-ux-patterns-consumer-autonomy-generative-ai"
+      ]
+    },
+    {
+      "concept": "User Agency & Meaningful Control",
+      "field": "interaction-design",
+      "definition": "User's perception that they can meaningfully influence agent behavior and outcomes; requires actual control points (not illusory), visibility of available options, and system responsiveness to user input.",
+      "strength": "empirical",
+      "key_refs": [
+        "Consumer Autonomy in Generative AI Services (2024)",
+        "Human-controllable AI: Meaningful Human Control (2512.04334)",
+        "Exploring Collaboration Patterns through the Lens of Agency (2507.06000)"
+      ],
+      "implication": "MetroGraph must provide real decision points (not rubber-stamp approvals): users can reject agent proposals, request alternative approaches, and see their input reflected in subsequent steps; illusion of control breeds frustration.",
+      "related_concepts": [
+        "Control Handoff",
+        "Mixed-Initiative Interaction",
+        "User Autonomy",
+        "Trust"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-consumer-autonomy-generative-ai",
+        "market-theory-agentic-ux-patterns-human-controllable-ai-meaningful-control",
+        "market-theory-agentic-ux-patterns-collaboration-patterns-human-ai-agency"
+      ]
+    },
+    {
+      "concept": "Proactive Assistance & Interruption Timing",
+      "field": "hci",
+      "definition": "Agent's opportune intervention to offer suggestions or ask for direction; must be timed to user's cognitive state (not interrupt during focus) and accompanied by rationale; personalized to user preferences for autonomy vs. guidance.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sensing What Surveys Miss: Personalizing Proactive LLM Support (2602.00880)",
+        "Predicting Routine Object Usage for Proactive Robot Assistance (2309.06252)",
+        "After Personas: Learning Preference-Aligned Proactive Assistants (2602.04000)"
+      ],
+      "implication": "MetroGraph's proactive agent features (e.g., 'suggest next step?') should be personalized and deferential; not all users want autonomy, and interruption at wrong time creates cognitive load; observe user patterns to time interventions.",
+      "related_concepts": [
+        "User Agency",
+        "Trust Calibration",
+        "Collaboration Patterns",
+        "User Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-sensing-surveys-llm-support-timing",
+        "market-theory-agentic-ux-patterns-predict-object-usage-proactive-assistance",
+        "market-theory-agentic-ux-patterns-after-personas-preference-aligned-assistants"
+      ]
+    },
+    {
+      "concept": "Interactive Explanation & Counterfactual Exploration",
+      "field": "hci",
+      "definition": "User-driven explanation where user can ask 'why did agent choose X?', explore 'what if I changed this input?', and interactively test counterfactuals; shifts from static post-hoc explanations to hypothesis-driven inquiry.",
+      "strength": "framework",
+      "key_refs": [
+        "Holistic Explainable AI (H-XAI) (2508.05792)",
+        "X-SYS: Reference Architecture for Interactive Explanation Systems (2602.12748)",
+        "One Explanation Does Not Fit All (2001.09734)"
+      ],
+      "implication": "MetroGraph's explanation UI should be query-driven: user clicks on agent decision, sees rationale, can manipulate inputs to see how decision would change, and asks follow-up questions; reduces over-interpretation of static explanations.",
+      "related_concepts": [
+        "Explainability",
+        "Mental Model Formation",
+        "User Understanding",
+        "Sensemaking"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-holistic-xai-extending-transparency",
+        "market-theory-agentic-ux-patterns-xsys-interactive-explanation-architecture",
+        "market-theory-agentic-ux-patterns-one-explanation-does-not-fit-interactive"
+      ]
+    },
+    {
+      "concept": "Automation Complacency & Vigilance",
+      "field": "cognitive-psych",
+      "definition": "User tendency to over-rely on agent and disengage from monitoring; especially acute when agent is reliable; requires interface design that maintains user engagement (e.g., unpredictable alerts, periodic verification tasks, confidence signals).",
+      "strength": "established-law",
+      "key_refs": [
+        "Complacency and Bias in Human Use of Automation (Parasuraman & Manzey, 2010, Human Factors 52.3)",
+        "Humans and Automation: Misuse, Disuse, Abuse (Parasuraman & Riley, 1997)"
+      ],
+      "implication": "MetroGraph should design against complacency: periodic spot-checks where user verifies agent output, confidence thresholds that trigger review, and confidence *variability* (not monotonic high confidence) to maintain alertness.",
+      "related_concepts": [
+        "Appropriate Reliance",
+        "User Vigilance",
+        "Transparency",
+        "Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-parasuraman-manzey-complacency-2010",
+        "market-theory-agentic-ux-patterns-parasuraman-riley-humans-automation-1997"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation & Feedback",
+      "field": "hci",
+      "definition": "User interface principle enabling users to directly modify agent outputs/state with immediate visible feedback; foundational design principle (Shneiderman) where system visibility and reversibility reduce cognitive load.",
+      "strength": "established-law",
+      "key_refs": [
+        "Direct manipulation for comprehensible, predictable and controllable user interfaces (Shneiderman, ACM IUI 1997/1982)",
+        "The Design of Everyday Things (Norman, 2013)"
+      ],
+      "implication": "MetroGraph should enable users to directly edit agent-proposed steps, modify data before agent uses it, and see immediate consequences; avoid modeless interactions or dialog boxes that hide state.",
+      "related_concepts": [
+        "User Control",
+        "Feedback",
+        "Visibility",
+        "Reversibility"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-shneiderman-direct-manipulation-iui",
+        "market-theory-agentic-ux-patterns-shneiderman-direct-manipulation-umd",
+        "market-theory-agentic-ux-patterns-norman-design-everyday-things"
+      ]
+    },
+    {
+      "concept": "Information Scent & Affordance Visibility",
+      "field": "information-foraging",
+      "definition": "Perceptual cues signaling what actions are available (affordances) and where relevant information can be found (information scent); users navigate exploratory tasks more efficiently when affordances are visible and information scent guides them.",
+      "strength": "established-law",
+      "key_refs": [
+        "Information Foraging Theory (Pirolli, 2007)",
+        "Information Foraging: How People Navigate on the Web (Pirolli & Card, UIST 1999)"
+      ],
+      "implication": "MetroGraph's agent UI must make affordances obvious (e.g., 'edit this step', 'inspect tool output', 'approve all remaining steps') and provide information scent guiding users to next-relevant action.",
+      "related_concepts": [
+        "User Agency",
+        "Visibility",
+        "Interaction Design",
+        "Exploratory Search"
+      ],
+      "source_ids": [
+        "market-theory-agentic-ux-patterns-pirolli-information-foraging-theory",
+        "market-theory-agentic-ux-patterns-pirolli-card-information-scent"
+      ]
+    }
+  ]
+}

@@ -88,5 +88,60 @@ pipeline's `fetch()`/`extract()` and serializes JSONL staging in the main thread
 `main` schema). Query: `fts_market_documents.match_bm25(source_id, '<query>')`. Join docs↔sources on
 `documents.source_id = sources.id`.
 
-**Next:** Phase C (extract → entity tables) in dependency waves — Wave 1: `companies` (freeze company.id),
-`market-landscape` (freeze feature taxonomy), all `theory-*` (theory_concepts), `market-trends`.
+**Next:** Phase C (extract → entity tables) in dependency waves.
+
+## Session 3 — 2026-06-25 — Phase C extraction (Wave 1 in progress) — PARTIAL
+
+Validate-one-then-fan-out (Aaron's directive). Extension tables load via the `duckdb` CLI
+(`read_json_auto` + `INSERT BY NAME`), NOT the base `ingest load` (which only does sources/documents).
+
+- **`companies` (spine) — DONE + FROZEN.** Mapped the Session-0 registry → `market.companies`: **183
+  companies** (182 + MetroGraph self-row `market.company.us`, is_self=TRUE) across 11 archetype categories.
+  **`company.id = market.company.<slug>` FROZEN** (contract C1). funding_rounds/people/per-company
+  source_ids = later enrichment (c_extract: partial).
+- **theory cluster (29 leaves) — DONE.** `market-phaseC-theory` workflow (29 agents, 1.5M tokens): each
+  agent read its `extract/sources.json` + pulled doc text via `duckdb -readonly`, extracted
+  `theory_concepts`. Merged/deduped by `market.theory.<slug>` (879 raw → **773 concepts**), loaded.
+  Fields: hci 191 · interaction-design 182 · visualization 149 · cognitive-psych 142 · graph-theory 44 · … .
+  1,174/1,521 citations resolve to ingested sources (~77%). All 29 `c_extract: done`.
+  - Bug fixed: 10 agents returned `leaf` as `market/<name>` (prefix) → merge script now strips it; removed
+    spurious `domains/market/market/*` dirs created by the first run.
+
+## Session 4 — 2026-06-26 — Phase C (Waves 1-4) + Phase D + Phase E + the paper — DONE
+
+Drove the rest on full autopilot ("don't stop till done"). Each phase = a workflow returning structured
+rows; deterministic load scripts merge into DuckDB (extension tables via `read_json_auto` + `INSERT BY NAME`).
+
+**Phase C (remaining waves):**
+- `market-landscape` — FROZE the feature taxonomy (contract C3): **110 features / 20 capability areas**
+  (2-proposer + synthesizer panel).
+- competitors (24 leaves) — **187 products**, the **1,168-cell product×feature differentiation matrix**
+  (A-F quality + hci_cost), **176 competitor roles**. 3 leaves hit the StructuredOutput size cap → re-run
+  with tighter feature caps. **+36 companies discovered (continuous discovery C1): 183 → 213.**
+- `customer-segments` (FROZE segment.id) — 12 segments, 12 personas, 40 jobs/pains/gains; `market-sizing` —
+  66 market_metrics, 33 reports.
+- `pricing` — 22 models / 45 tiers; `partners-integrations` — 28 partners (21 relevant_to_us).
+- `value-prop` — MetroGraph self-row (`market.product.us`) + **35 self product_features** (A-grade wedge),
+  value-map (jpg.our_relief), relationships; `business-model` — **9/9 BMC blocks**.
+- `ux-teardown-*` (10 leaves) — **85 ux_screens, 50 ux_flows, 99 ux_patterns (79 antipatterns)** — the
+  quantified "endless panes / flight-to-chat" evidence (e.g. n8n advanced-workflow flow = 52 clicks, F hci_cost).
+- Validated the algebra: whitespace + differentiation queries return real strategy.
+
+**Phase D — gold claims (adversarial):** D-1 generated **161 decision-grade claims** (8 cluster generators);
+D-2 = **63 skeptics / 3.5M tokens / 2,549 corpus queries** refuting each against the ingested corpus.
+Merged by agreement: **80 supported · 31 disputed · 49 refuted · 1 equivalent** (81 ≥ 0.66 agreement). The
+verifier is calibrated strict (demands corpus-quotable evidence), so interpretive/strategic claims skew
+disputed/refuted even when sound — recorded honestly, not dropped.
+
+**Phase E — relationships:** derived **757 typed edges** (evidenced_by 193, has_product 187, competes_with
+176, grounded_in 143, relieves 42, belongs_to_segment 12, substitute_for 4).
+
+**The paper — `market-synthesis/extract/paper.md`:** 10-section writer panel → assembled to **~22,560 words /
+1,443 lines**: exec thesis, market+sizing, HCI problem+theory, competitive landscape, UX evidence, whitespace
++differentiation, ICP+VPC, business model+pricing, GTM, risks — plus Methodology + a full **161-claim ledger**
+appendix. Made **self-auditing**: every in-body `[C:slug]` is annotated with its verdict+agreement glyph
+(✓supported / ~disputed / ✗refuted) + a citation-integrity legend, so no claim is overstated.
+
+**The corpus is complete and queryable** via `duckdb -readonly _db/knowledge.duckdb` and
+`domains/market/queries/insights.sql`. Floors, not ceilings — every leaf can be deepened further; companies
+keep growing via continuous discovery; blocked sources can be re-fetched (Playwright/archive.org).

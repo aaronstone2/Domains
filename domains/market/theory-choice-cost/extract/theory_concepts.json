@@ -1,0 +1,595 @@
+{
+  "leaf": "market/theory-choice-cost",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Hick-Hyman Law",
+      "field": "hci",
+      "definition": "Empirical law establishing a logarithmic relationship between the number of choice alternatives and human reaction time to select one: RT = b·log2(n+1), where reaction time increases predictably as choice complexity grows. Foundational to understanding cognitive costs of decision-making.",
+      "strength": "established-law",
+      "key_refs": [
+        "Hick 1952 / On the Rate of Gain of Information",
+        "Hyman 1953 / Stimulus Information as a Determinant of Reaction Time",
+        "Proctor & Schneider 2018 / Hick's Law for Choice Reaction Time: A Review"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-hick-hyman-law-original-1952",
+        "market-theory-choice-cost-hicks-law-review-proctor-schneider-2018",
+        "market-theory-choice-cost-hick-law-design-application-ixdf"
+      ],
+      "implication": "MetroGraph must minimize visual choice density in workflows; graph node/edge density directly impacts user reaction time and decision cost. Sequential or filtered presentation preferable to simultaneous all-options display.",
+      "related_concepts": [
+        "Miller's Law",
+        "Cognitive Load Theory",
+        "Menu Breadth-Depth Tradeoff",
+        "Choice Overload"
+      ]
+    },
+    {
+      "concept": "Miller's Law / Magical Number 7±2",
+      "field": "cognitive-psych",
+      "definition": "Empirical finding that human absolute judgment and immediate short-term memory span are limited to approximately 7±2 distinct items or chunks. While Miller acknowledged 7 is not magical, the principle constrains how many unrelated options humans can consciously compare.",
+      "strength": "empirical",
+      "key_refs": [
+        "Miller 1956 / The Magical Number Seven, Plus or Minus Two: Some Limits on Our Capacity for Processing Information"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-miller-magical-number-seven-1956"
+      ],
+      "implication": "MetroGraph node/menu designs should present no more than 5-7 primary options per view to avoid exceeding working memory span. Exceeding this ceiling increases cognitive load and choice difficulty exponentially.",
+      "related_concepts": [
+        "Cowan's Working Memory Refinement",
+        "Chunking",
+        "Cognitive Load Theory"
+      ]
+    },
+    {
+      "concept": "Cowan's Working Memory Refinement",
+      "field": "cognitive-psych",
+      "definition": "Modern refinement of Miller's law, establishing working memory capacity as 3-5 items (not 7) when controlling for rehearsal and consolidation effects. More conservative estimate of genuine simultaneous comparison capacity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cowan 2001 / The Magical Number 4 in Short-Term Memory: A Reconsideration of Mental Storage Capacity"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-cowan-magical-number-four-2001"
+      ],
+      "implication": "For database query tools, MetroGraph should show maximum 4-5 query filter options simultaneously; beyond this cognitive bottleneck users resort to heuristics/guessing rather than rational comparison.",
+      "related_concepts": [
+        "Miller's Law",
+        "Chunking",
+        "Attention"
+      ]
+    },
+    {
+      "concept": "Chunking",
+      "field": "cognitive-psych",
+      "definition": "Memory organization strategy where meaningfully related items are grouped into single cognitive units (chunks). Allows encoding richer information within working memory limits; chunk capacity varies by domain expertise and prior knowledge.",
+      "strength": "empirical",
+      "key_refs": [
+        "Miller 1956 / The Magical Number Seven, Plus or Minus Two",
+        "Chase & Simon 1973 / Perception in Chess"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-miller-magical-number-seven-1956"
+      ],
+      "implication": "MetroGraph should visually group related database fields/nodes into coherent chunks (taxonomies, node types, query categories) so expert users can treat related options as single units, expanding effective working memory.",
+      "related_concepts": [
+        "Miller's Law",
+        "Cowan's Working Memory Refinement",
+        "Information Architecture",
+        "Choice Architecture"
+      ]
+    },
+    {
+      "concept": "Paradox of Choice",
+      "field": "cognitive-psych",
+      "definition": "Framework introduced by Barry Schwartz that increasing choice variety can paradoxically reduce consumer satisfaction, increase regret/depression, and lower intrinsic motivation. Beyond a modest optimum (6-9 items), additional options create welfare loss via decision difficulty, regret, and adaptation pressure.",
+      "strength": "empirical",
+      "key_refs": [
+        "Schwartz 2004 / The Paradox of Choice: Why More Is Less",
+        "Iyengar & Lepper 2000 / When Choice is Demotivating: Can One Desire Too Much of a Good Thing?"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-schwartz-paradox-of-choice-book-2004",
+        "market-theory-choice-cost-iyengar-lepper-jam-study-2000"
+      ],
+      "implication": "Core wedge insight: MetroGraph's competitive advantage is NOT to show all 500+ database columns/nodes/edges simultaneously (like flat RAG/spreadsheet UIs). Must surface only high-scent, pre-filtered options matching query intent; excess visibility creates choice paralysis.",
+      "related_concepts": [
+        "Choice Overload",
+        "Decision Fatigue",
+        "Maximizers vs Satisficers",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Iyengar-Lepper Jam Study",
+      "field": "cognitive-psych",
+      "definition": "Landmark field experiment showing 24-choice jam display reduced purchase likelihood and post-choice satisfaction compared to 6-choice display. Demonstrates choice overload empirically in real consumer context; subsequent satisfaction with selection was higher when options were limited.",
+      "strength": "empirical",
+      "key_refs": [
+        "Iyengar & Lepper 2000 / When Choice is Demotivating: Can One Desire Too Much of a Good Thing?"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-iyengar-lepper-jam-study-2000"
+      ],
+      "implication": "Direct parallel to MetroGraph: showing 24 query operators/columns creates friction and lower task completion vs. showing 6 high-relevance suggestions. Better to filter aggressively than to maximize choice visibility.",
+      "related_concepts": [
+        "Choice Overload",
+        "Paradox of Choice",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Maximizers vs Satisficers",
+      "field": "cognitive-psych",
+      "definition": "Personality dimension distinguishing people who pursue optimization (maximizers) from those who accept 'good enough' solutions (satisficers). Maximizers experience higher regret, depression, and dissatisfaction with outcomes despite objectively similar choice quality; they are more sensitive to choice set size.",
+      "strength": "empirical",
+      "key_refs": [
+        "Schwartz et al. 2002 / Maximizing Versus Satisficing: Happiness Is a Matter of Choice",
+        "Schwartz 2004 / The Paradox of Choice"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-schwartz-maximizers-satisficers-research",
+        "market-theory-choice-cost-schwartz-paradox-of-choice-book-2004"
+      ],
+      "implication": "MetroGraph UI must support both personas: satisficers benefit from quick defaults/suggestions; maximizers need visibility into why certain options were filtered. Neither persona benefits from raw choice explosion (20+ column/node options).",
+      "related_concepts": [
+        "Satisficing",
+        "Decision Fatigue",
+        "Regret Aversion",
+        "Bounded Rationality"
+      ]
+    },
+    {
+      "concept": "Choice Overload",
+      "field": "cognitive-psych",
+      "definition": "Situational phenomenon where the number of available options exceeds cognitive capacity, resulting in reduced decision confidence, increased regret, lower satisfaction, and task abandonment. Meta-analyses show effect is contingent on choice set complexity, decision uncertainty, and goal clarity—not inevitable.",
+      "strength": "framework",
+      "key_refs": [
+        "Scheibehenne, Greifeneder & Hertwig 2010 / Can There Ever Be Too Many Options? A Meta-Analytic Review of Choice Overload",
+        "Chernev 2015 / Choice Overload: A Conceptual Review and Meta-Analysis"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-scheibehenne-greifeneder-meta-analysis-2010",
+        "market-theory-choice-cost-choice-overload-review-conceptual-2015"
+      ],
+      "implication": "MetroGraph must implement aggressive relevance filtering (high information scent) to keep choice sets within 4-9 items. Overload occurs not just from sheer number but from unclear relevance—semantic filtering is as important as quantity filtering.",
+      "related_concepts": [
+        "Paradox of Choice",
+        "Information Overload",
+        "Information Scent",
+        "Decision Fatigue"
+      ]
+    },
+    {
+      "concept": "Decision Fatigue",
+      "field": "cognitive-psych",
+      "definition": "Declining quality of decision-making after prolonged or intensive decision-making. Rooted in ego-depletion theory: decision-making consumes limited cognitive self-control resources; depletion leads to reduced deliberation, choice of defaults, and choice avoidance. Recent frameworks emphasize effort, motivation, and task complexity as additional moderators.",
+      "strength": "empirical",
+      "key_refs": [
+        "Baumeister 1998 / Ego Depletion and the Strength Model of Self-Control",
+        "Polman & Vohs 2016 / Decision Fatigue, Choosing for Others, and Self-Construal",
+        "Frontiers in Cognition 2025 / An Integrative Review on Unveiling the Causes and Effects of Decision Fatigue"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-baumeister-ego-depletion-1998",
+        "market-theory-choice-cost-polman-vohs-decision-fatigue-2016",
+        "market-theory-choice-cost-decision-fatigue-integrative-review-2025"
+      ],
+      "implication": "For AI-assisted workflows (agents, RAG), MetroGraph must reduce decision frequency and cognitive cost per decision. Rather than presenting 20 database columns per query, suggest 3-5 pre-ranked columns; this preserves user deliberation capacity for higher-stakes schema design decisions.",
+      "related_concepts": [
+        "Ego Depletion",
+        "Choice Overload",
+        "Bounded Rationality",
+        "Satisficing"
+      ]
+    },
+    {
+      "concept": "Ego Depletion",
+      "field": "cognitive-psych",
+      "definition": "Resource-based model of self-control positing that exerting willpower/decision-making depletes a limited cognitive resource (glucose, attention, motivation). Subsequent decisions show reduced quality, impulsivity, and procrastination until resources replenish (rest, food, time).",
+      "strength": "empirical",
+      "key_refs": [
+        "Baumeister et al. 1998 / Ego Depletion: Is the Active Self a Limited Resource?"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-baumeister-ego-depletion-1998"
+      ],
+      "implication": "MetroGraph should minimize decision micro-choices (modal dialogs, confirmation prompts, choice hierarchies) that deplete user attention. Batch-consolidate related decisions into single coherent choice points.",
+      "related_concepts": [
+        "Decision Fatigue",
+        "Bounded Rationality",
+        "Cognitive Load Theory"
+      ]
+    },
+    {
+      "concept": "Bounded Rationality",
+      "field": "cognitive-psych",
+      "definition": "Theory by Herbert Simon that human decision-makers are rational within constraints: incomplete information, finite cognitive capacity, and limited time. Humans satisfice (choose good-enough) rather than maximize, and use heuristics to manage complexity.",
+      "strength": "framework",
+      "key_refs": [
+        "Simon 1955 / A Behavioral Model of Rational Choice",
+        "Simon 1997 / Administrative Behavior (3rd edition)",
+        "Stanford Encyclopedia of Philosophy / Bounded Rationality"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-simon-bounded-rationality-satisficing"
+      ],
+      "implication": "MetroGraph design must abandon classical 'show everything, user chooses' paradigm. Instead, respect bounded rationality by pre-filtering, ranking, and recommending—assist users in satisficing rather than forcing maximization search.",
+      "related_concepts": [
+        "Satisficing",
+        "Heuristics and Biases",
+        "Prospect Theory"
+      ]
+    },
+    {
+      "concept": "Satisficing",
+      "field": "cognitive-psych",
+      "definition": "Decision strategy of accepting the first option that meets a threshold of acceptability, rather than searching for the global optimum. Satisficers set an aspiration level and choose the first alternative exceeding it; normative for bounded-rational agents under time/complexity constraints.",
+      "strength": "framework",
+      "key_refs": [
+        "Simon 1955 / A Behavioral Model of Rational Choice",
+        "Schwartz et al. 2002 / Maximizing Versus Satisficing: Happiness Is a Matter of Choice"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-simon-bounded-rationality-satisficing",
+        "market-theory-choice-cost-schwartz-maximizers-satisficers-research"
+      ],
+      "implication": "MetroGraph should design for satisficing workflows: show ranked suggestions where users can quickly approve top option without excessive deliberation. Hide 'show all 500 columns' behind expert mode; default to curated, high-confidence suggestions.",
+      "related_concepts": [
+        "Bounded Rationality",
+        "Maximizers vs Satisficers",
+        "Information Scent",
+        "Choice Architecture"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Framework by John Sweller distinguishing intrinsic load (inherent task complexity), extraneous load (unnecessary presentation complexity), and germane load (beneficial cognitive effort toward learning/task success). Optimal design minimizes extraneous, manages intrinsic, and focuses germane load.",
+      "strength": "framework",
+      "key_refs": [
+        "Sweller 1988 / Cognitive Load During Problem Solving: Effects on Learning",
+        "Sweller 2011 / Cognitive Load Theory and Educational Research",
+        "ACM 2022 / Cognitive Load Theory in Computing Education Research: A Review"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-sweller-cognitive-load-theory"
+      ],
+      "implication": "MetroGraph interface should minimize extraneous load (visual clutter, unnecessary options, confusing hierarchy) so users' cognitive effort focuses on germane load (understanding query semantics, schema relationships). Dense node visualizations violate this principle.",
+      "related_concepts": [
+        "Hick-Hyman Law",
+        "Working Memory",
+        "Information Overload",
+        "Visual Complexity"
+      ]
+    },
+    {
+      "concept": "Heuristics and Biases",
+      "field": "cognitive-psych",
+      "definition": "Foundational framework by Kahneman and Tversky showing humans systematically deviate from rational choice due to mental shortcuts (heuristics). Common biases include availability, anchoring, representativeness, and status quo bias. Under cognitive load, bias reliance increases.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kahneman & Tversky 1974 / Judgment under Uncertainty: Heuristics and Biases",
+        "Tversky & Kahneman 1974 / Judgment under Uncertainty: Heuristics and Biases"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-kahneman-tversky-heuristics-biases-1974"
+      ],
+      "implication": "MetroGraph must design interfaces that steer users toward sound heuristics (e.g., 'use the suggested columns') rather than exploitable ones (e.g., 'first option wins due to position bias'). Ranking options by relevance leverages availability heuristic constructively.",
+      "related_concepts": [
+        "Prospect Theory",
+        "Position Bias",
+        "Bounded Rationality"
+      ]
+    },
+    {
+      "concept": "Prospect Theory",
+      "field": "cognitive-psych",
+      "definition": "Decision theory by Kahneman and Tversky showing humans evaluate choices relative to a reference point, exhibit loss aversion (losses loom larger than equivalent gains), and are influenced by how choices are framed. Explains systematic deviations from expected-utility maximization.",
+      "strength": "empirical",
+      "key_refs": [
+        "Tversky & Kahneman 1979 / Prospect Theory: An Analysis of Decision under Risk"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-tversky-kahneman-prospect-theory-1979"
+      ],
+      "implication": "In MetroGraph, present query suggestions as gains ('add these relevant columns') not losses ('columns hidden from view'). Frame default suggestions as reference point (status quo) so users perceive deviating from suggestions as incurring loss.",
+      "related_concepts": [
+        "Heuristics and Biases",
+        "Regret Aversion",
+        "Anchoring Effect"
+      ]
+    },
+    {
+      "concept": "Regret Aversion",
+      "field": "cognitive-psych",
+      "definition": "Tendency to avoid choices that might lead to post-hoc regret ('I could have chosen differently'). Maximizers are particularly susceptible; regret increases with choice set size, social comparison opportunities, and perceived reversibility. Leads to choice paralysis and post-choice dissatisfaction.",
+      "strength": "empirical",
+      "key_refs": [
+        "Schwartz et al. 2002 / Maximizing Versus Satisficing: Happiness Is a Matter of Choice",
+        "Beattie et al. 1994 / The Psychology of Risky Decisions"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-schwartz-maximizers-satisficers-research"
+      ],
+      "implication": "MetroGraph should make query decisions reversible (easy to add/remove columns) and reduce post-decision comparison anxiety by clearly showing why specific options were surfaced. Reduces regret pressure that drives indecision.",
+      "related_concepts": [
+        "Maximizers vs Satisficers",
+        "Decision Fatigue",
+        "Choice Architecture"
+      ]
+    },
+    {
+      "concept": "Choice Architecture",
+      "field": "hci",
+      "definition": "Framework by Thaler and Sunstein for designing choice environments to steer decisions toward better outcomes without restricting freedom (libertarian paternalism). Tactics include default options, option ordering, framing, and presentation format. Recognizes choice context shapes outcome as much as preferences.",
+      "strength": "framework",
+      "key_refs": [
+        "Thaler & Sunstein 2008 / Nudge: Improving Decisions About Health, Wealth, and Happiness",
+        "Thaler & Sunstein 2003 / Choice Architecture (working paper)"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-thaler-sunstein-nudge-choice-architecture",
+        "market-theory-choice-cost-thaler-sunstein-nudge-book-2008"
+      ],
+      "implication": "MetroGraph IS an application of choice architecture: rank columns by relevance (default effect), group nodes into semantic clusters (framing), show top-5 suggestions first (ordering). This steers users toward sound query designs without hiding alternatives.",
+      "related_concepts": [
+        "Satisficing",
+        "Bounded Rationality",
+        "Information Scent",
+        "Progressive Disclosure"
+      ]
+    },
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "Concept by Pirolli that users evaluate navigation/choice paths by perceived relevance ('scent') of available cues and links. High-scent options appear likely to lead to desired information; low-scent options are avoided. Applies to column/node selection: users gravitate toward visually scented (semantically matched) options.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging",
+        "Pirolli & Fu 2003 / Sniff: A Fish-Eye View of Web History"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-pirolli-information-foraging-theory",
+        "market-theory-choice-cost-pirolli-information-scent-navigation"
+      ],
+      "implication": "MetroGraph's core competitive advantage: surface high-scent columns/nodes (semantically related to query intent) while burying low-scent ones. Label suggestions clearly ('customer_id' scents toward 'customer' queries). This mimics natural information foraging and reduces choice paralysis.",
+      "related_concepts": [
+        "Choice Overload",
+        "Bounded Rationality",
+        "Satisficing",
+        "Mental Models"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation",
+      "field": "hci",
+      "definition": "Foundational HCI principle by Ben Shneiderman: interfaces should provide immediate visibility of system state, rapid reversibility of actions, and continuous representation of objects. Reduces cognitive distance between mental model and system model.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Shneiderman 1998 / Designing the User Interface (3rd edition)"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-shneiderman-direct-manipulation-interface-1983"
+      ],
+      "implication": "MetroGraph nodes and edges should be directly selectable/draggable; hovering should show preview of column relationships; adding/removing columns should be immediate, not modal. Reduces cognitive gap between 'thinking about query' and 'building query'.",
+      "related_concepts": [
+        "Mental Models",
+        "Cognitive Load Theory",
+        "Interaction Design"
+      ]
+    },
+    {
+      "concept": "Mental Models",
+      "field": "hci",
+      "definition": "Cognitive framework (Norman) where users hold internal representations of how systems work. Design success depends on alignment between the user's mental model and the system's actual model. Misalignment causes errors, frustration, and cognitive load.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "Norman 1986 / Cognitive Engineering"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-norman-mental-models-hci"
+      ],
+      "implication": "MetroGraph should mirror users' mental models of databases (tables as entities, columns as attributes, relationships as edges). Metro-map metaphor leverages existing mental model of transit networks (nodes=stations, edges=routes). Avoids forcing users to learn unfamiliar abstraction.",
+      "related_concepts": [
+        "Information Architecture",
+        "Direct Manipulation",
+        "Semantic Clarity"
+      ]
+    },
+    {
+      "concept": "Menu Breadth-Depth Tradeoff",
+      "field": "hci",
+      "definition": "Design principle addressing hierarchical menu structures: broad (many top-level items) vs. deep (many nesting levels). Optimal balance is typically shallow-broad (5-9 items per level, max 3 levels); deep menus increase navigation cost and memory load; broad menus exceed working memory.",
+      "strength": "empirical",
+      "key_refs": [
+        "Jacko & Salvendy 2001 / Hierarchical Menu Design: Breadth, Depth, and Task Complexity",
+        "Norman 1991 / The Invisible Computer"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-breadth-depth-menu-design-tradeoff",
+        "market-theory-choice-cost-menu-design-breadth-depth-jacko-salvendy"
+      ],
+      "implication": "MetroGraph query builder should show ~7 top-level column categories (breadth) rather than 100 columns flat or 3-level nesting (depth). E.g., 'Customer', 'Orders', 'Products' as first-level; users drill into 5-9 columns per category.",
+      "related_concepts": [
+        "Miller's Law",
+        "Cognitive Load Theory",
+        "Information Architecture"
+      ]
+    },
+    {
+      "concept": "Progressive Disclosure",
+      "field": "hci",
+      "definition": "UI pattern that reveals information/options gradually based on user interest or task progression. Hides advanced options initially, showing only essential choices; expert users can 'unlock' deeper options. Reduces perceived complexity while preserving power-user accessibility.",
+      "strength": "framework",
+      "key_refs": [
+        "UXPin 2023 / What Is Progressive Disclosure in UX?",
+        "Nielsen & Norman Group / Best Practices in Progressive Disclosure"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-progressive-disclosure-ui-pattern"
+      ],
+      "implication": "MetroGraph can implement progressive disclosure: show top-5 suggested columns by default; offer 'show all columns' toggle for power users; advanced filters (join conditions, aggregations) in secondary panel. Balances novice simplicity with expert completeness.",
+      "related_concepts": [
+        "Choice Architecture",
+        "Cognitive Load Theory",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Visual Complexity",
+      "field": "visualization",
+      "definition": "Measurable property of interface/visualization design: high visual complexity results from dense information, low contrast, intricate patterns, and multiple visual elements. Empirically correlates with reduced user satisfaction, longer task completion, and increased errors; aesthetic judgment often inversely related to complexity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Deng & Poole 2010 / Affecting Student Attitudes and Perceptions Using Web-Based Learning Systems",
+        "Tuch et al. 2012 / Visual Complexity and Aesthetic Perception of Web Pages"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-visual-complexity-aesthetics-measurement"
+      ],
+      "implication": "MetroGraph must avoid 'hairball' graph visualizations (common failure of agent/workflow tools). Limit visible nodes to 8-12 and use layout algorithms (force-directed, layered) to reduce edge crossings. High complexity = high choice cost; visual simplicity is prerequisite for low-friction decision-making.",
+      "related_concepts": [
+        "Hick-Hyman Law",
+        "Cognitive Load Theory",
+        "Information Overload"
+      ]
+    },
+    {
+      "concept": "Visual Saliency",
+      "field": "visualization",
+      "definition": "Degree to which an interface element stands out to human visual attention based on contrast, size, color, motion. Salient elements are noticed immediately; non-salient elements are overlooked. Shapes user scanning patterns and perceived information hierarchy.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bylinskii et al. 2015 / Learning Visual Importance for Graphic Designs and Data Visualizations"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-visual-saliency-mobile-ui-attention"
+      ],
+      "implication": "In MetroGraph, high-scent columns should be visually salient (bold, centered, high contrast); low-relevance columns should be muted. Color/size encoding of node relevance guides attention to highest-value choices without requiring conscious search.",
+      "related_concepts": [
+        "Information Scent",
+        "Choice Architecture",
+        "Visual Complexity"
+      ]
+    },
+    {
+      "concept": "Position Bias / Presentation Bias",
+      "field": "hci",
+      "definition": "Empirical finding that users systematically prefer earlier/higher options in ranked lists or search results, regardless of objective quality. Position alone influences perceived quality and choice likelihood; top-ranked items receive disproportionate selection.",
+      "strength": "empirical",
+      "key_refs": [
+        "Joachims et al. 2005 / Accurately Interpreting Clickthrough Data as Implicit Feedback",
+        "Lewandowski et al. 2007 / Presentation Bias is Significant in Determining User Preference for Search Results"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-presentation-bias-search-results-ordering"
+      ],
+      "implication": "MetroGraph's ranking algorithm must ensure top suggestions are genuinely high-scent, not arbitrary. Misranking (placing low-relevance columns first) will drive users toward poor query choices. Ranking quality is load-bearing for avoiding choice errors.",
+      "related_concepts": [
+        "Heuristics and Biases",
+        "Choice Architecture",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Sequential vs Simultaneous Option Presentation",
+      "field": "hci",
+      "definition": "Experimental finding that presenting options sequentially (pairwise or one-at-a-time) leads to more rational, committed decisions compared to simultaneous display of all options. Sequential presentation reduces regret, increases satisfaction, and improves decision quality.",
+      "strength": "empirical",
+      "key_refs": [
+        "Das et al. 2025 / Pairwise Beats All-at-Once: Behavioral Gains from Sequential Choice Presentation",
+        "Poole & Dey 2010 / Eternal Quest for the Best: Sequential (vs. Simultaneous) Option Presentation Undermines Choice Commitment"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-sequential-vs-pairwise-choice-das-2025",
+        "market-theory-choice-cost-sequential-simultaneous-option-presentation"
+      ],
+      "implication": "MetroGraph could implement sequential suggestion: 'Add customer_id? Yes/No' → 'Add customer_name? Yes/No'. This outperforms simultaneous 'Select all columns:' checkbox grids. Sequential reduces choice deliberation cost and increases user confidence in queries.",
+      "related_concepts": [
+        "Choice Overload",
+        "Decision Fatigue",
+        "Choice Architecture"
+      ]
+    },
+    {
+      "concept": "Information Overload",
+      "field": "cognitive-psych",
+      "definition": "Condition where information quantity exceeds processing capacity; results in reduced comprehension, slower response, increased errors, and task abandonment. Related to but distinct from choice overload—overload can occur via visual density, data volume, or option multiplicity.",
+      "strength": "framework",
+      "key_refs": [
+        "Sweller 1988 / Cognitive Load During Problem Solving: Effects on Learning",
+        "Wurman 2001 / Information Anxiety"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-cognitive-load-theory"
+      ],
+      "implication": "MetroGraph's filtering/ranking system prevents information overload by showing only high-relevance results. Avoid displaying all 500 columns, all 200 tables, all 10,000 edges simultaneously. Controlled visibility = controlled information load.",
+      "related_concepts": [
+        "Choice Overload",
+        "Cognitive Load Theory",
+        "Visual Complexity"
+      ]
+    },
+    {
+      "concept": "Interface Bloat / Feature Creep",
+      "field": "hci",
+      "definition": "Accumulation of features, options, and interface elements over time, often resulting in cognitive overload, reduced learnability, and poor user experience. Users struggle to find relevant features among clutter; common in mature software (e.g., Microsoft Word).",
+      "strength": "framework",
+      "key_refs": [
+        "Wikipedia / Interface Bloat"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-interface-bloat-feature-creep-cognitive-load"
+      ],
+      "implication": "MetroGraph must resist temptation to add 'one more feature' to query builder (UDFs, temporal queries, fuzzy matching). Every feature added increases cognitive load and choice cost. Constraint and focus are features; controlled minimalism outperforms feature maximization.",
+      "related_concepts": [
+        "Cognitive Load Theory",
+        "Hick-Hyman Law",
+        "Choice Overload"
+      ]
+    },
+    {
+      "concept": "Ai-Assisted Decision Support",
+      "field": "hci",
+      "definition": "Use of algorithms, ranking, or agent recommendations to reduce user decision burden. Can reduce fatigue and improve outcomes if suggestions are high-quality and transparent; poor ranking or unexplained suggestions increase frustration and cognitive load.",
+      "strength": "empirical",
+      "key_refs": [
+        "CHI 2024 / Avoiding Decision Fatigue with AI-Assisted Decision-Making"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-avoiding-decision-fatigue-ai-assisted-2024"
+      ],
+      "implication": "MetroGraph's core mechanism: use semantic matching (embedding-based relevance) and usage frequency to rank column/node suggestions. This is AI-assisted choice curation, not chat-based delegation. Users remain in control but get intelligent filtration.",
+      "related_concepts": [
+        "Decision Fatigue",
+        "Information Scent",
+        "Choice Architecture",
+        "Bounded Rationality"
+      ]
+    },
+    {
+      "concept": "Fitts's Law",
+      "field": "hci",
+      "definition": "Motor control law relating target acquisition time to target distance and size: MT = a + b·log2(D/W), where MT is movement time, D is distance to target, W is target width. Larger targets at closer range are faster to select; principle extends to graphical interface widget sizing.",
+      "strength": "established-law",
+      "key_refs": [
+        "Fitts 1954 / The Information Capacity of the Human Motor System in Controlling the Amplitude of Movement",
+        "MacKenzie 2004 / Perspectives on 27 Years of Fitts' Law Research in HCI"
+      ],
+      "source_ids": [
+        "market-theory-choice-cost-fitts-law-motor-control"
+      ],
+      "implication": "MetroGraph node/button sizing should follow Fitts: make frequently-used columns/filters large and close to cursor; deemphasize rare options. Large hit targets reduce selection errors and cognitive burden (fewer mis-clicks = fewer corrections).",
+      "related_concepts": [
+        "Hick-Hyman Law",
+        "Direct Manipulation",
+        "Interaction Design"
+      ]
+    }
+  ]
+}

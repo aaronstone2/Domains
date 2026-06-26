@@ -1,0 +1,809 @@
+{
+  "leaf": "market/ux-teardown-workflow-automation",
+  "ux_flows": [
+    {
+      "slug": "zapier-create-basic-zap",
+      "product_slug": "zapier",
+      "flow_name": "Create & Deploy a Basic Two-Step Zap",
+      "goal": "Set up a simple trigger-action workflow (e.g., 'new email → save to spreadsheet')",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Sign in / land on dashboard",
+          "clicks": 1,
+          "friction": "None - instant homepage after login"
+        },
+        {
+          "step": 2,
+          "action": "Click 'Create Zap' button",
+          "clicks": 1,
+          "friction": "Clear CTA, single button"
+        },
+        {
+          "step": 3,
+          "action": "Search and select trigger app (email)",
+          "clicks": 3,
+          "friction": "Search box + select from list, intuitive"
+        },
+        {
+          "step": 4,
+          "action": "Choose trigger event (new email)",
+          "clicks": 2,
+          "friction": "Guided dropdown, no ambiguity"
+        },
+        {
+          "step": 5,
+          "action": "Authenticate trigger app (OAuth/API key)",
+          "clicks": 2,
+          "friction": "Modal flow, pre-filled when possible"
+        },
+        {
+          "step": 6,
+          "action": "Add action app (Google Sheets)",
+          "clicks": 3,
+          "friction": "Same search + select pattern"
+        },
+        {
+          "step": 7,
+          "action": "Choose action (append row)",
+          "clicks": 1,
+          "friction": "Direct selection, no nested options"
+        },
+        {
+          "step": 8,
+          "action": "Map trigger fields to action fields",
+          "clicks": 5,
+          "friction": "Inline field matching, visual preview"
+        },
+        {
+          "step": 9,
+          "action": "Test Zap",
+          "clicks": 1,
+          "friction": "One-click test execution"
+        },
+        {
+          "step": 10,
+          "action": "Save & activate",
+          "clicks": 1,
+          "friction": "Final toggle, no confirmation dialog"
+        }
+      ],
+      "total_steps": 10,
+      "total_clicks": 20,
+      "drop_off_risk": "low",
+      "hci_cost": "A",
+      "our_approach": "MetroGraph flows reduce cognitive load by visualizing data dependencies upfront. Instead of linear step-by-step, users sketch data shapes first (schema), then wire logic visually, minimizing rework. Pre-populated field suggestions based on schema inference eliminate the step-by-step field mapping friction.",
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-g2-zapier-reviews-ratings-2026",
+        "market-ux-teardown-workflow-automation-hatchworks-n8n-vs-zapier-2026",
+        "market-ux-teardown-workflow-automation-digitalapplied-zapier-vs-make-vs-n8n-2026"
+      ]
+    },
+    {
+      "slug": "make-create-moderate-scenario",
+      "product_slug": "make",
+      "flow_name": "Create a Multi-Step Scenario with Conditional Logic",
+      "goal": "Build a workflow with branching: 'if condition X, route to action A; else route to action B'",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Dashboard → New Scenario",
+          "clicks": 2,
+          "friction": "Clear entry point, but not as dominant as Zapier"
+        },
+        {
+          "step": 2,
+          "action": "Drag trigger module onto canvas",
+          "clicks": 1,
+          "friction": "Drag-and-drop, requires spatial orientation"
+        },
+        {
+          "step": 3,
+          "action": "Configure trigger (e.g., webhook)",
+          "clicks": 4,
+          "friction": "Modal config panel, some fields optional"
+        },
+        {
+          "step": 4,
+          "action": "Add action module from palette",
+          "clicks": 2,
+          "friction": "Palette search or scroll, then drag"
+        },
+        {
+          "step": 5,
+          "action": "Connect trigger to first action (draw line)",
+          "clicks": 1,
+          "friction": "Visual wiring, clear affordance"
+        },
+        {
+          "step": 6,
+          "action": "Configure action module",
+          "clicks": 5,
+          "friction": "More fields than Zapier; collapsible sections help"
+        },
+        {
+          "step": 7,
+          "action": "Add Router/Filter for conditional logic",
+          "clicks": 3,
+          "friction": "Router module is distinct; requires understanding data flow concept"
+        },
+        {
+          "step": 8,
+          "action": "Define routing conditions (if/then branches)",
+          "clicks": 6,
+          "friction": "Multi-clause interface; visual feedback on branch coverage"
+        },
+        {
+          "step": 9,
+          "action": "Add action modules to each branch",
+          "clicks": 6,
+          "friction": "Spatial layout becomes dense; requires canvas panning/zooming"
+        },
+        {
+          "step": 10,
+          "action": "Map fields across branches",
+          "clicks": 8,
+          "friction": "Context-aware field suggestions help, but multi-branch context adds load"
+        },
+        {
+          "step": 11,
+          "action": "Test scenario",
+          "clicks": 1,
+          "friction": "One-click run with execution log"
+        },
+        {
+          "step": 12,
+          "action": "Save & enable scheduling/webhooks",
+          "clicks": 2,
+          "friction": "Scenario settings panel, clear options"
+        }
+      ],
+      "total_steps": 12,
+      "total_clicks": 41,
+      "drop_off_risk": "medium",
+      "hci_cost": "C",
+      "our_approach": "MetroGraph avoids canvas bloat by using a layered inspection model: nodes stay small on the primary canvas (only showing name + I/O ports), with a right-hand inspector pane for detailed configuration. Conditionals are first-class schema types, not modules to be wired—reducing canvas density by ~40% and keeping pane_count low (2: canvas + inspector).",
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-hackceleration-make-review-2026",
+        "market-ux-teardown-workflow-automation-flowmondo-n8n-vs-zapier-vs-make",
+        "market-ux-teardown-workflow-automation-cipherprojects-n8n-vs-make-vs-zapier-2026"
+      ]
+    },
+    {
+      "slug": "n8n-advanced-nested-workflow",
+      "product_slug": "n8n",
+      "flow_name": "Build Advanced Workflow with Nested Flows, Error Handling & Parallel Execution",
+      "goal": "Create a sub-workflow for reusable logic, wire parallel branches with centralized error handling",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Editor → New Workflow",
+          "clicks": 2,
+          "friction": "Standard entry, but n8n has more onboarding prompts than Zapier"
+        },
+        {
+          "step": 2,
+          "action": "Add Trigger node",
+          "clicks": 2,
+          "friction": "Node palette search; requires familiarity with node concept"
+        },
+        {
+          "step": 3,
+          "action": "Configure trigger",
+          "clicks": 5,
+          "friction": "Side panel with many fields; inline help available"
+        },
+        {
+          "step": 4,
+          "action": "Add parallel execution nodes (fork)",
+          "clicks": 3,
+          "friction": "Requires understanding of parallel execution semantics"
+        },
+        {
+          "step": 5,
+          "action": "Create first parallel branch action",
+          "clicks": 4,
+          "friction": "Standard node config"
+        },
+        {
+          "step": 6,
+          "action": "Create second parallel branch action",
+          "clicks": 4,
+          "friction": "Duplicate logic; canvas becomes dense"
+        },
+        {
+          "step": 7,
+          "action": "Add merge node to synchronize branches",
+          "clicks": 2,
+          "friction": "Merge semantics (wait for all, timeout handling) require conceptual understanding"
+        },
+        {
+          "step": 8,
+          "action": "Add error handler node",
+          "clicks": 2,
+          "friction": "Error handler is disconnected visually; not obvious it catches upstream errors"
+        },
+        {
+          "step": 9,
+          "action": "Configure error handling logic",
+          "clicks": 5,
+          "friction": "Conditional error routing; multiple decision points"
+        },
+        {
+          "step": 10,
+          "action": "Create sub-workflow (nested execution)",
+          "clicks": 3,
+          "friction": "Sub-workflow concept; mental context switch"
+        },
+        {
+          "step": 11,
+          "action": "Build sub-workflow logic",
+          "clicks": 8,
+          "friction": "Switching between parent/child workflow contexts adds cognitive load"
+        },
+        {
+          "step": 12,
+          "action": "Wire sub-workflow call into main flow",
+          "clicks": 3,
+          "friction": "Parameter passing; mapping input/output"
+        },
+        {
+          "step": 13,
+          "action": "Map final output fields",
+          "clicks": 6,
+          "friction": "Multi-level nesting; expression builder for computed fields"
+        },
+        {
+          "step": 14,
+          "action": "Test workflow end-to-end",
+          "clicks": 1,
+          "friction": "Execution panel shows detailed logs; debugging aids included"
+        },
+        {
+          "step": 15,
+          "action": "Adjust error thresholds & save",
+          "clicks": 2,
+          "friction": "Final settings modal"
+        }
+      ],
+      "total_steps": 15,
+      "total_clicks": 52,
+      "drop_off_risk": "high",
+      "hci_cost": "F",
+      "our_approach": "MetroGraph's nested workflow model is explicit in the schema layer, not hidden in runtime semantics. Users define 'sub-schemas' (reusable types) upfront, reducing context switching. Error handling is schema-aware (e.g., 'field X may be null in 10% of calls'), making handling visually obvious without extra nodes. Canvas shows only happy-path logic; error cases are config attributes of edges, not separate nodes—cutting clicks by ~30% and pane_count from 4+ (canvas, panel, logs, sub-workflow editor) to 2 (schema + canvas).",
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-g2-n8n-reviews-ratings-2026",
+        "market-ux-teardown-workflow-automation-hatchworks-n8n-vs-zapier-2026",
+        "market-ux-teardown-workflow-automation-syncgtm-n8n-review-2026"
+      ]
+    },
+    {
+      "slug": "latenode-ai-agent-workflow",
+      "product_slug": "latenode",
+      "flow_name": "AI-Powered Workflow with LLM Integration & Dynamic Field Mapping",
+      "goal": "Wire LLM agent into workflow, use AI to infer field mappings, execute with code fallback",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create Workflow → Add LLM Agent Block",
+          "clicks": 3,
+          "friction": "AI-first positioning; LLM block is prominent in palette"
+        },
+        {
+          "step": 2,
+          "action": "Configure LLM (model, prompt, temperature)",
+          "clicks": 5,
+          "friction": "Visual prompt editor; parameter sliders"
+        },
+        {
+          "step": 3,
+          "action": "Add input data source (trigger or action)",
+          "clicks": 2,
+          "friction": "Clear palette; ~1,200+ app integrations"
+        },
+        {
+          "step": 4,
+          "action": "Map input fields to LLM context",
+          "clicks": 4,
+          "friction": "AI suggestion: 'I think you meant X field' — reduces manual work"
+        },
+        {
+          "step": 5,
+          "action": "Add code block (Node.js/Python) for complex logic",
+          "clicks": 2,
+          "friction": "Code editor with syntax highlighting; optional fallback to visual"
+        },
+        {
+          "step": 6,
+          "action": "Write custom code logic",
+          "clicks": 8,
+          "friction": "Dev-friendly; but context-switching from visual to code increases cognitive load"
+        },
+        {
+          "step": 7,
+          "action": "Connect LLM output to action",
+          "clicks": 2,
+          "friction": "Wiring; AI suggests field mappings based on LLM output schema"
+        },
+        {
+          "step": 8,
+          "action": "Add conditional based on AI reasoning",
+          "clicks": 3,
+          "friction": "Conditional node; but LLM output interpretation may be ambiguous"
+        },
+        {
+          "step": 9,
+          "action": "Test with sample data",
+          "clicks": 1,
+          "friction": "One-click test; shows AI reasoning trace"
+        },
+        {
+          "step": 10,
+          "action": "Save & deploy",
+          "clicks": 1,
+          "friction": "Usage-based billing (not per-task) makes scaling clear"
+        }
+      ],
+      "total_steps": 10,
+      "total_clicks": 31,
+      "drop_off_risk": "medium",
+      "hci_cost": "C",
+      "our_approach": "MetroGraph's approach: AI-powered field inference is schema-first, not workflow-first. Define input/output schemas (with ML-assisted type inference), then AI suggests mappings as schema transformations, not wiring tasks. This keeps the canvas clean (no 'AI block' visual clutter) and makes reasoning auditable at the schema level. Code blocks integrate via schema exports, not visual wiring—reducing pane_count bloat from Latenode's 4-5 (canvas, code editor, output preview, config panel) to 2-3.",
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-latenode-official-site-2026",
+        "market-ux-teardown-workflow-automation-composio-top-ai-workflow-automation-tools-2026",
+        "market-ux-teardown-workflow-automation-vellum-low-code-ai-workflow-automation-tools-2026"
+      ]
+    },
+    {
+      "slug": "node-red-iot-sensor-workflow",
+      "product_slug": "node-red",
+      "flow_name": "Wire IoT Sensors → Processing → Database with Visual Node Flow",
+      "goal": "Connect physical hardware (sensor nodes) through function blocks to persistent storage",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Node-RED editor → Add Inject node (trigger)",
+          "clicks": 2,
+          "friction": "Palette palette; community node count is overwhelming (000s available)"
+        },
+        {
+          "step": 2,
+          "action": "Configure inject (timestamp/manual trigger)",
+          "clicks": 3,
+          "friction": "Side panel config; cron expression support"
+        },
+        {
+          "step": 3,
+          "action": "Add sensor input node (hardware specific)",
+          "clicks": 3,
+          "friction": "Must find correct node for device type; documentation required"
+        },
+        {
+          "step": 4,
+          "action": "Configure sensor node (connection string, polling rate)",
+          "clicks": 5,
+          "friction": "Device-specific; often requires manual config file editing"
+        },
+        {
+          "step": 5,
+          "action": "Add function node for data processing",
+          "clicks": 2,
+          "friction": "Function node requires JavaScript knowledge"
+        },
+        {
+          "step": 6,
+          "action": "Write processing logic (e.g., filter outliers)",
+          "clicks": 8,
+          "friction": "Code editor; full JavaScript; high cognitive load for non-devs"
+        },
+        {
+          "step": 7,
+          "action": "Add database output node",
+          "clicks": 2,
+          "friction": "DB node selection; many variants (SQL, NoSQL, cloud)"
+        },
+        {
+          "step": 8,
+          "action": "Configure DB connection",
+          "clicks": 5,
+          "friction": "Connection string; credentials; may require environment variables"
+        },
+        {
+          "step": 9,
+          "action": "Wire nodes: inject → sensor → function → DB",
+          "clicks": 4,
+          "friction": "Visual wiring; but canvas grows dense with multiple parallel flows"
+        },
+        {
+          "step": 10,
+          "action": "Deploy & test",
+          "clicks": 1,
+          "friction": "Deploy button; but logs are in separate console tab"
+        }
+      ],
+      "total_steps": 10,
+      "total_clicks": 35,
+      "drop_off_risk": "high",
+      "hci_cost": "D",
+      "our_approach": "MetroGraph reduces Node-RED's complexity by: (1) schema-first data shaping—define sensor output schema once, reuse across functions; (2) lower code friction—visual transform library for 80% of use cases (filter, map, aggregate), code fallback only for edge cases; (3) unified canvas—no separate device config files; connection management is schema-aware and auditable. Pane count reduced from 3-4 (editor, console, config files, node properties) to 2 (schema + canvas).",
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-node-red-official-site-2026",
+        "market-ux-teardown-workflow-automation-zenml-orchestration-dagster-prefect-airflow-2026",
+        "market-ux-teardown-workflow-automation-bruin-data-pipeline-tools-2026"
+      ]
+    }
+  ],
+  "ux_patterns": [
+    {
+      "slug": "linear-step-ui-false-simplicity",
+      "pattern": "Linear step-by-step UI (e.g., Zapier's 'trigger → filter → action') creates illusion of simplicity but breaks down for any workflow with conditionals, parallel execution, or error handling. Users hit the ceiling fast.",
+      "is_antipattern": true,
+      "category": "Workflow Architecture",
+      "description": "Zapier positions its linear approach as user-friendly, but this forces users into 'multi-Zap' patterns (trigger multiple simple zaps, synchronize externally) for anything beyond trivial automations. Cost explodes with scale (per-task billing), and rework is frequent when requirements evolve.",
+      "hci_cost": "B",
+      "our_stance": "avoid",
+      "our_rationale": "Linear UIs defer architectural decisions (Where does data split? How are errors handled?) to runtime. MetroGraph makes these decisions explicit upfront via schema, eliminating false simplicity and the 'hit the wall' moment. Users graduate smoothly from simple flows to complex ones.",
+      "exemplar_product_slugs": [
+        "zapier"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-g2-zapier-reviews-ratings-2026",
+        "market-ux-teardown-workflow-automation-hatchworks-n8n-vs-zapier-2026",
+        "market-ux-teardown-workflow-automation-tinycommand-zapier-pricing-explained-2026"
+      ]
+    },
+    {
+      "slug": "canvas-pane-bloat-dense-visual",
+      "pattern": "Canvas-based editors (Make, n8n) suffer from visual bloat when workflows exceed 5-8 nodes. Multiple panes (canvas, config panel, execution logs, inspector, sub-workflows) fragment attention. Panning/zooming become primary navigation.",
+      "is_antipattern": true,
+      "category": "Visual Complexity",
+      "description": "Make's canvas is easier than n8n's node system, but both platforms require users to manage canvas density. Complex workflows end up with 20+ nodes, forcing minimap navigation, color-coding schemes, and layering tricks. Users spend 30-40% of time managing canvas layout, not logic.",
+      "hci_cost": "D",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph's inspector-pane model keeps the canvas clean by moving configuration out of line. Nodes stay compact (name + I/O ports); all detail lives in the right-hand inspector. Pane_count stays at 2 (canvas + inspector) vs 4-5 for competitors. Schema visualization (data shapes) reduces need for in-canvas labels.",
+      "exemplar_product_slugs": [
+        "make",
+        "n8n"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-hackceleration-make-review-2026",
+        "market-ux-teardown-workflow-automation-hackceleration-n8n-review-2026",
+        "market-ux-teardown-workflow-automation-contabo-n8n-vs-zapier-vs-make"
+      ]
+    },
+    {
+      "slug": "node-system-cognitive-load-error-handlers",
+      "pattern": "Node-based systems (n8n, Node-RED) represent error handling, sub-workflows, and parallel execution as separate nodes/blocks, not as first-class properties. This inflates the canvas and forces users to understand runtime semantics.",
+      "is_antipattern": true,
+      "category": "Conceptual Load",
+      "description": "In n8n, a 10-node simple workflow becomes 15+ nodes when adding error handlers, merge points, and conditional logic. Users must understand: node types, wiring semantics, execution order, data passing, variable scoping. 'First complex workflow takes 2x longer; fifth takes 1/2 the time'—evidence of high upfront cognitive cost.",
+      "hci_cost": "F",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph makes error handling and parallelism schema-level concerns, not runtime node concerns. A schema can declare 'field X is nullable' (error path), 'field Y can be computed in parallel with field Z' (parallel execution hint), 'sub-schema S is reusable' (sub-workflow). Canvas shows only happy-path logic. Click count drops by ~30% because error paths and forks aren't explicit nodes.",
+      "exemplar_product_slugs": [
+        "n8n",
+        "node-red"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-g2-n8n-reviews-ratings-2026",
+        "market-ux-teardown-workflow-automation-syncgtm-n8n-review-2026",
+        "market-ux-teardown-workflow-automation-cybernews-n8n-vs-zapier-2026"
+      ]
+    },
+    {
+      "slug": "task-based-billing-scalability-cliff",
+      "pattern": "Task-based billing (Zapier: 1 task = 1 execution) creates a cost cliff for users adding complexity (e.g., filter, loop, branch). A single logical workflow becomes 3-5 'tasks' and costs 3-5x more.",
+      "is_antipattern": true,
+      "category": "Business Model / UX Friction",
+      "description": "Zapier's pricing incentivizes staying within linear patterns. Any branching or reuse requires separate zaps or billing workarounds. Users report 'pricing surprises' when scaling. Make and n8n use per-execution pricing, which aligns incentives better.",
+      "hci_cost": "B",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph's usage model (if any) should decouple execution cost from workflow complexity. Recommend per-execution or per-data-volume pricing, not per-task. This removes the incentive to hide complexity and enables honest workflow design.",
+      "exemplar_product_slugs": [
+        "zapier"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-tinycommand-zapier-pricing-explained-2026",
+        "market-ux-teardown-workflow-automation-nocode-mba-zapier-pricing-2026",
+        "market-ux-teardown-workflow-automation-contabo-n8n-vs-zapier-vs-make"
+      ]
+    },
+    {
+      "slug": "ai-block-as-visual-complexity",
+      "pattern": "AI integration as a 'block' (Latenode, Make AI Agents) adds visual clutter and context-switching: users drag an LLM block, configure it separately, then wire it like any action. This treats AI as a tool, not a design primitive.",
+      "is_antipattern": true,
+      "category": "AI Integration",
+      "description": "In Latenode, an LLM block is 1 node on the canvas + 1 config panel for prompt/temperature + 1 code editor for fallback logic = 3 cognitive contexts. Users must manage model selection, prompt engineering, and error cases all at the same level as database writes.",
+      "hci_cost": "C",
+      "our_stance": "reinvent",
+      "our_rationale": "MetroGraph treats AI as a schema transformation tool, not a visual block. Users define 'input schema → [LLM] → output schema' at the schema level. The canvas shows only the inferred schema (no LLM block). Prompt engineering happens in a specialized inspector pane, not inline. This keeps pane_count low and makes AI reasoning auditable. Field inference is automatic from schema context.",
+      "exemplar_product_slugs": [
+        "latenode"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-composio-top-ai-workflow-automation-tools-2026",
+        "market-ux-teardown-workflow-automation-vellum-low-code-ai-workflow-automation-tools-2026",
+        "market-ux-teardown-workflow-automation-latenode-official-site-2026"
+      ]
+    },
+    {
+      "slug": "no-upfront-schema-friction-on-rework",
+      "pattern": "All 5 platforms (Zapier, Make, n8n, Node-RED, Latenode) require users to specify field mappings during workflow build, not upfront. Changing upstream app = cascading rework downstream.",
+      "is_antipattern": true,
+      "category": "Data Flow Design",
+      "description": "User builds a 10-step workflow wired together at field level. Upstream app adds 3 new fields or changes output schema. User must re-wire 5-8 steps. No 'schema versioning' or 'contract' concept.",
+      "hci_cost": "C",
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph's schema-first approach: define input/output contracts upfront. Downstream nodes auto-adapt when upstream schema expands (if compatible) or flag breaking changes. Rework is minimal because mappings are rule-based (not manual), not position-based.",
+      "exemplar_product_slugs": [
+        "zapier",
+        "make",
+        "n8n",
+        "node-red",
+        "latenode"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-pwc-digital-trends-operations-2026",
+        "market-ux-teardown-workflow-automation-kissflow-workflow-automation-statistics-2026",
+        "market-ux-teardown-workflow-automation-cflow-workflow-automation-statistics-2026"
+      ]
+    },
+    {
+      "slug": "visual-programming-learning-cliff",
+      "pattern": "Visual programming tools (Make, n8n, Node-RED) have steep learning curves (3-5 hours for Make; much steeper for n8n). Users self-report that fifth workflow is 50% faster than first—evidence of deferred learning.",
+      "is_antipattern": false,
+      "category": "Learnability",
+      "description": "This is not inherently bad, but it's a real cost. Platforms trade simplicity for power, and users pay upfront in cognitive load. Make's 3-5 hour curve is moderate; n8n's is severe. Zapier has near-zero curve but hits a capability wall fast.",
+      "hci_cost": "C",
+      "our_stance": "conditional",
+      "our_rationale": "MetroGraph aims to keep the learning curve shallow (<1 hour for basic workflows) while supporting advanced patterns (parallelism, error handling, nesting). This is possible because schema-first design makes the conceptual model simpler: 'define inputs/outputs, wire transforms.' Execution semantics are hidden. Users don't need to understand node-types, execution order, or variable scoping—the schema makes it obvious.",
+      "exemplar_product_slugs": [
+        "make",
+        "n8n",
+        "node-red"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-digitalapplied-zapier-vs-make-vs-n8n-2026",
+        "market-ux-teardown-workflow-automation-cipherprojects-n8n-vs-make-vs-zapier-2026",
+        "market-ux-teardown-workflow-automation-doit-n8n-vs-make-vs-zapier-2026"
+      ]
+    },
+    {
+      "slug": "code-first-fallback-context-switching",
+      "pattern": "Platforms with code fallback (Latenode, Node-RED, n8n JavaScript expressions) allow users to 'code their way out' of visual limitations, but this creates context-switching overhead (visual editor ↔ code editor) and discourages learning the visual paradigm.",
+      "is_antipattern": true,
+      "category": "Hybrid Visual-Code",
+      "description": "A user reaching a visual limitation in n8n can add a Function node and write JavaScript. This feels powerful but trains users to avoid the visual system. Eventually, workflows are 70% code, 30% visual—defeating the purpose of no-code. Also, code is per-node; there's no global library or reuse.",
+      "hci_cost": "D",
+      "our_stance": "conditional",
+      "our_rationale": "MetroGraph's approach: code is a schema transformation or a 'sub-workflow,' not a node. Users define what input types the code expects and what it outputs (via schema annotations). This makes code part of the visual contract, not an escape hatch. Reuse is schema-based, not node-based. Code is only allowed in specific contexts (e.g., inside a transform node), not inline on the canvas.",
+      "exemplar_product_slugs": [
+        "latenode",
+        "node-red",
+        "n8n"
+      ],
+      "source_ids": [
+        "market-ux-teardown-workflow-automation-hackceleration-n8n-review-2026",
+        "market-ux-teardown-workflow-automation-activepieces-pipedream-vs-zapier-2026",
+        "market-ux-teardown-workflow-automation-bruin-data-pipeline-tools-2026"
+      ]
+    },
+    {
+      "slug": "low-surface-area-direct-manipulation",
+      "pattern": "MetroGraph's wedge approach: schema-first design reduces surface area by making implicit complexity (data flow, error handling, parallelism) explicit upfront, not buried in canvas nodes or config panels.",
+      "is_antipattern": false,
+      "category": "Interaction Design / MetroGraph Principle",
+      "description": "Instead of '15 nodes + 4 panes + 50 clicks,' MetroGraph aims for '5 visual nodes + 1 inspector + ~20 clicks' because schema handles the structural decisions. Users see only what they need to decide at each moment.",
+      "hci_cost": "A",
+      "our_stance": "adopt",
+      "our_rationale": "This is MetroGraph's core wedge. Direct manipulation (wiring) is fast and spatial, but it breaks down when workflows are complex. Schema visualization (showing data shapes, constraints, transformations) complements wiring by making structure explicit. The result: low surface area (no bloated canvas), high expressiveness (schema captures subtlety), and no 'hit the wall' moment.",
+      "exemplar_product_slugs": [],
+      "source_ids": []
+    }
+  ],
+  "ux_screens": [
+    {
+      "slug": "zapier-trigger-selection-modal",
+      "product_slug": "zapier",
+      "screen_name": "Trigger App Selection Modal",
+      "description": "After clicking 'Create Zap,' user sees a modal with a search box and a paginated list of 8000+ apps. Apps are grouped by 'popular' (12 featured), 'recently used' (5), and 'all apps' (searchable). Single-selection; no preview of trigger events.",
+      "screen_type": "modal",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "search_box",
+        "app_list_paginated",
+        "popular_section",
+        "recently_used_section",
+        "cancel_button",
+        "continue_button"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-hatchworks-n8n-vs-zapier-2026"
+    },
+    {
+      "slug": "zapier-field-mapping-inline",
+      "product_slug": "zapier",
+      "screen_name": "Field Mapping Screen (Inline)",
+      "description": "After selecting trigger and action, user sees a two-column layout: left column lists trigger output fields; right column shows action input fields. User drags-and-drops or clicks to map fields. Required fields are highlighted in red. Optional fields have '+' button to add.",
+      "screen_type": "canvas",
+      "pane_count": 2,
+      "click_depth": 1,
+      "hci_cost": "B",
+      "ui_elements": [
+        "trigger_fields_column",
+        "action_fields_column",
+        "drag_drop_targets",
+        "required_field_indicators",
+        "add_optional_field_buttons",
+        "field_icons_type_hints"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-digitalapplied-zapier-vs-make-vs-n8n-2026"
+    },
+    {
+      "slug": "make-canvas-builder-main",
+      "product_slug": "make",
+      "screen_name": "Scenario Canvas Builder (Main)",
+      "description": "Central canvas shows nodes (trigger, actions, routers) wired together. Left sidebar has a collapsible module palette (3000+ integrations, search enabled). Right sidebar shows selected node's config panel. Top bar shows scenario name, test/run buttons, and execution history link. Bottom pane shows execution logs (collapses).",
+      "screen_type": "canvas",
+      "pane_count": 4,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "canvas_area",
+        "node_palette_sidebar_left",
+        "config_panel_sidebar_right",
+        "top_toolbar",
+        "execution_log_pane_bottom",
+        "zoom_minimap",
+        "node_connection_lines"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-hackceleration-make-review-2026"
+    },
+    {
+      "slug": "make-router-configuration-panel",
+      "product_slug": "make",
+      "screen_name": "Router Configuration (Conditional Routing)",
+      "description": "Right-hand inspector for a Router module. Shows 'if/then' rule builder: condition 1 (operator dropdown + field selector + value input) → then route to 'branch A'; add condition button; add new branch button. Each branch is color-coded. Visual feedback shows which branch is active for a given input.",
+      "screen_type": "inspector-pane",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "C",
+      "ui_elements": [
+        "condition_builder_rows",
+        "operator_dropdown",
+        "field_selector",
+        "value_input",
+        "add_condition_button",
+        "branch_selector_dropdown",
+        "add_branch_button",
+        "branch_color_indicators"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-flowmondo-n8n-vs-zapier-vs-make"
+    },
+    {
+      "slug": "n8n-editor-main-canvas",
+      "product_slug": "n8n",
+      "screen_name": "Workflow Editor (Main Canvas)",
+      "description": "Large canvas area with nodes (rectangles, each showing node name + I/O ports). Nodes are wired with colored edges. Left sidebar: collapsible node palette (search enabled). Right sidebar: inspector for selected node (config fields, output preview). Top bar: workflow name, execute/test buttons. Bottom: execution logs (detailed trace).",
+      "screen_type": "canvas",
+      "pane_count": 5,
+      "click_depth": 4,
+      "hci_cost": "D",
+      "ui_elements": [
+        "canvas_grid",
+        "node_blocks",
+        "input_output_ports",
+        "wiring_edges_colored",
+        "node_palette_sidebar_left",
+        "inspector_panel_right",
+        "execution_logs_bottom",
+        "minimap",
+        "zoom_controls"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-g2-n8n-reviews-ratings-2026"
+    },
+    {
+      "slug": "n8n-function-node-code-editor",
+      "product_slug": "n8n",
+      "screen_name": "Function Node Code Editor",
+      "description": "Inline code editor (JavaScript) for a Function node. Shows syntax highlighting, line numbers, autocomplete for 'data' and 'item' variables. Output is a JSON preview. If code errors, user sees red highlight + error message. No REPL or live debugging.",
+      "screen_type": "modal",
+      "pane_count": 1,
+      "click_depth": 1,
+      "hci_cost": "C",
+      "ui_elements": [
+        "code_editor",
+        "syntax_highlighting",
+        "line_numbers",
+        "autocomplete_dropdown",
+        "json_output_preview",
+        "error_highlight_red",
+        "error_message_panel"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-hackceleration-n8n-review-2026"
+    },
+    {
+      "slug": "latenode-workflow-builder-canvas",
+      "product_slug": "latenode",
+      "screen_name": "Workflow Builder (Visual + Code Hybrid)",
+      "description": "Canvas with nodes (trigger, actions, code blocks). Right sidebar: node config inspector. Code blocks show inline code editor (Node.js/Python syntax). LLM blocks show prompt config + model selection. Top bar: workflow name, deploy button. Left sidebar: 1200+ app/LLM palette (searchable). Bottom: execution history with per-step output preview.",
+      "screen_type": "canvas",
+      "pane_count": 5,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "canvas_area",
+        "node_blocks_visual_code",
+        "llm_prompt_editor",
+        "app_palette_sidebar",
+        "config_inspector_right",
+        "execution_history_bottom",
+        "deploy_button",
+        "wiring_lines"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-latenode-official-site-2026"
+    },
+    {
+      "slug": "node-red-flow-editor-main",
+      "product_slug": "node-red",
+      "screen_name": "Node-RED Flow Editor (Main)",
+      "description": "Browser-based editor with large canvas area. Nodes (rectangles) represent hardware inputs, functions, outputs. Left sidebar: node palette (search, grouping by type). Right sidebar: selected node's properties panel + info/help tab. Top bar: deploy button (red button when unsaved). Bottom: debug console (messages from debug nodes).",
+      "screen_type": "canvas",
+      "pane_count": 4,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "canvas_grid",
+        "node_rectangles",
+        "wiring_connections",
+        "node_palette_sidebar_left",
+        "properties_panel_right",
+        "debug_console_bottom",
+        "deploy_button",
+        "search_nodes"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-node-red-official-site-2026"
+    },
+    {
+      "slug": "node-red-function-node-editor-code",
+      "product_slug": "node-red",
+      "screen_name": "Function Node Code Editor (JavaScript)",
+      "description": "Modal dialog showing JavaScript editor with 'msg' variable documentation. User writes code to transform input. Editor has syntax highlighting, autocomplete. Output is a 'return msg' object. No live debugging; user relies on debug node + console output.",
+      "screen_type": "modal",
+      "pane_count": 1,
+      "click_depth": 1,
+      "hci_cost": "D",
+      "ui_elements": [
+        "code_editor",
+        "syntax_highlighting",
+        "autocomplete",
+        "msg_documentation_side_panel",
+        "return_example",
+        "ok_cancel_buttons"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-bruin-data-pipeline-tools-2026"
+    },
+    {
+      "slug": "latenode-llm-block-configuration",
+      "product_slug": "latenode",
+      "screen_name": "LLM Block Configuration Inspector",
+      "description": "Right-hand inspector for an LLM block. Shows: model selector (GPT-4, Claude, etc.), temperature slider (0–1), max_tokens input, prompt text area with variable placeholders (autocomplete from input schema). Separate section for output schema specification (what fields LLM should return).",
+      "screen_type": "inspector-pane",
+      "pane_count": 1,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "model_selector_dropdown",
+        "temperature_slider",
+        "max_tokens_input",
+        "prompt_textarea",
+        "variable_placeholder_autocomplete",
+        "output_schema_definition",
+        "test_llm_call_button"
+      ],
+      "source_id": "market-ux-teardown-workflow-automation-composio-top-ai-workflow-automation-tools-2026"
+    }
+  ]
+}

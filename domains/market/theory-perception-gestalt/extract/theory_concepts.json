@@ -1,0 +1,516 @@
+{
+  "leaf": "market/theory-perception-gestalt",
+  "extraction_notes": "Comprehensive extraction of 25 theory concepts from the theory-perception-gestalt leaf, grounded in 32 sources spanning 100 years of visual perception research. Coverage includes: (1) foundational Gestalt principles (grouping, figure-ground, contour integration); (2) preattentive processing and Feature Integration Theory (Treisman); (3) graphical perception effectiveness (Cleveland & McGill hierarchy); (4) visual attention and saliency (top-down/bottom-up mechanisms); (5) information visualization principles (Ware, Munzner, Tufte, Bertin); (6) graph visualization perception (node-link layouts, network topology); (7) visual encoding channels and design (color, texture, animation); (8) cognitive science foundations (working memory limits, cognitive load theory); (9) interaction design principles (affordances, icon design, visual metaphor); (10) contemporary validation methods (eye-tracking, task-based studies). Primary sources: Wagemans et al. (2012) comprehensive Gestalt review, Treisman Feature Integration Theory (1980, 1985), Cleveland & McGill (1984), Ware (2020), Munzner (2014), Quadri & Rosen (2021) perception survey. All concepts cite 1+ real source IDs from sources.json. Strength levels: 4 established-law (Gestalt principles, FIT), 14 empirical (preattentive, visual search, layout effects, color, CVD, animation, bandwidth, tasks), 7 framework (cognitive load, grammar of graphics, visual metaphor, semiotics, affordances, visual analytics, info-viz principles). No gaps in core scope; emerging areas (neurovisualization, AI-driven saliency) acknowledged in sources.json as sparse literature, appropriately excluded. Extraction grounded in document excerpts from Wagemans et al. and Treisman paper; other concepts validated through source notes and canonical citations.\"",
+  "concepts": [
+    {
+      "concept": "Gestalt Principles of Perceptual Grouping",
+      "field": "hci",
+      "definition": "A set of organizing principles by which the human visual system groups elements into coherent wholes, including proximity (nearness), similarity (shared attributes), continuity (smooth paths), closure (completing incomplete shapes), symmetry, and common fate (shared motion). These principles describe how visual perception naturally organizes elementary sensations into meaningful structures prior to conscious analysis.",
+      "strength": "established-law",
+      "key_refs": [
+        "Wertheimer 1912 / Phi motion and Gestalt psychology",
+        "Wagemans et al. 2012 / A Century of Gestalt Psychology in Visual Perception I"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-gestalt-century-review-i",
+        "market-theory-perception-gestalt-gestalt-century-review-ii"
+      ],
+      "related_concepts": [
+        "Figure-Ground Organization",
+        "Contour Integration and Completion",
+        "Perceptual Organization"
+      ],
+      "implication": "MetroGraph must leverage grouping principles (proximity, similarity, continuity) to organize nodes and edges naturally, reducing cognitive load when parsing complex graphs. Proper grouping minimizes explicit labeling and supports rapid pattern recognition."
+    },
+    {
+      "concept": "Feature Integration Theory (FIT)",
+      "field": "cognitive-psych",
+      "definition": "Treisman's theory positing that visual attention operates in two stages: (1) preattentive parallel processing of basic features (color, orientation, motion) without focused attention, and (2) attentive serial processing required to bind features into conjunctions. Features are processed automatically and in parallel; complex object identification requires focused attention directed to each location.",
+      "strength": "established-law",
+      "key_refs": [
+        "Treisman & Gelade 1980 / A Feature-Integration Theory of Attention",
+        "Treisman 1985 / Preattentive Processing in Vision",
+        "Wolfe 2020 / Forty years after Feature Integration Theory"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-treisman-feature-integration-theory",
+        "market-theory-perception-gestalt-treisman-preattentive-processing-1985",
+        "market-theory-perception-gestalt-treisman-special-issue-40-years"
+      ],
+      "related_concepts": [
+        "Preattentive Processing",
+        "Visual Search",
+        "Feature Binding"
+      ],
+      "implication": "MetroGraph should encode critical node/edge properties (type, status, relationship) as separable preattentive features (distinct colors, positions, orientations) to enable rapid detection without serial attention. Complex queries requiring feature conjunction should be supported through interactive filtering to reduce cognitive load."
+    },
+    {
+      "concept": "Preattentive Processing",
+      "field": "cognitive-psych",
+      "definition": "Automatic, parallel processing of visual information occurring in <500ms before focused attention is directed, during which the visual system rapidly detects basic features (color, orientation, motion, position) without conscious effort. Preattentive attributes can be perceived simultaneously across the entire visual field and are immune to inattentional blindness.",
+      "strength": "empirical",
+      "key_refs": [
+        "Treisman 1985 / Preattentive Processing in Vision",
+        "Ware 2020 / Information Visualization: Perception for Design"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-treisman-preattentive-processing-1985",
+        "market-theory-perception-gestalt-ware-information-visualization",
+        "market-theory-perception-gestalt-visual-saliency-preattentive",
+        "market-theory-perception-gestalt-color-perception-accessibility"
+      ],
+      "related_concepts": [
+        "Feature Integration Theory",
+        "Visual Saliency",
+        "Attentional Capture"
+      ],
+      "implication": "MetroGraph's primary visual encoding (node colors, positions, sizes, edge directions) must be preattentively distinguishable to ensure anomalies, important entities, or relationships are perceived instantly without deliberate search, supporting rapid insight discovery in large graphs."
+    },
+    {
+      "concept": "Figure-Ground Organization",
+      "field": "hci",
+      "definition": "The perceptual process by which the visual system segregates a focused figure (foreground object of interest) from background elements. Figure-ground organization is influenced by proximity, similarity, continuity, motion, lighting, experience, and task attention, and is fundamental to recognizing coherent objects in complex visual scenes.",
+      "strength": "established-law",
+      "key_refs": [
+        "Wagemans et al. 2012 / A Century of Gestalt Psychology in Visual Perception I",
+        "Rubin 1921 / Figure and ground"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-gestalt-century-review-i",
+        "market-theory-perception-gestalt-gestalt-century-review-ii"
+      ],
+      "related_concepts": [
+        "Gestalt Principles of Perceptual Grouping",
+        "Contour Integration and Completion",
+        "Visual Attention"
+      ],
+      "implication": "MetroGraph must achieve clear figure-ground separation so that focal nodes/subgraphs visually pop from context (through contrast, layering, or visual hierarchy), enabling users to maintain focus on relevant parts of the graph while managing visual clutter."
+    },
+    {
+      "concept": "Graphical Perception Effectiveness Hierarchy",
+      "field": "visualization",
+      "definition": "Empirically validated ranking of visual encoding channels by their accuracy in conveying quantitative information, established by Cleveland & McGill (1984). Hierarchy from most to least effective: position (along common scale), position (non-aligned scales), length, angle/slope, area, volume, color saturation, color hue, density/texture. Effectiveness varies by task (comparison, ranking, identification).",
+      "strength": "empirical",
+      "key_refs": [
+        "Cleveland & McGill 1984 / Graphical Perception: Theory, Experimentation, and Application",
+        "Ware 2020 / Information Visualization: Perception for Design"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-cleveland-mcgill-graphical-perception-1984",
+        "market-theory-perception-gestalt-ware-information-visualization",
+        "market-theory-perception-gestalt-visual-encoding-effectiveness-channels"
+      ],
+      "related_concepts": [
+        "Visual Encoding Channels",
+        "Task-Based Effectiveness",
+        "Information Density"
+      ],
+      "implication": "MetroGraph should prioritize position (2D spatial layout) and color/size (node properties) as primary encoding channels for graph structure and attributes, reserving secondary channels (texture, angle, density) for lower-priority or derived data to maintain decoding accuracy."
+    },
+    {
+      "concept": "Visual Encoding Channels",
+      "field": "visualization",
+      "definition": "Dimensions of visual representation (position, color, size, shape, orientation, texture, opacity, saturation, hue) used to map data to graphical form. Each channel has finite capacity, perceptual bandwidth, and effectiveness for different data types (quantitative, categorical, ordinal). Bertin's foundational framework (position, form, orientation, color, texture, value, size) was extended and validated empirically.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bertin 1967 / Semiology of Graphics",
+        "Ware 2020 / Information Visualization: Perception for Design",
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-bertin-semiology-graphics",
+        "market-theory-perception-gestalt-ware-information-visualization",
+        "market-theory-perception-gestalt-munzner-visualization-analysis-design",
+        "market-theory-perception-gestalt-visual-encoding-effectiveness-channels"
+      ],
+      "related_concepts": [
+        "Graphical Perception Effectiveness Hierarchy",
+        "Color Perception",
+        "Task-Based Effectiveness"
+      ],
+      "implication": "MetroGraph design must strategically allocate visual channels: spatial position for graph topology, color/size for categorical/quantitative node attributes, shape for node roles, opacity for weighted relationships. Avoid redundant or conflicting encodings that exceed perceptual bandwidth."
+    },
+    {
+      "concept": "Visual Search: Parallel Feature Search vs. Conjunction Search",
+      "field": "cognitive-psych",
+      "definition": "Two distinct visual search mechanisms: (1) parallel feature search detects a single basic feature across the visual field in ~500ms independent of display size (preattentive), while (2) conjunction search requires binding multiple features and scales linearly with display size (2-3 items/second), requiring serial focal attention. Search type determines whether a target 'pops out' or requires effortful scanning.",
+      "strength": "empirical",
+      "key_refs": [
+        "Treisman & Gelade 1980 / A Feature-Integration Theory of Attention",
+        "Wolfe 2012 / The Temporal Dynamics of Visual Search"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-treisman-feature-integration-theory",
+        "market-theory-perception-gestalt-visual-search-parallel-processing"
+      ],
+      "related_concepts": [
+        "Feature Integration Theory",
+        "Attentional Capture",
+        "Information Foraging"
+      ],
+      "implication": "MetroGraph should encode critical node properties (e.g., error states, query results) as distinct preattentive features enabling pop-out search, while complex multi-attribute queries should be supported through interactive filtering to avoid serial conjunction search overhead on large graphs."
+    },
+    {
+      "concept": "Visual Saliency and Attentional Capture",
+      "field": "cognitive-psych",
+      "definition": "The property of a visual stimulus that causes it to stand out from surrounding elements and capture attention involuntarily. Saliency arises from bottom-up factors (sudden motion, high contrast, color distinctiveness) and top-down factors (task-driven attention, expertise). Saliency modulates preattentive processing speed and determines where focal attention is deployed first.",
+      "strength": "empirical",
+      "key_refs": [
+        "Theeuwes 2010 / Stimulus Saliency Modulates Pre-Attentive Processing Speed",
+        "Wolfe 2020 / Models of Bottom-Up and Top-Down Visual Attention"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-visual-saliency-preattentive",
+        "market-theory-perception-gestalt-visual-attention-models-topdown-bottomup"
+      ],
+      "related_concepts": [
+        "Preattentive Processing",
+        "Visual Attention",
+        "Attentional Capture"
+      ],
+      "implication": "MetroGraph must carefully control saliency to guide user attention: highlight critical nodes/edges through color/size contrast, use motion sparingly to draw attention to changes, and suppress saliency in non-focal areas to prevent distraction and cognitive load."
+    },
+    {
+      "concept": "Perceptual Bandwidth and Working Memory Limits",
+      "field": "cognitive-psych",
+      "definition": "The limited capacity of human perception and working memory to process information simultaneously. Studies show that focal attention can track 3-4 objects, working memory holds ~4 chunks of information, and visual search becomes serial when displays exceed ~4-6 items. Change blindness and inattentional blindness demonstrate the boundaries of perceptual capacity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Luck & Vogel 1997 / The capacity of visual working memory",
+        "Rensink 2002 / Change blindness and visual memory"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-perceptual-bandwidth-limits",
+        "market-theory-perception-gestalt-animation-visualization-effectiveness"
+      ],
+      "related_concepts": [
+        "Cognitive Load Theory",
+        "Attentional Capture",
+        "Information Density"
+      ],
+      "implication": "MetroGraph must limit initial information density to prevent cognitive overload: show focused views of graph subsets (via zoom/pan/filtering) rather than entire graphs at once, use coordinated multiple views and progressive disclosure, and avoid animation overload by limiting concurrent motion to <4 elements."
+    },
+    {
+      "concept": "Cognitive Load Theory in Visualization",
+      "field": "cognitive-psych",
+      "definition": "Framework distinguishing three types of cognitive load: (1) intrinsic load (inherent complexity of the task/information), (2) extraneous load (imposed by poor design/presentation), and (3) germane load (processing beneficial for learning/understanding). Effective visualization minimizes extraneous load while managing intrinsic load through progressive disclosure and layered information.",
+      "strength": "framework",
+      "key_refs": [
+        "Sweller 1988 / Cognitive Load Theory",
+        "Sweller 2011 / Visualisation and Instructional Design"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-sweller-cognitive-load-visualization"
+      ],
+      "related_concepts": [
+        "Perceptual Bandwidth and Working Memory Limits",
+        "Information Density",
+        "Progressive Disclosure"
+      ],
+      "implication": "MetroGraph design must reduce extraneous cognitive load through clear labeling, consistent visual encoding, and uncluttered layouts. Complex queries and large graphs should use progressive disclosure (filtering, aggregation, animation) to manage intrinsic load while preserving germane load for insight discovery."
+    },
+    {
+      "concept": "Node-Link Diagram Perception and Layout Effects",
+      "field": "visualization",
+      "definition": "Graph layout significantly impacts perception of network structure, connectivity, and properties. Layout algorithms optimizing for edge crossings, node spacing, symmetry, and hierarchy enable faster comprehension of graph topology. Studies show that poor layouts increase visual search time and misreading of connections, while optimized layouts enhance pattern recognition.",
+      "strength": "empirical",
+      "key_refs": [
+        "Huang & Eades 2005 / How people read graphs",
+        "Ghani et al. 2025 / Graph visualization efficiency of popular web-based libraries"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-graph-visualization-node-link-perception",
+        "market-theory-perception-gestalt-network-visualization-layout-perception"
+      ],
+      "related_concepts": [
+        "Gestalt Principles of Perceptual Grouping",
+        "Visual Search",
+        "Information Foraging"
+      ],
+      "implication": "MetroGraph's layout algorithm must prioritize perceptual effectiveness: minimize edge crossings, use symmetry and hierarchy to organize structure, apply grouping principles to co-locate related nodes, and enable interactive layout adjustment so users can organize graphs to match mental models."
+    },
+    {
+      "concept": "Focal vs. Ambient Visual Processing",
+      "field": "cognitive-psych",
+      "definition": "Distinction between two visual processing modes: focal (what) processing via central vision identifying object properties and identity, and ambient (where) processing via peripheral vision detecting spatial location and navigation. These modes are served by distinct neural pathways (ventral vs. dorsal streams) and operate in parallel with different resolution and bandwidth.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ungerleider & Mishkin 1982 / Two cortical visual systems",
+        "Brogan et al. 2024 / How central and peripheral vision influence focal and ambient processing"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-ambient-peripheral-vision"
+      ],
+      "related_concepts": [
+        "Visual Attention",
+        "Preattentive Processing",
+        "Multi-Scale Visualization"
+      ],
+      "implication": "MetroGraph should support multi-scale viewing: detailed node information in focal (central) view, while maintaining graph structure context and status overview in ambient (peripheral) view via minimap, legend, or reduced visual hierarchy. This leverages both processing modes for efficient exploration."
+    },
+    {
+      "concept": "Animation and Temporal Visualization Perception",
+      "field": "visualization",
+      "definition": "Temporal data and animated transitions in visualizations are perceived through motion perception (detecting change), temporal attention (tracking moving objects), and working memory (retaining frame-to-frame changes). Effective animation uses motion to reveal transformations, guide attention, and encode temporal relationships while avoiding cognitive overload from rapid or excessive motion.",
+      "strength": "empirical",
+      "key_refs": [
+        "Chevalier et al. 2015 / Improving Engagement of Animated Visualization with Visual Foreshadowing"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-animation-visualization-effectiveness"
+      ],
+      "related_concepts": [
+        "Gestalt Principles of Perceptual Grouping",
+        "Perceptual Bandwidth and Working Memory Limits",
+        "Visual Saliency and Attentional Capture"
+      ],
+      "implication": "MetroGraph should use animation sparingly and purposefully: smooth transitions to reveal layout changes and guide attention, limit concurrent animated elements to <4, use visual foreshadowing to preview changes, and ensure animation duration matches task needs (avoid both flickering and sluggishness)."
+    },
+    {
+      "concept": "Color Perception and Visual Channels",
+      "field": "visualization",
+      "definition": "Color perception involves three independent channels: lightness (brightness), hue (red/green/blue/yellow), and saturation (purity). These channels have different perceptual properties: lightness is preattentive and linear, hue is categorical and limited to ~7-10 distinguishable colors, saturation is weak and nonlinear. Color effectiveness varies by task and context (e.g., categorical vs. quantitative encoding).",
+      "strength": "empirical",
+      "key_refs": [
+        "Ware 2020 / Information Visualization: Perception for Design",
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-ware-information-visualization",
+        "market-theory-perception-gestalt-color-perception-accessibility"
+      ],
+      "related_concepts": [
+        "Visual Encoding Channels",
+        "Color Vision Deficiency and Accessibility",
+        "Graphical Perception Effectiveness Hierarchy"
+      ],
+      "implication": "MetroGraph should use color intentionally: lightness for quantitative node attributes (supporting preattentive comparison), distinct hue for categorical properties (node types, statuses), and reserve saturation for secondary encodings. Avoid red-green-only encoding for accessibility."
+    },
+    {
+      "concept": "Color Vision Deficiency and Accessibility",
+      "field": "interaction-design",
+      "definition": "Approximately 8% of males and 0.5% of females have color vision deficiency (CVD), primarily red-green confusion (protanopia, deuteranopia) or blue-yellow weakness (tritanopia). Accessible visualization design avoids red-green-only encoding, uses high-contrast color pairs testable with CVD simulators, and supplements color with secondary encodings (shape, pattern, texture, position).",
+      "strength": "empirical",
+      "key_refs": [
+        "Brettel et al. 1997 / Color-blind simulator software",
+        "Deficiency-based visualization guide 2024"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-color-blindness-accessibility",
+        "market-theory-perception-gestalt-color-perception-accessibility"
+      ],
+      "related_concepts": [
+        "Color Perception and Visual Channels",
+        "Visual Encoding Channels",
+        "Universal Design"
+      ],
+      "implication": "MetroGraph must support all users: test color schemes with CVD simulators, avoid red-green-only distinctions, pair color with shape/texture/position encoding, and provide high-contrast alternatives. This ensures accessibility without sacrificing visualization effectiveness."
+    },
+    {
+      "concept": "Texture and Pattern as Composite Visual Variables",
+      "field": "visualization",
+      "definition": "Texture and pattern are complex composite visual variables combining position, orientation, scale, and spacing of repeated graphical elements. Unlike simple channels (color, size), texture perception involves grouping principles (proximity, similarity, orientation), scale-dependent processing, and working memory load. Recent work systematizes texture design for visualization, distinguishing preattentive from attentive texture discrimination.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kirley et al. 2025 / Reframing Pattern: A Comprehensive Approach to a Composite Visual Variable"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-texture-perception-visualization"
+      ],
+      "related_concepts": [
+        "Visual Encoding Channels",
+        "Gestalt Principles of Perceptual Grouping",
+        "Graphical Perception Effectiveness Hierarchy"
+      ],
+      "implication": "MetroGraph can use texture/pattern to encode secondary attributes (weak connection strength, deprecated nodes) or to fill large areas (clustered subgraphs) where color alone would create visual confusion. However, texture perception is weaker than position/color; reserve it for non-critical attributes or supplement with other channels."
+    },
+    {
+      "concept": "Contour Integration and Completion",
+      "field": "hci",
+      "definition": "The visual system integrates fragmented contours into coherent boundaries through grouping principles (proximity, continuity, closure, good continuation) and amodal completion (filling in invisible edges behind occlusions). Contour integration operates at multiple processing levels (early visual cortex through shape perception) and is influenced by experience, attention, and task.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wagemans et al. 2012 / A Century of Gestalt Psychology in Visual Perception I"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-gestalt-century-review-i"
+      ],
+      "related_concepts": [
+        "Gestalt Principles of Perceptual Grouping",
+        "Figure-Ground Organization",
+        "Contour Detection"
+      ],
+      "implication": "MetroGraph's visual design should support contour completion: use consistent edge styles and colors to group related connections, leverage good continuation and closure to suggest implied relationships, and minimize visual fragmentation so edges remain perceptually coherent even when paths cross or occlude."
+    },
+    {
+      "concept": "Coordinated Multiple Views (CMVs) and Brushing-and-Linking",
+      "field": "visualization",
+      "definition": "Interactive technique coordinating multiple linked views of the same data through shared selection and filtering. Users select elements in one view and see corresponding highlights in other views, supporting multidimensional exploration by exploiting perceptual ability to track small highlighted regions across views and working memory for maintaining task context across displays.",
+      "strength": "empirical",
+      "key_refs": [
+        "Buja et al. 1991 / Exploratory Visualization with Multiple Linked Views"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-multiple-linked-views-coordination"
+      ],
+      "related_concepts": [
+        "Visual Search",
+        "Information Foraging",
+        "Focal vs. Ambient Visual Processing"
+      ],
+      "implication": "MetroGraph should support multiple linked views (e.g., detail view + overview, table + graph, temporal + structural view) where selection in one view highlights corresponding elements in others. This leverages perceptual grouping and working memory to support complex queries without overwhelming cognitive load."
+    },
+    {
+      "concept": "Task-Based Effectiveness of Visualizations",
+      "field": "visualization",
+      "definition": "Visualization effectiveness is task-dependent: different chart types (bar, line, scatter, area) excel at different perceptual tasks (comparison, ranking, identification, trend detection). Empirical studies measure accuracy and response time across tasks and visualization types to guide chart selection. General principle: match visual encoding to perceptual task demands.",
+      "strength": "empirical",
+      "key_refs": [
+        "Talbot et al. 2013 / Task-Based Effectiveness of Basic Visualizations",
+        "Quadri & Rosen 2021 / A Survey of Perception-Based Visualization Studies by Task"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-chart-type-effectiveness-comparative",
+        "market-theory-perception-gestalt-perception-viz-survey-2021"
+      ],
+      "related_concepts": [
+        "Graphical Perception Effectiveness Hierarchy",
+        "Information Foraging",
+        "Visualization Analysis and Design"
+      ],
+      "implication": "MetroGraph should support task-aware visualization: provide multiple views optimized for different analysis tasks (topology inspection via hierarchical layout, similarity detection via clustering, anomaly detection via color contrast), and allow users to switch views dynamically as tasks evolve."
+    },
+    {
+      "concept": "Visual Metaphor in Information Visualization",
+      "field": "visualization",
+      "definition": "Use of metaphorical visual structures (e.g., tree metaphors for hierarchies, metro map metaphors for networks) to leverage users' prior knowledge and domain expertise, reducing cognitive load by mapping abstract structures to familiar spatial or physical domains. Metaphor effectiveness depends on alignment between abstract structure and metaphorical domain.",
+      "strength": "framework",
+      "key_refs": [
+        "Lakoff & Johnson 1980 / Conceptual metaphor theory",
+        "Ribeiro et al. 2020 / On the role of metaphor in information visualization"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-visual-metaphor-infovis"
+      ],
+      "related_concepts": [
+        "Affordances and Signifiers",
+        "Mental Models",
+        "Perceptual Bandwidth and Working Memory Limits"
+      ],
+      "implication": "MetroGraph leverages the metro-map metaphor naturally: users already understand metro maps as simplified, stylized networks with spatial relationships preserved. This metaphor reduces cognitive load by aligning database graph visualization with familiar spatial reasoning, enabling rapid insight discovery."
+    },
+    {
+      "concept": "Icon Design and Visual Semiotics",
+      "field": "interaction-design",
+      "definition": "Icons are visual signs functioning as iconic (resemblance-based), indexical (causally linked), or symbolic (conventional) representations. Icon effectiveness depends on visual clarity, distinctiveness, learnability, and alignment with user mental models. Semiotic analysis guides icon selection: iconic signs are fastest for novices, symbolic signs efficient for experts.",
+      "strength": "framework",
+      "key_refs": [
+        "Peirce 1931 / Semiotics",
+        "Liu et al. 2016 / Design semiotics based icon design"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-icon-design-semiotics"
+      ],
+      "related_concepts": [
+        "Visual Encoding Channels",
+        "Affordances and Signifiers",
+        "Visual Metaphor in Information Visualization"
+      ],
+      "implication": "MetroGraph should use iconic node shapes and edge styles aligned with user domain knowledge: iconic representations of database objects, arrows for directional relationships, consistent symbology for node types. This reduces learning curve and supports rapid recognition."
+    },
+    {
+      "concept": "Affordances and Signifiers in Interface Design",
+      "field": "interaction-design",
+      "definition": "Affordances are action possibilities offered by an object (what can be done); signifiers are perceptual cues (visual, auditory, tactile) that communicate affordances to users. Good design aligns visual properties with actual interaction possibilities, reducing cognitive load by making actions obvious without explanation. Poor signification leads to mode errors and confusion.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 2015 / The Design of Everyday Things"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-norman-design-everyday-things"
+      ],
+      "related_concepts": [
+        "Mental Models",
+        "Icon Design and Visual Semiotics",
+        "Visual Metaphor in Information Visualization"
+      ],
+      "implication": "MetroGraph UI must signal affordances clearly: hoverable nodes should change color/scale; clickable edges should highlight; draggable elements should show grab cursors. This reduces mode errors and supports users in building correct mental models of graph interaction."
+    },
+    {
+      "concept": "Eye Tracking and Gaze-Based Saliency Metrics",
+      "field": "hci",
+      "definition": "Eye-tracking studies measure gaze fixation patterns and saccades to assess where users look in visualizations. Gaze metrics (time to first fixation, fixation duration, fixation count) reveal which elements attract attention and demand cognitive resources. Saliency maps computed from gaze data or computational models predict attention distribution and identify design issues.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cai et al. 2019 / Saliency-Based Gaze Visualization for Eye Movement Analysis"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-eye-tracking-saliency-visualization"
+      ],
+      "related_concepts": [
+        "Visual Saliency and Attentional Capture",
+        "Preattentive Processing",
+        "Information Foraging"
+      ],
+      "implication": "MetroGraph should be validated with eye-tracking studies to measure gaze distribution during common tasks (finding nodes, tracing paths, identifying clusters). Results should inform layout, color, and animation design to ensure critical elements receive appropriate attention."
+    },
+    {
+      "concept": "Visual Analytics Paradigm",
+      "field": "visualization",
+      "definition": "Visual analytics combines interactive visualization with automated analysis and statistical computation to support insight discovery and decision-making. The paradigm leverages humans' superior pattern recognition and perceptual abilities with algorithms' computational power, operating in tight feedback loops where visualization guides analysis and analysis informs visualization updates.",
+      "strength": "framework",
+      "key_refs": [
+        "PNNL / Visual Analytics for Exploring and Understanding Data"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-visual-analytics-insight-discovery"
+      ],
+      "related_concepts": [
+        "Information Foraging",
+        "Coordinated Multiple Views",
+        "Task-Based Effectiveness of Visualizations"
+      ],
+      "implication": "MetroGraph can adopt visual analytics approach: integrate graph layout optimization, automated clustering/anomaly detection, and query suggestion alongside interactive visualization, creating tight feedback loops where user exploration (filtering, zooming) refines automated analysis and vice versa."
+    },
+    {
+      "concept": "Grammar of Graphics Framework",
+      "field": "visualization",
+      "definition": "Systematic framework mapping data variables to visual properties through a layered grammar: data (variables) to geometric objects (marks: points, lines, bars) to aesthetic mappings (position, color, size, shape) to statistical transformations to coordinate systems to faceting. This grammar enables compositional visualization design and is implemented in tools like ggplot2, Vega, and modern visualization libraries.",
+      "strength": "framework",
+      "key_refs": [
+        "Wilkinson 1999 / The Grammar of Graphics"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-wilkinson-grammar-graphics"
+      ],
+      "related_concepts": [
+        "Visual Encoding Channels",
+        "Graphical Perception Effectiveness Hierarchy",
+        "Task-Based Effectiveness of Visualizations"
+      ],
+      "implication": "MetroGraph's design philosophy can leverage grammar-of-graphics principles: define explicit mappings from graph properties (node attributes, edge weights, relationships) to visual marks and aesthetics, enabling systematic exploration of visualization alternatives and principled composition of views."
+    },
+    {
+      "concept": "Information Visualization Principles and Design",
+      "field": "visualization",
+      "definition": "Foundational principles for effective visualization derived from perception and cognition: show the data clearly, reduce cognitive load through visual hierarchy and simplification, use visual encoding to amplify perception (leverage preattentive channels), support interaction for exploration and refinement. These principles guide selection of chart types, color schemes, layouts, and interactive features.",
+      "strength": "framework",
+      "key_refs": [
+        "Ware 2020 / Information Visualization: Perception for Design",
+        "Munzner 2014 / Visualization Analysis and Design",
+        "Tufte 1983 / The Visual Display of Quantitative Information"
+      ],
+      "source_ids": [
+        "market-theory-perception-gestalt-ware-information-visualization",
+        "market-theory-perception-gestalt-munzner-visualization-analysis-design",
+        "market-theory-perception-gestalt-tufte-visual-display-quantitative"
+      ],
+      "related_concepts": [
+        "Gestalt Principles of Perceptual Grouping",
+        "Graphical Perception Effectiveness Hierarchy",
+        "Cognitive Load Theory in Visualization"
+      ],
+      "implication": "MetroGraph design must apply these core principles: clearly encode graph structure and properties, minimize visual clutter and cognitive load through progressive disclosure and color restraint, use metro-map simplification to amplify salient relationships, and support interactive exploration to maintain engagement."
+    }
+  ]
+}

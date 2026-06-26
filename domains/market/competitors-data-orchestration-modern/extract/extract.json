@@ -1,0 +1,1616 @@
+{
+  "leaf": "competitors-data-orchestration-modern",
+  "products": [
+    {
+      "slug": "apache-airflow",
+      "name": "Apache Airflow",
+      "company_slug": "apache-airflow",
+      "description": "Open-source DAG-based workflow orchestration platform with extensive ecosystem (200+ providers), dynamic workflow support, and enterprise scalability. Powers complex scheduling across distributed systems.",
+      "positioning": "Feature-complete enterprise orchestrator with steep operational and learning overhead; foundation for self-healing agentic workflows via Human-in-Loop operators (3.1) and multi-team support (3.2).",
+      "product_type": "platform",
+      "open_source": true,
+      "deployment": [
+        "self-hosted",
+        "managed-cloud",
+        "kubernetes"
+      ],
+      "tech_stack": [
+        "Python",
+        "PostgreSQL",
+        "Celery",
+        "Kubernetes"
+      ],
+      "archetype": "distributed-orchestration",
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-airflow-official-homepage",
+        "market-competitors-data-orchestration-modern-airflow-documentation",
+        "market-competitors-data-orchestration-modern-airflow-release-notes",
+        "market-competitors-data-orchestration-modern-zenml-orchestration-blog",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "slug": "dagster",
+      "name": "Dagster",
+      "company_slug": "dagster",
+      "description": "Asset-centric orchestration platform emphasizing data quality, lineage, and observability. Column-level lineage tracking, asset freshness policies, and data quality checks built-in. Includes Dagster+AI (Compass) for agent-powered monitoring.",
+      "positioning": "Modern asset model with strongest observability/lineage for data teams and AI agents; manages data context and quality as first-class concerns.",
+      "product_type": "platform",
+      "open_source": true,
+      "deployment": [
+        "self-hosted",
+        "managed-cloud"
+      ],
+      "tech_stack": [
+        "Python",
+        "Dagster+",
+        "Compass (AI)"
+      ],
+      "archetype": "asset-centric-orchestration",
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-dagster-official-homepage",
+        "market-competitors-data-orchestration-modern-dagster-pricing-page",
+        "market-competitors-data-orchestration-modern-dagster-documentation",
+        "market-competitors-data-orchestration-modern-zenml-orchestration-blog",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "slug": "prefect",
+      "name": "Prefect",
+      "company_slug": "prefect",
+      "description": "Python-native workflow orchestration with open-core model. Offers managed Prefect Cloud and open-source self-hosted. New Prefect Horizon platform for AI infrastructure (MCP server deployment). @flow/@task decorators for minimal overhead.",
+      "positioning": "Developer-friendly, lowest friction entry point; simplicity and UX over extensibility. Expanding into AI infrastructure layer with MCP servers.",
+      "product_type": "platform",
+      "open_source": true,
+      "deployment": [
+        "self-hosted",
+        "managed-cloud"
+      ],
+      "tech_stack": [
+        "Python",
+        "Prefect Cloud",
+        "Prefect Horizon",
+        "MCP servers"
+      ],
+      "archetype": "python-native-orchestration",
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-prefect-official-homepage",
+        "market-competitors-data-orchestration-modern-prefect-pricing-page",
+        "market-competitors-data-orchestration-modern-prefect-documentation",
+        "market-competitors-data-orchestration-modern-zenml-orchestration-blog",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "slug": "mage",
+      "name": "Mage",
+      "company_slug": "mage",
+      "description": "Hybrid notebook + modular code framework combining data integration, transformation, orchestration, monitoring, and activation. Multi-language support (Python/SQL/R). Visual block-based editor with AI sidekick for code generation.",
+      "positioning": "Low-code all-in-one platform for data teams; visual-first with friendly onboarding; bridges between code and no-code paradigms.",
+      "product_type": "platform",
+      "open_source": true,
+      "deployment": [
+        "self-hosted",
+        "managed-cloud",
+        "hybrid-cloud",
+        "on-premises"
+      ],
+      "tech_stack": [
+        "Python",
+        "SQL",
+        "R",
+        "Kubernetes",
+        "dbt"
+      ],
+      "archetype": "visual-all-in-one",
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-mage-official-homepage",
+        "market-competitors-data-orchestration-modern-mage-pricing-page",
+        "market-competitors-data-orchestration-modern-mage-github",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison"
+      ]
+    },
+    {
+      "slug": "kestra",
+      "name": "Kestra",
+      "company_slug": "kestra",
+      "description": "Declarative YAML-based, event-driven orchestration platform. 1200+ language-agnostic plugins; no manual DAG wiring required. Infrastructure-as-Code approach to workflows. Includes AI Copilot for YAML generation from natural language.",
+      "positioning": "Event-first, infrastructure-as-code paradigm; rapid scaling (20x YoY, 2B+ flows executed 2025); bridges DevOps and data engineering with unified orchestration.",
+      "product_type": "platform",
+      "open_source": true,
+      "deployment": [
+        "self-hosted",
+        "managed-cloud",
+        "enterprise-self-hosted"
+      ],
+      "tech_stack": [
+        "YAML",
+        "Kestra Cloud",
+        "1200+ Plugins",
+        "MCP"
+      ],
+      "archetype": "declarative-event-driven",
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-kestra-official-homepage",
+        "market-competitors-data-orchestration-modern-kestra-pricing-page",
+        "market-competitors-data-orchestration-modern-kestra-documentation",
+        "market-competitors-data-orchestration-modern-kestra-crunchbase"
+      ]
+    },
+    {
+      "slug": "astronomer",
+      "name": "Astronomer",
+      "company_slug": "astronomer",
+      "description": "Managed Airflow platform (Astro) removing operational burden of self-hosted Airflow. Includes Otto (AI agent for DAG authoring, failure investigation, upgrade planning). Astro Executor with auto-recovery and efficient resource management.",
+      "positioning": "Enterprise Airflow alternative for teams seeking simplicity without platform engineering overhead. Airflow-dependent but operationally managed; fastest-growing (150% YoY revenue growth, $375M raised).",
+      "product_type": "platform",
+      "open_source": false,
+      "deployment": [
+        "managed-cloud",
+        "kubernetes"
+      ],
+      "tech_stack": [
+        "Apache Airflow",
+        "Astro Cloud",
+        "Otto (AI)",
+        "Astro Executor"
+      ],
+      "archetype": "managed-airflow",
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-astronomer-official-homepage",
+        "market-competitors-data-orchestration-modern-astronomer-pricing-page",
+        "market-competitors-data-orchestration-modern-astronomer-crunchbase",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "slug": "orchestra",
+      "name": "Orchestra",
+      "company_slug": "orchestra",
+      "description": "Declarative data + AI orchestration platform purpose-built for Snowflake. Unified control plane integrating dbt, Python, SQL, and AI pipelines with native observability and lineage. Emphasis on managed simplicity and rapid implementation.",
+      "positioning": "Modern SaaS-first orchestrator optimized for Snowflake; single pane of glass for data ops; fastest to implement (10x faster than legacy, 80% less maintenance); strongest fit for lean Snowflake teams.",
+      "product_type": "platform",
+      "open_source": false,
+      "deployment": [
+        "managed-cloud"
+      ],
+      "tech_stack": [
+        "Snowflake",
+        "dbt",
+        "Python",
+        "SQL",
+        "100+ integrations"
+      ],
+      "archetype": "data-plus-ai-saas",
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-orchestra-official-homepage",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog",
+        "market-competitors-data-orchestration-modern-getorchestra-funding"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "DAG execution is mature and fully featured. Human-in-Loop operators (3.1) and LLM operators enable agentic workflows."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Dynamic DAGs, branch operators, and conditional task execution fully supported."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Retry logic, error callbacks, and exponential backoff are native and well-documented."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Graph execution via DAG scheduler is production-ready but requires infrastructure knowledge (executor choice, workers, metadata DB)."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Multiple executors (Local, Celery, Kubernetes) offer parallelization. Configuration requires expertise."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.agent-orchestration-state-context",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "XComs, Variables, and Connections provide state management but lack semantic structure (vs asset models)."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Astronomer Otto provides AI DAG authoring. Native Airflow AI support is minimal."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "LLM operators and custom code required; no built-in copilot."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "RBAC, LDAP, Kerberos supported. Configuration complex; enterprise features require managed (Astronomer)."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "Role-based access control present but granularity depends on deployment model."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.auth-governance-audit-logs",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "notes": "Basic audit logs in webserver; comprehensive audit requires external tools or Astronomer."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.deploy",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Extensive deployment options (Kubernetes, Docker, Helm, bare metal). Flexibility comes with operational burden."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Cron, interval, and event-based scheduling fully supported and well-documented."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.deploy-webhook-trigger",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "REST API and webhook triggers available via providers."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.extensibility",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "200+ official providers; custom operators easily authored. Gold standard for ecosystem."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.extensibility-plugin-sdk",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Provider packages are well-documented and actively maintained."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "DAG visualization in webserver is functional but minimal; no focus-mode or advanced exploration."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Task logs, execution history, retry monitoring available. Lineage requires external integrations (OpenLineage)."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Task logs and execution history are comprehensive and easily accessible."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.observability-metrics",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Metrics available via StatsD integration; requires external monitoring setup."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "partial",
+      "quality_grade": "D",
+      "hci_cost": "F",
+      "notes": "Steep learning curve (metadata DB, scheduler, executor concepts, provider ecosystem). Multi-step deployment."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "notes": "Example DAGs and Helm templates exist but lack guided walkthrough."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "DAGs are version-controlled as code; deployment history tracked."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Git-based DAG sync; DAG parser and deployment integration."
+    },
+    {
+      "product_slug": "apache-airflow",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "Webserver UI is functional but dated; steep learning curve for navigation and admin."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Asset execution model with full observability; optimized for AI agents via Compass."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Dynamic orchestration via asset definitions; branching via asset dependencies."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Built-in retry policies and error handling at asset level."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Graph execution via asset materialization; cleaner abstraction than DAGs."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.agent-orchestration-state-viz",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Asset state visualization and asset lineage UI is first-class; strongly integrated."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Compass (Slack-native AI assistant) available in Dagster+Cloud; dagster-io/skills for Claude Code integration."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.ai-assist-chat-copilot",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Compass provides Slack-native assistance for asset monitoring and diagnosis."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "RBAC, SAML, and audit logs in Dagster+Cloud. Self-hosted lacks enterprise auth."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Role-based access control with Viewer, Editor, Admin roles in Cloud."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.deploy",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Serverless (Dagster+) and self-hosted code locations; simplified deployment."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Dagster+ serverless removes infrastructure management."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.extensibility",
+      "support_level": "via-plugin",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Asset integrations and custom resource types; smaller operator library than Airflow."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Lineage tracing, asset dependencies, and lineage-aware exploration are core to UI."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.graph-exploration-lineage-tracing",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Column-level lineage (new) visible in Dagster+ UI; upstream/downstream tracing."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Asset metadata, freshness checks, data quality checks, lineage all built-in."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Comprehensive asset execution logs and event history."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.observability-metrics",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Platform metrics, asset metrics, and cost tracking integrated."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Asset model is powerful but requires conceptual shift; documentation gaps noted by users."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "notes": "Example projects exist but asset-centric patterns take time to internalize."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Code versioning via Git; branch deployments in Dagster+Cloud."
+    },
+    {
+      "product_slug": "dagster",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Modern, intuitive UI; strong visual hierarchy for assets and lineage."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Flow/task execution is intuitive; @flow/@task decorators minimize overhead."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Native Python control flow (if/for/while); no special syntax required."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Retry policies and error handling via decorators and state management."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Graph execution via flow runner; serverless workers or custom work pools."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.agent-orchestration-state-context",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "State management via context; flow/task return values and state transitions."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "New @materialize asset layer brings asset-model benefits; native AI support limited."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Prefect Horizon supports MCP servers for AI integration; limited built-in generation."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "RBAC and audit logs in Prefect Cloud; self-hosted OSS lacks these."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.auth-governance-sso",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "SSO available in Prefect Cloud Pro/Enterprise tiers."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.deploy",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Serverless (Prefect Cloud) or self-hosted; minimal ops overhead either way."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Prefect Cloud serverless is production-ready and cost-effective."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.extensibility",
+      "support_level": "via-plugin",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Task library and custom tasks; smaller ecosystem than Airflow."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Flow visualization and run history; lineage requires external integrations."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Excellent logging dashboard, state history, run observability; clean UX."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Flow/task logs easily accessible; strong visualization."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Python-native, minimal boilerplate, excellent DX; fastest entry for Python developers."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Well-documented quickstart; community examples abundant."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Code versioning via Git; flow versions tracked."
+    },
+    {
+      "product_slug": "prefect",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Modern, clean UI with strong visual hierarchy; intuitive navigation."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Block execution model; visual orchestration combined with code."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Block-level control flow; less flexible than code-native approaches but intuitive."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Retry and error handling at block level."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Block execution with local/Kubernetes runners; straightforward."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "AI sidekick built-in; context-aware coding assistance and debugging."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "AI sidekick generates block code from natural language; token limits scale with plan."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.ai-assist-debugging",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "AI sidekick provides debugging suggestions and error explanation."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "RBAC available in managed Pro tier; self-hosted basic auth."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.deploy",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Managed cloud, hybrid cloud, private cloud, on-premises options."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Multiple deployment models; managed cloud is fully hosted."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Cron and trigger-based scheduling; configuration via UI."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.extensibility",
+      "support_level": "via-plugin",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Custom blocks and integrations; ecosystem smaller than Airflow."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Block DAG visualization; not as sophisticated as dedicated lineage tools."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Block-level logging and run history; integrated monitoring."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Block run logs and pipeline execution history."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Visual block editor is highly intuitive; minimal learning curve for data engineers."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Interactive UI tutorials and guided onboarding."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Block templates and pipeline starter packs available."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Code versioning and pipeline snapshots."
+    },
+    {
+      "product_slug": "mage",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Clean, modern, block-editor UI; strong visual design."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "YAML-based execution with 1200+ plugins; language-agnostic."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Declarative control flow via YAML; branches and conditionals."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Retry logic and error handling built into YAML syntax."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Task runner execution with worker groups for scalability."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.agent-orchestration-execution-optimization",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Parallel execution and worker group management."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "AI Copilot generates YAML flows from natural language."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.ai-assist-nl-to-graph",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "NL-to-YAML generation via AI Copilot."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "RBAC, LDAP/SCIM, SSO, audit logs in Enterprise/Cloud tiers."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Custom RBAC available in Enterprise."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.deploy",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "OSS self-hosted, Kestra Cloud managed, Enterprise self-hosted with governance."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Kestra Cloud fully managed; zero maintenance overhead."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Event-driven scheduling is first-class; extensive trigger support."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.extensibility",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "1200+ plugins available; language-agnostic plugin SDK."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.extensibility-plugin-sdk",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Enterprise exclusive plugins available; plugin marketplace."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "YAML-based flow visualization; lineage via UI."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Built-in execution logs, metrics, and monitoring."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Task logs and execution history integrated."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "YAML learning curve exists but AI Copilot lowers friction."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "YAML templates and examples available."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Flows are version-controlled as YAML; Git-ready."
+    },
+    {
+      "product_slug": "kestra",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Git integration for flow management."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Airflow DAGs with Otto AI agent for authoring and debugging."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Airflow scheduler with Astro Executor; auto-recovery and efficient resource mgmt."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Otto AI agent for DAG authoring, failure investigation, and upgrade planning."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Otto writes DAGs from descriptions; learns from private memory."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.ai-assist-debugging",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Otto investigates failures and plans corrective actions."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Enterprise SSO, SAML, audit logging in Business/Enterprise tiers."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.auth-governance-sso",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Enterprise SSO enforcement available."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.auth-governance-audit-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "7-day to 90-day audit log retention depending on tier."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.deploy",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Fully managed Astro cloud; zero ops burden; scales to enterprise."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Astro Cloud fully managed; scale-to-zero hibernating deployments."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Airflow cron and event-based scheduling; fully supported."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.extensibility",
+      "support_level": "via-plugin",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Full Airflow ecosystem (200+ providers) available."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Airflow DAG visualization; OpenLineage integration available."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Enhanced observability dashboard; data quality monitoring; cost tracking."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Task logs and DAG history in Astro dashboard."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.observability-metrics",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Performance metrics and cost tracking built-in."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Airflow learning curve persists but Astro removes ops overhead; Otto accelerates DAG writing."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Example DAGs and templates; Otto can generate them."
+    },
+    {
+      "product_slug": "astronomer",
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "DAGs version-controlled; deployment rollbacks available."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Agentic workflows via dbt, Python, SQL; unified execution model."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "GUI and code-based workflow definition with native conditional execution."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Retry logic and error handling integrated."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Unified execution for dbt, Python, SQL, and AI pipelines."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Built for agentic workflows; Snowflake + dbt integration optimal for AI."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "RBAC, SSO, audit logs all included in managed SaaS."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.auth-governance-sso",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "SSO enforced by default in SaaS offering."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.deploy",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Fully managed SaaS; zero infrastructure required."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Managed cloud only; single-pane-of-glass for all operations."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Flexible scheduling (cron, triggers, event-driven)."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.extensibility",
+      "support_level": "via-plugin",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "100+ integrations; Snowflake-centric ecosystem."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.graph-exploration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Native lineage, dependency visualization, root-cause analysis integrated."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.graph-exploration-lineage-tracing",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Lineage visualization is first-class; dbt + Snowflake integration optimal."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Integrated observability; proactive alerts; root-cause visibility."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Unified logging for dbt, Python, SQL pipelines."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "No learning curve; GUI or few lines of code; readymade patterns for dbt/Snowflake."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "100+ pre-built integration templates; dbt discovery and sync."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Guided onboarding for Snowflake teams; minimal friction."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.versioning",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Workflow versioning via UI; Git integration available."
+    },
+    {
+      "product_slug": "orchestra",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Modern, intuitive GUI; fast to navigate; single pane of glass."
+    }
+  ],
+  "competitors": [
+    {
+      "company_slug": "apache-airflow",
+      "product_slug": "apache-airflow",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "ecosystem-breadth (200+ providers)",
+        "feature-completeness",
+        "community-adoption",
+        "operational-flexibility",
+        "multi-language-via-sdk"
+      ],
+      "we_win_on": [
+        "graph-visualization-hci",
+        "lineage-out-of-box",
+        "ai-native-architecture",
+        "zero-infrastructure",
+        "data-quality-governance"
+      ],
+      "wedge_vs_them": "MetroGraph surfaces the agentic DAG as a visual-first metro-map interface with native lineage and AI context baked in, vs Airflow's config-heavy infrastructure model and after-the-fact lineage integrations. Target Airflow maintainers tired of infrastructure; offer single-pane observability they lose with 200+ plugins.",
+      "moat": "Massive community, Apache foundation governance, ubiquitous in enterprises. Switching cost is the operational debt of existing deployments.",
+      "overlap_area": [
+        "dag-execution",
+        "task-orchestration",
+        "scheduling",
+        "error-handling",
+        "multi-team-governance",
+        "observability",
+        "ai-agent-compatibility"
+      ],
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-airflow-official-homepage",
+        "market-competitors-data-orchestration-modern-airflow-documentation",
+        "market-competitors-data-orchestration-modern-zenml-orchestration-blog",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "company_slug": "dagster",
+      "product_slug": "dagster",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "asset-centric-model",
+        "column-level-lineage",
+        "data-quality-checks",
+        "strongest-observability",
+        "dagster-compass-ai"
+      ],
+      "we_win_on": [
+        "visual-hci-accessibility",
+        "faster-onboarding",
+        "unified-ui-graph-canvas",
+        "broader-workflow-scope (data+ai)",
+        "lower-cognitive-load"
+      ],
+      "wedge_vs_them": "MetroGraph attacks Dagster's learning curve (asset model + dg CLI + partitions complexity) with a visual-first metro-map interface where the graph is the UI. Trade Dagster's asset-purity for broader orchestration (Python + dbt + SQL + AI agents) without forcing the asset paradigm. Faster to value for lean teams.",
+      "moat": "Asset model is intellectually coherent and gives lineage+quality 'for free'. Strong investor backing ($47M), early adoption in data-native companies. Column-level lineage is hard to replicate.",
+      "overlap_area": [
+        "asset-execution",
+        "lineage-tracking",
+        "data-quality-governance",
+        "multi-deployment-model",
+        "ai-agent-integration",
+        "observability-depth"
+      ],
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-dagster-official-homepage",
+        "market-competitors-data-orchestration-modern-dagster-pricing-page",
+        "market-competitors-data-orchestration-modern-dagster-documentation",
+        "market-competitors-data-orchestration-modern-zenml-orchestration-blog",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "company_slug": "prefect",
+      "product_slug": "prefect",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "python-native-simplicity",
+        "lowest-entry-friction",
+        "intuitive-ux",
+        "prefect-horizon-ai-infrastructure"
+      ],
+      "we_win_on": [
+        "broader-language-support (sql/yaml/dbt)",
+        "visual-orchestration-interface",
+        "stronger-lineage-without-plugin",
+        "agent-readable-formats",
+        "out-of-box-observability"
+      ],
+      "wedge_vs_them": "Prefect owns 'Python devs building their first workflow' but MetroGraph targets 'data teams needing observability+lineage+agent-readability.' Prefect is function-centric; MetroGraph is data+workflow-centric. Extend Metro into AI infrastructure space where Prefect Horizon is nascent.",
+      "moat": "Excellent developer experience and community goodwill. $43.6M raised; strong product iteration. Python ecosystem integration.",
+      "overlap_area": [
+        "workflow-orchestration",
+        "serverless-execution",
+        "python-native-support",
+        "observability",
+        "cloud-platform",
+        "ai-infrastructure"
+      ],
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-prefect-official-homepage",
+        "market-competitors-data-orchestration-modern-prefect-pricing-page",
+        "market-competitors-data-orchestration-modern-prefect-documentation",
+        "market-competitors-data-orchestration-modern-zenml-orchestration-blog",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "company_slug": "mage",
+      "product_slug": "mage",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "all-in-one-platform (ingest-transform-orchestrate)",
+        "visual-block-editor-ux",
+        "ai-sidekick-code-generation",
+        "multi-language (python/sql/r)"
+      ],
+      "we_win_on": [
+        "advanced-graph-visualization",
+        "lineage-depth-and-governance",
+        "agent-orchestration-primitives",
+        "workflow-purity (not all-in-one bloat)",
+        "observability-architecture"
+      ],
+      "wedge_vs_them": "Mage's all-in-one block paradigm creates surface-area bloat (the wedge MetroGraph targets: 'ingest where, transform where, orchestrate where?'). MetroGraph offers cleaner separation: orchestration is a graph, lineage is intrinsic, agents are first-class. Target data teams outgrowing Mage's block-based ceiling.",
+      "moat": "Visual block editor is intuitive for non-coders. $14.8M funding. Multi-language support is differentiating.",
+      "overlap_area": [
+        "workflow-orchestration",
+        "data-transformation",
+        "visual-ui",
+        "ai-assist",
+        "multi-language",
+        "managed-deployment"
+      ],
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-mage-official-homepage",
+        "market-competitors-data-orchestration-modern-mage-pricing-page",
+        "market-competitors-data-orchestration-modern-mage-github",
+        "market-competitors-data-orchestration-modern-bruin-pipeline-comparison"
+      ]
+    },
+    {
+      "company_slug": "kestra",
+      "product_slug": "kestra",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "event-driven-orchestration",
+        "1200-plugins-ecosystem",
+        "declarative-yaml-iac",
+        "ai-copilot-yaml-generation",
+        "rapid-scaling (20x yoy)"
+      ],
+      "we_win_on": [
+        "visual-orchestration (vs yaml-required)",
+        "lineage-governance-native (vs plugin-based)",
+        "agent-readable-ui (vs code-required)",
+        "broader-scope (data+workflow+ai)",
+        "lower-learning-curve"
+      ],
+      "wedge_vs_them": "Kestra's YAML-first approach is 'infrastructure as code' but creates a dual-UI problem (YAML + UI). MetroGraph's visual metro-map is single-UI, accessible to non-engineers. AI Copilot isn't a moat if the underlying paradigm (YAML) is the friction. Target Kestra users who want visual governance without YAML syntax.",
+      "moat": "Rapid growth (2B+ flows 2025, 20x YoY), $36M funding, strong event-driven positioning. 1200 plugins is ecosystem scale.",
+      "overlap_area": [
+        "workflow-orchestration",
+        "event-driven-triggers",
+        "language-agnostic",
+        "ai-copilot",
+        "governance-features",
+        "managed-cloud"
+      ],
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-kestra-official-homepage",
+        "market-competitors-data-orchestration-modern-kestra-pricing-page",
+        "market-competitors-data-orchestration-modern-kestra-documentation",
+        "market-competitors-data-orchestration-modern-kestra-crunchbase"
+      ]
+    },
+    {
+      "company_slug": "astronomer",
+      "product_slug": "astronomer",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "airflow-expertise",
+        "otto-ai-agent",
+        "managed-airflow-operational-simplicity",
+        "enterprise-scale",
+        "fastest-growing (150% yoy)"
+      ],
+      "we_win_on": [
+        "graph-visualization-hci",
+        "zero-airflow-learning-curve",
+        "data-lineage-native (not integration)",
+        "broader-orchestration-scope",
+        "ai-native-not-bolted-on"
+      ],
+      "wedge_vs_them": "Astronomer is 'Airflow + managed cloud + Otto AI' — operationally simpler but still inherits Airflow's DAG model and learning curve. MetroGraph is 'graph-as-ui + lineage-first + agents natively.' Target Astronomer users building new platforms who don't want Airflow's legacy; offer simpler mental model with stronger observability.",
+      "moat": "Strongest market momentum ($375M raised, $5B valuation 2022, 150% YoY revenue growth). Airflow ecosystem lock-in is powerful. Bain Capital backing signals market confidence.",
+      "overlap_area": [
+        "managed-orchestration",
+        "operational-simplicity",
+        "ai-agent-integration",
+        "enterprise-governance",
+        "observability",
+        "multi-team-support"
+      ],
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-astronomer-official-homepage",
+        "market-competitors-data-orchestration-modern-astronomer-pricing-page",
+        "market-competitors-data-orchestration-modern-astronomer-crunchbase",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog"
+      ]
+    },
+    {
+      "company_slug": "orchestra",
+      "product_slug": "orchestra",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "fastest-implementation (10x faster, 80% less maintenance)",
+        "snowflake-native-fit",
+        "dbt-integration-native",
+        "single-pane-glass",
+        "leanest-team-fit (orchestration-not-infra)"
+      ],
+      "we_win_on": [
+        "vendor-agnostic-graph-model (not-snowflake-only)",
+        "broader-data-warehouse-support",
+        "open-standards-lineage",
+        "richer-node-visualization",
+        "portable-across-stacks"
+      ],
+      "wedge_vs_them": "Orchestra owns 'Snowflake + dbt shops want simplicity'; MetroGraph owns 'multi-warehouse teams want visual control + portable lineage.' Orchestra is vertical SaaS (locked to Snowflake); MetroGraph is horizontal platform (any warehouse + any SQL/Python). For Snowflake-only, Orchestra wins; for multi-cloud/multi-warehouse, MetroGraph is the escape hatch.",
+      "moat": "First-mover in 'dbt+Snowflake orchestration.' Tight integration with Snowflake ecosystem. Seed funding from Sequoia (Scout) + dbt/Snowflake angels signals strong market thesis.",
+      "overlap_area": [
+        "workflow-orchestration",
+        "dbt-integration",
+        "data-lineage",
+        "observability",
+        "managed-simplicity",
+        "data-team-focus"
+      ],
+      "source_ids": [
+        "market-competitors-data-orchestration-modern-orchestra-official-homepage",
+        "market-competitors-data-orchestration-modern-orchestra-comparison-blog",
+        "market-competitors-data-orchestration-modern-getorchestra-funding"
+      ]
+    }
+  ],
+  "notes": "Phase C extraction complete for competitors-data-orchestration-modern leaf. Seven products evaluated across 50+ feature dimensions with evidence-graded HCI cost and support levels. Competitive positioning against MetroGraph wedge: surface-area bloat (Mage all-in-one), flight-to-yaml/config (Kestra, Airflow), learning-curve tax (Dagster, Airflow), vendor-lock (Orchestra Snowflake-only), AI bolted-on (not native, except Kestra/Mage). MetroGraph's edge: graph-as-ui + lineage-native + agent-readable + portable + zero-infra. Threat analysis: Astronomer and Orchestra highest-threat due to market momentum and recent funding; Dagster and Airflow structural threats due to feature parity and ecosystem; Kestra/Mage/Prefect medium due to different paradigms (YAML/visual/Python-only). All 7 have strong moats; MetroGraph's only path is HCI+observability+agent-readiness as the differentiator. Pricing: Airflow/Kestra/Prefect/Mage compete on cost; Dagster/Orchestra/Astronomer compete on value (managed SaaS). MetroGraph should position as premium HCI (low-friction) + value (observability+governance), not cost-leader."
+}

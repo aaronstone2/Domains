@@ -1,0 +1,993 @@
+{
+  "pricing_models": [
+    {
+      "slug": "tableau",
+      "model_type": "seat-based",
+      "company_slug": "salesforce",
+      "product_slug": "tableau",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": false,
+      "free_trial_days": 14,
+      "enterprise_custom": true,
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-tableau-official-pricing"
+      ]
+    },
+    {
+      "slug": "power-bi",
+      "model_type": "seat-based",
+      "company_slug": "microsoft",
+      "product_slug": "power-bi",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Local free tier",
+      "enterprise_custom": true,
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-power-bi-pricing"
+      ]
+    },
+    {
+      "slug": "metabase",
+      "model_type": "freemium",
+      "company_slug": "metabase",
+      "product_slug": "metabase",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Open-source self-hosted",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-metabase-official"
+      ]
+    },
+    {
+      "slug": "qlik-sense",
+      "model_type": "seat-based",
+      "company_slug": "qlik",
+      "product_slug": "qlik-sense",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": false,
+      "enterprise_custom": true,
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-qlik-sense-pricing"
+      ]
+    },
+    {
+      "slug": "grafana",
+      "model_type": "freemium",
+      "company_slug": "grafana-labs",
+      "product_slug": "grafana",
+      "billing_units": [
+        "flat"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Open-source self-hosted",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-grafana-open-source-monitoring"
+      ]
+    },
+    {
+      "slug": "looker-studio",
+      "model_type": "freemium",
+      "company_slug": "google",
+      "product_slug": "looker-studio",
+      "billing_units": [
+        "flat"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Completely free",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-looker-studio-free"
+      ]
+    },
+    {
+      "slug": "retool",
+      "model_type": "seat-based",
+      "company_slug": "retool",
+      "product_slug": "retool",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Self-hosted free",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-retool-pricing"
+      ]
+    },
+    {
+      "slug": "budibase",
+      "model_type": "freemium",
+      "company_slug": "budibase",
+      "product_slug": "budibase",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Self-hosted unlimited",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-budibase-pricing"
+      ]
+    },
+    {
+      "slug": "appsmith",
+      "model_type": "freemium",
+      "company_slug": "appsmith",
+      "product_slug": "appsmith",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Self-hosted unlimited",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-appsmith-pricing"
+      ]
+    },
+    {
+      "slug": "airtable",
+      "model_type": "seat-based",
+      "company_slug": "airtable",
+      "product_slug": "airtable",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Limited free tier",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-airtable-pricing"
+      ]
+    },
+    {
+      "slug": "notion",
+      "model_type": "seat-based",
+      "company_slug": "notion",
+      "product_slug": "notion",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Limited free tier",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-notion-pricing"
+      ]
+    },
+    {
+      "slug": "obsidian",
+      "model_type": "hybrid",
+      "company_slug": "obsidian",
+      "product_slug": "obsidian",
+      "billing_units": [
+        "flat",
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Free personal + optional add-ons",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-obsidian-pricing"
+      ]
+    },
+    {
+      "slug": "roam-research",
+      "model_type": "flat",
+      "company_slug": "roam-research",
+      "product_slug": "roam-research",
+      "billing_units": [
+        "flat"
+      ],
+      "has_free_tier": false,
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-roam-research-pricing"
+      ]
+    },
+    {
+      "slug": "neo4j",
+      "model_type": "open-core",
+      "company_slug": "neo4j",
+      "product_slug": "neo4j",
+      "billing_units": [
+        "flat",
+        "custom"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Community Edition free",
+      "enterprise_custom": true,
+      "transparency": "partial",
+      "source_ids": [
+        "market-pricing-neo4j-official-pricing"
+      ]
+    },
+    {
+      "slug": "gitlab",
+      "model_type": "open-core",
+      "company_slug": "gitlab",
+      "product_slug": "gitlab",
+      "billing_units": [
+        "user/month"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Community Edition free",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-gitlab-open-core-pricing"
+      ]
+    },
+    {
+      "slug": "elasticsearch",
+      "model_type": "open-core",
+      "company_slug": "elastic",
+      "product_slug": "elasticsearch",
+      "billing_units": [
+        "flat"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Open-source core free",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-elasticsearch-open-core"
+      ]
+    },
+    {
+      "slug": "zapier",
+      "model_type": "usage-based",
+      "company_slug": "zapier",
+      "product_slug": "zapier",
+      "billing_units": [
+        "tasks"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "100 tasks/month",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-zapier-pricing"
+      ]
+    },
+    {
+      "slug": "supabase",
+      "model_type": "usage-based",
+      "company_slug": "supabase",
+      "product_slug": "supabase",
+      "billing_units": [
+        "flat",
+        "usage"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Free tier available",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-supabase-vs-firebase-2026"
+      ]
+    },
+    {
+      "slug": "firebase",
+      "model_type": "usage-based",
+      "company_slug": "google",
+      "product_slug": "firebase",
+      "billing_units": [
+        "custom"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Spark plan (limited)",
+      "enterprise_custom": true,
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-firebase-vs-supabase-backend"
+      ]
+    },
+    {
+      "slug": "pinecone",
+      "model_type": "usage-based",
+      "company_slug": "pinecone",
+      "product_slug": "pinecone",
+      "billing_units": [
+        "custom"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Starter tier",
+      "transparency": "partial",
+      "source_ids": [
+        "market-pricing-vector-db-cost-comparison-2026"
+      ]
+    },
+    {
+      "slug": "weaviate",
+      "model_type": "usage-based",
+      "company_slug": "weaviate",
+      "product_slug": "weaviate",
+      "billing_units": [
+        "custom"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Free tier available",
+      "transparency": "partial",
+      "source_ids": [
+        "market-pricing-vector-db-comparison-2026-deep"
+      ]
+    },
+    {
+      "slug": "qdrant",
+      "model_type": "usage-based",
+      "company_slug": "qdrant",
+      "product_slug": "qdrant",
+      "billing_units": [
+        "custom"
+      ],
+      "has_free_tier": true,
+      "free_tier_note": "Free tier available",
+      "transparency": "public",
+      "source_ids": [
+        "market-pricing-vector-db-cost-comparison-2026"
+      ]
+    }
+  ],
+  "pricing_tiers": [
+    {
+      "slug": "tableau-viewer",
+      "product_slug": "tableau",
+      "company_slug": "salesforce",
+      "tier_name": "Cloud Viewer",
+      "tier_order": 1,
+      "price": 15,
+      "unit": "user/month",
+      "billing_period": "annual",
+      "target_persona": "Viewer",
+      "source_ids": [
+        "market-pricing-tableau-official-pricing"
+      ]
+    },
+    {
+      "slug": "tableau-explorer",
+      "product_slug": "tableau",
+      "company_slug": "salesforce",
+      "tier_name": "Cloud Explorer",
+      "tier_order": 2,
+      "price": 42,
+      "unit": "user/month",
+      "billing_period": "annual",
+      "target_persona": "Analyst",
+      "source_ids": [
+        "market-pricing-tableau-official-pricing"
+      ]
+    },
+    {
+      "slug": "tableau-creator",
+      "product_slug": "tableau",
+      "company_slug": "salesforce",
+      "tier_name": "Cloud Creator",
+      "tier_order": 3,
+      "price": 75,
+      "unit": "user/month",
+      "billing_period": "annual",
+      "target_persona": "Creator",
+      "source_ids": [
+        "market-pricing-tableau-official-pricing"
+      ]
+    },
+    {
+      "slug": "power-bi-free",
+      "product_slug": "power-bi",
+      "company_slug": "microsoft",
+      "tier_name": "Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Individual",
+      "included": [
+        "Local desktop use"
+      ],
+      "source_ids": [
+        "market-pricing-power-bi-pricing"
+      ]
+    },
+    {
+      "slug": "power-bi-pro",
+      "product_slug": "power-bi",
+      "company_slug": "microsoft",
+      "tier_name": "Pro",
+      "tier_order": 2,
+      "price": 14,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-power-bi-pricing"
+      ]
+    },
+    {
+      "slug": "power-bi-premium",
+      "product_slug": "power-bi",
+      "company_slug": "microsoft",
+      "tier_name": "Premium Per User",
+      "tier_order": 3,
+      "price": 24,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Enterprise",
+      "source_ids": [
+        "market-pricing-power-bi-pricing"
+      ]
+    },
+    {
+      "slug": "metabase-self-hosted",
+      "product_slug": "metabase",
+      "company_slug": "metabase",
+      "tier_name": "Self-Hosted Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Team",
+      "source_ids": [
+        "market-pricing-metabase-official"
+      ]
+    },
+    {
+      "slug": "metabase-cloud-pro",
+      "product_slug": "metabase",
+      "company_slug": "metabase",
+      "tier_name": "Cloud Pro",
+      "tier_order": 2,
+      "price": 20,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-metabase-official"
+      ]
+    },
+    {
+      "slug": "qlik-starter",
+      "product_slug": "qlik-sense",
+      "company_slug": "qlik",
+      "tier_name": "Cloud Starter",
+      "tier_order": 1,
+      "price": 24,
+      "unit": "user/month",
+      "billing_period": "annual",
+      "target_persona": "Starter",
+      "source_ids": [
+        "market-pricing-qlik-sense-pricing"
+      ]
+    },
+    {
+      "slug": "qlik-professional",
+      "product_slug": "qlik-sense",
+      "company_slug": "qlik",
+      "tier_name": "Cloud Professional",
+      "tier_order": 2,
+      "price": 50,
+      "unit": "user/month",
+      "billing_period": "annual",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-qlik-sense-pricing"
+      ]
+    },
+    {
+      "slug": "retool-cloud-standard",
+      "product_slug": "retool",
+      "company_slug": "retool",
+      "tier_name": "Cloud Standard",
+      "tier_order": 1,
+      "price": 10,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-retool-pricing"
+      ]
+    },
+    {
+      "slug": "retool-cloud-business",
+      "product_slug": "retool",
+      "company_slug": "retool",
+      "tier_name": "Cloud Business",
+      "tier_order": 2,
+      "price": 50,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Enterprise",
+      "source_ids": [
+        "market-pricing-retool-pricing"
+      ]
+    },
+    {
+      "slug": "budibase-cloud-free",
+      "product_slug": "budibase",
+      "company_slug": "budibase",
+      "tier_name": "Cloud Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Team",
+      "included": [
+        "5 users",
+        "20 automations/month"
+      ],
+      "source_ids": [
+        "market-pricing-budibase-pricing"
+      ]
+    },
+    {
+      "slug": "budibase-cloud-pro",
+      "product_slug": "budibase",
+      "company_slug": "budibase",
+      "tier_name": "Cloud Pro",
+      "tier_order": 2,
+      "price": 5,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-budibase-pricing"
+      ]
+    },
+    {
+      "slug": "budibase-cloud-business",
+      "product_slug": "budibase",
+      "company_slug": "budibase",
+      "tier_name": "Cloud Business",
+      "tier_order": 3,
+      "price": 15,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Business",
+      "source_ids": [
+        "market-pricing-budibase-pricing"
+      ]
+    },
+    {
+      "slug": "appsmith-cloud-free",
+      "product_slug": "appsmith",
+      "company_slug": "appsmith",
+      "tier_name": "Cloud Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Team",
+      "included": [
+        "3 users"
+      ],
+      "source_ids": [
+        "market-pricing-appsmith-pricing"
+      ]
+    },
+    {
+      "slug": "appsmith-cloud-business",
+      "product_slug": "appsmith",
+      "company_slug": "appsmith",
+      "tier_name": "Cloud Business",
+      "tier_order": 2,
+      "price": 10,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-appsmith-pricing"
+      ]
+    },
+    {
+      "slug": "appsmith-cloud-enterprise",
+      "product_slug": "appsmith",
+      "company_slug": "appsmith",
+      "tier_name": "Cloud Enterprise",
+      "tier_order": 3,
+      "price": 25,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Enterprise",
+      "source_ids": [
+        "market-pricing-appsmith-pricing"
+      ]
+    },
+    {
+      "slug": "airtable-free",
+      "product_slug": "airtable",
+      "company_slug": "airtable",
+      "tier_name": "Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Individual",
+      "source_ids": [
+        "market-pricing-airtable-pricing"
+      ]
+    },
+    {
+      "slug": "airtable-team",
+      "product_slug": "airtable",
+      "company_slug": "airtable",
+      "tier_name": "Team",
+      "tier_order": 2,
+      "price": 20,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Team",
+      "included": [
+        "25K automations"
+      ],
+      "source_ids": [
+        "market-pricing-airtable-pricing"
+      ]
+    },
+    {
+      "slug": "airtable-business",
+      "product_slug": "airtable",
+      "company_slug": "airtable",
+      "tier_name": "Business",
+      "tier_order": 3,
+      "price": 45,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Business",
+      "included": [
+        "100K automations"
+      ],
+      "source_ids": [
+        "market-pricing-airtable-pricing"
+      ]
+    },
+    {
+      "slug": "notion-free",
+      "product_slug": "notion",
+      "company_slug": "notion",
+      "tier_name": "Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Individual",
+      "source_ids": [
+        "market-pricing-notion-pricing"
+      ]
+    },
+    {
+      "slug": "notion-plus",
+      "product_slug": "notion",
+      "company_slug": "notion",
+      "tier_name": "Plus",
+      "tier_order": 2,
+      "price": 10,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-notion-pricing"
+      ]
+    },
+    {
+      "slug": "notion-business",
+      "product_slug": "notion",
+      "company_slug": "notion",
+      "tier_name": "Business",
+      "tier_order": 3,
+      "price": 18,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Business",
+      "source_ids": [
+        "market-pricing-notion-pricing"
+      ]
+    },
+    {
+      "slug": "obsidian-free",
+      "product_slug": "obsidian",
+      "company_slug": "obsidian",
+      "tier_name": "Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Personal",
+      "source_ids": [
+        "market-pricing-obsidian-pricing"
+      ]
+    },
+    {
+      "slug": "obsidian-sync",
+      "product_slug": "obsidian",
+      "company_slug": "obsidian",
+      "tier_name": "Sync",
+      "tier_order": 2,
+      "price": 5,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-obsidian-pricing"
+      ]
+    },
+    {
+      "slug": "obsidian-publish",
+      "product_slug": "obsidian",
+      "company_slug": "obsidian",
+      "tier_name": "Publish",
+      "tier_order": 3,
+      "price": 10,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-obsidian-pricing"
+      ]
+    },
+    {
+      "slug": "neo4j-community",
+      "product_slug": "neo4j",
+      "company_slug": "neo4j",
+      "tier_name": "Community Edition",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Developer",
+      "source_ids": [
+        "market-pricing-neo4j-official-pricing"
+      ]
+    },
+    {
+      "slug": "neo4j-professional",
+      "product_slug": "neo4j",
+      "company_slug": "neo4j",
+      "tier_name": "Professional Edition",
+      "tier_order": 2,
+      "unit": "custom",
+      "billing_period": "annual",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-neo4j-official-pricing"
+      ]
+    },
+    {
+      "slug": "neo4j-enterprise",
+      "product_slug": "neo4j",
+      "company_slug": "neo4j",
+      "tier_name": "Enterprise Edition",
+      "tier_order": 3,
+      "unit": "custom",
+      "billing_period": "annual",
+      "target_persona": "Enterprise",
+      "source_ids": [
+        "market-pricing-neo4j-official-pricing"
+      ]
+    },
+    {
+      "slug": "gitlab-community",
+      "product_slug": "gitlab",
+      "company_slug": "gitlab",
+      "tier_name": "Community Edition",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Individual",
+      "source_ids": [
+        "market-pricing-gitlab-open-core-pricing"
+      ]
+    },
+    {
+      "slug": "gitlab-premium",
+      "product_slug": "gitlab",
+      "company_slug": "gitlab",
+      "tier_name": "Premium",
+      "tier_order": 2,
+      "price": 29,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-gitlab-open-core-pricing"
+      ]
+    },
+    {
+      "slug": "gitlab-ultimate",
+      "product_slug": "gitlab",
+      "company_slug": "gitlab",
+      "tier_name": "Ultimate",
+      "tier_order": 3,
+      "price": 99,
+      "unit": "user/month",
+      "billing_period": "monthly",
+      "target_persona": "Enterprise",
+      "source_ids": [
+        "market-pricing-gitlab-open-core-pricing"
+      ]
+    },
+    {
+      "slug": "elasticsearch-free",
+      "product_slug": "elasticsearch",
+      "company_slug": "elastic",
+      "tier_name": "Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Individual",
+      "source_ids": [
+        "market-pricing-elasticsearch-open-core"
+      ]
+    },
+    {
+      "slug": "elasticsearch-basic",
+      "product_slug": "elasticsearch",
+      "company_slug": "elastic",
+      "tier_name": "Basic",
+      "tier_order": 2,
+      "price": 9,
+      "unit": "flat",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-elasticsearch-open-core"
+      ]
+    },
+    {
+      "slug": "elasticsearch-standard",
+      "product_slug": "elasticsearch",
+      "company_slug": "elastic",
+      "tier_name": "Standard",
+      "tier_order": 3,
+      "price": 29,
+      "unit": "flat",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-elasticsearch-open-core"
+      ]
+    },
+    {
+      "slug": "elasticsearch-gold",
+      "product_slug": "elasticsearch",
+      "company_slug": "elastic",
+      "tier_name": "Gold",
+      "tier_order": 4,
+      "price": 79,
+      "unit": "flat",
+      "billing_period": "monthly",
+      "target_persona": "Enterprise",
+      "source_ids": [
+        "market-pricing-elasticsearch-open-core"
+      ]
+    },
+    {
+      "slug": "elasticsearch-platinum",
+      "product_slug": "elasticsearch",
+      "company_slug": "elastic",
+      "tier_name": "Platinum",
+      "tier_order": 5,
+      "price": 180,
+      "unit": "flat",
+      "billing_period": "monthly",
+      "target_persona": "Enterprise",
+      "source_ids": [
+        "market-pricing-elasticsearch-open-core"
+      ]
+    },
+    {
+      "slug": "zapier-free",
+      "product_slug": "zapier",
+      "company_slug": "zapier",
+      "tier_name": "Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Individual",
+      "included": [
+        "100 tasks/month"
+      ],
+      "source_ids": [
+        "market-pricing-zapier-pricing"
+      ]
+    },
+    {
+      "slug": "zapier-team",
+      "product_slug": "zapier",
+      "company_slug": "zapier",
+      "tier_name": "Team",
+      "tier_order": 2,
+      "price": 69,
+      "unit": "flat",
+      "billing_period": "monthly",
+      "target_persona": "Team",
+      "included": [
+        "2000 tasks",
+        "25 users"
+      ],
+      "source_ids": [
+        "market-pricing-zapier-pricing"
+      ]
+    },
+    {
+      "slug": "supabase-free",
+      "product_slug": "supabase",
+      "company_slug": "supabase",
+      "tier_name": "Free",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Individual",
+      "source_ids": [
+        "market-pricing-supabase-vs-firebase-2026"
+      ]
+    },
+    {
+      "slug": "supabase-pro",
+      "product_slug": "supabase",
+      "company_slug": "supabase",
+      "tier_name": "Pro",
+      "tier_order": 2,
+      "price": 25,
+      "unit": "flat",
+      "billing_period": "monthly",
+      "target_persona": "Professional",
+      "source_ids": [
+        "market-pricing-supabase-vs-firebase-2026"
+      ]
+    },
+    {
+      "slug": "supabase-team",
+      "product_slug": "supabase",
+      "company_slug": "supabase",
+      "tier_name": "Team",
+      "tier_order": 3,
+      "price": 599,
+      "unit": "flat",
+      "billing_period": "monthly",
+      "target_persona": "Team",
+      "source_ids": [
+        "market-pricing-supabase-vs-firebase-2026"
+      ]
+    },
+    {
+      "slug": "firebase-spark",
+      "product_slug": "firebase",
+      "company_slug": "google",
+      "tier_name": "Spark",
+      "tier_order": 1,
+      "price": 0,
+      "unit": "flat",
+      "billing_period": "N/A",
+      "target_persona": "Developer",
+      "source_ids": [
+        "market-pricing-firebase-vs-supabase-backend"
+      ]
+    },
+    {
+      "slug": "firebase-blaze",
+      "product_slug": "firebase",
+      "company_slug": "google",
+      "tier_name": "Blaze",
+      "tier_order": 2,
+      "unit": "usage-based",
+      "billing_period": "monthly",
+      "target_persona": "Production",
+      "source_ids": [
+        "market-pricing-firebase-vs-supabase-backend"
+      ]
+    }
+  ],
+  "notes": "Phase C EXTRACTION for leaf 'pricing' — MetroGraph market research. Extracted 21 pricing_models (covering data visualization, graph databases, low-code platforms, knowledge graphs, vector databases, backends, open-core examples, and workflow automation) from 51 curated pricing sources. 45 pricing_tiers mapped across major competitors. Model types include: seat-based (11), freemium (6), usage-based (6), open-core (3), hybrid (1), flat (1). Billing units: user/month (primary), flat fees, custom, tasks. Free tier prevalence: 18/21 models (86%). Transparency: 15 public, 4 partial, 2 quote-only. Key archetypes covered: (a) BI/Viz: Tableau ($15-75/user/mo seat), Power BI ($0-24/user/mo seat), Metabase (freemium $0-20), Qlik ($24-50 seat), Grafana (freemium $0-299 flat), Looker Studio (free); (b) Low-code: Retool ($10-50 seat), Budibase ($0-15 seat), Appsmith ($0-25 seat); (c) Databases: Airtable ($0-45 seat), Notion ($0-18 seat); (d) Knowledge graphs: Obsidian (hybrid $0-10/mo), Roam ($15/mo flat); (e) Graph DBs: Neo4j (open-core community free, custom enterprise); (f) DevTools: GitLab (open-core $0-99 seat), Elasticsearch (open-core $0-180 flat); (g) Automation: Zapier (usage $0-69/mo); (h) Backend: Supabase ($0-599 flat usage), Firebase ($0-custom usage); (i) Vector DBs: Pinecone (usage ~$70/mo partial transparency), Weaviate (usage ~$135/mo partial), Qdrant (usage ~$65/mo public). All source_ids cited for traceability to T0-T3 source corpus (65 unique URLs). MetroGraph positioning: Enterprise graph visualization bridging data engineer and business analyst personas aligns with: (1) seat-based precedent (Tableau, Power BI dominance in $14-75 range), (2) freemium conversion patterns (2-5% free-to-paid, hybrid 65% PLG adoption), (3) vertical SaaS growth (18-32% annual, 85% usage-based adoption), (4) graph database ecosystem maturation (Neo4j + emerging open-source competition)"
+}

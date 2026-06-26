@@ -1,0 +1,711 @@
+{
+  "leaf": "market/theory-graph-aesthetics-readability",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Edge Crossing Minimization",
+      "field": "graph-theory",
+      "definition": "Aesthetic criterion prioritizing reduction of edge-edge intersections in a graph layout; empirically validated as the single most important visual factor affecting task performance and cognitive load in graph comprehension.",
+      "strength": "empirical",
+      "key_refs": [
+        "Purchase et al. (1996, 2002) — user studies validating crossing importance",
+        "Huang, Eades & Hong (2009) — cognitive load model incorporating crossing count",
+        "Yoghourdjian et al. (2018) — meta-analysis of 152 empirical studies"
+      ],
+      "related_concepts": [
+        "Planar Drawing",
+        "Cognitive Load in Graph Visualization",
+        "Edge Bundling"
+      ],
+      "implication": "MetroGraph must prioritize crossing-free or crossing-minimal layout algorithms (Sugiyama, planar) as foundational; even small crossing reductions yield measurable cognitive benefits for DB query visualization.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-purchase-user-study-aesthetics",
+        "market-theory-graph-aesthetics-readability-huang-eades-hong-effectiveness-2009",
+        "market-theory-graph-aesthetics-readability-exploring-limits-complexity"
+      ]
+    },
+    {
+      "concept": "Vertex Symmetry in Graph Layout",
+      "field": "visualization",
+      "definition": "Aesthetic principle that symmetric or balanced arrangement of vertices reduces visual complexity and enhances pattern recognition; a primary goal of spring-embedder algorithms alongside even vertex distribution.",
+      "strength": "empirical",
+      "key_refs": [
+        "Eades (1984) — spring embedder algorithm targeting symmetry as aesthetic goal",
+        "Fruchterman & Reingold (1991) — force-directed layout emphasizing even distribution and symmetry",
+        "Kobourov (2012) — comprehensive survey of force-directed methods and aesthetic goals"
+      ],
+      "related_concepts": [
+        "Force-Directed Layout",
+        "Gestalt Principles in Graph Drawing",
+        "Visual Encoding Effectiveness"
+      ],
+      "implication": "MetroGraph should integrate symmetry-preserving layout heuristics; useful for database schema graphs and query plans where logical symmetries map to domain structure.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-spring-embedders-survey",
+        "market-theory-graph-aesthetics-readability-force-directed-kobourov-handbook",
+        "market-theory-graph-aesthetics-readability-fruchterman-reingold-1991"
+      ]
+    },
+    {
+      "concept": "Edge Density and Visual Clutter",
+      "field": "visualization",
+      "definition": "Quantitative measure of the ratio of edges to vertices; high edge density increases visual clutter and cognitive load; threshold effects exist where dense graphs exceed human comprehension capacity without interaction or abstraction.",
+      "strength": "empirical",
+      "key_refs": [
+        "Yoghourdjian et al. (2018) — meta-analysis showing 75% of studies use graphs with <=200 edges",
+        "Huang, Eades & Hong (2009) — edge density component of cognitive load model",
+        "Tufte (1983, 2001) — data-ink ratio and chartjunk minimization principles"
+      ],
+      "related_concepts": [
+        "Cognitive Scalability Limits",
+        "Edge Bundling",
+        "Level-of-Detail for Large Graphs"
+      ],
+      "implication": "MetroGraph must detect high-density regions and offer edge bundling, filtering, or hierarchical expansion; avoids RAG/workflow-graph surface-area bloat via smart density reduction.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-exploring-limits-complexity",
+        "market-theory-graph-aesthetics-readability-huang-eades-hong-effectiveness-2009",
+        "market-theory-graph-aesthetics-readability-visual-display-quantitative-info-tufte"
+      ]
+    },
+    {
+      "concept": "Edge Bend Minimization",
+      "field": "graph-theory",
+      "definition": "Aesthetic criterion reducing the number of bends (direction changes) in polyline edges; critical for orthogonal and hierarchical layouts; minimizes visual discontinuity and improves edge traceability.",
+      "strength": "empirical",
+      "key_refs": [
+        "Di Battista, Eades, Tamassia & Tollis (1994) — foundational annotated bibliography",
+        "Kobourov et al. — orthogonal drawings with optimized face complexity",
+        "Holten (2006) — hierarchical edge bundling reducing visual clutter while preserving bendability"
+      ],
+      "related_concepts": [
+        "Orthogonal & Rectangular Layout",
+        "Hierarchical (Layered) Drawing",
+        "Uniform Edge Length"
+      ],
+      "implication": "For database schema and workflow graphs, minimize bends in edge routing; supports visual tracing of data flow and relationships without cognitive overload from jittered paths.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-algorithms-annotated-biblio",
+        "market-theory-graph-aesthetics-readability-orthogonal-rectangular-layout",
+        "market-theory-graph-aesthetics-readability-hierarchical-edge-bundling"
+      ]
+    },
+    {
+      "concept": "Uniform Edge Length",
+      "field": "graph-theory",
+      "definition": "Aesthetic goal that all edges in a graph layout should be approximately equal length; reduces vertex clustering at the center and improves readability by distributing information spatially; primary goal of spring embedders.",
+      "strength": "empirical",
+      "key_refs": [
+        "Eades (1984) — spring embedder targeting uniform edge length",
+        "Fruchterman & Reingold (1991) — optimal inter-vertex distance k balancing attractive/repulsive forces",
+        "Kobourov (2012) — force-directed aesthetics including uniform edge distribution"
+      ],
+      "related_concepts": [
+        "Force-Directed Layout",
+        "Vertex Symmetry in Graph Layout",
+        "Stress Majorization"
+      ],
+      "implication": "For workflow and query graphs, uniform edge lengths improve visual parsability; helps distinguish central hubs from peripheral nodes in knowledge graph visualization.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-spring-embedders-survey",
+        "market-theory-graph-aesthetics-readability-force-directed-kobourov-handbook"
+      ]
+    },
+    {
+      "concept": "Force-Directed Layout",
+      "field": "graph-theory",
+      "definition": "Family of layout algorithms (spring embedders, stress majorization) that treat graphs as physical systems with attractive forces between adjacent vertices and repulsive forces between non-adjacent; iteratively minimizes energy function to find stable configuration.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tutte (1963) — barycentric method (first force-directed algorithm)",
+        "Eades (1984) — spring layout using Hooke's law analogy",
+        "Fruchterman & Reingold (1991) — grid-optimized force-directed algorithm for larger graphs",
+        "Kamada & Kawai (1989) — graph-distance-based spring forces",
+        "Kobourov (2012) — comprehensive survey with modern scalable variants"
+      ],
+      "related_concepts": [
+        "Stress Majorization",
+        "Vertex Symmetry in Graph Layout",
+        "Uniform Edge Length"
+      ],
+      "implication": "MetroGraph foundation: force-directed methods provide intuitive, aesthetically pleasing layouts for generic graphs; suitable as default for both schema visualization and dynamic workflow/agent-graph exploration.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-spring-embedders-survey",
+        "market-theory-graph-aesthetics-readability-force-directed-kobourov-handbook",
+        "market-theory-graph-aesthetics-readability-fruchterman-reingold-1991"
+      ]
+    },
+    {
+      "concept": "Stress Majorization and Multidimensional Scaling",
+      "field": "graph-theory",
+      "definition": "Layout technique minimizing stress function based on graph-theoretic distances; reformulates force-directed problem as multidimensional scaling (MDS) optimization; scalable via sparse approximations; used in Graphviz neato layout.",
+      "strength": "established-law",
+      "key_refs": [
+        "Kamada & Kawai (1989) — spring forces proportional to shortest-path distances",
+        "Gansner, Koren & North (2005) — stress majorization for undirected graphs",
+        "Gansner et al. (2011) — sparse stress model reducing computational complexity",
+        "Kobourov (2012) — integration with force-directed survey"
+      ],
+      "related_concepts": [
+        "Force-Directed Layout",
+        "Uniform Edge Length"
+      ],
+      "implication": "For large graphs (100+ nodes), MetroGraph should use stress majorization as scalable alternative to classical force-directed; preserves distance-based aesthetic without O(V^2) repulsive force computation.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-stress-majorization-mds",
+        "market-theory-graph-aesthetics-readability-graphviz-neato-stress",
+        "market-theory-graph-aesthetics-readability-spring-embedders-survey"
+      ]
+    },
+    {
+      "concept": "Planar Drawing",
+      "field": "graph-theory",
+      "definition": "Theoretical and algorithmic approach to laying out planar graphs (graphs embeddable in the plane without edge crossings); guarantees crossing-free visualization; fundamental for database schema and hierarchy diagrams.",
+      "strength": "established-law",
+      "key_refs": [
+        "Di Battista, Eades, Tamassia & Tollis (1994, 1999) — foundational textbook on planar drawing algorithms",
+        "Tamassia (Ed.) (2013) — Handbook of Graph Drawing covering topological and planar embeddings",
+        "De Fraysseix et al. (1990s) — grid-based planar layout techniques",
+        "Angelini et al. (2014) — survey on graph drawing beyond planarity"
+      ],
+      "related_concepts": [
+        "Edge Crossing Minimization",
+        "Upward Planar Drawing",
+        "Orthogonal & Rectangular Layout"
+      ],
+      "implication": "For acyclic database relationships and tree-like query plans, MetroGraph should detect planarity and apply planar layout algorithms; guarantees zero crossings, reducing cognitive load dramatically.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-handbook-graph-drawing-visualization",
+        "market-theory-graph-aesthetics-readability-graph-drawing-algorithms-textbook",
+        "market-theory-graph-aesthetics-readability-planar-drawing-survey"
+      ]
+    },
+    {
+      "concept": "Orthogonal and Rectangular Layout",
+      "field": "graph-theory",
+      "definition": "Graph layout paradigm restricting edges to axis-aligned (horizontal/vertical) segments; reduces visual complexity in industrial diagrams; optimizes bend count, face complexity, and symmetry; used in VLSI, circuit design, and organizational charts.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tamassia (Ed.) (2013) — Handbook chapter on orthogonal drawing",
+        "Kobourov et al. — orthogonal drawings with face complexity optimization",
+        "Biedl & Kant (2004) — algorithms for planar orthogonal drawings"
+      ],
+      "related_concepts": [
+        "Planar Drawing",
+        "Edge Bend Minimization",
+        "Hierarchical (Layered) Drawing"
+      ],
+      "implication": "Suitable for rigid database schemas and organizational hierarchies; MetroGraph could offer orthogonal mode for structured domains where axis-aligned edges improve readability.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-handbook-graph-drawing-visualization",
+        "market-theory-graph-aesthetics-readability-orthogonal-rectangular-layout"
+      ]
+    },
+    {
+      "concept": "Hierarchical (Layered) Drawing",
+      "field": "graph-theory",
+      "definition": "Sugiyama-style algorithm for directed acyclic graphs; organizes vertices into horizontal layers respecting hierarchy; minimizes upward edges, layer span, and edge crossings; canonical for flowcharts, organizational charts, and workflow visualization.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sugiyama, Tagawa & Toda (1981) — foundational hierarchical layout algorithm",
+        "Di Battista, Eades, Tamassia & Tollis (1999) — comprehensive treatment in textbook",
+        "Tamassia (Ed.) (2013) — Handbook chapter and refinements"
+      ],
+      "related_concepts": [
+        "Edge Crossing Minimization",
+        "Upward Planar Drawing",
+        "Edge Bundling"
+      ],
+      "implication": "Critical for MetroGraph's workflow/agent-graph mode; hierarchical layout is standard for DAG-structured RAG/workflow graphs, enforces visual hierarchy matching logical flow.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-layered-hierarchical-sugiyama",
+        "market-theory-graph-aesthetics-readability-handbook-graph-drawing-visualization"
+      ]
+    },
+    {
+      "concept": "Circular Layout",
+      "field": "visualization",
+      "definition": "Arrangement of vertices in a circle with edges drawn as chords; reduces ink usage and supports perceptual grouping through radial position; useful for clique-heavy or community-structured networks.",
+      "strength": "empirical",
+      "key_refs": [
+        "Krebs (1998) — circular graph drawing for social networks",
+        "Wang et al. (2018) — intelligible circular layout for cognitive benefit",
+        "Holten (2006) — hierarchical edge bundling compatible with circular arrangements"
+      ],
+      "related_concepts": [
+        "Gestalt Principles in Graph Drawing",
+        "Edge Bundling",
+        "Community-Aware Layout"
+      ],
+      "implication": "For knowledge graphs with strong community structure or for exploration-mode browsing, circular layout offers alternative that emphasizes modularity and reduces cognitive effort for local-neighborhood tasks.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-circular-layout-cognitive"
+      ]
+    },
+    {
+      "concept": "Edge Bundling and Confluent Drawings",
+      "field": "visualization",
+      "definition": "Technique bundling multiple edges along common paths to reduce visual clutter in dense graphs; confluent drawings merge edges into smooth bundles; hierarchical edge bundling groups edges by hierarchy; improves readability without removing structural information.",
+      "strength": "empirical",
+      "key_refs": [
+        "Holten (2006) — hierarchical edge bundling foundational paper",
+        "Ersoy et al. (2011) — improved edge bundling with control structures",
+        "Cui et al. (2008) — confluent drawing for non-planar graphs",
+        "Sallaberry et al. (2024) — edge-path bundling for ambiguity reduction"
+      ],
+      "related_concepts": [
+        "Edge Density and Visual Clutter",
+        "Hierarchical (Layered) Drawing",
+        "Level-of-Detail for Large Graphs"
+      ],
+      "implication": "Critical for MetroGraph's dense-graph handling; bundling addresses surface-area bloat in workflow/agent graphs by visually reducing clutter while preserving traceability; bridges 2D readability gap.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-hierarchical-edge-bundling",
+        "market-theory-graph-aesthetics-readability-confluent-drawings-planar-viz",
+        "market-theory-graph-aesthetics-readability-edge-path-bundling"
+      ]
+    },
+    {
+      "concept": "Cognitive Load in Graph Visualization",
+      "field": "cognitive-psych",
+      "definition": "Framework (Huang, Eades & Hong 2009) relating task performance, mental effort, and cognitive load during graph analysis; proposes that cognitive load is a function of data structure, visual representation, task demand, and individual factors; foundational for understanding scalability limits.",
+      "strength": "empirical",
+      "key_refs": [
+        "Huang, Eades & Hong (2009) — seminal cognitive load model for graph visualization",
+        "Yoghourdjian et al. (2018) — meta-analysis grounding load factors in 152 empirical studies",
+        "Miller (1956) — working memory 'seven plus or minus two' rule applied to graphs",
+        "Swink & Chandrasekaran (1996) — cognitive load theory in visualization context"
+      ],
+      "related_concepts": [
+        "Mental Effort & Task Performance Model",
+        "Preattentive Processing",
+        "Visualization Efficiency"
+      ],
+      "implication": "Foundation for MetroGraph design: every aesthetic choice (crossing count, edge density, node count) must be evaluated through cognitive load lens; informs when to collapse/expand subgraphs or switch layouts.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-huang-eades-hong-effectiveness-2009",
+        "market-theory-graph-aesthetics-readability-exploring-limits-complexity"
+      ]
+    },
+    {
+      "concept": "Mental Effort and Task Performance Model",
+      "field": "cognitive-psych",
+      "definition": "Huang et al.'s quantitative model linking visualization effectiveness to both task completion time (performance) and mental effort (via NASA Task Load Index or similar); proposes efficiency metric = 1/(time * effort) to jointly optimize speed and cognitive burden.",
+      "strength": "empirical",
+      "key_refs": [
+        "Huang, Eades & Hong (2009) — visualization efficiency metric integrating task performance and mental effort",
+        "Hart & Staveland (1988) — NASA Task Load Index for measuring mental workload",
+        "Paas (1992) — cognitive load measurement via subjective effort ratings"
+      ],
+      "related_concepts": [
+        "Cognitive Load in Graph Visualization",
+        "Visualization Efficiency"
+      ],
+      "implication": "MetroGraph should instrumentalize this model: measure both completion time and user effort (eye gaze, interaction count, reported difficulty) to validate layout choices; optimize for efficiency not just speed.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-huang-eades-hong-effectiveness-2009"
+      ]
+    },
+    {
+      "concept": "Preattentive Processing in Visual Encoding",
+      "field": "cognitive-psych",
+      "definition": "Perceptual phenomenon where visual channels (color, size, position, orientation) are processed pre-consciously in <250ms; enables efficient information encoding; foundational for designing node and edge visual attributes in graphs.",
+      "strength": "empirical",
+      "key_refs": [
+        "Treisman & Gelade (1980) — feature integration theory; preattentive processing boundaries",
+        "Ware (2004) — Information Visualization: Perception for Design",
+        "Munzner (2014) — Visualization Analysis and Design; encoding effectiveness hierarchy",
+        "Healey et al. (1996) — evaluating perceptual preattentive channels in visualization"
+      ],
+      "related_concepts": [
+        "Visual Encoding Effectiveness (Cleveland-McGill Hierarchy)",
+        "Gestalt Principles in Graph Drawing"
+      ],
+      "implication": "MetroGraph should leverage preattentive channels (position, color hue, size) for critical graph properties (node type, edge weight, connectivity); avoid reliance on secondary processing for primary data dimensions.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-visual-encoding-effectiveness",
+        "market-theory-graph-aesthetics-readability-perceptual-foundations-visualization"
+      ]
+    },
+    {
+      "concept": "Visual Encoding Effectiveness (Cleveland-McGill Hierarchy)",
+      "field": "visualization",
+      "definition": "Empirically ranked ordering of visual encoding channels by perceptual effectiveness: position > length > direction > angle > area > volume > color hue; guides choice of visual variables for graph nodes and edges.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cleveland & McGill (1984, 1987) — foundational studies on perceptual effectiveness of visual channels",
+        "Mackinlay (1986) — APT system automating encoding choice based on effectiveness",
+        "Munzner (2014) — Visualization Analysis and Design; refined hierarchy including color, saturation, texture"
+      ],
+      "related_concepts": [
+        "Preattentive Processing in Visual Encoding",
+        "Visual Stability in Dynamic Graphs"
+      ],
+      "implication": "For MetroGraph's node/edge attributes: use position for primary dimensions (node identity, hierarchy), length/area for quantitative attributes, color for categories; reserve less effective channels for secondary info.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-visual-encoding-effectiveness"
+      ]
+    },
+    {
+      "concept": "Gestalt Principles in Graph Drawing",
+      "field": "cognitive-psych",
+      "definition": "Application of perceptual grouping laws (proximity, similarity, closure, continuity, common fate) to improve readability; proximity groups nearby vertices/edges, similarity (color/shape) implies category, continuity rewards smooth edge paths.",
+      "strength": "framework",
+      "key_refs": [
+        "Wertheimer (1923) — original Gestalt principles of perceptual organization",
+        "Mechev & Mchedlidze (2015) — explicit application to graph drawing",
+        "Palmer (1992) — Vision Science; modern cognitive science grounding of Gestalt laws"
+      ],
+      "related_concepts": [
+        "Preattentive Processing in Visual Encoding",
+        "Circular Layout",
+        "Edge Bundling"
+      ],
+      "implication": "MetroGraph layout should group related subgraphs by proximity (spatial clustering) and visual similarity; bundled edges leverage continuity principle; improves visual parsing of large graphs.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-gestalt-principles-graphs"
+      ]
+    },
+    {
+      "concept": "Information Scent and Navigation",
+      "field": "information-foraging",
+      "definition": "Pirolli's theory that users navigate information spaces by following 'scent'—cues signaling proximity to goal; in graph visualization, visual emphasis (position, color, size) on high-relevance nodes/edges guides exploration; informs interactive filtering and highlighting.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card (1999) — information foraging on the web; rational analysis",
+        "Pirolli (2007) — Information Foraging; application to search and exploration UI",
+        "Pirolli & Chi (2000) — integration with scent metaphor"
+      ],
+      "related_concepts": [
+        "Cognitive Load in Graph Visualization",
+        "Visual Encoding Effectiveness",
+        "Preattentive Processing in Visual Encoding"
+      ],
+      "implication": "For MetroGraph's exploration mode: dynamically highlight high-scent nodes/edges (relevant to query or user focus); reduces cognitive search burden in large workflow/agent graphs; supports goal-directed navigation.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-information-foraging-pirolli"
+      ]
+    },
+    {
+      "concept": "Aesthetic Metrics Framework (Purchase)",
+      "field": "visualization",
+      "definition": "Quantitative formalization (Purchase 2002) of seven aesthetic criteria as continuous 0-1 metrics: crossing, bends, area, aspect ratio, angular resolution, edge lengths, and density; enables algorithmic optimization and comparative evaluation of layouts.",
+      "strength": "empirical",
+      "key_refs": [
+        "Purchase (2002) — Metrics for Graph Drawing Aesthetics; foundational metric definitions",
+        "Purchase et al. (2001) — validation via user studies showing metric-performance correlations",
+        "Mooney et al. (2024) — comprehensive landscape of modern graph drawing metrics"
+      ],
+      "related_concepts": [
+        "Edge Crossing Minimization",
+        "Visualization Efficiency",
+        "Cognitive Load in Graph Visualization"
+      ],
+      "implication": "MetroGraph should instrument Purchase metrics to quantify layout quality; use metrics to select among algorithm variants and to guide iterative layout refinement; enables data-driven layout tuning.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-purchase-metrics-aesthetics-2002",
+        "market-theory-graph-aesthetics-readability-metric-mooney-landscape"
+      ]
+    },
+    {
+      "concept": "Visualization Efficiency",
+      "field": "visualization",
+      "definition": "Joint optimization metric combining task performance (completion time, accuracy) with cognitive demand (mental effort); proposes that a good visualization minimizes both execution time and workload; Huang et al.'s efficiency = 1/(time * effort).",
+      "strength": "empirical",
+      "key_refs": [
+        "Huang, Eades & Hong (2009) — visualization efficiency as joint optimization",
+        "Yost & North (2006) — display pixels and data scalability; tradeoff between size and performance",
+        "Dunne & Shneiderman (2013) — readability metrics tool incorporating efficiency principles"
+      ],
+      "related_concepts": [
+        "Mental Effort & Task Performance Model",
+        "Cognitive Load in Graph Visualization"
+      ],
+      "implication": "MetroGraph's optimization target: not just fast completion but cognitively light; prefer layouts reducing eye movements and mental load over raw performance speed. Informs when to use simplification vs. full detail.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-huang-eades-hong-effectiveness-2009",
+        "market-theory-graph-aesthetics-readability-improving-readability-metrics-tool"
+      ]
+    },
+    {
+      "concept": "Cognitive Scalability Limits",
+      "field": "cognitive-psych",
+      "definition": "Empirical bounds on graph size/density that humans can comprehend in a single view; Yoghourdjian et al. meta-analysis shows 75% of user studies use ≤100 nodes and ≤200 edges; working memory limits (~7±2 items) constrain direct comprehension.",
+      "strength": "empirical",
+      "key_refs": [
+        "Miller (1956) — working memory capacity 'seven plus or minus two'",
+        "Yoghourdjian et al. (2018) — meta-analysis of 152 empirical studies; empirical scalability bounds",
+        "Eick & Karr (1996) — visual and cognitive scalability distinguished; cognitive ceilings",
+        "Jankun-Kelly et al. (2006) — perceptual vs cognitive scalability tradeoffs"
+      ],
+      "related_concepts": [
+        "Cognitive Load in Graph Visualization",
+        "Level-of-Detail for Large Graphs"
+      ],
+      "implication": "Core MetroGraph principle: recognize that single-view comprehension plateaus around 100-200 nodes; beyond that, employ hierarchical expansion, filtering, multi-view strategies, or interactive exploration to maintain cognitive tractability.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-exploring-limits-complexity"
+      ]
+    },
+    {
+      "concept": "Eye-Tracking Studies of Layout Effects",
+      "field": "cognitive-psych",
+      "definition": "Empirical methodology measuring gaze patterns, fixation duration, and saccade paths to evaluate cognitive effort; validates that crossing minimization and layout quality reduce scan time and eye strain; provides objective cognitive workload proxy.",
+      "strength": "empirical",
+      "key_refs": [
+        "Huang et al. (2008) — eye-tracking study validating importance of crossing minimization",
+        "Goldberg & Wichansky (2003) — eye-tracking evaluation framework; cognitively motivated gaze analysis",
+        "Itti & Koch (2000) — computational models of visual attention and saliency"
+      ],
+      "related_concepts": [
+        "Cognitive Load in Graph Visualization",
+        "Mental Effort & Task Performance Model"
+      ],
+      "implication": "MetroGraph should consider eye-tracking in validation; crossing-heavy layouts force longer scan paths and higher fixation durations—objective evidence for crossing-minimization priority.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-eye-tracking-layout-effects"
+      ]
+    },
+    {
+      "concept": "User Study Validation of Aesthetic Criteria",
+      "field": "hci",
+      "definition": "Experimental paradigm (Purchase et al., Huang et al.) testing graph layouts with human subjects on comprehension/search tasks; validates that aesthetic criteria (crossing, symmetry, bends) correlate with task performance; empirical grounding for design guidelines.",
+      "strength": "empirical",
+      "key_refs": [
+        "Purchase et al. (1996, 2001, 2011) — series of user studies on aesthetic criteria importance",
+        "Huang, Eades & Hong (2008, 2009) — user studies validating cognitive load model",
+        "Yoghourdjian et al. (2018) — meta-analysis of 152 user studies; consensus findings"
+      ],
+      "related_concepts": [
+        "Edge Crossing Minimization",
+        "Aesthetic Metrics Framework",
+        "Cognitive Load in Graph Visualization"
+      ],
+      "implication": "MetroGraph design should be grounded in user studies; validate layout choices, interface affordances, and switching heuristics through controlled experiments before deployment.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-purchase-user-study-aesthetics",
+        "market-theory-graph-aesthetics-readability-huang-eades-hong-effectiveness-2009",
+        "market-theory-graph-aesthetics-readability-exploring-limits-complexity"
+      ]
+    },
+    {
+      "concept": "Mental Map Preservation in Dynamic Graphs",
+      "field": "visualization",
+      "definition": "Principle that layout changes in dynamic graphs should preserve the 'mental map'—user's spatial memory of vertex positions; sudden reorganizations increase cognitive load; smooth animations or stable layouts reduce navigation confusion.",
+      "strength": "empirical",
+      "key_refs": [
+        "Archambault & Purchase (2004, 2009) — reviews of mental map preservation studies",
+        "Diehl & Görg (2002) — static vs dynamic preservation metrics",
+        "Friedrich & Eades (2002) — animation and small-multiples for dynamic graph readability"
+      ],
+      "related_concepts": [
+        "Visual Stability in Dynamic Graphs",
+        "Edge Crossing Minimization"
+      ],
+      "implication": "For MetroGraph's dynamic workflow visualization (agent state evolving over time), minimize layout perturbations; preserve vertex positions between updates to avoid disorienting users; prioritize stability over perfect aesthetics.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-visual-stability-dynamic-graphs"
+      ]
+    },
+    {
+      "concept": "Visual Stability in Dynamic Graphs",
+      "field": "visualization",
+      "definition": "Formal framework (Brandes & Wagner) quantifying layout change magnitude in temporal graph visualization; accounts for vertex displacement, edge reconfiguration, and crossing changes; minimizing instability preserves user orientation and reduces cognitive load.",
+      "strength": "empirical",
+      "key_refs": [
+        "Brandes & Wagner (2008) — visual stability metrics for dynamic drawings",
+        "Lyons et al. (2013) — streaming and dynamic graph drawing",
+        "Didimo et al. (2019) — comprehensive treatment in modern survey"
+      ],
+      "related_concepts": [
+        "Mental Map Preservation in Dynamic Graphs",
+        "Cognitive Load in Graph Visualization"
+      ],
+      "implication": "For agent/workflow evolution in MetroGraph: implement layout algorithms that minimize frame-to-frame perturbations; use stable force-directed methods or incremental planar routing to preserve cognitive continuity.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-visual-stability-dynamic-graphs",
+        "market-theory-graph-aesthetics-readability-new-quality-metrics-dynamic"
+      ]
+    },
+    {
+      "concept": "Node-Link vs Matrix Representation Tradeoff",
+      "field": "interaction-design",
+      "definition": "Comparative paradigm: node-link diagrams excel at path-finding and local structure discovery; adjacency matrices excel at dense-graph analysis and global pattern detection; task-dependent superiority; MetroGraph should support both modes.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman & Aris (2006) — node-link vs matrix comparison; task-dependent tradeoffs",
+        "Munzner (2014) — comprehensive coverage of encoding tradeoffs",
+        "Revelle et al. (2020) — revisited empirical comparison with modern interfaces"
+      ],
+      "related_concepts": [
+        "Edge Bundling and Confluent Drawings",
+        "Cognitive Load in Graph Visualization"
+      ],
+      "implication": "MetroGraph should offer matrix view as complement to node-link for dense graphs; users switch views based on task (exploration → node-link; pattern discovery → matrix).",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-revisited-node-link-matrix"
+      ]
+    },
+    {
+      "concept": "Level-of-Detail (LOD) for Large Graphs",
+      "field": "visualization",
+      "definition": "Hierarchical visualization strategy progressively revealing graph detail at multiple zoom levels; reduces visual complexity by aggregating nodes/edges at coarse scales; integrates with graph abstraction and filtering to maintain cognitive tractability at all scales.",
+      "strength": "framework",
+      "key_refs": [
+        "Eades & Feng (1998) — level-of-detail in graph visualization",
+        "Munzner (2014) — LOD and hierarchical abstraction in Visualization Analysis and Design",
+        "Bezerianos et al. (2006) — progressive graph visualization"
+      ],
+      "related_concepts": [
+        "Cognitive Scalability Limits",
+        "Edge Bundling and Confluent Drawings",
+        "Community-Aware Layout"
+      ],
+      "implication": "Critical for MetroGraph's scalability: implement LOD strategy for large workflow/agent graphs; collapse dense subgraphs at zoom-out, expand on zoom-in; preserve overall structure while limiting visible complexity.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-large-graph-lod-visualization"
+      ]
+    },
+    {
+      "concept": "3D and Immersive VR Network Visualization",
+      "field": "visualization",
+      "definition": "Emerging paradigm using stereoscopic 3D, spatial audio, and immersive environments (VR/AR) to alleviate 2D readability limits; depth perception and embodied interaction reduce cognitive load for large graphs; trade-offs vs. traditional 2D accessibility.",
+      "strength": "empirical",
+      "key_refs": [
+        "Munzner (2014) — Chapter on 3D visualization pitfalls and promise",
+        "Bouvier et al. (2021) — survey of VR/AR network visualization",
+        "Sorger et al. (2018) — VRNetzer platform demonstrating immersive network analysis improvements",
+        "recent survey (2025) — Visual Network Analysis in Immersive Environments"
+      ],
+      "related_concepts": [
+        "Cognitive Scalability Limits",
+        "Force-Directed Layout",
+        "Visual Encoding Effectiveness"
+      ],
+      "implication": "Future MetroGraph option: for power users or large-scale agent/workflow analysis, offer immersive 3D mode; leverages spatial memory and embodied cognition to extend comprehension beyond 2D limits.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-immersive-vr-networks",
+        "market-theory-graph-aesthetics-readability-vr-network-analysis-platform"
+      ]
+    },
+    {
+      "concept": "Proximity Drawings",
+      "field": "graph-theory",
+      "definition": "Class of layouts (Gabriel, Delaunay, relative neighborhood) where adjacency implies spatial proximity; aesthetic principle: if u-v are connected, they should be nearer than non-adjacent pairs; improves visual inference of structure.",
+      "strength": "framework",
+      "key_refs": [
+        "Preparata & Shamos (1985) — computational geometry foundations",
+        "Tamassia (Ed.) (2013) — Handbook chapter on proximity drawings",
+        "Kobourov (2012) — integration with force-directed methods"
+      ],
+      "related_concepts": [
+        "Force-Directed Layout",
+        "Gestalt Principles in Graph Drawing"
+      ],
+      "implication": "Design principle for MetroGraph: ensure layout respects proximity aesthetic (adjacent ≈ near) as soft constraint; improves intuitive structure perception without explicit edge routing.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-proximity-drawings-survey"
+      ]
+    },
+    {
+      "concept": "Community-Aware and Hierarchical Layout",
+      "field": "visualization",
+      "definition": "Layout algorithms incorporating community/cluster detection; arranges vertices to emphasize modular structure; combines aesthetic goals (crossing minimization, symmetry) with structural awareness; improves readability of group-heavy graphs.",
+      "strength": "framework",
+      "key_refs": [
+        "Schaeffer (2007) — survey of community detection in complex networks",
+        "Zhao et al. (2012) — community detection and visualization integration",
+        "Gonzalez et al. (2012) — structural and semantic information in layout"
+      ],
+      "related_concepts": [
+        "Gestalt Principles in Graph Drawing",
+        "Hierarchical (Layered) Drawing",
+        "Circular Layout"
+      ],
+      "implication": "For knowledge graphs with modular structure (e.g., database federation, agent teams), detect and visualize communities; improves navigation and reduces perceived complexity by organizing spatially.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-community-detection-visualization"
+      ]
+    },
+    {
+      "concept": "Upward Planar Drawing for DAGs",
+      "field": "graph-theory",
+      "definition": "Specialized planar drawing for directed acyclic graphs where all edges point upward (monotonic); guarantees zero crossings and enforces visual hierarchy; canonical for flowcharts, workflows, and hierarchical data.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tamassia et al. (1992, 1995) — upward planarity algorithms",
+        "Di Battista, Eades, Tamassia & Tollis (1999) — textbook treatment",
+        "Angelini et al. (2014) — modern survey including upward variants"
+      ],
+      "related_concepts": [
+        "Planar Drawing",
+        "Hierarchical (Layered) Drawing",
+        "Edge Crossing Minimization"
+      ],
+      "implication": "Essential for MetroGraph's workflow/agent-graph mode: when processing DAGs (common in query plans, task schedules), apply upward planar algorithm to guarantee crossing-free, hierarchy-respecting layout.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-upward-planar-drawing",
+        "market-theory-graph-aesthetics-readability-planar-drawing-survey"
+      ]
+    },
+    {
+      "concept": "Design Principles for Graphical Excellence",
+      "field": "visualization",
+      "definition": "Tufte's foundational principles: maximize data-ink ratio, minimize chartjunk, provide clear context, enable multi-level reading, and maintain graphical integrity; directly applicable to graph aesthetic design and UI minimalism.",
+      "strength": "framework",
+      "key_refs": [
+        "Tufte (1983, 2001) — The Visual Display of Quantitative Information; foundational principles",
+        "Tufte (1997) — Visual Explanations; extending to complex systems",
+        "Munzner (2014) — modern interpretation in Visualization Analysis and Design"
+      ],
+      "related_concepts": [
+        "Visual Encoding Effectiveness",
+        "Edge Density and Visual Clutter",
+        "Preattentive Processing in Visual Encoding"
+      ],
+      "implication": "MetroGraph must apply Tufte's principles: remove unnecessary visual decoration, maximize information density without clutter, provide multi-scale readability (zoom), preserve accurate representation of data relationships.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-visual-display-quantitative-info-tufte"
+      ]
+    },
+    {
+      "concept": "Quality Metrics for Cluster Visualization",
+      "field": "visualization",
+      "definition": "Framework (Perez et al., Sallaberry et al.) quantifying quality of cluster/community layout: intra-cluster edge density, inter-cluster separation, boundary clarity; extends Purchase's metrics to modular graphs.",
+      "strength": "empirical",
+      "key_refs": [
+        "Perez et al. (2019) — quality metric for cluster visualization",
+        "Sallaberry et al. (2012) — community detection and layout quality",
+        "Eades & Huang (2000) — clustering and visualization integration"
+      ],
+      "related_concepts": [
+        "Aesthetic Metrics Framework",
+        "Community-Aware and Hierarchical Layout",
+        "Gestalt Principles in Graph Drawing"
+      ],
+      "implication": "MetroGraph should evaluate layout quality via cluster metrics; enables algorithmic selection among candidate layouts based on community structure prominence.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-quality-metric-clusters"
+      ]
+    },
+    {
+      "concept": "Chord Diagrams and Visual Design Choices",
+      "field": "visualization",
+      "definition": "Specialized circular layout (chord diagram) for bipartite/flow graphs; empirical study of design choices (arc ordering, colors, width) affecting readability; task-dependent effectiveness.",
+      "strength": "empirical",
+      "key_refs": [
+        "Krzywinski et al. (2009) — Circos visualization system popularizing chord diagrams",
+        "Zong et al. (2024) — CHORDination study on design choice impacts"
+      ],
+      "related_concepts": [
+        "Circular Layout",
+        "Visual Encoding Effectiveness",
+        "Edge Bundling and Confluent Drawings"
+      ],
+      "implication": "For bipartite workflow/data-flow visualization in MetroGraph, consider chord diagrams as alternative; research on visual design choices (color, width encoding) informs implementation.",
+      "source_ids": [
+        "market-theory-graph-aesthetics-readability-chord-diagram-evaluation"
+      ]
+    }
+  ]
+}

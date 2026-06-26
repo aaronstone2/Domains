@@ -1,0 +1,679 @@
+{
+  "leaf": "competitors-data-warehouse-lakehouse",
+  "products": [
+    {
+      "slug": "databricks-data-intelligence",
+      "name": "Databricks Data Intelligence Platform",
+      "description": "Unified data lakehouse platform combining Delta Lake (open data format), Unity Catalog governance, SQL/Python/Scala/R notebooks, Lakeflow Designer visual ETL, Photon C++ vectorized engine, and integrated ML/AI workflows. IPO-bound market leader for ML-centric data engineering.",
+      "company_slug": "databricks",
+      "product_type": "platform",
+      "deployment": [
+        "cloud-aws",
+        "cloud-azure",
+        "cloud-gcp",
+        "serverless"
+      ],
+      "positioning": "AI-first lakehouse for data engineers and ML teams; open Delta Lake + Spark-evolved compute; competing on unified ML/ELT capabilities and 20-40% cost advantage for ETL vs SQL-only warehouses.",
+      "archetype": "Unified Lakehouse + ML Workflows",
+      "tech_stack": [
+        "Delta Lake",
+        "Apache Spark",
+        "Photon Engine",
+        "Python",
+        "SQL",
+        "Scala",
+        "R"
+      ],
+      "open_source": false,
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-databricks-official-docs-aws",
+        "market-competitors-data-warehouse-lakehouse-databricks-official-pricing",
+        "market-competitors-data-warehouse-lakehouse-databricks-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-databricks-release-notes-aws",
+        "market-competitors-data-warehouse-lakehouse-databricks-forrester-wave-2024",
+        "market-competitors-data-warehouse-lakehouse-databricks-vs-snowflake-tech-insider"
+      ]
+    },
+    {
+      "slug": "snowflake-warehouse",
+      "name": "Snowflake Cloud Data Warehouse",
+      "description": "Enterprise cloud data warehouse with micro-partitioned columnar storage, virtual warehouse-based workload isolation, zero-copy data sharing, Iceberg write support, Cortex AI (Gemini 3.5 Flash multimodal), and advanced RBAC governance. Public company ($4.68B FY2026 revenue) dominating SQL-first analytics.",
+      "company_slug": "snowflake",
+      "product_type": "platform",
+      "deployment": [
+        "cloud-aws",
+        "cloud-azure",
+        "cloud-gcp"
+      ],
+      "positioning": "Enterprise SQL-first data warehouse; multi-cloud scale with workload isolation; competing on ease-of-use, performance for SQL analytics, zero-copy sharing, and mature governance.",
+      "archetype": "SQL-First Cloud Warehouse + Ecosystem",
+      "tech_stack": [
+        "Proprietary micro-partitioned storage",
+        "SQL",
+        "Cortex AI",
+        "Iceberg (partial)",
+        "Streamlit"
+      ],
+      "open_source": false,
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-snowflake-official-pricing",
+        "market-competitors-data-warehouse-lakehouse-snowflake-official-docs",
+        "market-competitors-data-warehouse-lakehouse-snowflake-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-snowflake-release-notes-2026",
+        "market-competitors-data-warehouse-lakehouse-snowflake-vs-redshift-cloudzero",
+        "market-competitors-data-warehouse-lakehouse-trustradius-databricks-vs-snowflake"
+      ]
+    },
+    {
+      "slug": "clickhouse-cloud",
+      "name": "ClickHouse Cloud",
+      "description": "Real-time OLAP database combining column-oriented storage with sub-second aggregation performance. 10x faster join performance vs Spark/Snowflake. Managed Cloud service ($0.20/hr compute) + open-source self-hosted option. Targeting 250%+ YoY growth for fresh-data analytics and observability.",
+      "company_slug": "clickhouse",
+      "product_type": "platform",
+      "deployment": [
+        "cloud-aws",
+        "cloud-azure",
+        "cloud-gcp",
+        "self-hosted-oss"
+      ],
+      "positioning": "Real-time OLAP for high-ingest, sub-second analytics; cost leader via compression and open-source option; competing on speed, cost efficiency, and data freshness vs warehouse-evolved platforms.",
+      "archetype": "Real-Time OLAP + Cost Leadership",
+      "tech_stack": [
+        "Column-oriented storage",
+        "SQL",
+        "ClickPipes (Kafka/CDC/S3)",
+        "Parquet/Iceberg (partial)",
+        "C++ execution"
+      ],
+      "open_source": true,
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-clickhouse-official-pricing",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-official-docs",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-vs-snowflake-flexera",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-join-performance-benchmark",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-blog-real-time-analytics"
+      ]
+    },
+    {
+      "slug": "dremio-cloud",
+      "name": "Dremio Cloud Lakehouse Platform",
+      "description": "Open lakehouse platform emphasizing vendor lock-in avoidance (Apache Iceberg/Parquet/Polaris Catalog). Intelligent Query Engine, Reflections acceleration, AI Agent with Mermaid visualization, multi-source federation. Recently acquired by SAP (May 2026, closing Q3 2026) for enterprise integration.",
+      "company_slug": "dremio",
+      "product_type": "platform",
+      "deployment": [
+        "cloud-aws",
+        "cloud-azure",
+        "cloud-gcp",
+        "kubernetes"
+      ],
+      "positioning": "Open-lakehouse alternative to proprietary warehouses; no vendor lock-in via Iceberg/Polaris; competing on multi-source federation, agentic AI, and openness.",
+      "archetype": "Open Lakehouse + Agentic Analytics",
+      "tech_stack": [
+        "Apache Iceberg",
+        "Polaris Catalog",
+        "Parquet",
+        "SQL",
+        "Apache Aria semantic layer",
+        "Mermaid diagrams"
+      ],
+      "open_source": false,
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-dremio-official-pricing",
+        "market-competitors-data-warehouse-lakehouse-dremio-official-docs",
+        "market-competitors-data-warehouse-lakehouse-dremio-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-dremio-release-notes-2026",
+        "market-competitors-data-warehouse-lakehouse-dremio-vs-competitors-dremio",
+        "market-competitors-data-warehouse-lakehouse-forrester-dremio-positioning"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "SQL/Python/Scala/R editors in notebooks; familiar to data engineers but notebooks introduce workflow complexity (2+ panes: code + results + sidebar outputs)"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.query-building-result-preview",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Cell output + separate visualization tabs; inline results visible but scattered across notebook interface"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Discover page (GA June 2026) for Unity Catalog navigation without deep hierarchy knowledge; improved but still requires schema understanding"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Copilot in notebooks generates SQL/Python; context-aware from cell history; low friction entry for new queries"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.ai-assist-chat-copilot",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Chat-like assistance in editor; works but secondary to code-generation focus"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.ai-assist-debugging",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Error messages in cell output; Copilot can suggest fixes but requires re-running cells"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "hci_cost_note": "Unity Catalog object-level governance; powerful but requires complex permission configuration; admin overhead"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.auth-governance-audit-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "hci_cost_note": "Comprehensive audit via Unity Catalog; tracks lineage and access; accessible but requires querying system tables"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.data-transformation-pipelines",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Lakeflow Designer (GA June 2026) visual no-code ETL canvas; major UX improvement over notebook-based workflows"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.integration-data-sharing",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Delta Sharing for multi-party access; open format but requires recipient setup; not as seamless as Snowflake zero-copy"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.query-building-parameterization",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Widget parameters in notebooks; SQL parameterization via Spark; scattered across UI"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Notebook templates and quickstart galleries; good variety but requires selecting from list"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Git integration for notebooks; branch/merge support; standard workflow but requires Git familiarity"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Dark/light themes available; customization limited"
+    },
+    {
+      "product_slug": "databricks-data-intelligence",
+      "feature_id": "market.feature.onboarding-contextual-help",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Inline help in UI; extensive docs; help scattered across notebook toolbar and sidebar"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "SQL worksheet editor; clean, focused interface; natural SQL-first workflow; minimal friction"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.query-building-result-preview",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Results panel below SQL editor; clear separation; excellent result browsing and export options"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "BI tools (Tableau, Power BI) integrate visually; native UI is SQL-only; requires external tools for drag-drop"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Object browser with column drill-down; quick search; clear hierarchy visualization; intuitive navigation"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "No native ERD; relationships must be discovered via queries or external tools"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.ai-assist-chat-copilot",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Cortex AI copilot in worksheet; can explain queries, suggest optimizations; native sidebar integration"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Cortex can generate SQL from natural language; context-aware from schema; clean UX"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.ai-assist-debugging",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Cortex can explain errors; helpful but requires manual query re-run"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "hci_cost_note": "Advanced role/grant system; comprehensive but complex; requires careful role design; admin overhead for policy setup"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.auth-governance-audit-logs",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Query history, login audit, object access logs; comprehensive; accessible via system views"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.integration-data-sharing",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Zero-copy data sharing; seamless cross-account access; minimal setup; industry-leading"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.onboarding-contextual-help",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Comprehensive docs, in-app tooltips, SQL function reference; easy to find help"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Dark/light themes; limited customization"
+    },
+    {
+      "product_slug": "snowflake-warehouse",
+      "feature_id": "market.feature.query-building-parameterization",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Bind parameters in SQL; session variables; execute template feature; good support"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "SQL editor (Web UI) + CLI + HTTP API; fast query execution; minimal UI overhead"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.query-building-result-preview",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "CLI output + Web UI table view; raw performance-focused; less polished than warehouse UIs"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "SHOW TABLES/DESCRIBE; Web UI has basic schema browser; minimal hierarchy visualization"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "No ERD support; relationships not surfaced"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "hci_cost_note": "Basic user/role model; limited fine-grained permissions; simpler than warehouses but less mature"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.auth-governance-audit-logs",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "hci_cost_note": "Query logs in system tables; limited audit trail; requires manual querying"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "No AI assistance; SQL-only workflow"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.integration-data-sharing",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "hci_cost_note": "No native data-sharing; must replicate data or grant DB access"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Comprehensive docs + examples; learning curve for OLAP mindset but excellent reference material"
+    },
+    {
+      "product_slug": "clickhouse-cloud",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "hci_cost_note": "Minimal Web UI; CLI-focused; functional but not polished"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "SQL editor; clean interface; multi-source context"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Semantic Layer provides some visual query assistance; not full drag-drop but better than SQL-only"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.query-building-result-preview",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Results panel; good data browsing; inline export"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Multi-source explorer; Polaris catalog discovery; simplified for multi-source federation; intuitive"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.ai-assist-chat-copilot",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "AI Agent with Mermaid diagram visualization (June 2026); can generate workflows; modern agentic interface"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Agent generates SQL from intent; semantic layer provides context; good UX"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "RBAC in Enterprise tier; role-based access; not as granular as Snowflake but adequate"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.integration-data-sharing",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Data access via Iceberg/Parquet; query federation; not as seamless as zero-copy but more flexible"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Query templates; good onboarding guides; learning curve for advanced features"
+    },
+    {
+      "product_slug": "dremio-cloud",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Modern UI; clean navigation; Mermaid diagram support; well-designed"
+    }
+  ],
+  "competitors": [
+    {
+      "company_slug": "databricks",
+      "product_slug": "databricks-data-intelligence",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Unified ML/AI workflows (MLflow, Mosaic AI)",
+        "Open Delta Lake format (no lock-in)",
+        "20-40% cheaper for ETL vs SQL analytics",
+        "Notebook IDE familiarity for data engineers",
+        "Lakeflow Designer visual ETL (GA)",
+        "Photon engine performance",
+        "Enterprise adoption momentum (Series L $4B valuation)"
+      ],
+      "we_win_on": [
+        "Visual graph UI for data exploration (vs notebook workflow scatter)",
+        "Surface-area constraints (Databricks suffers from feature sprawl)",
+        "Clear node/edge model (vs code-first complexity)",
+        "HCI clarity for non-technical users (vs notebook notebook intimidation)",
+        "Cost visibility (vs complex DBU pricing)"
+      ],
+      "wedge_vs_them": "Fix data platform UI collapse: visual graph replaces scattered notebook cells and config panels. MetroGraph surfaces data relationships + workflow dependencies as traversable graph; Databricks buries them in notebooks + sidebar complexity.",
+      "moat": "1) Spark/Delta ecosystem lock-in; 2) ML/AI workflow maturity; 3) $100B+ valuation enables platform sprawl + aggressive hiring; 4) Developer mindshare among data engineers",
+      "overlap_area": [
+        "Data pipeline orchestration",
+        "SQL + Python analytics",
+        "Governance + Catalog",
+        "Integration with BI tools",
+        "Cost optimization challenges"
+      ],
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-databricks-official-docs-aws",
+        "market-competitors-data-warehouse-lakehouse-databricks-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-databricks-release-notes-aws",
+        "market-competitors-data-warehouse-lakehouse-databricks-vs-snowflake-tech-insider",
+        "market-competitors-data-warehouse-lakehouse-bigdataboutique-databricks-vs-snowflake"
+      ]
+    },
+    {
+      "company_slug": "snowflake",
+      "product_slug": "snowflake-warehouse",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "SQL-first simplicity (lowest learning curve)",
+        "Ease of use for analysts (G2 leadership)",
+        "Enterprise readiness + Fortune 500 adoption",
+        "Zero-copy data sharing (industry-unique)",
+        "Virtual warehouse workload isolation",
+        "Cortex AI integration (Gemini 3.5 Flash)",
+        "Multi-cloud scale + proven reliability"
+      ],
+      "we_win_on": [
+        "Visual graph exploration (vs SQL query requirements)",
+        "Cost visibility (vs hidden compute surprises)",
+        "Node/edge clarity (vs config sprawl)",
+        "Intuitive data relationships (vs JOIN-based discovery)",
+        "Reduced cognitive load (vs SQL expertise barrier)"
+      ],
+      "wedge_vs_them": "Fix warehouse cost surprises + SQL complexity: visual graph replaces opaque credit consumption and JOIN-heavy queries. MetroGraph makes data relationship navigation visual; Snowflake hides it in SQL optimizer and cost billing.",
+      "moat": "1) Enterprise SQL expertise + 29% YoY growth; 2) $4.68B revenue network effects; 3) Zero-copy sharing ecosystem; 4) 125% NRR retention leadership",
+      "overlap_area": [
+        "SQL analytics + BI integration",
+        "Governance + data sharing",
+        "Cloud multi-tenancy",
+        "Cost management challenges",
+        "AI/LLM integration"
+      ],
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-snowflake-official-docs",
+        "market-competitors-data-warehouse-lakehouse-snowflake-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-snowflake-release-notes-2026",
+        "market-competitors-data-warehouse-lakehouse-snowflake-vs-redshift-cloudzero",
+        "market-competitors-data-warehouse-lakehouse-trustradius-databricks-vs-snowflake"
+      ]
+    },
+    {
+      "company_slug": "clickhouse",
+      "product_slug": "clickhouse-cloud",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Real-time OLAP performance (10x faster joins at scale)",
+        "Sub-second aggregation for fresh-data dashboards",
+        "Cost leadership (compression + open-source option)",
+        "No minimum usage model",
+        "250%+ YoY growth momentum",
+        "3,000+ enterprise customers",
+        "Series D $400M funding (Jan 2026) at $15B"
+      ],
+      "we_win_on": [
+        "Visual data exploration (vs SQL-only queries)",
+        "Workflow visualization (vs query-only interface)",
+        "Graphical discovery (vs table enumeration)",
+        "Cost transparency (vs still infrastructure complexity)",
+        "Lower barrier for non-SQL users"
+      ],
+      "wedge_vs_them": "Make real-time analytics more explorable: visual graph of data relationships + ingestion pipelines replaces SQL query burden. MetroGraph surfaces data freshness + join patterns visually; ClickHouse requires sub-second latency but no navigation visualization.",
+      "moat": "1) Column-oriented OLAP architecture (specialized for real-time); 2) Cost efficiency via compression; 3) Open-source community + self-hosted option; 4) Growth rate (3x YoY ARR)",
+      "overlap_area": [
+        "Real-time data ingestion",
+        "High-concurrency analytics",
+        "Cost-conscious deployments",
+        "Open data formats",
+        "Dashboard freshness"
+      ],
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-clickhouse-official-docs",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-vs-snowflake-flexera",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-join-performance-benchmark",
+        "market-competitors-data-warehouse-lakehouse-clickhouse-blog-real-time-analytics"
+      ]
+    },
+    {
+      "company_slug": "dremio",
+      "product_slug": "dremio-cloud",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Open lakehouse positioning (no vendor lock-in via Iceberg/Parquet)",
+        "Multi-source federation (Snowflake + S3 + Postgres in one query)",
+        "Reflections acceleration (materialized views)",
+        "AI Agent with Mermaid workflow visualization",
+        "Simplicity for multi-source scenarios",
+        "SAP acquisition (enterprise resources)"
+      ],
+      "we_win_on": [
+        "UI/UX clarity (vs agentic AI chat uncertainty)",
+        "Visual node/edge model (vs semantic layer abstraction)",
+        "Explicit graph exploration (vs agent decision-making black box)",
+        "Cost visibility (vs still DCU complexity)",
+        "Deterministic workflows (vs agent non-determinism)"
+      ],
+      "wedge_vs_them": "Replace agent chat with visual graph: explicit node/edge model for data relationships + transformations instead of agentic reasoning. MetroGraph surfaces multi-source schema as traversable graph; Dremio surfaces via AI Agent interpretation.",
+      "moat": "1) Open lakehouse + Polaris Catalog leadership; 2) Iceberg/Parquet format adoption; 3) SAP enterprise integration (post-acquisition); 4) Multi-source federation maturity",
+      "overlap_area": [
+        "Open lakehouse architecture",
+        "Multi-source data federation",
+        "Governance + catalog",
+        "Cost optimization",
+        "AI-assisted analytics"
+      ],
+      "source_ids": [
+        "market-competitors-data-warehouse-lakehouse-dremio-official-docs",
+        "market-competitors-data-warehouse-lakehouse-dremio-g2-reviews",
+        "market-competitors-data-warehouse-lakehouse-dremio-release-notes-2026",
+        "market-competitors-data-warehouse-lakehouse-dremio-vs-competitors-dremio",
+        "market-competitors-data-warehouse-lakehouse-forrester-dremio-positioning"
+      ]
+    }
+  ],
+  "notes": "\n**EXTRACTION SUMMARY**\n\nThis Phase C extraction covers the primary data warehouse/lakehouse competitive landscape (4 products x 4 companies) relevant to MetroGraph's positioning as a visual graph tool for data exploration + workflow orchestration.\n\n**Key Findings:**\n\n1. **Market Consolidation**: Warehouse market dominated by scale (Snowflake $4.68B revenue) + momentum (Databricks $134B valuation, ClickHouse 3x YoY). Dremio acquired by SAP (May 2026), indicating ecosystem consolidation into enterprise ecosystems.\n\n2. **HCI Failure Pattern** (MetroGraph's Wedge):\n   - **Databricks**: Notebook UI collapse (scattered cells, sidebar complexity, no data relationship visualization)\n   - **Snowflake**: SQL+config burden (users hide from cost complexity, relationships buried in JOINs)\n   - **ClickHouse**: SQL-only workflow (no visual discovery of schema or pipeline freshness)\n   - **Dremio**: Agent chat non-determinism (Mermaid diagrams help, but agentic reasoning adds uncertainty vs explicit graphs)\n\n3. **Feature Differentiation**:\n   - **AI/Copilot**: Databricks (full) = Snowflake (full) = Dremio (full) > ClickHouse (none). MetroGraph's edge: copilot + graph (not just code-gen).\n   - **Data Sharing**: Snowflake (zero-copy native, A) >> Databricks (Delta Sharing, B) > Dremio (federation, B) > ClickHouse (none, F).\n   - **Real-Time**: ClickHouse (sub-second, A) > Databricks (Photon, B) > Dremio (federation lag, B) > Snowflake (warehouse latency, C).\n   - **Open Format**: Dremio (Iceberg-native, A) = ClickHouse (self-hosted, A) > Databricks (Delta-locked, B) > Snowflake (proprietary, C).\n   - **Visual Exploration**: Dremio (semantic layer + agent, B) > Databricks (Discover page, B) > Snowflake (schema browser, B) > ClickHouse (CLI, C). **Gap: None excel at visual graph**. MetroGraph fills this.\n\n4. **Threat Sequencing**:\n   - **Databricks** (Threat: HIGH): Most directly competitive on workflows + AI. IPO imminent ($100B+ valuation) → likely to invest in UX.\n   - **Snowflake** (Threat: HIGH): Enterprise gravity + cost surprise recovery. Cortex AI + Iceberg support closing lakehouse gap.\n   - **ClickHouse** (Threat: HIGH): Fast-growing on real-time + cost. Limited for broad data discovery, but owns performance niche.\n   - **Dremio** (Threat: MEDIUM): Weakened by SAP acquisition (integration risk), but open lakehouse + agent positioning relevant.\n\n5. **MetroGraph Positioning**:\n   - Wedge: Fix HCI failure of scattered, SQL-first, code-heavy platforms → visual graph UI for data exploration + workflow orchestration.\n   - ICP: Data engineers + startups evaluating lakehouse/warehouse (Databricks, Dremio adjacency) OR cost-conscious teams (ClickHouse, Snowflake cost escape).\n   - Differentiation: Only visual graph + node/edge model across all four. All competitors converging on AI copilot; MetroGraph differentiates on **UI + AI** parity (graph-aware copilot, not just code-gen).\n\n**Sources Confidence**:\n- Tier 0 (Official): 10 sources (docs, pricing, funding)\n- Tier 1 (Release notes): 5 sources\n- Tier 2 (Analyst): 10 sources (G2, Gartner, Forrester, TrustRadius)\n- Tier 3 (Practitioner): 19 sources (comparisons, benchmarks, FinOps guides)\n- **Total: 44 sources ingested**, covering official positioning, customer reviews, analyst reports, and practitioner insights.\n\n**Gaps Deferred**:\n- Gartner Magic Quadrant full reports (paywalled)\n- Some analyst deep-dives (registration-gated)\n- Real customer NPS/churn data (not in tier 0-3 sources)\n- Detailed feature parity matrix for 100+ features (scoped to 20-30 most differentiating per product)\n"
+}
