@@ -151,7 +151,14 @@ CREATE TABLE IF NOT EXISTS {{schema}}.constraints (
   label                 VARCHAR NOT NULL,
   kind                  VARCHAR,                -- injury | equipment-gap | mobility | preference
   description           VARCHAR,
-  triggers              VARCHAR[],              -- ['grip-load','hanging','crush-grip'] — matched against exercises
+  triggers              VARCHAR[],              -- free descriptive tags (overhead, deep-flexion, axial-loading, impact, ballistic, end-range, ...)
+  -- typed matching columns: an exercise is contraindicated if its movement_pattern_id is in provoking_patterns,
+  -- OR its joint_stress overlaps provoking_joint_stress, OR its grip_pattern_tags overlaps provoking_grip_tags.
+  provoking_patterns    VARCHAR[],              -- movement_pattern slugs that aggravate it (vertical-push, hip-hinge, spinal-flexion, ...)
+  provoking_joint_stress VARCHAR[],             -- joint keys (shoulder, elbow, wrist, lumbar-spine, hip, knee, ankle, cervical)
+  provoking_grip_tags   VARCHAR[],              -- grip_pattern_tags (crush-grip, dead-hang, weight-hanging) for grip-mediated constraints
+  red_flags             VARCHAR[],              -- symptoms that mean STOP + see a professional (the refer-out screen)
+  intake_questions      VARCHAR[],              -- the functional characterization protocol for this constraint kind
   affected_exercise_ids VARCHAR[],
   affected_muscle_ids   VARCHAR[],
   workaround            VARCHAR,                -- e.g. 'use cable wrist cuffs / lifting straps / machine variant'
@@ -160,4 +167,47 @@ CREATE TABLE IF NOT EXISTS {{schema}}.constraints (
   active                BOOLEAN,
   notes                 VARCHAR,
   source_ids            VARCHAR[]
+);
+
+-- ───────────────────── per-gym equipment profiles (multi-gym) ─────────────
+-- A gym is a stored location with an equipment inventory. The routine generator takes a gym_id
+-- and selects/substitutes exercises against what that gym actually has. New gym = new profile JSON
+-- in routine/gyms/<id>.json + a load. Lets the same lifter carry routines across multiple gyms.
+CREATE TABLE IF NOT EXISTS {{schema}}.gyms (
+  id          VARCHAR PRIMARY KEY,    -- gym.<slug>
+  name        VARCHAR NOT NULL,
+  location    VARCHAR,
+  notes       VARCHAR,
+  is_default  BOOLEAN,
+  updated     DATE
+);
+
+CREATE TABLE IF NOT EXISTS {{schema}}.gym_equipment (
+  gym_id           VARCHAR NOT NULL,   -- -> gyms.id
+  equipment        VARCHAR NOT NULL,   -- implement/station key
+  category         VARCHAR,            -- free-weight | bar | machine | cable | bench | rack | cardio | accessory
+  corpus_equipment VARCHAR,            -- corpus exercise.equipment value(s) this satisfies, csv (dumbbell, cable, machine, smith-machine, barbell, ez-bar, kettlebell, bodyweight, box, ankle-cuff, wrist-cuff, ...)
+  station          VARCHAR,            -- specific station key for exercise gating (lat-pulldown, leg-press, pec-deck, back-extension, ...) or NULL
+  available        BOOLEAN,            -- false = explicitly absent (drives substitution)
+  -- LOADING ALGEBRA: how this implement's achievable weights are computed.
+  loading_model    VARCHAR,            -- arithmetic | discrete | plate-loaded | bodyweight | none
+  min_lb           DOUBLE,             -- arithmetic / plate-loaded (lightest settable load)
+  max_lb           DOUBLE,             -- arithmetic / plate-loaded (heaviest settable load)
+  increment_lb     DOUBLE,             -- arithmetic / plate-loaded (smallest step)
+  bar_weight_lb    DOUBLE,             -- plate-loaded: the bar's own contribution (Olympic 45, Smith effective ~25)
+  weights_lb       DOUBLE[],           -- discrete: the explicit set (kettlebells, fixed-bar set, corebags)
+  quantity         INTEGER,            -- count / pairs of the implement
+  est              BOOLEAN,            -- TRUE = numeric values are estimates pending measurement
+  model            VARCHAR,            -- brand / model
+  notes            VARCHAR,
+  PRIMARY KEY (gym_id, equipment)
+);
+
+-- Plate inventory per gym -> derives the plate-loaded bars' increment (2x smallest) and max (bar + 2x total).
+CREATE TABLE IF NOT EXISTS {{schema}}.gym_plates (
+  gym_id     VARCHAR NOT NULL,         -- -> gyms.id
+  plate_lb   DOUBLE NOT NULL,
+  pair_count INTEGER,                  -- number of PAIRS (NULL = ample/unknown)
+  est        BOOLEAN,
+  PRIMARY KEY (gym_id, plate_lb)
 );

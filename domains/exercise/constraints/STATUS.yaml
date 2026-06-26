@@ -4,10 +4,10 @@ domain: exercise
 leaf: constraints
 depth: standard          # scout | standard | exhaustive — assigned: standard (see _shared/sessions/depth-profiles.md)
 phases:
-  meta_research: todo
-  a_survey: todo         # -> sources
-  b_ingest: todo         # -> documents + FTS
-  c_extract: todo        # -> entity tables
-  d_gold: todo           # -> verified facts (the irreducible layer)
-  e_relationships: todo  # -> typed graph
-updated: null
+  meta_research: done
+  a_survey: done         # -> clinical knowledge (no external corpus needed at standard depth)
+  b_ingest: done         # -> n/a (authored from sports-med/physio practice)
+  c_extract: done        # -> 41 contraindication-library templates + 5 active personal constraints (typed trigger columns)
+  d_gold: done           # -> red-flag screen + functional workarounds per condition (the safety layer)
+  e_relationships: done  # -> constraint->exercise matching via provoking_patterns/joint_stress/grip_tags (verified)
+updated: 2026-06-26

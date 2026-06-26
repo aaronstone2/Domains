@@ -4,10 +4,10 @@ domain: exercise
 leaf: routine
 depth: standard          # scout | standard | exhaustive (see _shared/sessions/depth-profiles.md)
 phases:
-  meta_research: partial   # PLAN.md + README.md authored (planning pass); execution forks still open
-  a_survey: todo         # -> sources
-  b_ingest: todo         # -> documents + FTS
-  c_extract: todo        # -> entity tables
-  d_gold: todo           # -> verified facts (the irreducible layer)
-  e_relationships: todo  # -> typed graph
-updated: null
+  meta_research: done
+  a_survey: done         # -> n/a (synthesis leaf; consumes the corpus)
+  b_ingest: done         # -> n/a
+  c_extract: done        # -> gyms + gym_equipment + gym_plates (typed load algebra) + gym_loadable view; 290 Revolution profile
+  d_gold: done           # -> ROUTINE.md generated: balanced PPL x2 + dynamic mesocycle, real loads, cited, constraint-routed
+  e_relationships: done  # -> exercises x gym load-algebra x training_variables x claims x constraints joined into the routine
+updated: 2026-06-26

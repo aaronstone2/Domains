@@ -227,6 +227,56 @@ drop-sets-more-muscle → **refuted**). `agreement_score` is now a true 3-vote t
 
 OA-mirror chase for the 31 blocked load-bearing T0/T1 primaries: in progress.
 
+## Session 10 — 2026-06-26 — Multi-gym equipment profiles + 290 Revolution — DONE
+
+Added **per-gym equipment profiles** (user request: tie equipment to specific gyms, store many) with a
+properly **typed load algebra** (user pushed back on the first text-field draft — rightly). Schema:
+`exercise.gyms` + `exercise.gym_equipment` (loading_model ∈ arithmetic|discrete|plate-loaded|bodyweight|none,
+with min/max/increment_lb, bar_weight_lb, weights_lb[], station, corpus_equipment, available, est) +
+`exercise.gym_plates` (denomination → pair_count). A `gym_loadable` VIEW enumerates every achievable weight
+per implement (plate-loaded bars derive min/inc/max from gym_plates). Profiles live as JSON in
+`exercise/routine/gyms/<id>.json`; a new gym = a new file.
+
+**Algebra now queryable:** max DB (75), nearest settable load to a target (47→45), barbell membership
+(makes 95, not 92.5), implements that hit exactly 50 lb, cross-gym capability queries. `est=true` flags the
+values still to measure (selectorized stack ranges, kettlebell weights, exact plate counts).
+
+**First profile: `gym.290-revolution-drive-somerville`** (default) — commercial-grade Precor + Escape apartment
+gym, inventoried from 28 photos (ffmpeg HEIC→JPG, 4 vision agents → synthesis). 47 equipment rows / 38 available:
+Precor selectorized (lat-pulldown/seated-row, leg-ext/curl, multi-press), Precor **FTS Glide** functional trainer
+(+ cuffs that work for wrist → **pinky/wrist grip-bypass confirmed**), Precor Smith, half-rack + Olympic bar +
+plates (2.5-55), DBs **5-75/5**, fixed bars 20-60/10, kettlebells/corebags, benches (incline yes, decline no),
+VKR/dip, extensive cardio. **Absent:** leg-press, hack, pec-deck, preacher, calf-machine, 45/GHD back-extension, bands.
+
+**Coverage @ 290 Revolution:** 233 exercises → **198 directly doable**, 35 need substitution; after adding 13
+band→cable/cuff swaps (+absent-machine swaps), **33/35 have a swap edge**. Remaining 3 = 2 heuristic
+false-positives (bodyweight/DB, actually doable) + 1 band-only (tibialis raise). Effective coverage ≈ full.
+Back-extension absence covered by free-weight hinge (RDL/good-morning) + loaded carries (KB/corebag/DB) — fits the
+lower-back priority without a GHD. Substitutions now 315.
+
+## Session 11 — 2026-06-26 — Constraints + ROUTINE generated (THE deliverable) — DONE
+
+- **constraints leaf:** upgraded the table to typed trigger columns (provoking_patterns / joint_stress / grip_tags +
+  red_flags + intake_questions). Authored a **41-entry general contraindication library** (5 regional clinical agents:
+  shoulder/elbow-wrist/low-back/hip-knee/ankle-neck-systemic) + encoded Mark's **5 active personal constraints**
+  (lower-back = priority weak-point build; shoulder painless-crepitus; wrist tendinopathy; TMJ cue; left-pinky temporary).
+  Matching verified: pinky flags 89 grip-loaded exercises, shoulder 5 (overhead only), wrist 12 (direct wrist), back 0
+  (priority, not a gate), TMJ 0 (cue). All `done`.
+- **routine generator:** extracted a brief (215 available-at-290 exercises by muscle + volume/loading/claims/load-algebra),
+  ran architect → 3 session-designers → mesocycle → assembled **`domains/exercise/routine/ROUTINE.md`**.
+
+**Result: a balanced 6-day PPL×2 + dynamic mesocycle**, every exercise with real achievable loads (DB 5-75, Olympic
+plate-loaded, Smith, Precor selectorized), sets×reps×RIR×rest, set-structure (used for time-efficiency NOT 'more growth'),
+per-exercise constraint accommodations, and **citations to the verified claims** — including citing refuted claims to say
+what NOT to lean on (hip-thrust-superiority, incline-region-targeting). 42 exercise slots, **0 hallucinated** (all resolve
+to corpus ids). Lower-back/core prioritized; heavy hinge Wed→Thu-rest; autoregulation for the variable sport load.
+
+### THE VISION IS REALIZED
+The queryable algebra of verified training facts (anatomy → movements → programming → techniques, A→E, adversarially
+verified) + a typed equipment load-algebra + a general+personal constraints layer → **generated a personalized,
+evidence-cited, constraint-routed, gym-specific routine.** Regenerable on any input change. Future domains
+(nutrition / assessment-DEXA / recovery / health) are scoped in `_shared/ROADMAP.md`.
+
 ### RESEARCH LAYER COMPLETE (all 4 leaves A→E done)
 **58 muscles · 32 patterns · 233 exercises · 302 substitutions · 103 training_variables · 13 set_structures ·
 46 verified claims · 81 concepts · 2291 relationships · 168 docs + FTS · 231 sources.**
