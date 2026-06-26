@@ -20,6 +20,8 @@ DB_DIR: Path = REPO_ROOT / "_db"
 DB_PATH: Path = DB_DIR / "knowledge.duckdb"
 RAW_DIR: Path = DB_DIR / "raw"
 STAGING_DIR: Path = DB_DIR / "staging"
+# Layer 2 — committed columnar history (the one genuinely new durable state; small parquet).
+SNAPSHOTS_DIR: Path = SHARED_DIR / "snapshots"
 
 
 def discover_domains() -> tuple[str, ...]:

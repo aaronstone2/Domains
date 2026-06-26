@@ -31,6 +31,7 @@ BASE_TABLES: tuple[str, ...] = (
     "forecast_log",
     "claim_evidence",
     "primary_studies",
+    "claim_history",
 )
 
 

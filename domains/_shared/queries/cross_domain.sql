@@ -123,3 +123,14 @@ CREATE OR REPLACE VIEW meta.all_primary_studies AS
   SELECT 'linux' AS domain, * FROM linux.primary_studies UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.primary_studies UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.primary_studies;
+
+CREATE OR REPLACE VIEW meta.all_claim_history AS
+  SELECT 'devin' AS domain, * FROM devin.claim_history UNION ALL BY NAME
+  SELECT 'docker' AS domain, * FROM docker.claim_history UNION ALL BY NAME
+  SELECT 'ecs' AS domain, * FROM ecs.claim_history UNION ALL BY NAME
+  SELECT 'exercise' AS domain, * FROM exercise.claim_history UNION ALL BY NAME
+  SELECT 'firecracker' AS domain, * FROM firecracker.claim_history UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.claim_history UNION ALL BY NAME
+  SELECT 'linux' AS domain, * FROM linux.claim_history UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.claim_history UNION ALL BY NAME
+  SELECT 'methodology' AS domain, * FROM methodology.claim_history;

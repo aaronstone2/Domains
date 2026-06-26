@@ -154,6 +154,30 @@ def _cmd_calibrate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_snapshot(args: argparse.Namespace) -> int:
+    """Write a committed parquet snapshot of the fact tables + archive changed claims."""
+    from ingest.temporal import snapshot
+    from ingest.paths import DOMAIN_SCHEMAS
+    domains = (args.domain,) if args.domain else DOMAIN_SCHEMAS
+    con = open_db(read_only=False)
+    try:
+        print(f"snapshot: {snapshot(con, domains, args.label)}")
+    finally:
+        con.close()
+    return 0
+
+
+def _cmd_diff(args: argparse.Namespace) -> int:
+    """Diff current fact tables vs a prior snapshot label."""
+    from ingest.temporal import diff
+    con = open_db(read_only=True)
+    try:
+        print(f"diff: {diff(con, args.domain, args.since, args.table)}")
+    finally:
+        con.close()
+    return 0
+
+
 def _cmd_evidence(args: argparse.Namespace) -> int:
     """Seed claim_evidence from claim source ids; audit supported-but-not-primary-backed claims."""
     from ingest.verify import seed_claim_evidence, evidence_audit
@@ -246,6 +270,17 @@ def main(argv: list[str] | None = None) -> int:
     p_ev.add_argument("--domain", required=True)
     p_ev.add_argument("--audit", action="store_true")
     p_ev.set_defaults(func=_cmd_evidence)
+
+    p_snap = sub.add_parser("snapshot", help="write a committed parquet snapshot of the fact tables")
+    p_snap.add_argument("--label", required=True)
+    p_snap.add_argument("--domain", default=None, help="one domain (default: all)")
+    p_snap.set_defaults(func=_cmd_snapshot)
+
+    p_diff = sub.add_parser("diff", help="diff current fact tables vs a prior snapshot label")
+    p_diff.add_argument("--domain", required=True)
+    p_diff.add_argument("--since", required=True)
+    p_diff.add_argument("--table", default="claims")
+    p_diff.set_defaults(func=_cmd_diff)
 
     args = p.parse_args(argv)
     return int(args.func(args))

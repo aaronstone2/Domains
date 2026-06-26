@@ -160,6 +160,22 @@ LEFT JOIN {{schema}}.claim_evidence ce ON ce.claim_id = c.id
 LEFT JOIN {{schema}}.primary_studies ps ON ps.source_id = ce.evidence_id
 GROUP BY c.id, c.verdict;
 
+-- ───────────────────────── Layer 2 — temporal ─────────────────────────
+-- claim_history: SCD-2 closed versions of claims. Written by `ingest snapshot` when a claim's verdict
+-- or agreement changed since the last snapshot. row_json holds the full prior row (schema-drift proof).
+CREATE TABLE IF NOT EXISTS {{schema}}.claim_history (
+  history_id       VARCHAR PRIMARY KEY,    -- <claim_id>@<snapshot-label>
+  claim_id         VARCHAR NOT NULL,
+  verdict          VARCHAR,
+  agreement_score  DOUBLE,
+  as_of            DATE,
+  valid_from       DATE,
+  valid_to         DATE,
+  superseded_at    DATE,
+  supersede_reason VARCHAR,
+  row_json         VARCHAR
+);
+
 -- forecast_log — predictive-claim calibration (Brier scoring). Base so meta.all_forecast_log exists.
 CREATE TABLE IF NOT EXISTS {{schema}}.forecast_log (
   id              VARCHAR PRIMARY KEY,
@@ -191,3 +207,9 @@ ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS forecast_actual VARCHAR;
 -- Layer 1 (primary-evidence tier):
 ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS evidence_class VARCHAR;
 ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS primary_kind VARCHAR;
+-- Layer 2 (temporal):
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS as_of DATE;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS valid_from DATE;
+ALTER TABLE {{schema}}.claims ADD COLUMN IF NOT EXISTS valid_to DATE;
+ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS valid_from DATE;
+ALTER TABLE {{schema}}.sources ADD COLUMN IF NOT EXISTS valid_to DATE;
