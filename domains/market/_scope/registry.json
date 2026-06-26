@@ -1,0 +1,2654 @@
+{
+  "archetypes": [
+    {
+      "key": "graph-db-visualization",
+      "label": "Graph & DB Visualization Platforms",
+      "description": "End-user products/platforms that connect to graph (or graph-shaped) data and visually explore it — MetroGraph's most direct competitive set. Includes graph-DB-native explorers, DB-agnostic enterprise graph-viz platforms, and commercial graph-viz toolkits.",
+      "member_products": [
+        "Neo4j Bloom",
+        "NeoDash",
+        "Linkurious Enterprise",
+        "Graphistry",
+        "GraphAware Hume",
+        "Kineviz GraphXR",
+        "Memgraph Lab",
+        "Kuzu Explorer",
+        "gDotV",
+        "NebulaGraph Explorer",
+        "Tom Sawyer Perspectives",
+        "KeyLines",
+        "ReGraph",
+        "yFiles",
+        "yEd",
+        "Gephi",
+        "SemSpect",
+        "Graphileon",
+        "Graphlytic"
+      ],
+      "proposed_competitor_leaf": "competitors-graph-db-viz",
+      "proposed_teardown_leaf": "ux-teardown-graph-db-viz"
+    },
+    {
+      "key": "db-schema-modeling",
+      "label": "Database Schema & ERD Modeling",
+      "description": "Tools that visualize, design, and explore database schemas (ERDs, live-DB introspection). Directly competes with MetroGraph's DB-visualization wedge for the noSQL/SQL startup + data-engineer ICP.",
+      "member_products": [
+        "Azimutt",
+        "ChartDB",
+        "dbdiagram.io",
+        "DrawSQL",
+        "DbSchema",
+        "Vertabelo",
+        "SqlDBM",
+        "QuickDBD",
+        "ERDPlus",
+        "pgModeler",
+        "DBeaver EER",
+        "Prisma Studio",
+        "ER Flow"
+      ],
+      "proposed_competitor_leaf": "competitors-db-schema-modeling",
+      "proposed_teardown_leaf": "ux-teardown-db-schema-modeling"
+    },
+    {
+      "key": "node-graph-libraries",
+      "label": "Node-Based UI & Graph Rendering Libraries",
+      "description": "Developer libraries/SDKs for rendering nodes/edges and graphs — the technical foundation layer MetroGraph competes with / could build on (React Flow is the explicit rendering-layer peer). Not product competitors but shape the builder's expectations.",
+      "member_products": [
+        "React Flow / xyflow",
+        "D3.js",
+        "Cytoscape.js",
+        "Sigma.js",
+        "vis.js",
+        "react-force-graph",
+        "Cosmograph",
+        "AntV G6",
+        "Rete.js",
+        "Reaflow",
+        "Baklavajs",
+        "Neovis.js",
+        "Popoto.js",
+        "NetworkX"
+      ],
+      "proposed_competitor_leaf": "competitors-node-graph-libraries",
+      "proposed_teardown_leaf": "ux-teardown-node-graph-libraries"
+    },
+    {
+      "key": "graph-databases",
+      "label": "Graph & Multi-Model Database Engines",
+      "description": "The graph/multi-model DB backends whose data MetroGraph would visualize. Adjacency, not viz competitors — but the source-of-truth layer and a partnership/integration surface. Several bundle their own viz (linked into graph-db-visualization).",
+      "member_products": [
+        "Neo4j",
+        "TigerGraph",
+        "Memgraph",
+        "ArangoDB",
+        "Kuzu",
+        "FalkorDB",
+        "Grafeo",
+        "PuppyGraph",
+        "NebulaGraph",
+        "ArcadeDB",
+        "HugeGraph",
+        "BigQuery Graph"
+      ],
+      "proposed_competitor_leaf": "competitors-graph-databases",
+      "proposed_teardown_leaf": "ux-teardown-graph-databases"
+    },
+    {
+      "key": "workflow-automation",
+      "label": "Workflow Automation / iPaaS (node-based)",
+      "description": "Visual node-based workflow/automation and integration platforms. The canonical 'endless folders/panes/configs' HCI-comparison set MetroGraph's metro-map wedge targets.",
+      "member_products": [
+        "Zapier",
+        "Make",
+        "n8n",
+        "Workato",
+        "Tray.ai",
+        "Pipedream",
+        "Activepieces",
+        "Power Automate",
+        "Node-RED",
+        "Prismatic",
+        "Windmill",
+        "Latenode"
+      ],
+      "proposed_competitor_leaf": "competitors-workflow-automation",
+      "proposed_teardown_leaf": "ux-teardown-workflow-automation"
+    },
+    {
+      "key": "rag-agent-builders",
+      "label": "Visual RAG / AI-Agent Builders",
+      "description": "No-code/low-code canvas builders for RAG pipelines and AI agents. Directly named in MetroGraph's wedge (agent-builder HCI weak link, agent-vs-graph-chat confusion).",
+      "member_products": [
+        "Flowise",
+        "Langflow",
+        "Dify",
+        "Gumloop",
+        "Rivet",
+        "Voiceflow",
+        "Coze",
+        "BuildShip",
+        "MindStudio",
+        "Wordware",
+        "Lindy",
+        "Airia",
+        "RAGFlow",
+        "Botpress",
+        "Rasa",
+        "Copilot Studio",
+        "Vertex AI Agent Builder",
+        "Mastra",
+        "Relay.app",
+        "AnythingLLM"
+      ],
+      "proposed_competitor_leaf": "competitors-rag-agent-builders",
+      "proposed_teardown_leaf": "ux-teardown-rag-agent-builders"
+    },
+    {
+      "key": "internal-tools-lowcode",
+      "label": "Low-Code Internal Tools & No-Code Databases",
+      "description": "Internal-tool builders, low-code app platforms, and no-code database/spreadsheet frontends. Wedge target (config sprawl) plus ICP-adjacent data frontends (NocoDB/Teable/Baserow over SQL/noSQL).",
+      "member_products": [
+        "Retool",
+        "Appsmith",
+        "ToolJet",
+        "Budibase",
+        "Superblocks",
+        "UI Bakery",
+        "Illa",
+        "Lowdefy",
+        "Refine",
+        "NocoBase",
+        "Mendix",
+        "OutSystems",
+        "PowerApps",
+        "Bubble",
+        "Webflow",
+        "Xano",
+        "GrapesJS",
+        "Creatio",
+        "Airtable",
+        "NocoDB",
+        "Teable",
+        "Baserow",
+        "Grist",
+        "Knack",
+        "Smartsheet"
+      ],
+      "proposed_competitor_leaf": "competitors-internal-tools-lowcode",
+      "proposed_teardown_leaf": "ux-teardown-internal-tools-lowcode"
+    },
+    {
+      "key": "data-bi-notebook",
+      "label": "BI, Analytics & Data Notebooks",
+      "description": "Business-intelligence dashboards and analyst notebooks. Adjacent to MetroGraph via the data-engineer/analyst ICP and the 'consumption layer' of the modern data stack; AI-native notebooks (Hex) signal the AI+UI convergence.",
+      "member_products": [
+        "Metabase",
+        "Apache Superset",
+        "Hex",
+        "Observable",
+        "Tableau",
+        "Power BI",
+        "Looker",
+        "Grafana",
+        "Redash",
+        "QuickSight",
+        "OBIEE",
+        "Google Sheets",
+        "Databox",
+        "Knowi",
+        "Basedash",
+        "Tictable",
+        "Index",
+        "Jupyter"
+      ],
+      "proposed_competitor_leaf": "competitors-data-bi-notebook",
+      "proposed_teardown_leaf": "ux-teardown-data-bi-notebook"
+    },
+    {
+      "key": "diagramming",
+      "label": "Diagramming & Diagram-as-Code",
+      "description": "General diagramming, whiteboards, and diagram-as-code tools. Adjacent visualization space; several (Mermaid, draw.io, Lucidchart) render ERDs/graphs. Figma/FigJam appears here as a called-out MetroGraph integration partner, not a pure competitor.",
+      "member_products": [
+        "Mermaid",
+        "Graphviz",
+        "PlantUML",
+        "D2",
+        "Lucidchart",
+        "draw.io / diagrams.net",
+        "Miro",
+        "Figma / FigJam",
+        "Excalidraw",
+        "tldraw",
+        "Whimsical",
+        "Napkin",
+        "Qlerify",
+        "Visio",
+        "Mural",
+        "MockFlow",
+        "Creately",
+        "Penrose"
+      ],
+      "proposed_competitor_leaf": "competitors-diagramming",
+      "proposed_teardown_leaf": "ux-teardown-diagramming"
+    },
+    {
+      "key": "data-orchestration",
+      "label": "Data Orchestration, ETL/ELT & Observability",
+      "description": "Transformation, ingestion, orchestration, data-quality/observability, and warehouse/lakehouse platforms for the data-engineer ICP. Adjacency (many expose DAG/lineage graph views); establishes the stack MetroGraph plugs into.",
+      "member_products": [
+        "dbt",
+        "Fivetran",
+        "Airbyte",
+        "Talend",
+        "Apache Airflow",
+        "Dagster",
+        "Prefect",
+        "Mage",
+        "Kestra",
+        "Luigi",
+        "Kedro",
+        "Apache Beam",
+        "Temporal",
+        "Conductor",
+        "Camunda",
+        "Argo Workflows",
+        "Bruin",
+        "Orchestra",
+        "dltHub",
+        "SQLMesh",
+        "Dataform",
+        "Coalesce",
+        "Matillion",
+        "Astronomer",
+        "Great Expectations",
+        "Soda",
+        "Elementary",
+        "Monte Carlo",
+        "Databand",
+        "Databricks",
+        "Snowflake",
+        "ClickHouse",
+        "Dremio",
+        "Rubie"
+      ],
+      "proposed_competitor_leaf": "competitors-data-orchestration",
+      "proposed_teardown_leaf": "ux-teardown-data-orchestration"
+    }
+  ],
+  "companies": [
+    {
+      "name": "Neo4j",
+      "archetype": "graph-db-visualization",
+      "slug": "neo4j-bloom",
+      "url": "https://neo4j.com/product/bloom/",
+      "category": "Graph database visualization",
+      "is_direct_competitor": true,
+      "funding_signal": "$581M raised, ~$2B val, ~$200M ARR, IPO-prep; acquired GraphAware 2026",
+      "products": [
+        "Neo4j Bloom",
+        "NeoDash",
+        "Visual Cypher Builder"
+      ],
+      "note": "Anchor incumbent. Bloom = NL search + visual editing without Cypher, but Neo4j-only; non-technical focus. Separate engine row under graph-databases."
+    },
+    {
+      "name": "Linkurious",
+      "archetype": "graph-db-visualization",
+      "slug": "linkurious",
+      "url": "https://linkurious.com",
+      "category": "Graph visualization platform",
+      "is_direct_competitor": true,
+      "funding_signal": "~$50M+, Series B",
+      "products": [
+        "Linkurious Enterprise"
+      ],
+      "note": "DB-agnostic (Neo4j/Neptune/Cosmos/Memgraph); AML/fraud/investigation; #1 by enterprise adoption."
+    },
+    {
+      "name": "Graphistry",
+      "archetype": "graph-db-visualization",
+      "slug": "graphistry",
+      "url": "https://www.graphistry.com/",
+      "category": "GPU graph visualization",
+      "is_direct_competitor": true,
+      "funding_signal": "VC-stage",
+      "products": [
+        "Graphistry",
+        "PyGraphistry"
+      ],
+      "note": "GPU-accelerated visual investigation; cyber/fraud/IT; Python lib PyGraphistry."
+    },
+    {
+      "name": "GraphAware",
+      "archetype": "graph-db-visualization",
+      "slug": "graphaware-hume",
+      "url": "https://graphaware.com/",
+      "category": "Graph analytics platform",
+      "is_direct_competitor": true,
+      "funding_signal": "Acquired by Neo4j 2026",
+      "products": [
+        "GraphAware Hume"
+      ],
+      "note": "Code-free graph analytics + NLP knowledge-graph building; gov-grade RBAC/SSO."
+    },
+    {
+      "name": "Kineviz",
+      "archetype": "graph-db-visualization",
+      "slug": "graphxr",
+      "url": "https://www.graphxr.com/",
+      "category": "Graph visualization platform",
+      "is_direct_competitor": true,
+      "products": [
+        "GraphXR"
+      ],
+      "note": "Browser-based large-scale graph exploration for non-technical users; Gremlin/Cypher."
+    },
+    {
+      "name": "Memgraph (Lab)",
+      "archetype": "graph-db-visualization",
+      "slug": "memgraph-lab",
+      "url": "https://memgraph.com/lab",
+      "category": "Graph database visualization",
+      "is_direct_competitor": true,
+      "products": [
+        "Memgraph Lab"
+      ],
+      "note": "In-memory graph viz UI; GSS styling, schema viz, NL querying. Engine row separate under graph-databases."
+    },
+    {
+      "name": "Kuzu (Explorer)",
+      "archetype": "graph-db-visualization",
+      "slug": "kuzu-explorer",
+      "url": "https://kuzudb.com/",
+      "category": "Embedded graph DB visualization",
+      "is_direct_competitor": true,
+      "products": [
+        "Kuzu Explorer"
+      ],
+      "note": "Browser explorer for embedded graph DB; schema/query viz as graph/table/JSON."
+    },
+    {
+      "name": "gDotV",
+      "archetype": "graph-db-visualization",
+      "slug": "gdotv",
+      "url": "https://gdotv.com/",
+      "category": "Graph visualization toolkit",
+      "is_direct_competitor": true,
+      "products": [
+        "gDotV"
+      ],
+      "note": "Graph viz toolkit purpose-built for Kuzu; Kuzu Explorer alternative."
+    },
+    {
+      "name": "NebulaGraph (Explorer)",
+      "archetype": "graph-db-visualization",
+      "slug": "nebulagraph-explorer",
+      "url": "https://nebula-graph.io/",
+      "category": "Graph database visualization",
+      "is_direct_competitor": true,
+      "products": [
+        "NebulaGraph Explorer"
+      ],
+      "note": "Enterprise browser graph viz over NebulaGraph."
+    },
+    {
+      "name": "Tom Sawyer Software",
+      "archetype": "graph-db-visualization",
+      "slug": "tom-sawyer",
+      "url": "https://www.tomsawyer.com/",
+      "category": "Enterprise graph visualization SDK",
+      "is_direct_competitor": true,
+      "products": [
+        "Tom Sawyer Perspectives",
+        "Tom Sawyer Explorations"
+      ],
+      "note": "Enterprise graph viz SDK/platform; multi-DB (Neo4j/Neptune/Cosmos/Kuzu/JanusGraph/OrientDB)."
+    },
+    {
+      "name": "Cambridge Intelligence",
+      "archetype": "graph-db-visualization",
+      "slug": "cambridge-intelligence",
+      "url": "https://cambridge-intelligence.com/",
+      "category": "Commercial graph-viz toolkits",
+      "is_direct_competitor": true,
+      "products": [
+        "KeyLines",
+        "ReGraph"
+      ],
+      "note": "WebGL graph viz toolkits (JS KeyLines, React ReGraph); enterprise; time/geo/social analysis."
+    },
+    {
+      "name": "yWorks",
+      "archetype": "graph-db-visualization",
+      "slug": "yworks",
+      "url": "https://www.yworks.com/",
+      "category": "Graph-viz SDK + editor",
+      "is_direct_competitor": true,
+      "products": [
+        "yFiles",
+        "yEd"
+      ],
+      "note": "yFiles graph-viz SDK (React/Angular/Vue/HTML, Jupyter) + free yEd desktop editor; advanced auto-layout."
+    },
+    {
+      "name": "Gephi",
+      "archetype": "graph-db-visualization",
+      "slug": "gephi",
+      "url": "https://gephi.org/",
+      "category": "Network analysis & visualization",
+      "is_direct_competitor": true,
+      "funding_signal": "Open-source, ~25k stars",
+      "products": [
+        "Gephi"
+      ],
+      "note": "Desktop network analysis/viz; centrality/clustering/community; research + industry. Not DB-connected."
+    },
+    {
+      "name": "SemSpect",
+      "archetype": "graph-db-visualization",
+      "slug": "semspect",
+      "url": "https://semspect.de/",
+      "category": "Knowledge-graph exploration",
+      "is_direct_competitor": true,
+      "products": [
+        "SemSpect"
+      ],
+      "note": "Schema-based KG exploration with node/edge aggregation for scale; Neo4j graph app + web app."
+    },
+    {
+      "name": "Graphileon",
+      "archetype": "graph-db-visualization",
+      "slug": "graphileon",
+      "url": "https://www.graphileon.com/",
+      "category": "Low-code graph dashboard",
+      "is_direct_competitor": true,
+      "products": [
+        "Graphileon"
+      ],
+      "note": "Low-code graph dashboard for Neo4j; multi-format reporting, RBAC."
+    },
+    {
+      "name": "Graphlytic",
+      "archetype": "graph-db-visualization",
+      "slug": "graphlytic",
+      "url": "https://www.graphlytic.com/",
+      "category": "Web graph visualization",
+      "is_direct_competitor": true,
+      "products": [
+        "Graphlytic"
+      ],
+      "note": "Cytoscape.js-based customizable web graph viz; desktop/cloud/server."
+    },
+    {
+      "name": "xyflow",
+      "archetype": "node-graph-libraries",
+      "slug": "react-flow",
+      "url": "https://github.com/xyflow/xyflow",
+      "category": "Node-based UI library",
+      "is_direct_competitor": false,
+      "funding_signal": "~37.3k stars",
+      "products": [
+        "React Flow",
+        "Svelte Flow"
+      ],
+      "note": "Leading node-based UI lib; powers Zapier/Retool/n8n/LangGraph editors. MetroGraph's rendering-layer peer/foundation, not a product competitor."
+    },
+    {
+      "name": "D3.js",
+      "archetype": "node-graph-libraries",
+      "slug": "d3-js",
+      "url": "https://d3js.org/",
+      "category": "Data visualization library",
+      "is_direct_competitor": false,
+      "funding_signal": "~113k stars",
+      "products": [
+        "D3.js"
+      ],
+      "note": "Foundational data-viz lib; basis for many graph tools."
+    },
+    {
+      "name": "Cytoscape",
+      "archetype": "node-graph-libraries",
+      "slug": "cytoscape",
+      "url": "https://cytoscape.org/",
+      "category": "Graph theory & network viz",
+      "is_direct_competitor": false,
+      "funding_signal": "~10k stars (js)",
+      "products": [
+        "Cytoscape Desktop",
+        "Cytoscape.js"
+      ],
+      "note": "Graph theory + network viz; desktop (bioinformatics origin) + extensive JS library."
+    },
+    {
+      "name": "Sigma.js",
+      "archetype": "node-graph-libraries",
+      "slug": "sigma-js",
+      "url": "https://sigmajs.org/",
+      "category": "Graph rendering library",
+      "is_direct_competitor": false,
+      "products": [
+        "Sigma.js"
+      ],
+      "note": "Extensible WebGL graph rendering; JSON/GEXF."
+    },
+    {
+      "name": "vis.js",
+      "archetype": "node-graph-libraries",
+      "slug": "vis-js",
+      "url": "https://visjs.org/",
+      "category": "Visualization library",
+      "is_direct_competitor": false,
+      "products": [
+        "vis-network",
+        "vis-timeline"
+      ],
+      "note": "Network/timeline/3D viz lib; large datasets."
+    },
+    {
+      "name": "react-force-graph",
+      "archetype": "node-graph-libraries",
+      "slug": "react-force-graph",
+      "url": "https://github.com/vasturiano/react-force-graph",
+      "category": "Graph visualization library",
+      "is_direct_competitor": false,
+      "products": [
+        "react-force-graph"
+      ],
+      "note": "WebGL force-directed graph; 2D/3D/VR."
+    },
+    {
+      "name": "Cosmograph",
+      "archetype": "node-graph-libraries",
+      "slug": "cosmograph",
+      "url": "https://cosmograph.app/",
+      "category": "Graph visualization library",
+      "is_direct_competitor": false,
+      "products": [
+        "Cosmograph"
+      ],
+      "note": "GPU force-directed viz for very large graphs."
+    },
+    {
+      "name": "AntV",
+      "archetype": "node-graph-libraries",
+      "slug": "antv-g6",
+      "url": "https://github.com/antvis/g6",
+      "category": "Graph visualization framework",
+      "is_direct_competitor": false,
+      "funding_signal": "~12.2k stars",
+      "products": [
+        "G6"
+      ],
+      "note": "JS graph viz framework (network/tree); Ant Group."
+    },
+    {
+      "name": "Rete.js",
+      "archetype": "node-graph-libraries",
+      "slug": "rete-js",
+      "url": "https://github.com/retejs/rete",
+      "category": "Node editor framework",
+      "is_direct_competitor": false,
+      "funding_signal": "~12.1k stars",
+      "products": [
+        "Rete.js"
+      ],
+      "note": "Visual programming / dataflow node editor (TS)."
+    },
+    {
+      "name": "Reaflow",
+      "archetype": "node-graph-libraries",
+      "slug": "reaflow",
+      "url": "https://github.com/reaviz/reaflow",
+      "category": "Node editor library",
+      "is_direct_competitor": false,
+      "funding_signal": "~2.5k stars",
+      "products": [
+        "Reaflow"
+      ],
+      "note": "React node/flow diagram library."
+    },
+    {
+      "name": "Baklavajs",
+      "archetype": "node-graph-libraries",
+      "slug": "baklavajs",
+      "url": "https://github.com/newcat/baklavajs",
+      "category": "Node editor framework",
+      "is_direct_competitor": false,
+      "funding_signal": "~2k stars",
+      "products": [
+        "Baklavajs"
+      ],
+      "note": "Vue graph/dataflow editor."
+    },
+    {
+      "name": "Neovis.js",
+      "archetype": "node-graph-libraries",
+      "slug": "neovis-js",
+      "url": "https://github.com/neo4j-contrib/neovis.js",
+      "category": "Neo4j visualization library",
+      "is_direct_competitor": false,
+      "products": [
+        "Neovis.js"
+      ],
+      "note": "Neo4j + vis.js viz library; direct property-graph integration."
+    },
+    {
+      "name": "Popoto.js",
+      "archetype": "node-graph-libraries",
+      "slug": "popoto-js",
+      "url": "https://github.com/Nhogs/popoto",
+      "category": "Visual query builder library",
+      "is_direct_competitor": false,
+      "products": [
+        "Popoto.js"
+      ],
+      "note": "D3-based visual Cypher query builder with auto-complete."
+    },
+    {
+      "name": "NetworkX",
+      "archetype": "node-graph-libraries",
+      "slug": "networkx",
+      "url": "https://github.com/networkx/networkx",
+      "category": "Graph algorithms library",
+      "is_direct_competitor": false,
+      "funding_signal": "~17k stars",
+      "products": [
+        "NetworkX"
+      ],
+      "note": "Python graph algorithms/analysis foundation."
+    },
+    {
+      "name": "Azimutt",
+      "archetype": "db-schema-modeling",
+      "slug": "azimutt",
+      "url": "https://azimutt.app",
+      "category": "Database explorer & ERD",
+      "is_direct_competitor": true,
+      "funding_signal": "Bootstrapped (EU), ~2.1k stars, 4k+ users",
+      "products": [
+        "Azimutt"
+      ],
+      "note": "Open-source ERD + live-DB explorer for large/messy schemas; AML DSL; AI SQL; SQL+document. Strong ICP fit; bootstrapped (viz-only underfunded signal)."
+    },
+    {
+      "name": "ChartDB",
+      "archetype": "db-schema-modeling",
+      "slug": "chartdb",
+      "url": "https://chartdb.io",
+      "category": "Schema visualizer",
+      "is_direct_competitor": true,
+      "funding_signal": "Open-source; free + ~$12.50/mo",
+      "products": [
+        "ChartDB"
+      ],
+      "note": "AI-powered schema visualizer; smart-query import; multi-SQL; self-hostable; positioned as Azimutt alternative."
+    },
+    {
+      "name": "Holistics",
+      "archetype": "db-schema-modeling",
+      "slug": "dbdiagram",
+      "url": "https://dbdiagram.io",
+      "category": "ERD diagram tool",
+      "is_direct_competitor": true,
+      "funding_signal": "Free + ~$9/mo",
+      "products": [
+        "dbdiagram.io"
+      ],
+      "note": "Code-first ERD via DBML DSL; dev-loved; best for quick drafting, no live-DB connect."
+    },
+    {
+      "name": "DrawSQL",
+      "archetype": "db-schema-modeling",
+      "slug": "drawsql",
+      "url": "https://drawsql.app",
+      "category": "ERD diagram tool",
+      "is_direct_competitor": true,
+      "funding_signal": "~$15/mo",
+      "products": [
+        "DrawSQL"
+      ],
+      "note": "Collaborative ERD; SQL import; guided forms; SMB/teams."
+    },
+    {
+      "name": "DbSchema",
+      "archetype": "db-schema-modeling",
+      "slug": "dbschema",
+      "url": "https://dbschema.com/",
+      "category": "Database design tool",
+      "is_direct_competitor": true,
+      "funding_signal": "Free + ~$19/mo or $98 one-time",
+      "products": [
+        "DbSchema"
+      ],
+      "note": "Desktop design/sync/docs; 70+ DBs (SQL + NoSQL); reverse-engineering."
+    },
+    {
+      "name": "Vertabelo",
+      "archetype": "db-schema-modeling",
+      "slug": "vertabelo",
+      "url": "https://www.vertabelo.com/",
+      "category": "Database modeler",
+      "is_direct_competitor": true,
+      "funding_signal": "~$24/mo",
+      "products": [
+        "Vertabelo"
+      ],
+      "note": "Enterprise web modeler; versioning, schema validation."
+    },
+    {
+      "name": "SqlDBM",
+      "archetype": "db-schema-modeling",
+      "slug": "sqldbm",
+      "url": "https://sqldbm.com/",
+      "category": "Cloud data modeler",
+      "is_direct_competitor": true,
+      "funding_signal": "~$25/mo",
+      "products": [
+        "SqlDBM"
+      ],
+      "note": "Cloud data modeling for Snowflake/Databricks/BigQuery."
+    },
+    {
+      "name": "QuickDBD",
+      "archetype": "db-schema-modeling",
+      "slug": "quickdbd",
+      "url": "https://www.quickdatabasediagrams.com/",
+      "category": "Text-to-diagram DB tool",
+      "is_direct_competitor": true,
+      "funding_signal": "Free + ~$14/mo",
+      "products": [
+        "QuickDBD"
+      ],
+      "note": "Text-first DB design + SQL export."
+    },
+    {
+      "name": "ERDPlus",
+      "archetype": "db-schema-modeling",
+      "slug": "erdplus",
+      "url": "https://erdplus.com/",
+      "category": "ER diagram tool",
+      "is_direct_competitor": true,
+      "funding_signal": "Free",
+      "products": [
+        "ERDPlus"
+      ],
+      "note": "Academic-focused ER diagram tool; DBeaver integrates it."
+    },
+    {
+      "name": "pgModeler",
+      "archetype": "db-schema-modeling",
+      "slug": "pgmodeler",
+      "url": "https://pgmodeler.io/",
+      "category": "PostgreSQL modeling",
+      "is_direct_competitor": true,
+      "funding_signal": "Open-source",
+      "products": [
+        "pgModeler"
+      ],
+      "note": "PostgreSQL visual modeling + reverse engineering."
+    },
+    {
+      "name": "DBeaver",
+      "archetype": "db-schema-modeling",
+      "slug": "dbeaver",
+      "url": "https://dbeaver.io/",
+      "category": "DB IDE + ER diagramming",
+      "is_direct_competitor": true,
+      "funding_signal": "Open-source",
+      "products": [
+        "DBeaver EER"
+      ],
+      "note": "Multi-DB IDE with ER diagram extension."
+    },
+    {
+      "name": "Prisma",
+      "archetype": "db-schema-modeling",
+      "slug": "prisma-studio",
+      "url": "https://www.prisma.io/studio",
+      "category": "Visual DB browser (ORM)",
+      "is_direct_competitor": true,
+      "funding_signal": "$56.5M raised (Series B $40M)",
+      "products": [
+        "Prisma Studio"
+      ],
+      "note": "Visual DB browser; ORM-integrated; standalone in Prisma 7 w/ SQL introspection, AI filters/SQL; PG/MySQL/SQLite."
+    },
+    {
+      "name": "ER Flow",
+      "archetype": "db-schema-modeling",
+      "slug": "er-flow",
+      "url": "https://erflow.io",
+      "category": "AI ER diagram tool",
+      "is_direct_competitor": true,
+      "products": [
+        "ER Flow"
+      ],
+      "note": "AI-integrated visual-first ER tool; replaces code-first workflow."
+    },
+    {
+      "name": "Zapier",
+      "archetype": "workflow-automation",
+      "slug": "zapier",
+      "url": "https://zapier.com",
+      "category": "iPaaS / workflow automation",
+      "is_direct_competitor": false,
+      "funding_signal": "~$5B val (bootstrapped), ~$400M ARR, 35M+ users",
+      "products": [
+        "Zapier",
+        "Zapier Agents"
+      ],
+      "note": "iPaaS leader, 7,000+ integrations, agentic 2026. Pain: frequent UI churn, nested zaps, needs AI/Google to operate."
+    },
+    {
+      "name": "Make",
+      "archetype": "workflow-automation",
+      "slug": "make",
+      "url": "https://make.com",
+      "category": "Visual workflow automation",
+      "is_direct_competitor": false,
+      "funding_signal": "Bootstrapped, ~$100M+ ARR",
+      "products": [
+        "Make (Integromat)",
+        "Maia",
+        "Make AI Agents"
+      ],
+      "note": "Visual scenario builder; better UX than Zapier but steeper conceptual model (modules/connections/operations/data stores)."
+    },
+    {
+      "name": "n8n",
+      "archetype": "workflow-automation",
+      "slug": "n8n",
+      "url": "https://n8n.io",
+      "category": "Open-source workflow automation",
+      "is_direct_competitor": false,
+      "funding_signal": "$2.5B val, $180M Series C (Accel/NVIDIA), ~106k stars",
+      "products": [
+        "n8n",
+        "n8n 2.0"
+      ],
+      "note": "Major node-UI competitor. Open/fair-code; 70+ AI/LangChain nodes; self-host. Pain: steep curve, inadequate JS env, confusing node setup, poor errors."
+    },
+    {
+      "name": "Workato",
+      "archetype": "workflow-automation",
+      "slug": "workato",
+      "url": "https://www.workato.com/",
+      "category": "Enterprise iPaaS",
+      "is_direct_competitor": false,
+      "products": [
+        "Workato"
+      ],
+      "note": "Enterprise iPaaS; 1,000+ connectors; governance/compliance; AI orchestration."
+    },
+    {
+      "name": "Tray.io",
+      "archetype": "workflow-automation",
+      "slug": "tray-io",
+      "url": "https://tray.io",
+      "category": "Enterprise iPaaS",
+      "is_direct_competitor": false,
+      "funding_signal": "$2,500+/mo entry",
+      "products": [
+        "Tray.ai",
+        "Agent Gateway",
+        "Merlin Agent Builder"
+      ],
+      "note": "Technical enterprise iPaaS; strong JSON handling; steep curve for non-technical."
+    },
+    {
+      "name": "Pipedream",
+      "archetype": "workflow-automation",
+      "slug": "pipedream",
+      "url": "https://pipedream.com",
+      "category": "Developer workflow automation",
+      "is_direct_competitor": false,
+      "products": [
+        "Pipedream"
+      ],
+      "note": "Developer-first; serverless code steps (JS/Python/TS); 2,700+ APIs."
+    },
+    {
+      "name": "Activepieces",
+      "archetype": "workflow-automation",
+      "slug": "activepieces",
+      "url": "https://activepieces.com",
+      "category": "Open-source iPaaS",
+      "is_direct_competitor": false,
+      "funding_signal": "MIT, ~15k+ stars",
+      "products": [
+        "Activepieces"
+      ],
+      "note": "Open-source Zapier alt; early-stage UI quirks but closest to Zapier ease, far cheaper at scale."
+    },
+    {
+      "name": "Microsoft Power Automate",
+      "archetype": "workflow-automation",
+      "slug": "power-automate",
+      "url": "https://powerautomate.microsoft.com",
+      "category": "RPA / workflow automation",
+      "is_direct_competitor": false,
+      "products": [
+        "Power Automate"
+      ],
+      "note": "RPA + workflow in MS ecosystem (Azure/M365/Dynamics)."
+    },
+    {
+      "name": "Node-RED",
+      "archetype": "workflow-automation",
+      "slug": "node-red",
+      "url": "https://nodered.org",
+      "category": "Flow-based programming",
+      "is_direct_competitor": false,
+      "funding_signal": "OpenJS, ~21.3k stars, 2M+ deployments",
+      "products": [
+        "Node-RED"
+      ],
+      "note": "Flow-based programming for IoT/event automation; node-based editor."
+    },
+    {
+      "name": "Prismatic",
+      "archetype": "workflow-automation",
+      "slug": "prismatic",
+      "url": "https://prismatic.io",
+      "category": "Embedded iPaaS",
+      "is_direct_competitor": false,
+      "products": [
+        "Prismatic"
+      ],
+      "note": "Embedded iPaaS for SaaS products."
+    },
+    {
+      "name": "Windmill",
+      "archetype": "workflow-automation",
+      "slug": "windmill",
+      "url": "https://www.windmill.dev",
+      "category": "Open-source automation/orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "~10k+ stars",
+      "products": [
+        "Windmill"
+      ],
+      "note": "Open-source automation/orchestration (TS/Python); turns scripts into workflows; also a data-orchestration peer."
+    },
+    {
+      "name": "Latenode",
+      "archetype": "workflow-automation",
+      "slug": "latenode",
+      "url": "https://latenode.com",
+      "category": "Visual workflow-graph builder",
+      "is_direct_competitor": false,
+      "products": [
+        "Latenode"
+      ],
+      "note": "Visual workflow-graph on canvas; 5,500+ integrations; 'the diagram IS the automation'."
+    },
+    {
+      "name": "Flowise",
+      "archetype": "rag-agent-builders",
+      "slug": "flowise",
+      "url": "https://flowiseai.com",
+      "category": "Visual RAG/agent builder",
+      "is_direct_competitor": false,
+      "funding_signal": "Acquired by Workday (2024); ~39.9k stars; prior Sequoia/M12 $7.5M",
+      "products": [
+        "Flowise",
+        "AgentFlow"
+      ],
+      "note": "Open-source drag-drop RAG/agent builder over LangChain; Assistant/Chatflow/Agentflow. Pain: canvas over modularity, weak prod audit/cost dashboards."
+    },
+    {
+      "name": "Langflow",
+      "archetype": "rag-agent-builders",
+      "slug": "langflow",
+      "url": "https://www.langflow.org",
+      "category": "Visual LLM/agent builder",
+      "is_direct_competitor": false,
+      "funding_signal": "Acquired by DataStax (2024), ~$1.5M ARR at acq",
+      "products": [
+        "Langflow"
+      ],
+      "note": "Open-source visual LLM/agent builder (Python); modularity over canvas (opposite of Flowise trade-off)."
+    },
+    {
+      "name": "Dify",
+      "archetype": "rag-agent-builders",
+      "slug": "dify",
+      "url": "https://dify.ai",
+      "category": "Visual LLMOps/agent platform",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source, ~103k stars, ~$12M",
+      "products": [
+        "Dify"
+      ],
+      "note": "Visual orchestration studio; RAG + agent tools + model mgmt + observability; chat-first; 50+ tool integrations."
+    },
+    {
+      "name": "Gumloop",
+      "archetype": "rag-agent-builders",
+      "slug": "gumloop",
+      "url": "https://www.gumloop.com",
+      "category": "No-code AI workflow/agents",
+      "is_direct_competitor": false,
+      "funding_signal": "Series B $50M (Benchmark); Shopify/Ramp/Gusto/Instacart users",
+      "products": [
+        "Gumloop"
+      ],
+      "note": "Drag-drop visual canvas for AI agents + workflows; canvas-heavy."
+    },
+    {
+      "name": "Rivet",
+      "archetype": "rag-agent-builders",
+      "slug": "rivet",
+      "url": "https://rivet.ironcladapp.com/",
+      "category": "Visual AI programming",
+      "is_direct_competitor": false,
+      "funding_signal": "Ironclad-backed",
+      "products": [
+        "Rivet"
+      ],
+      "note": "Visual AI programming / agent builder by Ironclad."
+    },
+    {
+      "name": "Voiceflow",
+      "archetype": "rag-agent-builders",
+      "slug": "voiceflow",
+      "url": "https://www.voiceflow.com/",
+      "category": "Chat/voice agent builder",
+      "is_direct_competitor": false,
+      "products": [
+        "Voiceflow"
+      ],
+      "note": "No-code multimodal chat/voice agent builder."
+    },
+    {
+      "name": "ByteDance",
+      "archetype": "rag-agent-builders",
+      "slug": "coze",
+      "url": "https://coze.com",
+      "category": "AI agent/bot builder",
+      "is_direct_competitor": false,
+      "funding_signal": "ByteDance; open-sourced 2025; ~15k+ stars",
+      "products": [
+        "Coze",
+        "Coze Studio"
+      ],
+      "note": "AI agent/bot builder platform; enterprise backing."
+    },
+    {
+      "name": "BuildShip",
+      "archetype": "rag-agent-builders",
+      "slug": "buildship",
+      "url": "https://www.buildship.com/",
+      "category": "Visual backend / AI workflows",
+      "is_direct_competitor": false,
+      "products": [
+        "BuildShip"
+      ],
+      "note": "Visual backend builder for AI workflows."
+    },
+    {
+      "name": "MindStudio",
+      "archetype": "rag-agent-builders",
+      "slug": "mindstudio",
+      "url": "https://www.mindstudio.ai/",
+      "category": "No-code AI agent platform",
+      "is_direct_competitor": false,
+      "products": [
+        "MindStudio"
+      ],
+      "note": "Visual no-code AI agent builder."
+    },
+    {
+      "name": "Wordware",
+      "archetype": "rag-agent-builders",
+      "slug": "wordware",
+      "url": "https://www.wordware.ai/",
+      "category": "NL-programming agent builder",
+      "is_direct_competitor": false,
+      "products": [
+        "Wordware"
+      ],
+      "note": "Natural language as programming language for agents."
+    },
+    {
+      "name": "Lindy",
+      "archetype": "rag-agent-builders",
+      "slug": "lindy",
+      "url": "https://lindy.ai",
+      "category": "AI automation agents",
+      "is_direct_competitor": false,
+      "funding_signal": "Series B $35M (Battery), $49.9M total",
+      "products": [
+        "Lindy AI"
+      ],
+      "note": "'AI employees' in plain English; multi-channel automation; 1600+ app integrations."
+    },
+    {
+      "name": "Airia",
+      "archetype": "rag-agent-builders",
+      "slug": "airia",
+      "url": "https://www.airia.ai/",
+      "category": "Enterprise AI orchestration",
+      "is_direct_competitor": false,
+      "products": [
+        "Airia"
+      ],
+      "note": "Enterprise AI orchestration / no-code builder."
+    },
+    {
+      "name": "RAGFlow",
+      "archetype": "rag-agent-builders",
+      "slug": "ragflow",
+      "url": "https://ragflow.io",
+      "category": "Visual RAG workflow builder",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source (deepset-adjacent listing)",
+      "products": [
+        "RAGFlow"
+      ],
+      "note": "Visual workflows for RAG; alternative to code-first frameworks."
+    },
+    {
+      "name": "Botpress",
+      "archetype": "rag-agent-builders",
+      "slug": "botpress",
+      "url": "https://botpress.com",
+      "category": "Conversational bot builder",
+      "is_direct_competitor": false,
+      "products": [
+        "Botpress"
+      ],
+      "note": "Multichannel conversational bot building."
+    },
+    {
+      "name": "Rasa",
+      "archetype": "rag-agent-builders",
+      "slug": "rasa",
+      "url": "https://rasa.com",
+      "category": "Open-source conversational AI",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Rasa"
+      ],
+      "note": "Open-source conversational AI framework (dialogue)."
+    },
+    {
+      "name": "Microsoft Copilot Studio",
+      "archetype": "rag-agent-builders",
+      "slug": "copilot-studio",
+      "url": "https://microsoft.com/copilot/studio",
+      "category": "No-code enterprise agent builder",
+      "is_direct_competitor": false,
+      "products": [
+        "Copilot Studio"
+      ],
+      "note": "No-code enterprise agent builder; MS ecosystem."
+    },
+    {
+      "name": "Google Vertex AI Agent Builder",
+      "archetype": "rag-agent-builders",
+      "slug": "vertex-ai-agent-builder",
+      "url": "https://cloud.google.com/vertex-ai",
+      "category": "Cloud agent builder",
+      "is_direct_competitor": false,
+      "products": [
+        "Vertex AI Agent Builder"
+      ],
+      "note": "Google Cloud agent builder; pay-per-use."
+    },
+    {
+      "name": "Mastra",
+      "archetype": "rag-agent-builders",
+      "slug": "mastra",
+      "url": "https://mastra.ai",
+      "category": "TS agent framework + graph workflow engine",
+      "is_direct_competitor": false,
+      "funding_signal": "~22k stars in 15mo; 300k+ weekly npm",
+      "products": [
+        "Mastra"
+      ],
+      "note": "TypeScript agent framework with graph-based workflow engine; model routing (90+ providers); DX-focused. Kept here for its visual/graph workflow engine."
+    },
+    {
+      "name": "Relay.app",
+      "archetype": "rag-agent-builders",
+      "slug": "relay-app",
+      "url": "https://relay.app",
+      "category": "No-code AI automation",
+      "is_direct_competitor": false,
+      "products": [
+        "Relay.app"
+      ],
+      "note": "No-code AI automation with pre-built agents + large integration library."
+    },
+    {
+      "name": "AnythingLLM",
+      "archetype": "rag-agent-builders",
+      "slug": "anythingllm",
+      "url": "https://github.com/Mintplex-Labs/anything-llm",
+      "category": "Document AI / private RAG",
+      "is_direct_competitor": false,
+      "funding_signal": "~45.2k stars",
+      "products": [
+        "AnythingLLM"
+      ],
+      "note": "Multi-format document AI; private AI assistants / RAG."
+    },
+    {
+      "name": "Retool",
+      "archetype": "internal-tools-lowcode",
+      "slug": "retool",
+      "url": "https://retool.com",
+      "category": "Low-code internal tools",
+      "is_direct_competitor": false,
+      "funding_signal": "$3.2B val, $165M total, $120M+ ARR",
+      "products": [
+        "Retool",
+        "Retool Workflows",
+        "Retool Agents"
+      ],
+      "note": "Low-code internal-tools leader; AppGen + Agents 2025. Pain: 'cumbersome/slow' UI, 'extremely basic'/'90s movie', save bugs, mobile/web split."
+    },
+    {
+      "name": "Appsmith",
+      "archetype": "internal-tools-lowcode",
+      "slug": "appsmith",
+      "url": "https://appsmith.com",
+      "category": "Open-source low-code",
+      "is_direct_competitor": false,
+      "funding_signal": "$51.5M total (Series B $41M, Insight), ~37.2k stars",
+      "products": [
+        "Appsmith"
+      ],
+      "note": "Open-source low-code; JS-heavy configs; strong Git workflows; 25+ DB integrations."
+    },
+    {
+      "name": "ToolJet",
+      "archetype": "internal-tools-lowcode",
+      "slug": "tooljet",
+      "url": "https://www.tooljet.com",
+      "category": "Open-source low-code",
+      "is_direct_competitor": false,
+      "funding_signal": "~35.8k stars",
+      "products": [
+        "ToolJet"
+      ],
+      "note": "Open-source low-code internal tools; Appsmith/Budibase peer."
+    },
+    {
+      "name": "Budibase",
+      "archetype": "internal-tools-lowcode",
+      "slug": "budibase",
+      "url": "https://budibase.com",
+      "category": "Open-source low-code + automations",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source, ~24-28k stars",
+      "products": [
+        "Budibase"
+      ],
+      "note": "Low-code apps + automations; auto-CRUD, built-in DB; weak Git (export/import only)."
+    },
+    {
+      "name": "Superblocks",
+      "archetype": "internal-tools-lowcode",
+      "slug": "superblocks",
+      "url": "https://superblocks.com",
+      "category": "AI-native low-code",
+      "is_direct_competitor": false,
+      "products": [
+        "Superblocks"
+      ],
+      "note": "AI-native Retool competitor with observability/backend automation."
+    },
+    {
+      "name": "UI Bakery",
+      "archetype": "internal-tools-lowcode",
+      "slug": "ui-bakery",
+      "url": "https://uibakery.io",
+      "category": "Low-code internal tools",
+      "is_direct_competitor": false,
+      "funding_signal": "Profitable/self-funded",
+      "products": [
+        "UI Bakery"
+      ],
+      "note": "Retool alt; AI agent builds tools on live data; easier UI, shorter curve."
+    },
+    {
+      "name": "ILLA",
+      "archetype": "internal-tools-lowcode",
+      "slug": "illa",
+      "url": "https://www.illacloud.com",
+      "category": "Open-source low-code",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Illa"
+      ],
+      "note": "Open-source low-code platform."
+    },
+    {
+      "name": "Lowdefy",
+      "archetype": "internal-tools-lowcode",
+      "slug": "lowdefy",
+      "url": "https://lowdefy.com",
+      "category": "Config-driven low-code",
+      "is_direct_competitor": false,
+      "funding_signal": "MIT",
+      "products": [
+        "Lowdefy"
+      ],
+      "note": "YAML-config-driven open-source low-code."
+    },
+    {
+      "name": "Refine",
+      "archetype": "internal-tools-lowcode",
+      "slug": "refine",
+      "url": "https://refine.dev",
+      "category": "React internal-tools framework",
+      "is_direct_competitor": false,
+      "funding_signal": "~31.2k stars",
+      "products": [
+        "Refine"
+      ],
+      "note": "React framework for admin panels / internal tools."
+    },
+    {
+      "name": "NocoBase",
+      "archetype": "internal-tools-lowcode",
+      "slug": "nocobase",
+      "url": "https://nocobase.com",
+      "category": "Low-code DB platform",
+      "is_direct_competitor": false,
+      "funding_signal": "~21.3k stars (top 2025 growth)",
+      "products": [
+        "NocoBase"
+      ],
+      "note": "Plugin-architecture, database-first low-code platform."
+    },
+    {
+      "name": "Mendix",
+      "archetype": "internal-tools-lowcode",
+      "slug": "mendix",
+      "url": "https://www.mendix.com",
+      "category": "Enterprise low-code",
+      "is_direct_competitor": false,
+      "funding_signal": "Siemens-owned, Gartner Leader 2025",
+      "products": [
+        "Mendix"
+      ],
+      "note": "Cloud-native collaborative enterprise low-code app platform."
+    },
+    {
+      "name": "OutSystems",
+      "archetype": "internal-tools-lowcode",
+      "slug": "outsystems",
+      "url": "https://www.outsystems.com",
+      "category": "Enterprise low-code",
+      "is_direct_competitor": false,
+      "products": [
+        "OutSystems"
+      ],
+      "note": "Full-stack low-code w/ real code output; 200+ integrations. Pain: G2 flags learning curve as top friction."
+    },
+    {
+      "name": "Microsoft PowerApps",
+      "archetype": "internal-tools-lowcode",
+      "slug": "powerapps",
+      "url": "https://powerapps.microsoft.com",
+      "category": "Low-code app builder",
+      "is_direct_competitor": false,
+      "products": [
+        "PowerApps"
+      ],
+      "note": "MS-ecosystem low-code (Azure/365/SharePoint)."
+    },
+    {
+      "name": "Bubble",
+      "archetype": "internal-tools-lowcode",
+      "slug": "bubble",
+      "url": "https://bubble.io",
+      "category": "No-code web app builder",
+      "is_direct_competitor": false,
+      "funding_signal": "$100M+; YC-backed",
+      "products": [
+        "Bubble"
+      ],
+      "note": "Most capable no-code web app builder. Pain: no source export ('inexcusable'), vendor lock-in, steep curve."
+    },
+    {
+      "name": "Webflow",
+      "archetype": "internal-tools-lowcode",
+      "slug": "webflow",
+      "url": "https://webflow.com",
+      "category": "No-code web builder",
+      "is_direct_competitor": false,
+      "funding_signal": "YC + Accel",
+      "products": [
+        "Webflow"
+      ],
+      "note": "No-code visual web development; pressure from AI code generation."
+    },
+    {
+      "name": "Xano",
+      "archetype": "internal-tools-lowcode",
+      "slug": "xano",
+      "url": "https://www.xano.com",
+      "category": "No-code backend",
+      "is_direct_competitor": false,
+      "funding_signal": "~$85/mo Launch",
+      "products": [
+        "Xano"
+      ],
+      "note": "No-code backend (APIs/DB/workflows)."
+    },
+    {
+      "name": "GrapesJS",
+      "archetype": "internal-tools-lowcode",
+      "slug": "grapesjs",
+      "url": "https://github.com/GrapesJS/grapesjs",
+      "category": "Web builder framework",
+      "is_direct_competitor": false,
+      "funding_signal": "~24.4k stars",
+      "products": [
+        "GrapesJS"
+      ],
+      "note": "Open-source HTML/CSS visual web-builder framework."
+    },
+    {
+      "name": "Creatio",
+      "archetype": "internal-tools-lowcode",
+      "slug": "creatio",
+      "url": "https://creatio.com",
+      "category": "Low-code BPM/CRM",
+      "is_direct_competitor": false,
+      "funding_signal": "$1.2B unicorn, $200M (2024)",
+      "products": [
+        "Creatio"
+      ],
+      "note": "Low-code BPM/CRM platform; rare LCNC unicorn."
+    },
+    {
+      "name": "Airtable",
+      "archetype": "internal-tools-lowcode",
+      "slug": "airtable",
+      "url": "https://airtable.com",
+      "category": "No-code database/spreadsheet",
+      "is_direct_competitor": false,
+      "funding_signal": "~$11B val, $300M+ funding",
+      "products": [
+        "Airtable"
+      ],
+      "note": "No-code DB/spreadsheet hybrid; relational links/views; SaaS leader. Data-frontend ICP adjacency."
+    },
+    {
+      "name": "NocoDB",
+      "archetype": "internal-tools-lowcode",
+      "slug": "nocodb",
+      "url": "https://nocodb.com",
+      "category": "No-code database frontend",
+      "is_direct_competitor": false,
+      "funding_signal": "~54.8k stars",
+      "products": [
+        "NocoDB"
+      ],
+      "note": "Open-source Airtable alt; turns any SQL/NoSQL DB into smart spreadsheet. Strong ICP fit (noSQL/SQL data frontend)."
+    },
+    {
+      "name": "Teable",
+      "archetype": "internal-tools-lowcode",
+      "slug": "teable",
+      "url": "https://teable.io",
+      "category": "No-code database (Postgres)",
+      "is_direct_competitor": false,
+      "funding_signal": "~18.6k stars",
+      "products": [
+        "Teable"
+      ],
+      "note": "Postgres-backed no-code DB / Airtable alt; AI tables, automations, dashboards."
+    },
+    {
+      "name": "Baserow",
+      "archetype": "internal-tools-lowcode",
+      "slug": "baserow",
+      "url": "https://baserow.io",
+      "category": "Open-source no-code DB",
+      "is_direct_competitor": false,
+      "funding_signal": "~10k+ stars",
+      "products": [
+        "Baserow"
+      ],
+      "note": "Open-source Airtable alt; GDPR/HIPAA; self-host or cloud."
+    },
+    {
+      "name": "Grist",
+      "archetype": "internal-tools-lowcode",
+      "slug": "grist",
+      "url": "https://getgrist.com",
+      "category": "Relational spreadsheet-DB",
+      "is_direct_competitor": false,
+      "funding_signal": "Apache 2.0",
+      "products": [
+        "Grist"
+      ],
+      "note": "Relational spreadsheet-DB; Python formulas, automations; stronger than Notion for data."
+    },
+    {
+      "name": "Knack",
+      "archetype": "internal-tools-lowcode",
+      "slug": "knack",
+      "url": "https://www.knack.com",
+      "category": "No-code database apps",
+      "is_direct_competitor": false,
+      "products": [
+        "Knack"
+      ],
+      "note": "Database-first no-code application builder."
+    },
+    {
+      "name": "Smartsheet",
+      "archetype": "internal-tools-lowcode",
+      "slug": "smartsheet",
+      "url": "https://www.smartsheet.com",
+      "category": "Spreadsheet/PM platform",
+      "is_direct_competitor": false,
+      "funding_signal": "Enterprise",
+      "products": [
+        "Smartsheet"
+      ],
+      "note": "Web spreadsheet/PM with customizable dashboards."
+    },
+    {
+      "name": "Metabase",
+      "archetype": "data-bi-notebook",
+      "slug": "metabase",
+      "url": "https://www.metabase.com",
+      "category": "Open-source BI",
+      "is_direct_competitor": false,
+      "funding_signal": "$100M+ funding; open-source",
+      "products": [
+        "Metabase"
+      ],
+      "note": "Open-source BI; 10-min setup; non-technical; slows on big data/complex queries; ~12% modern-stack adoption."
+    },
+    {
+      "name": "Apache Superset",
+      "archetype": "data-bi-notebook",
+      "slug": "superset",
+      "url": "https://superset.apache.org",
+      "category": "Open-source BI",
+      "is_direct_competitor": false,
+      "funding_signal": "Apache",
+      "products": [
+        "Apache Superset"
+      ],
+      "note": "Open-source BI; more advanced than Metabase; needs semantic layer; data-team focus."
+    },
+    {
+      "name": "Hex",
+      "archetype": "data-bi-notebook",
+      "slug": "hex",
+      "url": "https://hex.tech",
+      "category": "AI-native data notebook",
+      "is_direct_competitor": false,
+      "funding_signal": "Series C $70M, $172M total (Sequoia/a16z/Snowflake)",
+      "products": [
+        "Hex",
+        "Notebook Agent"
+      ],
+      "note": "AI-native collaborative SQL/Python notebook; agentic Notebook Agent; consumption layer of modern data stack."
+    },
+    {
+      "name": "Observable",
+      "archetype": "data-bi-notebook",
+      "slug": "observable",
+      "url": "https://observablehq.com",
+      "category": "Data-viz notebooks",
+      "is_direct_competitor": false,
+      "funding_signal": "$46.1M (Sequoia/Acrew/Menlo); no new rounds since 2022",
+      "products": [
+        "Observable",
+        "Observable Plot"
+      ],
+      "note": "JS reactive data-viz notebooks; D3 ecosystem. Bootstrapped-pace signals viz-only underfunding."
+    },
+    {
+      "name": "Tableau",
+      "archetype": "data-bi-notebook",
+      "slug": "tableau",
+      "url": "https://www.tableau.com",
+      "category": "Data visualization / BI",
+      "is_direct_competitor": false,
+      "funding_signal": "Salesforce-acquired, ~$15B+",
+      "products": [
+        "Tableau"
+      ],
+      "note": "Drag-drop viz leader; steep mastery ceiling (LOD/calcs/dashboard actions)."
+    },
+    {
+      "name": "Microsoft Power BI",
+      "archetype": "data-bi-notebook",
+      "slug": "power-bi",
+      "url": "https://powerbi.microsoft.com",
+      "category": "Enterprise BI",
+      "is_direct_competitor": false,
+      "products": [
+        "Power BI"
+      ],
+      "note": "Enterprise BI; Excel-friendly (Power Query); steeper for non-Excel users; MS ecosystem."
+    },
+    {
+      "name": "Looker",
+      "archetype": "data-bi-notebook",
+      "slug": "looker",
+      "url": "https://cloud.google.com/looker",
+      "category": "Governed BI",
+      "is_direct_competitor": false,
+      "funding_signal": "Google Cloud",
+      "products": [
+        "Looker"
+      ],
+      "note": "Governed self-service BI; LookML/SQL learning curve; approachable once modeled."
+    },
+    {
+      "name": "Grafana Labs",
+      "archetype": "data-bi-notebook",
+      "slug": "grafana",
+      "url": "https://grafana.com",
+      "category": "Observability dashboards",
+      "is_direct_competitor": false,
+      "funding_signal": "$100M+; 35M+ users",
+      "products": [
+        "Grafana"
+      ],
+      "note": "Monitoring/observability dashboards; 170+ sources, 120+ viz types."
+    },
+    {
+      "name": "Redash",
+      "archetype": "data-bi-notebook",
+      "slug": "redash",
+      "url": "https://redash.io",
+      "category": "Open-source BI",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Redash"
+      ],
+      "note": "SQL-heavy query + viz BI; lighter infra."
+    },
+    {
+      "name": "Amazon QuickSight",
+      "archetype": "data-bi-notebook",
+      "slug": "quicksight",
+      "url": "https://aws.amazon.com/quicksight",
+      "category": "Cloud BI",
+      "is_direct_competitor": false,
+      "products": [
+        "QuickSight"
+      ],
+      "note": "AWS-native cloud BI."
+    },
+    {
+      "name": "Oracle OBIEE",
+      "archetype": "data-bi-notebook",
+      "slug": "obiee",
+      "url": "https://www.oracle.com/business-analytics/business-intelligence/",
+      "category": "Enterprise BI",
+      "is_direct_competitor": false,
+      "products": [
+        "OBIEE"
+      ],
+      "note": "Enterprise BI platform."
+    },
+    {
+      "name": "Google Sheets",
+      "archetype": "data-bi-notebook",
+      "slug": "google-sheets",
+      "url": "https://sheets.google.com",
+      "category": "Spreadsheet + viz",
+      "is_direct_competitor": false,
+      "products": [
+        "Google Sheets"
+      ],
+      "note": "Spreadsheet with simple viz; common entry-level BI."
+    },
+    {
+      "name": "Databox",
+      "archetype": "data-bi-notebook",
+      "slug": "databox",
+      "url": "https://databox.com",
+      "category": "Business dashboards",
+      "is_direct_competitor": false,
+      "products": [
+        "Databox"
+      ],
+      "note": "Marketing/sales metric dashboards."
+    },
+    {
+      "name": "Knowi",
+      "archetype": "data-bi-notebook",
+      "slug": "knowi",
+      "url": "https://www.knowi.com",
+      "category": "BI for unstructured/NoSQL",
+      "is_direct_competitor": false,
+      "products": [
+        "Knowi"
+      ],
+      "note": "BI supporting unstructured/NoSQL data. ICP-adjacent (noSQL)."
+    },
+    {
+      "name": "Basedash",
+      "archetype": "data-bi-notebook",
+      "slug": "basedash",
+      "url": "https://www.basedash.com/",
+      "category": "AI-native BI",
+      "is_direct_competitor": false,
+      "funding_signal": "YC-backed",
+      "products": [
+        "Basedash"
+      ],
+      "note": "AI-native BI; 500+ data sources; NL understanding."
+    },
+    {
+      "name": "Tictable",
+      "archetype": "data-bi-notebook",
+      "slug": "tictable",
+      "url": "https://tictable.com/",
+      "category": "AI data studio",
+      "is_direct_competitor": false,
+      "products": [
+        "Tictable"
+      ],
+      "note": "Lightweight AI data studio; spreadsheet + SQL engine + NL assistant; CSV/JSON/Parquet/local DB."
+    },
+    {
+      "name": "Index",
+      "archetype": "data-bi-notebook",
+      "slug": "index-bi",
+      "url": "https://www.getindex.ai/",
+      "category": "Next-gen BI",
+      "is_direct_competitor": false,
+      "funding_signal": "YC-backed",
+      "products": [
+        "Index"
+      ],
+      "note": "Next-gen BI for data teams; SQL + collaborative workspace."
+    },
+    {
+      "name": "Project Jupyter",
+      "archetype": "data-bi-notebook",
+      "slug": "jupyter",
+      "url": "https://jupyter.org",
+      "category": "Interactive notebooks",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Jupyter"
+      ],
+      "note": "Multi-language notebooks; industry standard; sequential execution."
+    },
+    {
+      "name": "Mermaid",
+      "archetype": "diagramming",
+      "slug": "mermaid",
+      "url": "https://mermaid.js.org",
+      "category": "Diagram-as-code",
+      "is_direct_competitor": false,
+      "funding_signal": "~85k stars, $7.5M (Sequoia/M12)",
+      "products": [
+        "Mermaid"
+      ],
+      "note": "Diagram-as-code (flowchart/ERD/graph/sequence/state); GitHub/GitLab/Notion native; 47% DaC adoption growth. ERD/graph capable = adjacency to MetroGraph."
+    },
+    {
+      "name": "Graphviz",
+      "archetype": "diagramming",
+      "slug": "graphviz",
+      "url": "https://graphviz.org",
+      "category": "Graph layout engine",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Graphviz"
+      ],
+      "note": "DOT graph layout engine; deterministic layouts, large dep graphs, headless CI; dated styling."
+    },
+    {
+      "name": "PlantUML",
+      "archetype": "diagramming",
+      "slug": "plantuml",
+      "url": "https://plantuml.com",
+      "category": "Text-based UML",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "PlantUML"
+      ],
+      "note": "Text-based UML/diagrams."
+    },
+    {
+      "name": "Terrastruct",
+      "archetype": "diagramming",
+      "slug": "d2",
+      "url": "https://d2lang.com",
+      "category": "Diagram-as-code language",
+      "is_direct_competitor": false,
+      "products": [
+        "D2"
+      ],
+      "note": "Modern diagram-as-code; better styling than Graphviz but needs build step (no native platform render)."
+    },
+    {
+      "name": "Lucidchart",
+      "archetype": "diagramming",
+      "slug": "lucidchart",
+      "url": "https://www.lucidchart.com",
+      "category": "Diagramming platform",
+      "is_direct_competitor": false,
+      "funding_signal": "$100M+; Lucid (Atlassian-adjacent)",
+      "products": [
+        "Lucidchart",
+        "Lucidspark"
+      ],
+      "note": "Diagramming + ERDs; AI-assisted; strong collaboration."
+    },
+    {
+      "name": "JGraph",
+      "archetype": "diagramming",
+      "slug": "drawio",
+      "url": "https://www.diagrams.net/",
+      "category": "Open-source diagramming",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "draw.io / diagrams.net"
+      ],
+      "note": "General diagramming + ERDs; offline; free; embeddable."
+    },
+    {
+      "name": "Miro",
+      "archetype": "diagramming",
+      "slug": "miro",
+      "url": "https://miro.com",
+      "category": "Collaborative whiteboard",
+      "is_direct_competitor": false,
+      "funding_signal": "$200M+, $3B+ val",
+      "products": [
+        "Miro"
+      ],
+      "note": "Collaborative whiteboard/diagramming."
+    },
+    {
+      "name": "Figma",
+      "archetype": "diagramming",
+      "slug": "figma",
+      "url": "https://figma.com",
+      "category": "Design + whiteboard",
+      "is_direct_competitor": false,
+      "funding_signal": "IPO 2025 ~$56B peak → ~$10B (Jun 2026); $1.05B rev",
+      "products": [
+        "Figma",
+        "FigJam"
+      ],
+      "note": "PARTNER, not pure competitor: MetroGraph calls out Figma integration. Design + FigJam whiteboard; embed/partnership surface."
+    },
+    {
+      "name": "Excalidraw",
+      "archetype": "diagramming",
+      "slug": "excalidraw",
+      "url": "https://excalidraw.com",
+      "category": "Sketch/diagram tool",
+      "is_direct_competitor": false,
+      "funding_signal": "MIT",
+      "products": [
+        "Excalidraw"
+      ],
+      "note": "Hand-drawn-style diagramming; portable format."
+    },
+    {
+      "name": "tldraw",
+      "archetype": "diagramming",
+      "slug": "tldraw",
+      "url": "https://www.tldraw.com",
+      "category": "Infinite-canvas SDK",
+      "is_direct_competitor": false,
+      "funding_signal": "MIT",
+      "products": [
+        "tldraw"
+      ],
+      "note": "Open-source infinite-canvas/whiteboard SDK; canvas-rendering foundation."
+    },
+    {
+      "name": "Whimsical",
+      "archetype": "diagramming",
+      "slug": "whimsical",
+      "url": "https://whimsical.com",
+      "category": "Collaborative diagramming",
+      "is_direct_competitor": false,
+      "products": [
+        "Whimsical"
+      ],
+      "note": "Collaborative diagramming + brainstorming."
+    },
+    {
+      "name": "Napkin",
+      "archetype": "diagramming",
+      "slug": "napkin",
+      "url": "https://www.napkin.ai",
+      "category": "AI diagram generator",
+      "is_direct_competitor": false,
+      "products": [
+        "Napkin"
+      ],
+      "note": "AI text-to-diagram (static image output)."
+    },
+    {
+      "name": "Qlerify",
+      "archetype": "diagramming",
+      "slug": "qlerify",
+      "url": "https://www.qlerify.com",
+      "category": "Process mapping",
+      "is_direct_competitor": false,
+      "products": [
+        "Qlerify"
+      ],
+      "note": "Process mapping, event storming, DDD."
+    },
+    {
+      "name": "Microsoft Visio",
+      "archetype": "diagramming",
+      "slug": "visio",
+      "url": "https://www.microsoft.com/microsoft-365/visio",
+      "category": "Enterprise diagramming",
+      "is_direct_competitor": false,
+      "products": [
+        "Visio"
+      ],
+      "note": "Classic enterprise diagrammer."
+    },
+    {
+      "name": "Mural",
+      "archetype": "diagramming",
+      "slug": "mural",
+      "url": "https://www.mural.co",
+      "category": "Collaborative whiteboard",
+      "is_direct_competitor": false,
+      "products": [
+        "Mural"
+      ],
+      "note": "Collaborative whiteboard for teams."
+    },
+    {
+      "name": "MockFlow",
+      "archetype": "diagramming",
+      "slug": "mockflow",
+      "url": "https://mockflow.com",
+      "category": "Wireframing + diagramming",
+      "is_direct_competitor": false,
+      "products": [
+        "MockFlow"
+      ],
+      "note": "UX/product wireframing + whiteboard."
+    },
+    {
+      "name": "Creately",
+      "archetype": "diagramming",
+      "slug": "creately",
+      "url": "https://www.creately.com/",
+      "category": "Collaborative diagramming",
+      "is_direct_competitor": false,
+      "products": [
+        "Creately"
+      ],
+      "note": "Cloud diagramming incl ER diagrams."
+    },
+    {
+      "name": "Penrose",
+      "archetype": "diagramming",
+      "slug": "penrose",
+      "url": "https://penrose.ink",
+      "category": "Math-notation diagrams",
+      "is_direct_competitor": false,
+      "funding_signal": "MIT",
+      "products": [
+        "Penrose"
+      ],
+      "note": "Diagrams from mathematical notation."
+    },
+    {
+      "name": "dbt Labs",
+      "archetype": "data-orchestration",
+      "slug": "dbt",
+      "url": "https://www.getdbt.com/",
+      "category": "Data transformation",
+      "is_direct_competitor": false,
+      "funding_signal": "$4.2B val, $416M raised; merging w/ Fivetran 2026 (~$600M ARR)",
+      "products": [
+        "dbt",
+        "dbt Cloud",
+        "dbt Explorer"
+      ],
+      "note": "SQL transformation standard; lineage DAG viz (Explorer); ~42% adoption."
+    },
+    {
+      "name": "Fivetran",
+      "archetype": "data-orchestration",
+      "slug": "fivetran",
+      "url": "https://fivetran.com",
+      "category": "Managed ELT",
+      "is_direct_competitor": false,
+      "funding_signal": "$5.6B val, $565M Series E; merging w/ dbt 2026",
+      "products": [
+        "Fivetran"
+      ],
+      "note": "Managed ELT; in-house connectors; fast setup, best-in-class sync reliability."
+    },
+    {
+      "name": "Airbyte",
+      "archetype": "data-orchestration",
+      "slug": "airbyte",
+      "url": "https://airbyte.com",
+      "category": "Open-source ELT",
+      "is_direct_competitor": false,
+      "funding_signal": "~20k+ stars",
+      "products": [
+        "Airbyte"
+      ],
+      "note": "Open-source ELT; community connectors; visual connector builder; technical-team focus."
+    },
+    {
+      "name": "Talend",
+      "archetype": "data-orchestration",
+      "slug": "talend",
+      "url": "https://talend.com",
+      "category": "Enterprise ETL",
+      "is_direct_competitor": false,
+      "products": [
+        "Talend"
+      ],
+      "note": "Enterprise ETL + quality/governance; on-prem/cloud/hybrid."
+    },
+    {
+      "name": "Apache Airflow",
+      "archetype": "data-orchestration",
+      "slug": "airflow",
+      "url": "https://airflow.apache.org",
+      "category": "Workflow orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "Apache, ~45.9k stars",
+      "products": [
+        "Apache Airflow"
+      ],
+      "note": "Orchestration standard; Python DAGs + Graph View; ~42% adoption. Pain: infra complexity, ops overhead, weak observability, slow onboarding."
+    },
+    {
+      "name": "Dagster",
+      "archetype": "data-orchestration",
+      "slug": "dagster",
+      "url": "https://dagster.io",
+      "category": "Asset-centric orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "$64M+",
+      "products": [
+        "Dagster"
+      ],
+      "note": "Asset-centric orchestration; lineage/metadata; best dbt integration; 'data as products'."
+    },
+    {
+      "name": "Prefect",
+      "archetype": "data-orchestration",
+      "slug": "prefect",
+      "url": "https://www.prefect.io",
+      "category": "Python orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "$50M+",
+      "products": [
+        "Prefect"
+      ],
+      "note": "Python-native orchestration; lowest friction (@flow); easier than Airflow."
+    },
+    {
+      "name": "Mage",
+      "archetype": "data-orchestration",
+      "slug": "mage",
+      "url": "https://www.mage.ai",
+      "category": "Data pipeline tool",
+      "is_direct_competitor": false,
+      "funding_signal": "$6.3M seed (Google Ventures)",
+      "products": [
+        "Mage AI"
+      ],
+      "note": "Notebook-style data pipeline/orchestration; streaming 2025."
+    },
+    {
+      "name": "Kestra",
+      "archetype": "data-orchestration",
+      "slug": "kestra",
+      "url": "https://kestra.io",
+      "category": "Declarative orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "~18.5k stars",
+      "products": [
+        "Kestra"
+      ],
+      "note": "Declarative YAML event-driven orchestration; asset-aware 2025."
+    },
+    {
+      "name": "Spotify",
+      "archetype": "data-orchestration",
+      "slug": "luigi",
+      "url": "https://luigi.readthedocs.io",
+      "category": "Workflow orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Luigi"
+      ],
+      "note": "Minimalist Python orchestration; Luigi 4.0 native Docker exec."
+    },
+    {
+      "name": "Kedro",
+      "archetype": "data-orchestration",
+      "slug": "kedro",
+      "url": "https://kedro.org",
+      "category": "ML/data pipeline framework",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Kedro"
+      ],
+      "note": "Python-native ML/data pipeline framework."
+    },
+    {
+      "name": "Apache Beam",
+      "archetype": "data-orchestration",
+      "slug": "apache-beam",
+      "url": "https://beam.apache.org",
+      "category": "Batch/streaming model",
+      "is_direct_competitor": false,
+      "funding_signal": "Apache",
+      "products": [
+        "Apache Beam"
+      ],
+      "note": "Unified batch/streaming model; GPU accel 2025."
+    },
+    {
+      "name": "Temporal",
+      "archetype": "data-orchestration",
+      "slug": "temporal",
+      "url": "https://temporal.io",
+      "category": "Durable execution",
+      "is_direct_competitor": false,
+      "funding_signal": "~21.2k stars; 1B+ exec/mo",
+      "products": [
+        "Temporal"
+      ],
+      "note": "Durable execution / long-running workflow runtime; Netflix/Stripe scale."
+    },
+    {
+      "name": "Orkes",
+      "archetype": "data-orchestration",
+      "slug": "conductor",
+      "url": "https://orkes.io",
+      "category": "Workflow orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "~32k stars (Conductor)",
+      "products": [
+        "Orkes Conductor",
+        "Netflix Conductor"
+      ],
+      "note": "Event-driven microservices workflow orchestration (Netflix-origin Conductor)."
+    },
+    {
+      "name": "Camunda",
+      "archetype": "data-orchestration",
+      "slug": "camunda",
+      "url": "https://camunda.com",
+      "category": "BPMN orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "Enterprise",
+      "products": [
+        "Camunda"
+      ],
+      "note": "Enterprise BPMN process orchestration."
+    },
+    {
+      "name": "Argo",
+      "archetype": "data-orchestration",
+      "slug": "argo-workflows",
+      "url": "https://github.com/argoproj/argo-workflows",
+      "category": "K8s-native orchestration",
+      "is_direct_competitor": false,
+      "funding_signal": "~16.8k stars",
+      "products": [
+        "Argo Workflows"
+      ],
+      "note": "Kubernetes CRD-based workflow orchestration (CI/CD, containers)."
+    },
+    {
+      "name": "Bruin",
+      "archetype": "data-orchestration",
+      "slug": "bruin",
+      "url": "https://getbruin.com/",
+      "category": "All-in-one data pipeline",
+      "is_direct_competitor": false,
+      "products": [
+        "Bruin"
+      ],
+      "note": "All-in-one: ingest + transform + orchestrate + checks + lineage; CLI-first, OSS."
+    },
+    {
+      "name": "Orchestra",
+      "archetype": "data-orchestration",
+      "slug": "orchestra",
+      "url": "https://www.getorchestra.io/",
+      "category": "Data orchestration",
+      "is_direct_competitor": false,
+      "products": [
+        "Orchestra"
+      ],
+      "note": "Modern Airflow alternative; addresses complexity/observability/onboarding."
+    },
+    {
+      "name": "dltHub",
+      "archetype": "data-orchestration",
+      "slug": "dlthub",
+      "url": "https://dlthub.com/",
+      "category": "Agentic data engineering",
+      "is_direct_competitor": false,
+      "funding_signal": "$7.5M seed; Snowflake Partner of the Year 2026",
+      "products": [
+        "dlt",
+        "dltHub"
+      ],
+      "note": "Agentic data-engineering: agents built ~91% of new pipelines (2.4k→81k Jan'25→Jan'26); MCP integration."
+    },
+    {
+      "name": "SQLMesh",
+      "archetype": "data-orchestration",
+      "slug": "sqlmesh",
+      "url": "https://sqlmesh.com",
+      "category": "Data transformation",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "SQLMesh"
+      ],
+      "note": "dbt-compatible transformation; fixes brittle DAGs/dev workflows."
+    },
+    {
+      "name": "Google Dataform",
+      "archetype": "data-orchestration",
+      "slug": "dataform",
+      "url": "https://dataform.co",
+      "category": "SQL transformation",
+      "is_direct_competitor": false,
+      "funding_signal": "Google Cloud",
+      "products": [
+        "Dataform"
+      ],
+      "note": "Modular SQL pipelines w/ web UI; closest dbt alternative on GCP."
+    },
+    {
+      "name": "Coalesce",
+      "archetype": "data-orchestration",
+      "slug": "coalesce",
+      "url": "https://coalesce.io",
+      "category": "Visual ELT",
+      "is_direct_competitor": false,
+      "products": [
+        "Coalesce"
+      ],
+      "note": "Visual ELT framework; column-level lineage; standardized templates."
+    },
+    {
+      "name": "Matillion",
+      "archetype": "data-orchestration",
+      "slug": "matillion",
+      "url": "https://www.matillion.com",
+      "category": "Visual ELT",
+      "is_direct_competitor": false,
+      "funding_signal": "Enterprise",
+      "products": [
+        "Matillion"
+      ],
+      "note": "Visual ELT platform w/ native dbt Core component."
+    },
+    {
+      "name": "Astronomer",
+      "archetype": "data-orchestration",
+      "slug": "astronomer",
+      "url": "https://www.astronomer.io",
+      "category": "Managed Airflow",
+      "is_direct_competitor": false,
+      "products": [
+        "Astronomer"
+      ],
+      "note": "Managed Airflow SaaS."
+    },
+    {
+      "name": "Great Expectations",
+      "archetype": "data-orchestration",
+      "slug": "great-expectations",
+      "url": "https://greatexpectations.io",
+      "category": "Data quality",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Great Expectations"
+      ],
+      "note": "Data-quality expectations/validation; integrates Dagster."
+    },
+    {
+      "name": "Soda",
+      "archetype": "data-orchestration",
+      "slug": "soda",
+      "url": "https://www.soda.io/",
+      "category": "Data quality & observability",
+      "is_direct_competitor": false,
+      "products": [
+        "Soda Core",
+        "Soda Cloud"
+      ],
+      "note": "OSS quality tests (Core) + SaaS monitoring/anomaly (Cloud); data contracts."
+    },
+    {
+      "name": "Elementary",
+      "archetype": "data-orchestration",
+      "slug": "elementary",
+      "url": "https://elementary-data.com",
+      "category": "Data observability",
+      "is_direct_competitor": false,
+      "products": [
+        "Elementary"
+      ],
+      "note": "dbt-native data observability / quality monitoring."
+    },
+    {
+      "name": "Monte Carlo",
+      "archetype": "data-orchestration",
+      "slug": "monte-carlo",
+      "url": "https://www.montecarlodata.com",
+      "category": "Data observability",
+      "is_direct_competitor": false,
+      "funding_signal": "Enterprise",
+      "products": [
+        "Monte Carlo"
+      ],
+      "note": "Data observability / anomaly detection."
+    },
+    {
+      "name": "Databand",
+      "archetype": "data-orchestration",
+      "slug": "databand",
+      "url": "https://www.databand.ai/",
+      "category": "Pipeline observability",
+      "is_direct_competitor": false,
+      "funding_signal": "IBM-owned; $50K-$300K+/yr",
+      "products": [
+        "Databand"
+      ],
+      "note": "Proactive pipeline observability w/ auto metadata + anomaly detection."
+    },
+    {
+      "name": "Databricks",
+      "archetype": "data-orchestration",
+      "slug": "databricks",
+      "url": "https://www.databricks.com/",
+      "category": "Data lakehouse platform",
+      "is_direct_competitor": false,
+      "funding_signal": "$100B val, $4B raise; Databricks SQL ~$1B run-rate",
+      "products": [
+        "Databricks Data Intelligence Platform",
+        "Agent Bricks",
+        "Lakebase"
+      ],
+      "note": "Lakehouse (Delta Lake) + SQL + ML + AI agents; Gartner leader. Warehouse/platform context for ICP."
+    },
+    {
+      "name": "Snowflake",
+      "archetype": "data-orchestration",
+      "slug": "snowflake",
+      "url": "https://www.snowflake.com/",
+      "category": "Cloud data warehouse",
+      "is_direct_competitor": false,
+      "funding_signal": "Public",
+      "products": [
+        "Snowflake",
+        "Cortex",
+        "Snowflake Vector Search"
+      ],
+      "note": "Cloud data warehouse + Cortex/vector. Warehouse context for ICP."
+    },
+    {
+      "name": "ClickHouse",
+      "archetype": "data-orchestration",
+      "slug": "clickhouse",
+      "url": "https://clickhouse.com/",
+      "category": "Real-time OLAP DB",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "ClickHouse"
+      ],
+      "note": "Sub-second OLAP; open-source Snowflake/Databricks challenger."
+    },
+    {
+      "name": "Dremio",
+      "archetype": "data-orchestration",
+      "slug": "dremio",
+      "url": "https://www.dremio.com/",
+      "category": "Lakehouse query engine",
+      "is_direct_competitor": false,
+      "products": [
+        "Dremio"
+      ],
+      "note": "Agentic lakehouse; AI query acceleration/discovery."
+    },
+    {
+      "name": "Rubie",
+      "archetype": "data-orchestration",
+      "slug": "rubie",
+      "url": "https://www.rubiehq.com/",
+      "category": "Agentic data migration",
+      "is_direct_competitor": false,
+      "funding_signal": "Seed $3.2M (Afore/Autopilot), YC ecosystem, founded 2024",
+      "products": [
+        "Rubie"
+      ],
+      "note": "AI-driven data migration/mapping & onboarding; 600+ connectors; agentic."
+    },
+    {
+      "name": "Neo4j (engine)",
+      "archetype": "graph-databases",
+      "slug": "neo4j",
+      "url": "https://neo4j.com",
+      "category": "Graph database engine",
+      "is_direct_competitor": false,
+      "funding_signal": "$581M raised, ~$2B val, ~$200M ARR",
+      "products": [
+        "Neo4j",
+        "Aura"
+      ],
+      "note": "Property-graph leader; Cypher; global anchor. Engine layer (viz = Bloom under graph-db-visualization). Integration/partnership surface for MetroGraph."
+    },
+    {
+      "name": "TigerGraph",
+      "archetype": "graph-databases",
+      "slug": "tigergraph",
+      "url": "https://tigergraph.com",
+      "category": "Distributed graph DB",
+      "is_direct_competitor": false,
+      "funding_signal": "$205M total raised, Series D-II (2025)",
+      "products": [
+        "TigerGraph"
+      ],
+      "note": "Distributed graph analytics; GSQL; 534B+ edge processing; pre-built viz connectors."
+    },
+    {
+      "name": "Memgraph (engine)",
+      "archetype": "graph-databases",
+      "slug": "memgraph",
+      "url": "https://memgraph.com",
+      "category": "In-memory graph DB",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source",
+      "products": [
+        "Memgraph"
+      ],
+      "note": "In-memory real-time graph DB; Cypher; memory-efficient; Cognee integration. Viz = Lab."
+    },
+    {
+      "name": "ArangoDB",
+      "archetype": "graph-databases",
+      "slug": "arangodb",
+      "url": "https://arangodb.com",
+      "category": "Multi-model DB",
+      "is_direct_competitor": false,
+      "funding_signal": "~13k+ stars; BSL 1.1",
+      "products": [
+        "ArangoDB"
+      ],
+      "note": "Multi-model (graph/doc/KV); AQL. License shift (Apache→BSL) cited as lock-in pain."
+    },
+    {
+      "name": "Kuzu (engine)",
+      "archetype": "graph-databases",
+      "slug": "kuzu",
+      "url": "https://kuzudb.com",
+      "category": "Embedded graph DB",
+      "is_direct_competitor": false,
+      "funding_signal": "Acquired by Apple 2025 (per source; unverified)",
+      "products": [
+        "Kuzu"
+      ],
+      "note": "Embedded property graph DB; Cypher; WASM in-browser. Viz = Explorer."
+    },
+    {
+      "name": "FalkorDB",
+      "archetype": "graph-databases",
+      "slug": "falkordb",
+      "url": "https://www.falkordb.com/",
+      "category": "AI-native graph DB",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source (on Redis)",
+      "products": [
+        "FalkorDB"
+      ],
+      "note": "Low-latency in-memory graph DB for AI; Cypher; benchmark-leading QPS."
+    },
+    {
+      "name": "Grafeo",
+      "archetype": "graph-databases",
+      "slug": "grafeo",
+      "url": "https://github.com/grafeo/grafeo",
+      "category": "Embedded graph DB (Rust)",
+      "is_direct_competitor": false,
+      "funding_signal": "New 2026 (HN launch)",
+      "products": [
+        "Grafeo"
+      ],
+      "note": "Rust embedded graph DB; GPU viz 1B+ edges/sec; built 'out of frustration with Neo4j'; immature. Viz-capable — watch."
+    },
+    {
+      "name": "PuppyGraph",
+      "archetype": "graph-databases",
+      "slug": "puppygraph",
+      "url": "https://www.puppygraph.com/",
+      "category": "Zero-ETL graph query engine",
+      "is_direct_competitor": false,
+      "funding_signal": "SOC2; clients AMD/Coinbase",
+      "products": [
+        "PuppyGraph"
+      ],
+      "note": "Zero-ETL graph query/viz over relational DBs + lakes; Gremlin/OpenCypher. Strong ICP fit (query existing SQL as graph)."
+    },
+    {
+      "name": "NebulaGraph (engine)",
+      "archetype": "graph-databases",
+      "slug": "nebulagraph",
+      "url": "https://nebula-graph.io/",
+      "category": "Distributed graph DB",
+      "is_direct_competitor": false,
+      "products": [
+        "NebulaGraph"
+      ],
+      "note": "Distributed graph DB; viz = Explorer."
+    },
+    {
+      "name": "ArcadeDB",
+      "archetype": "graph-databases",
+      "slug": "arcadedb",
+      "url": "https://arcadedb.com/",
+      "category": "Multi-model graph DB",
+      "is_direct_competitor": false,
+      "funding_signal": "Open-source (OSI)",
+      "products": [
+        "ArcadeDB"
+      ],
+      "note": "Multi-model graph DB; Neo4j alternative."
+    },
+    {
+      "name": "HugeGraph",
+      "archetype": "graph-databases",
+      "slug": "hugegraph",
+      "url": "https://hugegraph.apache.org/",
+      "category": "Distributed graph DB",
+      "is_direct_competitor": false,
+      "funding_signal": "Apache",
+      "products": [
+        "HugeGraph"
+      ],
+      "note": "Open-source distributed graph DB."
+    },
+    {
+      "name": "Google BigQuery Graph",
+      "archetype": "graph-databases",
+      "slug": "bigquery-graph",
+      "url": "https://cloud.google.com/bigquery",
+      "category": "Graph analytics in warehouse",
+      "is_direct_competitor": false,
+      "funding_signal": "Preview 2026",
+      "products": [
+        "BigQuery Graph"
+      ],
+      "note": "Graph analytics inside BigQuery w/ built-in viz + BigQuery Studio/Jupyter."
+    }
+  ],
+  "pain_themes": [
+    "UI surface-area bloat & feature sprawl: endless folders/panes/configs/popups, widget overload, 'extremely basic'/'90s movie' interfaces, cognitive overload from low-value features (Retool, UiPath, LaunchDarkly, general SaaS). MetroGraph's core wedge.",
+    "Steep learning curve & config complexity in visual/low-code builders: confusing node setup, inadequate JS env, nested conditions/retries/fallbacks pile up; 'mental model takes too long' (n8n, Zapier, Make, OutSystems, Blue Prism, Weaviate modules, Milvus).",
+    "Complexity ceiling with no escape hatch: visual builders break when real-world complexity emerges; ~10% of edge cases force users to JS/code hacks; 'hard stop' beyond the toolkit.",
+    "Users fleeing the UI for AI chat ('worst of both worlds'): no-code handles the easy 90%, hard cases go to ChatGPT/Claude; apps must meet users inside their AI environment. The category splits into fixed-sequence builders vs. personal AI assistants.",
+    "Agent-vs-UI confusion & agent feature creep: agents bolted onto every platform (30+ Slackbot features), unclear when to use agent vs UI; MCP/context bloat (7 servers = 33.7% of context window; 8k+ tokens before the user speaks).",
+    "Tool sprawl, fragmentation & vendor lock-in: 5-10 tools per data pipeline; ~$18k/employee in unused licenses; 50%+ orgs consolidating; lock-in (Bubble no source export, ArangoDB Apache→BSL license shift) and costly migrations.",
+    "Visualization-only tools under-differentiated & under-funded: Observable (no rounds since 2022) and Azimutt (bootstrapped) signal viz-only struggles to monetize without an orchestration/AI layer; 'market waiting for differentiation'.",
+    "Query-language / SQL/Cypher barrier: Looker needs SQL+LookML, Tableau needs LOD mastery, Cypher is hard for newcomers (spawns visual query builders); a barrier for the non-technical exploration MetroGraph targets.",
+    "Data-engineering stack fragmentation & operational overhead: Airflow infra complexity/observability/onboarding; modern data stack needs 5+ tools (dbt+Airflow+observability+BI+governance); dbt+Fivetran merger born of fragmentation frustration.",
+    "Graph adoption friction: graph DBs face an 'uphill battle for mass adoption'; Neo4j frustration spawns alternatives (Grafeo, FalkorDB, PuppyGraph); historical underutilization despite projected growth — an opening for better HCI."
+  ],
+  "dropped": [
+    "Foundation model providers (Anthropic Claude/MCP, OpenAI GPT-5/Operator, Google DeepMind Gemini/ADK, Mistral/Le Chat, Cohere, xAI Grok, DeepSeek, Alibaba Qwen, Meta Llama 4) — LLM providers, not visualization or builder UX; ingest as ecosystem context only.",
+    "Inference / GPU compute / model serving (Modal, CoreWeave, Replicate, Baseten, RunPod, BentoML, Groq, Together AI, Fireworks AI) — compute/serving infra, no DB/graph viz UX.",
+    "Vector DBs / RAG storage / agent memory (Pinecone, Weaviate, Qdrant, Milvus, Chroma, pgvector, LanceDB, Azure AI Search, Amazon Bedrock Knowledge Bases, Mem0, Letta, Zep, Cognee) — retrieval infra; no visual UX to tear down (Cognee/Memgraph KG adjacency noted under graph-databases).",
+    "LLM observability / eval (Langfuse, LangSmith, Braintrust, Arize Phoenix, Portkey, AgentOps, W&B Weave, Promptfoo, Ragas, DeepEval, Galileo, Opik, Helicone, Patronus, Latitude, TrueFoundry, Pydantic Logfire, MLflow) — LLMOps tooling, out of scope.",
+    "AI code editors / IDEs / app-gen (Cursor, Windsurf, GitHub Copilot, Claude Code, JetBrains AI, Continue, Aider, Cline, Roo Code, OpenAI Codex, Amazon Q Developer, Replit Agent, Bolt.new, Vercel v0, Lovable, Emergent, Cognition Devin) — coding UX, not DB/graph visualization. Relevant only as evidence of the 'flee-to-AI-chat' / AI-native UX trend.",
+    "Code-first agent frameworks (LangChain, LangGraph, CrewAI, Microsoft AutoGen/AG2, OpenAI Agents SDK, PydanticAI, HuggingFace smolagents, CAMEL, BabyAGI, DSPy, deepset Haystack, LlamaIndex, Anthropic Claude Agent SDK, AWS Strands, CopilotKit, LiteLLM, Instructor, BAML) — developer libraries with no visual UI to teardown. (Mastra kept in rag-agent-builders for its visual graph-workflow engine.)",
+    "Vertical / enterprise AI agents & RPA (Salesforce Agentforce/Einstein, ServiceNow, SAP Joule, Oracle AI, Workday AI, IBM watsonx Orchestrate, Zendesk AI, Harvey, Thoughtful AI, Boosted.ai, Hippocratic AI, Eve, Composabl, Hebbia, Indemn, Finny, Powder, Alltius, Wokelo, UiPath, Automation Anywhere, Blue Prism, Eloquent AI, 8Flow) — domain-specific agents/RPA, not horizontal DB/graph viz.",
+    "BaaS / dev backends (Supabase, Firebase, Neon, Convex, Appwrite, AWS Amplify, Backendless) — backend platforms; Supabase/Neon are ICP-adjacent (Postgres backends MetroGraph could visualize) but not viz competitors.",
+    "API / GraphQL tooling (Postman, Insomnia, Swagger UI, Stoplight, Redoc, Scalar, Bump.sh, Apigee, Apollo GraphQL/GraphOS, GraphiQL, GraphQL Editor, GraphQL Voyager, WunderGraph) — API dev tooling; GraphQL Voyager/Editor are schema-viz-adjacent but not database visualization.",
+    "Browser automation / scraping (Browserbase/Stagehand, Crawl4AI, Skyvern, Firecrawl, Steel, The Browser Company Dia) — agent web infra.",
+    "Integration / connector infrastructure (StackOne, Composio, Nango, Paragon, Merge.dev) — agent tool/connector layers, not viz products.",
+    "Feature flags / runtime config (LaunchDarkly, ConfigCat) — config management, unrelated.",
+    "Creative / 3D / media node editors (ComfyUI, SideFX Houdini, RasterFlow, Figma Weavy, Runway Workflows, Adobe Project Graph) — domain-specific node-based UX (image/video/3D); valuable as node-UX references but not DB/graph viz competitors.",
+    "Knowledge-management / collaboration workspaces (Notion, Coda, AppFlowy, Anytype, AFFiNE, Routine, Microsoft Whiteboard) — KM/collab; tangential (Notion/Coda have lightweight DBs but not graph/DB viz).",
+    "Headless CMS (Strapi, Directus) — content backends with DB admin; out of the graph/DB-viz scope.",
+    "Mobile/web no-code app builders (FlutterFlow, WeWeb, Glide, Tadabase, Clappia) — app-builder niche outside the noSQL/SQL DB-viz + data-engineer ICP.",
+    "Niche/desktop node & notebook tech (Pluto.jl, Nodezator, imnodes, ImGui Node Editor, Nodify, Reaviz misc) — language/desktop-specific node/notebook implementations; minor, folded into notes.",
+    "Market-research sources, not products (Gartner Magic Quadrant, CB Insights AI Agent Market Map, TLDL AI Market Map 2026, StackOne 120+ tools landscape, XAnge LLMOps Market Map) — these are landscape reports/analyst orgs; ingest as sources/documents, not as competitor companies.",
+    "Agent network / real-time frameworks (OpenAgents, TEN Framework) — agent orchestration/real-time A/V frameworks, no DB/graph viz UX."
+  ],
+  "notes": "Consolidated 7 cartographer outputs (~300+ raw candidates) into a deduplicated master registry of 158 in-scope companies across 10 emergent archetypes. Card-sort produced 10 clusters rather than the suggested 5-8 because the data genuinely spans three distinct competitive rings: (A) DIRECT — graph-db-visualization + db-schema-modeling (these visualize databases/graphs = MetroGraph's wedge; all flagged is_direct_competitor=true, ~29 companies); (B) ADJACENT/FOUNDATIONAL — node-graph-libraries (rendering layer, React Flow is the explicit tech peer), graph-databases (the backends MetroGraph reads + a partnership surface), data-bi-notebook and data-orchestration (the data-engineer ICP's stack, many with DAG/lineage graph views); (C) WEDGE-TARGET UX — workflow-automation, rag-agent-builders, internal-tools-lowcode, diagramming (the 'endless folders/panes/configs/popups' HCI weak link MetroGraph attacks). Dedup highlights: Neo4j, n8n, Azimutt, ChartDB, Prisma Studio, Kuzu, Memgraph, Gephi, Cambridge Intelligence/ReGraph, Tom Sawyer, Linkurious appeared across 3-5 cartographers → single rows; Neo4j/Memgraph/Kuzu/NebulaGraph split into engine row (graph-databases) + viz-product row (graph-db-visualization) since products differ. Figma is filed under diagramming but flagged as a called-out INTEGRATION PARTNER, not a competitor (same for Google Drive, not a discovery hit). Each archetype proposes competitors-<key> and ux-teardown-<key> leaves to scaffold via `pnpm leaf add market/<leaf>`. The `market` domain has schema.market.sql + the algebra tables (companies, products, features, segments, personas, jobs_pains_gains, pricing_*, ux_*, competitors, claims, etc.) ready to receive this registry; no leaves exist yet, so this seeds the corpus. Whitespace signal worth a claim row: no dominant tool combines graph/DB schema visualization + agent-workflow orchestration in a single low-surface-area (metro-map) view — competitors specialize in graph-viz OR workflow OR schema OR notebooks, and viz-only players (Observable, Azimutt) are under-funded."
+}

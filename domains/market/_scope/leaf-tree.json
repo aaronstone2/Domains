@@ -1,0 +1,1683 @@
+{
+  "charter_questions": [
+    "Who are MetroGraph's direct, adjacent/foundational, and wedge-target competitors, and how do the ~158 registry companies cluster across the 11 archetypes (which are direct DB/graph-viz threats vs partnership/ICP-stack adjacencies)?",
+    "What is the canonical, frozen capability/feature taxonomy for DB & graph visualization tools, and how does every product score on support_level, quality_grade, and HCI cost (A-F) against it?",
+    "Where is the defensible whitespace — specifically, does any incumbent combine graph/DB-schema visualization + agent-workflow orchestration in a single low-surface-area (metro-map) view, or do they all specialize in graph-viz OR workflow OR schema OR notebooks?",
+    "How large is the market (TAM/SAM/SOM, CAGR) for DB-visualization aimed at noSQL/SQL startups + data engineers, and which segments score highest on attractiveness (WTP, accessibility, competition density, our_fit)?",
+    "Who is the ICP (segments + personas), what are their jobs/pains/gains, and which pains does MetroGraph's wedge (low surface area, best-of-both AI+UI, no agent-vs-graph-chat confusion) actually relieve and how strongly?",
+    "What is MetroGraph's value proposition versus each direct competitor (we_win_on / they_win_on / wedge_vs_them / their moat)?",
+    "How do competitors price (model types, tiers, free tiers, transparency), and where are the exploitable pricing gaps?",
+    "What is MetroGraph's Business Model Canvas, and which GTM channels and integration/partnership surfaces (Figma, Google Drive, the graph-DB engines, the modern data stack) should it build?",
+    "What does an exhaustive UX teardown reveal about the 'endless folders/panes/configs/popups' surface-area bloat (pane counts, click depths, time-to-value, drop-off risk, antipatterns) and the 'flee-to-AI-chat' / agent-vs-graph-chat confusion across the wedge-target categories?",
+    "What HCI, cognitive-science, graph-visualization, and RAG/agent-UX theory grounds the wedge — i.e., the evidence base for why reduced cognitive load, strong information scent, direct manipulation, metro-map metaphor, and copilot-first hybrid interaction win?",
+    "Which strategic, competitive, and demand claims survive adversarial verification (supported vs disputed vs refuted), with explicit theory grounding and recorded nuance, so the synthesis paper never over-flattens a contested verdict?"
+  ],
+  "leaves": [
+    {
+      "name": "companies",
+      "cluster": "spine",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "companies",
+        "funding_rounds",
+        "people"
+      ],
+      "depends_on": [],
+      "scope": "Insert exactly one row per registry org (~158) + the MetroGraph self-row (is_self=TRUE); funding rounds + people stubs.",
+      "split_rationale": "Kept whole and FIRST: single authority for company facts; freezes company.id so all other leaves reference read-only. People is a designed stub.",
+      "claim_categories": [
+        "funding:co.*"
+      ],
+      "row_estimate": "~160 companies, ~120 funding_rounds, ~30 people stubs",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "market-landscape",
+      "cluster": "market",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "features",
+        "product_features",
+        "concepts"
+      ],
+      "depends_on": [],
+      "scope": "FREEZE the canonical feature taxonomy (capability areas → sub-features, categories, layers, pain_score, kano_class, hci_relevance); define the 11-archetype map.",
+      "split_rationale": "Kept whole — a single freezing authority is mandatory (contract C3). No company dependency: it is a capability vocabulary, authored before scorecards exist.",
+      "claim_categories": [
+        "feature:feat.*",
+        "market:landscape.*"
+      ],
+      "row_estimate": "~80-120 features, archetype concepts",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "market-sizing",
+      "cluster": "market",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "market_metrics",
+        "reports",
+        "segments"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "TAM/SAM/SOM + CAGR for DB-viz / graph-viz / data-engineer tooling, top-down and bottom-up, per whole-market and per-archetype.",
+      "split_rationale": "Separate authority (analyst sizing reports) disjoint from feature/competitive sources; isolates every market number behind reports/market_metrics.",
+      "claim_categories": [
+        "market:size.*"
+      ],
+      "row_estimate": "~40 market_metrics, ~15 sizing reports",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "market-trends",
+      "cluster": "market",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "market_metrics",
+        "claims",
+        "concepts"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape",
+        "market-sizing"
+      ],
+      "scope": "Cross-cutting trend signals: AI-native convergence, agentic 2026, consolidation (dbt+Fivetran), viz-only underfunding, graph-adoption friction.",
+      "split_rationale": "Synthesis-of-signals across archetypes — distinct from point sizing; needs landscape+sizing first to aggregate.",
+      "claim_categories": [
+        "market:trend.*"
+      ],
+      "row_estimate": "~25 trend claims, ~15 metrics",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-graph-db-viz-native",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "DB-bundled/embedded graph explorers: Neo4j Bloom, Memgraph Lab, Kuzu Explorer, gDotV, NebulaGraph Explorer, SemSpect.",
+      "split_rationale": "graph-db-visualization (16 cos) exceeds the 8-10 cap and splits cleanly on authority: engine-bundled explorers vs DB-agnostic platforms.",
+      "claim_categories": [
+        "competition:comp.gdbv-native.*",
+        "feature:comp.gdbv-native.feat.*"
+      ],
+      "row_estimate": "6 products, ~60 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-graph-db-viz-platforms",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "DB-agnostic enterprise platforms + commercial toolkits: Linkurious, Graphistry, GraphAware Hume, Kineviz GraphXR, Tom Sawyer, Cambridge Intelligence (KeyLines/ReGraph), yWorks (yFiles/yEd), Gephi, Graphileon, Graphlytic.",
+      "split_rationale": "Second half of the 16-company direct set; <=10 cap; toolkit/SDK authority distinct from native explorers.",
+      "claim_categories": [
+        "competition:comp.gdbv-platform.*",
+        "feature:comp.gdbv-platform.feat.*"
+      ],
+      "row_estimate": "10 products, ~100 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-db-schema-modeling-visual",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Visual/cloud/live-DB ERD tools (direct ICP rivals): Azimutt, ChartDB, dbdiagram.io, DrawSQL, DbSchema, Prisma Studio, ER Flow.",
+      "split_rationale": "db-schema-modeling (13 cos) > cap; splits on authority: modern visual/AI ERD vs classic dev/enterprise modelers.",
+      "claim_categories": [
+        "competition:comp.dbschema-visual.*",
+        "feature:comp.dbschema-visual.feat.*"
+      ],
+      "row_estimate": "7 products, ~70 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-db-schema-modeling-dev",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Developer/enterprise modelers + DB-IDE ERD: Vertabelo, SqlDBM, QuickDBD, ERDPlus, pgModeler, DBeaver EER.",
+      "split_rationale": "Second half of db-schema-modeling under cap; dev-tool/enterprise authority distinct.",
+      "claim_categories": [
+        "competition:comp.dbschema-dev.*",
+        "feature:comp.dbschema-dev.feat.*"
+      ],
+      "row_estimate": "6 products, ~55 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-node-graph-libs-rendering",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Graph/node rendering libraries (foundation peers, not product rivals): React Flow/xyflow, D3.js, Cytoscape.js, Sigma.js, vis.js, react-force-graph, Cosmograph.",
+      "split_rationale": "node-graph-libraries (14) > cap; rendering libs vs node-editor frameworks are disjoint developer authorities. Standard depth (build-on layer, not competitor).",
+      "claim_categories": [
+        "competition:comp.nodelib-render.*",
+        "feature:comp.nodelib-render.feat.*"
+      ],
+      "row_estimate": "7 products, ~50 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-node-graph-libs-editors",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Node-editor frameworks + graph-DB-specific libs: AntV G6, Rete.js, Reaflow, Baklavajs, Neovis.js, Popoto.js, NetworkX.",
+      "split_rationale": "Second half of node-graph-libraries under cap; node-editor/algorithms authority distinct from rendering.",
+      "claim_categories": [
+        "competition:comp.nodelib-editor.*",
+        "feature:comp.nodelib-editor.feat.*"
+      ],
+      "row_estimate": "7 products, ~45 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-graph-databases-leading",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Leading property/graph engines (adjacency + partnership surface): Neo4j, TigerGraph, Memgraph, ArangoDB, Kuzu, FalkorDB.",
+      "split_rationale": "graph-databases (12) > cap; established engines vs emerging/zero-ETL engines split. Adjacency → standard depth.",
+      "claim_categories": [
+        "competition:comp.gdb-leading.*",
+        "feature:comp.gdb-leading.feat.*"
+      ],
+      "row_estimate": "6 products, ~40 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-graph-databases-emerging",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Emerging / zero-ETL / multi-model engines: Grafeo, PuppyGraph, NebulaGraph, ArcadeDB, HugeGraph, BigQuery Graph.",
+      "split_rationale": "Second half of graph-databases under cap; PuppyGraph/BigQuery Graph zero-ETL-over-SQL = strong ICP-integration signal worth isolating.",
+      "claim_categories": [
+        "competition:comp.gdb-emerging.*",
+        "feature:comp.gdb-emerging.feat.*"
+      ],
+      "row_estimate": "6 products, ~40 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-workflow-automation-ipaas",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Mainstream node-based iPaaS (canonical surface-area-bloat set): Zapier, Make, n8n, Workato, Tray.ai, Pipedream.",
+      "split_rationale": "workflow-automation (12) > cap; mainstream iPaaS vs OSS/embedded split. Exhaustive: wedge-target HCI evidence.",
+      "claim_categories": [
+        "competition:comp.wfa-ipaas.*",
+        "feature:comp.wfa-ipaas.feat.*"
+      ],
+      "row_estimate": "6 products, ~60 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-workflow-automation-oss",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "OSS / Microsoft / embedded / flow-based automation: Activepieces, Power Automate, Node-RED, Prismatic, Windmill, Latenode.",
+      "split_rationale": "Second half of workflow-automation under cap; OSS/embedded authority distinct from commercial iPaaS.",
+      "claim_categories": [
+        "competition:comp.wfa-oss.*",
+        "feature:comp.wfa-oss.feat.*"
+      ],
+      "row_estimate": "6 products, ~50 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-rag-agent-builders-canvas",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Visual canvas RAG/agent builders (named wedge: agent-vs-graph-chat confusion): Flowise, Langflow, Dify, Gumloop, Rivet, BuildShip, MindStudio, RAGFlow, Mastra, AnythingLLM.",
+      "split_rationale": "rag-agent-builders (20) > cap; canvas/visual builders vs conversational/enterprise agents split. Exhaustive: directly named in wedge.",
+      "claim_categories": [
+        "competition:comp.rag-canvas.*",
+        "feature:comp.rag-canvas.feat.*"
+      ],
+      "row_estimate": "10 products, ~90 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-rag-agent-builders-conversational",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Conversational / enterprise / NL-first agent builders: Voiceflow, Coze, Wordware, Lindy, Airia, Botpress, Rasa, Copilot Studio, Vertex AI Agent Builder, Relay.app.",
+      "split_rationale": "Second half of rag-agent-builders under cap; conversational/enterprise authority distinct from visual canvas.",
+      "claim_categories": [
+        "competition:comp.rag-conv.*",
+        "feature:comp.rag-conv.feat.*"
+      ],
+      "row_estimate": "10 products, ~80 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-internal-tools-lowcode",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Low-code internal-tool builders (config-sprawl wedge target): Retool, Appsmith, ToolJet, Budibase, Superblocks, UI Bakery, Illa, Lowdefy, Refine, NocoBase.",
+      "split_rationale": "internal-tools-lowcode (25) split 3-way on authority: internal-tool builders / app platforms / no-code DBs. Exhaustive: Retool config-sprawl is core wedge evidence.",
+      "claim_categories": [
+        "competition:comp.itlc-builders.*",
+        "feature:comp.itlc-builders.feat.*"
+      ],
+      "row_estimate": "10 products, ~90 product_features",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "competitors-lowcode-app-platforms",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Low-code/no-code app & web platforms: Mendix, OutSystems, PowerApps, Bubble, Webflow, Xano, GrapesJS, Creatio.",
+      "split_rationale": "Second slice of internal-tools-lowcode; enterprise app-platform authority distinct from internal-tools and from no-code DBs.",
+      "claim_categories": [
+        "competition:comp.itlc-apps.*",
+        "feature:comp.itlc-apps.feat.*"
+      ],
+      "row_estimate": "8 products, ~60 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-nocode-databases",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "No-code database/spreadsheet frontends (ICP-adjacent data frontends over SQL/noSQL): Airtable, NocoDB, Teable, Baserow, Grist, Knack, Smartsheet.",
+      "split_rationale": "Third slice of internal-tools-lowcode; data-frontend ICP adjacency is a distinct competitive sub-question.",
+      "claim_categories": [
+        "competition:comp.itlc-nocodedb.*",
+        "feature:comp.itlc-nocodedb.feat.*"
+      ],
+      "row_estimate": "7 products, ~55 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-data-bi-dashboards",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "BI dashboard/analytics platforms (data-engineer ICP consumption layer): Metabase, Superset, Tableau, Power BI, Looker, Grafana, Redash, QuickSight, OBIEE.",
+      "split_rationale": "data-bi-notebook (18) > cap; dashboards/BI vs notebooks/AI-native split on user authority.",
+      "claim_categories": [
+        "competition:comp.bi-dash.*",
+        "feature:comp.bi-dash.feat.*"
+      ],
+      "row_estimate": "9 products, ~70 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-data-notebooks-ai",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Notebooks + AI-native + lightweight data studios (AI+UI convergence signal): Hex, Observable, Google Sheets, Databox, Knowi, Basedash, Tictable, Index, Jupyter.",
+      "split_rationale": "Second half of data-bi-notebook under cap; AI-native notebook authority distinct from BI dashboards.",
+      "claim_categories": [
+        "competition:comp.bi-notebook.*",
+        "feature:comp.bi-notebook.feat.*"
+      ],
+      "row_estimate": "9 products, ~60 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-diagramming-as-code",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Diagram-as-code + ERD/graph-capable diagrammers: Mermaid, Graphviz, PlantUML, D2, Lucidchart, draw.io, Creately, Penrose, Visio.",
+      "split_rationale": "diagramming (18) > cap; diagram-as-code/ERD-render vs collaborative whiteboard split on authority.",
+      "claim_categories": [
+        "competition:comp.diag-code.*",
+        "feature:comp.diag-code.feat.*"
+      ],
+      "row_estimate": "9 products, ~65 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-diagramming-whiteboard",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors",
+        "partners"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Collaborative whiteboards + AI diagram tools (Figma = INTEGRATION PARTNER, flag relevant_to_us): Miro, Figma/FigJam, Excalidraw, tldraw, Whimsical, Napkin, Qlerify, Mural, MockFlow.",
+      "split_rationale": "Second half of diagramming under cap; whiteboard authority distinct; Figma must be modeled as partner not competitor (coopetition).",
+      "claim_categories": [
+        "competition:comp.diag-board.*",
+        "feature:comp.diag-board.feat.*"
+      ],
+      "row_estimate": "9 products, ~55 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-data-etl-ingestion",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "ETL/ELT ingestion + visual ELT + agentic migration: Fivetran, Airbyte, Talend, Matillion, Coalesce, dltHub, Bruin, Rubie.",
+      "split_rationale": "data-orchestration (34) split 5-way; ingestion authority disjoint from transform/orchestrate/warehouse.",
+      "claim_categories": [
+        "competition:comp.data-etl.*",
+        "feature:comp.data-etl.feat.*"
+      ],
+      "row_estimate": "8 products, ~55 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-data-transformation-quality",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Transformation (lineage DAG viz) + data quality/observability: dbt, SQLMesh, Dataform, Great Expectations, Soda, Elementary, Monte Carlo, Databand.",
+      "split_rationale": "Transform+observability slice of data-orchestration; lineage-graph views are a relevant adjacency worth isolating.",
+      "claim_categories": [
+        "competition:comp.data-transform.*",
+        "feature:comp.data-transform.feat.*"
+      ],
+      "row_estimate": "8 products, ~50 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-data-orchestration-modern",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "product_features",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Modern data orchestrators with DAG/graph views: Airflow, Dagster, Prefect, Mage, Kestra, Astronomer, Orchestra.",
+      "split_rationale": "Orchestrator slice; DAG-view UX is the adjacency. Kept <=cap; engine runtimes split off separately.",
+      "claim_categories": [
+        "competition:comp.data-orch.*",
+        "feature:comp.data-orch.feat.*"
+      ],
+      "row_estimate": "7 products, ~45 product_features",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "competitors-workflow-engines",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "competitors"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "General workflow/durable-execution engines (context only): Luigi, Kedro, Apache Beam, Temporal, Conductor, Camunda, Argo Workflows.",
+      "split_rationale": "Distant adjacency — scout depth; isolates infra-engine authority from data orchestrators.",
+      "claim_categories": [
+        "competition:comp.wf-engines.*"
+      ],
+      "row_estimate": "7 products, ~20 product_features",
+      "synth_depth": "scout"
+    },
+    {
+      "name": "competitors-data-warehouse-lakehouse",
+      "cluster": "competitive",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "products",
+        "competitors",
+        "companies"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape"
+      ],
+      "scope": "Warehouse/lakehouse platform context for the ICP stack: Databricks, Snowflake, ClickHouse, Dremio.",
+      "split_rationale": "Platform context (not viz rivals) — scout depth; 4 mega-vendors kept whole.",
+      "claim_categories": [
+        "competition:comp.data-warehouse.*"
+      ],
+      "row_estimate": "4 products, ~15 product_features",
+      "synth_depth": "scout"
+    },
+    {
+      "name": "customer-segments",
+      "cluster": "customers",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "segments",
+        "personas",
+        "jobs_pains_gains"
+      ],
+      "depends_on": [
+        "companies"
+      ],
+      "scope": "FREEZE segment.id (noSQL/SQL startups, data engineers, analysts, etc.); personas + the VPC customer profile (jobs/pains/gains) with severity/importance/relief.",
+      "split_rationale": "Kept whole and authoritative — freezes segment.id (contract C7) and owns the customer-profile side of VPC so value-prop can map onto it without write contention.",
+      "claim_categories": [
+        "segment:seg.*",
+        "demand:seg.demand.*"
+      ],
+      "row_estimate": "~8 segments, ~12 personas, ~60 jobs_pains_gains",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "value-prop",
+      "cluster": "vpc",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "jobs_pains_gains",
+        "relationships",
+        "claims"
+      ],
+      "depends_on": [
+        "customer-segments",
+        "market-landscape",
+        "competitors-graph-db-viz-native",
+        "competitors-graph-db-viz-platforms",
+        "competitors-db-schema-modeling-visual",
+        "ux-teardown-graph-db-viz",
+        "theory-metro-map-metaphor",
+        "theory-visual-programming-dataflow",
+        "theory-hybrid-multimodal-interfaces"
+      ],
+      "scope": "MetroGraph value-map: pain relievers / gain creators / products-and-services mapped to frozen jobs/pains/gains; per-competitor we_win_on differentiation; whitespace claim.",
+      "split_rationale": "Synthesis-of-positioning leaf — needs frozen segments + competitor we_win_on/they_win_on + theory; writes value-map relationships (grounded_in/substitute_for) and the headline whitespace claim.",
+      "claim_categories": [
+        "demand:vp.*",
+        "competition:vp.diff.*"
+      ],
+      "row_estimate": "~30 relief mappings, ~20 differentiation claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "business-model",
+      "cluster": "business-model",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "bmc_blocks",
+        "claims"
+      ],
+      "depends_on": [
+        "customer-segments",
+        "value-prop",
+        "pricing",
+        "partners-integrations"
+      ],
+      "scope": "MetroGraph's 9-block Business Model Canvas (+ optionally key competitors' BMCs), linking segments/features/partners/pricing tiers.",
+      "split_rationale": "Owns bmc_blocks; depends on value-prop, pricing, partners to link blocks. Distinct GTM authority.",
+      "claim_categories": [
+        "gtm:bmc.*"
+      ],
+      "row_estimate": "~9-18 bmc_blocks, ~15 gtm claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "pricing",
+      "cluster": "pricing",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "pricing_models",
+        "pricing_tiers",
+        "claims"
+      ],
+      "depends_on": [
+        "companies",
+        "market-landscape",
+        "competitors-graph-db-viz-native",
+        "competitors-db-schema-modeling-visual",
+        "competitors-workflow-automation-ipaas",
+        "competitors-internal-tools-lowcode"
+      ],
+      "scope": "Pricing models + tier ladders for all priced products (reads product.id across competitor leaves); pricing-gap analysis vs MetroGraph.",
+      "split_rationale": "Owns pricing_models/pricing_tiers (contract C9); pricing-page authority disjoint from feature/UX sources. Reads products created by competitor leaves (wave-ordered after them).",
+      "claim_categories": [
+        "pricing:price.*"
+      ],
+      "row_estimate": "~70 pricing_models, ~200 pricing_tiers",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "partners-integrations",
+      "cluster": "partners",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "partners",
+        "relationships",
+        "claims"
+      ],
+      "depends_on": [
+        "companies"
+      ],
+      "scope": "MetroGraph's integration surface (Figma, Google Drive, graph-DB engines, modern data stack) + competitors' ecosystems; relevant_to_us flagging.",
+      "split_rationale": "Owns partners table (contract C10) + integrates_with/partners_with relationships; called-out integrations (Figma, Google Drive) are a distinct strategic authority.",
+      "claim_categories": [
+        "integration:intg.*"
+      ],
+      "row_estimate": "~60 partners, ~80 relationships",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-cognitive-load",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Cognitive Load Theory (Sweller/Ayres/Kalyuga): intrinsic/extraneous/germane load; absorbs progressive disclosure + information architecture as applied CLT.",
+      "split_rationale": "Foundational theory with its own seminal corpus; absorbs the non-leaf progressive-disclosure pattern. Core to surface-area wedge → exhaustive.",
+      "claim_categories": [
+        "hci:thy.cog-load.*",
+        "theory:thy.cog-load.*"
+      ],
+      "row_estimate": "~8 theory_concepts, ~12 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-working-memory",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Working-memory capacity limits (Miller 7±2; Cowan 3-5); hard bound on simultaneous visible controls.",
+      "split_rationale": "Distinct seminal authority (Miller/Cowan) and a quantitative design bound; small but disjoint from CLT.",
+      "claim_categories": [
+        "theory:thy.wm.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~6 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-information-foraging",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Information Foraging Theory (Pirolli & Card): information scent, patch/diet models — why poor cues drive flight to chat.",
+      "split_rationale": "Distinct PARC authority; directly explains the flee-to-AI-chat thesis → exhaustive.",
+      "claim_categories": [
+        "theory:thy.info-forage.*"
+      ],
+      "row_estimate": "~5 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-recognition-recall",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Recognition vs recall (Nielsen heuristic #6): visible options cheaper than hidden commands.",
+      "split_rationale": "Distinct usability-heuristic authority (Nielsen); grounds the visibility thesis.",
+      "claim_categories": [
+        "theory:thy.recog-recall.*"
+      ],
+      "row_estimate": "~3 theory_concepts, ~5 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-choice-cost",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Cost of choices: Hick-Hyman law (RT=a+b·log2 n) + Paradox of Choice / decision fatigue (Schwartz).",
+      "split_rationale": "Two related authorities (Hick/Hyman motor-RT, Schwartz behavioral-econ) merged under one 'cost of options' theme central to the surface-area wedge; merge avoids two thin leaves while noting the distinct literatures.",
+      "claim_categories": [
+        "theory:thy.choice-cost.*"
+      ],
+      "row_estimate": "~5 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-perception-gestalt",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Visual perception: Gestalt grouping, preattentive processing (Treisman), graphical-perception effectiveness (Cleveland & McGill).",
+      "split_rationale": "Distinct perceptual-psychology authority; grounds encoding/grouping choices for graph layouts.",
+      "claim_categories": [
+        "theory:thy.perception.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~8 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-direct-manipulation",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Direct-manipulation foundations (Shneiderman 1983): continuous representation, physical reversible actions, immediate feedback; absorbs reversibility/undo.",
+      "split_rationale": "Foundational Shneiderman corpus; MetroGraph's core strength → exhaustive. Absorbs the non-leaf reversibility pattern.",
+      "claim_categories": [
+        "theory:thy.direct-manip.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-norman-gulfs-distance",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Norman's gulfs of execution/evaluation, affordances/signifiers, + Hutchins semantic/articulatory distance.",
+      "split_rationale": "Norman/Hutchins authority; affordances and semantic-articulatory distance merged here (same author lineage) rather than as thin separate leaves.",
+      "claim_categories": [
+        "theory:thy.norman.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~8 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-instrumental-interaction",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Beaudouin-Lafon post-WIMP instrumental interaction (reification, polymorphism, reuse, currying) + AI-Instruments.",
+      "split_rationale": "Distinct post-WIMP authority; nodes/edges as reifiable instruments bridges DM + AI intent.",
+      "claim_categories": [
+        "theory:thy.instrumental.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~6 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-mixed-initiative",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Mixed-initiative interaction (Horvitz 1999, 12 principles) + control allocation, autonomy levels, mode switching.",
+      "split_rationale": "Horvitz authority; merges area-2 and area-4 mixed-initiative duplicates into one leaf. Core to copilot-first hybrid → exhaustive.",
+      "claim_categories": [
+        "theory:thy.mixed-init.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-dm-vs-agents-debate",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Shneiderman-Maes debate (DM vs intelligent agents) + modern prompt-vs-direct-manipulation + copilot-vs-autonomous-agent distinctions.",
+      "split_rationale": "Merges three overlapping subareas (the classic debate, prompt-vs-DM, copilot-vs-agent) into the single 'control vs delegation' authority. Directly frames 'best of both' → exhaustive.",
+      "claim_categories": [
+        "theory:thy.dm-vs-agents.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~12 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-tangible-embodied",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Tangible & embodied interaction (Ishii/Ullmer): spatial metaphor, physicality — grounds metro-map 'substance' of nodes.",
+      "split_rationale": "Distinct MIT Media Lab/TEI authority; spatial-embodiment grounding for the metro metaphor.",
+      "claim_categories": [
+        "theory:thy.tangible.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~6 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-conversational-ui-challenges",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Conversational UI limitations: ambiguity, context, intent recognition — why pure chat fails for structured tasks.",
+      "split_rationale": "Distinct conversational-AI literature; diagnoses the chat-abandonment starting thesis.",
+      "claim_categories": [
+        "theory:thy.conv-ui.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~8 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-nl-interfaces-structured-data",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "NL→structured-output (NL2SQL/NL2VIS): ambiguity resolution, DataTone, pragmatics, interactive disambiguation.",
+      "split_rationale": "MetroGraph-specific (NL→graph structure) with its own NL2VIS/NL2SQL corpus → exhaustive.",
+      "claim_categories": [
+        "theory:thy.nl-structured.*"
+      ],
+      "row_estimate": "~5 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-hybrid-multimodal-interfaces",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Hybrid NL + direct-manipulation / multimodal interfaces (Graphologue, LLM-GUI architectures) — the space MetroGraph occupies.",
+      "split_rationale": "CORE thesis space; emerging-but-distinct corpus → exhaustive.",
+      "claim_categories": [
+        "theory:thy.hybrid-mm.*"
+      ],
+      "row_estimate": "~5 theory_concepts, ~12 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-graph-layout-algorithms",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Graph layout: force-directed (Eades, Fruchterman-Reingold), hierarchical (Sugiyama), tree (Reingold-Tilford), orthogonal/octilinear.",
+      "split_rationale": "Large algorithmic corpus with distinct graph-drawing authorities; underpins metro-map octilinear routing → exhaustive. Absorbs hierarchical/tree (judged non-leaf).",
+      "claim_categories": [
+        "theory:thy.graph-layout.*"
+      ],
+      "row_estimate": "~8 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-graph-aesthetics-readability",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Graph aesthetics & readability: crossing minimization, symmetry, edge density, empirical cognitive-load studies (Huang, Kobourov).",
+      "split_rationale": "Empirical human-factors authority distinct from layout algorithms; evidence base for 'metro-map reduces cognitive load' → exhaustive.",
+      "claim_categories": [
+        "theory:thy.graph-aesthetics.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-infovis-framework-methodology",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "InfoVis design methodology: Munzner nested model, Shneiderman mantra, Cleveland-McGill encoding hierarchy.",
+      "split_rationale": "Munzner/Shneiderman methodological authority; the design-process backbone for the whole viz cluster.",
+      "claim_categories": [
+        "theory:thy.infovis-method.*"
+      ],
+      "row_estimate": "~5 theory_concepts, ~8 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-metro-map-metaphor",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Metro-map metaphor for abstract data: octilinear schematic layout, MetroSets, applications to software/pathways/concepts.",
+      "split_rationale": "MetroGraph's CORE differentiator and primary visual metaphor → exhaustive, standalone authority.",
+      "claim_categories": [
+        "theory:thy.metro-map.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~12 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-database-schema-visualization",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "DB schema & ERD visualization theory: Chen ER model, relational/noSQL/graph schema representation, large-schema complexity.",
+      "split_rationale": "Direct application domain (ICP); Chen ERD lineage is a distinct authority → exhaustive.",
+      "claim_categories": [
+        "theory:thy.db-schema-viz.*"
+      ],
+      "row_estimate": "~5 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-visual-programming-dataflow",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Visual/dataflow programming + the Deutsch limit (~50 primitives), end-user programming, why node-canvas builders hit a complexity ceiling.",
+      "split_rationale": "Central context for the wedge (why metro-map beats dense dataflow builders); distinct VPL authority → exhaustive.",
+      "claim_categories": [
+        "theory:thy.visual-prog.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~12 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-interactive-graph-exploration",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Interactive graph exploration & sensemaking: pan/zoom/filter, focus+context, brushing, visual query builders, large-network interaction.",
+      "split_rationale": "Merges interactive-exploration + sensemaking + graph-viz-interaction (same interaction-technique authority) into one leaf; absorbs temporal-graph (non-leaf).",
+      "claim_categories": [
+        "theory:thy.graph-explore.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~10 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-human-ai-interaction-design",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims",
+        "relationships"
+      ],
+      "depends_on": [],
+      "scope": "Guidelines for Human-AI Interaction (Amershi et al. CHI 2019, 18 principles) + design-pattern catalogs.",
+      "split_rationale": "Foundational Amershi authority for AI-UI design → exhaustive; anchors the agentic-UX subcluster.",
+      "claim_categories": [
+        "hci:thy.human-ai.*",
+        "theory:thy.human-ai.*"
+      ],
+      "row_estimate": "~5 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-agentic-ux-patterns",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Agentic UX patterns: interruptibility, step-by-step logs, approve/veto, control handoff for autonomous agents.",
+      "split_rationale": "Distinct emerging agentic-UX practitioner corpus; absorbs generative-AI design principles (non-leaf).",
+      "claim_categories": [
+        "theory:thy.agentic-ux.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~8 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-trust-explainability",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Trust, explainability & transparency in AI UIs; absorbs RAG-UX (showing retrieval context) and model-card documentation.",
+      "split_rationale": "Distinct XAI/trust authority; merges RAG-UX + model-cards (judged non-leaf) here. Core to agent-vs-graph-chat confusion fix → exhaustive.",
+      "claim_categories": [
+        "theory:thy.trust-xai.*"
+      ],
+      "row_estimate": "~6 theory_concepts, ~10 claims",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "theory-agent-observability-workflow",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Visualizing agent workflows/observability: DAG/Sankey overlays, per-step latency, human-in-the-loop interruption points.",
+      "split_rationale": "Distinct observability authority; metro-map↔DAG mapping is a specific design opportunity worth its own leaf.",
+      "claim_categories": [
+        "theory:thy.agent-obs.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~6 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-mental-models-ai-expertise",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "User mental models of AI; expert/novice gap; when LLM assistants fail and who blames the UI.",
+      "split_rationale": "Distinct mental-models authority; scaffolds the expert-vs-novice ICP trust split.",
+      "claim_categories": [
+        "theory:thy.mental-models.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~8 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-user-agency-control",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Locus of control, sense of agency, user-control vs autonomy preferences/personalization in autonomous systems.",
+      "split_rationale": "Merges locus-of-control + user-control-autonomy (same agency-psychology authority) into one leaf.",
+      "claim_categories": [
+        "theory:thy.user-agency.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~8 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "theory-error-recovery-correction",
+      "cluster": "theory",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "theory_concepts",
+        "claims"
+      ],
+      "depends_on": [],
+      "scope": "Error detection/recovery & correction loops: over-reliance vs over-intervention, before/after visibility, persuasion paradox.",
+      "split_rationale": "Distinct error-recovery/calibrated-intervention authority; load-bearing for undo + before/after graph edits.",
+      "claim_categories": [
+        "theory:thy.error-recovery.*"
+      ],
+      "row_estimate": "~4 theory_concepts, ~6 claims",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "ux-teardown-graph-db-viz",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-graph-db-viz-native",
+        "competitors-graph-db-viz-platforms",
+        "market-landscape"
+      ],
+      "scope": "Deep flows (<=5) on the direct set: Neo4j Bloom, Linkurious, Kineviz GraphXR, Memgraph Lab, Gephi — pane_count/click_depth/hci_cost.",
+      "split_rationale": "One teardown per archetype; capped at 5 deep flows. Direct-competitor authority → exhaustive; depends on its competitor leaves for product.id + feature linkage.",
+      "claim_categories": [
+        "ux:ux.gdbv.*",
+        "hci:ux.gdbv.*"
+      ],
+      "row_estimate": "~25 screens, 5 flows, ~10 patterns",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "ux-teardown-db-schema-modeling",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-db-schema-modeling-visual",
+        "competitors-db-schema-modeling-dev",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on Azimutt, ChartDB, dbdiagram.io, DbSchema, Prisma Studio (live-DB connect → first ERD).",
+      "split_rationale": "Per-archetype teardown, <=5 flows; direct ICP authority → exhaustive.",
+      "claim_categories": [
+        "ux:ux.dbschema.*",
+        "hci:ux.dbschema.*"
+      ],
+      "row_estimate": "~25 screens, 5 flows, ~10 patterns",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "ux-teardown-node-graph-libraries",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-node-graph-libs-rendering",
+        "competitors-node-graph-libs-editors",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on canonical demo apps: React Flow, Cytoscape.js, Sigma.js, AntV G6, Rete.js.",
+      "split_rationale": "Per-archetype teardown; foundation-layer → standard depth, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.nodelib.*",
+        "hci:ux.nodelib.*"
+      ],
+      "row_estimate": "~15 screens, 5 flows, ~8 patterns",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "ux-teardown-graph-databases",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-graph-databases-leading",
+        "competitors-graph-databases-emerging",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on bundled UIs: Neo4j Browser, Memgraph, TigerGraph, NebulaGraph, PuppyGraph (query-to-viz).",
+      "split_rationale": "Per-archetype teardown; adjacency → standard, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.gdb.*",
+        "hci:ux.gdb.*"
+      ],
+      "row_estimate": "~15 screens, 5 flows, ~8 patterns",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "ux-teardown-workflow-automation",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-workflow-automation-ipaas",
+        "competitors-workflow-automation-oss",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on Zapier, Make, n8n, Node-RED, Latenode (build-first-workflow) — canonical pane-bloat evidence.",
+      "split_rationale": "Per-archetype teardown; canonical wedge-target HCI evidence → exhaustive, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.wfa.*",
+        "hci:ux.wfa.*"
+      ],
+      "row_estimate": "~25 screens, 5 flows, ~12 patterns",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "ux-teardown-rag-agent-builders",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-rag-agent-builders-canvas",
+        "competitors-rag-agent-builders-conversational",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on Flowise, Langflow, Dify, Gumloop, Coze — agent-vs-graph-chat confusion documented.",
+      "split_rationale": "Per-archetype teardown; named in wedge → exhaustive, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.rag.*",
+        "hci:ux.rag.*"
+      ],
+      "row_estimate": "~25 screens, 5 flows, ~12 patterns",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "ux-teardown-internal-tools-lowcode",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-internal-tools-lowcode",
+        "competitors-lowcode-app-platforms",
+        "competitors-nocode-databases",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on Retool, Appsmith, Budibase, Airtable, NocoDB (config sprawl + data-frontend).",
+      "split_rationale": "Per-archetype teardown spanning all three internal-tools sub-leaves; config-sprawl wedge → exhaustive, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.itlc.*",
+        "hci:ux.itlc.*"
+      ],
+      "row_estimate": "~25 screens, 5 flows, ~12 patterns",
+      "synth_depth": "exhaustive"
+    },
+    {
+      "name": "ux-teardown-data-bi-notebook",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-data-bi-dashboards",
+        "competitors-data-notebooks-ai",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on Metabase, Superset, Hex, Tableau, Grafana (query/explore-to-dashboard).",
+      "split_rationale": "Per-archetype teardown; ICP-adjacent → standard, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.bi.*",
+        "hci:ux.bi.*"
+      ],
+      "row_estimate": "~15 screens, 5 flows, ~8 patterns",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "ux-teardown-diagramming",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-diagramming-as-code",
+        "competitors-diagramming-whiteboard",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on Lucidchart, draw.io, Miro, Figma/FigJam, Mermaid (ERD/graph render) — Figma flow as partner-embed study.",
+      "split_rationale": "Per-archetype teardown; adjacency + Figma partner-embed surface → standard, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.diag.*",
+        "hci:ux.diag.*"
+      ],
+      "row_estimate": "~15 screens, 5 flows, ~8 patterns",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "ux-teardown-data-orchestration",
+      "cluster": "ux",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "ux_screens",
+        "ux_flows",
+        "ux_patterns"
+      ],
+      "depends_on": [
+        "competitors-data-orchestration-modern",
+        "competitors-data-transformation-quality",
+        "competitors-data-etl-ingestion",
+        "market-landscape"
+      ],
+      "scope": "<=5 flows on Airflow, Dagster, dbt Explorer, Prefect, Coalesce (DAG/lineage graph views).",
+      "split_rationale": "Per-archetype teardown; DAG/lineage-view adjacency → standard, <=5 flows.",
+      "claim_categories": [
+        "ux:ux.dataorch.*",
+        "hci:ux.dataorch.*"
+      ],
+      "row_estimate": "~15 screens, 5 flows, ~8 patterns",
+      "synth_depth": "standard"
+    },
+    {
+      "name": "market-synthesis",
+      "cluster": "synthesis",
+      "depth": "exhaustive",
+      "primary_tables": [
+        "reports",
+        "relationships",
+        "concepts"
+      ],
+      "depends_on": [
+        "value-prop",
+        "business-model",
+        "market-trends",
+        "market-sizing",
+        "pricing",
+        "ux-teardown-graph-db-viz",
+        "ux-teardown-rag-agent-builders",
+        "theory-metro-map-metaphor",
+        "theory-visual-programming-dataflow",
+        "theory-hybrid-multimodal-interfaces"
+      ],
+      "scope": "The fully-cited research paper: whitespace thesis, segment attractiveness, differentiation, pricing gaps, theory-grounded wedge — reads all claims, writes zero.",
+      "split_rationale": "Final read-only synthesis (contract C5 conflation guard): writes reports/synthesis relationships only, never claims; depends on the whole corpus.",
+      "claim_categories": [
+        "(read-only — writes reports + synthesis relationships only, no claim rows)"
+      ],
+      "row_estimate": "~1 paper report, ~50 synthesis relationships",
+      "synth_depth": "exhaustive"
+    }
+  ],
+  "contracts": [
+    {
+      "id": "C1-company-id-freeze",
+      "statement": "The `companies` leaf is the sole first-writer of {{schema}}.companies and {{schema}}.funding_rounds and freezes every company.id (`market.company.<slug>`). All other leaves reference company.id read-only and MUST NOT insert company rows."
+    },
+    {
+      "id": "C2-self-rows",
+      "statement": "MetroGraph's own company + product rows use the reserved ids `market.company.us` / `market.product.us` with is_self=TRUE, written by `companies` and `value-prop` respectively; every us-vs-them query is a self-join on is_self."
+    },
+    {
+      "id": "C3-feature-taxonomy-freeze",
+      "statement": "The `market-landscape` leaf is the sole writer of {{schema}}.features and freezes the feature taxonomy (ids `market.feature.<slug>`, hierarchy, category, layer, kano_class) BEFORE any product_features are written. Competitor + teardown leaves reference feature.id read-only when scoring product_features (deterministic id `market.pf.<product-slug>.<feature-slug>`)."
+    },
+    {
+      "id": "C4-product-id-partition",
+      "statement": "product.id is partitioned by archetype: each competitor leaf owns the products rows for exactly its assigned companies (`market.product.<slug>`) and is their only writer; no other leaf inserts products for those companies, so product PKs never collide across parallel writers."
+    },
+    {
+      "id": "C5-claims-partition-paper-readonly",
+      "statement": "{{schema}}.claims is partitioned per leaf by claim-id NAMESPACE (each leaf writes only ids under its declared prefix, e.g. `market.claim.comp.gdbv-native.*`) AND by the controlled category vocab it is allowed to emit. `market-synthesis` (paper) is READ-ONLY on claims and must never re-flatten or overwrite a verdict (conflation guard)."
+    },
+    {
+      "id": "C6-reports-first-writer-wins",
+      "statement": "{{schema}}.reports is keyed by source_id (= sources.id); whichever leaf first ingests a source owns its report row (first-writer-wins on upsert). Every number in market-sizing/trends/pricing resolves to a reports or market_metrics row."
+    },
+    {
+      "id": "C7-segment-id-freeze",
+      "statement": "The `customer-segments` leaf is the sole writer of {{schema}}.segments and freezes segment.id (`market.segment.<slug>`); personas, jobs_pains_gains, pricing_tiers, and bmc_blocks reference segment.id read-only."
+    },
+    {
+      "id": "C8-vpc-ownership-split",
+      "statement": "`customer-segments` owns the VPC customer-profile side (personas + jobs_pains_gains for the market ICP). `value-prop` owns the value-map side: it sets our_relief/relief_strength/addressed_by_feature_ids on existing jpg rows and writes the relief/differentiation relationships — the two leaves never write the same column of the same row."
+    },
+    {
+      "id": "C9-pricing-ownership",
+      "statement": "The `pricing` leaf is the sole writer of {{schema}}.pricing_models and {{schema}}.pricing_tiers, referencing product.id/company.id read-only; it runs after all competitor leaves so every priced product exists."
+    },
+    {
+      "id": "C10-partners-ownership",
+      "statement": "The `partners-integrations` leaf is the sole writer of {{schema}}.partners and owns integrates_with/partners_with relationship edges; Figma and Google Drive are modeled as partners with relevant_to_us=TRUE even where the org also has a competitors row (coopetition)."
+    },
+    {
+      "id": "C11-competitor-role-overlay",
+      "statement": "Competitor leaves write {{schema}}.competitors as a ROLE overlay (company_id + product_id + we_win_on/they_win_on/wedge_vs_them) and the competes_with relationship; they never duplicate company facts (those live once in `companies` per C1)."
+    },
+    {
+      "id": "C12-ux-evidence-linkage",
+      "statement": "Any ux_screen_ids referenced from product_features.ux_screen_ids must be created by the matching ux-teardown leaf (which is wave-ordered after the competitor leaf); teardown leaves own ux_screens/ux_flows/ux_patterns and link them back via feature_ids read-only."
+    },
+    {
+      "id": "C13-theory-grounding",
+      "statement": "Theory leaves are the sole writers of {{schema}}.theory_concepts (`market.theory.<slug>`); any claim.theory_concept_ids set by other leaves must resolve to an existing theory_concept, so theory leaves run in wave 1 before grounded claims are written."
+    },
+    {
+      "id": "C14-relationship-edges",
+      "statement": "Cross-entity edges in {{schema}}.relationships are written by their owning leaf only: competes_with (competitor leaves), partners_with/integrates_with (partners), acquired_by/invested_in (companies), grounded_in (theory + value-prop), substitute_for/belongs_to_segment (value-prop), synthesis edges (market-synthesis)."
+    }
+  ],
+  "waves": [
+    {
+      "wave": 1,
+      "leaves": [
+        "companies",
+        "market-landscape",
+        "theory-cognitive-load",
+        "theory-working-memory",
+        "theory-information-foraging",
+        "theory-recognition-recall",
+        "theory-choice-cost",
+        "theory-perception-gestalt",
+        "theory-direct-manipulation",
+        "theory-norman-gulfs-distance",
+        "theory-instrumental-interaction",
+        "theory-mixed-initiative",
+        "theory-dm-vs-agents-debate",
+        "theory-tangible-embodied",
+        "theory-conversational-ui-challenges",
+        "theory-nl-interfaces-structured-data",
+        "theory-hybrid-multimodal-interfaces",
+        "theory-graph-layout-algorithms",
+        "theory-graph-aesthetics-readability",
+        "theory-infovis-framework-methodology",
+        "theory-metro-map-metaphor",
+        "theory-database-schema-visualization",
+        "theory-visual-programming-dataflow",
+        "theory-interactive-graph-exploration",
+        "theory-human-ai-interaction-design",
+        "theory-agentic-ux-patterns",
+        "theory-trust-explainability",
+        "theory-agent-observability-workflow",
+        "theory-mental-models-ai-expertise",
+        "theory-user-agency-control",
+        "theory-error-recovery-correction"
+      ]
+    },
+    {
+      "wave": 2,
+      "leaves": [
+        "competitors-graph-db-viz-native",
+        "competitors-graph-db-viz-platforms",
+        "competitors-db-schema-modeling-visual",
+        "competitors-db-schema-modeling-dev",
+        "competitors-node-graph-libs-rendering",
+        "competitors-node-graph-libs-editors",
+        "competitors-graph-databases-leading",
+        "competitors-graph-databases-emerging",
+        "competitors-workflow-automation-ipaas",
+        "competitors-workflow-automation-oss",
+        "competitors-rag-agent-builders-canvas",
+        "competitors-rag-agent-builders-conversational",
+        "competitors-internal-tools-lowcode",
+        "competitors-lowcode-app-platforms",
+        "competitors-nocode-databases",
+        "competitors-data-bi-dashboards",
+        "competitors-data-notebooks-ai",
+        "competitors-diagramming-as-code",
+        "competitors-diagramming-whiteboard",
+        "competitors-data-etl-ingestion",
+        "competitors-data-transformation-quality",
+        "competitors-data-orchestration-modern",
+        "competitors-workflow-engines",
+        "competitors-data-warehouse-lakehouse",
+        "customer-segments",
+        "market-sizing",
+        "partners-integrations"
+      ]
+    },
+    {
+      "wave": 3,
+      "leaves": [
+        "ux-teardown-graph-db-viz",
+        "ux-teardown-db-schema-modeling",
+        "ux-teardown-node-graph-libraries",
+        "ux-teardown-graph-databases",
+        "ux-teardown-workflow-automation",
+        "ux-teardown-rag-agent-builders",
+        "ux-teardown-internal-tools-lowcode",
+        "ux-teardown-data-bi-notebook",
+        "ux-teardown-diagramming",
+        "ux-teardown-data-orchestration",
+        "pricing",
+        "market-trends"
+      ]
+    },
+    {
+      "wave": 4,
+      "leaves": [
+        "value-prop"
+      ]
+    },
+    {
+      "wave": 5,
+      "leaves": [
+        "business-model"
+      ]
+    },
+    {
+      "wave": 6,
+      "leaves": [
+        "market-synthesis"
+      ]
+    }
+  ],
+  "acceptance_tests": [
+    "Coverage: every org in the master registry (~158) plus the MetroGraph self-row resolves to exactly one {{schema}}.companies row; COUNT(is_self)=1; no company appears in two competitor leaves' product sets.",
+    "Product-id partition (C4): zero product.id collisions; every {{schema}}.products row's company_id resolves to a companies.id; each competitor leaf's product count <= 10.",
+    "Feature-freeze ordering (C3): every product_features.feature_id and jpg.addressed_by_feature_ids and theory.applies_to_feature_ids resolves to a features.id written by market-landscape; no product_features row predates the frozen taxonomy.",
+    "Claims partition (C5): every claim.category is in the controlled vocab; every claim.id falls under its writing leaf's declared namespace prefix; no two leaves share a claim-id prefix; market-synthesis wrote zero claim rows.",
+    "Direct-competitor completeness: every is_direct_competitor company has a competitors row with non-empty we_win_on, they_win_on, wedge_vs_them, and >=1 product_features scorecard row with an hci_cost grade.",
+    "Teardown caps (C12): each ux-teardown leaf has <= 5 ux_flows; every ux_screen carries pane_count, click_depth and an hci_cost A-F grade; each teardown flags >=1 is_antipattern ux_pattern; any product_features.ux_screen_ids resolve to ux_screens written by the matching teardown.",
+    "Theory grounding (C13): every theory leaf produced theory_concepts with implication + strength populated; every claim.theory_concept_ids resolves; the six core cognitive/viz theories each ground >=1 strategic claim.",
+    "Reports first-writer-wins (C6): reports PK is unique on source_id; every numeric assertion in market-sizing, market-trends, and pricing resolves to a reports or market_metrics row with a source.",
+    "Segment-freeze (C7): customer-segments is the only writer of segments; every persona.segment_id, jpg.segment_id, pricing_tier.target_persona_id/segment link, and bmc linked_segment_ids resolves.",
+    "Whitespace claim exists: value-prop emits the headline supported/disputed claim that no incumbent combines graph/DB-schema viz + agent-workflow orchestration in a single low-surface-area view, grounded in >=1 theory concept and citing >=3 competitor leaves.",
+    "Synthesis integrity: market-synthesis writes only reports + synthesis relationships; every assertion in the paper cites a claim.id, and no claim verdict is re-flattened (conflation guard holds).",
+    "Acyclic waves: no leaf depends on a leaf in an equal-or-later wave; wave 1 has zero dependencies; the dependency graph is a DAG terminating at market-synthesis."
+  ],
+  "notes": "SCALE: blueprint scaffolds ~74 leaves (1 spine + 3 market + 24 competitive + 1 customers + 1 vpc + 1 business-model + 1 pricing + 1 partners + 29 theory + 11 ux + 1 synthesis). This exceeds the rough 25-35 hint because two forces dominate: (a) the 8-10-product competitor cap forced 24 competitor sub-leaves out of 11 archetypes (data-orchestration alone split 5 ways from 34 cos; internal-tools-lowcode 3 ways from 25); (b) the four parallel theory cartographers emitted ~39 'big_enough' subareas with heavy cross-area duplication, which I consolidated to 29 non-overlapping theory leaves (merged: mixed-initiative x2, cognitive-load+progressive-disclosure, DM-debate+prompt-vs-DM+copilot-vs-agent, Hick+Schwartz choice-cost, locus+autonomy user-agency, interactive-exploration+sensemaking, trust+RAG-UX+model-cards; dropped the 6 'big_enough=false' patterns into their parent leaves).\n\nGRANULARITY CALLS: competitor leaves split on source/authority disjointness (engine-bundled vs DB-agnostic graph viz; visual vs dev ERD; rendering libs vs node-editors; iPaaS vs OSS; canvas vs conversational agents; BI vs notebooks; diagram-as-code vs whiteboard; ingestion/transform/orchestrate/engine/warehouse). Teardowns kept ONE per archetype (11) within the <=5-flow cap by picking the 5 most representative products. Theory and market-landscape carry NO company dependency so they sit in wave 1 per the brief.\n\nDEPTH: defaulted exhaustive; downgraded genuinely thin/adjacent leaves to standard (foundational libs, graph-DB engines, BI, diagramming, most data-stack, peripheral theory) and scout (workflow-engines, warehouse-lakehouse). Direct rivals (graph-db-viz, db-schema-modeling), named wedge targets (workflow-automation, rag-agent-builders, internal-tools), customer/value/pricing/partners, the six core HCI+viz theories, and synthesis stay exhaustive.\n\nSELF-JOIN READY: MetroGraph rows under market.company.us / market.product.us with is_self=TRUE (C2) make every differentiation/pricing/UX query a free us-vs-them split. pricing depends_on lists a representative subset of competitor leaves but reads product.id across ALL of them; wave 3 placement (after all wave-2 competitor leaves) is the authoritative ordering guarantee.\n\nPARALLELISM: within each wave leaves are write-disjoint by the contracts (per-archetype product namespaces, per-leaf claim-id prefixes, single-owner tables for features/segments/pricing/partners/theory_concepts), so a wave can be fanned out to parallel writers with no PK collisions."
+}

@@ -9,7 +9,9 @@ CREATE OR REPLACE VIEW meta.all_sources AS
   SELECT 'ecs' AS domain, * FROM ecs.sources UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.sources UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.sources UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.sources UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.sources UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.sources UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.sources;
 
 CREATE OR REPLACE VIEW meta.all_documents AS
@@ -18,7 +20,9 @@ CREATE OR REPLACE VIEW meta.all_documents AS
   SELECT 'ecs' AS domain, * FROM ecs.documents UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.documents UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.documents UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.documents UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.documents UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.documents UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.documents;
 
 CREATE OR REPLACE VIEW meta.all_concepts AS
@@ -27,7 +31,9 @@ CREATE OR REPLACE VIEW meta.all_concepts AS
   SELECT 'ecs' AS domain, * FROM ecs.concepts UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.concepts UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.concepts UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.concepts UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.concepts UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.concepts UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.concepts;
 
 CREATE OR REPLACE VIEW meta.all_commands AS
@@ -36,7 +42,9 @@ CREATE OR REPLACE VIEW meta.all_commands AS
   SELECT 'ecs' AS domain, * FROM ecs.commands UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.commands UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.commands UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.commands UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.commands UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.commands UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.commands;
 
 CREATE OR REPLACE VIEW meta.all_config_keys AS
@@ -45,7 +53,9 @@ CREATE OR REPLACE VIEW meta.all_config_keys AS
   SELECT 'ecs' AS domain, * FROM ecs.config_keys UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.config_keys UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.config_keys UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.config_keys UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.config_keys UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.config_keys UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.config_keys;
 
 CREATE OR REPLACE VIEW meta.all_failure_modes AS
@@ -54,7 +64,9 @@ CREATE OR REPLACE VIEW meta.all_failure_modes AS
   SELECT 'ecs' AS domain, * FROM ecs.failure_modes UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.failure_modes UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.failure_modes UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.failure_modes UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.failure_modes UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.failure_modes UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.failure_modes;
 
 CREATE OR REPLACE VIEW meta.all_relationships AS
@@ -63,5 +75,7 @@ CREATE OR REPLACE VIEW meta.all_relationships AS
   SELECT 'ecs' AS domain, * FROM ecs.relationships UNION ALL BY NAME
   SELECT 'exercise' AS domain, * FROM exercise.relationships UNION ALL BY NAME
   SELECT 'firecracker' AS domain, * FROM firecracker.relationships UNION ALL BY NAME
+  SELECT 'k8s' AS domain, * FROM k8s.relationships UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.relationships UNION ALL BY NAME
+  SELECT 'market' AS domain, * FROM market.relationships UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.relationships;
