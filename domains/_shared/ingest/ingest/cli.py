@@ -165,6 +165,21 @@ def _cmd_model(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_render(args: argparse.Namespace) -> int:
+    """Project strategy.render_blocks into the non-divergent artifact family (read-only)."""
+    from pathlib import Path
+
+    from ingest.render import render
+    con = open_db(read_only=True)
+    try:
+        written = render(con, Path(args.out) if args.out else None)
+    finally:
+        con.close()
+    for w in written:
+        print(f"rendered: {w}")
+    return 0
+
+
 def _cmd_reason(args: argparse.Namespace) -> int:
     """Run inference rules to derive new edges/claims (speculative until verified)."""
     from ingest.reason import reason
@@ -371,6 +386,10 @@ def main(argv: list[str] | None = None) -> int:
     p_reason.add_argument("--rule", default=None, help="run only this rule id")
     p_reason.add_argument("--commit", action="store_true", help="actually write derived rows")
     p_reason.set_defaults(func=_cmd_reason)
+
+    p_render = sub.add_parser("render", help="project strategy.render_blocks into a non-divergent family of .md artifacts")
+    p_render.add_argument("--out", default=None, help="output dir (default domains/strategy/render/)")
+    p_render.set_defaults(func=_cmd_render)
 
     p_model = sub.add_parser("model", help="run a Monte-Carlo model from _shared/models/<id>.yaml")
     p_model.add_argument("run", nargs="?", default="run")  # `ingest model run --model ...`

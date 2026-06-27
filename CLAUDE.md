@@ -62,6 +62,9 @@ A multi-domain knowledge corpus lives in this repo: DuckDB at `_db/knowledge.duc
 - `embed --domain` / `search --hybrid` / `gaps` — Layer 4: local fastembed vectors (`embed` extra), `base embeddings` table, HNSW via `queries/vss_index.sql`, BM25+vector RRF, dedup/whitespace.
 - `reason --domain [--commit]` — Layer 5: inference rules in `_shared/rules/*.yaml` derive edges/claims (speculative until verified) with `derivations` provenance.
 - `model run --domain --model <id>` — Layer 3: NumPy Monte-Carlo from `_shared/models/*.yaml` (fixed seed → reproducible) into `model_runs`.
+- `render [--out <dir>]` — Layer 7: project `strategy.render_blocks` ⋈ `artifact_blocks` into a non-divergent family of `.md` artifacts (investor deck / strategy memo / battlecards / board update) under `domains/strategy/render/`. A shared metric renders byte-identically across artifacts (structural non-divergence); verdict glyphs keep every figure self-auditing (a proxy-only wedge can't read as measured). Read-only; regenerable.
+
+**The `strategy` synthesis domain** reads the whole cross-domain algebra READ-ONLY and never mutates another domain's verdicts (the C5 conflation guard; `market.claims` snapshot diff stays 0/0/0). It holds `wedge_reeval` (each wedge claim re-graded to an honest ceiling — **supported-by-proxy is the cap, never experimental**, derived from the empty `voc` dormant-intake), `recommendations` (priority derived by query over cited claims' confidence × impact; missing experiments emitted as `is_experiment` roadmap items), `render_blocks`/`artifact_blocks` (the non-divergence projection), and `red_team_findings` (falsifiers wired to live `compintel` temporal signals).
 
 **Active focus:** `domains/exercise/` — a science-backed training-fact corpus that generates an optimal Push/Pull/Legs routine (static loop + dynamic mesocycle). See `domains/exercise/PLAN.md`.
 
