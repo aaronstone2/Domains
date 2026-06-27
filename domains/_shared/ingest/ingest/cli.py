@@ -154,6 +154,72 @@ def _cmd_calibrate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_forecast(args: argparse.Namespace) -> int:
+    """Register predictive claims as datable forecasts (feeds the Brier calibration loop)."""
+    from ingest.verify import register_forecasts
+    con = open_db(read_only=False)
+    try:
+        print(f"forecast {args.domain}: {register_forecasts(con, args.domain, args.horizon)}")
+    finally:
+        con.close()
+    return 0
+
+
+def _cmd_sensitivity(args: argparse.Namespace) -> int:
+    """Tornado sensitivity: which model inputs drive output variance."""
+    from ingest.mc import sensitivity
+    con = open_db(read_only=False)
+    try:
+        r = sensitivity(con, args.domain, args.model, args.seed, args.draws)
+    finally:
+        con.close()
+    if "error" in r:
+        print(r["error"]); return 1
+    print(f"sensitivity [{r['model']} -> {r['metric']}] (n={r['n']}, seed={r['seed']}):")
+    for d in r["tornado"]:
+        bar = "#" * int(round(d["contribution"] * 40))
+        print(f"  {d['param']:<16} rho={d['rho']:+.3f}  {d['contribution']*100:5.1f}%  {bar}")
+    return 0
+
+
+def _cmd_watch(args: argparse.Namespace) -> int:
+    """Detect competitor moves since a cutoff that erode the wedge / fire falsifiers => recompute."""
+    from ingest.watch import watch
+    con = open_db(read_only=True)
+    try:
+        w = watch(con, args.since)
+    finally:
+        con.close()
+    print(f"watch since {w['since']}: {len(w['erosions'])} wedge-eroding move(s), "
+          f"{len(w['new_falsifiers'])} new falsifier(s), {len(w['hit_wedge_features'])} feature(s) hit")
+    for e in w["erosions"]:
+        print(f"  [{e['date']}] {e['strength'] or '?':<8} {e['detail']}  -> {','.join(e['features'] or [])}")
+    for f in w["new_falsifiers"]:
+        print(f"  ! FALSIFIER {f['finding']} ({f['severity']}) fired on {f['on_date']}")
+    if w["recompute"]:
+        print(f"  => recompute {len(w['recompute'])} recommendation(s): {', '.join(r['rec'] for r in w['recompute'])}")
+    return 0
+
+
+def _cmd_decide(args: argparse.Namespace) -> int:
+    """0/1 knapsack over recommendations under an effort budget => committed action set."""
+    from ingest.decide import decide
+    con = open_db(read_only=True)
+    try:
+        d = decide(con, args.budget)
+    finally:
+        con.close()
+    print(f"decide (budget {d['budget_pts']} pts, spent {d['spent_pts']}, realized priority {d['realized_priority']}):")
+    print("  SELECTED:")
+    for s in d["selected"]:
+        tag = " [experiment]" if s["is_experiment"] else ""
+        print(f"    + {s['id']} ({s['kind']}, {s['effort']}, prio {s['priority']}){tag}")
+    print("  DEFERRED:")
+    for s in d["deferred"]:
+        print(f"    - {s['id']} ({s['kind']}, {s['effort']}, prio {s['priority']})")
+    return 0
+
+
 def _cmd_model(args: argparse.Namespace) -> int:
     """Run a Monte-Carlo model (deterministic from committed YAML + seed) into model_runs."""
     from ingest.mc import run
@@ -386,6 +452,26 @@ def main(argv: list[str] | None = None) -> int:
     p_reason.add_argument("--rule", default=None, help="run only this rule id")
     p_reason.add_argument("--commit", action="store_true", help="actually write derived rows")
     p_reason.set_defaults(func=_cmd_reason)
+
+    p_fc = sub.add_parser("forecast", help="register predictive claims as datable forecasts (Brier loop)")
+    p_fc.add_argument("--domain", required=True)
+    p_fc.add_argument("--horizon", type=int, default=365, help="days until resolves_by")
+    p_fc.set_defaults(func=_cmd_forecast)
+
+    p_sens = sub.add_parser("sensitivity", help="tornado: which model inputs drive output variance")
+    p_sens.add_argument("--domain", required=True)
+    p_sens.add_argument("--model", required=True)
+    p_sens.add_argument("--seed", type=int, default=42)
+    p_sens.add_argument("--draws", type=int, default=10000)
+    p_sens.set_defaults(func=_cmd_sensitivity)
+
+    p_watch = sub.add_parser("watch", help="competitor moves since a cutoff that erode the wedge / fire falsifiers")
+    p_watch.add_argument("--since", required=True, help="cutoff date YYYY-MM-DD")
+    p_watch.set_defaults(func=_cmd_watch)
+
+    p_decide = sub.add_parser("decide", help="0/1 knapsack over recommendations under an effort budget")
+    p_decide.add_argument("--budget", type=int, required=True, help="effort points (s=1 m=2 l=3 xl=5)")
+    p_decide.set_defaults(func=_cmd_decide)
 
     p_render = sub.add_parser("render", help="project strategy.render_blocks into a non-divergent family of .md artifacts")
     p_render.add_argument("--out", default=None, help="output dir (default domains/strategy/render/)")

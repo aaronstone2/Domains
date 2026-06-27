@@ -140,6 +140,35 @@ def evidence_audit(con: duckdb.DuckDBPyConnection, domain: str) -> list[tuple]:
     ).fetchall()
 
 
+def register_forecasts(con: duckdb.DuckDBPyConnection, domain: str, horizon_days: int = 365) -> dict[str, int]:
+    """Turn predictive claims into datable, scoreable forecasts in forecast_log (idempotent).
+
+    Every claim whose verification_standard is 'predictive' (or whose verdict is 'speculative') becomes a
+    forecast with predicted_prob seeded from its confidence (default 0.5) and a resolves_by horizon. This
+    is what gives the Brier calibration loop something to score — without it, forecast_log stays empty and
+    'predictive' verification is aspirational. Outcomes are filled in later (resolve), never auto-assumed.
+    """
+    rows = con.execute(
+        f"""
+        SELECT id, COALESCE(confidence, 0.5), COALESCE(last_verified, CURRENT_DATE)
+        FROM {domain}.claims
+        WHERE COALESCE(verification_standard, '') = 'predictive' OR verdict = 'speculative'
+        """
+    ).fetchall()
+    n = 0
+    for cid, conf, asof in rows:
+        prob = min(0.95, max(0.05, float(conf)))
+        con.execute(
+            f"INSERT INTO {domain}.forecast_log "
+            f"(id, claim_id, predicted_prob, predicted_at, resolves_by, resolved, notes) "
+            f"VALUES (?,?,?,?, CAST(? AS DATE) + INTERVAL ({horizon_days}) DAY, FALSE, 'auto-registered from predictive claim') "
+            f"ON CONFLICT (id) DO UPDATE SET predicted_prob = excluded.predicted_prob, resolves_by = excluded.resolves_by",
+            [f"{domain}.fc.{cid.split('.')[-1]}", cid, prob, asof, asof],
+        )
+        n += 1
+    return {"forecasts_registered": n, "horizon_days": horizon_days}
+
+
 def calibrate(con: duckdb.DuckDBPyConnection, domain: str) -> dict[str, float]:
     """Score resolved predictive claims (Brier) and report mean calibration."""
     con.execute(

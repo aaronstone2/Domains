@@ -80,3 +80,38 @@ def run(con: duckdb.DuckDBPyConnection, domain: str, model_id: str, seed: int = 
     )
     return {"run_id": rid, "metric": model.get("output_metric"), "p10": p10, "p50": p50, "p90": p90,
             "mean": mean, "stdev": stdev}
+
+
+def _spearman(x: np.ndarray, y: np.ndarray) -> float:
+    """Rank correlation, robust to the non-linear expr (no SciPy dependency)."""
+    rx = np.argsort(np.argsort(x)).astype(float)
+    ry = np.argsort(np.argsort(y)).astype(float)
+    rx -= rx.mean()
+    ry -= ry.mean()
+    denom = math.sqrt(float((rx * rx).sum()) * float((ry * ry).sum()))
+    return 0.0 if denom == 0 else float((rx * ry).sum() / denom)
+
+
+def sensitivity(con: duckdb.DuckDBPyConnection, domain: str, model_id: str, seed: int = 42, n: int = 10000) -> dict:
+    """Tornado: each input's rank-correlation with the output over the MC draws — what drives variance.
+
+    Reproducible from the same seed as `run`. Pure-input params (those that actually vary) are ranked by
+    |Spearman ρ| so the biggest uncertainty levers are explicit, not buried in a single point estimate.
+    """
+    model = load_model(model_id)
+    if model is None:
+        return {"error": f"no model {model_id} under {MODELS_DIR}"}
+    rng = np.random.default_rng(seed)
+    samples = {a["param"]: _sample(rng, a, n) for a in model["assumptions"]}
+    env = dict(samples)
+    env["np"] = np
+    out = np.asarray(eval(model["expr"], {"__builtins__": {}}, env), dtype=float)  # noqa: S307
+    tornado = sorted(
+        ({"param": p, "rho": round(_spearman(v, out), 4), "contribution": None}
+         for p, v in samples.items() if float(np.std(v)) > 0),
+        key=lambda d: -abs(d["rho"]),
+    )
+    total = sum(abs(d["rho"]) for d in tornado) or 1.0
+    for d in tornado:
+        d["contribution"] = round(abs(d["rho"]) / total, 4)  # share of explained rank-variance
+    return {"model": model_id, "metric": model.get("output_metric", "output"), "n": n, "seed": seed, "tornado": tornado}
