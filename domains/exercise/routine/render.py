@@ -1,8 +1,16 @@
 #!/usr/bin/env python
-"""Render ROUTINE.md -> styled ROUTINE.html -> ROUTINE.pdf (Chrome/Edge headless).
+"""Render the routine markdown docs in output/ -> styled .html -> .pdf (Chrome/Edge headless).
 
-Usage (from anywhere):  uv run --with markdown python domains/exercise/routine/render.py
-Re-run after editing ROUTINE.md to refresh the printable PDF.
+Each routine lives at output/<lifter>-<gym>.md (e.g. output/mark-290-revolution.md).
+This renders every such doc to output/<name>.html + output/<name>.pdf next to it.
+README.md (the index) is skipped.
+
+Usage (from anywhere):
+  uv run --with markdown python domains/exercise/routine/render.py            # render all routines
+  uv run --with markdown python domains/exercise/routine/render.py aaron-290-revolution mark-290-revolution
+      # render only the named doc(s) (with or without the .md extension)
+
+Re-run after editing any output/*.md to refresh its printable PDF.
 """
 import subprocess
 import sys
@@ -11,7 +19,8 @@ from pathlib import Path
 import markdown
 
 HERE = Path(__file__).parent
-md, html, pdf = HERE / "ROUTINE.md", HERE / "ROUTINE.html", HERE / "ROUTINE.pdf"
+OUT = HERE / "output"
+SKIP = {"README"}  # the index, not a routine
 
 CSS = """
 @page { size: Letter; margin: 0.55in 0.5in; }
@@ -36,23 +45,55 @@ code { background:#eef2ff; color:#3730a3; padding:1px 4px; border-radius:3px; fo
 hr { border:none; border-top:2px solid #e2e8f0; margin:18px 0; }
 """
 
-def main() -> int:
-    body = markdown.markdown(md.read_text(encoding="utf-8"),
-                             extensions=["tables", "fenced_code", "sane_lists", "attr_list", "toc"])
-    html.write_text(f'<!doctype html><html><head><meta charset="utf-8"><title>The Routine</title>'
-                    f"<style>{CSS}</style></head><body>{body}</body></html>", encoding="utf-8")
-    browser = next((p for p in (
+
+def find_browser() -> str | None:
+    return next((p for p in (
         r"C:\Program Files\Google\Chrome\Application\chrome.exe",
         r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
         r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
     ) if Path(p).exists()), None)
+
+
+def targets(argv: list[str]) -> list[Path]:
+    if argv:
+        out = []
+        for a in argv:
+            p = OUT / (a if a.endswith(".md") else a + ".md")
+            if not p.exists():
+                print(f"!! not found: {p.relative_to(HERE)}")
+            else:
+                out.append(p)
+        return out
+    return sorted(p for p in OUT.glob("*.md") if p.stem not in SKIP)
+
+
+def render_one(md: Path, browser: str | None) -> bool:
+    html, pdf = md.with_suffix(".html"), md.with_suffix(".pdf")
+    title = next((ln.lstrip("# ").strip() for ln in md.read_text(encoding="utf-8").splitlines()
+                  if ln.startswith("# ")), md.stem)
+    body = markdown.markdown(md.read_text(encoding="utf-8"),
+                             extensions=["tables", "fenced_code", "sane_lists", "attr_list", "toc"])
+    html.write_text(f'<!doctype html><html><head><meta charset="utf-8"><title>{title}</title>'
+                    f"<style>{CSS}</style></head><body>{body}</body></html>", encoding="utf-8")
     if not browser:
-        print("No Chrome/Edge found; open ROUTINE.html and Ctrl-P -> Save as PDF.")
-        return 1
+        print(f"   wrote {html.name} (no Chrome/Edge found; open it and Ctrl-P -> Save as PDF)")
+        return False
     subprocess.run([browser, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
                     f"--print-to-pdf={pdf}", html.as_uri()], check=False)
-    print(f"wrote {pdf}")
-    return 0
+    print(f"   {md.name} -> {pdf.name}")
+    return True
+
+
+def main() -> int:
+    docs = targets(sys.argv[1:])
+    if not docs:
+        print(f"No routine docs to render in {OUT}")
+        return 1
+    browser = find_browser()
+    print(f"Rendering {len(docs)} routine doc(s) from {OUT.relative_to(HERE.parent)}/ :")
+    ok = all(render_one(d, browser) for d in docs)
+    return 0 if (ok or not browser) else 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

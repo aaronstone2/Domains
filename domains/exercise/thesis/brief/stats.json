@@ -1,0 +1,82 @@
+{
+ "corpus_counts": {
+  "muscles": 58,
+  "movement_patterns": 32,
+  "exercises": 235,
+  "substitutions": 317,
+  "training_variables": 103,
+  "set_structures": 13,
+  "claims": 46,
+  "concepts": 81,
+  "relationships": 2304,
+  "documents": 169,
+  "sources": 169,
+  "constraints": 46
+ },
+ "claims_by_verdict": {
+  "refuted": 19,
+  "disputed": 15,
+  "supported": 7,
+  "equivalent": 5
+ },
+ "relationships_by_type": {
+  "assists": 858,
+  "targets": 463,
+  "substitutes": 315,
+  "governs": 275,
+  "instance-of": 233,
+  "antagonist-of": 160
+ },
+ "sources_by_tier": {
+  "T0": 35,
+  "T1": 32,
+  "T2": 67,
+  "T3": 35
+ },
+ "training_variables_by_key": {
+  "frequency": 19,
+  "weekly_sets": 18,
+  "rir": 15,
+  "rest_seconds": 14,
+  "load_pct_1rm": 13,
+  "overload_method": 12,
+  "rep_range": 5,
+  "session_sets": 3,
+  "mesocycle_length": 2,
+  "deload": 2
+ },
+ "gym_load_algebra_290": [
+  {
+   "equipment": "olympic-barbell",
+   "max_lb": 570.0
+  },
+  {
+   "equipment": "smith-machine",
+   "max_lb": 550.0
+  },
+  {
+   "equipment": "dumbbell",
+   "max_lb": 75.0
+  },
+  {
+   "equipment": "fixed-barbell",
+   "max_lb": 60.0
+  },
+  {
+   "equipment": "corebag",
+   "max_lb": 44.0
+  }
+ ],
+ "lifter_capabilities": [
+  {
+   "key": "bodyweight-pull-up",
+   "status": "working-toward",
+   "regress_to": "exercise.move.lat-pulldown-wide-grip"
+  },
+  {
+   "key": "exercise.move.ab-wheel-rollout",
+   "status": "cannot",
+   "regress_to": "exercise.move.trx-fallout"
+  }
+ ]
+}

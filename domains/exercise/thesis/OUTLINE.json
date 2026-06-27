@@ -1,0 +1,341 @@
+{
+  "title": "The Iron Verdict",
+  "subtitle": "What Really Builds Muscle and Strength, What Only Pretends To, and How a Few Verified Principles Compose Into Your Own Program",
+  "thesis_statement": "Most of what determines muscle growth is a small, well-established set of principles: enough hard, progressively-overloaded volume across every muscle, taken near enough to failure, often enough to recover from, on exercises that load each muscle well through its range. Almost everything fitness culture obsesses over — exercise \"targeting,\" magic set-structures, the optimal frequency, the perfect split — is either equivalent to the plain version once volume is matched, or simply overstated. This book makes that case from an adversarially-verified corpus of training-science claims, where 19 of 46 popular claims were refuted and only 7 survived. Throughout, it separates the EFFECT question (does this grow more muscle?) from the PRACTICAL question (is it worth doing anyway, for time, fatigue, or joints?), shows exactly where the popular claims break, and then demonstrates how the facts that do survive compose — through anatomy, equipment, and individual constraints — into a genuinely personalized program.",
+  "chapters": [
+    {
+      "number": 1,
+      "id": "introduction-the-iron-verdict",
+      "title": "Introduction: The Few Things That Matter",
+      "thesis": "A serious lifter is drowning in advice, but the evidence says the answer is short and boring, and the single skill worth learning is telling the principle that grows muscle apart from the practice that merely feels productive.",
+      "sections": [
+        "The Question Every Lifter Actually Asks",
+        "The Short List: Volume, Overload, Effort, Recovery",
+        "Effect vs. Practical: Two Questions That Get Confused",
+        "A Corpus on Trial, Not One More Opinion",
+        "The Verdict Scoreboard at a Glance",
+        "How to Read This Book"
+      ],
+      "draws_from": [
+        "stats.json",
+        "claims.json"
+      ],
+      "must_make_points": [
+        "State the thesis plainly up front: a small set of principles — enough hard, progressively-overloaded weekly volume per muscle, near enough to failure, often enough to recover — drives most growth, while targeting, set-structures, frequency, and the 'perfect split' are mostly equivalent-at-matched-volume or overstated.",
+        "Introduce the book's central analytical move: always separate the EFFECT question (does it grow more muscle?) from the PRACTICAL question (is it worth doing for time/fatigue/joints/enjoyment?), because conflating the two is the single most common error in fitness discourse.",
+        "Preview the scoreboard from stats.json honestly: of 46 adversarially-verified claims, 19 were refuted, 15 disputed, 5 equivalent, and only 7 supported — i.e., the hit-rate of confident popular claims is low and 'supported' is the rare exception, not the rule.",
+        "Set the tone as rigorous but not nihilistic: some things genuinely matter, a few targeting claims (e.g., the standing calf raise) genuinely survived, and the book ends in a real, personalized Push/Pull/Legs program — this is a map of what to ignore so you can focus on what works."
+      ],
+      "target_words": 2400
+    },
+    {
+      "number": 2,
+      "id": "the-engine-of-growth",
+      "title": "The Engine: What a Muscle Actually Responds To",
+      "thesis": "Hypertrophy is driven overwhelmingly by mechanical tension delivered through challenging reps, which is why load is largely interchangeable above a threshold and why activation, the pump, and metabolic stress are unreliable predictors of growth.",
+      "sections": [
+        "Mechanical Tension as the Near-Exclusive Stimulus",
+        "Henneman's Size Principle and the 'Effective Reps' Story",
+        "Why Load Is Largely Interchangeable Above ~30% 1RM",
+        "Fiber Types, Metabolic Stress, and Muscle Damage: Minor Characters",
+        "The Acute-Chronic Dissociation: A Harder Set Is Not a Better Set",
+        "EMG and the Pump: Measuring the Wrong Thing"
+      ],
+      "draws_from": [
+        "concepts.json",
+        "claims.json",
+        "training_variables.json",
+        "sources.json"
+      ],
+      "must_make_points": [
+        "Establish mechanical tension as the primary, probably near-exclusive, hypertrophy stimulus, with metabolic stress and muscle damage as largely theoretical secondary contributors (concepts: mechanical-tension, metabolic-stress) — this is the lens every later mechanism is read through.",
+        "Explain the size principle and correct the over-simplified 'only the last five effective reps count / full recruitment only at ~85% 1RM' model (concept effective-reps myth): recruitment is gradual, full recruitment arrives around ~80% MVC, and firing-rate increases keep adding stimulus.",
+        "Feature load-independence as a mechanistic result: ~30-85% 1RM grow muscle about equally when taken near failure (Lopez NMA; Grgic-Schoenfeld fiber-type meta), with a ~30% 1RM floor below which growth roughly halves (Lasevicius) — the root that later refutes 'heavy load required.'",
+        "Plant the keystone epistemic fact for the whole book: acute EMG activation and acute swelling/pump do NOT reliably predict which exercise grows a muscle more (claim mu-emg-swelling-predicts-regional-growth, REFUTED; concepts emg-proxy-limitation, muscle-swelling-proxy, acute-chronic-dissociation; correlations ~ -0.03 to 0.5), which quietly dissolves most of the targeting claims to come."
+      ],
+      "target_words": 3400
+    },
+    {
+      "number": 3,
+      "id": "functional-anatomy-for-lifters",
+      "title": "How Muscles Actually Work: A Functional Anatomy for Lifters",
+      "thesis": "Muscle roles, two-joint mechanics, and the length at which a muscle is loaded together explain both why exercise selection matters less than people think and where the few real targeting effects genuinely come from.",
+      "sections": [
+        "Agonists, Antagonists, Synergists, and Fixators",
+        "The Length-Tension Relationship and Training at Long Muscle Lengths",
+        "Biarticular Muscles and Active/Passive Insufficiency",
+        "Moment Arms: Why Leverage Changes Through a Single Rep",
+        "Regional Hypertrophy and Neuromuscular Compartments",
+        "A Working Map of the 58 Muscles"
+      ],
+      "draws_from": [
+        "muscles.json",
+        "concepts.json",
+        "claims.json",
+        "movement_patterns.json"
+      ],
+      "must_make_points": [
+        "Lay out the role vocabulary (agonist/antagonist/synergist/fixator) and biarticular action (rectus femoris, hamstrings, gastrocnemius, biceps and triceps long heads) as the anatomical backbone everything downstream depends on.",
+        "Establish the 'train at long muscle lengths' principle while explicitly distinguishing it from the misnamed 'stretch-mediated hypertrophy' (concept stretch-mediated-hypertrophy): long-length training tends to grow muscle somewhat more, but an end-ROM deep-stretch feeling is NOT required and the mechanism is unresolved.",
+        "Feature the SUPPORTED length-bias claims as the legitimate survivors, all from direct within-person MRI trials: standing vs seated calf raise grows the gastroc far more (claim ml-standing-vs-seated-calf, SUPPORTED; Kinoshita 2023), the seated leg curl grows the hip-extensor hamstring heads more (SUPPORTED; Maeo), and reclined leg extension grows the rectus femoris more (SUPPORTED; Larsen 2024).",
+        "Handle the DISPUTED rectus-femoris active-insufficiency claim (claim 5) honestly: the biarticular/active-insufficiency phenomenon is real, but the popular 'distal RF is never recruited in leg extensions' detail is backwards — showing that even textbook anatomy folklore must be checked against outcome data.",
+        "Explain regional hypertrophy and neuromuscular compartments as the real basis for any regional effect, while flagging that predicting regional outcomes from acute proxies stays unreliable (concepts regional-hypertrophy, regional-muscle-activation)."
+      ],
+      "target_words": 3600
+    },
+    {
+      "number": 4,
+      "id": "the-movement-map",
+      "title": "The Movement Map: Patterns, Substitution, and Your Tools",
+      "thesis": "Exercises are interchangeable instances of a small set of movement patterns, so a program is built from patterns and stimulus-to-fatigue trade-offs rather than from magic lifts, and almost any exercise can be swapped for another that trains the same muscle.",
+      "sections": [
+        "Thirty-Two Movement Patterns and the Push/Pull/Legs Logic",
+        "Compound vs. Isolation: Equivalent per Unit of Stimulus",
+        "Stimulus-to-Fatigue Ratio: The Real Selection Criterion",
+        "Free Weights, Machines, and Cables: Tools, Not Hierarchies",
+        "Grip as a Limiting Factor and How to Bypass It",
+        "The Substitution Graph: 317 Swaps, Chosen Variety",
+        "The Muscle-Confusion Myth"
+      ],
+      "draws_from": [
+        "movement_patterns.json",
+        "concepts.json",
+        "set_structures.json",
+        "claims.json",
+        "sources.json"
+      ],
+      "must_make_points": [
+        "Frame exercises as instances of ~32 movement patterns with antagonist pairings (movement_patterns.json), so Push/Pull/Legs and Upper/Lower fall out naturally from covering the patterns rather than from dogma or brand-name routines.",
+        "Establish compound-vs-isolation equivalence (concept compound-vs-isolation): no consistent hypertrophy difference per unit of effective stimulus, so compounds earn their place on time-efficiency while isolation work is added selectively to cover muscles the compounds understimulate.",
+        "Introduce stimulus-to-fatigue ratio (SFR) as the actual exercise-selection criterion and present free-weight/machine/cable as interchangeable tools shaped by resistance profile and which muscle limits the set — not an inherent hierarchy (concepts stimulus-to-fatigue-ratio, free-weight-vs-machine).",
+        "Debunk the muscle-confusion myth (concept muscle-confusion-myth): variety is deliberately chosen to cover a muscle's functions and regions and is capped — a few progressively-overloaded exercises beat endless rotation — and motivate the substitution engine (317 swaps) plus grip as a removable limiter (lifting straps add ~10-19% to deadlift)."
+      ],
+      "target_words": 3400
+    },
+    {
+      "number": 5,
+      "id": "the-dials-that-matter",
+      "title": "The Dials That Move the Needle: Volume, Load, and Effort",
+      "thesis": "Weekly volume, sufficient load, and sufficient proximity to failure are the levers that actually determine growth — yet the popular absolutist version of each (always more volume, heavy or nothing, failure or nothing) breaks under scrutiny.",
+      "sections": [
+        "Volume: The King Lever and Its Diminishing Returns",
+        "The Volume Landmarks: MV, MEV, MAV, MRV",
+        "Is There a Junk-Volume Ceiling?",
+        "Load: Strength Is Load-Dependent, Size Is Not",
+        "Proximity to Failure: How Hard Is Hard Enough?",
+        "The Real Fatigue Cost of the Last Few Reps",
+        "Autoregulation: RIR, RPE, and Velocity"
+      ],
+      "draws_from": [
+        "training_variables.json",
+        "claims.json",
+        "concepts.json"
+      ],
+      "must_make_points": [
+        "Establish volume as the dominant hypertrophy driver (Pelland 2026: 100% posterior probability the slope exceeds zero) while puncturing the absolutist version: 'more volume ALWAYS means more growth' is DISPUTED (claim 14) — a real dose-response with diminishing returns (~3:2 scaling) and an uncertain ceiling, not endless linear gains.",
+        "Show the per-week 'junk-volume / MRV ~10-20 sets' ceiling is DISPUTED (claim 15): only per-session diminishing returns are well-supported (Krieger), while Pelland detected no weekly plateau and fixed MRV numbers are practitioner recovery heuristics, not trained RCTs.",
+        "Feature the load reckoning as the cleanest example of effect-question precision: 'heavy loads required to maximize hypertrophy' is REFUTED (claim 19) — size is load-independent ~30-85% 1RM to failure — while strength genuinely IS load-dependent (Lopez SMD 0.60), with a ~30% 1RM floor below which growth halves.",
+        "Feature the failure reckoning: 'training to failure is required to maximize growth and strength' is REFUTED (claim 17), and '0 RIR beats 1-3 RIR' is DISPUTED (claim 18) — hypertrophy has only a shallow negative RIR slope, 1-3 RIR captures nearly all of it, failure is same-or-worse for strength, and the last reps roughly triple acute fatigue (Refalo).",
+        "Introduce the volume landmarks (MV ~6, MEV ~8-12, MAV 12-20, MRV ~20+ sets/muscle/week) and autoregulation (RIR-RPE scale, AVT benchmark/volume sets) as the practical machinery that turns these dials into a progressing program used in the worked example."
+      ],
+      "target_words": 4000
+    },
+    {
+      "number": 6,
+      "id": "the-overrated-dials",
+      "title": "The Overrated Dials: Frequency, Rest, Rep Range, and Periodization",
+      "thesis": "Once weekly volume and effort are held constant, the variables lifters agonize over — how many days, how long to rest, which rep range, which periodization model — collapse toward equivalence and matter mainly as logistics for fitting volume in.",
+      "sections": [
+        "Frequency: A Volume Vehicle, Not an Independent Driver",
+        "The Strength Exception to the Frequency Story",
+        "Rest Intervals: Equivalence With a Volume Cost",
+        "Rep Range: No Magic Zone, Just a Sweet Spot for Hard Sets",
+        "Progressive Overload: Load vs. Reps vs. Sets",
+        "Periodization: Variation Helps; the Model Barely Matters",
+        "Mesocycles, Deloads, and What Actually Changes"
+      ],
+      "draws_from": [
+        "training_variables.json",
+        "claims.json",
+        "concepts.json"
+      ],
+      "must_make_points": [
+        "Feature frequency as EQUIVALENT at matched volume for hypertrophy (claim 16, EQUIVALENT): the only firm floor is >=2x/week beats 1x (Schoenfeld 2016); the sweeping '3-6x beats 1-2x' conflates 'frequency lets you do more volume' (true) with 'frequency itself grows more at equal volume' (largely false), with a genuine small strength benefit — concentrated in upper-body pressing — as the honest exception.",
+        "Feature rest as EQUIVALENCE-WITH-A-COST (claim 20, EQUIVALENT): longer rest grows somewhat more per matched set, but the deficit is fully compensable by roughly doubling sets (Krieger), so 'short rest compromises growth' is an overstatement and >=2 min is a time-efficiency and load-preservation choice, not a hypertrophy requirement.",
+        "Feature rep-range and overload-method equivalence: ~6-20 reps grow muscle within ~10-15% of each other (r-squared ~0.07), reframing the 'sweet spot' as maximizing hard sets, and load-progression vs rep-progression are interchangeable for size (Plotkin 2022).",
+        "Feature periodization: 'periodized beats non-periodized even at matched volume AND intensity' is DISPUTED (claim 21) — variation helps and there is a real strength edge (Williams ES 0.43), but it is largely a peak-intensity confound and hypertrophy is equivalent (Grgic LP-vs-DUP), so plan variation for fatigue and peaking rather than fetishizing the model."
+      ],
+      "target_words": 3600
+    },
+    {
+      "number": 7,
+      "id": "the-equivalence-trap",
+      "title": "The Equivalence Trap: Set-Structures and the 'More Muscle' Mirage",
+      "thesis": "Drop sets, rest-pause, supersets, pyramids, cluster sets, and the rest produce the same growth as plain straight sets when volume and effort are matched, and their real value — time, fatigue management, variety — is routinely mis-sold as extra muscle.",
+      "sections": [
+        "Straight Sets: The Benchmark Nobody Beats",
+        "Equivalence at Matched Volume: The Meta-Analytic Verdict",
+        "Drop Sets, Rest-Pause, and Myo-Reps: Equal Growth, Less Time",
+        "Supersets and Pre-Exhaustion: A Misfire and a Myth",
+        "Pyramids: Variety, Not Superiority",
+        "Cluster Sets, Lengthened Partials, and 21s",
+        "How 'Equal Growth in Less Time' Becomes 'More Muscle'"
+      ],
+      "draws_from": [
+        "set_structures.json",
+        "claims.json",
+        "concepts.json"
+      ],
+      "must_make_points": [
+        "State the central equivalence principle (concept equivalence-at-matched-volume): advanced techniques as a class produce hypertrophy comparable to straight sets (claim 13, EQUIVALENT; Fonseca SMD ~ -0.00, Tsartsapakis g=0.046 ns, Bayesian NMA finds no method consistently superior).",
+        "Feature the REFUTED technique claims: drop sets do NOT build more muscle than equal-volume straight sets (claim 8, REFUTED), supersets do NOT compromise hypertrophy (claim 11, REFUTED; Burke 2025, 36% less time), and pre-exhaustion does NOT raise target activation or growth (claim 12, REFUTED; Fujita literally titled '...Does Not Increase Muscle Activity...').",
+        "Feature the EQUIVALENT pyramid claims: reverse-pyramid and pyramid training are not superior to equal-volume straight sets (claims 6 and 7, EQUIVALENT; Angleri CSA +7.5% vs +7.6%), with straight sets if anything mildly preferable for pure strength.",
+        "Feature the DISPUTED efficiency claims honestly: rest-pause/myo-reps grow equal muscle in markedly less time, not more muscle (claim 9, DISPUTED), and lengthened partials are a reasonable add-on for lagging regions, not a universal upgrade over full ROM (claim 10, DISPUTED).",
+        "Name the recurring conflation explicitly via acute-chronic dissociation: a harder-feeling, higher-lactate, higher-RPE set is not a more productive set, and 'equal growth in less time' is the legitimate selling point being inflated into 'more muscle.'"
+      ],
+      "target_words": 3400
+    },
+    {
+      "number": 8,
+      "id": "the-targeting-reckoning",
+      "title": "The Targeting Reckoning: Can You Really Aim Your Growth?",
+      "thesis": "Nearly every popular claim that a grip, angle, stance, or signature exercise 'targets' a muscle or region rests on an activation-to-growth leap the evidence does not support, and the handful that survive do so through length, not through activation or pump.",
+      "sections": [
+        "The Keystone Error: From EMG and Pump to Predicted Growth",
+        "The Glutes: Hip Thrust vs. Squat",
+        "The Back: Grips, Widths, and Lat-Targeting Folklore",
+        "The Chest: Incline, Flat, Decline, and the Upper-Pec Question",
+        "Shoulders: Behind-the-Neck and Cable-Raise Claims",
+        "The Squat-Style and Foot-Position Family",
+        "What Actually Survived: Length-Biased Selection",
+        "The Full Scoreboard: 19 Refuted, 15 Disputed, 7 Supported, 5 Equivalent"
+      ],
+      "draws_from": [
+        "claims.json",
+        "muscles.json",
+        "movement_patterns.json",
+        "concepts.json",
+        "stats.json"
+      ],
+      "must_make_points": [
+        "Re-establish the keystone (claim mu-emg-swelling-predicts-regional-growth, REFUTED) and show it dissolving the entire back-targeting cluster: grip orientation and width do NOT re-target the lats (claims grip-orientation-regional-lat, wide-grip-pulldown, front-vs-behind-neck, supinated-pulldown, all REFUTED; Brusco found no LD difference across 7 grips), and 'rows bias mid-back / pulldowns bias lats' and 'rows are a poor lat exercise' are activation-only (REFUTED).",
+        "Feature the glute and chest reckonings: the hip thrust is NOT superior to the squat for glute growth (claims 4 and ml-hip-thrust-vs-squat, REFUTED; Plotkin 2023 similar growth, squat loads the long length), though the short-vs-long-length complementarity is a defensible heuristic (DISPUTED); flat-bench mid-pec bias and dip/decline lower-pec bias are REFUTED, incline upper-pec growth is DISPUTED (one thin Chaves outlier), and 'incline + flat maximizes the pec' is REFUTED.",
+        "Feature the squat-style family as uniformly DISPUTED-not-supported: deep squat, stance width, knee-dominant style, leg-press foot position, and deficit/step-RDL all rest on EMG/mechanism with no head-to-head growth trial, because summed knee+hip extensor demand at a given depth is fixed — stance and foot position REDISTRIBUTE load, they do not add stimulus.",
+        "Name the genuine survivors and why they won: the SUPPORTED claims (standing vs seated calf, seated vs lying leg curl, reclined leg extension, lengthened curls vs preacher, the RDL-vs-leg-curl hamstring split, and the lower-body lengthened-bias heuristic) all win through trained-at-long-length MRI outcomes, and explicitly separate effect ('grows more') from practical ('worth including for coverage, comfort, or joints').",
+        "Close with the full 46-claim scoreboard from stats.json and the recurring failure modes that explain it: the activation-to-growth leap, the unmatched-volume confound, mechanism or proxy substituting for a measured outcome, and reliance on untrained, low-n samples."
+      ],
+      "target_words": 4200
+    },
+    {
+      "number": 9,
+      "id": "training-around-a-real-body",
+      "title": "Training Around a Real Body: Constraints, Safety, and Red Flags",
+      "thesis": "A program that ignores the individual's injuries, joints, capabilities, and pain signals is wrong no matter how well it matches the evidence, so the corpus treats constraints, substitutions, severity tiers, and refer-out red flags as first-class inputs.",
+      "sections": [
+        "Individual Variation as a Design Input, Not a Footnote",
+        "The Constraint Model: Triggers, Patterns, and Joint Stress",
+        "Severity Tiers: Mild, Moderate, and Hard-Block",
+        "Red Flags and When to Refer Out",
+        "The 24-Hour Pain Rule and Load-as-Medicine",
+        "Routing Around an Injury: Substitution Under Constraint",
+        "A Real Lifter's Constraints"
+      ],
+      "draws_from": [
+        "constraints.json",
+        "movement_patterns.json",
+        "stats.json"
+      ],
+      "must_make_points": [
+        "Frame constraints as first-class program inputs (constraints.json): each carries triggers, provoking patterns, provoking joint-stress and grip tags, a concrete workaround, and a severity, so the generator can route load away from a problem instead of dropping a muscle group entirely.",
+        "Establish the safety spine: explicit red flags (leg pain radiating below the knee, saddle numbness or bowel/bladder change = possible cauda equina emergency, the drop-arm sign, true mechanical locking, post-dislocation neurovascular signs) trigger refer-out, and severity escalates mild -> moderate -> hard-block (e.g., diagnosed spondylolisthesis, an unconfirmed full-thickness cuff tear).",
+        "Teach load-as-medicine and the 24-hour response rule: most tendinopathies and joint pains are progressive-loading targets, not avoidance (patellar and rotator-cuff tendinopathy, knee osteoarthritis), with mild pain <=3/10 that settles by the next day as the acceptable working band.",
+        "Ground it in the corpus's real lifter: a left-pinky crush-grip jam (grip-bypass via cable cuffs/straps/machines), painless right-shoulder crepitus on overhead press (favor shoulder-friendly variants, not a block), quiet right-wrist tendinopathy (neutral grip), TMJ (jaw-relaxation cue on Valsalva sets), and a lower back treated as a PRIORITY weak-point to BUILD rather than avoid."
+      ],
+      "target_words": 3400
+    },
+    {
+      "number": 10,
+      "id": "from-facts-to-a-program",
+      "title": "From Facts to a Program: Composing a Personalized Push/Pull/Legs",
+      "thesis": "The verified facts compose — anatomy times equipment times constraints times the dials — into a concrete, individualized routine: a static structural loop plus a dynamic mesocycle that ramps volume and autoregulates effort.",
+      "sections": [
+        "The Composition: Anatomy x Equipment x Constraints x Dials",
+        "Choosing the Split From Frequency and Recovery Reality",
+        "Filling the Patterns: Selection by SFR and Length",
+        "The Static Loop: Structure That Doesn't Change",
+        "The Dynamic Mesocycle: MEV to MRV and the Deload",
+        "Equipment and Load Algebra: Programming a Real Home Gym",
+        "A Worked Week, Set by Set",
+        "Progression, Autoregulation, and When to Change Something"
+      ],
+      "draws_from": [
+        "stats.json",
+        "training_variables.json",
+        "constraints.json",
+        "movement_patterns.json",
+        "set_structures.json",
+        "muscles.json",
+        "claims.json"
+      ],
+      "must_make_points": [
+        "Show the composition explicitly: cover every muscle and pattern, pick exercises by SFR and length-bias, set volume from the landmarks, set load from the size-vs-strength goal, set effort by RIR, and distribute via frequency — so every prior chapter's verdict becomes a knob the generator turns.",
+        "Use the corpus's real equipment and capabilities from stats.json: the actual load algebra (olympic barbell to 570 lb, smith to 550, dumbbells to 75, fixed barbell to 60, corebag to 44) and lifter capabilities (working toward a bodyweight pull-up, regress to lat pulldown; cannot ab-wheel rollout, regress to TRX fallout) constrain which exercises are even available.",
+        "Route the real lifter's constraints into the plan: shoulder-friendly pressing over heavy strict barbell overhead, grip-bypass on hangs and carries, a deliberately built lower back (RDL, back-extension, loaded carries, plus anti-flexion/extension/rotation core), and the heavy hinge scheduled clear of martial-arts days.",
+        "Present a concrete worked PPL week with sets, reps, and RIR, plus the dynamic ramp (start near MEV ~8-12 sets/muscle, add ~1-2 sets/week toward MRV ~20, deload to MV ~6 when performance stalls) and the autoregulation/progression rules (double progression, the fresh benchmark set, descending within-block RIR) that keep it honest and individual."
+      ],
+      "target_words": 4000
+    },
+    {
+      "number": 11,
+      "id": "the-method-verified-corpus",
+      "title": "The Method: Why an Adversarially Verified Corpus Beats a Research Doc",
+      "thesis": "The reliability of this thesis comes from its method — every claim was put through adversarial skeptic lenses, graded by evidence and source tier, and stored as structured, queryable knowledge rather than persuasive prose.",
+      "sections": [
+        "Structured Knowledge vs. a Persuasive Essay",
+        "Claims on Trial: The Multi-Lens Adversarial Verdict",
+        "Verdicts, Agreement Scores, and Evidence Grades",
+        "Source Tiers: From Meta-Analysis to Blog",
+        "The Graph: Muscles, Movements, and 2,300 Relationships",
+        "Reproducibility and the Honesty Dividend"
+      ],
+      "draws_from": [
+        "stats.json",
+        "sources.json",
+        "claims.json",
+        "concepts.json"
+      ],
+      "must_make_points": [
+        "Contrast a corpus with a deep-research document: 46 claims, 103 training variables, 235 exercises, 317 substitutions, 81 concepts, and 2,304 typed relationships are queryable and recomposable, whereas prose can only be re-read — structure is precisely what lets the same facts generate a personalized program.",
+        "Explain adversarial verification: each claim faced multiple skeptic lenses (the volume-equation lens, the anatomy lenses), and a verdict of 'supported' requires surviving them, which is why only 7 of 46 claims are supported and the per-claim nuance field records exactly where each claim breaks.",
+        "Explain the grading scaffold that makes confidence legible: verdicts (supported / equivalent / disputed / refuted), agreement scores, evidence grades (RCT / meta-analysis / mechanistic / expert), and source tiers T0-T3 (35 T0, 32 T1, 67 T2, 35 T3) — confidence is shown, not merely asserted.",
+        "Draw the meta-lesson: the method forces honesty (it manufactured no false certainty, demoted activation EMG to mechanism, and let 'equivalent' and 'disputed' verdicts stand rather than rounding them up), which is the real reason a verified corpus is more trustworthy than a confident-sounding essay."
+      ],
+      "target_words": 3000
+    },
+    {
+      "number": 12,
+      "id": "conclusion-train-the-principles",
+      "title": "The Verdict: Train the Principles, Not the Myths",
+      "thesis": "The irreducible core of building muscle and strength is short, boring, and well-established; everything else is either equivalent, overstated, or a personal-comfort decision — and knowing the difference is what frees a lifter to train well.",
+      "sections": [
+        "The Irreducible Core, Restated",
+        "What the Noise Actually Cost You",
+        "Honest Uncertainty: What We Still Don't Know",
+        "From Reader to Practitioner",
+        "The Broader Lesson: Evidence Literacy Beyond the Gym"
+      ],
+      "draws_from": [
+        "claims.json",
+        "stats.json",
+        "concepts.json"
+      ],
+      "must_make_points": [
+        "Restate the irreducible core in one breath: enough hard, progressively-overloaded weekly volume per muscle, taken near enough to failure, frequently enough to recover, on exercises that load each muscle well through its range — that is most of the answer, and the rest is detail.",
+        "Recapitulate the effect-vs-practical discipline as the book's transferable tool: targeting, set-structure, frequency, and split decisions are mostly practical (time, fatigue, joints, enjoyment, adherence), which is a perfectly good basis to choose them — just not because they grow 'more' muscle.",
+        "Be honest about the open questions surfaced by the corpus: the true upper volume ceiling, the trained-population generalizability of the length-bias and deep-squat findings, the unresolved mechanism behind length-dependent growth, and the thinness of elite-strength and deload-timing data.",
+        "End on the meta-takeaway: the same adversarial, effect-vs-practical, show-me-the-matched-volume-outcome literacy that cleared the gym myths is a general-purpose defense against confident-sounding claims everywhere, in the weight room and far beyond it."
+      ],
+      "target_words": 2200
+    }
+  ]
+}

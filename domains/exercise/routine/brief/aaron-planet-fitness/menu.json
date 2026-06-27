@@ -23,12 +23,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.ez-bar-curl",
@@ -53,12 +48,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-curl",
@@ -83,12 +73,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-twist-curl",
@@ -113,12 +98,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.incline-dumbbell-curl",
@@ -142,12 +122,56 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.preacher-curl",
+   "name": "Preacher Curl",
+   "pattern": "elbow-flexion-supinated",
+   "primary": [
+    "Biceps brachii (short head)",
+    "Biceps brachii (long head)"
+   ],
+   "secondary": [
+    "Brachialis",
+    "Brachioradialis"
+   ],
+   "equipment": [
+    "ez-bar",
+    "barbell",
+    "dumbbell"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "moderate",
+   "regional_bias": "short head of biceps; heavy stretched-position loading",
+   "grip_demand": "moderate",
+   "rep_range": "10-20",
+   "rir": "1-3",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.machine-preacher-curl",
+   "name": "Machine Preacher Curl",
+   "pattern": "elbow-flexion-supinated",
+   "primary": [
+    "Biceps brachii (short head)",
+    "Biceps brachii (long head)"
+   ],
+   "secondary": [
+    "Brachialis"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "short head of biceps; low-skill stable loading good for myoreps/drop sets",
+   "grip_demand": "low",
+   "rep_range": "10-20",
+   "rir": "1-3",
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.spider-curl",
@@ -171,12 +195,7 @@
    "grip_demand": "moderate",
    "rep_range": "20-30",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.concentration-curl",
@@ -200,12 +219,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-curl",
@@ -229,12 +243,30 @@
    "grip_demand": "moderate",
    "rep_range": "20-30",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.machine-curl",
+   "name": "Machine Curl (One-Arm)",
+   "pattern": "elbow-flexion-supinated",
+   "primary": [
+    "Biceps brachii (long head)",
+    "Biceps brachii (short head)"
+   ],
+   "secondary": [
+    "Brachialis"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "overall biceps; supported, low-skill, easy to re-load for myoreps/occlusion",
+   "grip_demand": "low",
+   "rep_range": "10-20",
+   "rir": "0-2",
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.hammer-curl",
@@ -258,12 +290,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.triceps-pushdown",
@@ -359,12 +386,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.overhead-barbell-ez-extension",
@@ -389,12 +411,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.skullcrusher",
@@ -420,12 +437,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.jm-press",
@@ -452,12 +464,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-10",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.close-grip-bench-press",
@@ -484,12 +491,34 @@
    "grip_demand": "moderate",
    "rep_range": "5-10",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.triceps-dip",
+   "name": "Triceps Dip",
+   "pattern": "elbow-extension",
+   "primary": [
+    "Triceps brachii (lateral head)",
+    "Triceps brachii (medial head)"
+   ],
+   "secondary": [
+    "Triceps brachii (long head)",
+    "Pectoralis major",
+    "Anterior deltoid (deltoid, anterior/clavicular part)",
+    "Anconeus"
+   ],
+   "equipment": [
+    "bodyweight",
+    "machine"
+   ],
+   "compound": true,
+   "role": "fixed-core",
+   "sfr": "high",
+   "regional_bias": "overall triceps (lateral/medial emphasis with upright torso)",
+   "grip_demand": "moderate",
+   "rep_range": "10-20",
+   "rir": "1-3",
+   "constraint_flags": []
   }
  ],
  "forearms": [
@@ -518,12 +547,7 @@
    "grip_demand": "high",
    "rep_range": "10-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.barbell-wrist-curl",
@@ -545,12 +569,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-wrist-curl",
@@ -572,12 +591,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.behind-back-barbell-wrist-curl",
@@ -599,12 +613,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-wrist-curl",
@@ -626,12 +635,7 @@
    "grip_demand": "low",
    "rep_range": "20-30",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.finger-rolling-wrist-curl",
@@ -653,16 +657,7 @@
    "grip_demand": "moderate",
    "rep_range": "12-20",
    "rir": "0-1",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    },
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.barbell-reverse-wrist-curl",
@@ -684,12 +679,7 @@
    "grip_demand": "low",
    "rep_range": "12-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-reverse-wrist-curl",
@@ -711,12 +701,7 @@
    "grip_demand": "low",
    "rep_range": "12-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-reverse-wrist-curl",
@@ -738,12 +723,7 @@
    "grip_demand": "low",
    "rep_range": "20-30",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.barbell-reverse-curl",
@@ -792,12 +772,7 @@
    "grip_demand": "moderate",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.rope-cable-hammer-curl",
@@ -843,16 +818,7 @@
    "grip_demand": "high",
    "rep_range": "2-4 full wind-ups",
    "rir": "0-1",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    },
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.hand-gripper",
@@ -874,16 +840,7 @@
    "grip_demand": "high",
    "rep_range": "10-30",
    "rir": "0-1",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    },
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.plate-pinch",
@@ -905,16 +862,7 @@
    "grip_demand": "high",
    "rep_range": "20-40s holds",
    "rir": "0",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    },
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dead-hang",
@@ -938,44 +886,7 @@
    "grip_demand": "high",
    "rep_range": "20-40s holds",
    "rir": "0",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
-  },
-  {
-   "id": "exercise.move.farmers-carry",
-   "name": "Farmer's Carry",
-   "pattern": "loaded-carry",
-   "primary": [
-    "Finger flexors (crush-grip group)",
-    "Wrist flexors (forearm flexor group)"
-   ],
-   "secondary": [
-    "Trapezius",
-    "Erector spinae",
-    "Quadratus lumborum"
-   ],
-   "equipment": [
-    "dumbbell",
-    "kettlebell",
-    "barbell"
-   ],
-   "compound": true,
-   "role": "fixed-core",
-   "sfr": "moderate",
-   "regional_bias": "support-grip finger flexors; traps",
-   "grip_demand": "high",
-   "rep_range": "20-40s walks",
-   "rir": "0-1",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.suitcase-rack-pull-hold",
@@ -1000,12 +911,7 @@
    "grip_demand": "high",
    "rep_range": "20-40s holds",
    "rir": "0",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.forearm-pronation-supination",
@@ -1030,12 +936,7 @@
    "grip_demand": "moderate",
    "rep_range": "12-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-wrist-tendonitis",
-     "accommodation": "Favor neutral-grip variants; allow wrist wraps; prefer machine/cable where the wrist stays neutral; FTS cuffs bypass gri"
-    }
-   ]
+   "constraint_flags": []
   }
  ],
  "glutes": [
@@ -1074,12 +975,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.sumo-deadlift",
@@ -1112,12 +1008,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.trap-bar-deadlift",
@@ -1149,12 +1040,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.deficit-deadlift",
@@ -1186,12 +1072,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.barbell-back-squat-low-bar",
@@ -1270,6 +1151,32 @@
    "sfr": "high",
    "regional_bias": "upper gluteus maximus (American style upper GM ~90% vs lower GM ~57% MVIC)",
    "grip_demand": "low",
+   "rep_range": "10-20",
+   "rir": "1-2",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.machine-hip-thrust",
+   "name": "Machine Hip Thrust",
+   "pattern": "hip-extension",
+   "primary": [
+    "Gluteus maximus"
+   ],
+   "secondary": [
+    "Biceps femoris",
+    "Semimembranosus",
+    "Adductor magnus",
+    "Gluteus medius"
+   ],
+   "equipment": [
+    "machine",
+    "plate"
+   ],
+   "compound": true,
+   "role": "fixed-core",
+   "sfr": "high",
+   "regional_bias": "upper gluteus maximus; very high SFR due to spinal/setup offload vs barbell",
+   "grip_demand": "none",
    "rep_range": "10-20",
    "rir": "1-2",
    "constraint_flags": []
@@ -1401,6 +1308,54 @@
    "constraint_flags": []
   },
   {
+   "id": "exercise.move.machine-glute-kickback",
+   "name": "Machine Glute Kickback",
+   "pattern": "hip-extension",
+   "primary": [
+    "Gluteus maximus"
+   ],
+   "secondary": [
+    "Biceps femoris",
+    "Semimembranosus",
+    "Gluteus medius"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "gluteus maximus; very high SFR (single leg, low body-support and CNS cost, short rest)",
+   "grip_demand": "none",
+   "rep_range": "12-25",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.seated-hip-abduction-machine",
+   "name": "Seated Hip Abduction Machine",
+   "pattern": "hip-abduction",
+   "primary": [
+    "Gluteus medius"
+   ],
+   "secondary": [
+    "Gluteus minimus",
+    "Gluteus maximus",
+    "Tensor fasciae latae"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "gluteus medius/minimus and upper (superior) gluteus maximus fibers; lean forward to bias upper GMax",
+   "grip_demand": "none",
+   "rep_range": "12-25",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
    "id": "exercise.move.cable-hip-abduction",
    "name": "Cable Standing Hip Abduction",
    "pattern": "hip-abduction",
@@ -1449,12 +1404,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.sumo-deficit-deadlift",
@@ -1481,74 +1431,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
-  },
-  {
-   "id": "exercise.move.dumbbell-step-up",
-   "name": "Dumbbell Step-Up",
-   "pattern": "lunge-split-squat",
-   "primary": [
-    "Gluteus maximus"
-   ],
-   "secondary": [
-    "Gluteus medius",
-    "Vastus lateralis",
-    "Biceps femoris",
-    "Adductor magnus"
-   ],
-   "equipment": [
-    "dumbbell",
-    "box"
-   ],
-   "compound": true,
-   "role": "dynamic-accessory",
-   "sfr": "high",
-   "regional_bias": "gluteus maximus + gluteus medius (highest GMax EMG of any reviewed exercise; a high box biases the glute)",
-   "grip_demand": "moderate",
-   "rep_range": "10-20",
-   "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
-  },
-  {
-   "id": "exercise.move.lateral-step-up",
-   "name": "Lateral Step-Up",
-   "pattern": "lunge-split-squat",
-   "primary": [
-    "Gluteus maximus"
-   ],
-   "secondary": [
-    "Gluteus medius",
-    "Gluteus minimus",
-    "Vastus lateralis",
-    "Adductor magnus"
-   ],
-   "equipment": [
-    "dumbbell",
-    "box"
-   ],
-   "compound": true,
-   "role": "dynamic-accessory",
-   "sfr": "high",
-   "regional_bias": "gluteus maximus with heavy gluteus medius/minimus involvement (frontal-plane stabilization)",
-   "grip_demand": "moderate",
-   "rep_range": "10-20",
-   "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.barbell-walking-lunge",
@@ -1599,12 +1482,57 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.reverse-hyperextension",
+   "name": "Reverse Hyperextension",
+   "pattern": "hip-extension",
+   "primary": [
+    "Gluteus maximus"
+   ],
+   "secondary": [
+    "Biceps femoris",
+    "Semimembranosus",
+    "Semitendinosus",
+    "Erector spinae"
+   ],
+   "equipment": [
+    "machine",
+    "bodyweight"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "moderate",
+   "regional_bias": "gluteus maximus + hamstrings (terminal hip extension, low spinal load)",
+   "grip_demand": "low",
+   "rep_range": "12-25",
+   "rir": "1-2",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.hip-abduction-machine-minimus-tfl",
+   "name": "Hip Abduction Machine (Gluteus Minimus / TFL Bias)",
+   "pattern": "hip-abduction",
+   "primary": [
+    "Gluteus minimus",
+    "Tensor fasciae latae"
+   ],
+   "secondary": [
+    "Gluteus medius",
+    "Gluteus maximus"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "gluteus minimus and tensor fasciae latae as deep/anterior frontal-plane abductors; an upright torso (vs. leaning forward, which biases upper GMax) keeps emphasis on the minimus/TFL. Full ROM out to a strong abducted squeeze.",
+   "grip_demand": "none",
+   "rep_range": "12-25",
+   "rir": "0-1",
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-hip-abduction-tfl",
@@ -1662,12 +1590,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.step-romanian-deadlift",
@@ -1697,12 +1620,7 @@
    "grip_demand": "high",
    "rep_range": "6-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.stiff-leg-deadlift",
@@ -1732,12 +1650,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-romanian-deadlift",
@@ -1766,49 +1679,7 @@
    "grip_demand": "moderate",
    "rep_range": "6-12",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
-  },
-  {
-   "id": "exercise.move.single-leg-romanian-deadlift",
-   "name": "Single-Leg Romanian Deadlift",
-   "pattern": "hip-hinge",
-   "primary": [
-    "Biceps femoris",
-    "Semitendinosus",
-    "Semimembranosus",
-    "Gluteus maximus"
-   ],
-   "secondary": [
-    "Gluteus medius",
-    "Erector spinae",
-    "Quadratus lumborum",
-    "Adductor magnus",
-    "Wrist flexors (forearm flexor group)",
-    "Finger flexors (crush-grip group)"
-   ],
-   "equipment": [
-    "dumbbell",
-    "kettlebell",
-    "barbell"
-   ],
-   "compound": true,
-   "role": "dynamic-accessory",
-   "sfr": "high",
-   "regional_bias": "single-leg hamstring/glute hinge with extra gluteus-medius and anti-rotation demand; strong semitendinosus emphasis",
-   "grip_demand": "moderate",
-   "rep_range": "8-12",
-   "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.good-morning",
@@ -1836,6 +1707,36 @@
    "grip_demand": "low",
    "rep_range": "8-15",
    "rir": "2-3",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.45-degree-back-extension",
+   "name": "45-Degree Back Extension (Hip Extension)",
+   "pattern": "hip-hinge",
+   "primary": [
+    "Biceps femoris",
+    "Semitendinosus",
+    "Semimembranosus",
+    "Gluteus maximus",
+    "Erector spinae"
+   ],
+   "secondary": [
+    "Adductor magnus",
+    "Quadratus lumborum"
+   ],
+   "equipment": [
+    "machine",
+    "bodyweight",
+    "plate",
+    "barbell"
+   ],
+   "compound": true,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "rounded-back/glute-focused or flat-back/hamstring-focused depending on spinal cue; very high hamstring (biceps femoris + semitendinosus) activation",
+   "grip_demand": "none",
+   "rep_range": "10-20",
+   "rir": "1-2",
    "constraint_flags": []
   },
   {
@@ -1940,12 +1841,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-10",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.incline-barbell-bench-press",
@@ -1970,12 +1866,7 @@
    "grip_demand": "moderate",
    "rep_range": "6-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.decline-barbell-bench-press",
@@ -2000,12 +1891,7 @@
    "grip_demand": "moderate",
    "rep_range": "6-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-flat-bench-press",
@@ -2030,12 +1916,7 @@
    "grip_demand": "high",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.incline-dumbbell-bench-press",
@@ -2060,12 +1941,7 @@
    "grip_demand": "high",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.smith-machine-flat-bench-press",
@@ -2090,12 +1966,7 @@
    "grip_demand": "moderate",
    "rep_range": "6-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.smith-machine-incline-press",
@@ -2120,12 +1991,7 @@
    "grip_demand": "moderate",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.machine-chest-press",
@@ -2153,6 +2019,31 @@
    "constraint_flags": []
   },
   {
+   "id": "exercise.move.incline-machine-press",
+   "name": "Incline Machine Press",
+   "pattern": "horizontal-push",
+   "primary": [
+    "Pectoralis major"
+   ],
+   "secondary": [
+    "Anterior deltoid (deltoid, anterior/clavicular part)",
+    "Triceps brachii (lateral head)",
+    "Triceps brachii (medial head)",
+    "Triceps brachii (long head)"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": true,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "clavicular (upper) pec",
+   "grip_demand": "low",
+   "rep_range": "12-30",
+   "rir": "0-2",
+   "constraint_flags": []
+  },
+  {
    "id": "exercise.move.dumbbell-flat-flye",
    "name": "Dumbbell Flat Flye",
    "pattern": "horizontal-push",
@@ -2173,12 +2064,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.incline-dumbbell-flye",
@@ -2201,12 +2087,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-flye-mid",
@@ -2297,6 +2178,28 @@
    "constraint_flags": []
   },
   {
+   "id": "exercise.move.pec-deck-machine-flye",
+   "name": "Pec Deck Machine Flye",
+   "pattern": "horizontal-push",
+   "primary": [
+    "Pectoralis major"
+   ],
+   "secondary": [
+    "Anterior deltoid (deltoid, anterior/clavicular part)"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "whole pec (sternal); isolation",
+   "grip_demand": "none",
+   "rep_range": "10-25",
+   "rir": "0-2",
+   "constraint_flags": []
+  },
+  {
    "id": "exercise.move.chest-dip",
    "name": "Chest Dip",
    "pattern": "horizontal-push",
@@ -2320,12 +2223,7 @@
    "grip_demand": "moderate",
    "rep_range": "6-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.push-up",
@@ -2376,12 +2274,7 @@
    "grip_demand": "high",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   }
  ],
  "core": [
@@ -2529,12 +2422,7 @@
    "grip_demand": "high",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.hanging-knee-raise",
@@ -2558,12 +2446,7 @@
    "grip_demand": "high",
    "rep_range": "15-30",
    "rir": "0-1",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.lying-leg-raise",
@@ -2762,12 +2645,7 @@
    "grip_demand": "moderate",
    "rep_range": "12-20 per side",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-side-bend",
@@ -2791,91 +2669,6 @@
    "grip_demand": "low",
    "rep_range": "12-20 per side",
    "rir": "1-2",
-   "constraint_flags": []
-  },
-  {
-   "id": "exercise.move.suitcase-carry",
-   "name": "Suitcase Carry",
-   "pattern": "loaded-carry",
-   "primary": [
-    "Quadratus lumborum",
-    "External oblique"
-   ],
-   "secondary": [
-    "Erector spinae",
-    "External oblique",
-    "Finger flexors (crush-grip group)",
-    "Gluteus medius",
-    "Internal oblique",
-    "Quadratus lumborum",
-    "Trapezius"
-   ],
-   "equipment": [
-    "dumbbell",
-    "kettlebell"
-   ],
-   "compound": true,
-   "role": "dynamic-accessory",
-   "sfr": "moderate",
-   "regional_bias": "quadratus lumborum and obliques (anti-lateral-flexion), grip",
-   "grip_demand": "high",
-   "rep_range": "20-40s carries per side",
-   "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
-  },
-  {
-   "id": "exercise.move.trx-fallout",
-   "name": "TRX / Suspension Fallout (Anti-Extension)",
-   "pattern": "anti-extension",
-   "primary": [
-    "Rectus abdominis"
-   ],
-   "secondary": [
-    "External oblique",
-    "Transversus abdominis",
-    "Erector spinae"
-   ],
-   "equipment": [
-    "bodyweight",
-    "trx"
-   ],
-   "compound": false,
-   "role": "dynamic-accessory",
-   "sfr": "high",
-   "regional_bias": "whole rectus + bracing erectors (anti-extension); harder than ball, easier than ab-wheel",
-   "grip_demand": "low",
-   "rep_range": "8-15",
-   "rir": "1-3",
-   "constraint_flags": []
-  },
-  {
-   "id": "exercise.move.stability-ball-rollout",
-   "name": "Stability-Ball Rollout (Anti-Extension)",
-   "pattern": "anti-extension",
-   "primary": [
-    "Rectus abdominis"
-   ],
-   "secondary": [
-    "External oblique",
-    "Transversus abdominis",
-    "Erector spinae"
-   ],
-   "equipment": [
-    "bodyweight",
-    "stability-ball"
-   ],
-   "compound": false,
-   "role": "dynamic-accessory",
-   "sfr": "high",
-   "regional_bias": "whole rectus + bracing erectors (anti-extension)",
-   "grip_demand": "none",
-   "rep_range": "8-15",
-   "rir": "1-3",
    "constraint_flags": []
   }
  ],
@@ -2902,12 +2695,7 @@
    "grip_demand": "moderate",
    "rep_range": "12-25",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-lateral-raise",
@@ -2958,6 +2746,30 @@
    "constraint_flags": []
   },
   {
+   "id": "exercise.move.machine-lateral-raise",
+   "name": "Machine Lateral Raise",
+   "pattern": "shoulder-abduction",
+   "primary": [
+    "Lateral deltoid (deltoid, middle/acromial part)"
+   ],
+   "secondary": [
+    "Supraspinatus",
+    "Anterior deltoid (deltoid, anterior/clavicular part)",
+    "Trapezius"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "lateral deltoid; grip- and core-free so ideal for high-rep, myorep, and drop work",
+   "grip_demand": "none",
+   "rep_range": "12-30",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
    "id": "exercise.move.lean-away-dumbbell-lateral-raise",
    "name": "Lean-Away Dumbbell Lateral Raise",
    "pattern": "shoulder-abduction",
@@ -2978,12 +2790,7 @@
    "grip_demand": "moderate",
    "rep_range": "12-25",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-face-pull",
@@ -3012,6 +2819,32 @@
    "constraint_flags": []
   },
   {
+   "id": "exercise.move.reverse-pec-deck",
+   "name": "Reverse Pec-Deck (Machine Rear Delt Fly)",
+   "pattern": "shoulder-horizontal-abduction",
+   "primary": [
+    "Posterior deltoid (deltoid, posterior/spinal part)"
+   ],
+   "secondary": [
+    "Infraspinatus",
+    "Teres minor",
+    "Rhomboid major",
+    "Rhomboid minor",
+    "Trapezius"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "posterior deltoid; minimal synergist so rest can be very short",
+   "grip_demand": "low",
+   "rep_range": "12-30",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
    "id": "exercise.move.dumbbell-bent-over-rear-lateral-raise",
    "name": "Bent-Over Dumbbell Rear Lateral Raise",
    "pattern": "shoulder-horizontal-abduction",
@@ -3035,12 +2868,7 @@
    "grip_demand": "moderate",
    "rep_range": "12-25",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-cross-body-rear-lateral-raise",
@@ -3197,12 +3025,7 @@
    "grip_demand": "low",
    "rep_range": "12-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.lying-dumbbell-internal-rotation",
@@ -3226,12 +3049,7 @@
    "grip_demand": "low",
    "rep_range": "12-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.side-lying-dumbbell-external-rotation",
@@ -3255,12 +3073,7 @@
    "grip_demand": "low",
    "rep_range": "12-20",
    "rir": "1-3",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-external-rotation-elbow-side",
@@ -3337,12 +3150,7 @@
    "grip_demand": "high",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-upright-row",
@@ -3369,12 +3177,7 @@
    "grip_demand": "high",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-upright-row",
@@ -3431,12 +3234,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-10",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-shoulder-crepitus",
-     "accommodation": "Painless => no restriction. Favor shoulder-friendly press variants (neutral-grip DB, landmine, incline) over strict heav"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.seated-barbell-overhead-press",
@@ -3466,12 +3264,7 @@
    "grip_demand": "moderate",
    "rep_range": "5-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-shoulder-crepitus",
-     "accommodation": "Painless => no restriction. Favor shoulder-friendly press variants (neutral-grip DB, landmine, incline) over strict heav"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.seated-dumbbell-shoulder-press",
@@ -3500,16 +3293,7 @@
    "grip_demand": "high",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-shoulder-crepitus",
-     "accommodation": "Painless => no restriction. Favor shoulder-friendly press variants (neutral-grip DB, landmine, incline) over strict heav"
-    },
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.smith-machine-shoulder-press",
@@ -3537,12 +3321,7 @@
    "grip_demand": "moderate",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-shoulder-crepitus",
-     "accommodation": "Painless => no restriction. Favor shoulder-friendly press variants (neutral-grip DB, landmine, incline) over strict heav"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.machine-shoulder-press",
@@ -3569,12 +3348,7 @@
    "grip_demand": "low",
    "rep_range": "10-25",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "right-shoulder-crepitus",
-     "accommodation": "Painless => no restriction. Favor shoulder-friendly press variants (neutral-grip DB, landmine, incline) over strict heav"
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.dumbbell-front-raise",
@@ -3600,12 +3374,7 @@
    "grip_demand": "moderate",
    "rep_range": "12-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.cable-front-raise",
@@ -3663,12 +3432,7 @@
    "grip_demand": "high",
    "rep_range": "6-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.barbell-bent-over-row-straps",
@@ -3726,12 +3490,7 @@
    "grip_demand": "high",
    "rep_range": "5-10",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.barbell-row-underhand",
@@ -3760,12 +3519,7 @@
    "grip_demand": "high",
    "rep_range": "8-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.t-bar-row",
@@ -3796,12 +3550,7 @@
    "grip_demand": "moderate",
    "rep_range": "8-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.incline-bench-dumbbell-row",
@@ -3830,12 +3579,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.one-arm-dumbbell-row",
@@ -3865,12 +3609,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.seated-cable-row-wide",
@@ -3988,12 +3727,7 @@
    "grip_demand": "high",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.inverted-row",
@@ -4024,12 +3758,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.gorilla-row-dumbbell",
@@ -4059,12 +3788,7 @@
    "grip_demand": "high",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.seal-row",
@@ -4094,12 +3818,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.smith-machine-row",
@@ -4128,12 +3847,7 @@
    "grip_demand": "moderate",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.thick-bar-dumbbell-row",
@@ -4159,12 +3873,7 @@
    "grip_demand": "high",
    "rep_range": "10-20",
    "rir": "0-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.lat-pulldown-wide-grip",
@@ -4315,51 +4024,7 @@
    "grip_demand": "high",
    "rep_range": "5-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
-  },
-  {
-   "id": "exercise.move.pull-up-weighted",
-   "name": "Weighted Pull-Up",
-   "pattern": "vertical-pull",
-   "primary": [
-    "Latissimus dorsi",
-    "Teres major"
-   ],
-   "secondary": [
-    "Biceps brachii (long head)",
-    "Brachialis",
-    "Brachioradialis",
-    "Trapezius",
-    "Rhomboid major",
-    "Posterior deltoid (deltoid, posterior/spinal part)",
-    "Infraspinatus",
-    "Teres minor",
-    "Finger flexors (crush-grip group)"
-   ],
-   "equipment": [
-    "bodyweight",
-    "plate",
-    "dumbbell",
-    "kettlebell"
-   ],
-   "compound": true,
-   "role": "fixed-core",
-   "sfr": "high",
-   "regional_bias": "upper/outer lats; a primary heavy vertical-pull anchor (RP pairs weighted pull-ups with barbell rows as the heavy back staples)",
-   "grip_demand": "high",
-   "rep_range": "5-10",
-   "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.chin-up-supinated",
@@ -4389,12 +4054,7 @@
    "grip_demand": "high",
    "rep_range": "6-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.neutral-grip-pull-up",
@@ -4423,12 +4083,36 @@
    "grip_demand": "high",
    "rep_range": "6-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.assisted-pull-up-machine",
+   "name": "Assisted Pull-Up (Machine)",
+   "pattern": "vertical-pull",
+   "primary": [
+    "Latissimus dorsi",
+    "Teres major"
+   ],
+   "secondary": [
+    "Biceps brachii (long head)",
+    "Brachialis",
+    "Brachioradialis",
+    "Rhomboid major",
+    "Trapezius",
+    "Posterior deltoid (deltoid, posterior/spinal part)",
+    "Finger flexors (crush-grip group)"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": true,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "same as the chosen grip (pronated upper-lat / neutral / supinated lower-lat); regression tool to build to a free pull-up",
+   "grip_demand": "high",
+   "rep_range": "8-15",
+   "rir": "1-2",
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.straight-arm-pulldown",
@@ -4507,12 +4191,7 @@
    "grip_demand": "moderate",
    "rep_range": "10-20",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.behind-neck-pulldown",
@@ -4571,12 +4250,7 @@
    "grip_demand": "high",
    "rep_range": "5-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.commando-pull-up",
@@ -4606,12 +4280,7 @@
    "grip_demand": "high",
    "rep_range": "5-12",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.supine-cable-scapular-protraction",
@@ -4777,6 +4446,59 @@
    "constraint_flags": []
   },
   {
+   "id": "exercise.move.leg-press",
+   "name": "Leg Press",
+   "pattern": "squat",
+   "primary": [
+    "Vastus lateralis",
+    "Vastus medialis",
+    "Vastus intermedius",
+    "Rectus femoris"
+   ],
+   "secondary": [
+    "Gluteus maximus",
+    "Adductor magnus"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": true,
+   "role": "fixed-core",
+   "sfr": "high",
+   "regional_bias": "vastii-dominant quad work; foot position shifts adductor involvement",
+   "grip_demand": "none",
+   "rep_range": "10-20",
+   "rir": "0-2",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.leg-press-single-leg",
+   "name": "Single-Leg Leg Press",
+   "pattern": "squat",
+   "primary": [
+    "Vastus lateralis",
+    "Vastus medialis",
+    "Vastus intermedius",
+    "Rectus femoris"
+   ],
+   "secondary": [
+    "Gluteus maximus",
+    "Adductor magnus",
+    "Gluteus medius"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": true,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "per-side vastii-dominant quad work",
+   "grip_demand": "none",
+   "rep_range": "10-20",
+   "rir": "0-2",
+   "constraint_flags": []
+  },
+  {
    "id": "exercise.move.leg-extension",
    "name": "Leg Extension",
    "pattern": "knee-extension",
@@ -4899,12 +4621,7 @@
    "grip_demand": "moderate",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.bulgarian-split-squat-barbell",
@@ -4960,12 +4677,7 @@
    "grip_demand": "moderate",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.walking-lunge-barbell",
@@ -5020,44 +4732,35 @@
    "grip_demand": "moderate",
    "rep_range": "8-15",
    "rir": "1-2",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
-  },
-  {
-   "id": "exercise.move.goblet-squat",
-   "name": "Goblet Squat",
-   "pattern": "squat",
-   "primary": [
-    "Vastus lateralis",
-    "Vastus medialis",
-    "Vastus intermedius",
-    "Rectus femoris"
-   ],
-   "secondary": [
-    "Gluteus maximus",
-    "Adductor magnus",
-    "Rectus abdominis",
-    "Erector spinae"
-   ],
-   "equipment": [
-    "dumbbell",
-    "kettlebell"
-   ],
-   "compound": true,
-   "role": "dynamic-accessory",
-   "sfr": "moderate",
-   "regional_bias": "quad-biased via upright torso and deep ROM",
-   "grip_demand": "moderate",
-   "rep_range": "10-20",
-   "rir": "0-2",
    "constraint_flags": []
   }
  ],
  "calves": [
+  {
+   "id": "exercise.move.standing-calf-raise-machine",
+   "name": "Standing Calf Raise (Machine)",
+   "pattern": "plantarflexion-knee-straight",
+   "primary": [
+    "Gastrocnemius"
+   ],
+   "secondary": [
+    "Soleus",
+    "Plantaris",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "gastrocnemius (knee-straight bias)",
+   "grip_demand": "low",
+   "rep_range": "10-20",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
   {
    "id": "exercise.move.standing-calf-raise-smith",
    "name": "Smith Machine Standing Calf Raise",
@@ -5133,12 +4836,7 @@
    "grip_demand": "high",
    "rep_range": "15-30",
    "rir": "0-1",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.stair-calf-raise",
@@ -5188,12 +4886,134 @@
    "grip_demand": "high",
    "rep_range": "15-30",
    "rir": "0-1",
-   "constraint_flags": [
-    {
-     "constraint": "left-pinky",
-     "accommodation": "Grip-bypass: cable wrist cuffs (FTS — confirmed work), lifting straps, machine-loaded variants; avoid hanging heavy DBs "
-    }
-   ]
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.leg-press-calf-raise",
+   "name": "Leg Press Calf Raise",
+   "pattern": "plantarflexion-knee-straight",
+   "primary": [
+    "Gastrocnemius"
+   ],
+   "secondary": [
+    "Soleus",
+    "Plantaris",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "fixed-core",
+   "sfr": "high",
+   "regional_bias": "gastrocnemius (knee near-straight)",
+   "grip_demand": "none",
+   "rep_range": "10-20",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.seated-calf-raise-machine",
+   "name": "Seated Calf Raise (Machine)",
+   "pattern": "plantarflexion-knee-bent",
+   "primary": [
+    "Soleus"
+   ],
+   "secondary": [
+    "Gastrocnemius",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group",
+    "Plantaris"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "soleus (knee-bent bias)",
+   "grip_demand": "none",
+   "rep_range": "15-30",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.seated-calf-raise-dumbbell",
+   "name": "Seated Calf Raise (Dumbbell on Knees)",
+   "pattern": "plantarflexion-knee-bent",
+   "primary": [
+    "Soleus"
+   ],
+   "secondary": [
+    "Gastrocnemius",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group",
+    "Plantaris"
+   ],
+   "equipment": [
+    "dumbbell",
+    "plate"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "moderate",
+   "regional_bias": "soleus (knee-bent bias)",
+   "grip_demand": "low",
+   "rep_range": "15-30",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.seated-calf-raise-smith",
+   "name": "Smith Machine Seated Calf Raise",
+   "pattern": "plantarflexion-knee-bent",
+   "primary": [
+    "Soleus"
+   ],
+   "secondary": [
+    "Gastrocnemius",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group",
+    "Plantaris"
+   ],
+   "equipment": [
+    "smith-machine",
+    "plate"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "moderate",
+   "regional_bias": "soleus (knee-bent bias)",
+   "grip_demand": "low",
+   "rep_range": "15-30",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.donkey-calf-raise",
+   "name": "Donkey Calf Raise",
+   "pattern": "plantarflexion-knee-straight",
+   "primary": [
+    "Gastrocnemius"
+   ],
+   "secondary": [
+    "Soleus",
+    "Plantaris",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "gastrocnemius (knee-straight, hinged-hip stretch)",
+   "grip_demand": "none",
+   "rep_range": "10-20",
+   "rir": "0-1",
+   "constraint_flags": []
   },
   {
    "id": "exercise.move.single-leg-calf-raise-bodyweight",
@@ -5217,6 +5037,56 @@
    "regional_bias": "gastrocnemius (knee-straight bias)",
    "grip_demand": "none",
    "rep_range": "20-30",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.seated-calf-raise-leg-press",
+   "name": "Seated Leg-Press Calf Raise (Bent Knee)",
+   "pattern": "plantarflexion-knee-bent",
+   "primary": [
+    "Soleus"
+   ],
+   "secondary": [
+    "Gastrocnemius",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group",
+    "Plantaris"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "moderate",
+   "regional_bias": "soleus (knee-bent bias)",
+   "grip_demand": "none",
+   "rep_range": "15-30",
+   "rir": "0-1",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.standing-calf-raise-lengthened-partials",
+   "name": "Standing Calf Raise — Bottom Lengthened Partials",
+   "pattern": "plantarflexion-knee-straight",
+   "primary": [
+    "Gastrocnemius"
+   ],
+   "secondary": [
+    "Soleus",
+    "Plantaris",
+    "Tibialis posterior",
+    "Fibularis (peroneal) group"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "gastrocnemius, lengthened/stretched range",
+   "grip_demand": "low",
+   "rep_range": "15-30",
    "rir": "0-1",
    "constraint_flags": []
   },
@@ -5273,6 +5143,30 @@
    "grip_demand": "none",
    "rep_range": "8-15",
    "rir": "1-2",
+   "constraint_flags": []
+  },
+  {
+   "id": "exercise.move.hip-adduction-machine",
+   "name": "Hip Adduction Machine",
+   "pattern": "hip-adduction",
+   "primary": [
+    "Adductor longus and brevis (with gracilis, pectineus)",
+    "Adductor magnus"
+   ],
+   "secondary": [
+    "Gluteus maximus",
+    "Sartorius"
+   ],
+   "equipment": [
+    "machine"
+   ],
+   "compound": false,
+   "role": "dynamic-accessory",
+   "sfr": "high",
+   "regional_bias": "adductor longus/brevis and gracilis (short adductors) with adductor magnus assisting; upright torso biases the proximal adductors. Open the pads to a deep abducted stretch for full ROM.",
+   "grip_demand": "none",
+   "rep_range": "12-25",
+   "rir": "0-1",
    "constraint_flags": []
   },
   {

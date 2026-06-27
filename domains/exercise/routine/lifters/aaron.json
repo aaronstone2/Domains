@@ -1,0 +1,30 @@
+{
+  "lifter": {
+    "id": "lifter.aaron",
+    "name": "Aaron Stone",
+    "bodyweight_lb": null,
+    "training_age": "intermediate",
+    "goals": "Balanced strength + physique, 4 days/week consistently. Upper-body volume is WELCOME/therapeutic for the shoulders (sedentary worsens his shoulder symptoms; consistent upper-body training resolves them).",
+    "notes": "No sports. Trains at TWO gyms: 290 Revolution (free-weight + Smith + Precor + FTS cable) and a Planet Fitness (machine-rich + Smith + DBs, no Olympic barbell/rack). No lifts he cannot do yet.",
+    "is_default": false,
+    "updated": "2026-06-26"
+  },
+  "capabilities": [],
+  "constraints": [
+    {
+      "id": "exercise.constraint.aaron.shoulder-instability",
+      "label": "Bilateral shoulder — prior dislocation, rotator-cuff/labrum; LIMITED external-rotation ROM (no pain)",
+      "kind": "injury",
+      "description": "Both shoulders, history of dislocation with rotator-cuff/labral involvement. Manifests as LIMITED external-rotation range of motion (presses fine, but the arms can't travel further back than ~neutral). No pain. Notably: sedentary -> symptoms worsen; consistent upper-body training -> symptoms resolve, so upper-body volume is THERAPEUTIC.",
+      "triggers": ["end-range-external-rotation", "behind-the-neck", "apprehension-position", "deep-overhead-stretch", "ballistic-overhead", "deep-dip"],
+      "provoking_patterns": [],
+      "provoking_joint_stress": [],
+      "provoking_grip_tags": [],
+      "workaround": "Train WITHIN available ROM: do NOT force external rotation / horizontal abduction past neutral. AVOID behind-the-neck press or pulldown, wide-grip end-range stretch positions, deep dips, and ballistic/jerky overhead. FAVOR neutral-grip and front-of-body pressing (he presses fine), controlled tempo, full-but-pain-free ROM. EMPHASIZE rotator-cuff + scapular-stability work and generous upper-body volume — it is therapeutic for him and protects the labrum. The apprehension position (abduction + end-range external rotation) is the single thing to avoid.",
+      "red_flags": ["a dislocation or subluxation event", "sharp pain", "a sense of the shoulder slipping / instability", "numbness or tingling down the arm", "sudden loss of strength"],
+      "intake_questions": ["Which positions feel like the shoulder might slip?", "Painless ROM limit or any pain?", "Worse when sedentary, better when training?"],
+      "severity_default": "mild",
+      "notes": "Bilateral. Upper-body training is therapeutic -> program generous upper volume within ROM. Not a broad pressing/pulling gate; it's a ROM/technique modification + a cuff/scapular emphasis."
+    }
+  ]
+}
