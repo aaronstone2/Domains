@@ -43,6 +43,12 @@ def embed_domain(
     con: duckdb.DuckDBPyConnection, domain: str, kinds: tuple[str, ...] = ("document", "claim", "concept")
 ) -> int:
     """Compute + upsert embeddings for the requested object kinds. Returns rows embedded."""
+    # The persisted HNSW index (queries/vss_index.sql) blocks writes to `embeddings` unless vss is loaded.
+    try:
+        con.execute("INSTALL vss; LOAD vss;")
+        con.execute("SET hnsw_enable_experimental_persistence=true;")
+    except Exception:
+        pass
     model = _get_model()
     total = 0
     for kind in kinds:
