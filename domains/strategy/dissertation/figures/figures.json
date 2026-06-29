@@ -61,15 +61,15 @@
  },
  {
   "file": "relationship_graph.png",
-  "caption": "The typed relationship graph (2,091 edges, 21 types) is the algebra the synthesis layer reads: grounds/contradicts from HCI, erodes from competitive intel, gates from governance, measures from product.",
+  "caption": "The typed relationship graph (2,095 edges, 21 types) is the algebra the synthesis layer reads: grounds/contradicts from HCI, erodes from competitive intel, gates from governance, measures from product.",
   "chapter": "02-method",
   "note": "meta.all_relationships"
  },
  {
   "file": "sensitivity_tornado.png",
-  "caption": "Each financial driver's p10–p90 range with the p50 marker. These input ranges (not a variance decomposition) are what the Monte-Carlo propagates into the wide LTV:CAC and SOM spreads.",
+  "caption": "What actually drives each model's spread: SOM is 61% obtained-penetration (som_share), LTV:CAC is 61% ARPU and 33% CAC (negative ρ). The genuine sensitivity output — rank-correlation over the MC draws, not just input ranges — computed live from the committed models.",
   "chapter": "09-finance",
-  "note": "finance.model_assumptions"
+  "note": "ingest.mc.sensitivity (market-som, finance-ltv-cac)"
  },
  {
   "file": "governance_gaps.png",
