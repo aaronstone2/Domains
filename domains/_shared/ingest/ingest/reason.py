@@ -81,7 +81,42 @@ def _apply_sql_edge(con, domain, rule, dry_run) -> int:
     return n
 
 
-_KINDS = {"transitive": _apply_transitive, "sql_edge": _apply_sql_edge}
+def _apply_sql_claim(con, domain, rule, dry_run) -> int:
+    """A SELECT returning (claim_id, statement, confidence, premise_ids[]) → derived SPECULATIVE claims.
+
+    Reasoning proposes, verification disposes: derived claims land with verdict='speculative' +
+    evidence_grade='derived', provenance recorded in `derivations`, and stay quarantined until Layer-6
+    verify/calibrate promotes them. Never overwrites an author-written claim (ON CONFLICT keeps existing).
+    """
+    sql = rule["sql"].replace("{domain}", domain)
+    rows = con.execute(sql).fetchall()
+    if dry_run:
+        return len(rows)
+    n = 0
+    for row in rows:
+        cid, stmt = row[0], row[1]
+        conf = float(row[2]) if len(row) > 2 and row[2] is not None else 0.4
+        premises = list(row[3]) if len(row) > 3 and row[3] is not None else []
+        existed = con.execute(f"SELECT 1 FROM {domain}.claims WHERE id = ?", [cid]).fetchone()
+        if existed:
+            continue
+        con.execute(
+            f"INSERT INTO {domain}.claims "
+            f"(id, statement, category, claim_type, verdict, evidence_grade, confidence, affected_ids, last_verified) "
+            f"VALUES (?,?,?,?, 'speculative', 'derived', ?, ?, CURRENT_DATE)",
+            [cid, stmt, rule.get("category", "derived"), rule.get("claim_type", "derived"), conf, premises],
+        )
+        con.execute(
+            f"INSERT INTO {domain}.derivations "
+            f"(id, derived_claim_id, rule_id, premise_claim_ids, confidence_out, created_at) "
+            f"VALUES (?,?,?,?,?,CURRENT_DATE) ON CONFLICT (id) DO NOTHING",
+            [f"{domain}.deriv.{rule['id']}.{cid.split('.')[-1]}", cid, rule["id"], premises, round(conf, 3)],
+        )
+        n += 1
+    return n
+
+
+_KINDS = {"transitive": _apply_transitive, "sql_edge": _apply_sql_edge, "sql_claim": _apply_sql_claim}
 
 
 def reason(con: duckdb.DuckDBPyConnection, domain: str, only: str | None = None, dry_run: bool = False) -> dict:

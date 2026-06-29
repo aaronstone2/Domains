@@ -1,0 +1,23 @@
+id: derive-contested-wedge
+kind: sql_claim
+category: competitive
+claim_type: derived
+description: >
+  Layer-5 claim derivation (cross-domain): a wedge feature eroded by many dated competitor moves is, by
+  inference, a CONTESTED wedge — first-mover differentiation there is speculative pending defensibility.
+  Derives one speculative claim per heavily-eroded feature, with the eroding compintel changes as premises.
+  Quarantined as verdict='speculative' until Layer-6 verification promotes it — reasoning proposes,
+  verification disposes. Runs on --domain strategy so derived claims live in the synthesis layer, never
+  polluting an authored domain's verdicts.
+sql: |
+  SELECT
+    'strategy.claim.derived.contested-' || regexp_replace(r.to_id, 'market\.feature\.', '') AS claim_id,
+    'Derived inference: wedge feature ' || r.to_id || ' is CONTESTED — ' || count(*) ||
+      ' dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is '
+      || 'speculative pending a defensibility moat. Quarantined until verified.' AS statement,
+    round(least(0.5, 0.2 + 0.04 * count(*)), 3) AS confidence,
+    list(DISTINCT r.from_id) AS premise_ids
+  FROM compintel.relationships r
+  WHERE r.rel_type = 'erodes' AND r.to_id LIKE 'market.feature%'
+  GROUP BY r.to_id
+  HAVING count(*) >= 5
