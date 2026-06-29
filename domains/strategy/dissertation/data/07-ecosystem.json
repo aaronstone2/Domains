@@ -1,0 +1,915 @@
+{
+ "chapter": {
+  "num": "VII",
+  "slug": "07-ecosystem",
+  "title": "Ecosystem & Integration",
+  "kind": "drafted"
+ },
+ "home_domains": [
+  "ecosystem"
+ ],
+ "home_claims": [
+  {
+   "id": "claim.mongodb-nosql-pain",
+   "statement": "Schema visualization for MongoDB addresses documented pain point for JSON/document data (0.8 pain_score); no competitor (Compass, Studio 3T) offers cross-DB schema graphs",
+   "category": "ecosystem",
+   "claim_type": "predictive",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "high",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "claim.neo4j-differentiation",
+   "statement": "Neo4j Cypher schema visualization + relationship graph rendering is unique differentiator vs. Metabase/Supabase Dashboard; captures premium segment (knowledge graphs, recommendation engines)",
+   "category": "ecosystem",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "high",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "claim.postgres-mysql-baseline",
+   "statement": "PostgreSQL + MySQL integration captures 55-60% of MetroGraph's addressable market (relational DB users across web, analytics, enterprise segments)",
+   "category": "ecosystem",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "moderate",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "claim.realtime-schemas-supabase",
+   "statement": "Supabase + PlanetScale real-time schema change subscriptions enable collaborative schema visualization (first-to-market advantage in multi-user schema editing)",
+   "category": "ecosystem",
+   "claim_type": "predictive",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "moderate",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "claim.snowflake-bigquery-wedge",
+   "statement": "Snowflake + BigQuery integration unlocks high-LTV cloud analytics segment (data warehouses, BI teams); these 2 DBs account for 40%+ of enterprise data warehouse spend",
+   "category": "ecosystem",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "moderate",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.graphql-introspection-data-discovery",
+   "statement": "GraphQL introspection can serve as universal schema discovery mechanism for API-first data sources, reducing connector complexity vs. database-specific connectors.",
+   "category": "technical-pattern",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "technical-feasibility",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.kafka-debezium-realtime-lineage",
+   "statement": "Real-time data pipelines using Kafka + Debezium CDC require live graph visualization of schema changes and data flow for debugging.",
+   "category": "workflow-requirement",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "technical-analysis",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.pgvector-semantic-data-governance",
+   "statement": "PostgreSQL + pgvector extension enables semantic similarity search over schema metadata, unlocking AI-powered data discovery for governance teams.",
+   "category": "feature-potential",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "technical-analysis",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.reverse-etl-graph-visualization",
+   "statement": "Reverse-ETL platforms (Census, Hightouch) need graph visualization of operational data models to reduce transformation errors during sync.",
+   "category": "market-insight",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "practitioner-interviews",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.reverse-etl-transforms-90percent-manual",
+   "statement": "85-90% of reverse-ETL transformation logic is hand-coded due to lack of visual transformation UX, contradicting vendor claims of 'low-code' simplicity.",
+   "category": "workflow-reality",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "survey-signals",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.vector-db-adoption-2025",
+   "statement": "Vector database integrations (Pinecone, Weaviate, Qdrant) are becoming standard in data visualization tools for semantic search and embedding-aware lineage.",
+   "category": "integration-pattern",
+   "claim_type": "strategic",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "industry-signals",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.cdc-adoption-still-under-10percent",
+   "statement": "CDC (Change Data Capture) adoption in data platforms remains below 10% despite mature tooling (Debezium, DMS, native binlogs); visualization gaps are not primary blocking factor.",
+   "category": "market-reality",
+   "claim_type": "strategic",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "vendor-surveys",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  },
+  {
+   "id": "ecosystem.claim.openlineage-standardization",
+   "statement": "OpenLineage adoption across dbt, Airflow, and Spark creates unified lineage metadata that graph visualization tools can standardize against (dbt 1.5+, Airflow 2.3+, Spark 3.1+).",
+   "category": "standards-alignment",
+   "claim_type": "strategic",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "source-docs",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "ecosystem"
+  }
+ ],
+ "n_home_claims": 13,
+ "blocks": {
+  "integration_points": [
+   {
+    "priority_score": 4.512,
+    "reach_score": 0.95,
+    "effort_score": 0.2,
+    "strategic_fit": 0.95,
+    "feasibility": "proven",
+    "api": "PostgreSQL Information Schema + Wire Protocol",
+    "direction": "inbound",
+    "rationale": "PostgreSQL is the industry standard for relational databases; INFORMATION_SCHEMA provides standardized, portable schema introspection. High coverage across MetroGraph's ICP (data engineers, DBAs, analysts). Enables core feature: schema-introspection (pain_score 0.85)."
+   },
+   {
+    "priority_score": 3.2,
+    "reach_score": 0.6,
+    "effort_score": 0.15,
+    "strategic_fit": 0.8,
+    "feasibility": "proven",
+    "api": "DuckDB Python/C API",
+    "direction": "inbound",
+    "rationale": "DuckDB emerging as replacement for SQLite in analytics; embedded in Python/JavaScript tools. Enables local-first data exploration without server. Unique positioning: zero network latency. Targets: data scientists, notebook users (growing ICP segment)."
+   },
+   {
+    "priority_score": 3.0,
+    "reach_score": 0.75,
+    "effort_score": 0.2,
+    "strategic_fit": 0.8,
+    "feasibility": "proven",
+    "api": "MySQL INFORMATION_SCHEMA + Wire Protocol",
+    "direction": "inbound",
+    "rationale": "MySQL/MariaDB covers web application databases; INFORMATION_SCHEMA identical to Postgres. Part of same ICP as PostgreSQL but slightly lower reach (legacy monoliths). Enables: schema-introspection, ERD rendering."
+   },
+   {
+    "priority_score": 1.912,
+    "reach_score": 0.85,
+    "effort_score": 0.4,
+    "strategic_fit": 0.9,
+    "feasibility": "proven",
+    "api": "Snowflake REST API",
+    "direction": "inbound",
+    "rationale": "Snowflake dominates cloud data warehouse space; REST API enables safe API-key-based connections (no DB credentials needed). High-value segment (analytics teams, data labs). Addresses: schema-introspection, data discovery. Snowflake partnership ecosystem is existing partner."
+   },
+   {
+    "priority_score": 1.733,
+    "reach_score": 0.4,
+    "effort_score": 0.15,
+    "strategic_fit": 0.65,
+    "feasibility": "proven",
+    "api": "SQLite File-Based Database API",
+    "direction": "inbound",
+    "rationale": "SQLite everywhere (mobile, embedded, local tools). Low effort; attracts developers building client-side data tools. Complements DuckDB for local-first positioning. No network overhead."
+   },
+   {
+    "priority_score": 1.7,
+    "reach_score": 0.7,
+    "effort_score": 0.35,
+    "strategic_fit": 0.85,
+    "feasibility": "proven",
+    "api": "Google BigQuery REST API",
+    "direction": "inbound",
+    "rationale": "BigQuery captures Google Cloud / analytics segment; REST API + Service Account auth enables enterprise adoption. High reach within GCP ecosystem. Supports: schema-introspection, ERD rendering for logical data models."
+   },
+   {
+    "priority_score": 1.467,
+    "reach_score": 0.55,
+    "effort_score": 0.3,
+    "strategic_fit": 0.8,
+    "feasibility": "speculative",
+    "api": "Supabase REST API + Realtime",
+    "direction": "inbound",
+    "rationale": "Supabase adds real-time schema change subscriptions via WebSocket (differentiator vs. vanilla Postgres). Targets: modern app startups, Firebase-alternative users. Enables: live data binding, collaborative schema visualization. Existing partner: Supabase API ecosystem."
+   },
+   {
+    "priority_score": 1.214,
+    "reach_score": 0.5,
+    "effort_score": 0.35,
+    "strategic_fit": 0.85,
+    "feasibility": "proven",
+    "api": "Neo4j Cypher + Bolt Protocol",
+    "direction": "inbound",
+    "rationale": "Neo4j commands premium segment (knowledge graphs, recommendation engines); Cypher schema queries enable relationship visualization. Feature: data-source-graph-db (pain_score 0.78). Existing partnership with Neo4j Visualization Ecosystem. Differentiates MetroGraph in graph space."
+   },
+   {
+    "priority_score": 0.992,
+    "reach_score": 0.7,
+    "effort_score": 0.6,
+    "strategic_fit": 0.85,
+    "feasibility": "speculative",
+    "api": null,
+    "direction": "outbound",
+    "rationale": "dbt transforms raw data into models; visualizing dbt lineage + schemas together enables end-to-end data pipeline visibility. Partnership: dbt ecosystem existing partner. Unlocks: data transformation segment. Feeds: visualization of model dependencies."
+   },
+   {
+    "priority_score": 0.975,
+    "reach_score": 0.65,
+    "effort_score": 0.5,
+    "strategic_fit": 0.75,
+    "feasibility": "proven",
+    "api": "MongoDB Admin Commands + Wire Protocol",
+    "direction": "inbound",
+    "rationale": "MongoDB dominates document database market; necessary for feature: data-source-nosql (pain_score 0.8). Schema inference from aggregation pipelines enables schema visualization without fixed schemas. Opens new ICP: full-stack JS teams."
+   },
+   {
+    "priority_score": 0.75,
+    "reach_score": 0.35,
+    "effort_score": 0.35,
+    "strategic_fit": 0.75,
+    "feasibility": "speculative",
+    "api": "PlanetScale REST API",
+    "direction": "inbound",
+    "rationale": "PlanetScale uniqueness: schema-branching (dev/staging/prod workflows). Addresses emerging data workflow paradigm. Targets: growth-stage startups standardizing on MySQL. Real-time change tracking enables collaborative schema visualization."
+   },
+   {
+    "priority_score": 0.56,
+    "reach_score": 0.4,
+    "effort_score": 0.5,
+    "strategic_fit": 0.7,
+    "feasibility": "speculative",
+    "api": null,
+    "direction": "bidirectional",
+    "rationale": "Great Expectations monitors data quality; integrating schema + quality rules enables visual data governance (schema + constraints + quality SLAs). Addresses: data teams needing quality visibility alongside schema. Existing partner."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": "PostgreSQL Information Schema + Wire Protocol",
+    "direction": "inbound",
+    "rationale": "pgvector (GitHub pgvector/pgvector) extends PostgreSQL with vector similarity search. Enables semantic search without separate DB. Natural complement to existing PG integration. Zero network overhead for embedded analytics."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": "OpenLineage API",
+    "direction": "inbound",
+    "rationale": "OpenLineage (openlineage.io, LFAI project) emerging standard for lineage metadata. Supported by dbt 1.5+, Airflow 2.3+, Spark 3.1+. Graph tools aligned with OpenLineage unlock federated lineage."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "inbound",
+    "rationale": "Pinecone (pinecone.io, Series B $100M 2023) is industry-leading vector DB. Enables semantic search over graph node embeddings and similarity-based data discovery. High reach in AI/ML segment building retrieval-augmented generation (RAG) systems."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "bidirectional",
+    "rationale": "Weaviate (weaviate.io) is open-source vector DB with native GraphQL API, enabling graph-native vector queries. Natural alignment with graph visualization. Lower vendor lock-in vs. Pinecone."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "inbound",
+    "rationale": "Qdrant (qdrant.tech) optimized for scale and latency in high-frequency search. Emerging player (Series A 2022) with growing adoption. Smaller reach but differentiated on performance metrics."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "bidirectional",
+    "rationale": "Apache Kafka (confluent.io) is event streaming standard. Paired with Debezium CDC, enables real-time schema change tracking and lineage updates. High reach in modern data platforms."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "inbound",
+    "rationale": "Debezium (debezium.io, Confluent-maintained) captures DB changes as event stream. Unlocks real-time graph updates without polling. Complements Kafka integration for continuous data sync."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "outbound",
+    "rationale": "Census (getcensus.com, Series B 2022) syncs refined data back to operational platforms. Graph visualization of source → destination mapping reduces transformation errors. Mid-market SaaS teams."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "outbound",
+    "rationale": "Hightouch (hightouch.com, Series C 2023) competitor to Census in reverse-ETL. Similar operationalization use case. Earlier market presence with enterprise customers."
+   },
+   {
+    "priority_score": 0.0,
+    "reach_score": null,
+    "effort_score": null,
+    "strategic_fit": null,
+    "feasibility": null,
+    "api": null,
+    "direction": "inbound",
+    "rationale": "GraphQL introspection (GraphQL spec 2021) enables universal schema discovery for API-first sources. Hasura, Apollo, Postgraphile support introspection. Reduces need for database-specific connectors."
+   }
+  ],
+  "apis": [
+   {
+    "name": "Activepieces REST API",
+    "category": "workflow-automation",
+    "auth_model": "Bearer Token",
+    "protocol": "REST",
+    "has_webhooks": true,
+    "maturity": "beta"
+   },
+   {
+    "name": "Apache Airflow REST API",
+    "category": "dag-orchestration",
+    "auth_model": "Basic Auth / Kerberos / LDAP",
+    "protocol": "REST",
+    "has_webhooks": false,
+    "maturity": "stable"
+   },
+   {
+    "name": "Apache Superset API",
+    "category": "observability-bi",
+    "auth_model": "JWT Token",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "Auth0 Platform",
+    "category": "auth-identity",
+    "auth_model": "OAuth2/OIDC",
+    "protocol": "REST",
+    "has_webhooks": null,
+    "maturity": "GA"
+   },
+   {
+    "name": "Dagster GraphQL API",
+    "category": "data-orchestration",
+    "auth_model": "API Token (Cloud)",
+    "protocol": "GraphQL",
+    "has_webhooks": false,
+    "maturity": "stable"
+   },
+   {
+    "name": "Datadog API",
+    "category": "observability-metrics",
+    "auth_model": "API Key + Application Key",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "DuckDB Python/C API",
+    "category": "db-warehouse",
+    "auth_model": "File-based or in-memory, no network auth",
+    "protocol": "Embedded (Python/C library)",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "Google BigQuery REST API",
+    "category": "db-warehouse",
+    "auth_model": "Google OAuth2, Service Accounts, API Keys",
+    "protocol": "HTTPS REST",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "Google Workspace Identity",
+    "category": "auth-identity",
+    "auth_model": "OAuth2/OIDC",
+    "protocol": "REST",
+    "has_webhooks": null,
+    "maturity": "GA"
+   },
+   {
+    "name": "Grafana HTTP API",
+    "category": "observability-dashboard",
+    "auth_model": "Service Account Token or Basic Auth",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "LangGraph Python API",
+    "category": "ai-agent-graph",
+    "auth_model": "None (SDK)",
+    "protocol": "Python Library",
+    "has_webhooks": false,
+    "maturity": "beta"
+   },
+   {
+    "name": "Make.com API",
+    "category": "workflow-automation",
+    "auth_model": "API Token",
+    "protocol": "REST",
+    "has_webhooks": true,
+    "maturity": "stable"
+   },
+   {
+    "name": "Metabase API",
+    "category": "observability-bi",
+    "auth_model": "Session Token (X-Metabase-Session header)",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "Microsoft Entra ID (Azure AD)",
+    "category": "auth-identity",
+    "auth_model": "OAuth2/OIDC",
+    "protocol": "REST",
+    "has_webhooks": null,
+    "maturity": "GA"
+   },
+   {
+    "name": "MongoDB Admin Commands + Wire Protocol",
+    "category": "db-warehouse",
+    "auth_model": "username/password, SCRAM, X.509 certificates, OAuth2",
+    "protocol": "MongoDB Wire Protocol (port 27017)",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "MySQL INFORMATION_SCHEMA + Wire Protocol",
+    "category": "db-warehouse",
+    "auth_model": "username/password, SSL/TLS, OAuth2 via extensions",
+    "protocol": "TCP (MySQL wire protocol port 3306)",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "Neo4j Cypher + Bolt Protocol",
+    "category": "db-warehouse",
+    "auth_model": "username/password, LDAP, OAuth2, OIDC",
+    "protocol": "Bolt (port 7687) or HTTP (port 7474)",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "Okta Identity & Access Management",
+    "category": "auth-identity",
+    "auth_model": "OAuth2/OIDC",
+    "protocol": "REST",
+    "has_webhooks": null,
+    "maturity": "GA"
+   },
+   {
+    "name": "OpenLineage API",
+    "category": "observability-lineage",
+    "auth_model": "API-dependent (OpenAPI spec)",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "PlanetScale REST API",
+    "category": "db-warehouse",
+    "auth_model": "OAuth2, API Tokens, MySQL credentials",
+    "protocol": "HTTPS REST + MySQL wire protocol",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "PostgreSQL Information Schema + Wire Protocol",
+    "category": "db-warehouse",
+    "auth_model": "username/password, SSL/TLS, OAuth2 via extensions",
+    "protocol": "TCP (libpq wire protocol port 5432)",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "PostgreSQL System Catalog",
+    "category": "observability-lineage",
+    "auth_model": "Database credentials",
+    "protocol": "SQL",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "Power BI REST API",
+    "category": "observability-bi",
+    "auth_model": "OAuth2 / Service Principal",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "Redash API",
+    "category": "observability-bi",
+    "auth_model": "API Key (query or header)",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "SAML 2.0 Identity Federation",
+    "category": "auth-identity",
+    "auth_model": "SAML 2.0",
+    "protocol": "XML/HTTP",
+    "has_webhooks": null,
+    "maturity": "GA"
+   },
+   {
+    "name": "SCIM 2.0 User Provisioning",
+    "category": "auth-identity",
+    "auth_model": "Bearer Token / OAuth2",
+    "protocol": "REST",
+    "has_webhooks": null,
+    "maturity": "GA"
+   },
+   {
+    "name": "SQLite File-Based Database API",
+    "category": "db-warehouse",
+    "auth_model": "File permissions only",
+    "protocol": "File I/O (sqlite3 library)",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "Snowflake Metadata API",
+    "category": "observability-lineage",
+    "auth_model": "API Key / OAuth2",
+    "protocol": "REST/HTTP + SQL",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "Snowflake REST API",
+    "category": "db-warehouse",
+    "auth_model": "OAuth2, JWT, Key Pair Authentication, Username/Password",
+    "protocol": "HTTPS REST",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "Supabase REST API + Realtime",
+    "category": "db-warehouse",
+    "auth_model": "API Key, OAuth2 via GoTrue, JWT tokens",
+    "protocol": "HTTPS REST + WebSocket",
+    "has_webhooks": null,
+    "maturity": "stable"
+   },
+   {
+    "name": "Tableau Server REST API",
+    "category": "observability-bi",
+    "auth_model": "Session Token",
+    "protocol": "REST/HTTP",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "Temporal Workflow API",
+    "category": "workflow-orchestration",
+    "auth_model": "mTLS / API Key",
+    "protocol": "gRPC",
+    "has_webhooks": false,
+    "maturity": "stable"
+   },
+   {
+    "name": "Zapier Platform API",
+    "category": "workflow-automation",
+    "auth_model": "API Key / OAuth2",
+    "protocol": "REST",
+    "has_webhooks": true,
+    "maturity": "stable"
+   },
+   {
+    "name": "dbt Metadata API",
+    "category": "observability-lineage",
+    "auth_model": "API Key",
+    "protocol": "REST/HTTP + JSON artifacts",
+    "has_webhooks": null,
+    "maturity": null
+   },
+   {
+    "name": "n8n REST API",
+    "category": "workflow-automation",
+    "auth_model": "Bearer Token / OAuth2",
+    "protocol": "REST",
+    "has_webhooks": true,
+    "maturity": "stable"
+   }
+  ],
+  "endpoints": [
+   {
+    "api": "DuckDB Python/C API",
+    "method": "SELECT",
+    "path": "information_schema.tables",
+    "purpose": "Query information_schema.tables for schema introspection"
+   },
+   {
+    "api": "Google BigQuery REST API",
+    "method": "GET",
+    "path": "/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables",
+    "purpose": "List tables in dataset for feature: schema-introspection"
+   },
+   {
+    "api": "Google BigQuery REST API",
+    "method": "GET",
+    "path": "/bigquery/v2/projects/{projectId}/datasets",
+    "purpose": "List datasets for feature: schema-introspection"
+   },
+   {
+    "api": "MongoDB Admin Commands + Wire Protocol",
+    "method": "Command",
+    "path": "db.adminCommand({listCollections: 1})",
+    "purpose": "List collections in database for feature: data-source-nosql"
+   },
+   {
+    "api": "MySQL INFORMATION_SCHEMA + Wire Protocol",
+    "method": "SELECT",
+    "path": "information_schema.tables WHERE table_schema = ?",
+    "purpose": "List tables in database for feature: schema-introspection"
+   },
+   {
+    "api": "Neo4j Cypher + Bolt Protocol",
+    "method": "Cypher",
+    "path": "CALL db.schema.visualization()",
+    "purpose": "Retrieve graph schema for visualization for feature: data-source-graph-db"
+   },
+   {
+    "api": "OpenLineage API",
+    "method": "POST",
+    "path": "POST /api/v1/lineage",
+    "purpose": "Ingest OpenLineage JSON-LD events for standardized lineage metadata"
+   },
+   {
+    "api": "PlanetScale REST API",
+    "method": "GET",
+    "path": "/api/v1/organizations/{org}/databases/{database}/branches",
+    "purpose": "Track schema changes across database branches"
+   },
+   {
+    "api": "PostgreSQL Information Schema + Wire Protocol",
+    "method": "SELECT",
+    "path": "information_schema.columns WHERE table_name = $1",
+    "purpose": "List columns for table/ERD rendering for feature: schema-introspection-erd"
+   },
+   {
+    "api": "PostgreSQL Information Schema + Wire Protocol",
+    "method": "SELECT",
+    "path": "information_schema.referential_constraints",
+    "purpose": "Retrieve foreign key relationships for ERD for feature: schema-introspection-erd"
+   },
+   {
+    "api": "PostgreSQL Information Schema + Wire Protocol",
+    "method": null,
+    "path": null,
+    "purpose": "PostgreSQL <-> operator for vector similarity search in governance schemas"
+   },
+   {
+    "api": "PostgreSQL Information Schema + Wire Protocol",
+    "method": "SELECT",
+    "path": "information_schema.tables WHERE table_schema = $1",
+    "purpose": "List all tables in schema for feature: schema-introspection"
+   },
+   {
+    "api": "SQLite File-Based Database API",
+    "method": "SELECT",
+    "path": "sqlite_master WHERE type='table'",
+    "purpose": "Query sqlite_master for schema introspection"
+   },
+   {
+    "api": "Snowflake REST API",
+    "method": "GET",
+    "path": "/api/v2/databases/{database}/schemas/{schema}/tables",
+    "purpose": "List tables in schema for feature: schema-introspection"
+   },
+   {
+    "api": "Snowflake REST API",
+    "method": "GET",
+    "path": "/api/v2/databases/{database}/schemas",
+    "purpose": "List schemas in database for feature: schema-introspection"
+   },
+   {
+    "api": "Supabase REST API + Realtime",
+    "method": "WebSocket",
+    "path": "/realtime/v1",
+    "purpose": "Subscribe to real-time schema changes via WebSocket"
+   },
+   {
+    "api": null,
+    "method": "POST",
+    "path": "POST /query",
+    "purpose": "Query vector embeddings by similarity for semantic data discovery"
+   },
+   {
+    "api": null,
+    "method": "POST",
+    "path": "POST /graphql",
+    "purpose": "GraphQL introspection and vector query for schema-aware similarity search"
+   },
+   {
+    "api": null,
+    "method": "POST",
+    "path": "POST /search",
+    "purpose": "Semantic similarity search with filtering for data discovery"
+   },
+   {
+    "api": null,
+    "method": null,
+    "path": "kafka://source-changes",
+    "purpose": "Subscribe to real-time CDC events from Debezium connectors"
+   },
+   {
+    "api": null,
+    "method": "GET",
+    "path": "GET /snapshot",
+    "purpose": "Initial snapshot of database state before CDC stream"
+   },
+   {
+    "api": null,
+    "method": "POST",
+    "path": "POST /syncs/{sync_id}/run",
+    "purpose": "Trigger reverse-ETL sync and monitor transformation status"
+   },
+   {
+    "api": null,
+    "method": "POST",
+    "path": "POST /graphql",
+    "purpose": "GraphQL introspection query to discover schema and relationships"
+   }
+  ],
+  "integrates_edges": [
+   {
+    "n": 20
+   }
+  ]
+ },
+ "figures": [
+  "integration_feasibility.png"
+ ]
+}

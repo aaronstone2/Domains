@@ -1,0 +1,1493 @@
+{
+ "chapter": {
+  "num": "V",
+  "slug": "05-product-wedge",
+  "title": "Product & the Wedge",
+  "kind": "drafted"
+ },
+ "home_domains": [
+  "product"
+ ],
+ "home_claims": [
+  {
+   "id": "product.metrograph.query-building-partial",
+   "statement": "MetroGraph Visual Query Building for MongoDB is partially implemented with service infrastructure (MongoService) but UI component is not activated",
+   "category": "feature",
+   "claim_type": "descriptive",
+   "verdict": "disputed",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.export-not-implemented",
+   "statement": "MetroGraph does not implement Export/Download functionality; no serialization or file export mechanisms found in codebase",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.undo-redo-not-implemented",
+   "statement": "MetroGraph does not implement Undo/Redo functionality; no evidence of history management or transaction reversal in codebase",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.canvas-shipped",
+   "statement": "MetroGraph implements Visual Canvas & Editor with drag/drop and visual layout capabilities",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.data-binding-shipped",
+   "statement": "MetroGraph implements Data Binding & Variable System with EditorService tracking changes and reactive state updates",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.data-source-mongodb-shipped",
+   "statement": "MetroGraph implements Data Source Integration with MongoDB connection and MongoService",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.edge-creation-shipped",
+   "statement": "MetroGraph implements Edge Creation through integrated drag-and-drop and line-connection components",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.edges-shipped",
+   "statement": "MetroGraph implements Edges & Data-Flow Connections using LeaderLine library with visual connectors",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.graph-navigation-shipped",
+   "statement": "MetroGraph implements Graph Navigation & Exploration with node tree structure and parent-child relationships",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.manual-positioning-shipped",
+   "statement": "MetroGraph implements Manual Positioning with drag component allowing free node placement",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.node-creation-shipped",
+   "statement": "MetroGraph implements Node Creation & Palette with document/widget components spawned on dashboard",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.nodes-shipped",
+   "statement": "MetroGraph implements Node System with typed container components and node hierarchy",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.observability-logs-inprogress",
+   "statement": "MetroGraph implements Execution Logs & Step Debugging with error tracking and summary visualization",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.pan-zoom-shipped",
+   "statement": "MetroGraph implements Pan, Zoom & Semantic Viewport with resize and drag components for viewport manipulation",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.properties-inspector-shipped",
+   "statement": "MetroGraph implements Node Properties/Inspector Panel with multiple viewer types (text, number, boolean, select, key-value, object)",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.query-building-inprogress",
+   "statement": "MetroGraph implements Visual Query Building for MongoDB with field filtering and search interface",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "claim.metrograph.schema-introspection-shipped",
+   "statement": "MetroGraph implements Schema Introspection & Discovery with MongoDB collection and field discovery",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.auto-layout-shipped",
+   "statement": "MetroGraph implements Auto-Layout & Rectangle Packing through RectanglePackerService with recursive bin-packing algorithm optimized for 10, 100, and 1000+ node counts",
+   "category": "feature",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.edge-rendering-shipped",
+   "statement": "MetroGraph implements edge rendering and styling through DrawLinesService using LeaderLine library for visual connectors with customizable appearance",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.error-logging-shipped",
+   "statement": "MetroGraph implements Execution Logs & Error Tracking with stack trace visualization, error grouping, and error summary components for debugging",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.mongo-introspection-shipped",
+   "statement": "MetroGraph implements MongoDB Schema Introspection allowing discovery of collections, fields, and nested document structure with field-path traversal",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.multi-selection-shipped",
+   "statement": "MetroGraph implements Multi-Selection & Bulk Editing through SelectedObjectsService enabling selection and tracking of multiple objects (containers, viewers, documents)",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.node-styling-shipped",
+   "statement": "MetroGraph implements Node Styling & Theming through ColorService providing color management and visual customization for nodes",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "product.metrograph.render-metrics-shipped",
+   "statement": "MetroGraph implements Performance Monitoring through ContainerRenderTimeService and PlotService tracking render lag, resize metrics, rectangle packing performance across different node scales",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "code-inspection",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "vision-1",
+   "statement": "Every component is a live-editable JSON object with position/size controlled by signal-aware dimension system; editing JSON at any level updates state reactively via Angular signals",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "spec",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "vision-2",
+   "statement": "Layout engine uses signal-backed StateService with lenses to track dimensions (width, height, top, left) for every positioned element; changes to dimensions trigger computed() consumers and causality effects",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "spec",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  },
+  {
+   "id": "vision-3",
+   "statement": "JSON editability is declarative: ViewerMeta symbol attached to objects specifies field-level editors (text, number, toggle, select, readonly); changes recorded in EditorService and propagated to parent object state",
+   "category": "product",
+   "claim_type": "descriptive",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "spec",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 1,
+   "n_contradicting": null,
+   "domain": "product"
+  }
+ ],
+ "n_home_claims": 27,
+ "blocks": {
+  "feature_specs": [
+   {
+    "name": "Execution Logs & Step Debugging",
+    "status": "in-progress",
+    "market_feature_id": "market.feature.observability-execution-logs",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Error tracking and execution summary visualization"
+   },
+   {
+    "name": "Visual & Code Query Building",
+    "status": "in-progress",
+    "market_feature_id": "market.feature.query-building",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "MongoDB query builder with visual field selection interface"
+   },
+   {
+    "name": "Accessibility (WCAG 2.1 AA)",
+    "status": "planned",
+    "market_feature_id": "market.feature.ux-chrome-accessibility",
+    "hci_cost_grade": null,
+    "evidence_grade": "pending-experimental",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "WCAG 2.1 AA compliance"
+   },
+   {
+    "name": "Agent & Workflow Orchestration",
+    "status": "planned",
+    "market_feature_id": "market.feature.agent-orchestration",
+    "hci_cost_grade": null,
+    "evidence_grade": "pending-experimental",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Execution engine for node graphs"
+   },
+   {
+    "name": "Force-Directed / Organic Layout",
+    "status": "planned",
+    "market_feature_id": "market.feature.graph-layout-force-directed",
+    "hci_cost_grade": null,
+    "evidence_grade": "pending-experimental",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Automatic node layout with force-directed algorithms"
+   },
+   {
+    "name": "Git Integration & Branch/Merge",
+    "status": "planned",
+    "market_feature_id": "market.feature.versioning-git",
+    "hci_cost_grade": null,
+    "evidence_grade": "pending-experimental",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Version control for graphs"
+   },
+   {
+    "name": "Keyboard Shortcuts & Command Palette",
+    "status": "planned",
+    "market_feature_id": "market.feature.ux-chrome-keyboard",
+    "hci_cost_grade": null,
+    "evidence_grade": "pending-experimental",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Keyboard-driven interface for rapid graph editing"
+   },
+   {
+    "name": "Real-Time Collaboration",
+    "status": "planned",
+    "market_feature_id": "market.feature.collaboration-realtime-sync",
+    "hci_cost_grade": null,
+    "evidence_grade": "pending-experimental",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Multi-user collaborative graph editing"
+   },
+   {
+    "name": "Auto-Layout & Rectangle Packing",
+    "status": "shipped",
+    "market_feature_id": "market.feature.canvas-grouping",
+    "hci_cost_grade": null,
+    "evidence_grade": null,
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": null
+   },
+   {
+    "name": "Data Binding & Variable System",
+    "status": "shipped",
+    "market_feature_id": "market.feature.data-binding",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Reactive data binding with EditorService change tracking and multiple viewer types"
+   },
+   {
+    "name": "Data Source Integration & Connections",
+    "status": "shipped",
+    "market_feature_id": "market.feature.data-source",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "MongoDB data source integration with connection management"
+   },
+   {
+    "name": "Edge Creation / Connect Nodes",
+    "status": "shipped",
+    "market_feature_id": "market.feature.edges-creation",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Ability to create connections between nodes through drag-and-drop interface"
+   },
+   {
+    "name": "Edge Styling & Appearance Customization",
+    "status": "shipped",
+    "market_feature_id": "market.feature.edges-properties",
+    "hci_cost_grade": null,
+    "evidence_grade": null,
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": null
+   },
+   {
+    "name": "Edges & Data-Flow Connections",
+    "status": "shipped",
+    "market_feature_id": "market.feature.edges",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Visual edge rendering between nodes with LeaderLine library support"
+   },
+   {
+    "name": "Error Tracking & Stack Trace Visualization",
+    "status": "shipped",
+    "market_feature_id": "market.feature.observability-execution-logs",
+    "hci_cost_grade": null,
+    "evidence_grade": null,
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": null
+   },
+   {
+    "name": "Graph Navigation & Exploration",
+    "status": "shipped",
+    "market_feature_id": "market.feature.graph-exploration",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Node tree navigation with parent-child relationships"
+   },
+   {
+    "name": "Manual Positioning & Snap-to-Grid",
+    "status": "shipped",
+    "market_feature_id": "market.feature.graph-layout-manual",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Drag-based node positioning"
+   },
+   {
+    "name": "Multi-Selection & Bulk Editing",
+    "status": "shipped",
+    "market_feature_id": "market.feature.canvas-multi-select",
+    "hci_cost_grade": null,
+    "evidence_grade": null,
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": null
+   },
+   {
+    "name": "Node Creation & Palette",
+    "status": "shipped",
+    "market_feature_id": "market.feature.nodes-creation",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Dynamic node spawning via document/widget components on the canvas"
+   },
+   {
+    "name": "Node Properties / Inspector Panel",
+    "status": "shipped",
+    "market_feature_id": "market.feature.nodes-properties",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Property inspection with multiple viewer types for node attributes"
+   },
+   {
+    "name": "Node Styling & Visual Theming",
+    "status": "shipped",
+    "market_feature_id": null,
+    "hci_cost_grade": null,
+    "evidence_grade": null,
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": null
+   },
+   {
+    "name": "Node System & Types",
+    "status": "shipped",
+    "market_feature_id": "market.feature.nodes",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Typed container component hierarchy representing nodes with proper composition model"
+   },
+   {
+    "name": "Pan, Zoom & Semantic Viewport",
+    "status": "shipped",
+    "market_feature_id": "market.feature.canvas-pan-zoom",
+    "hci_cost_grade": "efficient",
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Viewport manipulation through drag and resize components"
+   },
+   {
+    "name": "Performance Monitoring & Metrics",
+    "status": "shipped",
+    "market_feature_id": null,
+    "hci_cost_grade": null,
+    "evidence_grade": null,
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": null
+   },
+   {
+    "name": "SQL / MongoDB Support",
+    "status": "shipped",
+    "market_feature_id": "market.feature.data-source-sql",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "MongoDB database support with query execution"
+   },
+   {
+    "name": "Schema Introspection & Discovery",
+    "status": "shipped",
+    "market_feature_id": "market.feature.schema-introspection",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "MongoDB collection and field discovery with schema exploration"
+   },
+   {
+    "name": "Visual Canvas & Editor",
+    "status": "shipped",
+    "market_feature_id": "market.feature.canvas",
+    "hci_cost_grade": null,
+    "evidence_grade": "code",
+    "pane_count_spec": null,
+    "click_depth_spec": null,
+    "description": "Interactive canvas for creating and arranging nodes with visual layout system"
+   }
+  ],
+  "components": [
+   {
+    "name": "Visual Canvas System",
+    "kind": "system",
+    "responsibility": "Provides the main visual canvas/dashboard where nodes are rendered and manipulated",
+    "loc": null
+   },
+   {
+    "name": "LineConnectionComponent",
+    "kind": "component",
+    "responsibility": "Renders visual connection lines between selected key-value pairs and their target documents",
+    "loc": null
+   },
+   {
+    "name": "Edge & Connection System",
+    "kind": "system",
+    "responsibility": "Visual connection rendering between nodes using LeaderLine library",
+    "loc": null
+   },
+   {
+    "name": "Drag & Resize System",
+    "kind": "system",
+    "responsibility": "Enables drag-and-drop and resize operations for nodes on the canvas",
+    "loc": null
+   },
+   {
+    "name": "Data Viewer & Editor System",
+    "kind": "system",
+    "responsibility": "Multiple viewer types for data binding and property inspection (text, number, boolean, select, key-value, object)",
+    "loc": null
+   },
+   {
+    "name": "MongoDB Query Builder",
+    "kind": "feature",
+    "responsibility": "Visual MongoDB query construction with collection/field selection and filtering",
+    "loc": null
+   },
+   {
+    "name": "Observability & Metrics System",
+    "kind": "system",
+    "responsibility": "Error logging, execution tracking, and performance metrics visualization",
+    "loc": null
+   },
+   {
+    "name": "Data Integration Services",
+    "kind": "system",
+    "responsibility": "MongoDB integration, global object store management, and data source handling",
+    "loc": null
+   },
+   {
+    "name": "Node & Container System",
+    "kind": "system",
+    "responsibility": "Core node/container abstraction with properties, state management, and composition",
+    "loc": null
+   },
+   {
+    "name": "DashboardComponent",
+    "kind": "component",
+    "responsibility": "Top-level viewport container (100vw x 100vh); manages document list, dev tools, error summary; listens to EditorService for live JSON edits (e.g. packer strategy changes)",
+    "loc": null
+   },
+   {
+    "name": "ContainerComponent",
+    "kind": "component",
+    "responsibility": "Base class for all positioned/sized elements; implements TStatefulEntity to participate in StateService; uses computed derivedStyle() that reads from DimensionService signals; manages lifecycle, event routing, and error propagation",
+    "loc": null
+   },
+   {
+    "name": "DocumentComponent",
+    "kind": "component",
+    "responsibility": "Wraps JSON objects/documents with title bar and drag/resize handles; resolves MongoDB document references; emits ObjectComponent for display; tracks selection and errors",
+    "loc": null
+   },
+   {
+    "name": "Viewer (base class)",
+    "kind": "component",
+    "responsibility": "Base class for all data renderers; computes getIntendedSize() based on data type; implements editable input with valueChange output; extends ContainerComponent for positioning",
+    "loc": null
+   },
+   {
+    "name": "ObjectComponent",
+    "kind": "component",
+    "responsibility": "Renders JSON objects by iterating entries and creating KeyValueViewerComponent children; computes child positions via rectangle packing; manages keyToComponent map reactively",
+    "loc": null
+   },
+   {
+    "name": "KeyValueViewerComponent",
+    "kind": "component",
+    "responsibility": "Renders a single key-value pair; conditionally renders key (text/object), value (by type), and pagination toggle; resolves editor type from FieldMeta; emits onValueChange() to EditorService; tracks selection and line connections",
+    "loc": null
+   },
+   {
+    "name": "TextViewerComponent",
+    "kind": "component",
+    "responsibility": "Renders string values in textarea; emits valueChange on edit",
+    "loc": null
+   },
+   {
+    "name": "NumberViewerComponent",
+    "kind": "component",
+    "responsibility": "Renders numeric values with optional slider or text input based on editor type",
+    "loc": null
+   },
+   {
+    "name": "BooleanViewerComponent",
+    "kind": "component",
+    "responsibility": "Renders boolean values with toggle control",
+    "loc": null
+   },
+   {
+    "name": "SelectViewerComponent",
+    "kind": "component",
+    "responsibility": "Renders enumerated values with dropdown selector from FieldMeta.options",
+    "loc": null
+   },
+   {
+    "name": "ObjectListComponent",
+    "kind": "component",
+    "responsibility": "Renders arrays of objects by iterating and creating ObjectComponent children",
+    "loc": null
+   },
+   {
+    "name": "DragComponent",
+    "kind": "component",
+    "responsibility": "CDK drag handler; listens to started/moved/ended events and updates dragElement's Left/Top dimensions via DimensionService",
+    "loc": null
+   },
+   {
+    "name": "ResizeComponent",
+    "kind": "component",
+    "responsibility": "Resize handle; calculates width/height deltas from mouse events; updates resizeElement dimensions; triggers causality effects and recursive size adjustment",
+    "loc": null
+   },
+   {
+    "name": "ResolverComponent",
+    "kind": "component",
+    "responsibility": "Template resolution; given a type, resolves template and context from ResolutionService",
+    "loc": null
+   },
+   {
+    "name": "EditorService",
+    "kind": "service",
+    "responsibility": "Tracks JSON edit history; recordChange() stores source object, path, value, prev; exposes latestChange signal for reactive consumers (e.g., DashboardComponent listening for packer strategy changes)",
+    "loc": null
+   },
+   {
+    "name": "StateService",
+    "kind": "service",
+    "responsibility": "Central signal-based state store; maps [TStatefulEntityID][key] -> signal(value); get/set/remove/removeEntity methods for tracking state; manages AbstractLense registration",
+    "loc": null
+   },
+   {
+    "name": "DimensionService",
+    "kind": "service",
+    "responsibility": "Signal-aware dimension lens; extends AbstractLense; reads/writes width, height, top, left via StateService; fires dimension change effects; core executor for layout updates",
+    "loc": null
+   },
+   {
+    "name": "RelativeDimensionService",
+    "kind": "service",
+    "responsibility": "Computes relative positioning of children; applies child slots and scaling/mimic relations; updates position when parent resizes",
+    "loc": null
+   },
+   {
+    "name": "CausalityService",
+    "kind": "service",
+    "responsibility": "DAG-based asynchrony control; factorizeCausable() creates handlers that fire effects only after all upstream causes complete; prevents race conditions and redundant computation in graph layout",
+    "loc": null
+   },
+   {
+    "name": "EventService",
+    "kind": "service",
+    "responsibility": "Event routing dispatch; maps component symbols to specialized event targets (ContainerEventTarget, ObjectViewerEventTarget, KeyValueViewerEventTarget); enables flow() propagation up component tree",
+    "loc": null
+   },
+   {
+    "name": "AppComponent",
+    "kind": "component",
+    "responsibility": "Root Angular component; entry point for router with RouterOutlet",
+    "loc": null
+   }
+  ],
+  "benchmarks": [
+   {
+    "subject_id": null,
+    "metric": "click-depth-layout-controls",
+    "value": null,
+    "unit": "clicks",
+    "method": "pending-experimental",
+    "is_dormant": true
+   },
+   {
+    "subject_id": null,
+    "metric": "hci-cost-grade-critical-features",
+    "value": null,
+    "unit": null,
+    "method": "pending-experimental",
+    "is_dormant": true
+   },
+   {
+    "subject_id": null,
+    "metric": "pane-count-user-cognitive-load",
+    "value": null,
+    "unit": "panes",
+    "method": "pending-experimental",
+    "is_dormant": true
+   },
+   {
+    "subject_id": null,
+    "metric": "user-interaction-without-training",
+    "value": null,
+    "unit": "success-rate",
+    "method": "pending-experimental",
+    "is_dormant": true
+   },
+   {
+    "subject_id": null,
+    "metric": "visual-surface-area-reduction",
+    "value": null,
+    "unit": null,
+    "method": "pending-experimental",
+    "is_dormant": true
+   },
+   {
+    "subject_id": null,
+    "metric": "Container Render Lag Ratio",
+    "value": null,
+    "unit": "ratio (0-1)",
+    "method": null,
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "Node Resize Operation Duration",
+    "value": null,
+    "unit": "milliseconds",
+    "method": null,
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "Rectangle Packing Layout Time (10 nodes)",
+    "value": null,
+    "unit": "milliseconds",
+    "method": null,
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "Rectangle Packing Layout Time (100 nodes)",
+    "value": null,
+    "unit": "milliseconds",
+    "method": null,
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "Rectangle Packing Layout Time (1000+ nodes)",
+    "value": null,
+    "unit": "milliseconds",
+    "method": null,
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "angular-components",
+    "value": 30.0,
+    "unit": null,
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "array-display-sample-size",
+    "value": 5.0,
+    "unit": "items",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "component-style-max-error",
+    "value": 120.0,
+    "unit": "KB",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "component-style-max-warning",
+    "value": 100.0,
+    "unit": "KB",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "development-dependencies",
+    "value": 11.0,
+    "unit": null,
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "error-detail-visual-size",
+    "value": 200.0,
+    "unit": "px",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "error-pin-visual-size",
+    "value": 110.0,
+    "unit": "px",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "initial-bundle-size-max-error",
+    "value": 20.0,
+    "unit": "MB",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "initial-bundle-size-max-warning",
+    "value": 30.0,
+    "unit": "MB",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "layout-max-nesting-depth",
+    "value": 10.0,
+    "unit": "levels",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "max-viewer-width",
+    "value": 500.0,
+    "unit": "px",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "min-viewer-width",
+    "value": 20.0,
+    "unit": "px",
+    "method": "code-measured",
+    "is_dormant": null
+   },
+   {
+    "subject_id": null,
+    "metric": "production-dependencies",
+    "value": 10.0,
+    "unit": null,
+    "method": "code-measured",
+    "is_dormant": null
+   }
+  ],
+  "measures_edges": [
+   {
+    "from_id": "feat.canvas",
+    "to_id": "market.feature.canvas",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.git-integration",
+    "to_id": "market.feature.versioning-git",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.edges",
+    "to_id": "market.feature.edges",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.edge-creation",
+    "to_id": "market.feature.edges-creation",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.node-creation",
+    "to_id": "market.feature.nodes-creation",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.properties-inspector",
+    "to_id": "market.feature.nodes-properties",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.pan-zoom",
+    "to_id": "market.feature.canvas-pan-zoom",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.nodes",
+    "to_id": "market.feature.nodes",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.schema-introspection",
+    "to_id": "market.feature.schema-introspection",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.data-source",
+    "to_id": "market.feature.data-source",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.data-source-mongodb",
+    "to_id": "market.feature.data-source-sql",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.query-building",
+    "to_id": "market.feature.query-building",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.graph-exploration",
+    "to_id": "market.feature.graph-exploration",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.manual-positioning",
+    "to_id": "market.feature.graph-layout-manual",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.execution-logs",
+    "to_id": "market.feature.observability-execution-logs",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.agent-orchestration",
+    "to_id": "market.feature.agent-orchestration",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.keyboard-shortcuts",
+    "to_id": "market.feature.ux-chrome-keyboard",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.collaboration",
+    "to_id": "market.feature.collaboration-realtime-sync",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.force-layout",
+    "to_id": "market.feature.graph-layout-force-directed",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.error-tracking",
+    "to_id": "market.feature.observability-execution-logs",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.accessibility",
+    "to_id": "market.feature.ux-chrome-accessibility",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.multi-selection",
+    "to_id": "market.feature.canvas-multi-select",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.auto-layout",
+    "to_id": "market.feature.canvas-grouping",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.edge-styling",
+    "to_id": "market.feature.edges-properties",
+    "confidence": 0.7
+   },
+   {
+    "from_id": "feat.data-binding",
+    "to_id": "market.feature.data-binding",
+    "confidence": 0.7
+   }
+  ],
+  "wedge_reeval": [
+   {
+    "market_claim_id": "market.claim.agent-observability-through-visualization-improves-trust",
+    "market_verdict": "disputed",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'disputed' (pure-secondary). Cross-domain evidence now: hci:grounds, hci:contradicts. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.mixed-initiative-design-ai-ui-parity-prevents-transparency-backfire",
+    "market_verdict": "disputed",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'disputed' (pure-secondary). Cross-domain evidence now: hci:contradicts, hci:grounds. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.mixed-initiative-requires-visualization-to-prevent-agent-opacity",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds, hci:contradicts. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.visual-affordances-enable-interaction-without-training",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:contradicts, hci:grounds. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.direct-manipulation-outperforms-conversation-graph-exploration",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.force-directed-graph-layout-remains-dominant-but-unoptimized-for-schem",
+    "market_verdict": "supported",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "voc:grounds_by_proxy"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'supported' (pure-secondary). Cross-domain evidence now: voc:grounds_by_proxy. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.graph-visualization-clutter-at-scale",
+    "market_verdict": "disputed",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds",
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Usability study: surface-area / progressive-disclosure variant vs full-canvas control; DV = time-on-task, error count, SUS; n>=30. Lands in voc.usability_sessions (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'disputed' (pure-secondary). Cross-domain evidence now: hci:grounds, voc:weakly_grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.information-foraging-predicts-metro-map-adoption",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.progressive-disclosure-unlocks-schema-acquisition-in-graphs",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Usability study: surface-area / progressive-disclosure variant vs full-canvas control; DV = time-on-task, error count, SUS; n>=30. Lands in voc.usability_sessions (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.wayfinding-in-schematic-maps-transfers-from-transit-knowledge",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.ai-ui-parity-exclusive-wedge",
+    "market_verdict": "supported",
+    "cross_domain_ceiling": "weak-proxy",
+    "proxy_support": [
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'supported' (pure-secondary). Cross-domain evidence now: voc:weakly_grounds. Ceiling='weak-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.flight-to-chat-when-ui-confuses-documented",
+    "market_verdict": "supported",
+    "cross_domain_ceiling": "weak-proxy",
+    "proxy_support": [
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'supported' (pure-secondary). Cross-domain evidence now: voc:weakly_grounds. Ceiling='weak-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.schematic-maps-outperform-force-directed-database-exploration",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "weak-proxy",
+    "proxy_support": [
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: voc:weakly_grounds. Ceiling='weak-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   }
+  ],
+  "status_mix": [
+   {
+    "status": "shipped",
+    "n": 19
+   },
+   {
+    "status": "planned",
+    "n": 6
+   },
+   {
+    "status": "in-progress",
+    "n": 2
+   }
+  ]
+ },
+ "figures": [
+  "wedge_ceiling.png"
+ ]
+}

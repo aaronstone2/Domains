@@ -1,0 +1,172 @@
+{
+ "chapter": {
+  "num": "II",
+  "slug": "02-method",
+  "title": "Method — The Strategy-OS Engine",
+  "kind": "drafted"
+ },
+ "home_domains": [],
+ "home_claims": [],
+ "n_home_claims": 0,
+ "blocks": {
+  "tables_per_domain": [
+   {
+    "domain": "market",
+    "tables": 36
+   },
+   {
+    "domain": "voc",
+    "tables": 23
+   },
+   {
+    "domain": "strategy",
+    "tables": 21
+   },
+   {
+    "domain": "finance",
+    "tables": 20
+   },
+   {
+    "domain": "product",
+    "tables": 20
+   },
+   {
+    "domain": "ecosystem",
+    "tables": 19
+   },
+   {
+    "domain": "compintel",
+    "tables": 19
+   },
+   {
+    "domain": "hci",
+    "tables": 19
+   },
+   {
+    "domain": "governance",
+    "tables": 19
+   }
+  ],
+  "evidence_classes": [
+   {
+    "domain": "hci",
+    "evidence_class": "primary",
+    "n": 85
+   },
+   {
+    "domain": "hci",
+    "evidence_class": "secondary",
+    "n": 74
+   },
+   {
+    "domain": "market",
+    "evidence_class": "secondary",
+    "n": 240
+   },
+   {
+    "domain": "product",
+    "evidence_class": "secondary",
+    "n": 17
+   },
+   {
+    "domain": "voc",
+    "evidence_class": "primary",
+    "n": 42
+   }
+  ],
+  "derivations": [
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-agent-orchestration",
+    "derived_claim_id": "strategy.claim.derived.contested-agent-orchestration",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.5
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-ai-assist",
+    "derived_claim_id": "strategy.claim.derived.contested-ai-assist",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.4
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-ai-assist-data-exploration",
+    "derived_claim_id": "strategy.claim.derived.contested-ai-assist-data-exploration",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.4
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-canvas",
+    "derived_claim_id": "strategy.claim.derived.contested-canvas",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.5
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-canvas-pan-zoom",
+    "derived_claim_id": "strategy.claim.derived.contested-canvas-pan-zoom",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.5
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-data-binding",
+    "derived_claim_id": "strategy.claim.derived.contested-data-binding",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.48
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-edges",
+    "derived_claim_id": "strategy.claim.derived.contested-edges",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.4
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-nodes",
+    "derived_claim_id": "strategy.claim.derived.contested-nodes",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.5
+   },
+   {
+    "id": "strategy.deriv.derive-contested-wedge.contested-nodes-agent-type",
+    "derived_claim_id": "strategy.claim.derived.contested-nodes-agent-type",
+    "rule_id": "derive-contested-wedge",
+    "confidence_out": 0.5
+   }
+  ],
+  "forecast_log": [
+   {
+    "n_forecasts": 65,
+    "resolved": 0,
+    "mean_brier": null
+   }
+  ],
+  "model_runs": [
+   {
+    "id": "finance.run.finance-ltv-cac.42",
+    "model": "finance-ltv-cac",
+    "output_metric": "ltv_cac_ratio",
+    "seed": 42,
+    "n_draws": 10000,
+    "p10": 2.5567806585026402,
+    "p50": 8.473511005340587,
+    "p90": 28.23267883320289
+   },
+   {
+    "id": "market.run.market-som.42",
+    "model": "market-som",
+    "output_metric": "som_usd",
+    "seed": 42,
+    "n_draws": 10000,
+    "p10": 37603484.845288776,
+    "p50": 93576612.39638716,
+    "p90": 226260639.90348503
+   }
+  ],
+  "primary_studies_count": [
+   {
+    "hci_primary_studies": 21
+   }
+  ]
+ },
+ "figures": [
+  "relationship_graph.png",
+  "evidence_grade.png"
+ ]
+}

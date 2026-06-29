@@ -1,0 +1,688 @@
+{
+ "chapter": {
+  "num": "XI",
+  "slug": "11-roadmap",
+  "title": "Forward Research Roadmap",
+  "kind": "drafted"
+ },
+ "home_domains": [],
+ "home_claims": [],
+ "n_home_claims": 0,
+ "blocks": {
+  "experiments": [
+   {
+    "id": "strategy.rec.experiment-1",
+    "statement": "RUN THE MISSING STUDY to lift \"force-directed-graph-layout-remains-dominant-but-unoptimized-for-schem\" past its proxy ceiling: Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "priority_score": 0.35,
+    "effort": "m",
+    "cites_claim_ids": [
+     "market.claim.force-directed-graph-layout-remains-dominant-but-unoptimized-for-schem"
+    ]
+   },
+   {
+    "id": "strategy.rec.experiment-2",
+    "statement": "RUN THE MISSING STUDY to lift \"graph-visualization-clutter-at-scale\" past its proxy ceiling: Usability study: surface-area / progressive-disclosure variant vs full-canvas control; DV = time-on-task, error count, SUS; n>=30. Lands in voc.usability_sessions (currently EMPTY).",
+    "priority_score": 0.1155,
+    "effort": "m",
+    "cites_claim_ids": [
+     "market.claim.graph-visualization-clutter-at-scale"
+    ]
+   },
+   {
+    "id": "strategy.rec.experiment-0",
+    "statement": "RUN THE MISSING STUDY to lift \"direct-manipulation-outperforms-conversation-graph-exploration\" past its proxy ceiling: Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "priority_score": 0.0875,
+    "effort": "m",
+    "cites_claim_ids": [
+     "market.claim.direct-manipulation-outperforms-conversation-graph-exploration"
+    ]
+   },
+   {
+    "id": "strategy.rec.experiment-3",
+    "statement": "RUN THE MISSING STUDY to lift \"information-foraging-predicts-metro-map-adoption\" past its proxy ceiling: Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "priority_score": 0.0875,
+    "effort": "m",
+    "cites_claim_ids": [
+     "market.claim.information-foraging-predicts-metro-map-adoption"
+    ]
+   }
+  ],
+  "wedge_experiments": [
+   {
+    "market_claim_id": "market.claim.agent-observability-through-visualization-improves-trust",
+    "cross_domain_ceiling": "contested",
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.mixed-initiative-design-ai-ui-parity-prevents-transparency-backfire",
+    "cross_domain_ceiling": "contested",
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.mixed-initiative-requires-visualization-to-prevent-agent-opacity",
+    "cross_domain_ceiling": "contested",
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.visual-affordances-enable-interaction-without-training",
+    "cross_domain_ceiling": "contested",
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.direct-manipulation-outperforms-conversation-graph-exploration",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.force-directed-graph-layout-remains-dominant-but-unoptimized-for-schem",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.graph-visualization-clutter-at-scale",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Usability study: surface-area / progressive-disclosure variant vs full-canvas control; DV = time-on-task, error count, SUS; n>=30. Lands in voc.usability_sessions (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.information-foraging-predicts-metro-map-adoption",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.progressive-disclosure-unlocks-schema-acquisition-in-graphs",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Usability study: surface-area / progressive-disclosure variant vs full-canvas control; DV = time-on-task, error count, SUS; n>=30. Lands in voc.usability_sessions (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.wayfinding-in-schematic-maps-transfers-from-transit-knowledge",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.ai-ui-parity-exclusive-wedge",
+    "cross_domain_ceiling": "weak-proxy",
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.flight-to-chat-when-ui-confuses-documented",
+    "cross_domain_ceiling": "weak-proxy",
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY)."
+   },
+   {
+    "market_claim_id": "market.claim.schematic-maps-outperform-force-directed-database-exploration",
+    "cross_domain_ceiling": "weak-proxy",
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY)."
+   }
+  ],
+  "hci_hypotheses": [
+   {
+    "id": "hci-cognitive-load-disclosure-h1",
+    "statement": "Progressive disclosure (showing detail-on-demand, hiding non-essential relationships initially, expanding nodes iteratively) enables faster schema acquisition and more accurate mental models of complex graph structures compared to fully-expanded views, by reducing extraneous cognitive load while preserving access to all information.",
+    "status": "active",
+    "maps_to_market_claim_id": "market.claim.progressive-disclosure-unlocks-schema-acquisition-in-graphs",
+    "what_would_validate": "Empirical comparison of progressive disclosure vs. fully-expanded graph visualizations on task completion time, accuracy of mental model reconstruction (via concept mapping or recall), and subjective cognitive load (NASA-TLX or Paas scale) with n=60+ participants performing graph exploration tasks."
+   },
+   {
+    "id": "hci-cognitive-load-disclosure-h2",
+    "statement": "Metro-map style layouts (orthogonal edges, fixed node positions, constrained geometry) reduce cognitive load and improve mental model stability compared to force-directed layouts by minimizing split-attention effects and supporting consistent spatial encoding across repeated interactions.",
+    "status": "active",
+    "maps_to_market_claim_id": "market.claim.schematic-maps-outperform-force-directed-database-exploration",
+    "what_would_validate": "Controlled experiment comparing orthogonal/metro layouts vs. force-directed layouts on: (1) task accuracy on path-finding/connectivity tasks, (2) mental model consistency across repeated trials, (3) eye-tracking metrics (gaze entropy, fixation duration), (4) subjective cognitive load, with n=40+ per condition."
+   },
+   {
+    "id": "hci-cognitive-load-disclosure-h3",
+    "statement": "Split-attention between text labels/legends and graph elements increases cognitive load and degrades comprehension; integrating labels directly into the graph (or via persistent on-hover) reduces extraneous load and improves task performance.",
+    "status": "active",
+    "maps_to_market_claim_id": "market.claim.element-interactivity-requires-graph-decomposition",
+    "what_would_validate": "Empirical comparison of integrated labels vs. separated legend + graph on task time, error rate, and eye-tracking (gaze-switching frequency) for n=50+ participants identifying node relationships in high-element-interactivity graphs (>20 nodes with >50 connections)."
+   },
+   {
+    "id": "hci-cognitive-load-disclosure-h4",
+    "statement": "Multiple simultaneous panes (canvas + inspector + controls + properties) create cognitive load through split-attention; unified progressive-disclosure interface showing detail-on-demand achieves equivalent functionality with lower measured cognitive load.",
+    "status": "active",
+    "maps_to_market_claim_id": "market.claim.40-percent-screens-3plus-panes-standard",
+    "what_would_validate": "Controlled experiment comparing 4+ pane interface vs. progressive-disclosure unified interface on NASA-TLX cognitive load, task completion time, and error rate for workflow/graph construction tasks (n=60+). Multi-pane condition should show significantly higher cognitive load scores."
+   },
+   {
+    "id": "hci-cognitive-load-disclosure-h5",
+    "statement": "Information scent (clarity of navigation cues, relevance of labels, predictability of navigation paths) predicts user success in graph exploration; weak information scent drives users to conversational AI interfaces as a substitute affordance system.",
+    "status": "active",
+    "maps_to_market_claim_id": "market.claim.metro-map-metaphor-reduces-information-scent-uncertainty",
+    "what_would_validate": "Study comparing graph tools with high information scent (clear labels, familiar affordances, predictable layouts) vs. low information scent on task success rate, exploration time, and propensity to switch to chat-based alternatives. Also measure via A/B testing of MetroGraph vs. force-directed baseline on user flow: % who successfully complete task vs. % who abandon to chat."
+   },
+   {
+    "id": "hci-schematization-wayfinding-h1",
+    "statement": "Schematic map layouts (metro-style: orthogonal edges, consistent spacing, reduced visual clutter) improve wayfinding task completion time by 20-35% compared to force-directed graph layouts",
+    "status": "grounded",
+    "maps_to_market_claim_id": null,
+    "what_would_validate": "Controlled experiment: N=60+ participants navigating schematic vs force-directed representations of same 50-node graph; measure task time, error rate, cognitive load (NASA-TLX), and mental model accuracy via post-task spatial recall test"
+   },
+   {
+    "id": "hci-schematization-wayfinding-h2",
+    "statement": "Schematic layouts enable transfer of existing wayfinding knowledge from transit systems (London Underground, NYC Subway familiarity) to database navigation, reducing learning curve by 40%+ compared to force-directed layouts",
+    "status": "grounded",
+    "maps_to_market_claim_id": null,
+    "what_would_validate": "Within-subjects study: N=40-50 participants with varying transit-map familiarity navigating schematic DB layout; measure immediate comprehension accuracy and time-to-first-correct-action with/without transit experience; validate knowledge transfer via pre/post spatial mental model assessments"
+   },
+   {
+    "id": "hci-schematization-wayfinding-h3",
+    "statement": "Stable spatial encoding in schematic layouts (fixed node positions) produces 25-40% faster mental model construction than dynamic/force-directed layouts (node repositioning across views)",
+    "status": "grounded",
+    "maps_to_market_claim_id": null,
+    "what_would_validate": "Eye-tracking study: N=30-40 participants viewing 5 sequential views of same graph with stable vs randomly-positioned node layouts; measure fixation count, saccade amplitude, and time-to-comprehension via post-view recall accuracy; validate via fMRI or EEG measures of cognitive load (theta/alpha power)"
+   },
+   {
+    "id": "hci-schematization-wayfinding-h4",
+    "statement": "Orthogonal edge layouts reduce visual clutter and working-memory load, enabling comprehension of graphs up to 80-100 nodes vs ~30-40 node limit for force-directed layouts",
+    "status": "grounded",
+    "maps_to_market_claim_id": null,
+    "what_would_validate": "Complexity scaling study: N=50+ participants navigating graphs of increasing node density (20, 40, 60, 80, 100 nodes) in both layout styles; measure success rate, completion time, self-reported cognitive load (NASA-TLX); identify inflection point where force-directed breaks down but schematic remains usable"
+   },
+   {
+    "id": "hci-schematization-wayfinding-h5",
+    "statement": "Landmark-based spatial encoding (colored stations, named clusters, hierarchical organization) reduces search time by 30-50% by providing preattentive cues for rapid schema recognition",
+    "status": "grounded",
+    "maps_to_market_claim_id": null,
+    "what_would_validate": "Visual search study: N=40-60 participants identifying specific relationships in graph with vs without semantic landmarks/color encoding; measure response time, fixation count, and error rate; validate preattentive processing via <250ms response-time analysis"
+   },
+   {
+    "id": "hci-dh-animated-transitions-reduce-cognitive-load-graph-updates",
+    "statement": "Animated transitions in MetroGraph's canvas (when nodes move, edges reflow, or schema is updated) reduce cognitive load by maintaining object constancy and reducing gaze refixations by 30-40%, compared to instant state changes.",
+    "status": "grounded-by-theory",
+    "maps_to_market_claim_id": "extraneous-load-reduction-principal-design-lever",
+    "what_would_validate": "A/B test comparing MetroGraph with animated transitions (300-500ms) vs. instant canvas updates, measuring: (1) task completion time (expect 15-25% improvement), (2) eye-gaze refixations during pan/zoom (expect 30-40% reduction), (3) error rate in schema navigation tasks (expect 10-20% reduction). Sample size n=30+ per condition."
+   },
+   {
+    "id": "hci-dh-infinite-canvas-regions-distribute-extraneous-load",
+    "statement": "MetroGraph's Infinite Canvas with Regions (organizing subgraphs into visually-bounded regions) reduces extraneous cognitive load by preventing split-attention effect and maintaining spatial proximity of related entities, compared to single-viewport dense graph visualization.",
+    "status": "grounded-by-theory",
+    "maps_to_market_claim_id": "element-interactivity-requires-graph-decomposition",
+    "what_would_validate": "Controlled experiment (n=30+) comparing MetroGraph (infinite canvas with regions) vs. dense single-view graph (e.g., Cytoscape) on schema comprehension tasks with 100+ nodes. Measure: (1) task completion time (expect 20-30% improvement with regions), (2) error rate in identifying relationships (expect 15-25% lower with regions), (3) perceived cognitive load (NASA-TLX, expect 10-15 point reduction). Confirm split-attention reduction via eye-tracking (measure time to assemble distributed information)."
+   },
+   {
+    "id": "hci-dh-information-scent-metro-semantics-prevents-flight-to-chat",
+    "statement": "MetroGraph's high-information-scent visual design (station names, line colors, spatial hierarchy, clear affordances) provides stronger predictability of relationship structure than force-directed graphs, reducing users' resort to chat-based querying for schema exploration.",
+    "status": "grounded-by-theory",
+    "maps_to_market_claim_id": "information-foraging-predicts-metro-map-adoption",
+    "what_would_validate": "User study (n=24+) comparing MetroGraph vs. force-directed tool for exploratory database schema tasks: (1) frequency of users switching to chat/search when UI is unclear (measure as % of task attempts), (2) self-reported confidence in understanding relationships (Likert scale), (3) task completion without external help (expect 60-80% reduction in chat queries). Collect eye-tracking to measure information scent perception via gaze latency to decision regions."
+   },
+   {
+    "id": "hci-dh-metro-map-layout-enables-preattentive-pattern-recognition",
+    "statement": "MetroGraph's metro-map schematic layout (orthogonal edges, snap-to-grid, consistent station positions, color-coded lines) enables preattentive visual feature processing (<250ms) of relationship topologies compared to force-directed layouts, improving rapid schema comprehension.",
+    "status": "grounded-by-theory",
+    "maps_to_market_claim_id": "metro-map-layout-brand-differentiation",
+    "what_would_validate": "Visual search task comparing MetroGraph (metro-map layout) vs. force-directed layout (e.g., Cytoscape): (1) time-to-find relationship between two nodes (expect 40-50% faster with metro-map), (2) accuracy in identifying node dependencies (expect 15-25% improvement), (3) gaze-time to first fixation on target (expect 100-200ms faster). Study should control for graph size (50-100 nodes) and relationship complexity."
+   },
+   {
+    "id": "hci-dh-timing-of-animations-300-500ms-optimal-for-comprehension",
+    "statement": "Animation duration in MetroGraph should be tuned to 300-500ms range (neither too fast to be perceived, nor so slow as to create drag) to optimize object constancy tracking and cognitive load reduction during interactive updates.",
+    "status": "grounded-by-theory",
+    "maps_to_market_claim_id": "extraneous-load-reduction-principal-design-lever",
+    "what_would_validate": "Animation timing study (within-subjects, n=20+) testing MetroGraph's canvas transitions at 5 duration levels (200ms, 300ms, 400ms, 500ms, 800ms). Measure: (1) subjective smoothness rating (Likert), (2) task completion time (expect U-shaped curve, faster at 300-500ms), (3) comprehension accuracy (identify relationships in transformed graph), (4) perceived waiting time. Analyze eye-tracking data to confirm smooth pursuit eye movement at optimal duration."
+   },
+   {
+    "id": "dh-explanations-alone-insufficient-reliance-calibration",
+    "statement": "Text explanations alone (without interactive visualization) do not improve error detection or appropriately calibrate reliance; longer explanations may increase false confidence (mere exposure / completeness bias)",
+    "status": "mixed",
+    "maps_to_market_claim_id": "market.claim.mixed-initiative-design-ai-ui-parity-prevents-transparency-backfire",
+    "what_would_validate": "RCT: compare explanation-only vs. explanation + visualization + interaction; measure trust calibration (appropriately rejecting incorrect suggestions); task accuracy with incorrect agent advice; replication of Bansal finding (n>300, powered for interaction)"
+   },
+   {
+    "id": "dh-agent-transparency-visualization-prevents-bias",
+    "statement": "Visualizing agent reasoning (showing decision steps, confidence, alternatives) reduces automation bias and increases appropriate reliance compared to opaque agent execution",
+    "status": "supported",
+    "maps_to_market_claim_id": "market.claim.mixed-initiative-requires-visualization-to-prevent-agent-opacity",
+    "what_would_validate": "Controlled experiment measuring acceptance of incorrect agent suggestions; lower acceptance rate with transparency condition; eye-tracking showing increased attention to agent reasoning; error detection task performance improvement"
+   },
+   {
+    "id": "dh-agentic-loop-visibility-enables-error-detection",
+    "statement": "Making agent execution loops visible (step-by-step task execution, intermediate outputs, error handling) enables users to detect and correct agent failures faster than chat-based debugging or opaque agent logs",
+    "status": "supported",
+    "maps_to_market_claim_id": "market.claim.agentic-loop-visibility-unserved",
+    "what_would_validate": "Controlled experiment with error injection in agent workflows; measure time-to-detect-error, error correction success rate; compare graph-based workflow visualization vs. text logs vs. chat debugging; user study with domain experts (data engineers, workflow designers)"
+   },
+   {
+    "id": "dh-direct-manipulation-reduces-reliance-overload",
+    "statement": "Direct-manipulation graph interfaces (drag, click-to-expand, in-place edit) with visible agent actions produce lower cognitive load and better error detection than conversational chat + invisible agent execution",
+    "status": "supported",
+    "maps_to_market_claim_id": "market.claim.direct-manipulation-outperforms-conversation-graph-exploration",
+    "what_would_validate": "A/B test comparing graph canvas with visible agent nodes vs. chat-only interface; measure task completion time, error detection latency, mental model accuracy (simulation task); eye-tracking attention distribution"
+   },
+   {
+    "id": "hci-hypothesis-edge-crossing-cognitive-load",
+    "statement": "Reducing edge crossings via orthogonal layout constraints will decrease cognitive load (measured by fixation duration, fixation count, pupil dilation) and improve comprehension accuracy compared to high-crossing layouts",
+    "status": "untested-for-metro-graph",
+    "maps_to_market_claim_id": "market.claim.mental-model-stability-requires-consistent-spatial-encoding",
+    "what_would_validate": "Eye-tracking study measuring fixation patterns and duration on metro-map vs force-directed layouts during path-finding and relationship identification tasks. Hypothesis validated if metro-map produces: (1) fewer fixations, (2) shorter average fixation duration, (3) higher comprehension accuracy (p<0.05)."
+   },
+   {
+    "id": "hci-hypothesis-extraneous-load-reduction-effectiveness",
+    "statement": "Reducing extraneous cognitive load through UI simplification (single-pane canvas, hide non-essential controls, minimize modal dialogs) will improve task performance more than increasing intrinsic load management",
+    "status": "untested-for-metro-graph",
+    "maps_to_market_claim_id": "market.claim.extraneous-load-reduction-principal-design-lever",
+    "what_would_validate": "Experiment comparing MetroGraph (high affordance, low extraneous load) vs. competitor tools (multiple panes, modal dialogs). Measure: task completion time, error rate, NASA-TLX cognitive load subscales (specifically extraneous load perception). Validated if MetroGraph significantly improves extraneous load scores and task performance."
+   },
+   {
+    "id": "hci-hypothesis-metro-map-layout-advantage",
+    "statement": "Metro-map style layouts (orthogonal edges, constrained routing, stable spatial encoding) will produce faster task completion and higher accuracy than force-directed layouts in database schema exploration tasks",
+    "status": "untested-for-metro-graph",
+    "maps_to_market_claim_id": "market.claim.schematic-maps-outperform-force-directed-database-exploration",
+    "what_would_validate": "Controlled experiment comparing metro-map layout vs. force-directed layout on database schema comprehension tasks (identifying relationships, schema structure, cardinality constraints). Measure: task completion time, error rate, NASA-TLX cognitive load score. Hypothesis validated if metro-map shows significant (p<0.05) advantage on 2+ metrics."
+   },
+   {
+    "id": "hci-hypothesis-progressive-disclosure-schema-acquisition",
+    "statement": "Progressive disclosure of graph nodes (showing related nodes on-demand, hiding non-essential relationships initially) will improve mental model formation and schema comprehension compared to full graph expansion",
+    "status": "untested-for-metro-graph",
+    "maps_to_market_claim_id": "market.claim.progressive-disclosure-unlocks-schema-acquisition-in-graphs",
+    "what_would_validate": "Experiment comparing full-graph view vs. progressive-disclosure view. Measure: (1) Schema comprehension test (draw relationships, identify cardinality), (2) task completion time, (3) number of interactions needed, (4) confidence ratings. Validated if progressive-disclosure achieves higher comprehension scores without increased completion time."
+   },
+   {
+    "id": "hci-hypothesis-stable-spatial-encoding-transfer",
+    "statement": "Stable spatial encoding in database schema visualizations (consistent node positions, fixed layout) will enable rapid recognition and enable knowledge transfer to future schema exploration tasks",
+    "status": "untested-for-metro-graph",
+    "maps_to_market_claim_id": "market.claim.wayfinding-in-schematic-maps-transfers-from-transit-knowledge",
+    "what_would_validate": "Longitudinal study: users explore same database schema multiple times. Measure: (1) task completion time improvement across sessions (learning curve), (2) accuracy improvement, (3) transfer test on new schema with similar structure. Validated if users show significant learning curve on repeated schemas and transfer to novel schemas faster than baseline."
+   },
+   {
+    "id": "hci-hypothesis-visual-affordances-reduce-training-need",
+    "statement": "Strong visual affordances (directional arrows, color-coded interactive regions, expand/collapse affordances) will reduce training time and enable naive users to explore database schemas without prior instruction",
+    "status": "untested-for-metro-graph",
+    "maps_to_market_claim_id": "market.claim.visual-affordances-enable-interaction-without-training",
+    "what_would_validate": "Between-subjects experiment: (1) high-affordance group (MetroGraph), (2) weak-affordance group (minimalist layout). Measure: time-to-first-interaction, task success rate on unprompted exploration, and success on targeted tasks without training. Validated if high-affordance group achieves significantly higher success rates and lower time-to-completion without training."
+   }
+  ],
+  "product_roadmap": [
+   {
+    "title": "Complete Visual Query Builder for MongoDB",
+    "category": null,
+    "status": "in-progress",
+    "effort": null,
+    "rationale": "MongoQueryComponent infrastructure exists but is disabled; completing would enable visual query construction without code",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Enhanced Execution Logs & Debugging UI",
+    "category": null,
+    "status": "in-progress",
+    "effort": null,
+    "rationale": "Error tracking exists; improving visualization and filtering would support workflow debugging",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "User study: visual affordances reduce gulf of execution",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "high",
+    "rationale": "Refuted claim market.claim.visual-affordances-enable-interaction-without-training requires empirical validation that visible affordances (raised buttons, directional arrows, color-coded regions, icon semantics) enable interaction without training, compared to weak-affordance tools that push users to conversational LLM substitutes",
+    "cited_claim_ids": [
+     "market.claim.visual-affordances-enable-interaction-without-training"
+    ]
+   },
+   {
+    "title": "Competitive A-grade HCI cost study on 8 critical features vs n8n/Make/Zapier",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "high",
+    "rationale": "Refuted claim market.claim.hci-cost-parity-on-critical-features claimed Graph achieves A-grade quality with A HCI cost on 8 high-pain features (pain >= 0.85), matching or exceeding competitors; requires structured UX audit and task-based usability comparison",
+    "cited_claim_ids": [
+     "market.claim.hci-cost-parity-on-critical-features"
+    ]
+   },
+   {
+    "title": "Optimize bundle size: current budgets (20MB error, 30MB warning) are high; target <5MB",
+    "category": "infra",
+    "status": "planned",
+    "effort": "high",
+    "rationale": "Angular 21.1.5 with leader-line and full Material library inflate initial bundle; opportunity for tree-shaking, lazy-loading, and dependency audit to improve cold-start performance and reduce download time for graph editing workflows",
+    "cited_claim_ids": []
+   },
+   {
+    "title": "Audit component style budget utilization (current: 100-120KB error)",
+    "category": "infra",
+    "status": "planned",
+    "effort": "low",
+    "rationale": "Component style budget in angular.json allows up to 120KB per component at error threshold; audit current usage patterns to identify over-styling and inform design system consolidation for reusability",
+    "cited_claim_ids": []
+   },
+   {
+    "title": "Validate pane count cognitive penalty hypothesis (CLT)",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "medium",
+    "rationale": "Refuted claim market.claim.40-percent-screens-3plus-panes-standard posited 40% of screens have 3+ panes with measurable cognitive penalty; user study needed to establish ground truth on split-attention effect threshold and impact on task completion time",
+    "cited_claim_ids": [
+     "market.claim.40-percent-screens-3plus-panes-standard"
+    ]
+   },
+   {
+    "title": "Measure surface-area reduction: metro-map vs dense canvas layout",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "medium",
+    "rationale": "Refuted claim market.claim.wedge-low-surface-area-aesthetic-emerging-pattern claimed metro-map style (orthogonal edges, snap-to-grid, hierarchy) achieves A-tier HCI vs D-tier for dense canvases; need quantitative surface-area metrics and comparative eye-tracking/comprehension study",
+    "cited_claim_ids": [
+     "market.claim.wedge-low-surface-area-aesthetic-emerging-pattern"
+    ]
+   },
+   {
+    "title": "Audit layout control discoverability across UI surfaces",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "medium",
+    "rationale": "Refuted claim market.claim.layout-controls-scattered-discoverability-failure documented fragmented layout algorithm access (right-click menu, panel, toolbar, dialog) reducing discoverability in C-tier HCI tools; Graph should consolidate controls to A-tier surface, validate with task-based usability test",
+    "cited_claim_ids": [
+     "market.claim.layout-controls-scattered-discoverability-failure"
+    ]
+   },
+   {
+    "title": "Validate agent orchestration + visualization feature cluster for data engineers",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "medium",
+    "rationale": "Refuted claim market.claim.agent-orchestration-feature-gap-data-teams asserted Graph uniquely combines orchestration with database-native visualization and data binding (rare in 36 surveyed products); user interviews with data engineers to validate feature gap and market fit",
+    "cited_claim_ids": [
+     "market.claim.agent-orchestration-feature-gap-data-teams"
+    ]
+   },
+   {
+    "title": "Analyze low-code UI complexity tradeoff: Graph config UX vs code verbosity",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "medium",
+    "rationale": "Refuted claim market.claim.low-code-paradox-ui-replaces-code-complexity posited low-code platforms hide code complexity but expose UI complexity (D-tier HCI cost); measure cognitive load of Graph config workflows vs traditional code patterns; inform design targets for config surface area",
+    "cited_claim_ids": [
+     "market.claim.low-code-paradox-ui-replaces-code-complexity"
+    ]
+   },
+   {
+    "title": "Validate async collaboration friction in real-time vs comment-based feedback",
+    "category": "validation-experiment",
+    "status": "planned",
+    "effort": "medium",
+    "rationale": "Refuted claim market.claim.real-time-collaboration-async-friction-mismatch documented workflow friction when async feedback relies on comments rather than visual annotations (B-tier HCI in 4 platforms); assess Graph's async collaboration patterns and design target for friction reduction",
+    "cited_claim_ids": [
+     "market.claim.real-time-collaboration-async-friction-mismatch"
+    ]
+   },
+   {
+    "title": "Establish render node budget and performance profiling for large graphs",
+    "category": "feature",
+    "status": "planned",
+    "effort": "medium",
+    "rationale": "Code-measured budget constants exist (layout max depth=10, array sample=5, viewer width 20-500px) but no node-count or frame-rate budget defined; should establish render-node limits, FPS targets, and memory budgets for graphs with 100-10K+ nodes to guide performance optimization and UX thresholds",
+    "cited_claim_ids": []
+   },
+   {
+    "title": "Force-Directed / Organic Graph Layout",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Alternative to rectangle packing; would provide more natural-looking network diagrams",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Undo/Redo & Edit History",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Essential UX feature for graph editing; requires transaction/event log architecture",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Export to Multiple Formats (JSON, SVG, PNG, etc.)",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Enable users to export graphs for sharing, documentation, and integration with other tools",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Real-Time Collaboration & Multi-User Editing",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Enable teams to edit graphs simultaneously with presence indicators and conflict resolution",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Git Integration & Version Control",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Enable branching, merging, and version history tracking with Git backends",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Keyboard Shortcuts & Command Palette",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Improve power-user productivity with keyboard-driven workflows",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Agent & Workflow Orchestration Runtime",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Execute MetroGraph workflows as autonomous agents with step-by-step execution and control flow",
+    "cited_claim_ids": null
+   },
+   {
+    "title": "Render Performance Optimization for 10K+ Nodes",
+    "category": null,
+    "status": "planned",
+    "effort": null,
+    "rationale": "Currently benchmarked to 1000 nodes; virtualization and rendering optimizations needed for larger graphs",
+    "cited_claim_ids": null
+   }
+  ],
+  "gov_roadmap": [
+   {
+    "severity": "blocker",
+    "remediation": "Implement SSO/OAuth2/SAML support (Okta, Azure AD, Google, GitHub). Estimate: 8-12 weeks engineering. Must support identity federation and group/role sync from IdP.",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement mandatory encryption for all ePHI: TLS 1.3 for in-transit (HTTPS everywhere), AES-256 for at-rest encryption. Integrate with underlying data store encryption (DuckDB, MongoDB). Provide encryption key management with audit trail. Estimate: 6-8 weeks.",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Integrate MFA (TOTP/SMS/push) via auth provider or NIST-compliant library. Enforce MFA on all user accounts. Estimate: 4-6 weeks.",
+    "effort": "medium"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Build comprehensive audit log system capturing: user identity, action type, resource accessed, timestamp, result. Immutable log storage. Queryable audit UI with export/filtering. Estimate: 10-14 weeks.",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Complete implementation of all CC1-CC9 controls (security environment, risk assessment, monitoring, system operations, change management). Budget 6 months build + 6 months audit observation. Estimated cost: 50-100k USD audit fees.",
+    "effort": "ultra"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Create GDPR-compliant Data Processing Agreement template; implement sub-processor management system; add DPA acceptance workflow in customer onboarding; document lawful basis and data categories processed",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement comprehensive audit logging system: track user identity, action (query/view/export), timestamp, source IP, data accessed, and result. Store logs immutably with at least 90-day retention. Integrate SOC2-compliant logging infrastructure",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Deadline was March 31, 2025 (OVERDUE). Ship universal MFA immediately for all user access. Support phishing-resistant methods (FIDO2). Conduct MFA audit for all users. Estimate: 2-4 weeks emergency implementation.",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement workspace-scoped RBAC with roles (Admin, Editor, Viewer) and granular permission model. Require role assignment at login and enforce in API/UI. Estimate: 6-8 weeks.",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement GDPR Art. 17 workflow: accept deletion requests via support system; purge query history, saved graphs, and user data; coordinate deletion with connected data sources; provide deletion confirmation with audit trail",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement top-down risk assessment approach for internal controls: identify financial statement risks, assess entity-level controls, then detail-test significant accounts. Document risk register and control mapping. Engage external SOX auditor. Estimate: 12-16 weeks prep + 6 months audit.",
+    "effort": "ultra"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Offer EU data residency deployment option: deploy infrastructure in EU region (Ireland, Germany, Netherlands). Document compliance with GDPR adequacy. Provide data residency selection at signup. Estimate: 12-16 weeks (infrastructure + application changes).",
+    "effort": "ultra"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement AI transparency disclosure: add user notifications when AI systems are used, disclose AI-generated content, provide controls for user consent. Audit all AI system interactions. Deadline: August 2, 2026 (IMMINENT). Estimate: 3-4 weeks.",
+    "effort": "high"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Begin FedRAMP authorization process: complete System Security Plan (SSP) mapping 323 controls, conduct continuous monitoring setup, engage Third Party Assessment Organization (3PAO) for testing. Timeline: 6-12 months minimum. Cost: 50k-150k USD.",
+    "effort": "ultra"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement OAuth 2.0 / OIDC identity provider integration, add MFA (TOTP / U2F), and persist user identity throughout session. Required before any enterprise deployment.",
+    "effort": "l"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Design and implement role-based access control: (1) Define roles (viewer, editor, admin); (2) Scope data sources and workflows per role; (3) Enforce at API and UI layer; (4) Integrate with identity provider.",
+    "effort": "xl"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Build audit event stream: log all user actions (login, workflow create/edit, data access, query execution), write immutable log to append-only store (e.g., DuckDB table), expose via API for SIEM integration and quarterly review reports.",
+    "effort": "xl"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement data classification system: (1) UI to tag columns/fields with PII/PHI/confidential/public; (2) Persist classification metadata; (3) Propagate downstream in lineage; (4) Integrate with access control to enforce masking/restrictions.",
+    "effort": "l"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement column-level access control: (1) Design schema for field-level permissions; (2) Modify data source connector to filter columns per role; (3) Apply masking in preview UI and exported data; (4) Audit every access.",
+    "effort": "xl"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Create NIS2 Article 20 governance framework: board-level cybersecurity dashboard, quarterly executive reporting, documented risk oversight minutes. Integrate with incident response and risk assessment. Estimate: 4-6 weeks framework + ongoing.",
+    "effort": "medium"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Ship MFA enforcement with TOTP, SMS, and push notification options; integrate with Okta, Azure AD, or use open-source FIDO2 library. Enforce at login and API authentication. Estimate: 4-6 weeks.",
+    "effort": "medium"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Offer EU data residency option with infrastructure in EU region; document Schrems II compliance strategy (SCCs with supplementary measures or Adequacy Decision path); provide DPA appendix addressing data transfer mechanisms",
+    "effort": "high"
+   },
+   {
+    "severity": "important",
+    "remediation": "Implement machine-readable marking for synthetic/AI-generated content in output data. Add metadata tags (e.g., JSON schema with 'ai_generated: true'). Extended deadline: December 2, 2026. Estimate: 2-3 weeks.",
+    "effort": "medium"
+   },
+   {
+    "severity": "major",
+    "remediation": "Extend RBAC to workspace level: (1) Implement multi-tenant data isolation (workflows/sources scoped per workspace); (2) Grant users workspace-level roles; (3) Log all cross-workspace access; (4) Support workspace transfer/ownership for data mesh topologies.",
+    "effort": "l"
+   },
+   {
+    "severity": "major",
+    "remediation": "Formalize lineage as queryable data: (1) Extract source/transform/sink relationships from node graph into lineage table; (2) Expose upstream/downstream search UI; (3) Support lineage export for compliance tools (e.g., Collibra, Alation); (4) Add impact analysis (change to source → affected workflows).",
+    "effort": "m"
+   },
+   {
+    "severity": "major",
+    "remediation": "Add CCPA compliance statements to privacy policy; implement consumer request workflow (access, deletion, opt-out); add non-discrimination clause; ensure 45-day response time for requests; train support team on California requirements",
+    "effort": "medium"
+   },
+   {
+    "severity": "major",
+    "remediation": "Create sub-processor registry documenting all data sources (SQL, MongoDB, cloud providers) and their processing scope; include in DPA; notify customers of changes; provide SCCs or equivalent contracts from sub-processors",
+    "effort": "medium"
+   },
+   {
+    "severity": "major",
+    "remediation": "Define incident response plan with roles, escalation paths, and 72-hour notification procedures; implement security event detection and alerting; create breach notification workflow; document and test annually",
+    "effort": "medium"
+   },
+   {
+    "severity": "major",
+    "remediation": "Document encryption standards (TLS 1.2+, AES-256 at rest); implement key rotation procedures; add encryption status to security documentation; enable customer verification of encryption state",
+    "effort": "medium"
+   },
+   {
+    "severity": "major",
+    "remediation": "Ship RBAC with workspace-level and resource-level roles; implement MFA support; add role templates (viewer, editor, admin); enforce least-privilege access with audit trail of role assignments",
+    "effort": "high"
+   }
+  ],
+  "dormant_intake": [
+   {
+    "t": "voc.interviews",
+    "n": 0
+   },
+   {
+    "t": "voc.surveys",
+    "n": 0
+   },
+   {
+    "t": "voc.usability_sessions",
+    "n": 0
+   },
+   {
+    "t": "voc.ab_experiments",
+    "n": 0
+   },
+   {
+    "t": "hci.primary_studies(dormant)",
+    "n": 0
+   },
+   {
+    "t": "market.primary_studies",
+    "n": 0
+   }
+  ]
+ },
+ "figures": [
+  "recommendation_priority.png"
+ ]
+}

@@ -1,0 +1,401 @@
+{
+ "chapter": {
+  "num": "I",
+  "slug": "01-thesis",
+  "title": "Thesis & Epistemic Stance",
+  "kind": "drafted"
+ },
+ "home_domains": [],
+ "home_claims": [],
+ "n_home_claims": 0,
+ "blocks": {
+  "wedge_reeval": [
+   {
+    "market_claim_id": "market.claim.agent-observability-through-visualization-improves-trust",
+    "market_verdict": "disputed",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'disputed' (pure-secondary). Cross-domain evidence now: hci:grounds, hci:contradicts. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.mixed-initiative-design-ai-ui-parity-prevents-transparency-backfire",
+    "market_verdict": "disputed",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'disputed' (pure-secondary). Cross-domain evidence now: hci:contradicts, hci:grounds. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.mixed-initiative-requires-visualization-to-prevent-agent-opacity",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds, hci:contradicts. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.visual-affordances-enable-interaction-without-training",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "contested",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [
+     "hci:contradicts"
+    ],
+    "pending_experimental": true,
+    "confidence": 0.35,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:contradicts, hci:grounds. Ceiling='contested'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.direct-manipulation-outperforms-conversation-graph-exploration",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.force-directed-graph-layout-remains-dominant-but-unoptimized-for-schem",
+    "market_verdict": "supported",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "voc:grounds_by_proxy"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'supported' (pure-secondary). Cross-domain evidence now: voc:grounds_by_proxy. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.graph-visualization-clutter-at-scale",
+    "market_verdict": "disputed",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds",
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Usability study: surface-area / progressive-disclosure variant vs full-canvas control; DV = time-on-task, error count, SUS; n>=30. Lands in voc.usability_sessions (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'disputed' (pure-secondary). Cross-domain evidence now: hci:grounds, voc:weakly_grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.information-foraging-predicts-metro-map-adoption",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.progressive-disclosure-unlocks-schema-acquisition-in-graphs",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Usability study: surface-area / progressive-disclosure variant vs full-canvas control; DV = time-on-task, error count, SUS; n>=30. Lands in voc.usability_sessions (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.wayfinding-in-schematic-maps-transfers-from-transit-knowledge",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "supported-by-proxy",
+    "proxy_support": [
+     "hci:grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.5,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: hci:grounds. Ceiling='supported-by-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.ai-ui-parity-exclusive-wedge",
+    "market_verdict": "supported",
+    "cross_domain_ceiling": "weak-proxy",
+    "proxy_support": [
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'supported' (pure-secondary). Cross-domain evidence now: voc:weakly_grounds. Ceiling='weak-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.flight-to-chat-when-ui-confuses-documented",
+    "market_verdict": "supported",
+    "cross_domain_ceiling": "weak-proxy",
+    "proxy_support": [
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered preference + task-success test: visual graph view vs chat/conversational control of the same agent workflow; DV = success rate, trust calibration, time-to-detect-error; n>=40. Lands in voc.ab_experiments (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'supported' (pure-secondary). Cross-domain evidence now: voc:weakly_grounds. Ceiling='weak-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   },
+   {
+    "market_claim_id": "market.claim.schematic-maps-outperform-force-directed-database-exploration",
+    "market_verdict": "refuted",
+    "cross_domain_ceiling": "weak-proxy",
+    "proxy_support": [
+     "voc:weakly_grounds"
+    ],
+    "contradicting": [],
+    "pending_experimental": true,
+    "confidence": 0.3,
+    "needed_experiment": "Pre-registered controlled A/B: MetroGraph metro/schematic layout vs force-directed on a schema-comprehension + path-finding task; DV = task time & error rate; n>=40 within-subject. Lands in voc.ab_experiments / hci primary_studies (currently EMPTY).",
+    "rationale": "Market corpus verdict was 'refuted' (pure-secondary). Cross-domain evidence now: voc:weakly_grounds. Ceiling='weak-proxy'. The wedge cannot exceed supported-by-proxy: no MetroGraph behavioral study exists (voc dormant-intake empty) => pending_experimental."
+   }
+  ],
+  "strategy_claims": [
+   {
+    "id": "strategy.claim.derived.contested-canvas",
+    "statement": "Derived inference: wedge feature market.feature.canvas is CONTESTED — 19 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.5
+   },
+   {
+    "id": "strategy.claim.derived.contested-agent-orchestration",
+    "statement": "Derived inference: wedge feature market.feature.agent-orchestration is CONTESTED — 11 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.5
+   },
+   {
+    "id": "strategy.claim.derived.contested-nodes-agent-type",
+    "statement": "Derived inference: wedge feature market.feature.nodes-agent-type is CONTESTED — 20 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.5
+   },
+   {
+    "id": "strategy.claim.derived.contested-nodes",
+    "statement": "Derived inference: wedge feature market.feature.nodes is CONTESTED — 9 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.5
+   },
+   {
+    "id": "strategy.claim.derived.contested-canvas-pan-zoom",
+    "statement": "Derived inference: wedge feature market.feature.canvas-pan-zoom is CONTESTED — 11 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.5
+   },
+   {
+    "id": "strategy.claim.derived.contested-data-binding",
+    "statement": "Derived inference: wedge feature market.feature.data-binding is CONTESTED — 7 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.48
+   },
+   {
+    "id": "strategy.claim.derived.contested-ai-assist-data-exploration",
+    "statement": "Derived inference: wedge feature market.feature.ai-assist-data-exploration is CONTESTED — 5 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.4
+   },
+   {
+    "id": "strategy.claim.derived.contested-ai-assist",
+    "statement": "Derived inference: wedge feature market.feature.ai-assist is CONTESTED — 5 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.4
+   },
+   {
+    "id": "strategy.claim.derived.contested-edges",
+    "statement": "Derived inference: wedge feature market.feature.edges is CONTESTED — 5 dated competitor moves erode it (compintel temporal layer), so first-mover differentiation here is speculative pending a defensibility moat. Quarantined until verified.",
+    "verdict": "speculative",
+    "confidence": 0.4
+   }
+  ],
+  "corpus_totals": [
+   {
+    "claims": 406,
+    "sources": 4436,
+    "relationships": 2095
+   }
+  ],
+  "verdict_mix": [
+   {
+    "domain": "compintel",
+    "verdict": "speculative",
+    "n": 8
+   },
+   {
+    "domain": "compintel",
+    "verdict": "supported",
+    "n": 7
+   },
+   {
+    "domain": "ecosystem",
+    "verdict": "speculative",
+    "n": 11
+   },
+   {
+    "domain": "ecosystem",
+    "verdict": "supported",
+    "n": 2
+   },
+   {
+    "domain": "finance",
+    "verdict": "disputed",
+    "n": 1
+   },
+   {
+    "domain": "finance",
+    "verdict": "speculative",
+    "n": 10
+   },
+   {
+    "domain": "finance",
+    "verdict": "supported",
+    "n": 9
+   },
+   {
+    "domain": "governance",
+    "verdict": "CONFIRMED",
+    "n": 4
+   },
+   {
+    "domain": "governance",
+    "verdict": "TRUE",
+    "n": 9
+   },
+   {
+    "domain": "governance",
+    "verdict": "speculative",
+    "n": 5
+   },
+   {
+    "domain": "governance",
+    "verdict": "supported",
+    "n": 15
+   },
+   {
+    "domain": "hci",
+    "verdict": "disputed",
+    "n": 6
+   },
+   {
+    "domain": "hci",
+    "verdict": "mixed",
+    "n": 5
+   },
+   {
+    "domain": "hci",
+    "verdict": "speculative",
+    "n": 6
+   },
+   {
+    "domain": "hci",
+    "verdict": "supported",
+    "n": 32
+   },
+   {
+    "domain": "market",
+    "verdict": "disputed",
+    "n": 29
+   },
+   {
+    "domain": "market",
+    "verdict": "equivalent",
+    "n": 3
+   },
+   {
+    "domain": "market",
+    "verdict": "refuted",
+    "n": 38
+   },
+   {
+    "domain": "market",
+    "verdict": "speculative",
+    "n": 21
+   },
+   {
+    "domain": "market",
+    "verdict": "supported",
+    "n": 86
+   },
+   {
+    "domain": "product",
+    "verdict": "disputed",
+    "n": 1
+   },
+   {
+    "domain": "product",
+    "verdict": "speculative",
+    "n": 2
+   },
+   {
+    "domain": "product",
+    "verdict": "supported",
+    "n": 24
+   },
+   {
+    "domain": "strategy",
+    "verdict": "speculative",
+    "n": 9
+   },
+   {
+    "domain": "voc",
+    "verdict": "speculative",
+    "n": 2
+   },
+   {
+    "domain": "voc",
+    "verdict": "supported",
+    "n": 61
+   }
+  ],
+  "self_company": [
+   {
+    "name": "MetroGraph",
+    "category": "db-viz",
+    "description": "Metro-map-style database-visualization node/edge graph tool. Angular 17 + SignalDB (reactive local-first); vision: every component becomes JSON (live-editable data-defined UI). Wedge: best-of-both AI+UI, low surface area, no agent-vs-graph-chat confusion.",
+    "tagline": null,
+    "founded_year": null
+   }
+  ]
+ },
+ "figures": [
+  "wedge_ceiling.png",
+  "verdict_distribution.png"
+ ]
+}
