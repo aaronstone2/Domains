@@ -17,15 +17,32 @@ import duckdb
 
 from ingest.paths import SNAPSHOTS_DIR
 
-# The "fact" tables worth versioning. documents/embeddings are big + derivable, so excluded.
-SNAPSHOT_TABLES: tuple[str, ...] = (
-    "claims",
-    "sources",
-    "relationships",
-    "claim_evidence",
-    "primary_studies",
-    "forecast_log",
-)
+# Tables NOT snapshotted: `embeddings` (large FLOAT[384], fully regenerable via `ingest embed`) and
+# `claim_history` (the SCD-2 audit, replayed from the parquet sequence itself). Everything else in each
+# domain schema — base AND domain-specific entity tables — is captured, so snapshot+restore round-trips
+# the entire corpus from committed state (the regenerable-artifact guarantee, Part 7).
+_SNAPSHOT_EXCLUDE: frozenset[str] = frozenset({"embeddings", "claim_history"})
+
+# FK-safe ordering: parents restored first, junctions last. Tables not listed go in the middle.
+_RESTORE_FIRST: tuple[str, ...] = ("sources", "claims", "primary_studies", "documents", "concepts")
+_RESTORE_LAST: tuple[str, ...] = ("claim_evidence", "relationships", "derivations", "forecast_log")
+
+
+def _data_tables(con: duckdb.DuckDBPyConnection, domain: str) -> list[str]:
+    """Every base table in the domain schema worth versioning (excludes embeddings/claim_history)."""
+    rows = con.execute(
+        "SELECT table_name FROM information_schema.tables "
+        "WHERE table_schema=? AND table_type='BASE TABLE' ORDER BY table_name",
+        [domain],
+    ).fetchall()
+    return [r[0] for r in rows if r[0] not in _SNAPSHOT_EXCLUDE]
+
+
+def _restore_order(tables: list[str]) -> list[str]:
+    """Parents first, junctions last — so FK-constrained restore into a fresh DB succeeds."""
+    mid = [t for t in tables if t not in _RESTORE_FIRST and t not in _RESTORE_LAST]
+    return ([t for t in _RESTORE_FIRST if t in tables] + sorted(mid)
+            + [t for t in _RESTORE_LAST if t in tables])
 
 
 def _label_dir(label: str) -> Path:
@@ -45,14 +62,7 @@ def snapshot(con: duckdb.DuckDBPyConnection, domains: tuple[str, ...], label: st
     prev = _latest_label_before(label)
     for d in domains:
         con.execute(f"UPDATE {d}.claims SET as_of = COALESCE(as_of, last_verified)")
-        for t in SNAPSHOT_TABLES:
-            # table exists for every domain (all base); guard anyway
-            exists = con.execute(
-                "SELECT 1 FROM information_schema.tables WHERE table_schema=? AND table_name=?",
-                [d, t],
-            ).fetchone()
-            if not exists:
-                continue
+        for t in _data_tables(con, d):
             pq = (out / f"{d}.{t}.parquet").as_posix()
             con.execute(f"COPY (SELECT * FROM {d}.{t}) TO '{pq}' (FORMAT parquet)")
             written += 1
@@ -60,6 +70,37 @@ def snapshot(con: duckdb.DuckDBPyConnection, domains: tuple[str, ...], label: st
             archived += _archive_changed_claims(con, d, prev_label=prev, new_label=label)
     _write_manifest(label, domains, written, archived)
     return {"label": label, "tables_written": written, "claims_archived": archived, "prev": prev}
+
+
+def restore(con: duckdb.DuckDBPyConnection, domains: tuple[str, ...], label: str) -> dict:
+    """Reload the full corpus from a committed parquet snapshot into a fresh (init-db'd) database.
+
+    `init-db` + `restore --label <L>` deterministically reconstructs every domain's data from committed
+    state — the regenerability guarantee for domains whose research was loaded ad-hoc. Clears each table
+    (children first) then INSERTs BY NAME (parents first) so FK constraints hold. Skips embeddings
+    (regenerate with `ingest embed`). Idempotent.
+    """
+    try:
+        con.execute("INSTALL vss; LOAD vss;")  # in case any indexed table sneaks in
+    except Exception:
+        pass
+    base = _label_dir(label)
+    if not base.is_dir():
+        return {"error": f"no snapshot {label} at {base}"}
+    loaded = 0
+    rows_total = 0
+    for d in domains:
+        present = [t for t in _data_tables(con, d) if (base / f"{d}.{t}.parquet").is_file()]
+        # clear children-first
+        for t in reversed(_restore_order(present)):
+            con.execute(f"DELETE FROM {d}.{t}")
+        # load parents-first
+        for t in _restore_order(present):
+            pq = (base / f"{d}.{t}.parquet").as_posix()
+            con.execute(f"INSERT INTO {d}.{t} BY NAME SELECT * FROM read_parquet('{pq}')")
+            rows_total += con.execute(f"SELECT count(*) FROM {d}.{t}").fetchone()[0]
+            loaded += 1
+    return {"label": label, "tables_loaded": loaded, "rows_total": rows_total}
 
 
 def _archive_changed_claims(
@@ -128,7 +169,7 @@ def _write_manifest(label: str, domains: tuple[str, ...], written: int, archived
     manifest = {
         "label": label,
         "domains": list(domains),
-        "tables": list(SNAPSHOT_TABLES),
+        "excluded_tables": sorted(_SNAPSHOT_EXCLUDE),
         "files_written": written,
         "claims_archived": archived,
     }

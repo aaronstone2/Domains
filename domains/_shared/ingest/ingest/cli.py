@@ -316,6 +316,19 @@ def _cmd_snapshot(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_restore(args: argparse.Namespace) -> int:
+    """Rebuild the full corpus from a committed parquet snapshot (init-db first)."""
+    from ingest.temporal import restore
+    from ingest.paths import DOMAIN_SCHEMAS
+    domains = (args.domain,) if args.domain else DOMAIN_SCHEMAS
+    con = open_db(read_only=False)
+    try:
+        print(f"restore: {restore(con, domains, args.label)}")
+    finally:
+        con.close()
+    return 0
+
+
 def _cmd_diff(args: argparse.Namespace) -> int:
     """Diff current fact tables vs a prior snapshot label."""
     from ingest.temporal import diff
@@ -424,6 +437,11 @@ def main(argv: list[str] | None = None) -> int:
     p_snap.add_argument("--label", required=True)
     p_snap.add_argument("--domain", default=None, help="one domain (default: all)")
     p_snap.set_defaults(func=_cmd_snapshot)
+
+    p_restore = sub.add_parser("restore", help="rebuild the corpus from a committed parquet snapshot (init-db first)")
+    p_restore.add_argument("--label", required=True)
+    p_restore.add_argument("--domain", default=None, help="one domain (default: all)")
+    p_restore.set_defaults(func=_cmd_restore)
 
     p_diff = sub.add_parser("diff", help="diff current fact tables vs a prior snapshot label")
     p_diff.add_argument("--domain", required=True)
