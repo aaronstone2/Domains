@@ -324,3 +324,47 @@ Plus 32 hand-curated intra-ecs cross-leaf rels + 98 auto-derived from failure_mo
 **ECS vertical: COMPLETE.** Combined with firecracker (37 sources, 172/130/119 + 71 fms + 231 rels), the AWS-runtime cluster of the corpus is fully built — including the load-bearing Fargate↔Firecracker + Nitro↔Firecracker cross-domain links.
 
 **Next:** resume documented domain order (docker → linux → devin → k8s) OR pivot to harness/synthesis work. Per CLAUDE.md PREAMBLE, after all P1+P3 verticals land, run horizontal P2 (devin devbox capture) + P4 (cross-domain failure-modes) + P5 (cross-domain relationships) + P6+ (harness, polish).
+
+---
+
+## 2026-06-27 — Corpus deepening pass (data backbone made exhaustive + tight)
+
+A 9-agent deepening sweep enriched every thin domain (not new domains — more depth in existing ones).
+Corpus grew **268 → 340 claims** across 8 domains; backbone tightened:
+- **voc**: 17 → **39 reviews**, 22 → **42 claims**, and `claim_evidence` wired so all 42 are
+  **honestly primary-backed (review-mining grade)** via `v_claim_grade` — the proxy-evidence engine's
+  evidence layer is now populated (it was empty). Wedge claims it grounds still stay proxy.
+- **compintel**: 66 → **76 dated changes**, +12 signals, 3 → **15 strategic claims** (new rivals: Kuzu,
+  FalkorDB, TigerGraph, PuppyGraph, Hasura, Materialize…).
+- **finance**: 8 → **18 comps**, 20 → **39 unit-economics** rows (scenario-based CAC/ARPU/NRR/rule-of-40).
+- **ecosystem**: 12 → **22 integration_points** (now with `feeds_feature_id` wired → real edges), +9 endpoints.
+- **governance** +10 claims, **hci** +12 claims.
+
+All verdicts normalized to the standard set; predictive claims registered as forecasts corpus-wide
+(Brier loop has substance). Re-verify + re-embed + re-reason + wedge-reeval + synthesis re-run over the
+richer corpus — the 3 acceptance tests still pass and market verdicts remain unmutated. Snapshot
+`2026Q2-deepened` (102 tables, committed parquet).
+
+**New engine layers this session:** `sensitivity` (L3 tornado), `forecast` (L6 register loop),
+`watch` (L8 self-updating change detection), `decide` (L9 portfolio knapsack) — the CLI now exposes 20
+verbs end-to-end.
+
+## 2026-06-27 — Exhaustive round (fill every empty table + tighten evidence backbone)
+
+Targeted the structural gaps a row-count audit exposed. Corpus **340 → 397 claims**; every previously
+empty domain table now populated:
+- **hci structured layer (was 100% empty)**: 34 real published studies (Purchase, Ghoniem/Fekete,
+  Huang eye-tracking, Holten, Cockburn overview+detail…), 25 theory_grounding, 25 design_hypotheses, 82
+  grounds edges. **21 real RCT/controlled-exp/meta-analyses registered as primary_studies** + 144
+  claim_evidence links → **hci 46/49 claims now primary-backed (was 0)** in v_claim_grade (honest:
+  primary for the GENERAL principle; the MetroGraph wedge claims they ground stay proxy).
+- **governance**: structured layer doubled — **59 requirements** / 56 controls / 47 gaps across HIPAA-2026,
+  PCI-DSS-4.0.1, FedRAMP-Rev5, EU-AI-Act, NIS2, SOX-PCAOB.
+- **compintel**: 76 → **101 dated changes**; **24 intel_snapshots** synthesized from real moves (was 0).
+- **product** +6 feature_specs/+5 benchmarks/+10 roadmap (honesty check clean); **market** +16, **voc**
+  +21 claims, **finance** +17 comps.
+
+Engine fix: `embed.py` now loads the vss extension before writing (the persisted HNSW index had been
+silently blocking re-embeds). Re-verify + re-embed all domains; reason/wedge-reeval/synthesis re-run; 3
+acceptance tests still pass; market's 38 refuted verdicts preserved (additions only, C5 guard). Snapshot
+`2026Q2-exhaustive` (102 tables committed parquet).

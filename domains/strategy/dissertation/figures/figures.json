@@ -1,0 +1,92 @@
+[
+ {
+  "file": "market_som.png",
+  "caption": "Modeled SOM distribution (fixed-seed Monte-Carlo over committed assumptions): p10 $37.6M, p50 $93.6M, p90 $226.3M. A modeled estimate, not a measured revenue figure.",
+  "chapter": "03-market",
+  "note": "market.run.market-som.42"
+ },
+ {
+  "file": "ltv_cac.png",
+  "caption": "Modeled LTV:CAC distribution: p10 2.56×, p50 8.47×, p90 28.2×. The wide spread reflects pre-revenue assumption uncertainty; the median clears the 3× SaaS-health line but the p10 tail does not.",
+  "chapter": "09-finance",
+  "note": "finance.run.finance-ltv-cac.42"
+ },
+ {
+  "file": "comps_multiples.png",
+  "caption": "Revenue multiples of graph-DB / viz / workflow / low-code comparables (n=30, median 33.0×). Each point is a public/known financing comp; MetroGraph is pre-revenue, so these bound an option value, not a mark.",
+  "chapter": "09-finance",
+  "note": "finance.comps"
+ },
+ {
+  "file": "funding_landscape.png",
+  "caption": "The most-capitalized companies in the indexed competitive set (213 companies, 327 financing rounds). Capital concentration marks where incumbents can out-spend on the converging canvas/agent features.",
+  "chapter": "03-market",
+  "note": "market.companies / market.funding_rounds"
+ },
+ {
+  "file": "feature_pain.png",
+  "caption": "Top features by customer-pain score across the feature taxonomy (110 features). High-pain canvas/visualization capabilities (≥0.8, in orange) are the whitespace the wedge targets.",
+  "chapter": "03-market",
+  "note": "market.features"
+ },
+ {
+  "file": "wedge_ceiling.png",
+  "caption": "The 13 wedge claims re-graded against cross-domain evidence. None exceed supported-by-proxy; every one carries pending-experimental-validation, derived from the empty MetroGraph behavioral-data tables.",
+  "chapter": "01-thesis",
+  "note": "strategy.wedge_reeval"
+ },
+ {
+  "file": "hci_grounds_contradicts.png",
+  "caption": "How the HCI literature attaches to market/wedge claims: 82 grounding edges support, 11 contradicting edges refute (force-directed wins path-finding/subgraph tasks). The empirical floor is real but context-dependent.",
+  "chapter": "04-hci",
+  "note": "hci.relationships"
+ },
+ {
+  "file": "erosion_timeline.png",
+  "caption": "Dated competitor moves by quarter; orange marks moves that erode a feature MetroGraph claims. The drumbeat on canvas + agent nodes is what fires the red-team falsifiers.",
+  "chapter": "10-strategy",
+  "note": "compintel.changes"
+ },
+ {
+  "file": "evidence_grade.png",
+  "caption": "Claims with derived primary backing (green) vs proxy/secondary support (grey), by domain. Only HCI (46/49) and VoC review-mining (42/63) carry primary backing; market/product/finance are secondary by construction.",
+  "chapter": "12-limitations",
+  "note": "v_claim_grade"
+ },
+ {
+  "file": "verdict_distribution.png",
+  "caption": "The gold layer is honest about dissent: 406 claims span supported through refuted. Refuted/disputed claims are retained and reframed as hypotheses, not deleted.",
+  "chapter": "01-thesis",
+  "note": "meta.all_claims"
+ },
+ {
+  "file": "relationship_graph.png",
+  "caption": "The typed relationship graph (2,095 edges, 21 types) is the algebra the synthesis layer reads: grounds/contradicts from HCI, erodes from competitive intel, gates from governance, measures from product.",
+  "chapter": "02-method",
+  "note": "meta.all_relationships"
+ },
+ {
+  "file": "sensitivity_tornado.png",
+  "caption": "What actually drives each model's spread: SOM is 61% obtained-penetration (som_share), LTV:CAC is 61% ARPU and 33% CAC (negative ρ). The genuine sensitivity output — rank-correlation over the MC draws, not just input ranges — computed live from the committed models.",
+  "chapter": "09-finance",
+  "note": "ingest.mc.sensitivity (market-som, finance-ltv-cac)"
+ },
+ {
+  "file": "governance_gaps.png",
+  "caption": "Open compliance gaps gating the enterprise segment, by severity. The blocker count is the honest finding for an early-stage tool — each blocker becomes a dated roadmap item.",
+  "chapter": "08-governance",
+  "note": "governance.compliance_gaps"
+ },
+ {
+  "file": "recommendation_priority.png",
+  "caption": "Recommendations ranked by a derived priority score (not hand-set). Purple bars are the four needed-but-missing MetroGraph experiments — roadmap items, never assumed as done.",
+  "chapter": "10-strategy",
+  "note": "strategy.recommendations"
+ },
+ {
+  "file": "integration_feasibility.png",
+  "caption": "Integration targets ranked by derived priority (reach × strategic-fit / effort). Postgres leads on information_schema introspection and ICP reach; feasibility grades are design estimates.",
+  "chapter": "07-ecosystem",
+  "note": "ecosystem.integration_points"
+ }
+]

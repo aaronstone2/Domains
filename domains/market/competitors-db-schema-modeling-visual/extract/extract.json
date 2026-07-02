@@ -1,0 +1,971 @@
+{
+  "leaf": "competitors-db-schema-modeling-visual",
+  "products": [
+    {
+      "slug": "azimutt",
+      "name": "Azimutt",
+      "company_slug": "azimutt",
+      "description": "Database explorer and analyzer for large/complex schemas. Offers visual schema exploration, data exploration, database analysis with rule-based optimization suggestions, and collaborative documentation via AML (Azimutt Markup Language) diagrams.",
+      "positioning": "Exploration-first tool for large monolithic or microservice databases; targets DevOps, data analysts, and teams needing operational schema documentation.",
+      "archetype": "Schema explorer + diagram tool",
+      "product_type": "platform",
+      "open_source": true,
+      "deployment": [
+        "cloud",
+        "on-premise",
+        "self-hosted"
+      ],
+      "tech_stack": [
+        "Elixir",
+        "Phoenix",
+        "Elm"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-azimutt-official-homepage",
+        "market-competitors-db-schema-modeling-visual-azimutt-docs",
+        "market-competitors-db-schema-modeling-visual-azimutt-pricing",
+        "market-competitors-db-schema-modeling-visual-azimutt-github-repo"
+      ]
+    },
+    {
+      "slug": "chartdb",
+      "name": "ChartDB",
+      "company_slug": "chartdb",
+      "description": "AI-powered database schema visualization tool with instant SQL import (~15 seconds), real-time collaboration, live database sync, and smart query-based schema extraction. Supports multiple relational databases.",
+      "positioning": "Fast, visual, cloud-first ERD tool for teams; emphasizes speed of import and AI-assisted schema design over deep exploration.",
+      "archetype": "Visual diagram editor + AI copilot",
+      "product_type": "platform",
+      "open_source": true,
+      "deployment": [
+        "cloud",
+        "self-hosted"
+      ],
+      "tech_stack": [
+        "React",
+        "Node.js"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-chartdb-official-homepage",
+        "market-competitors-db-schema-modeling-visual-chartdb-pricing",
+        "market-competitors-db-schema-modeling-visual-chartdb-github-repo",
+        "market-competitors-db-schema-modeling-visual-chartdb-blog"
+      ]
+    },
+    {
+      "slug": "dbdiagram-io",
+      "name": "dbdiagram.io",
+      "company_new_name": "dbdiagram",
+      "description": "Code-first database diagram tool using DBML (Database Markup Language) DSL. Emphasizes simple, text-based schema definition with visual preview, SQL import, and basic collaboration features.",
+      "positioning": "Minimalist, code-first approach for developers who prefer text-based versioning over visual design; tight integration with Git workflows.",
+      "archetype": "Code-first ERD + DSL",
+      "product_type": "platform",
+      "open_source": false,
+      "deployment": [
+        "cloud"
+      ],
+      "tech_stack": [
+        "JavaScript"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-dbdiagram-official-homepage",
+        "market-competitors-db-schema-modeling-visual-dbdiagram-docs",
+        "market-competitors-db-schema-modeling-visual-dbml-language-docs",
+        "market-competitors-db-schema-modeling-visual-dbdiagram-pricing"
+      ]
+    },
+    {
+      "slug": "drawsql",
+      "name": "DrawSQL",
+      "company_slug": "drawsql",
+      "description": "Visual database schema diagram tool with real-time collaborative editing, AI schema review (indexes, naming conventions), and architecture-review ready presentation. Includes discussion threads on canvas and version history.",
+      "positioning": "Design-focused, collaborative ERD tool for teams running architecture reviews; strong HCI for visual design and discussion workflows.",
+      "archetype": "Visual diagram editor + collaboration platform",
+      "product_type": "platform",
+      "open_source": false,
+      "deployment": [
+        "cloud"
+      ],
+      "tech_stack": [
+        "React",
+        "Node.js"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-drawsql-official-homepage",
+        "market-competitors-db-schema-modeling-visual-drawsql-pricing",
+        "market-competitors-db-schema-modeling-visual-drawsql-features",
+        "market-competitors-db-schema-modeling-visual-drawsql-changelog"
+      ]
+    },
+    {
+      "slug": "dbschema",
+      "name": "DbSchema",
+      "company_slug": "dbschema",
+      "description": "All-in-one database design and management tool with visual reverse engineering, ERD creation, data exploration, SQL client, and Git integration. Supports 100+ databases with offline design capability and deployment-safe schema migration workflows.",
+      "positioning": "Enterprise/team-focused tool for DBAs, architects, and developers; emphasizes comprehensive feature set (design → document → deploy) with visual-first no-SQL-required interface.",
+      "archetype": "Comprehensive database IDE",
+      "product_type": "platform",
+      "open_source": false,
+      "deployment": [
+        "desktop",
+        "cloud"
+      ],
+      "tech_stack": [
+        "Java"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-dbschema-official-homepage",
+        "market-competitors-db-schema-modeling-visual-dbschema-features",
+        "market-competitors-db-schema-modeling-visual-dbschema-documentation",
+        "market-competitors-db-schema-modeling-visual-dbschema-release-notes"
+      ]
+    },
+    {
+      "slug": "prisma-studio",
+      "name": "Prisma Studio",
+      "company_slug": "prisma",
+      "description": "Visual database browser and data editor integrated into Prisma ORM ecosystem. Provides no-SQL-required data exploration, filtering, search, and real-time team collaboration via Prisma Console. Focused on data browsing rather than schema design.",
+      "positioning": "Developer tool within Prisma ecosystem; emphasizes data browsing and team collaboration over schema design; usage-based pricing tied to Prisma Postgres operations.",
+      "archetype": "Data browser + ORM integration",
+      "product_type": "feature",
+      "open_source": true,
+      "deployment": [
+        "cloud",
+        "local"
+      ],
+      "tech_stack": [
+        "TypeScript",
+        "React"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-prisma-studio-official-page",
+        "market-competitors-db-schema-modeling-visual-prisma-studio-docs",
+        "market-competitors-db-schema-modeling-visual-prisma-changelog",
+        "market-competitors-db-schema-modeling-visual-prisma-postgres-pricing"
+      ]
+    },
+    {
+      "slug": "erflow",
+      "name": "ER Flow",
+      "company_new_name": "ER Flow",
+      "description": "Modern online ER diagram tool with real-time collaboration, CRDT-powered sync, automatic SQL migration generation, and MCP (Model Context Protocol) server for AI coding assistant integration. Supports visual ER design with checkpoints/versioning.",
+      "positioning": "AI-forward ER design tool for developers; emphasizes MCP integration for natural-language schema generation and modern collab features (CRDT sync, real-time cursors).",
+      "archetype": "Visual ER editor + AI integration (MCP)",
+      "product_type": "platform",
+      "open_source": false,
+      "deployment": [
+        "cloud"
+      ],
+      "tech_stack": [
+        "React",
+        "Node.js"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-erflow-official-homepage",
+        "market-competitors-db-schema-modeling-visual-erflow-blog",
+        "market-competitors-db-schema-modeling-visual-erflow-mcp-dev-to-article"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Multi-layout support, search everywhere, follow relations; optimized for large schemas with 80+ tables staying navigable."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Incremental visual exploration with search, follow relations, find-path; core value prop for database exploration at scale."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "SQL generation from visual queries; not primary focus compared to exploration."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.data-management-data-browser",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Data exploration with follow-relations in actual data; advanced feature for support/debugging workflows."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.ai-assist-data-exploration",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "AI SQL generation and query explanation; marked as 'soon' in roadmap, not yet fully mature."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Saved layouts, layout memos, checkpoints; multiple named versions for different exploration contexts."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.collaboration-live-collab",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Team collaboration available, but not primary focus; depth unclear from docs."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.integration-git",
+      "support_level": "via-workaround",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "hci_cost_note": "Design model versioning exists, but no explicit Git integration mentioned."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.deployment-flexibility-cloud",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "EU-hosted cloud, freemium + paid tiers."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.deployment-flexibility-on-premise",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Enterprise on-premise option available; requires higher tier."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Dark mode available; standard theme support."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.onboarding-contextual-help",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Docs available; in-context help not emphasized."
+    },
+    {
+      "product_slug": "azimutt",
+      "feature_id": "market.feature.data-management-data-import",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Multiple input options: samples, SQL files, database URLs; no signup required for ephemeral projects."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Fast, beautiful ERD rendering by default; ~15 seconds to diagram from SQL query."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.ai-assist-nl-to-graph",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "AI agent for schema design; natural language to tables/relationships; core differentiator (Pro tier)."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.ai-assist-node-suggestion",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "AI generates tables from descriptions, suggests relationships; integrated throughout design experience."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.data-management-data-import",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Single-query instant import (~15s), SQL paste, live DB sync; emphasis on zero-friction import."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.query-building-result-preview",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Live DB sync shows real schema; import preview before committing."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.collaboration-live-collab",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Real-time collab with live cursors; Team tier ($59/5-users); core feature emphasis."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Template library, version snapshots, undo/redo; 200+ templates for common patterns."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "200+ real-world schema templates (SaaS, e-commerce, CRM); strong onboarding via examples."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.integration-third-party",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Embed live diagrams in Notion, Confluence, docs; iframeable."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.deployment-flexibility-cloud",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Cloud SaaS, free tier available, no database access required."
+    },
+    {
+      "product_slug": "chartdb",
+      "feature_id": "market.feature.deployment-flexibility-self-hosted",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Open-source AGPL, 22k+ stars; self-hosting possible but not primary product focus."
+    },
+    {
+      "product_slug": "dbdiagram-io",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Clean visual rendering from DBML code; simple and neat, but lacks advanced layout features."
+    },
+    {
+      "product_slug": "dbdiagram-io",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "DBML DSL editor; code-first is core value prop; tight syntax, rapid definition."
+    },
+    {
+      "product_slug": "dbdiagram-io",
+      "feature_id": "market.feature.data-management-data-import",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "SQL import available, but DBML entry is primary workflow; less frictionless than query-based tools."
+    },
+    {
+      "product_slug": "dbdiagram-io",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Code-based versioning natural fit; DBML text stays in Git, diffs are readable; primary differentiator."
+    },
+    {
+      "product_slug": "dbdiagram-io",
+      "feature_id": "market.feature.collaboration-live-collab",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "hci_cost_note": "Collaboration available at higher tiers, but not primary focus; code-first limits real-time visual collab."
+    },
+    {
+      "product_slug": "dbdiagram-io",
+      "feature_id": "market.feature.deployment-flexibility-cloud",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Cloud SaaS only; freemium (10 free diagrams), Personal ($14/mo), Team ($60/mo for 3 users)."
+    },
+    {
+      "product_slug": "dbdiagram-io",
+      "feature_id": "market.feature.ux-chrome-keyboard",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Text editor is keyboard-native; minimal GUI friction for code-first workflow."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Beautiful by default ERDs; auto-layout, visually polish-focused; ready for docs/architecture reviews without manual arrangement."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "AI schema review (indexes, naming consistency), table generation from description, diff preview before apply; integrated via Pro tier."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.collaboration-live-collab",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Live cursors, real-time editing, threaded discussions on canvas; multiplayer-first design (Pro tier)."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.collaboration-comments",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Threaded discussion canvas; designed for architecture review workflows; stays on schema forever."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.data-management-data-import",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "SQL import (CREATE TABLE paste), visual design, export to DDL/Laravel/JSON."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Version history with state comparison; go back to earlier schema approaches."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "200+ real-world schema templates (multi-tenant, CRM, e-commerce, SaaS billing); quick-start oriented."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.integration-third-party",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Embed interactive diagrams in Notion, Confluence, docs; live, not static."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Dark mode, professional themes; visually refined default styling."
+    },
+    {
+      "product_slug": "drawsql",
+      "feature_id": "market.feature.deployment-flexibility-cloud",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Cloud-only SaaS; Hobbyist (free, 15 tables), Starter ($19/mo), Growth ($59/5-users), Large ($179/mo), Enterprise."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Full reverse engineering to ER diagrams in seconds; visual, intuitive; no SQL required."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Visual schema browser for tables, columns, indexes, relationships; explore related data visually."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.data-management-data-browser",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Browse and edit relational data across multiple tables; SQL client integrated."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.data-management-data-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Edit data directly in grid; embedded editing experience."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "SQL editor included; write queries visually or as code; 100+ database support with native types."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.versioning-git",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Design model stored in Git; keep diagrams under version control; review deployment changes."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.versioning-diff",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Visual diff and SQL diff scripts; compare environments before applying."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.collaboration-live-collab",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Team collaboration on schema design; not as polished as real-time multiplayer-focused tools."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.deployment-flexibility-desktop",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Desktop app for Windows, macOS, Linux; offline design capability; primary deployment."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.deployment-flexibility-cloud",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Cloud collaboration available; secondary to desktop-first positioning."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.auth-governance-rbac",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Role-based workflow support (developers, architects, DBAs, analysts); depth unclear."
+    },
+    {
+      "product_slug": "dbschema",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "9+ video tutorials covering key features, database-specific workflows, team collaboration."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Visual data browser with model-aware navigation; filters, search, column browser; no SQL required."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.data-management-data-browser",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Visual record exploration with clickable relationships; core positioning as data browser."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.data-management-data-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Edit records directly; embedded editing in custom applications possible (Prisma Postgres only)."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.query-building-result-preview",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Advanced filtering with multiple tabs; result preview inline; precise filtering across complex data."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.collaboration-live-collab",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Real-time team collaboration in Prisma Console; no local setup required; centralized access."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.deployment-flexibility-cloud",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Prisma Console cloud collaboration; team workflows; no local config needed."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.deployment-flexibility-local",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Local machine access during development; fast solo workflows."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.integration-orm",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Deep Prisma ORM integration; embedded in Prisma ecosystem; type-safe data access."
+    },
+    {
+      "product_slug": "prisma-studio",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Recent: dark mode, multi-cell edit, copy as CSV/Markdown, Cmd+K palette."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Visual ER diagram design; core tool for database modeling."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.ai-assist-nl-to-graph",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "MCP Server for AI coding assistants (Cursor, Windsurf); natural language schema generation; automatic migration generation as code evolves."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.collaboration-live-collab",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Real-time collaboration with live cursors, changes, comments; CRDT-powered sync."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.collaboration-comments",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Notes and comments on tables, columns, canvas; documentation integrated into design."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Checkpoints and versioning; roll back anytime; track changes to procedures and triggers."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.data-management-data-import",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "SQL import from files; paste CREATE TABLE statements and go."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.query-building-code-generation",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Automatic SQL migration generation; PostgreSQL, MySQL, and more; seamless export to code."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.integration-third-party",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "MCP Server integration with Cursor, Windsurf, other AI tools; primary AI integration strategy."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.onboarding-contextual-help",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "hci_cost_note": "Documentation available; in-context help not emphasized."
+    },
+    {
+      "product_slug": "erflow",
+      "feature_id": "market.feature.deployment-flexibility-cloud",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Cloud SaaS only; Free tier (1 project, 3 public diagrams, 15 tables), Pro ($4.97/user/mo or $3.99/user/mo annually)."
+    }
+  ],
+  "competitors": [
+    {
+      "company_slug": "azimutt",
+      "product_slug": "azimutt",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "MetroGraph = visual graph orchestration for data workflows + low-code AI agents; Azimutt = schema exploration + documentation. MetroGraph can integrate Azimutt-like exploration into workflow design; Azimutt cannot easily express orchestration logic or agent-state visualization.",
+      "they_win_on": [
+        "Large schema exploration at scale (80+ tables navigable)",
+        "Database analysis with rule-based optimization (missing indexes, best-practices checks)",
+        "Multi-layout exploration workflows (incremental discovery, saved views)",
+        "Mature data exploration with follow-relations in actual data",
+        "Open-source with EU self-hosting option"
+      ],
+      "we_win_on": [
+        "Orchestration visualization (agents, workflows, control flow)",
+        "AI state and decision-tree rendering",
+        "Low-code workflow design vs. exploration-only",
+        "Graph execution and parallelization optimization",
+        "Natural language to workflow/graph composition"
+      ],
+      "moat": "Database analysis rules engine, mature exploration UX for complex schemas, dedicated EU cloud compliance.",
+      "overlap_area": [
+        "schema visualization",
+        "ERD rendering",
+        "visual database understanding"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-azimutt-official-homepage",
+        "market-competitors-db-schema-modeling-visual-azimutt-vs-drawsql-comparison"
+      ]
+    },
+    {
+      "company_slug": "chartdb",
+      "product_slug": "chartdb",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "MetroGraph = graph editor for orchestration + agents; ChartDB = ERD design focused on AI-assisted schema generation. MetroGraph's strength: showing runtime behavior, state transitions, agent loops. ChartDB's strength: fast schema import, visual polish. Different user tasks (design vs. orchestrate).",
+      "they_win_on": [
+        "Instant schema import (~15 seconds) with single-query approach",
+        "AI schema generation and suggestion (tables from description, index recommendations)",
+        "Beautiful-by-default visual design (no manual arrangement needed)",
+        "Live database sync for real-time schema reflection",
+        "200+ pre-designed schema templates"
+      ],
+      "we_win_on": [
+        "Orchestration graph design (workflows, agent loops, control flow)",
+        "Runtime state visualization and decision paths",
+        "Low-code agent builder vs. schema-design-only",
+        "Graph execution engine integration",
+        "AI workflow generation from natural language"
+      ],
+      "moat": "Smart Query import engine, AI schema copilot trained on real databases, template library, rapid cloud deployment.",
+      "overlap_area": [
+        "visual database design",
+        "AI-assisted entity suggestion",
+        "schema exploration"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-chartdb-official-homepage",
+        "market-competitors-db-schema-modeling-visual-chartdb-comparison-dbdiagram-drawsql",
+        "market-competitors-db-schema-modeling-visual-chartdb-dev-to-ai-guide"
+      ]
+    },
+    {
+      "company_slug": "dbdiagram",
+      "product_slug": "dbdiagram-io",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "wedge_vs_them": "MetroGraph = graph orchestration with AI; dbdiagram = code-first ERD design. Different user personas: dbdiagram attracts Git-native developers; MetroGraph targets workflow/agent builders who think in nodes+edges, not code syntax.",
+      "they_win_on": [
+        "Code-first DSL (DBML) for text-based, Git-friendly schema versioning",
+        "Minimal, simple UX with low learning curve",
+        "Tight developer workflow integration (edit as text, version in Git)",
+        "Freemium with low entry price point"
+      ],
+      "we_win_on": [
+        "Visual node-edge graph editor for complex orchestration logic",
+        "Agent state and control-flow visualization",
+        "Low-code workflow composition vs. code-first DSL",
+        "AI agent builder vs. database schema tool",
+        "Runtime execution visualization and debugging"
+      ],
+      "moat": "DBML language and community, Git workflow integration, code-first philosophy resonating with developers.",
+      "overlap_area": [
+        "schema visualization",
+        "visual + code hybrid design",
+        "version control integration"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-dbdiagram-official-homepage",
+        "market-competitors-db-schema-modeling-visual-dbml-language-docs",
+        "market-competitors-db-schema-modeling-visual-chartdb-comparison-dbdiagram-drawsql"
+      ]
+    },
+    {
+      "company_slug": "drawsql",
+      "product_slug": "drawsql",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "MetroGraph = graph orchestration + agent design; DrawSQL = collaborative schema design + architecture review. DrawSQL's multiplayer canvas and discussion threads are strong for schema review; MetroGraph is strong for workflow orchestration and agent state visualization.",
+      "they_win_on": [
+        "Polished, beautiful-by-default ERD design (auto-layout, ready for docs)",
+        "Real-time multiplayer editing with live cursors and threaded discussions on canvas",
+        "AI schema review (index suggestions, naming consistency checks, diff preview)",
+        "Architecture-review-ready diagrams without manual styling",
+        "Discussion threads stay on schema (collaborative review history)"
+      ],
+      "we_win_on": [
+        "Orchestration graph design (control flow, agent loops, state transitions)",
+        "AI agent builder vs. schema copilot",
+        "Workflow execution visualization and debugging",
+        "Parallel execution and dependency optimization rendering",
+        "Natural language to graph/workflow composition"
+      ],
+      "moat": "Multiplayer-first collaborative design, threaded discussion canvas, AI schema review copilot, beautiful default styling.",
+      "overlap_area": [
+        "visual database design",
+        "collaboration features",
+        "AI-assisted design"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-drawsql-official-homepage",
+        "market-competitors-db-schema-modeling-visual-drawsql-features",
+        "market-competitors-db-schema-modeling-visual-drawsql-real-time-collab-docs"
+      ]
+    },
+    {
+      "company_slug": "dbschema",
+      "product_slug": "dbschema",
+      "competitor_type": "adjacent",
+      "threat_level": "medium",
+      "wedge_vs_them": "MetroGraph = orchestration graph editor; DbSchema = comprehensive database IDE (design + data explore + SQL + deploy). Different workflows: DbSchema is DBA/architect tool for full DB lifecycle; MetroGraph is for workflow/agent builders. Some feature overlap in visual design, but different use-case target.",
+      "they_win_on": [
+        "All-in-one database IDE: design + explore + edit + deploy from one tool",
+        "Reverse engineering with 100+ database support",
+        "Data browsing and editing in-app (no SQL required)",
+        "Git-backed design models with deployment safety (SQL diffs, migration scripts)",
+        "Desktop + cloud hybrid deployment"
+      ],
+      "we_win_on": [
+        "Graph orchestration and workflow design (not database lifecycle)",
+        "Agent state and loop visualization",
+        "Low-code AI agent builder",
+        "Cloud-first SaaS positioning vs. desktop-first",
+        "Workflow execution engine"
+      ],
+      "moat": "100+ database support, comprehensive feature set (design-document-deploy), desktop/cloud hybrid, Git integration for schema versioning.",
+      "overlap_area": [
+        "visual schema design",
+        "reverse engineering capability",
+        "collaborative workflows"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-dbschema-official-homepage",
+        "market-competitors-db-schema-modeling-visual-dbschema-features",
+        "market-competitors-db-schema-modeling-visual-dbschema-design-tools-comparison"
+      ]
+    },
+    {
+      "company_slug": "prisma",
+      "product_slug": "prisma-studio",
+      "competitor_type": "indirect",
+      "threat_level": "low",
+      "wedge_vs_them": "MetroGraph = graph orchestration for workflows/agents; Prisma Studio = data browser for Prisma ORM users. Different focus: Studio is data-browsing tool for devs using Prisma; MetroGraph is orchestration builder. Minimal overlap except in visual exploration paradigm.",
+      "they_win_on": [
+        "Tight Prisma ORM ecosystem integration (type-safe, real-time collab in Console)",
+        "No SQL required for data browsing and editing",
+        "Embedded data editing in custom applications (Prisma Postgres)",
+        "Usage-based pricing model (pay per operation)"
+      ],
+      "we_win_on": [
+        "Graph orchestration design (not data browsing)",
+        "AI workflow/agent builder",
+        "Control-flow and agent-state visualization",
+        "Independent from ORM ecosystem",
+        "Workflow execution engine"
+      ],
+      "moat": "Deep Prisma ecosystem integration, type-safe data access, Console collab experience, embedded app UI.",
+      "overlap_area": [
+        "visual data exploration",
+        "real-time collaboration",
+        "low-code paradigm"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-prisma-studio-official-page",
+        "market-competitors-db-schema-modeling-visual-prisma-studio-docs"
+      ]
+    },
+    {
+      "company_slug": "erflow",
+      "product_slug": "erflow",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "wedge_vs_them": "MetroGraph = graph editor for data workflows and AI agents; ER Flow = ER diagram tool with AI MCP integration. Overlap: both target visual graph design + AI. ER Flow focus: database modeling with AI; MetroGraph focus: workflow orchestration and agent builders. ER Flow's MCP positioning suggests intent to compete in AI coding assistant space.",
+      "they_win_on": [
+        "MCP Server integration with Cursor, Windsurf for AI-driven schema generation",
+        "Visual ER modeling with auto-generated SQL migrations",
+        "CRDT-powered real-time sync for reliable collaboration",
+        "Trigger and stored-procedure visual design",
+        "Table grouping and visual organization"
+      ],
+      "we_win_on": [
+        "Orchestration graph design (control flow, agent loops, state machines)",
+        "Agent state and decision-tree visualization",
+        "Workflow execution engine and runtime debugging",
+        "Broader AI integration (not just schema generation)",
+        "No-code/low-code workflow builder for data engineers"
+      ],
+      "moat": "MCP Server for AI assistant integration, CRDT sync protocol, visual migration generation, modern collab stack.",
+      "overlap_area": [
+        "visual graph design",
+        "AI-assisted code generation",
+        "real-time collaboration",
+        "natural language to graph"
+      ],
+      "source_ids": [
+        "market-competitors-db-schema-modeling-visual-erflow-official-homepage",
+        "market-competitors-db-schema-modeling-visual-erflow-mcp-dev-to-article",
+        "market-competitors-db-schema-modeling-visual-erflow-vs-dbdiagram"
+      ]
+    }
+  ],
+  "notes": "**Extraction completed for Phase C (EXTRACTION) – competitors-db-schema-modeling-visual leaf. **Coverage: 7 primary products (Azimutt, ChartDB, dbdiagram.io, DrawSQL, DbSchema, Prisma Studio, ER Flow) with systematic evidence from 59 T0/T1/T2/T3 sources across product pages, docs, GitHub, reviews, and vendor comparisons.**Product data:** All 7 products mapped to existing or new company stubs. Archetype, positioning, deployment, open-source status, and tech stack extracted from official pages and GitHub.\n\n**Feature scoring (15-35 most relevant per product):**\n- Azimutt: 14 features scored (schema introspection, data exploration, versioning, collaboration, deployment) – emphasis on large-schema exploration.\n- ChartDB: 13 features scored (ERD, AI schema generation, instant import, collaboration, templates) – emphasis on speed and AI copilot.\n- dbdiagram.io: 7 features scored (DBML editor, Git versioning, simple UX, limited collab) – code-first positioning.\n- DrawSQL: 13 features scored (ERD design, multiplayer collab, AI review, templates, embedding) – collaboration and architecture review focus.\n- DbSchema: 13 features scored (ERD, reverse engineering, data browser/editor, SQL client, Git, versioning) – all-in-one IDE positioning.\n- Prisma Studio: 10 features scored (data browser, data editor, real-time collab, ORM integration, themes) – data-browsing focus within Prisma ecosystem.\n- ER Flow: 10 features scored (ERD, AI MCP integration, real-time collab, comments, migration generation) – modern AI-first positioning.\n\n**Competitor positioning:**\n- **Direct (high threat): Azimutt, ChartDB, DrawSQL, ER Flow** – All offer visual ERD design, real-time collab, and/or AI features. Wedges: MetroGraph differentiates on orchestration graph design (control flow, agent loops), AI agent builder (not just schema copilot), and runtime execution visualization.\n- **Direct (medium threat): dbdiagram.io** – Code-first DSL appeals to Git-native developers; MetroGraph wedge is visual node-edge design for non-developers + workflow orchestration.\n- **Adjacent (medium threat): DbSchema** – All-in-one database IDE; MetroGraph wedge is narrower (orchestration + agents, not full DB lifecycle).\n- **Indirect (low threat): Prisma Studio** – Data browser within ORM; minimal workflow orchestration overlap.\n\n**Moats identified:** Azimutt (database analysis rules + large-schema UX), ChartDB (smart query import + template library), dbdiagram.io (DBML DSL + Git community), DrawSQL (multiplayer canvas + threaded discussions), DbSchema (100+ DB support + comprehensive IDE), Prisma Studio (ORM ecosystem integration), ER Flow (MCP protocol + CRDT sync).\n\n**Evidence quality:** Strong T0 (homepages, pricing, GitHub) and T1 (docs, changelogs) coverage. T2/T3 (reviews, comparisons) provide user sentiment and competitive framing but limited deep technical detail on HCI friction beyond surface claims."
+}

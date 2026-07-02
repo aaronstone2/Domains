@@ -1,0 +1,868 @@
+[
+  {
+    "area": "Cognitive Cost in UI Design: Surface-Area Bloat and Information Complexity",
+    "notes": "This research corpus decomposes cognitive-science literature relevant to MetroGraph's core HCI thesis: existing RAG/workflow/agent tools suffer from \"huge surface area for little value\"—endless folders, panes, configs, popups that fragment attention and increase cognitive burden, driving users to abandon the UI for chat. Eight candidate theories span cognitive capacity (Miller, Sweller), information-seeking behavior (Pirolli & Card), memory (Nielsen), decision complexity (Hick, Schwartz), and interaction efficiency (Fitts). Rigorous evaluation identifies SIX foundational theories warranting exhaustive research leaves; two are assessed as non-leaf (Progressive Disclosure is a design pattern, not theory; Fitts's Law addresses motor efficiency, not cognitive burden). The six primary theories form a coherent framework explaining surface-area bloat as multifaceted cognitive and affective burden, directly supporting MetroGraph's wedge: simplicity reduces cognitive load, improves information scent, and keeps users engaged with visualization rather than fleeing to chat.",
+    "subareas": [
+      {
+        "name": "Cognitive Load Theory",
+        "scope": "Educational psychology theory explaining how learning and task performance are constrained by limited cognitive capacity. Distinguishes three additive components: intrinsic load (inherent element interactivity), extraneous load (design choices), and germane load (beneficial schema construction). Central to understanding how UI design choices either reduce or magnify cognitive burden.",
+        "seminal_authors": [
+          "John Sweller",
+          "Paul Ayres",
+          "Slava Kalyuga",
+          "Fred Paas"
+        ],
+        "key_works": [
+          "Cognitive load during problem solving: Effects on learning (1988)",
+          "Cognitive Load Theory (2011 Springer book with Ayres & Kalyuga)",
+          "Efficiency in Learning (2006 with Clark & Nguyen)",
+          "Cognitive Load Theory: What We Learn and How We Learn (2023)"
+        ],
+        "relevance_to_metrograph": "Directly explains why bloated UIs impair task performance: extraneous load from many panes/options/configs fragments attention. Progressive disclosure and information architecture are CLT solutions. Quantifies the cognitive cost of surface-area bloat and provides framework for measuring UI complexity impact.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "theory-cognitive-load"
+      },
+      {
+        "name": "Working Memory Capacity Limits",
+        "scope": "Research into finite capacity of working memory for holding and manipulating information in real time. Original estimate (Miller 7±2 items, 1956) refined downward by Cowan (2001) to 3-5 items when rehearsal and pattern-matching are controlled. Establishes hard boundary on how many simultaneous stimuli users can process.",
+        "seminal_authors": [
+          "George Miller",
+          "Nelson Cowan"
+        ],
+        "key_works": [
+          "The Magical Number Seven, Plus or Minus Two: Some Limits on our Capacity for Processing Information (1956, Psychological Review)",
+          "The Magical Mystery Four (2001 Cowan review)",
+          "Laws of UX: Miller's Law (contemporary HCI application)"
+        ],
+        "relevance_to_metrograph": "Establishes hard limits on how many menu items, options, or visible controls can be effectively processed. Supports design thesis that fewer visible options = better performance. For database visualization, suggests maximum 3-5 top-level views or primary actions should be visible; beyond that requires progressive disclosure or filtering.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "theory-working-memory"
+      },
+      {
+        "name": "Information Foraging Theory",
+        "scope": "Framework from behavioral ecology modeling how information seekers navigate information environments by balancing search costs against information gains. Introduces 'information scent' (perception of value/cost from proximal cues like links), patch selection models, and diet models. Explains why users abandon interfaces with poor cues for alternative tools (chat).",
+        "seminal_authors": [
+          "Peter Pirolli",
+          "Stuart Card"
+        ],
+        "key_works": [
+          "Information Foraging (1999 PARC/Xerox UIR technical report)",
+          "Information Foraging Theory: A Framework for Intelligence Analysis",
+          "Information Foraging for Enhancing Implicit Feedback in Content-based Image Recommendation"
+        ],
+        "relevance_to_metrograph": "Explains user flight from complex UIs: poor information scent (cues about what links/buttons lead to) in dense interfaces creates high search costs and perceived low value, driving users to chat. Direct application to database visualization—metro map must make 'scent' of relevant data visible (clear labels, hierarchy, visual hierarchy) to prevent foraging failures. High scent = users stay engaged; low scent = users defect.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "theory-information-foraging"
+      },
+      {
+        "name": "Progressive Disclosure Pattern",
+        "scope": "UI design technique reducing visible complexity by showing essential information/controls first, revealing advanced options conditionally (on click/hover), contextually (based on user state), or sequentially (step-by-step workflows). Grounded in Cognitive Load Theory; aims to reduce extraneous load.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "A direct design pattern for reducing surface-area bloat. While critical for implementation, progressive disclosure lacks standalone theoretical depth; it is an applied manifestation of Cognitive Load Theory's extraneous-load reduction. Should integrate into applied CLT research or interaction-design patterns corpus rather than stand as independent leaf."
+      },
+      {
+        "name": "Recognition vs Recall in Memory",
+        "scope": "Cognitive psychology distinction between retrieval with explicit cues (recognition: 'Do you recognize this?'—easier) vs internal generation of retrieval cues (recall: 'Reproduce this from memory'—harder). Recognition leverages perceptual familiarity; recall demands working memory, search, and executive function. Neurological substrates differ (rhinal cortex vs hippocampus).",
+        "seminal_authors": [
+          "Jakob Nielsen",
+          "Memory researchers in cognitive psychology"
+        ],
+        "key_works": [
+          "Memory Recognition and Recall in User Interfaces (Nielsen Norman Group)",
+          "Recognition Rather Than Recall: Heuristic #6 (Nielsen's 1994 usability heuristics)",
+          "Recognition vs. Recall: Leveraging Cognitive Processes in User Interfaces (LogRocket)"
+        ],
+        "relevance_to_metrograph": "Supports 'visibility' thesis: visible options (recognition) are cognitively cheaper than requiring users to remember hidden commands (recall). Dense UIs with hidden features force users into costly recall-dependent interactions. Metro-map design should expose primary workflows and data views (recognition-friendly) rather than hiding them behind menus or requiring users to remember obscure navigation paths.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "theory-recognition-recall"
+      },
+      {
+        "name": "Hick's Law: Choice Complexity and Decision Time",
+        "scope": "Principle (Hick 1952, Hyman refinement) establishing logarithmic relationship between number of choices and decision reaction time: RT = a + b log₂(n). While decision time increases sublinearly with choice count, cognitive load and decision complexity increase significantly. Limitations acknowledged in complex HCI contexts, but relationship remains robust at base level.",
+        "seminal_authors": [
+          "William Edmund Hick",
+          "Ray Hyman"
+        ],
+        "key_works": [
+          "On the rate of gain of information (Hick, 1952)",
+          "Hick's Law for Choice Reaction Time: A Review (Proctor & Schneider, 2018)",
+          "The Hick-Hyman Law: An Argument Against Complexity in User Interface Design (IxDF)"
+        ],
+        "relevance_to_metrograph": "Mathematical/empirical basis for why interface complexity (breadth of visible options) degrades decision speed and increases cognitive burden. Explains why 5 visible buttons are better than 20. Supports simplification thesis and tiered/progressive disclosure. For database visualization, suggests limiting primary navigation to ~5 top-level actions; beyond that, bundle into menus or progressive views.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "theory-choice-complexity"
+      },
+      {
+        "name": "Fitts's Law: Motor Control and Interaction Efficiency",
+        "scope": "Principle of motor control predicting movement time to target as function of distance and target size: MT = a + b log₂(2D/W). Foundational to HCI, explains why large buttons near cursor are faster to select. However, focuses on motor-interaction efficiency rather than cognitive burden; addresses 'how fast can you point' not 'how much does this overload working memory'.",
+        "seminal_authors": [
+          "Paul Fitts"
+        ],
+        "key_works": [
+          "The Information Capacity of the Human Motor System (Fitts, 1954)",
+          "Fitts' Law and the Science of Motor Learning (Biology Insights)",
+          "A Study of Model Iterations of Fitts' Law and Its Application to HCI (MDPI 2024)"
+        ],
+        "relevance_to_metrograph": "Addresses interaction efficiency (speed of target acquisition) but is tangential to cognitive-cost focus of this corpus. May apply to metro-map interaction design (pan/zoom/filter interaction speed) but does not address core thesis about cognitive burden from options/configs/panes. Include for completeness but deprioritize relative to cognitive-load-centered theories.",
+        "big_enough_for_leaf": false
+      },
+      {
+        "name": "Paradox of Choice and Decision Fatigue",
+        "scope": "Principle established by Barry Schwartz (2004) and verified in behavioral economics: excessive options lead to lower satisfaction, decision paralysis, regret, and increased anxiety despite promised choice freedom. Relates to decision fatigue (ego depletion), fear of missing out (FOMO), maximizing vs satisficing strategies, and psychological cost of optimization across large option sets.",
+        "seminal_authors": [
+          "Barry Schwartz",
+          "Nathan Cheek"
+        ],
+        "key_works": [
+          "The Paradox of Choice: Why More Is Less (2004, Schwartz; revised 2024 edition with Cheek)",
+          "The Paradox of Choice (The Decision Lab reference)",
+          "The Paradox of Choice by Barry Schwartz (Wikipedia)"
+        ],
+        "relevance_to_metrograph": "Central to 'huge surface area for little value' diagnosis. Too many UI options → decision fatigue → users flee to chat for simpler interaction. Addresses affective/motivational cost of complexity, not just cognitive cost. Users given 50 config options feel paralyzed; users given 'smart defaults + 3 quick settings' feel empowered. Explains why 'more features' often decreases satisfaction.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "theory-choice-overload"
+      }
+    ]
+  },
+  {
+    "area": "Direct Manipulation vs. Conversational/Natural Language UI: A Literature Corpus for MetroGraph",
+    "notes": "Decomposition of core HCI literature addressing MetroGraph's thesis: achieving \"best of both\" (direct manipulation + conversational UI) while avoiding \"worst of both\" (endless config surfaces + NL ambiguity). Each sub-area identified as warranting its own exhaustive research leaf based on: distinct seminal authors/works, clear relevance to MetroGraph's design challenges, and sufficient scope for substantive research corpus. Emphasized areas directly supporting hybrid/integrated paradigms and structured data visualization.",
+    "subareas": [
+      {
+        "name": "Direct Manipulation: Foundations & Principles",
+        "scope": "Shneiderman's seminal work on direct manipulation as interaction paradigm (1983+). Core principles: continuous representation of objects, physical actions vs. syntax, rapid reversible operations with immediate feedback. Foundational to understanding why DM works cognitively and its design requirements.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "direct-manipulation-foundations",
+        "relevance_to_metrograph": "MetroGraph's core strength: direct node/edge manipulation on canvas mirrors physical object manipulation. Guides principles for metro-map-style dragging, visual feedback, and reversibility that differentiate from pure NL interfaces.",
+        "seminal_authors": [
+          "Ben Shneiderman",
+          "Edwin Hutchins",
+          "David Hutchins"
+        ],
+        "key_works": [
+          "Direct Manipulation: A Step Beyond Programming (Shneiderman, 1983)",
+          "Direct Manipulation Interfaces (Hutchins et al., 1985)",
+          "Designing the User Interface (Shneiderman, 4th ed.)"
+        ]
+      },
+      {
+        "name": "Norman's Models: Gulfs, Affordances, and Design Principles",
+        "scope": "Donald Norman's cognitive models for interaction design: gulf of execution (user intent → system actions), gulf of evaluation (system state → user interpretation). Affordances and signifiers for discoverability. Seven stages of action. Foundational to understanding where DM succeeds (small gulfs, visible affordances) and where NL might fail (interpretation gaps).",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "norman-cognitive-models",
+        "relevance_to_metrograph": "Critical for understanding MetroGraph's HCI advantage: direct manipulation minimizes gulf of execution (visual nodes = visible intent mapping); guides design of feedback systems to minimize gulf of evaluation. Informs when to use visual affordances vs. NL prompting.",
+        "seminal_authors": [
+          "Donald Norman",
+          "William Gaver"
+        ],
+        "key_works": [
+          "The Design of Everyday Things (Norman, 1988 & 2013 revised)",
+          "User Centered System Design (Norman & Draper, 1986)",
+          "Technology Things That Make Us Smart (Norman, 1993)"
+        ]
+      },
+      {
+        "name": "Instrumental Interaction: Post-WIMP Theory",
+        "scope": "Beaudouin-Lafon's generative theory moving beyond WIMP interfaces. Four principles: reification (making abstract content concrete), polymorphism (instruments & content adaptability), reuse (instruments across contexts), currying (partial application). Modern relevance: AI-Instruments research on LLM prompts as instruments.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "instrumental-interaction-theory",
+        "relevance_to_metrograph": "Directly applicable: nodes/edges as reifiable instruments; graph as polymorphic content. AI-Instruments research (2025) explores how LLM prompts can be embodied as manipulation tools—bridges direct manipulation + conversational intent. Core to 'best of both' thesis.",
+        "seminal_authors": [
+          "Michel Beaudouin-Lafon",
+          "Wendy Mackay"
+        ],
+        "key_works": [
+          "Instrumental Interaction: An Interaction Model for Designing Post-WIMP User Interfaces (Beaudouin-Lafon, 2000)",
+          "Reification, Polymorphism and Reuse: Three Principles for Designing Visual Interfaces (Beaudouin-Lafon & Mackay, 2000)",
+          "AI-Instruments: Embodying Prompts as Instruments (2025 CHI)"
+        ]
+      },
+      {
+        "name": "Mixed-Initiative Interaction: Human-Machine Negotiation",
+        "scope": "Eric Horvitz's (1999) framework for interfaces where humans and machines flexibly negotiate control. 12 principles for graceful handoff, responsibility awareness, communication clarity. Systems that blend automation with user control rather than pure delegation or pure manual control.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "mixed-initiative-interaction",
+        "relevance_to_metrograph": "Directly relevant: MetroGraph can support mixed-initiative workflows where users directly manipulate graph structure while AI suggests optimizations, detects patterns, or assists with layout. Avoids both 'user controls everything (config hell)' and 'AI decides everything (black box)' extremes.",
+        "seminal_authors": [
+          "Eric Horvitz"
+        ],
+        "key_works": [
+          "Principles of Mixed-Initiative User Interfaces (Horvitz, 1999 CHI)",
+          "Uncertainty, Action, and Interaction: In Pursuit of Mixed-Initiative Computing (Horvitz)",
+          "LookOut system documentation (Outlook scheduling assistant)"
+        ]
+      },
+      {
+        "name": "Conversational User Interfaces: Chatbots & NL Interaction Challenges",
+        "scope": "NLP/chatbot interfaces, conversational agents. Documented limitations: context understanding, ambiguity, incomplete information, user intent recognition, privacy concerns, voice-specific challenges. Why pure conversational UI fails for structured tasks.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "conversational-ui-challenges",
+        "relevance_to_metrograph": "Diagnosis of MetroGraph's starting thesis: pure chat abandonment. Documents why users abandon conversational graph exploration for direct manipulation. Informs design of when/where to offer chat vs. drag.",
+        "seminal_authors": [
+          "Multiple (NLP/conversational AI community)"
+        ],
+        "key_works": [
+          "Conversational Information Seeking (survey, 2022)",
+          "Conversational UI: Application and Limitations (2023)",
+          "A Survey on Multi-User Conversational Interfaces (2025)",
+          "UX Design Best Practices for Conversational AI and Chatbots"
+        ]
+      },
+      {
+        "name": "Natural Language Interfaces to Structured Data & Visualization",
+        "scope": "Specialized challenge: translating NL queries to structured outputs (SQL, visualization specs, graph transformations). Ambiguity resolution techniques: interactive disambiguation, pragmatics-based inference, ambiguity widgets. NL2VIS/NL2SQL literature. DataTone managing ambiguity in visualization.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "nl-interfaces-structured-data",
+        "relevance_to_metrograph": "MetroGraph-specific: database-visualization tool means NL queries must map to precise graph structure. Document how ambiguity resolution works (and fails) and design patterns for NL+graphical feedback loops.",
+        "seminal_authors": [
+          "DataTone team",
+          "NL2VIS research community"
+        ],
+        "key_works": [
+          "DataTone: Managing Ambiguity in Natural Language Interfaces for Data Visualization",
+          "Towards Natural Language Interfaces for Data Visualization (survey)",
+          "nvBench 2.0: Resolving Ambiguity in Text-to-Visualization through Stepwise Reasoning (2025)",
+          "Applying Natural Language Pragmatics in a Data Visualization User Interface"
+        ]
+      },
+      {
+        "name": "The Shneiderman-Maes Debate: Direct Manipulation vs. Intelligent Agents",
+        "scope": "Landmark 1997 CHI/IUI debate. Shneiderman: user control via direct manipulation (predictable, comprehensible). Maes: intelligent delegation (agents learn user preferences, handle complexity). 25+ year legacy: how this debate informs current AI-UI design. Modern reincarnation: ChatGPT-era resurgence of automation vs. control.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "shneiderman-maes-debate",
+        "relevance_to_metrograph": "Foundational lens for MetroGraph thesis. Documents why both pure positions fail; frames 'best of both' as explicit rejection of either extreme. Current relevance: AI tools re-opening this debate (autonomous agents vs. user tools).",
+        "seminal_authors": [
+          "Ben Shneiderman",
+          "Pattie Maes"
+        ],
+        "key_works": [
+          "Intelligent Software Agents vs. User-Controlled Direct Manipulation (CHI '97 debate)",
+          "Direct Manipulation vs. Interface Agents (Interactions 1997, extended debate)",
+          "Direct Manipulation vs. Interface Agents: Revisiting the Classic HCI Debate Decades Later (retrospective, 2023)"
+        ]
+      },
+      {
+        "name": "Tangible & Embodied Interaction",
+        "scope": "Tangible User Interfaces (TUIs): physical objects coupled with digital data. Embodied interaction: thinking tied to doing, not just speaking. MIT Media Lab work (Ishii, Ullmer, 1997+). TEI conference. Spatial metaphors, haptic feedback, physicality in digital interaction.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "tangible-embodied-interaction",
+        "relevance_to_metrograph": "Metro-map visual metaphor is inherently spatial/tangible: nodes occupy positions, edges connect them. Graph manipulation as spatial embodied action (vs. text commands). Informs design of 'weight' and 'substance' to graph objects (making them feel manipulable, not abstract).",
+        "seminal_authors": [
+          "Hiroshi Ishii",
+          "Brygg Ullmer"
+        ],
+        "key_works": [
+          "Tangible Bits: Beyond the Pixel (Ishii & Ullmer, CHI 1997)",
+          "Tangible User Interfaces: Past, Present, and Future Directions (survey)",
+          "TEI conference proceedings (2007+)",
+          "The Role of Physicality in Tangible and Embodied Interactions (ACM Interactions 2011)"
+        ]
+      },
+      {
+        "name": "Information Visualization: Interaction Design & Techniques",
+        "scope": "Interaction techniques for visual data exploration: focus+context, semantic zoom, brushing, filtering, linked views. Graph-specific: node-link diagram interaction, layout algorithms interactivity. InfoVis community design patterns. Evaluation frameworks for visualization interaction.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "infovis-interaction-design",
+        "relevance_to_metrograph": "Core to MetroGraph's product: database-visualization tool must support fluid interaction with graph structure. Informs principles for zoom/pan, node clustering, edge filtering, linked multi-view exploration.",
+        "seminal_authors": [
+          "InfoVis research community"
+        ],
+        "key_works": [
+          "How to Design an Information Visualization (IxDF article)",
+          "Evaluation of Two Interaction Techniques for Visualization of Dynamic Graphs (2016)",
+          "A Design Process of Visual Analytics Applications using Conceptual Graphs",
+          "Revisiting the Design Patterns of Composite Visualizations (2022)"
+        ]
+      },
+      {
+        "name": "Semantic & Articulatory Distance in Interface Expressiveness",
+        "scope": "Hutchins et al. (1985) distinction: semantic distance (gap between user intent & system meaning), articulatory distance (gap between intention & physical form). How interfaces minimize cognitive load by reducing these distances. Direct manipulation reduces semantic distance; NL can reduce articulatory distance but increases semantic distance.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "semantic-articulatory-distance",
+        "relevance_to_metrograph": "Theoretical foundation for hybrid approach: direct manipulation minimizes semantic distance (visual nodes clearly map to database entities). Natural language assists articulatory distance (complex queries easier to express in English than drag chains). Design goal: minimize both.",
+        "seminal_authors": [
+          "Edwin Hutchins",
+          "David Hutchins",
+          "Donald Norman"
+        ],
+        "key_works": [
+          "User-Centered System Design (Norman & Draper, 1986)",
+          "Direct Manipulation Interfaces (Hutchins, Hollan, Norman, 1985)",
+          "Directness and its role in usability (Hutchins, Palen, Notkin, 1997)"
+        ]
+      },
+      {
+        "name": "Hybrid & Multimodal Interfaces: Integrating NL with Direct Manipulation",
+        "scope": "Systems combining conversational & graphical modalities. Complementary strengths: NL for expressing complex intents, GUI for immediate visual feedback and precise control. Seamless handoff between modes. LLM-driven multimodal interfaces (2024+). Graph interaction + conversational refinement patterns.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "hybrid-multimodal-interfaces",
+        "relevance_to_metrograph": "CORE to MetroGraph thesis: this is the research space MetroGraph occupies. Documents design patterns for when users switch between drag-drop and conversational refinement, avoiding isolation of either modality.",
+        "seminal_authors": [
+          "Multiple (emerging field, 2023+)"
+        ],
+        "key_works": [
+          "Bridging Natural Language and Graphical User Interfaces (recent Springer chapter)",
+          "Natural Language Interaction for Editing Visual Knowledge Graphs (2024)",
+          "A Multimodal GUI Architecture for Interfacing with LLM-Based Conversational Assistants (2024)",
+          "Graphologue: Exploring Large Language Model Responses with Interactive Diagrams (2023)",
+          "Putting Humans in the Natural Language Processing Loop: A Survey (2021)"
+        ]
+      },
+      {
+        "name": "Reversibility, Undo, and Safe Exploration in Direct Manipulation",
+        "scope": "Principle that rapid, reversible operations are core to direct manipulation (Shneiderman). Undo/redo patterns, error recovery, incremental actions. Psychological safety for exploration without fear of irreversible mistakes. Implementation patterns across applications.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Design principle rather than full research area. MetroGraph graph manipulation must support undo/redo and reversible actions. Could be a subsection of Direct Manipulation Foundations rather than its own leaf.",
+        "seminal_authors": [
+          "Ben Shneiderman"
+        ],
+        "key_works": [
+          "UX for Reversible Actions: A Decision Framework for Designing with Recovery in Mind"
+        ]
+      },
+      {
+        "name": "Command-Line vs. GUI: History and AI-Era Renaissance",
+        "scope": "Historical perspective: command-line to GUI transition (1980s-90s). Recent resurgence: AI-powered CLIs, LLM command-line interfaces, diminished GUI use in AI-heavy workflows.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Historiographical context rather than active research corpus. Useful framing but integrable into Shneiderman-Maes Debate or Direct Manipulation Foundations as historical background.",
+        "seminal_authors": [
+          "Ben Shneiderman"
+        ],
+        "key_works": [
+          "From Direct Manipulation to Indirect Delegation: The AI Renaissance of the Command Line"
+        ]
+      },
+      {
+        "name": "Affordances & Signifiers: Making Manipulability Visible",
+        "scope": "Donald Norman's distinction between affordances (actual properties) and signifiers (perceived cues). William Gaver's taxonomy. Discovery and learability through visible design.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Important principle but subsumable under Norman's Models. MetroGraph design: making graph nodes appear draggable, edges connectable, etc. through visual signifiers.",
+        "seminal_authors": [
+          "Donald Norman",
+          "William Gaver"
+        ],
+        "key_works": [
+          "The Design of Everyday Things (Norman, 2013 revised)",
+          "Cognitive Affordances in Visualization (2025)"
+        ]
+      }
+    ]
+  },
+  {
+    "area": "Graph/Node-Link Visualization and Visual/Dataflow Programming",
+    "notes": "Comprehensive research decomposition for MetroGraph's theoretical foundations. MetroGraph is a database visualization tool using metro-map metaphor for noSQL/SQL data engineers. This corpus maps literature across graph layout algorithms, visualization design methodology, visual programming paradigms, and domain-specific database visualization. The Deutsch limit critique of visual programming is central context for why MetroGraph's UI approach differs from traditional dataflow tools. Metro-map metaphor is direct application. Visual perception and cognitive load are foundational for evaluating readability of graph layouts.",
+    "subareas": [
+      {
+        "name": "Graph Layout Algorithms",
+        "scope": "Computational and algorithmic approaches to automatically positioning nodes and edges in 2D/3D space to optimize aesthetic criteria. Includes force-directed methods (spring models, electrical models), hierarchical/layered layouts (Sugiyama method), tree-specific layouts (Reingold-Tilford, balloon layouts), and specialized approaches (radial, circular, orthogonal). Focuses on algorithmic efficiency and aesthetic quality metrics.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "graph-layout-algorithms",
+        "relevance_to_metrograph": "Core technical foundation. Metro-map layouts have specific constraints (octilinear edges, geographic metaphor) that diverge from standard force-directed. Hierarchical/layered layout theory (Sugiyama) parallels metro-map routing requirements. Database schema hierarchies may benefit from tree layout optimizations.",
+        "seminal_authors": [
+          "Peter Eades",
+          "Thomas M. Fruchterman",
+          "Edward M. Reingold",
+          "Sugiyama et al.",
+          "Kamada & Kawai",
+          "Roberto Tamassia",
+          "Stephen G. Kobourov"
+        ],
+        "key_works": [
+          "Eades - 'A heuristic for graph drawing' (1984, spring embedding)",
+          "Fruchterman & Reingold - 'Graph drawing by force-directed placement' (1991)",
+          "Sugiyama et al. - 'Methods for visual understanding of hierarchical system structures' (1981, Sugiyama hierarchical layout)",
+          "Tamassia et al. - 'Handbook of Graph Drawing and Visualization' (comprehensive reference)",
+          "Kamada & Kawai - Force-directed layout with optimization",
+          "Reingold & Tilford - Tree layout algorithm"
+        ]
+      },
+      {
+        "name": "Graph Aesthetics, Readability, and Cognitive Load",
+        "scope": "Design principles and empirical evaluation of graph visualization effectiveness. Covers edge crossing minimization (NP-complete problem), symmetry maximization, edge length uniformity, and cognitive load impact on task performance. Includes empirical human-factors studies measuring task completion time, accuracy, eye-tracking metrics, and individual differences in cognitive capacity. Addresses conflicts between competing aesthetic criteria.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "graph-aesthetics-readability-cognitive",
+        "relevance_to_metrograph": "Critical for evaluating whether metro-map visualization reduces cognitive load compared to alternatives. Empirical evidence on crossing minimization, edge density, and visual clutter directly informs design decisions. Database schema complexity requires understanding readability thresholds.",
+        "seminal_authors": [
+          "Weidong Huang",
+          "Peter Eades",
+          "Seok-Hee Hong",
+          "Stephen G. Kobourov",
+          "Christoph Buchheim",
+          "Tamara Munzner",
+          "Card & Mackinlay"
+        ],
+        "key_works": [
+          "Huang et al. - 'Measuring effectiveness of graph visualizations: A cognitive load perspective' (2009)",
+          "Hong & Eades - Symmetry and crossing minimization research",
+          "Kobourov - 'Are Crossings Important for Drawing Large Graphs?' (empirical study)",
+          "Buchheim - Crossing minimisation for symmetric drawings",
+          "Burch & Huang - 'The State of the Art in Empirical User Evaluation of Graph Visualizations' (survey)"
+        ]
+      },
+      {
+        "name": "Visual Programming Languages and Dataflow Paradigms",
+        "scope": "Programming models using visual elements (blocks, nodes, connections) for program construction. Covers block-based languages (Scratch, Blockly), visual dataflow systems, end-user programming frameworks, and the Deutsch limit—the foundational critique that visual programming is limited to ~50 visual primitives on screen before becoming intractable. Addresses why visual programming failed in professional contexts and how modularity/clustering might overcome limitations.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "visual-programming-dataflow",
+        "relevance_to_metrograph": "Adjacent domain informing UI philosophy. MetroGraph avoids 'worst of both worlds' problem (traditional low-code tools have huge surface area leading to tool abandonment for AI chat). Deutsch limit critique is central context: why metro-map metaphor + graph visualization beats dense multi-pane traditional dataflow builders. End-user programming literature informs interaction design for non-developer data engineers.",
+        "seminal_authors": [
+          "L. Peter Deutsch",
+          "Fred Lakin",
+          "MIT Media Lab (Scratch team)",
+          "Google (Blockly team)",
+          "Ben Shneiderman",
+          "Margaret M. Burnett",
+          "Brad Myers"
+        ],
+        "key_works": [
+          "Deutsch's aphorism on visual programming limits (~50 primitives)",
+          "Scratch language and environment design (MIT Media Lab)",
+          "Blockly - block-based visual programming platform (Google)",
+          "Research on Deutsch limit critiques and modularity solutions",
+          "Visual dataflow language surveys and controlled experiments",
+          "End-user programming studies (information foraging theory perspective)"
+        ]
+      },
+      {
+        "name": "Information Visualization: Framework and Design Methodology",
+        "scope": "Systematic frameworks for visualization design and decision-making. Covers Munzner's nested model (domain problem → data abstraction → encoding/interaction → algorithm), visual encoding principles (position, color, size, shape, hue), perceptual effectiveness hierarchy, task-driven visualization design, and validation methods. Addresses fundamental question: how do we systematically design effective visualizations?",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "infovis-framework-methodology",
+        "relevance_to_metrograph": "Foundational design methodology. Munzner's framework guides MetroGraph's design from domain problems (DB visualization) through encoding choices (node/edge representation, metro-map layout). Visual encoding selection is critical for database schema readability.",
+        "seminal_authors": [
+          "Tamara Munzner",
+          "Ben Shneiderman",
+          "Stuart Card",
+          "Jock Mackinlay",
+          "William Cleveland",
+          "Robert McGill",
+          "Edward Tufte"
+        ],
+        "key_works": [
+          "Munzner - 'Visualization Analysis and Design' (2014, nested 4-level model)",
+          "Munzner - 'A nested model for visualization design and validation'",
+          "Card & Mackinlay - Information visualization taxonomies",
+          "Shneiderman - 'The Eyes Have It: A Task by Data Type Taxonomy for Information Visualizations'",
+          "Cleveland & McGill - Perceptual effectiveness of visual encoding",
+          "Tufte - 'The Visual Display of Quantitative Information'"
+        ]
+      },
+      {
+        "name": "Visual Perception and Cognitive Principles",
+        "scope": "Psychological and perceptual foundations for visualization design. Covers Gestalt principles of perception (proximity, similarity, continuity, closure, common fate, symmetry), perceptual magnitude judgments, visual attention and saliency, preattentive processing, and cognitive load theory from cognitive psychology. Addresses how human visual and cognitive systems process visual information.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "perception-cognitive-principles",
+        "relevance_to_metrograph": "Theoretical underpinning for all visualization design choices. Gestalt principles guide graph layout (grouping related nodes, emphasizing connections). Preattentive processing justifies color/shape encoding choices for database elements. Cognitive load limits determine when visualization becomes overwhelming.",
+        "seminal_authors": [
+          "Max Wertheimer",
+          "Wolfgang Köhler",
+          "Kurt Koffka",
+          "William Cleveland",
+          "Robert McGill",
+          "Anne Treisman",
+          "Daniel Kahneman"
+        ],
+        "key_works": [
+          "Wertheimer et al. - Gestalt psychology foundational texts (early 1900s)",
+          "Cleveland & McGill - 'Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods' (1984)",
+          "Treisman - Preattentive visual processing theory",
+          "Kahneman - Cognitive load and attention research",
+          "Visual perception surveys and perceptual effectiveness studies"
+        ]
+      },
+      {
+        "name": "Database Schema Visualization and Entity-Relationship Models",
+        "scope": "Visualization techniques for database structure, schema design, and data model representation. Covers Entity-Relationship Diagrams (ERDs), relational schema visualization, noSQL/graph database model representation, schema complexity visualization, and query visualization. Addresses how to make database structures intelligible to engineers and stakeholders.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "database-schema-visualization",
+        "relevance_to_metrograph": "Direct application domain—MetroGraph's ICP is SQL/noSQL startups and data engineers visualizing databases. ERD is standard schema representation; MetroGraph must improve on traditional ERD limitations (dense, hard to navigate large schemas). Database schema hierarchies, relationships, and complexity are core visualization challenges.",
+        "seminal_authors": [
+          "Peter P.S. Chen",
+          "Roberto Tamassia",
+          "Database visualization researchers",
+          "Graph database visualization researchers"
+        ],
+        "key_works": [
+          "Peter Chen - 'The Entity-Relationship Model: Toward a Unified View of Data' (1976, ACM TODS)",
+          "ERD design tools and evolution (Lucidchart, SmartDraw, etc.)",
+          "Database visualization surveys",
+          "Graph database visualization tools (Gephi, Cytoscape for molecular databases)",
+          "Schema complexity and large-database visualization research"
+        ]
+      },
+      {
+        "name": "Metro-Map Metaphor for Information Visualization",
+        "scope": "Application of transit/metro map visual metaphor to abstract data domains. Covers schematic network layout with octilinear (orthogonal + 45°) edge routing, station labeling, line coloring, distance uniformity principles, and automatic metro-map generation algorithms. Includes applications to software projects, biochemical pathways, concept networks, and knowledge graphs. Addresses how geographic/transit familiarity aids comprehension of abstract networks.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "metro-map-metaphor-visualization",
+        "relevance_to_metrograph": "Directly relevant—MetroGraph's core visual metaphor and primary differentiator from competing tools. Metro-map metaphor leverages user familiarity with transit systems to make database visualization more intuitive. Layout algorithms must satisfy metro-map aesthetic constraints (regularity, clarity, minimal crossing).",
+        "seminal_authors": [
+          "Ahn et al.",
+          "Markell et al.",
+          "Schematic map visualization researchers",
+          "Transit map design community"
+        ],
+        "key_works": [
+          "Ahn et al. - 'A metro map metaphor for visualization of software projects'",
+          "Automatic metro-map layout and schematic routing research",
+          "MetroSets - extending metro-maps to set visualization",
+          "Octilinear layout optimization papers",
+          "Application papers: biochemical pathways, concept networks, project planning"
+        ]
+      },
+      {
+        "name": "Interactive Graph Exploration and Query Interfaces",
+        "scope": "User interaction techniques for exploring and querying graphs without requiring formal query language knowledge. Covers direct manipulation of graphical encodings, visual query builders, knowledge graph exploration interfaces, multi-modal interaction (mouse + natural language), and exploratory vs. goal-oriented search paradigms. Addresses non-expert user navigation of complex graph structures.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "interactive-graph-exploration",
+        "relevance_to_metrograph": "Critical for UX—database engineers need intuitive exploration and query. Direct manipulation of nodes/edges in MetroGraph should enable navigation and filtering without syntax. Multi-modal interaction (graph manipulation + natural language descriptions) aligns with AI+UI hybrid approach.",
+        "seminal_authors": [
+          "HCI and visualization community",
+          "Knowledge graph researchers",
+          "Database interface designers"
+        ],
+        "key_works": [
+          "GraphVista - interactive exploration of large graphs",
+          "Graph Detective - visualized query interface",
+          "RDF Explorer - knowledge graph exploration for non-experts",
+          "Direct manipulation in visualization research",
+          "Exploratory data analysis paradigms"
+        ]
+      },
+      {
+        "name": "Hierarchical and Tree Visualization",
+        "scope": "Layout algorithms and visualization techniques specifically for tree and hierarchical structures. Covers tree-specific layout methods (Reingold-Tilford, radial trees, balloon layouts), space-filling approaches (TreeMaps), hierarchy flattening/clustering, and performance optimization for large hierarchies. Addresses how to make tree traversal and parent-child relationships explicit and navigable.",
+        "big_enough_for_leaf": false,
+        "proposed_leaf_name": "hierarchical-tree-visualization",
+        "relevance_to_metrograph": "Specialized subroutine of Graph Layout Algorithms. Database schemas often have hierarchical aspects (e.g., table containment in namespaces, foreign key hierarchies). TreeMap visualization by Shneiderman is notable but primarily space-filling rather than node-link focused.",
+        "seminal_authors": [
+          "Ben Shneiderman",
+          "Reingold & Tilford",
+          "Tree layout algorithm researchers"
+        ],
+        "key_works": [
+          "Shneiderman - TreeMaps (space-filling hierarchical visualization)",
+          "Reingold & Tilford - 'Tidier drawings of trees'",
+          "Tree layout survey papers",
+          "Hierarchical graph drawing (subset of Tamassia handbook)"
+        ]
+      },
+      {
+        "name": "Dynamic and Temporal Graph Visualization",
+        "scope": "Visualization of graphs that change over time. Covers animation-based methods (redrawing graph at each timestep) vs. timeline-based static representations, temporal network analysis, graph stability (preserving mental maps during updates), and spatio-temporal graph evolution. Addresses readability challenges in dynamic contexts and offline temporal overview.",
+        "big_enough_for_leaf": false,
+        "proposed_leaf_name": "temporal-graph-visualization",
+        "relevance_to_metrograph": "Lower priority than static schema visualization. Database schemas evolve over time; tracking evolution is useful but not central to core value proposition. Animation/timeline trade-offs are important but secondary to readable static layout.",
+        "seminal_authors": [
+          "Temporal network visualization researchers",
+          "Graph animation researchers"
+        ],
+        "key_works": [
+          "Surveys on dynamic graph visualization methods",
+          "Timeline-based temporal network visualization",
+          "Graph stability and mental-map preservation",
+          "Tools like TGX (temporal network analysis)"
+        ]
+      }
+    ]
+  },
+  {
+    "area": "RAG / Agent / LLM-in-the-Loop UX: Agentic Systems Visualization for Database Tools",
+    "subareas": [
+      {
+        "name": "Human-AI Interaction Design Principles",
+        "scope": "Foundational design guidelines for systems where humans and AI collaborate. Covers 18 design principles validated through practitioner evaluation (Amershi et al. CHI 2019), including human control, error prevention, and mode transparency.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "hci-human-ai-interaction-design",
+        "seminal_authors": [
+          "Saleema Amershi",
+          "Daniel Weld",
+          "Mihai Vorvoreanu",
+          "Adam Fourney",
+          "Besmira Nushi",
+          "Paul Collisson"
+        ],
+        "key_works": [
+          "Guidelines for Human-AI Interaction (CHI 2019)",
+          "Atlas of Human-AI Interaction: Interactive Meta-Science Platform (2025)",
+          "Design Patterns of Human-AI Interfaces in Healthcare (2025)"
+        ],
+        "relevance_to_metrograph": "Core for designing how graph manipulation interfaces present AI assistance without overwhelming users; directly addresses the 'chat vs graph confusion' by establishing design guidelines for integrated AI-UI systems."
+      },
+      {
+        "name": "Agentic UX Patterns and Autonomous Agent Interfaces",
+        "scope": "Design patterns for systems where AI agents take initiative (not just suggest). Includes UI/UX for control switching, transparency in multi-step agent tasks, and interruptibility. Emerging patterns from UX Magazine, Salesforce, EY, and Microsoft Design.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "ux-agentic-design-patterns",
+        "seminal_authors": [
+          "Aaron Hans (UX Magazine)",
+          "Salesforce Design",
+          "EY Design",
+          "Microsoft Design"
+        ],
+        "key_works": [
+          "Secrets of Agentic UX: Emerging Design Patterns for Human Interaction with AI Agents (UX Magazine 2026)",
+          "The agentic interface: principles and patterns for autonomous UX (Medium 2025)",
+          "How agentic AI enables a new approach to user experience design (EY 2025)",
+          "UX design for agents (Microsoft Design 2025)"
+        ],
+        "relevance_to_metrograph": "Critical for designing agent-driven graph modifications; patterns like step-by-step logs, progress visualization, and interrupt/approve controls directly prevent 'black box' agent behavior in visual contexts."
+      },
+      {
+        "name": "Mixed-Initiative System Design and Control Allocation",
+        "scope": "Theory and practice of co-creation between human and AI where initiative is negotiated dynamically. Covers autonomy levels (passive suggestion to full automation), mode switching, and real-time control handoff.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "systems-mixed-initiative-control",
+        "seminal_authors": [
+          "(Mixed-Initiative Context research team)",
+          "HCI researchers on mode switching"
+        ],
+        "key_works": [
+          "Mixed-Initiative Context: Structuring and Managing Context for Human-AI Collaboration (2026)",
+          "Understanding Mode Switching in Human-AI Collaboration: Behavioral Insights and Predictive Modeling (2025)",
+          "Baba is Y'all 2.0: Design and Investigation of a Collaborative Mixed-Initiative System (2022)",
+          "A Large-Scale Analysis of Mixed Initiative in Information-Seeking Dialogues (2021)"
+        ],
+        "relevance_to_metrograph": "Essential for graph tools: users might manually select nodes vs request agent refactoring; research on mode switching informs smooth transitions between direct manipulation and AI assistance."
+      },
+      {
+        "name": "Trust, Explainability, and Transparency in AI Interfaces",
+        "scope": "How explainability and visual transparency build or erode trust. Includes narrative-based explanations, interactive dashboards, multi-level frameworks, and the distinction between 'trust enforcement' (opaque) vs 'trust empowerment' (informed).",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "ui-trust-explainability-transparency",
+        "seminal_authors": [
+          "(UXmatters researchers)",
+          "ScreamingBox AI UX",
+          "Human-Centered Explainability researchers"
+        ],
+        "key_works": [
+          "Designing AI User Interfaces That Foster Trust and Transparency (UXmatters 2025)",
+          "Preliminary Quantitative Study on Explainability and Trust in AI Systems (2024)",
+          "Is Trust Correlated with Explainability In AI? A Meta-Analysis (2025)",
+          "Human-Centered Explainability in AI-Enhanced UI Security Interfaces (2026)"
+        ],
+        "relevance_to_metrograph": "Shows users must understand agent reasoning (not just see outputs). For graphs: displaying retrieval context, decision chains, and limitations of agent-modified subgraphs builds trust."
+      },
+      {
+        "name": "Visualization for Agent Observability and Workflow Steering",
+        "scope": "Techniques for making agent workflows visible: graph theory for workflow flowcharts (Sankey, DAG), time-series of agent actions, per-node latency/tool-call overlays, human-in-the-loop interruption points.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "viz-agent-observability-workflow",
+        "seminal_authors": [
+          "AgentVidia Research",
+          "Microsoft (Agent Framework)",
+          "JetBrains",
+          "Langfuse",
+          "AWS/Strands"
+        ],
+        "key_works": [
+          "Visualizing Agent Workflows (AgentVidia Research Encyclopedia)",
+          "Microsoft Agent Framework Workflows - Observability (2025)",
+          "LLM Evaluation and AI Observability for Agent Monitoring (JetBrains 2026)",
+          "SciVisAgentBench: Benchmark for Scientific Data Analysis and Visualization Agents (2026)",
+          "MASFactory: Graph-centric Framework for Orchestrating LLM-Based Multi-Agent Systems (2026)"
+        ],
+        "relevance_to_metrograph": "Metro map naturally maps to DAG/graph workflows; users need to see agent decision paths overlaid on the graph visualization."
+      },
+      {
+        "name": "Prompt Engineering vs Direct Manipulation: Interface Trade-offs",
+        "scope": "Tension between language-based (prompts) and visual/spatial (direct manipulation) control. Includes DirectGPT research, hybrid approaches where visual objects reduce ambiguity.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "ui-prompt-vs-direct-manipulation",
+        "seminal_authors": [
+          "DirectGPT researchers",
+          "David Echeverri",
+          "Adam Fard",
+          "Brickify team"
+        ],
+        "key_works": [
+          "DirectGPT: A Direct Manipulation Interface to Interact with Large Language Models (2023)",
+          "Direct Manipulation vs. Interface Agents: Revisiting the Classic HCI Debate Decades Later (2025)",
+          "Prompt Engineering vs. Prompt Design: Two Wings of the Same AI Bird (Medium 2025)",
+          "Brickify: Enabling Expressive Design Intent Specification through Direct Manipulation on Design Tokens (2025)"
+        ],
+        "relevance_to_metrograph": "Core to MetroGraph's value prop: graph visualization IS direct manipulation. Lit shows users prefer visual control for spatial tasks; prompts are for high-level intent ('add a retrieval step'), direct manipulation for local changes."
+      },
+      {
+        "name": "Cognitive Load Management and Information Architecture",
+        "scope": "How adaptive visualizations respond to user cognitive capacity. Progressive disclosure (step-by-step, conditional, contextual). Strategies: visual hierarchy, information chunking, reducing extraneous load.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "viz-cognitive-load-information-arch",
+        "seminal_authors": [
+          "(Adaptive Visualization researchers)",
+          "ISIC 2013 symposium presenters",
+          "Dev3lop",
+          "Ratomir"
+        ],
+        "key_works": [
+          "Adaptive Visualization Interface That Manages User's Cognitive Load (2013 ISIC Symposium)",
+          "How to Address Cognitive Load in Complex Digital Interfaces (2024)",
+          "Investigating the generalizability of EEG-based Cognitive Load Estimation Across Visualizations (2018)",
+          "Progressive Disclosure in UX/UI Design: Balancing Complexity and Clarity (2026)"
+        ],
+        "relevance_to_metrograph": "Graph databases can be visually overwhelming. Progressive disclosure hides advanced queries/agent options. Novices see simple graph; experts access agent steering, RAG context, performance tuning."
+      },
+      {
+        "name": "User Mental Models of AI: Expertise Gaps and Capability Understanding",
+        "scope": "The 'expert blind spot' and 'mental model gap': experts know when AI will fail; novices treat it as oracle. Research on how users (expert vs novice) form mental models of agent capabilities, LLM prompting strategies, and failure modes.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "cognition-mental-models-ai-expertise",
+        "seminal_authors": [
+          "OpenCraft AI",
+          "Understanding User Mental Models researchers",
+          "ACM Transactions on Interactive Intelligent Systems"
+        ],
+        "key_works": [
+          "Improving User Mental Models of XAI Systems with an Inclusive Design Approach (2024)",
+          "Understanding User Mental Models in AI-Driven Code Completion Tools (2025)",
+          "The 'Mental Model' Gap: Why AI is a Superweapon for Experts and a Toy for Everyone Else (OpenCraft AI)",
+          "An Exploration of Mental Models of AI in Human–AI Co-Creativity (ACM 2024)",
+          "Why and When LLM-Based Assistants Can Go Wrong (2024)"
+        ],
+        "relevance_to_metrograph": "Data engineers vs casual users have different trust in graph agents. Experts understand when RAG retrieval fails; novices blame the UI. Design must scaffold mental models: show what agent 'sees' (retrieval context)."
+      },
+      {
+        "name": "Locus of Control and User Agency in Autonomous Systems",
+        "scope": "Psychological construct: users' perceived ability to influence outcomes. How transparency and user control over system decisions affect sense of agency. Autonomy-personality fit.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "cognition-locus-of-control-agency",
+        "seminal_authors": [
+          "Preserving Sense of Agency researchers",
+          "Effects of Agency Locus And Transparency of AI (Penn State)"
+        ],
+        "key_works": [
+          "Preserving Sense of Agency: User Preferences for Robot Autonomy and User Control (2025)",
+          "Effects of Agency Locus And Transparency of AI: Uncertainty Reduction and Emerging Mind (2024)",
+          "In AI We Trust? Effects of Agency Locus and Transparency (JCMC 2021)",
+          "Trust, Shared Understanding and Locus of Control in Mixed-Initiative Robotic Systems (2021)"
+        ],
+        "relevance_to_metrograph": "User sense of control over graph changes (vs agent autonomy) directly impacts trust. If agents refactor the graph without user veto, users lose sense of control."
+      },
+      {
+        "name": "Error Recovery, Correction Loops, and Intervention Design",
+        "scope": "How users detect and correct agent/AI errors. Challenges: over-reliance (miss agent errors), over-intervention (correct correct predictions). Recovery speed, feedback design, and the 'persuasion paradox' (fluent explanations increase deference even when wrong).",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "interaction-error-recovery-correction",
+        "seminal_authors": [
+          "Error Recovery in Human-AI Collaboration researchers",
+          "Calibrated Intervention in Human-AI Forecasting team"
+        ],
+        "key_works": [
+          "Error Recovery in Wearable Robotic Co-Grasping: The Role of Human-Led Correction (2025)",
+          "Calibrated Intervention in Human–AI Collaborative Forecasting (2026)",
+          "Being responsible or affable: Effects of AI error correction behaviors on user engagement (2025)",
+          "The Persuasion Paradox: When LLM Explanations Fail to Improve Human-AI Team Performance (2026)"
+        ],
+        "relevance_to_metrograph": "When agents misrefactor the graph, users must catch and fix it. UX must make error visibility salient (show before/after) and enable fast undo/revision."
+      },
+      {
+        "name": "User Control Preferences and Personalization in AI Systems",
+        "scope": "Do users prefer autonomy (agent decides) or control (user decides)? Mechanisms: serendipity, diversity, randomization vs deterministic filtering. Privacy-utility tradeoff. Human Context Protocol for portable preferences.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "interaction-user-control-autonomy",
+        "seminal_authors": [
+          "Robust AI Personalization researchers (Stanford Digital Economy Lab)",
+          "Beyond Algorethics researchers"
+        ],
+        "key_works": [
+          "How Personalization Drives Consumer Choice and Autonomy (ITIF 2026)",
+          "Robust AI Personalization Controls: The Human Context Protocol (Stanford 2025)",
+          "Towards Aligning Personalized Conversational Recommendation Agents with Users' Privacy Preferences (2024)",
+          "Autonomy Reshapes How Personalization Affects Privacy Concerns and Trust in LLM Agents (2025)"
+        ],
+        "relevance_to_metrograph": "Different data engineers want different levels of agent autonomy for graph ops. Some prefer suggestions only; others delegate complex refactoring. UI must support preferences without forced login/config."
+      },
+      {
+        "name": "Attention Guidance and Visual Hierarchy in Complex Interfaces",
+        "scope": "How visual design (contrast, size, color, position) guides user attention. Top-down (intentional) vs bottom-up (automatic) attention. Techniques: visual cues, in-view vs in-situ indicators. Digital wellbeing lens.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Relevant but not leaf-worthy on its own; feeds into cognitive load/information architecture leaf. For MetroGraph: highlighting agent-modified nodes, focusing on high-impact changes."
+      },
+      {
+        "name": "Sensemaking Through Data Visualization and Exploration",
+        "scope": "How users build mental representations of data through iterative visualization interaction. Gestalt principles, visual encoding choices, and feedback loops that enable hypothesis testing.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "viz-sensemaking-data-exploration",
+        "seminal_authors": [
+          "Sensemaking with Interactive Data Visualization researchers",
+          "How Design Researchers Make Sense team"
+        ],
+        "key_works": [
+          "Sensemaking with Interactive Data Visualization (2016)",
+          "Talking datasets – Understanding data sensemaking behaviours (2021)",
+          "How Design Researchers Make Sense of Data Visualizations in Data-Driven Design: An Uncertainty-Aware Sensemaking Model (2024)",
+          "Using Visual Representations of Data to Enhance Sensemaking in Data Exploration Tasks"
+        ],
+        "relevance_to_metrograph": "Graph exploration IS sensemaking: users iteratively query, filter, refactor to understand database structure. Agents should support this exploration loop, not replace it."
+      },
+      {
+        "name": "Graph Visualization and Interaction Design for Large Networks",
+        "scope": "Layout algorithms, interaction techniques (pan, zoom, filter), scalability challenges, and user studies on querying/filtering graph data. Multi-layout immersive approaches.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "viz-graph-visualization-interaction",
+        "seminal_authors": [
+          "Interactive Querying over Network Data researchers",
+          "A Multi-Layout Design team",
+          "yWorks (democratizing graph visualization)"
+        ],
+        "key_works": [
+          "Interactive Querying over Large Network Data: Scalability, Visualization, and Interaction Design (2013)",
+          "A Multi-Layout Design for Immersive Visualization of Network Data (2021)",
+          "Evaluation of two interaction techniques for visualization of dynamic graphs (2016)",
+          "From Experiments to Agents: How yWorks Uses AI to Democratize Graph Visualization (2025)"
+        ],
+        "relevance_to_metrograph": "Metro-map aesthetic requires understanding graph viz fundamentals. Research on interaction (zoom, pan, filter) and layout algorithms informs design. AI agents can suggest layouts, but users must control them."
+      },
+      {
+        "name": "Copilots vs Autonomous Agents: Architectural and UX Distinctions",
+        "scope": "Copilots (request-response, human decides) vs agents (plan-act-evaluate loop, AI acts). When to use each. Governance and error escalation differences. Hybrid architectures.",
+        "big_enough_for_leaf": true,
+        "proposed_leaf_name": "ux-copilot-vs-autonomous-agents",
+        "seminal_authors": [
+          "Virtual Workforce AI",
+          "Domo",
+          "Dextra Labs",
+          "DZone"
+        ],
+        "key_works": [
+          "AI agent vs copilot: autonomous AI agents vs copilots (Virtual Workforce 2026)",
+          "AI Copilots vs AI Agents: Understanding the Difference and Choosing the Right Approach (Domo 2026)",
+          "Agentic AI vs Copilots | Shift from Assistance to Autonomy (Dextra Labs 2026)",
+          "AI Copilot vs AI Agent: When to Let AI Assist vs Act Autonomously (Medium 2025)"
+        ],
+        "relevance_to_metrograph": "Core product decision: Is MetroGraph a copilot (AI suggests query refinements) or agent-enabled (AI auto-executes graph refactoring)? Likely hybrid: copilot-first with agent opt-in per task."
+      },
+      {
+        "name": "RAG (Retrieval-Augmented Generation) User Experience and Information Visibility",
+        "scope": "How RAG systems show retrieval context, sources, and reasoning. Trust through transparency (showing retrieved docs). Personalization and adaptation based on user interactions.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Relevant but narrower than other leaves. For MetroGraph: showing agent which schema/docs it retrieved to answer a query. Feeds into trust/transparency leaf."
+      },
+      {
+        "name": "Progressive Disclosure and Low-Code Visual Programming",
+        "scope": "UI patterns for managing complexity: step-by-step, conditional, contextual disclosure. Low-code/no-code visual workflows. Node-RED, visual flow editors.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Relevant to progressive disclosure leaf. For MetroGraph: advanced user preferences hide RAG tuning, agent parameters, but expose them on-demand."
+      },
+      {
+        "name": "Model Cards and AI System Documentation",
+        "scope": "Standardized documentation (Google Model Cards framework) capturing model purpose, performance, limitations, ethical considerations. Builds transparency and stakeholder trust.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Smaller area; feeds into trust/transparency. For MetroGraph: documenting limitations of agents used for graph suggestions (e.g., 'fails on >1000-node subgraphs')."
+      },
+      {
+        "name": "Copilot Design Patterns in Healthcare and Critical Systems",
+        "scope": "How copilots are designed for high-stakes domains (clinical decision support, cybersecurity). Emphasis on human oversight, error escalation, and confidence calibration.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Related to mixed-initiative/copilot design but specific to high-stakes. Less directly applicable to data-exploration context, though error-recovery lessons transfer."
+      },
+      {
+        "name": "Design Principles for Generative AI Applications",
+        "scope": "Broader principles for AI-native UX: managing generative uncertainty, progressive refinement, confidence signaling.",
+        "big_enough_for_leaf": false,
+        "relevance_to_metrograph": "Feeds into agentic UX patterns leaf. For MetroGraph: how to design agent output refinement (iterative graph suggestions)."
+      }
+    ],
+    "notes": "This literature map addresses MetroGraph's core HCI challenge: avoiding the \\\"chat vs graph confusion\\\" by designing an integrated visual-agentic system where users manipulate graphs directly while optionally leveraging AI agents for suggestions and automation.\n\n**Key Syntheses:**\n\n1. **The Copilot-First Hybrid Model**: Literature suggests copilots (suggestions + human veto) are safer than autonomous agents for graph modification. MetroGraph should default to copilot mode (agent suggests, user approves) with agent-mode opt-in per task.\n\n2. **Prompt vs Direct Manipulation**: Users strongly prefer visual control for spatial tasks (graph node positioning, query construction). Prompts should be for high-level intent ('optimize this subgraph'), not low-level operations ('move node A to coordinate X,Y').\n\n3. **Trust Through Transparency**: Users must see agent reasoning (what it retrieved, why it chose that refactoring). For MetroGraph: overlay retrieval context (schema info, docs used) on agent-suggested changes.\n\n4. **Mental Model Gaps**: Data engineers and casual users have different trust profiles. Experts understand when agents fail; novices blame UI. Design must scaffold understanding (e.g., 'agent retrieved 3 docs, confidence 0.75').\n\n5. **Observability as Agency**: Agents feel safe when users see their actions in real-time (DAG of query execution, per-step reasoning). For MetroGraph: visualize agent planning step-by-step on the graph.\n\n6. **Error Recovery Speed**: When agents misrefactor graphs, users must quickly see and undo. Before/after visualization is critical. Over-explanation ('here's why I changed it') can increase deference even when wrong.\n\n7. **Cognitive Load via Progressive Disclosure**: Complex options (agent tuning, RAG context, layout algorithms) should be hidden from novices, revealed contextually for experts.\n\n8. **Locus of Control Matters**: User sense of influence over agent behavior directly impacts adoption. Even in agent mode, users want checkpoints and veto authority.\n\n**Leaves Recommended:**\n- `hci-human-ai-interaction-design` (foundational Amershi + design patterns)\n- `ux-agentic-design-patterns` (observable, interruptible agents)\n- `systems-mixed-initiative-control` (mode switching, autonomy levels)\n- `ui-trust-explainability-transparency` (showing reasoning, admitting limits)\n- `viz-agent-observability-workflow` (DAG overlays, step-by-step)\n- `ui-prompt-vs-direct-manipulation` (spatial control > language for graphs)\n- `viz-cognitive-load-information-arch` (progressive disclosure)\n- `cognition-mental-models-ai-expertise` (expert-novice scaffolding)\n- `cognition-locus-of-control-agency` (user veto/checkpoints)\n- `interaction-error-recovery-correction` (undo, before/after)\n- `interaction-user-control-autonomy` (preference levels)\n- `viz-sensemaking-data-exploration` (iterative understanding)\n- `viz-graph-visualization-interaction` (layout, pan/zoom, filtering)\n- `ux-copilot-vs-autonomous-agents` (copilot default, agent opt-in)\n\n**Secondary themes** (feed into larger leaves, less leaf-worthy alone):\n- RAG UX (→ trust/transparency leaf)\n- Attention guidance (→ cognitive load leaf)\n- Model cards (→ trust leaf)\n- Healthcare copilots (→ mixed-initiative leaf)"
+  }
+]

@@ -1,0 +1,157 @@
+{
+  "name": "differentiation_matrix",
+  "caption": "MetroGraph HCI-cost edge vs competitor average, pain-weighted.",
+  "sql": "WITH us AS (SELECT feature_id, qg(hci_cost) uc FROM market.product_features WHERE product_id='market.product.us'), them AS (SELECT pf.feature_id, AVG(qg(pf.hci_cost)) tc FROM market.product_features pf JOIN market.products p ON pf.product_id=p.id WHERE p.is_self=false GROUP BY 1) SELECT f.name, us.uc us_hci, ROUND(them.tc,2) their_avg_hci, ROUND((us.uc-them.tc)*f.pain_score,2) weighted_edge FROM us JOIN them USING(feature_id) JOIN market.features f ON f.id=us.feature_id ORDER BY weighted_edge DESC LIMIT 25",
+  "rows": [
+    {
+      "name": "Schema Introspection & Discovery",
+      "us_hci": 5,
+      "their_avg_hci": 3.0,
+      "weighted_edge": 1.7
+    },
+    {
+      "name": "Graph Layout Engine",
+      "us_hci": 5,
+      "their_avg_hci": 3.21,
+      "weighted_edge": 1.52
+    },
+    {
+      "name": "Graph Database Support",
+      "us_hci": 5,
+      "their_avg_hci": 3.44,
+      "weighted_edge": 1.21
+    },
+    {
+      "name": "Graph Navigation & Exploration",
+      "us_hci": 5,
+      "their_avg_hci": 3.58,
+      "weighted_edge": 1.2
+    },
+    {
+      "name": "Onboarding & Learning",
+      "us_hci": 5,
+      "their_avg_hci": 3.84,
+      "weighted_edge": 0.9
+    },
+    {
+      "name": "Natural Language to Graph/Workflow",
+      "us_hci": 5,
+      "their_avg_hci": 3.88,
+      "weighted_edge": 0.89
+    },
+    {
+      "name": "Interactive Tutorials & Quickstart",
+      "us_hci": 5,
+      "their_avg_hci": 3.91,
+      "weighted_edge": 0.82
+    },
+    {
+      "name": "AI-Assisted Building (Copilot)",
+      "us_hci": 5,
+      "their_avg_hci": 4.0,
+      "weighted_edge": 0.8
+    },
+    {
+      "name": "Visual Query Builder",
+      "us_hci": 5,
+      "their_avg_hci": 3.97,
+      "weighted_edge": 0.8
+    },
+    {
+      "name": "Query Parameterization & Binding",
+      "us_hci": 5,
+      "their_avg_hci": 4.0,
+      "weighted_edge": 0.78
+    },
+    {
+      "name": "AI Code Generation for Transforms",
+      "us_hci": 5,
+      "their_avg_hci": 3.97,
+      "weighted_edge": 0.74
+    },
+    {
+      "name": "Extensibility & Plugin System",
+      "us_hci": 5,
+      "their_avg_hci": 3.95,
+      "weighted_edge": 0.74
+    },
+    {
+      "name": "Version History & Snapshots",
+      "us_hci": 5,
+      "their_avg_hci": 4.05,
+      "weighted_edge": 0.71
+    },
+    {
+      "name": "Code-First Query Editor (SQL/Cypher/jq)",
+      "us_hci": 5,
+      "their_avg_hci": 4.16,
+      "weighted_edge": 0.69
+    },
+    {
+      "name": "Visual Canvas & Editor",
+      "us_hci": 5,
+      "their_avg_hci": 4.35,
+      "weighted_edge": 0.62
+    },
+    {
+      "name": "Edges & Data-Flow Connections",
+      "us_hci": 5,
+      "their_avg_hci": 4.33,
+      "weighted_edge": 0.59
+    },
+    {
+      "name": "Keyboard Shortcuts & Command Palette",
+      "us_hci": 5,
+      "their_avg_hci": 4.13,
+      "weighted_edge": 0.54
+    },
+    {
+      "name": "Visual Schema Explorer & Column Browser",
+      "us_hci": 5,
+      "their_avg_hci": 4.35,
+      "weighted_edge": 0.52
+    },
+    {
+      "name": "Accessibility (WCAG 2.1 AA)",
+      "us_hci": 5,
+      "their_avg_hci": 4.0,
+      "weighted_edge": 0.5
+    },
+    {
+      "name": "UX Chrome & Accessibility",
+      "us_hci": 5,
+      "their_avg_hci": 4.18,
+      "weighted_edge": 0.49
+    },
+    {
+      "name": "Node System & Types",
+      "us_hci": 5,
+      "their_avg_hci": 4.5,
+      "weighted_edge": 0.48
+    },
+    {
+      "name": "Context-Aware AI Chat Sidebar",
+      "us_hci": 5,
+      "their_avg_hci": 4.43,
+      "weighted_edge": 0.47
+    },
+    {
+      "name": "Data Binding & Variable System",
+      "us_hci": 5,
+      "their_avg_hci": 4.5,
+      "weighted_edge": 0.43
+    },
+    {
+      "name": "Themes, Dark Mode & Styling",
+      "us_hci": 5,
+      "their_avg_hci": 4.13,
+      "weighted_edge": 0.43
+    },
+    {
+      "name": "ERD & Relationship Diagram Rendering",
+      "us_hci": 5,
+      "their_avg_hci": 4.42,
+      "weighted_edge": 0.42
+    }
+  ]
+}

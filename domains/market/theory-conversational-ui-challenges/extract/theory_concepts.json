@@ -1,0 +1,575 @@
+{
+  "leaf": "market/theory-conversational-ui-challenges",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Semantic Ambiguity in Conversational Interfaces",
+      "field": "hci",
+      "definition": "The inherent inability of natural language to fully specify meaning without contextual grounding; includes word-sense ambiguity, referential ambiguity, and scope ambiguity that conversational systems struggle to resolve without visual or structural context.",
+      "strength": "empirical",
+      "key_refs": [
+        "Dealing with Semantic Underspecification in Multimodal NLP (ACL 2023)",
+        "Semantic Underspecification - Language and Linguistics Compass (2010)",
+        "Disambiguation in Conversational Question Answering in the Era of LLM (2025)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-semantic-underspecification-multimodal-nlp",
+        "market-theory-conversational-ui-challenges-semantic-underspecification-language-models",
+        "market-theory-conversational-ui-challenges-disambiguation-conversational-qa-llm-survey"
+      ],
+      "implication": "MetroGraph must complement conversational querying with visual node/edge representations that ground semantic meaning; pure text cannot fully specify graph structures or query intent without spatial scaffolding.",
+      "related_concepts": [
+        "Pragmatic Implicature",
+        "Context Underspecification",
+        "Intent Recognition Failure"
+      ]
+    },
+    {
+      "concept": "Context Underspecification in Multi-Turn Dialogue",
+      "field": "hci",
+      "definition": "The progressive loss or unavailability of sufficient contextual information across dialogue turns, causing systems to misunderstand user intent due to missing pronoun resolution, implicit references, or unstated assumptions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Conversational Information Seeking (2022)",
+        "A Survey of Conversational Search (2024)",
+        "Towards Universal Dialogue State Tracking (2018)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-conversational-information-seeking-survey",
+        "market-theory-conversational-ui-challenges-survey-conversational-search",
+        "market-theory-conversational-ui-challenges-towards-universal-dialogue-state-tracking"
+      ],
+      "implication": "MetroGraph must make query context (selected nodes, filters, scope) visually persistent; temporal linear dialogue cannot reliably maintain structured state that users expect to persist across interaction.",
+      "related_concepts": [
+        "Dialogue State Tracking",
+        "Context Window Limitations",
+        "Mental Model Misalignment"
+      ]
+    },
+    {
+      "concept": "Intent Recognition Failure in Complex Dialogue",
+      "field": "hci",
+      "definition": "The inability of conversational systems to accurately classify user intents from natural language utterances, especially when users express multiple simultaneous goals, have out-of-distribution phrasings, or rely on conversational implicature.",
+      "strength": "empirical",
+      "key_refs": [
+        "Intent Recognition in Dialogue Systems (2024)",
+        "Multi-Intent Recognition in Dialogue Understanding (2024)",
+        "Dialogue Agents 101: Critical Ingredients for Designing Effective Conversational Systems (2023)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-intent-recognition-dialogue-systems",
+        "market-theory-conversational-ui-challenges-multi-intent-recognition-dialogue",
+        "market-theory-conversational-ui-challenges-dialogue-agents-101-critical-ingredients"
+      ],
+      "implication": "MetroGraph must provide visual intent specification (drag nodes, set constraints, compose operators) rather than relying on NLU; explicit structural inputs are more reliable than natural language for graph manipulation.",
+      "related_concepts": [
+        "NLU Robustness",
+        "Out-of-Distribution Inputs",
+        "Multi-Intent Ambiguity"
+      ]
+    },
+    {
+      "concept": "Dialogue Repair Mismatch",
+      "field": "hci",
+      "definition": "The systematic failure of conversational systems to employ human-expected repair and clarification strategies when misunderstanding occurs; systems lack the contextual models and cooperative principles that humans use to recover from dialogue breakdowns.",
+      "strength": "empirical",
+      "key_refs": [
+        "An analysis of dialogue repair in virtual assistants (2024)",
+        "System and User Strategies to Repair Conversational Breakdowns (2024)",
+        "Exploring human error recovery strategies: Implications for spoken dialogue systems (2005)",
+        "Clarification in Spoken Dialogue Systems (2003)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-dialogue-repair-virtual-assistants",
+        "market-theory-conversational-ui-challenges-error-recovery-spoken-dialogue-systems",
+        "market-theory-conversational-ui-challenges-exploring-human-error-recovery-strategies",
+        "market-theory-conversational-ui-challenges-clarification-spoken-dialogue-systems"
+      ],
+      "implication": "MetroGraph should provide immediate visual feedback (highlighting selections, showing query results) to surface misunderstandings before requiring verbal repair; proactive error prevention through UI feedback reduces reliance on conversational error recovery.",
+      "related_concepts": [
+        "Clarification Request Generation",
+        "Robustness to Errors",
+        "Cooperative Principles"
+      ]
+    },
+    {
+      "concept": "Pragmatic Understanding Failure",
+      "field": "cognitive-psych",
+      "definition": "The inability of conversational systems to infer speaker intent from conversational implicature, context-dependent meaning, and cooperative principles (Grice); systems fail to understand what is meant versus what is literally said.",
+      "strength": "empirical",
+      "key_refs": [
+        "Expanding the Set of Pragmatic Considerations in Conversational AI (2023)",
+        "Implicature in Interaction: Understanding Implicature Improves Alignment in Human-LLM Interaction (2024)",
+        "Towards an Analysis of Discourse and Interactional Pragmatic Reasoning Capabilities of Large Language Models (2024)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-pragmatic-considerations-conversational-ai",
+        "market-theory-conversational-ui-challenges-implicature-interaction-human-llm",
+        "market-theory-conversational-ui-challenges-pragmatic-understanding-conversational-systems"
+      ],
+      "implication": "MetroGraph must use explicit structural affordances (node colors, layout, annotations) to communicate system intent instead of relying on conversational implicature; visual grammar is less ambiguous than natural language pragmatics.",
+      "related_concepts": [
+        "Cooperative Principles",
+        "Context Appropriateness",
+        "Indirect Meaning"
+      ]
+    },
+    {
+      "concept": "Dialogue State Tracking Bottleneck",
+      "field": "hci",
+      "definition": "The core architectural limitation where systems must maintain and update a consistent belief state about dialogue context across turns; heterogeneous dialogue representations, domain-specific state schemas, and cross-domain generalization failures prevent robust state maintenance.",
+      "strength": "framework",
+      "key_refs": [
+        "Dialogue State Tracking in Task-Oriented Systems (2023)",
+        "Towards Universal Dialogue State Tracking (2018)",
+        "Evaluating LLM-based Agents for Multi-Turn Conversations: A Survey (2025)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-task-oriented-dialogue-state-tracking",
+        "market-theory-conversational-ui-challenges-towards-universal-dialogue-state-tracking",
+        "market-theory-conversational-ui-challenges-evaluating-llm-agents-multi-turn-conversations"
+      ],
+      "implication": "MetroGraph must make graph state visually persistent through a spatial canvas instead of maintaining hidden dialogue state; explicit visual representation of nodes/edges/filters eliminates the need for context tracking across interaction turns.",
+      "related_concepts": [
+        "Context Persistence",
+        "Belief State",
+        "Multi-Domain Generalization"
+      ]
+    },
+    {
+      "concept": "Constraint Discovery Problem in Conversational Interfaces",
+      "field": "interaction-design",
+      "definition": "Users cannot discover system capabilities, constraints, or valid input ranges through natural conversation; conversational interfaces lack affordances for revealing what is possible, leading to abandonmentin when phrasing differs from system expectations.",
+      "strength": "empirical",
+      "key_refs": [
+        "Chat Failures and Troubles: Reasons and Solutions (2023)",
+        "Convo: What does conversational programming need? An exploration of machine learning interface design (2020)",
+        "The Conversation Trap: why defaulting to chat might be the biggest interaction design mistake of the AI era (2026)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-chat-failures-troubles-reasons-solutions",
+        "market-theory-conversational-ui-challenges-convo-machine-learning-interface-design",
+        "market-theory-conversational-ui-challenges-conversation-trap-interaction-design-mistake"
+      ],
+      "implication": "MetroGraph must surface operators, filters, and valid query patterns through visual UI elements (menus, drag-drop controls, schema visualization) rather than relying on users to discover them through trial-and-error conversation.",
+      "related_concepts": [
+        "Discoverability",
+        "Affordances",
+        "Invisible Capabilities"
+      ]
+    },
+    {
+      "concept": "Mental Model Misalignment",
+      "field": "cognitive-psych",
+      "definition": "Persistent disconnect between users' mental models of what a conversational system can do and its actual capabilities; transparency features paradoxically reduce satisfaction and do not bridge the comprehension gap.",
+      "strength": "empirical",
+      "key_refs": [
+        "Exploring users' mental models of conversational agents: a systematic review (2025)",
+        "Understanding Mental Models of Generative Conversational Search and The Effect of Interface Transparency (2025)",
+        "Transparent Conversational Agents: The Impact of Capability Communication on User Behavior and Mental Model Alignment (2024)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-exploring-users-mental-models-conversational-agents",
+        "market-theory-conversational-ui-challenges-understanding-mental-models-generative-search",
+        "market-theory-conversational-ui-challenges-transparent-conversational-agents-capability-communication"
+      ],
+      "implication": "MetroGraph must use visual system metaphors (graph, schema, data structures) that align with how users conceptually think about structured data; design interface to match user mental models of the problem domain rather than trying to explain system internals.",
+      "related_concepts": [
+        "Trust Calibration",
+        "Transparency",
+        "Cognitive Load"
+      ]
+    },
+    {
+      "concept": "Multimodal Underspecification",
+      "field": "hci",
+      "definition": "Natural language alone is insufficient for specifying complex visual or structural tasks (visualization, layout, graph operations); unimodal text-only intent is inadequately grounded in spatial or visual context.",
+      "strength": "empirical",
+      "key_refs": [
+        "Towards Natural Language Interfaces for Data Visualization: A Survey (2021)",
+        "Deep Learning Approaches for Multimodal Intent Recognition: A Survey (2024)",
+        "Show, Don't Tell: Reflections on the Design of Multi-modal Conversational Interfaces (2021)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-natural-language-interfaces-data-visualization-survey",
+        "market-theory-conversational-ui-challenges-deep-learning-multimodal-intent-recognition",
+        "market-theory-conversational-ui-challenges-multimodal-conversational-interfaces"
+      ],
+      "implication": "MetroGraph inherently requires multimodal interaction: conversational queries must be paired with visual node selection, spatial layout, and structural constraints. Graph visualization is not optional scaffolding but essential specification mechanism.",
+      "related_concepts": [
+        "Visual Affordances",
+        "Spatial Interaction",
+        "Cognitive Load Reduction"
+      ]
+    },
+    {
+      "concept": "Linear Dialogue Structure Limitations",
+      "field": "interaction-design",
+      "definition": "Sequential turn-taking in conversational interfaces constrains exploration and multi-path reasoning; linear chat history cannot represent parallel hypotheses, branching decision trees, or non-sequential task flows that users need for complex work.",
+      "strength": "empirical",
+      "key_refs": [
+        "ChatGraPhT: A Visual Conversation Interface for Multi-Path Reflection with Agentic LLM Support (2024)",
+        "Do Conversational Interfaces Limit Creativity? Exploring Visual Graph Systems for Creative Writing (2024)",
+        "Agentic Workflows for Conversational Human-AI Interaction Design (2025)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-linear-dialogue-limitations",
+        "market-theory-conversational-ui-challenges-do-conversational-interfaces-limit-creativity",
+        "market-theory-conversational-ui-challenges-agentic-workflows-conversational-design"
+      ],
+      "implication": "MetroGraph's graph-based interface directly addresses this by representing multiple query paths, branching logic, and parallel explorations as spatial structures; graph canvas enables non-linear, exploratory interaction that linear chat cannot support.",
+      "related_concepts": [
+        "Spatial Exploration",
+        "Multi-Path Reasoning",
+        "Dialogue Transience"
+      ]
+    },
+    {
+      "concept": "Conversational Inertia in LLM Agents",
+      "field": "hci",
+      "definition": "The tendency of large language models in extended conversations to repeat prior decisions or become locked into early dialogue patterns despite receiving longer context; extended context does not monotonically improve multi-turn dialogue quality.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mitigating Conversational Inertia in Multi-Turn Agents (2025)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-mitigating-conversational-inertia-agents"
+      ],
+      "implication": "MetroGraph avoids dialogue inertia by using explicit visual state representation (nodes, edges, filters) that users can directly manipulate; visual representation prevents the model from being locked into prior conversational patterns.",
+      "related_concepts": [
+        "Context Window Effects",
+        "Attention Distribution",
+        "Path Dependency"
+      ]
+    },
+    {
+      "concept": "Hallucination and Grounding Failure",
+      "field": "hci",
+      "definition": "Conversational AI systems generate plausible-sounding but factually false information (hallucinations); grounding to external data is insufficient, and architectural constraints are needed to ensure conversational truthfulness in constrained domains.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mitigating LLM Hallucinations Using a Multi-Agent Framework (2024)",
+        "Context Window Limits: Why Your LLM Still Hallucinates (2026)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-halluci-nation-grounding-llm-conversational",
+        "market-theory-conversational-ui-challenges-context-window-llm-hallucination"
+      ],
+      "implication": "MetroGraph must enforce constraints at the interface level (valid operators, schema-constrained queries, real-time result feedback) to prevent hallucinated results; conversational query must be validated against actual graph structure before execution.",
+      "related_concepts": [
+        "Factual Grounding",
+        "Context Window Effects",
+        "Truthfulness"
+      ]
+    },
+    {
+      "concept": "Query Reformulation Failure in Conversational RAG",
+      "field": "rag",
+      "definition": "Automatic query rewriting in conversational RAG systems fails to capture user intent from conversational context, particularly for co-reference resolution and context-dependent pronoun binding.",
+      "strength": "empirical",
+      "key_refs": [
+        "Can Synthetic Query Rewrites Capture User Intent Better than Humans in Retrieval-Augmented Generation? (2024)",
+        "Beyond Pipelines: A Fundamental Study on the Rise of Generative-Retrieval Architectures in Web Research (2025)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-query-reformulation-conversational-search",
+        "market-theory-conversational-ui-challenges-beyond-pipelines-generative-retrieval"
+      ],
+      "implication": "MetroGraph should allow users to explicitly specify query context through visual graph annotations (selected nodes, constraints) rather than relying on conversational query reformulation to infer intent from chat history.",
+      "related_concepts": [
+        "Context Management",
+        "Coreference Resolution",
+        "Intent Disambiguation"
+      ]
+    },
+    {
+      "concept": "Task Completion-Satisfaction Gap",
+      "field": "hci",
+      "definition": "Dialogue systems can complete tasks accurately but still produce low user satisfaction; task completion rate and dialogue efficiency are independent of user experience quality, indicating systems miss critical UX dimensions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Understanding User Satisfaction with Task-oriented Dialogue Systems (2022)",
+        "Assessing Interaction Quality in Human–AI Dialogue: An Integrative Review and Multi-Layer Framework for Conversational Agents (2023)",
+        "How to Evaluate Your Dialogue Models: A Review of Approaches (2021)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-task-completion-dialogue-systems-evaluation",
+        "market-theory-conversational-ui-challenges-assessing-interaction-quality-human-ai-dialogue",
+        "market-theory-conversational-ui-challenges-dialogue-system-evaluation-comprehensive-review"
+      ],
+      "implication": "MetroGraph must prioritize user agency, comprehension, and feedback loops alongside task completion; visual interface transparency that shows query structure, constraints, and results helps close the satisfaction gap.",
+      "related_concepts": [
+        "User Agency",
+        "Feedback Loops",
+        "Comprehensibility"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation Superiority for Regularly-Used Tasks",
+      "field": "hci",
+      "definition": "Foundational HCI principle that direct manipulation interfaces outperform conversational interfaces for routine, well-understood tasks; spatial, reversible, visually-encoded actions provide superior cognitive efficiency and user control.",
+      "strength": "established-law",
+      "key_refs": [
+        "Direct Manipulation Interfaces (Norman, 1983)",
+        "Designing the User Interface: Strategies for Effective Human-Computer Interaction (Shneiderman, 2016)",
+        "Shneiderman's Eight Golden Rules of Interface Design (1987)",
+        "Conversational agent or direct manipulation in human–system interaction (2005)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-direct-manipulation-interfaces",
+        "market-theory-conversational-ui-challenges-designing-user-interface-shneiderman",
+        "market-theory-conversational-ui-challenges-shneiderman-user-interface-design-rules",
+        "market-theory-conversational-ui-challenges-conversational-vs-direct-manipulation"
+      ],
+      "implication": "MetroGraph embraces direct manipulation (drag nodes, draw edges, apply filters spatially) for database graph queries because users perform these queries repeatedly; direct manipulation outperforms conversation for this task class.",
+      "related_concepts": [
+        "User Agency",
+        "Cognitive Load",
+        "Spatial Interaction",
+        "Affordances"
+      ]
+    },
+    {
+      "concept": "Information Foraging and Scent",
+      "field": "information-foraging",
+      "definition": "Human information-seeking involves iterative exploration guided by information scent (Pirolli); conversations alone cannot provide the visual cues and interactive feedback that guide exploration, requiring navigation through information landscape.",
+      "strength": "framework",
+      "key_refs": [
+        "Information Seeking Behavior - an overview (Pirolli's Information Foraging Theory, 2000s)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-information-seeking-behavior-overview"
+      ],
+      "implication": "MetroGraph's graph visualization provides visual scent (node colors, edge patterns, result previews) that guides users through query exploration; conversational interfaces lack the ambient information cues needed for foraging behavior.",
+      "related_concepts": [
+        "Visual Feedback",
+        "Iterative Exploration",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Discoverability Failure in Linear Chat",
+      "field": "interaction-design",
+      "definition": "Conversational interfaces provide no affordances for discovering available operations, constraints, or valid parameter ranges; users must resort to trial-and-error or explicit help-seeking rather than visual hints.",
+      "strength": "empirical",
+      "key_refs": [
+        "The Conversation Trap: why defaulting to chat might be the biggest interaction design mistake of the AI era (2026)",
+        "Beyond the Conversation Trap: Designing for Hybrid Human-Agent Interaction Modes (2026)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-conversation-trap-interaction-design-mistake",
+        "market-theory-conversational-ui-challenges-conversation-trap-hybrid-modes"
+      ],
+      "implication": "MetroGraph surfaces query capabilities through UI elements (visible operators, type hints, schema visualization) rather than forcing users to discover them conversationally; visual affordances enable passive learning and rapid capability discovery.",
+      "related_concepts": [
+        "Affordances",
+        "Visible System State",
+        "Passive Learning"
+      ]
+    },
+    {
+      "concept": "Transience of Conversational Interaction",
+      "field": "hci",
+      "definition": "Brief, transient nature of conversational turns limits opportunities for sustained user engagement; interactions are ephemeral without persistent visualization of interaction history and context.",
+      "strength": "empirical",
+      "key_refs": [
+        "Agentic Workflows for Conversational Human-AI Interaction Design (2025)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-agentic-workflows-conversational-design"
+      ],
+      "implication": "MetroGraph provides persistent visual canvas where query structures, results, and refinements remain visible and replayable; spatial persistence addresses the transience problem by making interaction artifacts durable.",
+      "related_concepts": [
+        "Persistent State",
+        "Interaction History",
+        "Artifact Durability"
+      ]
+    },
+    {
+      "concept": "Ambiguity from Functionality Superposition",
+      "field": "hci",
+      "definition": "Wide range of conversational AI capabilities combined with unlimited possible user goals creates a vast ambiguous design space; users cannot easily constrain their requests to valid system functionality.",
+      "strength": "empirical",
+      "key_refs": [
+        "Agentic Workflows for Conversational Human-AI Interaction Design (2025)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-agentic-workflows-conversational-design"
+      ],
+      "implication": "MetroGraph constrains the design space by providing domain-specific visual operators for graph queries (node filters, edge traversals, aggregations); explicit constraints in the UI reduce ambiguity compared to open-ended natural language.",
+      "related_concepts": [
+        "Design Space Complexity",
+        "Constraint Discovery",
+        "Intent Ambiguity"
+      ]
+    },
+    {
+      "concept": "Web Interface Control Failure with Pure Language",
+      "field": "hci",
+      "definition": "LLMs controlling web interfaces through language instructions fail for visual/spatial tasks and structural navigation requiring real-time visual feedback and iterative refinement.",
+      "strength": "empirical",
+      "key_refs": [
+        "WebWISE: Web Interface Control and Sequential Exploration with Large Language Models (2023)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-webwise-web-interface-control-llm"
+      ],
+      "implication": "MetroGraph must maintain visual feedback loops (showing node selections, query previews, result highlights) because pure language instructions cannot reliably specify complex structural manipulations.",
+      "related_concepts": [
+        "Visual Feedback",
+        "Iterative Refinement",
+        "Real-Time Grounding"
+      ]
+    },
+    {
+      "concept": "Multi-Agent Conversational Complexity",
+      "field": "hci",
+      "definition": "Coordination and complexity issues emerge when multiple conversational agents operate together; chat paradigm does not scale to multi-agent scenarios requiring orchestration and role clarity.",
+      "strength": "empirical",
+      "key_refs": [
+        "One Agent Too Many: User Perspectives on Approaches to Multi-agent Conversational AI (2024)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-multimodal-vs-speech-only-performance"
+      ],
+      "implication": "MetroGraph's node-based graph model naturally supports multi-agent scenarios through visual role differentiation (node types, coloring, annotations); graph structure makes agent roles and interactions explicit.",
+      "related_concepts": [
+        "Orchestration",
+        "Role Clarity",
+        "Scalability"
+      ]
+    },
+    {
+      "concept": "Cognitive Load of Linear Chat for Structured Tasks",
+      "field": "cognitive-psych",
+      "definition": "Conversational interfaces impose high cognitive load for structured data tasks by forcing users to maintain mental models of invisible system state, remember prior context, and reconcile linear dialogue with non-linear task logic.",
+      "strength": "framework",
+      "key_refs": [
+        "Visualization Analysis and Design (Munzner, 2014)",
+        "Designing the User Interface: Strategies for Effective Human-Computer Interaction (Shneiderman, 2016)",
+        "Conversational User Interfaces for Blind Knowledge Workers: A Case Study (2020)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-visualization-analysis-design-munzner",
+        "market-theory-conversational-ui-challenges-designing-user-interface-shneiderman",
+        "market-theory-conversational-ui-challenges-conversational-ui-blind-knowledge-workers"
+      ],
+      "implication": "MetroGraph reduces cognitive load by externalizing query structure as visual graph: nodes represent entities, edges show relationships, visual constraints are spatially encoded. External representation reduces working memory demand.",
+      "related_concepts": [
+        "External Representation",
+        "Working Memory",
+        "Mental Model"
+      ]
+    },
+    {
+      "concept": "NL Interface Ambiguity for Structured Tasks",
+      "field": "interaction-design",
+      "definition": "Natural language interfaces for structured tasks (NL2VIS, NL2SQL, NL2Query) fail due to ambiguity in visual specification, context maintenance, and lack of affordances for constraint expression.",
+      "strength": "empirical",
+      "key_refs": [
+        "Towards Natural Language Interfaces for Data Visualization: A Survey (2021)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-natural-language-interfaces-data-visualization-survey"
+      ],
+      "implication": "MetroGraph augments NL with visual graph semantics: structured queries are specified through direct manipulation (selecting nodes, composing operators visually), reducing ambiguity compared to pure NL approaches.",
+      "related_concepts": [
+        "Structured Query Specification",
+        "Visual Semantics",
+        "Constraint Expression"
+      ]
+    },
+    {
+      "concept": "Trust Calibration Limitations of Transparency",
+      "field": "cognitive-psych",
+      "definition": "Transparency features and explanations alone are insufficient for helping users calibrate trust in AI systems; users need to understand system boundaries, confidence limits, and failure modes beyond capability descriptions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Trust Calibration in Agentic AI: Designing for Appropriate Reliance, Not Blind Trust (2026)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-trust-calibration-agentic-ai"
+      ],
+      "implication": "MetroGraph must design interfaces that make query semantics and execution bounds transparent (showing exactly which nodes match, what constraints apply) rather than relying on conversational explanations of AI behavior.",
+      "related_concepts": [
+        "Transparency",
+        "User Agency",
+        "Appropriate Reliance"
+      ]
+    },
+    {
+      "concept": "Semantic Grounding Failure in Multi-Agent NL Interfaces",
+      "field": "hci",
+      "definition": "Natural language interfaces for multi-agent task assignment fail due to semantic grounding challenges when mapping NL to workflows; explicit constraints are necessary to disambiguate intent.",
+      "strength": "empirical",
+      "key_refs": [
+        "Towards A Natural Language Interface for Flexible Multi-Agent Task Assignment (2023)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-natural-language-flexible-agent-task-assignment"
+      ],
+      "implication": "MetroGraph's graph structure provides semantic grounding for multi-query workflows: visual node composition, edge constraints, and type annotations make assignment semantics explicit without NL ambiguity.",
+      "related_concepts": [
+        "Semantic Clarity",
+        "Explicit Constraints",
+        "Workflow Semantics"
+      ]
+    },
+    {
+      "concept": "Dialogue Coherence and Appropriateness",
+      "field": "hci",
+      "definition": "Systems struggle to maintain coherent dialogue and generate contextually appropriate responses; automatic metrics cannot capture true interaction quality beyond task completion.",
+      "strength": "framework",
+      "key_refs": [
+        "How to Evaluate Your Dialogue Models: A Review of Approaches (2021)",
+        "Survey on Evaluation Methods for Dialogue Systems (2019)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-dialogue-system-evaluation-comprehensive-review",
+        "market-theory-conversational-ui-challenges-survey-dialogue-system-evaluation"
+      ],
+      "implication": "MetroGraph avoids dialogue coherence problems by using explicit visual protocol (graph state, query structure) that both user and system maintain synchronously; no hidden dialogue state to maintain.",
+      "related_concepts": [
+        "System Appropriateness",
+        "Coherence",
+        "Evaluation Metrics"
+      ]
+    },
+    {
+      "concept": "Survey Consensus on Multi-User CUI Challenges",
+      "field": "hci",
+      "definition": "Systematic reviews document persistent design challenges in conversational interfaces: context management, turn-taking ambiguity, and architectural complexity that remain unsolved across implementations.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Survey on Multi-User Conversational Interfaces (2024)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-survey-multi-user-conversational-interfaces"
+      ],
+      "implication": "MetroGraph's approach of combining graph visualization with optional conversational layer acknowledges these persistent challenges by not relying on conversation alone for structured queries.",
+      "related_concepts": [
+        "Architectural Patterns",
+        "Turn-Taking",
+        "Collaborative Dialogue"
+      ]
+    },
+    {
+      "concept": "Insufficient Capability-Boundary Communication",
+      "field": "hci",
+      "definition": "Conversational systems fail to effectively communicate what capabilities they do and do not have; users struggle with invisible constraints until they encounter failures.",
+      "strength": "empirical",
+      "key_refs": [
+        "Convo: What does conversational programming need? An exploration of machine learning interface design (2020)"
+      ],
+      "source_ids": [
+        "market-theory-conversational-ui-challenges-convo-machine-learning-interface-design"
+      ],
+      "implication": "MetroGraph makes capabilities explicit through UI schema (visible operators, type constraints, available node types) rather than requiring conversational discovery of what is possible.",
+      "related_concepts": [
+        "Affordances",
+        "Visible Constraints",
+        "Capability Boundaries"
+      ]
+    }
+  ]
+}

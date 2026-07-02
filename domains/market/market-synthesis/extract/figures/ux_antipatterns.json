@@ -1,0 +1,157 @@
+{
+  "name": "ux_antipatterns",
+  "caption": "The endless-panes antipattern catalog (by product spread).",
+  "sql": "SELECT pattern, len(exemplar_product_ids) n_products, hci_cost, our_stance FROM market.ux_patterns WHERE is_antipattern ORDER BY n_products DESC LIMIT 25",
+  "rows": [
+    {
+      "pattern": "Canvas-based rendering (SVG or WebGL) provides no semantic HTML structure for screen readers; node relationships and graph topology inaccessible to assistive technology",
+      "n_products": 5,
+      "hci_cost": "F",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "All 5 platforms (Zapier, Make, n8n, Node-RED, Latenode) require users to specify field mappings during workflow build, not upfront. Changing upstream app = cascading rework downstream.",
+      "n_products": 5,
+      "hci_cost": "C",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "Information revealed only on mouse hover (edge labels, node descriptions, connection metadata)",
+      "n_products": 4,
+      "hci_cost": "D",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "Low-Code Platforms Reduce Visible Code, but Increase Hidden UI Complexity (Config UI becomes new 'code')",
+      "n_products": 4,
+      "hci_cost": "D",
+      "our_stance": "conditional"
+    },
+    {
+      "pattern": "Platforms Target 'Citizen Developers' (Non-Technical Users) But Require 2-4 Week Learning Curve (Reduces Adoption)",
+      "n_products": 4,
+      "hci_cost": "D",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "100+ UI Components in Visual Builder, Requiring Cognitive Categorization",
+      "n_products": 4,
+      "hci_cost": "D",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Node-Link Graphs Cluttered at Scale (>30 nodes)",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Modal-Heavy Workflows: Multi-Step Forms in Dialogs",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "Graph visualization requires simultaneous visibility of 4-5 UI panels (canvas, layout controls, property inspector, style editor, element details) to access full functionality",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Fine-Grained Role-Based Access Control Exposed as Feature Matrix (8+ role types, per-resource assignment)",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Left Inspector + Center Canvas + Right Properties Pane (3-Pane Layout)",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "Graph query language (Cypher, GQL, Gremlin) required to perform advanced operations, blocking non-technical users",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Performance Blindness (No Query Cost Visibility Before Execution)",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "adopt"
+    },
+    {
+      "pattern": "Platforms with code fallback (Latenode, Node-RED, n8n JavaScript expressions) allow users to 'code their way out' of visual limitations, but this creates context-switching overhead (visual editor ↔ code editor) and discourages learning the visual paradigm.",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "conditional"
+    },
+    {
+      "pattern": "Nested Modal Dialogs: Trigger-Action-Condition-Value Matrices",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "AI Features (Text-to-Diagram, Clustering, Summarization) as Separate Tools, Not Integrated into Main Canvas",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Multiple persistent panes (3-6 simultaneous panels/sidebars) forcing user eye-scanning and context-switching between controls and canvas",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "Offline vs. Online Mode Cognitive Split",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "End-users forced to select and tune graph layout algorithms (force-directed, hierarchical, circular, etc.) with technical parameters (iterations, spring length, gravity)",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Critical operations (select all, layout, undo/redo, search) hidden behind undocumented keyboard shortcuts with no visual hint or menu entry",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "Query Language Barrier (Cypher/nGQL/SQL Required)",
+      "n_products": 3,
+      "hci_cost": "D",
+      "our_stance": "reinvent"
+    },
+    {
+      "pattern": "Unbounded Query Results (No Default Limit, Large Clutter)",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "adopt"
+    },
+    {
+      "pattern": "Feature Comparison Matrix as Pricing/Plan Selector",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "avoid"
+    },
+    {
+      "pattern": "Hourly Usage-Based or Tiered Per-User Pricing Creates Uncertainty in TCO Calculation",
+      "n_products": 3,
+      "hci_cost": "B",
+      "our_stance": "conditional"
+    },
+    {
+      "pattern": "Dashboard design requires manual layout, data variant handling, and extensive user testing with real data",
+      "n_products": 3,
+      "hci_cost": "C",
+      "our_stance": "reinvent"
+    }
+  ]
+}

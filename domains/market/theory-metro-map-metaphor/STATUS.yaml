@@ -1,0 +1,13 @@
+# Phase manifest — read by a new session to resume where the last one left off.
+# phase states: todo | partial | done
+domain: market
+leaf: theory-metro-map-metaphor
+depth: exhaustive          # scout | standard | exhaustive (see _shared/sessions/depth-profiles.md)
+phases:
+  meta_research: done
+  a_survey: done         # -> sources
+  b_ingest: partial      # -> documents + FTS: 39/51 ingested
+  c_extract: done        # -> theory_concepts extracted
+  d_gold: done           # -> verified claims (shared layer)
+  e_relationships: done  # -> typed graph (shared)
+updated: 2026-06-26

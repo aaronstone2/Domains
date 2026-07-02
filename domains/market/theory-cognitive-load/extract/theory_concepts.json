@@ -1,0 +1,709 @@
+{
+  "leaf": "market/theory-cognitive-load",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Cognitive Load",
+      "field": "cognitive-psych",
+      "definition": "The total amount of mental effort being used in working memory during a learning task; comprises three independent types (intrinsic, extraneous, germane) that collectively cannot exceed available working memory capacity without impairing learning.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller 1988 / Cognitive load during problem solving: Effects on learning",
+        "Sweller/Ayres/Kalyuga 2011 / Cognitive Load Theory (textbook)"
+      ],
+      "implication": "MetroGraph must bound total cognitive load across its three dimensions; exceeding working memory capacity causes learning failure. Design constraint: prioritize intrinsic load (task complexity), minimize extraneous load (UI clutter), and channel germane load (meaningful cognitive activity) toward user goals.",
+      "related_concepts": [
+        "Working Memory Capacity",
+        "Intrinsic Load",
+        "Extraneous Load",
+        "Germane Load",
+        "Element Interactivity"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-sweller-1988-cognitive-load-problem-solving",
+        "market-theory-cognitive-load-sweller-ayres-kalyuga-2011-cognitive-load-theory-book"
+      ]
+    },
+    {
+      "concept": "Intrinsic Load",
+      "field": "cognitive-psych",
+      "definition": "The inherent difficulty of a task determined by the number and complexity of interactive elements that must be simultaneously processed; also called 'element interactivity' — increases with domain complexity and task novelty.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller 1994 / Cognitive load theory, learning difficulty, and instructional design",
+        "Sweller/Ayres/Kalyuga 2011 / Cognitive Load Theory"
+      ],
+      "implication": "MetroGraph cannot reduce intrinsic load of database/graph reasoning tasks (inherent complexity), but must surface it gradually via progressive disclosure and chunking; cannot present all relationships simultaneously without overwhelming working memory.",
+      "related_concepts": [
+        "Element Interactivity",
+        "Task Complexity",
+        "Schema Acquisition",
+        "Progressive Disclosure"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-sweller-1994-clt-learning-difficulty-instructional-design",
+        "market-theory-cognitive-load-sweller-ayres-kalyuga-2011-cognitive-load-theory-book",
+        "market-theory-cognitive-load-element-interactivity-scaling-clt-2023"
+      ]
+    },
+    {
+      "concept": "Extraneous Load",
+      "field": "cognitive-psych",
+      "definition": "Cognitive load imposed by the format, presentation, or design of instructional materials rather than the task content itself; e.g., poor information organization, visual clutter, poorly-chosen modalities, redundant information that requires mental integration.",
+      "strength": "established-law",
+      "key_refs": [
+        "Chandler & Sweller 1991 / Cognitive Load Theory and the Format of Instruction",
+        "Sweller/Ayres/Kalyuga 2011 / Cognitive Load Theory"
+      ],
+      "implication": "MetroGraph's core wedge: extraneous load is the target for UI/UX reduction. Every design choice (visual encoding, interaction design, information architecture, modal separation) either reduces or increases extraneous load. This is the principal lever for best-of-both AI+UI.",
+      "related_concepts": [
+        "Split-Attention Effect",
+        "Modality Principle",
+        "Redundancy Principle",
+        "Information Architecture",
+        "Visual Design"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-chandler-sweller-1991-cognitive-load-format-instruction",
+        "market-theory-cognitive-load-sweller-ayres-kalyuga-2011-cognitive-load-theory-book",
+        "market-theory-cognitive-load-split-attention-principle-cambridge-handbook",
+        "market-theory-cognitive-load-modality-principle-multimedia-cambridge",
+        "market-theory-cognitive-load-redundancy-principle-multimedia-cambridge"
+      ]
+    },
+    {
+      "concept": "Germane Load",
+      "field": "cognitive-psych",
+      "definition": "Cognitive load that arises from meaningful learning activities that contribute directly to understanding and schema construction; includes deep processing, elaboration, and metacognitive reflection on task content.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller/Ayres/Kalyuga 2011 / Cognitive Load Theory",
+        "Paas & van Merriënboer 2020 / Cognitive-Load Theory: Methods to Manage Working Memory Load"
+      ],
+      "implication": "MetroGraph must foster germane load by channeling mental effort toward graph understanding, schema building around data relationships, and meaningful exploration. Guidance systems (AI) should support this rather than passive consumption.",
+      "related_concepts": [
+        "Deep Processing",
+        "Schema Acquisition",
+        "Elaboration",
+        "Metacognition",
+        "Guided Learning"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-sweller-ayres-kalyuga-2011-cognitive-load-theory-book",
+        "market-theory-cognitive-load-paas-van-merrienboer-2020-cognitive-load-methods-working-memory"
+      ]
+    },
+    {
+      "concept": "Element Interactivity",
+      "field": "cognitive-psych",
+      "definition": "The degree to which elements of a problem or learning task must be mentally combined, integrated, or processed simultaneously; high interactivity increases intrinsic load; the primary determinant of task complexity under CLT.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller 1994 / Cognitive load theory, learning difficulty, and instructional design",
+        "Element Interactivity Scaling in CLT 2023"
+      ],
+      "implication": "MetroGraph graph nodes with many dependencies = high element interactivity. Design must decompose queries/views to isolate elements; use linked views, progressive querying, or temporal presentation to allow sequential rather than simultaneous processing.",
+      "related_concepts": [
+        "Intrinsic Load",
+        "Task Decomposition",
+        "Chunking",
+        "Schema Formation"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-sweller-1994-clt-learning-difficulty-instructional-design",
+        "market-theory-cognitive-load-element-interactivity-scaling-clt-2023"
+      ]
+    },
+    {
+      "concept": "Split-Attention Effect",
+      "field": "cognitive-psych",
+      "definition": "Cognitive load increase when instructional materials require learners to mentally integrate separated sources of information (e.g., text and diagram in different locations, or search interface and result visualization in disconnected views).",
+      "strength": "empirical",
+      "key_refs": [
+        "Chandler & Sweller 1991 / Cognitive Load Theory and the Format of Instruction",
+        "Split-Attention Principle in Multimedia Learning / Cambridge Handbook"
+      ],
+      "implication": "MetroGraph UI must integrate related information in proximity: query controls near results, schema visualization near data, metadata near node selection. Separated panels force mentally holding multiple contexts simultaneously.",
+      "related_concepts": [
+        "Extraneous Load",
+        "Information Architecture",
+        "Visual Integration",
+        "Spatial Contiguity"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-chandler-sweller-1991-cognitive-load-format-instruction",
+        "market-theory-cognitive-load-split-attention-principle-cambridge-handbook"
+      ]
+    },
+    {
+      "concept": "Modality Principle",
+      "field": "cognitive-psych",
+      "definition": "Learning is enhanced when information is presented across multiple sensory channels (auditory + visual) rather than a single channel (text-only); leverages dual processing capacity of working memory and reduces cognitive overload on any single channel.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mayer / Cognitive Theory of Multimedia Learning",
+        "Modality Principle in Multimedia Learning / Cambridge Handbook"
+      ],
+      "implication": "MetroGraph could combine visual graph layout (spatial reasoning), textual labels (semantic specificity), and interaction cues (affordance). Care required: narration not always optimal for domain experts; expertise reversal may apply.",
+      "related_concepts": [
+        "Dual Channel Theory",
+        "Multimedia Learning",
+        "Working Memory",
+        "Expertise Reversal Effect"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-mayer-cognitive-theory-multimedia-learning",
+        "market-theory-cognitive-load-modality-principle-multimedia-cambridge",
+        "market-theory-cognitive-load-kalyuga-2007-expertise-reversal-effect-instructional"
+      ]
+    },
+    {
+      "concept": "Redundancy Principle",
+      "field": "cognitive-psych",
+      "definition": "Adding the same information in multiple forms simultaneously (e.g., narration + text + animation of the same content) increases cognitive load without benefit; however, partial redundancy (content vs. modal) may be beneficial depending on learner expertise and task.",
+      "strength": "empirical",
+      "key_refs": [
+        "Redundancy Principle in Multimedia Learning / Cambridge Handbook",
+        "Different types of redundancy and their effect on learning and cognitive load / BJEP 2023"
+      ],
+      "implication": "MetroGraph: avoid showing the same edge relationship in multiple simultaneous representations (redundant modal redundancy = wasted load). Distinguish content redundancy (progressive examples of same concept = helpful) from modal redundancy (same concept in text + image + video = harmful).",
+      "related_concepts": [
+        "Extraneous Load",
+        "Information Density",
+        "Coherence Principle",
+        "Modality Principle"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-redundancy-principle-multimedia-cambridge",
+        "market-theory-cognitive-load-redundancy-effect-bjep-2023"
+      ]
+    },
+    {
+      "concept": "Worked Examples Effect",
+      "field": "cognitive-psych",
+      "definition": "Showing learners annotated examples of problem solutions before independent practice significantly reduces extraneous load, accelerates schema acquisition, and improves learning outcomes compared to unguided problem solving, especially for novices.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller 1988 / Cognitive load during problem solving: Effects on learning",
+        "The effect of worked examples on learning solution steps and knowledge transfer / ERR 2023",
+        "Effects of Worked Examples with Explanation Types / ACM Transactions 2024"
+      ],
+      "implication": "MetroGraph: guide users with worked queries, annotated result traversals, and example graph patterns before open-ended exploration. Tutorials with labeled steps reduce extraneous load and accelerate schema formation for database navigation.",
+      "related_concepts": [
+        "Schema Acquisition",
+        "Guided Learning",
+        "Extraneous Load",
+        "Expertise Reversal Effect"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-sweller-1988-cognitive-load-problem-solving",
+        "market-theory-cognitive-load-worked-examples-effect-learning-2023",
+        "market-theory-cognitive-load-worked-examples-clt-acm-transactions-2024"
+      ]
+    },
+    {
+      "concept": "Expertise Reversal Effect",
+      "field": "cognitive-psych",
+      "definition": "Instructional strategies effective for novices (high scaffolding, worked examples, explicit guidance) become ineffective or counterproductive for experts who already possess schemas; expert learners may experience increased extraneous load from over-explanation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kalyuga 2007 / Expertise Reversal Effect and Its Implications for Learner-Tailored Instruction",
+        "Individual Differences and Cognitive Load Theory / Cambridge CLT book chapter"
+      ],
+      "implication": "MetroGraph requires adaptive guidance: novices need verbose schema-building examples and constraints; experts need quick query construction and advanced features. UI cannot be one-size-fits-all; must detect expertise and surface appropriate guidance level.",
+      "related_concepts": [
+        "Individual Differences",
+        "Learner Modelling",
+        "Scaffolding",
+        "Schema Acquisition",
+        "Adaptive Instruction"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-kalyuga-2007-expertise-reversal-effect-instructional",
+        "market-theory-cognitive-load-individual-differences-clt-chapter",
+        "market-theory-cognitive-load-individual-differences-clt-2024-science-direct"
+      ]
+    },
+    {
+      "concept": "Schema Acquisition",
+      "field": "cognitive-psych",
+      "definition": "The process of building mental structures (schemas) that chunk multiple interacting elements into single cognitive units; schemas reduce cognitive load by allowing recognition of patterns and automatic retrieval of appropriate responses without detailed analysis.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller 1988 / Cognitive load during problem solving: Effects on learning",
+        "Sweller/Ayres/Kalyuga 2011 / Cognitive Load Theory"
+      ],
+      "implication": "MetroGraph's learning goal: help users build schemas for common query patterns, relationship structures, and graph traversal strategies. Progressive examples and guided exploration compress high-interactivity tasks into recognizable patterns, reducing future cognitive load.",
+      "related_concepts": [
+        "Mental Models",
+        "Pattern Recognition",
+        "Expertise Development",
+        "Chunking",
+        "Automaticity"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-sweller-1988-cognitive-load-problem-solving",
+        "market-theory-cognitive-load-sweller-ayres-kalyuga-2011-cognitive-load-theory-book"
+      ]
+    },
+    {
+      "concept": "Progressive Disclosure",
+      "field": "interaction-design",
+      "definition": "UI design pattern that reveals information, options, or complexity gradually as needed, hiding advanced features initially and revealing them only when user expertise or task context demands; directly reduces extraneous cognitive load by managing information density.",
+      "strength": "empirical",
+      "key_refs": [
+        "Progressive Disclosure in UX / UXPin 2026",
+        "Progressive Disclosure / The Decision Lab"
+      ],
+      "implication": "MetroGraph core design lever: basic mode shows essential query tools and top-level results; advanced/expert mode shows schema visualization, subqueries, optimization hints, raw output. Initial simpler UI reduces extraneous load; layers expose intrinsic task complexity progressively.",
+      "related_concepts": [
+        "Information Architecture",
+        "Extraneous Load",
+        "Adaptive Interfaces",
+        "Scaffolding",
+        "Information Density"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-progressive-disclosure-ux-design",
+        "market-theory-cognitive-load-progressive-disclosure-decision-lab"
+      ]
+    },
+    {
+      "concept": "Information Architecture",
+      "field": "interaction-design",
+      "definition": "The structural design of information systems that organizes content and relationships to align with user mental models, reducing cognitive load by making information findable and presented in ways that match user expectations and knowledge organization.",
+      "strength": "framework",
+      "key_refs": [
+        "Cognitive Psychology in Information Architecture / Medium",
+        "Mental Models and How They Shape Information Architecture / IA Authority"
+      ],
+      "implication": "MetroGraph's IA must reflect how database experts think about schemas, relationships, and queries. Grouping related controls, using familiar terminology (not novel abstractions), and structuring results hierarchically aligns with user mental models and reduces extraneous load.",
+      "related_concepts": [
+        "Mental Models",
+        "Extraneous Load",
+        "Cognitive Affordances",
+        "Navigation Design",
+        "Content Organization"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-information-architecture-cognitive-load",
+        "market-theory-cognitive-load-mental-models-information-architecture"
+      ]
+    },
+    {
+      "concept": "Graph Visualization Cognitive Load",
+      "field": "visualization",
+      "definition": "The cognitive load experienced when interpreting network or graph visualizations; increases with node count, edge density, and layout complexity; eye-tracking studies show load peaks at 50-100 nodes and becomes prohibitive >175 nodes.",
+      "strength": "empirical",
+      "key_refs": [
+        "Scalability of Network Visualisation from a Cognitive Load Perspective / arXiv 2020",
+        "Exploring the Limits of Complexity: A Survey of Empirical Studies on Graph Visualisation / arXiv 2019"
+      ],
+      "implication": "MetroGraph cannot show large database schemas or query result graphs as monolithic visualizations. Must employ abstraction (hierarchical collapse of node clusters), filtering (show only relevant subgraphs), and progressive expansion to keep visible node count <50 for readable interpretation.",
+      "related_concepts": [
+        "Visualization Design",
+        "Scalability",
+        "Graph Layout Algorithms",
+        "Abstraction Hierarchies",
+        "Information Density"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-graph-visualization-cognitive-load-2020",
+        "market-theory-cognitive-load-graph-visualization-limits-complexity-survey"
+      ]
+    },
+    {
+      "concept": "Visualization Design for Cognitive Load",
+      "field": "visualization",
+      "definition": "Intentional manipulation of visual encoding (color, shape, position, size), information density, and interaction affordances to manage cognitive load in data displays; includes principles like data-ink ratio, visual hierarchy, and cognitive load-aware symbol design.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cognitive Load-Aware Visualization Design / Journal article",
+        "Tufte's Design Principles (faculty.cc.gatech.edu)"
+      ],
+      "implication": "MetroGraph visual encoding choices (node color = node type, edge color = relationship strength, position = hierarchy) must be designed for rapid recognition and automaticity. High data-ink ratio preferred; minimize decorative elements; use color carefully (colorblind accessibility).",
+      "related_concepts": [
+        "Visual Encoding",
+        "Data Ink Ratio",
+        "Color Theory",
+        "Visual Hierarchy",
+        "Graph Aesthetics"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-visualization-cognitive-load-design",
+        "market-theory-cognitive-load-tufte-data-visualization-principles"
+      ]
+    },
+    {
+      "concept": "Working Memory Capacity",
+      "field": "cognitive-psych",
+      "definition": "The limited capacity of working memory to simultaneously hold and manipulate information, typically ~4 items or 'chunks' of information; this bottleneck is the fundamental reason cognitive load theory applies to learning and interface design.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller/Ayres/Kalyuga 2011 / Cognitive Load Theory",
+        "Paas & van Merriënboer 2020 / Cognitive-Load Theory: Methods to Manage Working Memory Load"
+      ],
+      "implication": "MetroGraph cannot exceed ~4 independent concepts in immediate view without external cognitive support. Query filters, result grouping, and step-by-step traversal respect this limit; must prevent simultaneous presentation of 10+ relationships or nested query conditions.",
+      "related_concepts": [
+        "Cognitive Load",
+        "Chunking",
+        "Attention",
+        "Cognitive Capacity"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-sweller-ayres-kalyuga-2011-cognitive-load-theory-book",
+        "market-theory-cognitive-load-paas-van-merrienboer-2020-cognitive-load-methods-working-memory"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Measurement: Eye-Tracking",
+      "field": "hci",
+      "definition": "Physiological measurement of cognitive load using ocular metrics (pupil dilation, fixation duration, saccade velocity, blink rate); validated indicators of mental effort; non-intrusive and can be continuous during task performance.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cognitive Load and Oculometrics in the Educational Scenarios / ACM HCI 2024 (Meta-Analysis)",
+        "Cognitive load and visual attention assessment using physiological eye tracking measures / PLOS ONE 2024"
+      ],
+      "implication": "MetroGraph user testing should include eye-tracking to validate UI clarity. High saccade velocity (searching), prolonged fixations (confusion), or rapid pupil dilation (high effort) signal excessive extraneous load requiring redesign. Practical validation method for CLT predictions.",
+      "related_concepts": [
+        "Cognitive Load Measurement",
+        "Physiology",
+        "User Testing",
+        "Usability Metrics"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-chi-2024-cognitive-load-oculometrics-meta-analysis",
+        "market-theory-cognitive-load-eye-tracking-cognitive-load-visual-attention-2024"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Measurement: Subjective Questionnaires",
+      "field": "hci",
+      "definition": "Self-report instruments (NASA Task Load Index, CLT questionnaires) where learners rate perceived mental demand, physical demand, temporal pressure, effort, frustration, and performance. Validated at scale but subject to response bias and limited discriminative power.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Systematic Meta-analysis of the Reliability and Validity of Subjective Cognitive Load Questionnaires / Educational Psychology Review 2023"
+      ],
+      "implication": "MetroGraph can use post-task questionnaires (NASA-TLX) to validate interface changes, but should not rely solely on subjective measures. Pair with objective metrics (task completion time, error rate) and eye-tracking for robust CLT validation.",
+      "related_concepts": [
+        "Cognitive Load Measurement",
+        "NASA-TLX",
+        "User Perception",
+        "Validation Methods"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-subjective-clt-questionnaire-meta-analysis-2023"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Measurement: EEG and Neuroscience",
+      "field": "cognitive-psych",
+      "definition": "Measurement of cognitive load using electroencephalography (EEG) and machine learning to detect brain activity patterns associated with mental effort; bridges cognitive load theory with computational neuroscience; requires specialized equipment but highly objective.",
+      "strength": "empirical",
+      "key_refs": [
+        "Assessing Cognitive Load Using EEG and Eye-Tracking in 3-D Learning Environments / MDPI 2022",
+        "Modeling Cognitive Load as a Self-Supervised Brain Rate with EEG and Deep Learning / 2022"
+      ],
+      "implication": "For research-grade validation of MetroGraph prototypes, EEG can objectively measure cognitive load across interface versions. Not practical for production user testing but valuable for A/B testing major design changes at research level.",
+      "related_concepts": [
+        "Cognitive Load Measurement",
+        "Neuroscience",
+        "Objective Metrics",
+        "Machine Learning"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-eeg-eye-tracking-3d-learning-2022",
+        "market-theory-cognitive-load-clt-eeg-brain-rate-2022"
+      ]
+    },
+    {
+      "concept": "Individual Differences in Cognitive Load",
+      "field": "cognitive-psych",
+      "definition": "Learner characteristics (prior knowledge, spatial ability, working memory capacity, learning styles, expertise level) that moderate the relationship between instruction format and cognitive load; same design may be high-load for novices but low-load for experts.",
+      "strength": "empirical",
+      "key_refs": [
+        "Individual Differences and Cognitive Load Theory / Cambridge CLT book",
+        "Cognitive load theory and individual differences / Learning and Individual Differences 2024"
+      ],
+      "implication": "MetroGraph cannot assume uniform cognitive load across user base. Expertise level is the primary moderator: experts tolerate higher intrinsic complexity, resent over-scaffolding; novices benefit from constraints and worked examples. Adaptive UI is essential.",
+      "related_concepts": [
+        "Expertise",
+        "Working Memory Capacity",
+        "Spatial Ability",
+        "Learning Styles",
+        "Expertise Reversal Effect"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-individual-differences-clt-chapter",
+        "market-theory-cognitive-load-individual-differences-clt-2024-science-direct"
+      ]
+    },
+    {
+      "concept": "Information Foraging Theory",
+      "field": "information-foraging",
+      "definition": "Cognitive model of how people search for and navigate information; applies predator-prey ecological concepts to information seeking (users follow information 'scent' and forage iteratively). Complements CLT by modeling search behavior and navigation load.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli 2007 / Information Foraging Theory: Adaptive Interaction with Information (Oxford)",
+        "Information Foraging: A Theory of How People Navigate on the Web / Nielsen Norman Group"
+      ],
+      "implication": "MetroGraph users forage for relevant data across schemas and relationships. Clear information scent (labels, previews, hierarchy) reduces search cognitive load. Poor scent forces random clicking/re-reading, increasing extraneous load. Design affordances that guide query refinement.",
+      "related_concepts": [
+        "Navigation",
+        "Search Behavior",
+        "Information Scent",
+        "Interaction Design",
+        "Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-pirolli-information-foraging-theory",
+        "market-theory-cognitive-load-pirolli-card-information-foraging"
+      ]
+    },
+    {
+      "concept": "Design Cognition (Norman)",
+      "field": "interaction-design",
+      "definition": "Donald Norman's framework on how users build mental models of systems through affordances, constraints, and feedback; bridges HCI design principles with cognitive psychology; emphasizes gulfs of execution (what can I do?) and evaluation (what happened?).",
+      "strength": "framework",
+      "key_refs": [
+        "Norman / The Design of Everyday Things"
+      ],
+      "implication": "MetroGraph interfaces must clearly communicate what users can do (affordances) and the results of actions (feedback loops). Minimize gulf of execution (complex query syntax) and gulf of evaluation (unclear result structure). Aligns with CLT by reducing extraneous cognitive load from deciphering system behavior.",
+      "related_concepts": [
+        "Affordances",
+        "Mental Models",
+        "Feedback",
+        "Interaction Design",
+        "Usability"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-norman-design-everyday-things"
+      ]
+    },
+    {
+      "concept": "Far Transfer Limitation",
+      "field": "cognitive-psych",
+      "definition": "Meta-analytic evidence that learning in one context rarely transfers to different contexts; CLT provides partial explanation (schemas are domain/context-specific), but transfer limitation challenges assumptions about knowledge generalization and exposes gap between CLT's instructional focus and broader learning goals.",
+      "strength": "empirical",
+      "key_refs": [
+        "Near and Far Transfer in Cognitive Training: A Second-Order Meta-Analysis / Collabra Psychology 2019",
+        "Far Transfer of Metacognitive Regulation / Educational Psychology Review 2024"
+      ],
+      "implication": "MetroGraph schemas built for one database domain may not transfer to different domains. Instruction design should explicitly teach transferable reasoning patterns (query composition, relationship reasoning) rather than assuming learned skills generalize. Limits scope of foundational guidance.",
+      "related_concepts": [
+        "Transfer of Learning",
+        "Schema Generalization",
+        "Metacognition",
+        "Instruction Design"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-near-far-transfer-cognitive-training-2019",
+        "market-theory-cognitive-load-far-transfer-metacognitive-regulation-2024"
+      ]
+    },
+    {
+      "concept": "CLT Measurement Validity Critique",
+      "field": "cognitive-psych",
+      "definition": "Ongoing scholarly debate about whether CLT measurement (especially subjective questionnaires) actually captures working memory load; concerns include confounding of mental effort with task difficulty, poor discriminant validity across load types, and questions about whether working memory is truly the bottleneck.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Cognitive Load Theory: New Directions and Challenges / Applied Cognitive Psychology 2012",
+        "A Systematic Meta-analysis of the Reliability and Validity of Subjective Cognitive Load Questionnaires / Educational Psychology Review 2023"
+      ],
+      "implication": "MetroGraph should not over-rely on CLT predictions without validation. Use multiple measurement approaches (eye-tracking, task performance, error rates) and acknowledge measurement limitations. CLT provides strong directional guidance but precise load quantification remains uncertain.",
+      "related_concepts": [
+        "Cognitive Load Measurement",
+        "Research Methodology",
+        "Construct Validity",
+        "Empirical Validation"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-ayres-2012-clt-new-directions-challenges",
+        "market-theory-cognitive-load-subjective-clt-questionnaire-meta-analysis-2023"
+      ]
+    },
+    {
+      "concept": "Beyond CLT: Affective and Social Factors",
+      "field": "cognitive-psych",
+      "definition": "Critical perspective arguing that CLT's exclusive focus on memory and extraneous load neglects motivation, emotion, social engagement, self-efficacy, and intrinsic interest; these factors significantly impact learning but fall outside CLT's scope.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Beyond Cognitive Load Theory: Why Learning Needs More than Memory Management / 2024"
+      ],
+      "implication": "MetroGraph should incorporate motivational design beyond CLT load management: clear progress indicators, achievable milestones, engagement with database discovery. CLT prevents cognitive overload; complementary designs build engagement. Not a limitation of CLT but recognition of its bounded scope.",
+      "related_concepts": [
+        "Motivation",
+        "Affect",
+        "Engagement",
+        "Self-Efficacy",
+        "Intrinsic Interest"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-beyond-clt-learning-needs-more-2024"
+      ]
+    },
+    {
+      "concept": "CLT in AI/LLM Interface Design",
+      "field": "hci",
+      "definition": "Application of CLT principles to AI tool interfaces, addressing the new challenge of balancing expanded AI context windows (unlimited information) against human attention limits (constrained); frames AI augmentation as managing extraneous load while preserving user agency.",
+      "strength": "empirical",
+      "key_refs": [
+        "The Cognitive Divergence: AI Context Windows, Human Attention Decline, and the Delegation Feedback Loop / arXiv 2026",
+        "Measuring algorithmic interpretability: A human-learning-based framework and cognitive complexity score / arXiv 2022",
+        "Cognitive Load Theory & AI: Optimizing Human Learning Potential / AI Competence"
+      ],
+      "implication": "MetroGraph's wedge: AI (RAG/agents) can surface relevant schema patterns and queries, reducing user search load. But unfiltered AI output overwhelms working memory (the flight to chat problem). CLT guides selective surfacing: show only top alternatives, with progressive expansion, preserving user comprehension and agency.",
+      "related_concepts": [
+        "AI Explainability",
+        "Human-AI Collaboration",
+        "Context Windows",
+        "Information Overload",
+        "User Agency"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-cognitive-divergence-ai-attention-2026",
+        "market-theory-cognitive-load-algorithmic-interpretability-human-learning-2022",
+        "market-theory-cognitive-load-clt-ai-design-guide"
+      ]
+    },
+    {
+      "concept": "Contemporary CLT Applications: Embodied and Mixed Reality Learning",
+      "field": "cognitive-psych",
+      "definition": "Recent expansion of CLT to kinesthetic and immersive environments; meta-analysis shows embodied learning (physical interaction + cognitive activity) reduces cognitive load and improves performance; extends CLT beyond text/multimedia to spatial, physical modalities.",
+      "strength": "empirical",
+      "key_refs": [
+        "Effectiveness of embodied learning on learning performance: A meta-analysis based on CLT perspective / 2024 (17 studies)"
+      ],
+      "implication": "For graph visualization, spatial manipulation (drag to explore, rotate for 3D views) may reduce cognitive load vs. abstract symbolic interaction. Could design gestural or VR versions of MetroGraph where physical exploration of graph structure reduces extraneous load; speculative but supported by embodied CLT research.",
+      "related_concepts": [
+        "Embodied Cognition",
+        "Spatial Ability",
+        "Kinesthetic Learning",
+        "Mixed Reality",
+        "Multimodal Interaction"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-embodied-learning-meta-analysis-2024"
+      ]
+    },
+    {
+      "concept": "Multimedia Learning Principles (15 Principles)",
+      "field": "cognitive-psych",
+      "definition": "Mayer's evidence-based design principles derived from CLT for multimedia instruction: signaling, segmenting, pretraining, modality, redundancy, coherence, personalization, voice, image, and others; collectively reduce extraneous load and foster germane load in multimedia lessons.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mayer / Cognitive Theory of Multimedia Learning (Cambridge Handbook; 200+ experiments)"
+      ],
+      "implication": "MetroGraph multimedia elements (graphs, tables, tooltips, guided tutorials) should follow Mayer's principles: highlight key schema edges (signaling), break complex queries into steps (segmenting), use narration over text for animations (modality), remove redundant displays. Directly reduces extraneous load.",
+      "related_concepts": [
+        "Multimedia Design",
+        "Extraneous Load",
+        "Visual Design",
+        "Modality Principle",
+        "Redundancy Principle"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-mayer-cognitive-theory-multimedia-learning"
+      ]
+    },
+    {
+      "concept": "Cognitive Circles (Novel CLT Measurement)",
+      "field": "hci",
+      "definition": "Emerging HCI measurement method using a novel interface (Cognitive Circles) to directly elicit perceived mental workload intensity; addresses limitations of NASA-TLX and other questionnaires by providing continuous, less biased load assessment.",
+      "strength": "empirical",
+      "key_refs": [
+        "The Potential of Cognitive Circles to Measure Mental Load / UIST 2024"
+      ],
+      "implication": "For MetroGraph user testing, Cognitive Circles offers promising lightweight alternative to eye-tracking for measuring interface-induced cognitive load. Could be integrated into online user studies for rapid iteration and A/B testing.",
+      "related_concepts": [
+        "Cognitive Load Measurement",
+        "HCI Methods",
+        "User Testing",
+        "Interface Design"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-chi-2024-cognitive-circles-mental-load-measurement"
+      ]
+    },
+    {
+      "concept": "Cognitive Load in Realistic Field Settings",
+      "field": "hci",
+      "definition": "In-the-wild measurement of cognitive load from behavioral and physiological signals (pupillary response, task performance, timing) without controlled lab settings; enables validation of CLT in natural work contexts rather than only artificial learning scenarios.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cognitive Load Estimation in the Wild / CHI 2018"
+      ],
+      "implication": "MetroGraph real-world usage data (query times, result viewing patterns, error rates, re-queries) can be analyzed as indicators of cognitive load, without intrusive testing. Continuous monitoring of actual usage provides CLT validation in production context.",
+      "related_concepts": [
+        "Cognitive Load Measurement",
+        "Field Studies",
+        "Behavioral Analytics",
+        "User Monitoring"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-chi-2018-cognitive-load-estimation"
+      ]
+    },
+    {
+      "concept": "CLT in Professional and Clinical Learning",
+      "field": "cognitive-psych",
+      "definition": "Application of CLT to complex professional training (nursing, medicine, surgery) where high-stakes decision-making requires balancing intrinsic task complexity with extraneous load management; shows CLT effective in real-world professional contexts, not just academic learning.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cognitive load theory in workplace-based learning from the viewpoint of nursing students / Path analysis 2024",
+        "Cognitive load theory in health professional education / Medical Education 2010"
+      ],
+      "implication": "MetroGraph users are professionals (DBAs, data engineers, analysts) in high-stakes environments. CLT principles tested in clinical/professional contexts are directly applicable; design should support accurate decision-making under time pressure, not just learning.",
+      "related_concepts": [
+        "Professional Training",
+        "Decision Making",
+        "Expertise",
+        "High-Stakes Learning"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-nursing-clinical-learning-clt-path-analysis-2024",
+        "market-theory-cognitive-load-van-merrienboer-2010-clt-health-professional-education"
+      ]
+    },
+    {
+      "concept": "CLT in Computing Education",
+      "field": "cognitive-psych",
+      "definition": "Extensive application of CLT to programming and computer science education; meta-analyses show CLT principles (worked examples, scaffolding, explicit instruction) particularly effective for novice programmers; establishes CLT as foundational to CS pedagogy.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cognitive Load Theory in Computing Education Research: A Review / ACM TOCE 2023"
+      ],
+      "implication": "MetroGraph is teaching database query composition (essentially a programming task). CLT principles proven effective for code learning (worked examples, step-by-step guidance, schema formation) apply directly to query building; can leverage well-established CS pedagogy.",
+      "related_concepts": [
+        "Computing Education",
+        "Programming Learning",
+        "Novice Learning",
+        "Code Comprehension"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-computing-education-clt-review-2023"
+      ]
+    },
+    {
+      "concept": "Contemporary CLT Trends and Emerging Directions",
+      "field": "cognitive-psych",
+      "definition": "Recent developments in CLT research including integration with AI/adaptive systems, mixed reality, neuroscience measurement, social/affective factors, and database-specific optimization; represents field evolution beyond classical Sweller theory toward heterogeneous learning contexts.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cognitive Load Theory: Emerging Trends and Innovations / MDPI Education 2025 (15th CLT Conference)",
+        "Challenging Cognitive Load Theory: The Role of Educational Neuroscience and AI / 2024"
+      ],
+      "implication": "MetroGraph design should stay current with CLT extensions beyond classical theory. Contemporary emphasis on AI integration, adaptive interfaces, and neuroscience measurement aligns with MetroGraph's goal of combining AI guidance with user comprehension.",
+      "related_concepts": [
+        "Adaptive Learning",
+        "AI Integration",
+        "Emerging Methods",
+        "Interdisciplinary Applications"
+      ],
+      "source_ids": [
+        "market-theory-cognitive-load-mdpi-2025-clt-emerging-trends-innovations",
+        "market-theory-cognitive-load-challenging-clt-neuroscience-ai-2024"
+      ]
+    }
+  ]
+}

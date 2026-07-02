@@ -1,0 +1,646 @@
+{
+  "leaf": "market/theory-norman-gulfs-distance",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Gulf of Execution",
+      "field": "interaction-design",
+      "definition": "The distance between a user's intention to perform a task and the actions the system allows them to take. It measures how well the system's input mechanisms align with what users want to do.",
+      "strength": "established-law",
+      "key_refs": [
+        "Hutchins-Hollan-Norman 1986 / Direct Manipulation Interfaces",
+        "Norman 1988 / The Design of Everyday Things",
+        "Norman 2013 / The Design of Everyday Things: Revised and Expanded"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1986-direct-manipulation-interfaces",
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things",
+        "market-theory-norman-gulfs-distance-norman-2013-design-of-everyday-things-revised"
+      ],
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Articulatory Distance",
+        "Semantic Distance",
+        "Affordance",
+        "Signifier"
+      ],
+      "implication": "MetroGraph must minimize execution gulf by ensuring the interaction model for creating/manipulating graph structures, setting up DB queries, and configuring visualizations aligns intuitively with user goals—avoiding surface-area bloat that forces complex nested navigation."
+    },
+    {
+      "concept": "Gulf of Evaluation",
+      "field": "interaction-design",
+      "definition": "The distance between the system's presentation of its state and the user's ability to perceive and interpret that state in relation to their goals. It reflects how well the output representation maps to user understanding.",
+      "strength": "established-law",
+      "key_refs": [
+        "Hutchins-Hollan-Norman 1986 / Direct Manipulation Interfaces",
+        "Norman 1988 / The Design of Everyday Things",
+        "Pirolli & Card 1999 / Information Foraging Theory"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1986-direct-manipulation-interfaces",
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things",
+        "market-theory-norman-gulfs-distance-pirolli-card-1999-information-foraging"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Information Scent",
+        "Semantic Distance",
+        "Feedback",
+        "Feedforward"
+      ],
+      "implication": "MetroGraph must surface query results, graph state, and agent operations visibly so users can quickly assess whether system state matches their intention—especially critical when AI/RAG components generate visualizations or graph transformations."
+    },
+    {
+      "concept": "Semantic Distance",
+      "field": "interaction-design",
+      "definition": "The cognitive gap between the conceptual model a user holds (their intention) and the representation/language the system requires to execute actions. High semantic distance means users must translate their goals into unfamiliar concepts.",
+      "strength": "established-law",
+      "key_refs": [
+        "Hutchins-Hollan-Norman 1986 / Direct Manipulation Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1986-direct-manipulation-interfaces"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Mental Model",
+        "Articulatory Distance",
+        "Affordance"
+      ],
+      "implication": "MetroGraph should allow users to express queries and graph operations in task-domain language (e.g. 'show relationships between these entities') rather than low-level graph algebra or SQL—reducing translation overhead that currently plagues RAG/agent-builder UIs."
+    },
+    {
+      "concept": "Articulatory Distance",
+      "field": "interaction-design",
+      "definition": "The physical and mechanical effort required to articulate an action to the system once intention is clear. It concerns input complexity, syntax requirements, and number of steps needed to invoke an action.",
+      "strength": "established-law",
+      "key_refs": [
+        "Hutchins-Hollan-Norman 1986 / Direct Manipulation Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1986-direct-manipulation-interfaces"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Semantic Distance",
+        "Direct Manipulation",
+        "Constraint"
+      ],
+      "implication": "MetroGraph's drag-and-drop graph metaphor (metro-map style) reduces articulatory distance vs. text-based queries—users directly manipulate edges/nodes rather than parsing command syntax."
+    },
+    {
+      "concept": "Affordance",
+      "field": "interaction-design",
+      "definition": "A relationship between an object's properties and an organism's capabilities that enables a particular action. In design, affordances are the action possibilities that an object offers to a perceiver, dependent on both object properties and perceiver abilities.",
+      "strength": "established-law",
+      "key_refs": [
+        "Gibson 1977 / The Theory of Affordances",
+        "Gibson 1979 / The Ecological Approach to Visual Perception",
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-gibson-1977-theory-of-affordances",
+        "market-theory-norman-gulfs-distance-gibson-1979-ecological-approach-visual-perception",
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things"
+      ],
+      "related_concepts": [
+        "Signifier",
+        "Constraint",
+        "Cognitive Affordance",
+        "Mental Model"
+      ],
+      "implication": "MetroGraph nodes/edges must afford intuitive interaction: edges should afford dragging to create relationships, nodes should afford selection/deletion/property editing. Affordances must match users' existing mental models from other graph tools or geographic maps."
+    },
+    {
+      "concept": "Signifier",
+      "field": "interaction-design",
+      "definition": "A perceptual mark or indicator that communicates the existence and location of an affordance. Signifiers make affordances discoverable and interpretable; without them, even real affordances remain hidden from users.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things: Revised and Expanded"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-2013-design-of-everyday-things-revised"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Discoverability",
+        "Mental Model",
+        "Feedback"
+      ],
+      "implication": "MetroGraph must explicitly signal affordances: hover states on edges indicating drag-to-create, visual highlights for selectable nodes, icons/labels showing available actions. Without signifiers, users won't discover graph manipulation capabilities (major UX failure of current agent-builder tools)."
+    },
+    {
+      "concept": "Cognitive Affordance",
+      "field": "visualization",
+      "definition": "The capacity of a design element to afford cognitive actions (such as comparing, inferring, extracting) rather than just physical actions. Cognitive affordances describe how a visualization's design invites mental operations like pattern recognition or hypothesis formation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fygenson et al. 2025 / Cognitive Affordances in Visualization",
+        "Padilla 2023 / Cognitive affordances in visualization (various)"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-cognitive-affordances-visualization-arxiv"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Visualization Literacy",
+        "Mental Model",
+        "Information Scent"
+      ],
+      "implication": "MetroGraph's visual encoding (node size, color, position, connection patterns) should afford cognitive actions: comparing node importance, detecting clusters, inferring entity relationships—reducing cognitive load and supporting exploratory analysis."
+    },
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "Users' perception of the value and likelihood of finding relevant information along a particular information path. Scent cues guide navigation choices; high scent (strong relevance cues) leads users toward goals efficiently, low scent causes navigation failure.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging Theory",
+        "Pirolli 2003 / Information Scent and Web Navigation"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-pirolli-card-1999-information-foraging",
+        "market-theory-norman-gulfs-distance-pirolli-2003-information-scent-web-navigation"
+      ],
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Mental Model",
+        "Information Foraging",
+        "Discoverability"
+      ],
+      "implication": "MetroGraph must provide strong information scent in graph exploration: query results, entity preview panels, and interaction breadcrumbs should make it obvious which relationships to follow next—addressing the 'flight to AI chat' problem where users abandon UI to ask questions."
+    },
+    {
+      "concept": "Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "An interface paradigm where users directly interact with objects of interest through continuous visual representation, physical actions or button presses, and rapid visible feedback. Users see what they're manipulating and immediate consequences of actions.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages",
+        "Hutchins-Hollan-Norman 1986 / Direct Manipulation Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-shneiderman-1983-direct-manipulation",
+        "market-theory-norman-gulfs-distance-norman-1986-direct-manipulation-interfaces"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Feedback",
+        "Semantic Distance",
+        "Articulatory Distance"
+      ],
+      "implication": "MetroGraph's core value: dragging nodes/edges to compose DB queries and data transformations is direct manipulation—avoiding abstract syntax (SQL, config JSON)—which dramatically reduces execution gulf vs. conversational AI chat interfaces."
+    },
+    {
+      "concept": "Distributed Cognition",
+      "field": "cognitive-psych",
+      "definition": "Cognition is not bounded by individual minds but distributed across people, artifacts, and environment. Knowledge is encoded in tools, documents, and social structures; cognitive processes emerge from coordination between internal and external representations.",
+      "strength": "framework",
+      "key_refs": [
+        "Hutchins 1995 / Distributed Cognition (seminal work)",
+        "Hutchins 1999 / Distributed Cognition: The Organization of Cognitive Systems"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-hutchins-distributed-cognition"
+      ],
+      "related_concepts": [
+        "Mental Model",
+        "External Representation",
+        "Affordance",
+        "Cognitive Artifact"
+      ],
+      "implication": "MetroGraph as a cognitive artifact must encode domain knowledge visually (graph structure itself becomes external memory) and support coordination between user intention and system capabilities—the graph is a 'thinking tool' that distributes the cognitive load of query construction."
+    },
+    {
+      "concept": "Mental Model",
+      "field": "cognitive-psych",
+      "definition": "The user's internal, simplified representation of how a system works. Mismatches between user mental model and actual system model are a primary source of interaction failures and high gulf values.",
+      "strength": "empirical",
+      "key_refs": [
+        "Norman 1983 / Some Observations on Mental Models",
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things",
+        "market-theory-norman-gulfs-distance-ixdf-mental-models"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Signifier",
+        "Gulf of Execution",
+        "Gulf of Evaluation"
+      ],
+      "implication": "MetroGraph should align with users' mental models from familiar domains (geographic maps, flowcharts, SQL joins visualized)—not introduce novel graph abstractions. The metro-map metaphor leverages existing mental models of public transportation network topology."
+    },
+    {
+      "concept": "Constraint",
+      "field": "interaction-design",
+      "definition": "Design elements that limit the set of possible user actions to only valid ones. Constraints reduce the gulf of execution by preventing errors at the interaction level (e.g., you cannot connect incompatible types, cannot drag to invalid targets).",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "Norman 2013 / The Design of Everyday Things: Revised and Expanded"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things",
+        "market-theory-norman-gulfs-distance-norman-2013-design-of-everyday-things-revised",
+        "market-theory-norman-gulfs-distance-ixdf-constraints"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Feedback",
+        "Error Prevention",
+        "Gulf of Execution"
+      ],
+      "implication": "MetroGraph constraints: only allow edge creation between compatible nodes (entity→relation, relation→entity), only allow certain table joins based on schema—visual constraints (grayed-out invalid targets) reduce execution errors and guide correct interaction."
+    },
+    {
+      "concept": "Feedback",
+      "field": "interaction-design",
+      "definition": "Information returned to the user about the result of an action. Immediate, clear feedback closes the gulf of evaluation by showing whether actions achieved intended effects.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "Norman 2013 / The Design of Everyday Things: Revised and Expanded"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things",
+        "market-theory-norman-gulfs-distance-norman-2013-design-of-everyday-things-revised",
+        "market-theory-norman-gulfs-distance-feedforward-feedback-interaction"
+      ],
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Feedforward",
+        "Direct Manipulation"
+      ],
+      "implication": "MetroGraph must provide immediate visual feedback: edge highlights on drag, query preview before execution, real-time result counts, status indicators for data loading. Absence of feedback forces users to use 'slow AI chat' as feedback mechanism."
+    },
+    {
+      "concept": "Feedforward",
+      "field": "interaction-design",
+      "definition": "Predictive information about the likely consequences of an action before it is executed. Feedforward allows users to anticipate outcomes and adjust actions proactively, reducing the gulf of execution.",
+      "strength": "empirical",
+      "key_refs": [
+        "Hollan et al. 2002 / Distributed cognition and human-computer interaction",
+        "Shneiderman et al. CHI papers on preview interactions"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-chi-arxiv-crossing-gulf-execution",
+        "market-theory-norman-gulfs-distance-feedforward-feedback-interaction"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Feedback",
+        "Direct Manipulation"
+      ],
+      "implication": "MetroGraph preview panels showing query results as user drags/configures edges implement feedforward—users see what query will return before committing, reducing execution errors and the trial-and-error loop common in RAG/agent-builder UIs."
+    },
+    {
+      "concept": "Seven Stages of Action",
+      "field": "interaction-design",
+      "definition": "Norman's model of human action: Goal Formation → Intention Formation → Action Specification → Execution → Perception → Interpretation → Evaluation. Gulfs of execution and evaluation map to the transition from intention to execution and from perception to interpretation.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 1986 / User Centered System Design",
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1986-user-centered-system-design",
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Gulf of Evaluation",
+        "Mental Model",
+        "Affordance"
+      ],
+      "implication": "MetroGraph interaction flow aligns with stages: users form goal (analyze entity relationships), specify action (drag edge), execute (release), perceive state (visual feedback), evaluate (matches goal?). The model guides where UX failures occur."
+    },
+    {
+      "concept": "Visibility of System State",
+      "field": "interaction-design",
+      "definition": "The degree to which the current state and available actions are perceptually obvious to users. High visibility closes the gulf of evaluation; poor visibility forces users to maintain complex internal models.",
+      "strength": "empirical",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things",
+        "Shneiderman 1983 / Direct Manipulation"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-norman-1988-design-of-everyday-things",
+        "market-theory-norman-gulfs-distance-shneiderman-1983-direct-manipulation"
+      ],
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Signifier",
+        "Information Scent"
+      ],
+      "implication": "MetroGraph's metro-map view makes graph state immediately visible—users see all entities, relationships, and filters at a glance, vs. conversational UI which hides state in message history."
+    },
+    {
+      "concept": "Discoverability",
+      "field": "interaction-design",
+      "definition": "How easily users can learn about available system features, actions, and affordances without external documentation. Poor discoverability creates execution gulf because users don't know what's possible.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nielsen 2020s articles on discoverability",
+        "ixdf.org Discoverability entry"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-ixdf-discoverability"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Signifier",
+        "Gulf of Execution",
+        "Visibility of System State"
+      ],
+      "implication": "MetroGraph node/edge contextual menus, hover tooltips, and visual affordances make actions discoverable—users learn that clicking nodes filters, dragging creates joins, right-click shows options. Current agent-builder tools fail here."
+    },
+    {
+      "concept": "Visualization Literacy",
+      "field": "visualization",
+      "definition": "The ability to read and interpret data visualizations, including understanding visual encodings, recognizing patterns, and extracting insights. Interactive visualization literacy extends this to interaction competence.",
+      "strength": "empirical",
+      "key_refs": [
+        "Lam et al. 2012 / Narrative Visualization",
+        "León et al. 2026 / A Multiliteracy Model for Interactive Visualization Literacy"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-visualization-literacy-multiliteracy-model"
+      ],
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Cognitive Affordance",
+        "Mental Model"
+      ],
+      "implication": "MetroGraph design must consider visualization literacy gaps: users unfamiliar with graph layouts, node-link encodings, or filter mechanics need visual scaffolding—the metro-map metaphor leverages existing literacy from transportation networks."
+    },
+    {
+      "concept": "Interaction Cost",
+      "field": "interaction-design",
+      "definition": "The effort (cognitive, physical, time) required for a user to perform an action. High interaction cost discourages exploratory behavior and invites workarounds (like switching to chat interfaces).",
+      "strength": "empirical",
+      "key_refs": [
+        "Lam et al. 2012 / Narrative Visualization",
+        "León et al. 2026 / A Multiliteracy Model for Interactive Visualization Literacy"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-visualization-literacy-multiliteracy-model"
+      ],
+      "related_concepts": [
+        "Articulatory Distance",
+        "Semantic Distance",
+        "Gulf of Execution",
+        "Complexity"
+      ],
+      "implication": "MetroGraph drag-and-drop reduces interaction cost vs. SQL/JSON config—enables rapid exploratory querying. High interaction cost in current tools is a key driver of 'flight to AI chat'."
+    },
+    {
+      "concept": "Progressive Disclosure",
+      "field": "interaction-design",
+      "definition": "Technique for managing complexity by revealing information and options gradually, on-demand, rather than all at once. Reduces cognitive load and visual clutter while maintaining power-user access.",
+      "strength": "empirical",
+      "key_refs": [
+        "ixdf.org Progressive Disclosure entry"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-ixdf-progressive-disclosure"
+      ],
+      "related_concepts": [
+        "Cognitive Load",
+        "Affordance",
+        "Complexity",
+        "Discoverability"
+      ],
+      "implication": "MetroGraph should use progressive disclosure: basic node/edge manipulation visible, advanced filters/aggregations in collapsible panels, raw query/result export in menus—avoiding surface-area bloat that paralyzes novices."
+    },
+    {
+      "concept": "Gulf of Goal Formation",
+      "field": "interaction-design",
+      "definition": "In visualization contexts, the gap between what users want to understand about data and the visualization tasks/operations available to them. Extends Norman's framework to knowledge work (León et al. 2026).",
+      "strength": "framework",
+      "key_refs": [
+        "León et al. 2026 / A Multiliteracy Model for Interactive Visualization Literacy"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-visualization-literacy-multiliteracy-model"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Gulf of Evaluation",
+        "Mental Model"
+      ],
+      "implication": "MetroGraph users often have vague goals ('show me related entities') that don't map to standard query operations. Guided query builders, templates, or natural-language bridging must close this gulf."
+    },
+    {
+      "concept": "Agent Interface vs. Human Interface",
+      "field": "interaction-design",
+      "definition": "Distinction between interfaces designed for human cognitive interaction (emphasizing perceptibility, affordance clarity) and interfaces designed for machine invocation (emphasizing determinism, explicit semantics). Current RAG/agent tools blur this boundary problematically.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Wang et al. 2026 / From Human Interfaces to Agent Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-from-human-to-agent-interfaces"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Signifier",
+        "Mental Model",
+        "Direct Manipulation"
+      ],
+      "implication": "MetroGraph is fundamentally a human interface (UI) for graph composition—not an agent interface. This is correct: humans form goals and specify operations; agents should invoke capabilities, not design interactions. Conflating these creates the 'best-of-worst' chatbot UIs."
+    },
+    {
+      "concept": "Conversational Agent Gap",
+      "field": "hci",
+      "definition": "Research finding that user expectations of conversational agent capabilities dramatically exceed actual system capabilities, creating large gulfs of execution (what I can ask) and evaluation (whether the agent understood).",
+      "strength": "empirical",
+      "key_refs": [
+        "Luger & Sellen 2016 / Like having a really bad PA: The gulf between user expectation and experience of conversational agents"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-chi-2016-gulf-conversational-agents"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Gulf of Evaluation",
+        "Mental Model",
+        "Affordance"
+      ],
+      "implication": "MetroGraph avoids conversational agent UIs precisely because of this gap—visual graph metaphor makes capabilities explicit and bounds expectations. Users know exactly what operations are available (connect two entities, filter by property) vs. vague chat expectations."
+    },
+    {
+      "concept": "Sensemaking in Visualization",
+      "field": "visualization",
+      "definition": "The iterative process of exploring data through visualization, forming hypotheses, testing them interactively, and building understanding. Sensemaking depends on tight coupling between exploration, feedback, and interpretation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Zhang 2019 (various papers on sensemaking)"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-sensemaking-interactive-visualization"
+      ],
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Interactive Visualization",
+        "Feedback",
+        "Information Scent"
+      ],
+      "implication": "MetroGraph's interactive query composition supports sensemaking: iteratively refine graph filters, see results immediately, form new hypotheses based on patterns—much more effective than chat-based exploration where feedback lags and causality is obscured."
+    },
+    {
+      "concept": "Complexity as Design Material",
+      "field": "interaction-design",
+      "definition": "Recent framework (2024) reconsidering Norman's 'simplicity at all costs' principle. Some systems benefit from exposing inherent complexity visually rather than hiding it; the goal is 'appropriate' complexity, not minimal complexity.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Hoey et al. 2024 / Complexity as Design Material"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-complexity-as-design-material"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Cognitive Load",
+        "Progressive Disclosure",
+        "Mental Model"
+      ],
+      "implication": "MetroGraph graph structure complexity is appropriate to expose visually—users benefit from seeing schema relationships directly rather than having them abstracted away. The wedge against 'flight to chat' is showing appropriate complexity at scale, not over-simplifying."
+    },
+    {
+      "concept": "Cognitive Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Theory that human working memory has limited capacity. Cognitive load can be intrinsic (problem inherent difficulty), extraneous (poor design), or generative (productive learning). Design should minimize extraneous load.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller 1988 / Cognitive load during problem solving",
+        "Cognitive load theory applications in UX design"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-cognitive-load-theory-ux"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Gulf of Evaluation",
+        "Mental Model",
+        "Complexity"
+      ],
+      "implication": "MetroGraph visual composition reduces extraneous cognitive load by making graph structure immediately perceptible—users don't memorize SQL/JSON syntax. Intrinsic load (understanding entity relationships) remains but is aided by visualization."
+    },
+    {
+      "concept": "Direct Manipulation Principles (Shneiderman)",
+      "field": "interaction-design",
+      "definition": "Shneiderman's three defining characteristics: (1) continuous representation of objects of interest, (2) physical actions or button presses instead of syntax, (3) rapid incremental reversible operations with immediate visible effect.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Step Beyond Programming Languages"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-shneiderman-1983-direct-manipulation"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "Affordance",
+        "Feedback",
+        "Articulatory Distance"
+      ],
+      "implication": "MetroGraph embodies all three: graph entities continuously visible, drag edges instead of join syntax, undo/redo with instant visual updates—this is why the approach is more discoverable and low-error than SQL/chat alternatives."
+    },
+    {
+      "concept": "Semantic Guidance for UI Generation",
+      "field": "hci",
+      "definition": "Approach for AI-generated UIs: instead of generating visual code, provide semantic annotations that guide layout (what information is primary vs. secondary, what actions are core vs. advanced)—reduces gulf between intent and output.",
+      "strength": "empirical",
+      "key_refs": [
+        "Yuan et al. 2025 / Bridging Gulfs in UI Generation through Semantic Guidance"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-bridging-gulfs-ui-generation-arxiv"
+      ],
+      "related_concepts": [
+        "Gulf of Execution",
+        "Gulf of Evaluation",
+        "Affordance",
+        "Direct Manipulation"
+      ],
+      "implication": "If MetroGraph components are auto-generated by AI (e.g. query builders for custom schemas), semantic guidance ensures generated affordances match user expectations—the graph metaphor itself is semantic guidance."
+    },
+    {
+      "concept": "Text-as-Material Interaction",
+      "field": "interaction-design",
+      "definition": "Paradigm where text (rather than visual shapes/widgets) becomes the primary interaction material—users manipulate text directly as a medium for creating, composing, and understanding operations.",
+      "strength": "empirical",
+      "key_refs": [
+        "Yi et al. 2024-2026 / Texterial: A Text-as-Material Interaction Paradigm for LLM-Mediated Writing"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-texterial-llm-text-as-material"
+      ],
+      "related_concepts": [
+        "Direct Manipulation",
+        "Affordance",
+        "Semantic Distance"
+      ],
+      "implication": "MetroGraph could hybridize: visual graph + text-based refinement (users type constraints or labels inline)—combining direct manipulation's spatial clarity with text's expressiveness."
+    },
+    {
+      "concept": "Exploratory Search Interface Design",
+      "field": "information-foraging",
+      "definition": "Principles for designing systems where users don't have a fixed search goal but iteratively refine understanding through exploration—requires strong feedback, visual scaffolding, and low interaction cost.",
+      "strength": "empirical",
+      "key_refs": [
+        "SIGIR 2025 / Design Principles for Exploratory Search Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-exploratory-search-interface-design"
+      ],
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Information Scent",
+        "Sensemaking",
+        "Feedback"
+      ],
+      "implication": "MetroGraph is fundamentally an exploratory search tool for complex data/graphs. It must support iterative hypothesis formation (filter entity types) → observation (see results) → refinement (adjust filters)—this is exactly where conversational UI fails."
+    },
+    {
+      "concept": "Affordance and Computational Rationality",
+      "field": "hci",
+      "definition": "Recent reconceptualization of affordances through computational lens: affordances as computational functions that a system makes available to an agent (human or machine) given agent capabilities and system state.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Xu et al. 2025 / Redefining Affordance via Computational Rationality"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-redefining-affordance-computational-rationality"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Agent Interface",
+        "Mental Model"
+      ],
+      "implication": "For MetroGraph: affordances = set of valid graph operations given schema and current state. Computational view clarifies why visual affordances matter: users must be able to infer the operation set from visual state."
+    },
+    {
+      "concept": "Ecological Psychology Foundations",
+      "field": "cognitive-psych",
+      "definition": "Gibson's philosophical framework: perception is direct pickup of information from the environment; organisms and environments co-evolve such that perceptual systems are attuned to invariant properties (affordances) that matter for survival and action.",
+      "strength": "established-law",
+      "key_refs": [
+        "Gibson 1979 / The Ecological Approach to Visual Perception",
+        "Turvey 1992 / Affordances and Prospective Control"
+      ],
+      "source_ids": [
+        "market-theory-norman-gulfs-distance-history-philosophy-ecological-psychology",
+        "market-theory-norman-gulfs-distance-gibson-1979-ecological-approach-visual-perception"
+      ],
+      "related_concepts": [
+        "Affordance",
+        "Direct Perception",
+        "Mental Model"
+      ],
+      "implication": "MetroGraph visual design should attune users' perception to graph properties (entity clustering, relationship directionality, cardinality) directly, not mediated through abstract queries—leverages ecological psychology's insight about perception-action coupling."
+    }
+  ]
+}

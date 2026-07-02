@@ -1,0 +1,127 @@
+{
+  "name": "segment_attractiveness",
+  "caption": "Segments ranked by WTP x our_fit x growth / competition.",
+  "sql": "SELECT name, priority, size_usd, growth_rate, willingness_to_pay wtp, our_fit, competition_density, (CASE willingness_to_pay WHEN 'high' THEN 3 WHEN 'medium' THEN 2 ELSE 1 END * CASE our_fit WHEN 'high' THEN 3 WHEN 'medium' THEN 2 ELSE 1 END * (1+COALESCE(growth_rate,0)) / CASE competition_density WHEN 'high' THEN 3 WHEN 'medium' THEN 2 ELSE 1 END) score FROM market.segments ORDER BY score DESC",
+  "rows": [
+    {
+      "name": "Graph & Knowledge Graph Users",
+      "priority": "beachhead",
+      "size_usd": 5600000000.0,
+      "growth_rate": 0.319,
+      "wtp": "high",
+      "our_fit": "high",
+      "competition_density": "low",
+      "score": 11.870999999999999
+    },
+    {
+      "name": "Data Mesh / Distributed Data Teams",
+      "priority": "expansion",
+      "size_usd": 1950000000.0,
+      "growth_rate": 0.1756,
+      "wtp": "high",
+      "our_fit": "high",
+      "competition_density": "low",
+      "score": 10.5804
+    },
+    {
+      "name": "Real-Time Analytics & Streaming Teams",
+      "priority": "expansion",
+      "size_usd": 14000000000.0,
+      "growth_rate": 0.12,
+      "wtp": "high",
+      "our_fit": "medium",
+      "competition_density": "low",
+      "score": 6.720000000000001
+    },
+    {
+      "name": "CDOs & Data Leadership",
+      "priority": "beachhead",
+      "size_usd": 8500000000.0,
+      "growth_rate": 0.25,
+      "wtp": "high",
+      "our_fit": "high",
+      "competition_density": "medium",
+      "score": 5.625
+    },
+    {
+      "name": "Analytics Engineers",
+      "priority": "beachhead",
+      "size_usd": 18000000000.0,
+      "growth_rate": 0.22,
+      "wtp": "high",
+      "our_fit": "high",
+      "competition_density": "medium",
+      "score": 5.49
+    },
+    {
+      "name": "Data Governance & Quality Teams",
+      "priority": "expansion",
+      "size_usd": 3400000000.0,
+      "growth_rate": 0.219,
+      "wtp": "high",
+      "our_fit": "high",
+      "competition_density": "medium",
+      "score": 5.4855
+    },
+    {
+      "name": "Enterprise Data Teams",
+      "priority": "expansion",
+      "size_usd": 63910000000.0,
+      "growth_rate": 0.433,
+      "wtp": "high",
+      "our_fit": "high",
+      "competition_density": "high",
+      "score": 4.299
+    },
+    {
+      "name": "NoSQL/SQL Startups",
+      "priority": "beachhead",
+      "size_usd": 3000000000.0,
+      "growth_rate": 0.35,
+      "wtp": "medium",
+      "our_fit": "high",
+      "competition_density": "medium",
+      "score": 4.050000000000001
+    },
+    {
+      "name": "Data Science & ML Teams",
+      "priority": "expansion",
+      "size_usd": 220900000000.0,
+      "growth_rate": 0.204,
+      "wtp": "high",
+      "our_fit": "medium",
+      "competition_density": "medium",
+      "score": 3.612
+    },
+    {
+      "name": "Data Engineers",
+      "priority": "beachhead",
+      "size_usd": 105400000000.0,
+      "growth_rate": 0.1512,
+      "wtp": "high",
+      "our_fit": "high",
+      "competition_density": "high",
+      "score": 3.4536
+    },
+    {
+      "name": "Low-Code / No-Code Development Teams",
+      "priority": "expansion",
+      "size_usd": 45400000000.0,
+      "growth_rate": 0.1996,
+      "wtp": "medium",
+      "our_fit": "medium",
+      "competition_density": "medium",
+      "score": 2.3992
+    },
+    {
+      "name": "Business Analysts / BI Users",
+      "priority": "expansion",
+      "size_usd": 10200000000.0,
+      "growth_rate": 0.0907,
+      "wtp": "high",
+      "our_fit": "medium",
+      "competition_density": "high",
+      "score": 2.1814
+    }
+  ]
+}

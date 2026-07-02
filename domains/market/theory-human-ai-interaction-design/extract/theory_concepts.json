@@ -1,0 +1,641 @@
+{
+  "leaf": "market/theory-human-ai-interaction-design",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Eighteen Design Guidelines for Human-AI Interaction",
+      "field": "interaction-design",
+      "definition": "A set of 18 design guidelines (Amershi et al., CHI 2019) covering four design principles: give control to users, enable graceful failure, support operator with information, and encourage appropriate reliance. Validated across 20 AI products with 49 practitioners.",
+      "strength": "established-law",
+      "key_refs": [
+        "Amershi et al. 2019 / Guidelines for Human-AI Interaction",
+        "Amershi et al. 2021 / Assessing Human-AI Interaction Early through Factorial Surveys"
+      ],
+      "implication": "MetroGraph must implement these 18 principles across its interface design to ensure users maintain appropriate control, can recover from failures, have visibility into system reasoning, and develop calibrated trust.",
+      "related_concepts": [
+        "User Control and Agency",
+        "Graceful Failure Recovery",
+        "Uncertainty Presentation",
+        "Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-amershi-guidelines-human-ai-interaction-2019",
+        "market-theory-human-ai-interaction-design-amershi-guidelines-pdf-microsoft",
+        "market-theory-human-ai-interaction-design-amershi-validation-guidelines-through-factorial-surveys"
+      ]
+    },
+    {
+      "concept": "Trust Calibration in Human-AI Systems",
+      "field": "interaction-design",
+      "definition": "The process of bringing user trust in alignment with actual system performance (not over-trust or under-trust). Involves designing informative explanations that enable accurate mental models rather than persuasive explanations that increase reliance regardless of correctness.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bansal et al. 2021 / Does the Whole Exceed its Parts?",
+        "Wang & Yin 2024 / Practising Appropriate Trust"
+      ],
+      "implication": "MetroGraph should prioritize informative explanations that calibrate user trust accurately; explanations must help users understand both capabilities and limitations rather than simply increase reliance.",
+      "related_concepts": [
+        "Explainability and Transparency",
+        "Uncertainty Presentation",
+        "User Expectations",
+        "Appropriate Reliance"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-bansal-complementary-team-performance-explanations-2021",
+        "market-theory-human-ai-interaction-design-appropriate-trust-human-ai-design-chi",
+        "market-theory-human-ai-interaction-design-systematic-review-user-trust-ai-systems-hci"
+      ]
+    },
+    {
+      "concept": "Mental Models and User Understanding of AI Capabilities",
+      "field": "cognitive-psych",
+      "definition": "Users' internal representations of how AI systems work and what they can/cannot do. Misaligned mental models lead to inappropriate use, unmet expectations, and reduced team performance. Must be elicited and designed for explicitly.",
+      "strength": "empirical",
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things",
+        "Amershi & Vaughan 2024 / User Mental Models in AI Code Completion",
+        "Kaushik et al. 2024 / Exploring Mental Models of Early Adopters"
+      ],
+      "implication": "MetroGraph design must surface and support formation of accurate mental models of graph reasoning, agent behavior, and query execution; use progressive disclosure and examples to avoid capability mismatches.",
+      "related_concepts": [
+        "Design Psychology",
+        "Explainability",
+        "AI Literacy",
+        "User Expectations"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-mental-models-ai-design",
+        "market-theory-human-ai-interaction-design-user-mental-models-ai-code-completion",
+        "market-theory-human-ai-interaction-design-generative-ai-mental-models-early-adopters"
+      ]
+    },
+    {
+      "concept": "Explainability vs. Interpretability vs. Transparency",
+      "field": "hci",
+      "definition": "Explainability (why did the system decide X), interpretability (how does the system work internally), and transparency (what data/processes are being used) are distinct design concerns with different cognitive and trust implications. Not all are needed equally for all user types.",
+      "strength": "framework",
+      "key_refs": [
+        "Mohseni et al. 2019 / Multidisciplinary Survey and Framework",
+        "Springer et al. 2024 / Towards Human-Centered Explainable AI Survey",
+        "Mohseni & Weld 2024 / From Explainable to Interactive AI"
+      ],
+      "implication": "MetroGraph must carefully target which form of explanation (explainability, interpretability, or transparency) best serves each user type (domain expert vs. non-expert querying graph structure); avoid over-explaining simple operations.",
+      "related_concepts": [
+        "Trust Calibration",
+        "User Control",
+        "AI Literacy",
+        "Information Design"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-multidisciplinary-survey-explainable-ai-design-evaluation",
+        "market-theory-human-ai-interaction-design-towards-human-centered-xai-survey-user-studies",
+        "market-theory-human-ai-interaction-design-from-explainable-to-interactive-ai-literature-review"
+      ]
+    },
+    {
+      "concept": "User Control and Agency in Human-AI Interaction",
+      "field": "interaction-design",
+      "definition": "The degree to which users can direct, modify, or override AI system behavior. Critical for human dignity, error recovery, and trust. Ranges from consultative (users seek AI input) to delegative (AI acts autonomously with user oversight).",
+      "strength": "framework",
+      "key_refs": [
+        "Amershi et al. 2019 / Guidelines (Principle 1: Give Control to Users)",
+        "Miller et al. 2024 / Design Considerations for Human Oversight of AI",
+        "Norman & Stappers 2015 / AI Systems as Agents"
+      ],
+      "implication": "MetroGraph must embed user control throughout the interaction model: users must be able to inspect queries, modify graph traversal, override suggestions, and rewind agent decisions; avoid over-automation.",
+      "related_concepts": [
+        "Graceful Failure Recovery",
+        "Transparency",
+        "Appropriate Reliance",
+        "Interaction Primitives"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-amershi-guidelines-pdf-microsoft",
+        "market-theory-human-ai-interaction-design-design-considerations-human-oversight-ai"
+      ]
+    },
+    {
+      "concept": "Graceful Failure and Error Recovery",
+      "field": "interaction-design",
+      "definition": "Designing systems to fail in predictable, recoverable ways rather than catastrophically. Users need visibility into what went wrong, why, and how to recover. Critical for trust and continued engagement.",
+      "strength": "framework",
+      "key_refs": [
+        "Amershi et al. 2019 / Guidelines (Principle 2: Explain Graceful Failures)",
+        "Google PAIR Guidebook 2024 / Errors + Graceful Failure chapter"
+      ],
+      "implication": "MetroGraph must implement transparent error states: show users when agents fail, why, which data/relationships caused issues, and offer clear recovery paths (retry, alternative query, manual override).",
+      "related_concepts": [
+        "Transparency",
+        "User Control",
+        "Uncertainty Presentation",
+        "Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-amershi-guidelines-pdf-microsoft",
+        "market-theory-human-ai-interaction-design-google-pair-errors-failing-chapter"
+      ]
+    },
+    {
+      "concept": "Uncertainty Representation and Communication",
+      "field": "visualization",
+      "definition": "How to visually and textually represent AI system uncertainty (confidence, prediction intervals, alternative answers). Raw probability is less effective than calibrated frequency or visual representations. Affects user reliance and decision quality.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kaur et al. 2023 / Designing for Appropriate Reliance: Uncertainty Presentation",
+        "Banerjee & Chakraborty 2023 / Understanding Uncertainty: How Lay Decision-makers Perceive Uncertainty"
+      ],
+      "implication": "MetroGraph should represent agent/query uncertainty through calibrated frequency bands, visual confidence indicators, or alternative suggestions rather than raw percentages; design should match user expertise and task context.",
+      "related_concepts": [
+        "Information Design",
+        "Trust Calibration",
+        "Visualization",
+        "Appropriate Reliance"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-designing-appropriate-reliance-uncertainty-presentation",
+        "market-theory-human-ai-interaction-design-understanding-uncertainty-lay-decision-makers-ai"
+      ]
+    },
+    {
+      "concept": "Appropriate Reliance and Over-Reliance",
+      "field": "cognitive-psych",
+      "definition": "Users may rely on AI too much (over-reliance, automation bias) or too little (under-reliance) based on mismatches between perceived and actual system capability. Design must actively support appropriate levels of reliance through transparency and control.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bansal et al. 2021 / Complementary Team Performance",
+        "Amershi & Kaur 2023 / Designing for Appropriate Reliance"
+      ],
+      "implication": "MetroGraph design must surface when users should and shouldn't trust agent suggestions through signals (confidence scores, failure histories, complexity warnings) to prevent both under-reliance (missing valuable suggestions) and over-reliance (accepting flawed reasoning).",
+      "related_concepts": [
+        "Trust Calibration",
+        "Explainability",
+        "User Control",
+        "Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-designing-appropriate-reliance-uncertainty-presentation",
+        "market-theory-human-ai-interaction-design-bansal-complementary-team-performance-explanations-2021"
+      ]
+    },
+    {
+      "concept": "AI Literacy and User Competencies",
+      "field": "hci",
+      "definition": "The set of competencies users need to interact effectively with AI systems: understanding AI capabilities/limitations, mental models of how systems work, ability to recognize failure modes, and knowing when to trust or override. Varies significantly by user background.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kaur et al. 2020 / What is AI Literacy? Competencies and Design Considerations",
+        "Huang et al. 2024 / AI Literacy for Community Colleges"
+      ],
+      "implication": "MetroGraph must provide scaffolding for users with varying AI literacy: onboarding that builds correct mental models, progressive disclosure of complexity, in-context help for recognizing agent limitations, and design that doesn't assume AI expertise.",
+      "related_concepts": [
+        "Mental Models",
+        "Explainability",
+        "User Control",
+        "Design Principles"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-ai-literacy-competencies-design-considerations",
+        "market-theory-human-ai-interaction-design-ai-literacy-community-colleges"
+      ]
+    },
+    {
+      "concept": "Human-in-the-Loop Design and Feedback Integration",
+      "field": "interaction-design",
+      "definition": "Systematic design for integrating human judgment into AI systems through feedback loops. Includes active learning, human annotation, preference learning (RLHF), and collaborative refinement. Process-oriented rather than reactive.",
+      "strength": "framework",
+      "key_refs": [
+        "Madaio et al. 2021 / Human-in-the-Loop Design Cycles",
+        "Casper et al. 2023 / RLHF Survey",
+        "Lim et al. 2021 / Guidelines for Designing Human-in-the-Loop Machine Training Interfaces"
+      ],
+      "implication": "MetroGraph should embed feedback mechanisms throughout: users can correct graph interpretations, validate query logic, refine agent behavior, and teach the system domain-specific patterns; feedback must flow back into model/agent training.",
+      "related_concepts": [
+        "User Control",
+        "Interactive AI",
+        "Design Patterns",
+        "Collaborative Systems"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-human-in-loop-machine-learning-systematic-review",
+        "market-theory-human-ai-interaction-design-human-in-loop-ai-systematic-review-entropy",
+        "market-theory-human-ai-interaction-design-guidelines-designing-human-in-loop-training-interfaces"
+      ]
+    },
+    {
+      "concept": "Human-AI Team Performance and Complementarity",
+      "field": "cognitive-psych",
+      "definition": "Research on how humans and AI agents combine to outperform either alone. Depends critically on appropriate task allocation, communication patterns, and user understanding of agent capabilities. Complementarity requires both entities play to their strengths.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bansal et al. 2021 / Does the Whole Exceed its Parts?",
+        "Xu et al. 2025 / Collaborating with AI Agents: Field Experiments",
+        "Ahmed et al. 2023 / AI Teammate Communication Strategies"
+      ],
+      "implication": "MetroGraph should be designed as a team player, not a replacement: highlight where agent reasoning excels and where human oversight is essential; design communication (what agent explains, when it asks for help) to maximize complementarity.",
+      "related_concepts": [
+        "Trust Calibration",
+        "User Control",
+        "Communication Design",
+        "Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-bansal-complementary-team-performance-explanations-2021",
+        "market-theory-human-ai-interaction-design-collaborating-ai-agents-field-experiments-teamwork",
+        "market-theory-human-ai-interaction-design-investigating-ai-teammate-communication-strategies"
+      ]
+    },
+    {
+      "concept": "Expectation Management and Alignment",
+      "field": "hci",
+      "definition": "Actively shaping and maintaining user expectations about what AI can do to match actual capabilities and limitations. Poor expectation management leads to disappointment, loss of trust, and abandonment. Requires upfront communication and ongoing calibration.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sap et al. 2020 / Will You Accept an Imperfect AI?",
+        "Lai et al. 2024 / Expectation Management in AI Framework"
+      ],
+      "implication": "MetroGraph's onboarding and messaging must set realistic expectations about graph coverage, query complexity limits, reasoning depth, and error rates; use progressive difficulty and clear success criteria to calibrate expectations over time.",
+      "related_concepts": [
+        "Mental Models",
+        "Trust Calibration",
+        "AI Literacy",
+        "Design Principles"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-expectation-management-ai-framework",
+        "market-theory-human-ai-interaction-design-will-you-accept-imperfect-ai-expectation-adjustment"
+      ]
+    },
+    {
+      "concept": "Proactive AI and Appropriate Autonomy Levels",
+      "field": "interaction-design",
+      "definition": "Systems that initiate actions without explicit user request. User preferences for proactivity vary by context, task criticality, and relationship type. Over-proactivity feels intrusive; under-proactivity misses opportunities. Requires explicit design of autonomy boundaries.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sap et al. 2020 / Exploring User Expectations of Proactive AI Systems"
+      ],
+      "implication": "MetroGraph should calibrate when agents proactively suggest queries, refine traversals, or flag relationships vs. waiting for user direction; design should make autonomy level explicit and allow adjustment per user preference.",
+      "related_concepts": [
+        "User Control",
+        "Design Principles for Agents",
+        "Appropriate Reliance"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-exploring-user-expectations-proactive-ai"
+      ]
+    },
+    {
+      "concept": "Design Patterns for Human-AI Interaction",
+      "field": "interaction-design",
+      "definition": "Reusable solutions to recurring HCI+AI problems: feedback patterns (confidence indicators, alternatives, explanations), control patterns (override, refine, undo), error patterns (recovery, graceful degradation), and learning patterns (progressive disclosure, onboarding).",
+      "strength": "empirical",
+      "key_refs": [
+        "Liu et al. 2024 / Survey of UI Design in Generative AI Applications",
+        "Bussone et al. 2024 / Taxonomy of Human-Generative-AI Interactions",
+        "Amershi et al. 2019 / Guidelines (implicit patterns)"
+      ],
+      "implication": "MetroGraph should adopt proven interaction patterns: confidence badges for agent suggestions, undo/redo for query refinements, in-context tooltips for complex reasoning, progressive disclosure of advanced features, and clear error recovery flows.",
+      "related_concepts": [
+        "User Control",
+        "Explainability",
+        "Interaction Design",
+        "Design Standards"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-survey-ui-design-generative-ai-applications",
+        "market-theory-human-ai-interaction-design-taxonomy-human-generative-ai-interactions"
+      ]
+    },
+    {
+      "concept": "Harmful Design Patterns and Dark Patterns in AI",
+      "field": "interaction-design",
+      "definition": "Design patterns that harm users: over-anthropomorphization (making AI seem more capable than it is), deceptive confidence displays, guilt-based feedback, obfuscated limitations, making override difficult, addictive engagement mechanics that replace critical thinking.",
+      "strength": "framework",
+      "key_refs": [
+        "Gray et al. 2024 / Characterizing and Modeling Harms from Design Patterns"
+      ],
+      "implication": "MetroGraph must explicitly avoid harmful patterns: don't anthropomorphize agents excessively, clearly mark limitations, make override easy, avoid guilt-based feedback for not using agent suggestions, and prevent dark patterns that exploit cognitive biases.",
+      "related_concepts": [
+        "Trust Calibration",
+        "User Control",
+        "Transparency",
+        "Design Ethics"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-characterizing-harms-design-patterns-ai-interfaces"
+      ]
+    },
+    {
+      "concept": "Interaction Primitives and Design Space Decomposition",
+      "field": "interaction-design",
+      "definition": "Breaking down human-AI interactions into fundamental primitives (query, explain, refine, feedback, undo, override) and mapping them to a design space. Enables systematic coverage of design options and comparison across AI applications.",
+      "strength": "framework",
+      "key_refs": [
+        "Amershi et al. 2024 / Unpacking Human-AI Interactions: Primitives to Design Space"
+      ],
+      "implication": "MetroGraph should be designed systematically across primitives: support query (user specifies intent), explain (system reveals reasoning), refine (user adjusts parameters), feedback (user corrects mistakes), undo (revert decisions), and override (take control). Each primitive needs coherent design.",
+      "related_concepts": [
+        "User Control",
+        "Interaction Design",
+        "Design Patterns"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-unpacking-human-ai-interactions-primitives-design-space"
+      ]
+    },
+    {
+      "concept": "Conversational Interface Design for AI",
+      "field": "interaction-design",
+      "definition": "Specialized HCI considerations for chatbots, dialogue systems, and conversational agents: turn-taking, clarification strategies, context management, error recovery in dialogue, multimodal integration, and conversation history.",
+      "strength": "empirical",
+      "key_refs": [
+        "Moore et al. 2023 / On the Design of and Interaction with Conversational Agents"
+      ],
+      "implication": "If MetroGraph includes conversational query interfaces (query-by-dialog), apply dialogue design patterns: explicit confirmation of intent, clear context windows, easy clarification mechanisms, and history navigation to prevent misunderstandings.",
+      "related_concepts": [
+        "Interaction Design",
+        "User Control",
+        "Error Recovery",
+        "Natural Language Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-on-design-conversational-agents-hci-review"
+      ]
+    },
+    {
+      "concept": "Creative Collaboration and Co-creation with AI",
+      "field": "interaction-design",
+      "definition": "Designing AI systems to augment human creativity through suggestion, exploration, and co-ideation rather than replacement. Requires maintaining user control, avoiding excessive constraint from AI suggestions, and enabling serendipitous discovery.",
+      "strength": "empirical",
+      "key_refs": [
+        "Zhang et al. 2024 / Evaluating AI-Assisted Creative Ideation",
+        "Xu et al. 2025 / Exploring Creativity in Human-AI Co-creation"
+      ],
+      "implication": "If MetroGraph serves exploratory/creative graph queries (discovering unexpected relationships), design for co-creation: surface multiple query paths, show why agent suggests certain traversals, allow deviation from suggestions without penalty, celebrate serendipitous findings.",
+      "related_concepts": [
+        "User Control",
+        "Mental Models",
+        "Team Performance",
+        "Interaction Design"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-ai-assisted-creative-ideation-crossover-study",
+        "market-theory-human-ai-interaction-design-exploring-creativity-human-ai-cocreation-design-experience"
+      ]
+    },
+    {
+      "concept": "Recommender System Interfaces and Explanation Design",
+      "field": "interaction-design",
+      "definition": "Specialized HCI for AI systems that suggest items, rankings, or actions. Must build trust through transparent explanations, support user agency through filtering/overriding, and avoid filter bubbles. Distinct from other AI interfaces due to personalization.",
+      "strength": "empirical",
+      "key_refs": [
+        "Taube et al. 2006 / Trust-Inspiring Explanation Interfaces for Recommender Systems",
+        "Liu et al. 2020 / How Do Users Interact with Algorithm Recommender Systems?"
+      ],
+      "implication": "If MetroGraph recommends graph queries or relationships, design explanations around recommendation rationale (why this path?), allow users to explore alternatives, and provide control to refine or reject suggestions.",
+      "related_concepts": [
+        "Explainability",
+        "User Control",
+        "Trust Calibration"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-trust-inspiring-explanation-interfaces-recommenders",
+        "market-theory-human-ai-interaction-design-how-users-interact-algorithm-recommender-systems"
+      ]
+    },
+    {
+      "concept": "Reinforcement Learning from Human Feedback (RLHF)",
+      "field": "interaction-design",
+      "definition": "Methods for collecting human preferences and using them to fine-tune AI model behavior. Requires interface design for preference collection that is cognitive scalable, unbiased, and connected to downstream model updates. Critical for personalization and user agency.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ouyang et al. 2023 / A Survey of Reinforcement Learning from Human Feedback"
+      ],
+      "implication": "MetroGraph could use RLHF to personalize agent behavior: collect user preferences for query styles, reasoning depth, and explanation types; ensure feedback interface is lightweight and users understand how feedback shapes future behavior.",
+      "related_concepts": [
+        "Human-in-the-Loop",
+        "User Control",
+        "Feedback Integration",
+        "Personalization"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-reinforcement-learning-human-feedback-survey"
+      ]
+    },
+    {
+      "concept": "Design Principles for Generative AI Applications",
+      "field": "interaction-design",
+      "definition": "Principles specific to generative AI (as opposed to other AI types): managing variability (outputs differ each run), controllability (steering generation), user expectations (what counts as quality), and iteration (refine output through dialogue).",
+      "strength": "empirical",
+      "key_refs": [
+        "Chiang et al. 2023 / Toward General Design Principles for Generative AI",
+        "Amershi et al. 2024 / Design Principles for Generative AI Applications"
+      ],
+      "implication": "If MetroGraph uses generative reasoning agents, design for output variability: show multiple query interpretations, explain why agent chose one path over alternatives, allow refinement through dialogue, and set expectations that perfect answers may not always exist.",
+      "related_concepts": [
+        "Uncertainty Presentation",
+        "User Control",
+        "Interaction Design",
+        "Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-design-principles-toward-general-generative-ai",
+        "market-theory-human-ai-interaction-design-design-principles-generative-ai-2024"
+      ]
+    },
+    {
+      "concept": "Design Principles for Human-Agent Interaction",
+      "field": "interaction-design",
+      "definition": "Guidelines for multi-agent systems where humans coordinate with software agents: emphasizing transparency (what is each agent doing?), communication (clear delegation and status updates), and appropriate autonomy (humans know when agents act independently).",
+      "strength": "framework",
+      "key_refs": [
+        "Zhang et al. 2024 / Design Principles for Human-Agent Interaction"
+      ],
+      "implication": "MetroGraph's agents must communicate openly: surface what reasoning is happening, distinguish human vs. AI decisions, enable human agents to direct AI agents, and provide clear status updates on query execution progress.",
+      "related_concepts": [
+        "User Control",
+        "Transparency",
+        "Communication Design",
+        "Team Performance"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-design-principles-human-agent-interaction"
+      ]
+    },
+    {
+      "concept": "Feedback Barriers in Conversational Agents",
+      "field": "interaction-design",
+      "definition": "Psychological and interface barriers that prevent users from providing feedback to conversational agents (effort, unclear impact, social awkwardness, lack of feedback mechanisms). Removing barriers increases user control and system improvement.",
+      "strength": "empirical",
+      "key_refs": [
+        "Al-Natour et al. 2025 / Feedback by Design: User Barriers in Conversational Agents"
+      ],
+      "implication": "MetroGraph must lower friction for user feedback: provide lightweight feedback mechanisms (thumbs up/down, quick corrections), show how feedback was used, make feedback feel natural in dialogue (not intrusive), and explicitly request feedback when most useful.",
+      "related_concepts": [
+        "Human-in-the-Loop",
+        "User Control",
+        "Interaction Design"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-feedback-by-design-user-barriers-conversational-agents"
+      ]
+    },
+    {
+      "concept": "AI Agent Behavioral Science and Adaptive Interaction",
+      "field": "cognitive-psych",
+      "definition": "Understanding how AI agents behave in response to human input and how to design agents that adapt to user preferences, communication styles, and expertise levels. Agents should learn user patterns and adjust behavior accordingly.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Amershi et al. 2025 / AI Agent Behavioral Science"
+      ],
+      "implication": "MetroGraph agents should adapt: learn user query patterns, adjust explanation complexity to match user expertise over time, adapt suggestion types based on user feedback history, and communicate when shifting behavior.",
+      "related_concepts": [
+        "User Control",
+        "Mental Models",
+        "Personalization",
+        "Learning Systems"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-ai-agent-behavioral-science"
+      ]
+    },
+    {
+      "concept": "User-First Approach to AI Ethics and Values",
+      "field": "hci",
+      "definition": "Designing AI systems with values that reflect user preferences and cultural contexts rather than imposing designer values. Requires participatory design, testing across diverse populations, and ongoing adaptation to user needs.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ahmed et al. 2024 / The User-First Approach to AI Ethics"
+      ],
+      "implication": "MetroGraph should incorporate user values: allow users to specify what relationships matter most, expose algorithmic choices that reflect values (e.g., path-finding trade-offs), and test design with diverse user communities to avoid cultural biases.",
+      "related_concepts": [
+        "User Control",
+        "Design Ethics",
+        "Participatory Design"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-user-first-approach-ai-ethics-preferences"
+      ]
+    },
+    {
+      "concept": "Human-AI Interaction Design Standards and Frameworks",
+      "field": "interaction-design",
+      "definition": "Emerging standards and systematic frameworks for human-AI interaction design: ISO-style guidelines, maturity models, design templates, and evaluation criteria. Provide structure for practitioners and consistency across products.",
+      "strength": "framework",
+      "key_refs": [
+        "Zhang et al. 2025 / Human-AI Interaction Design Standards",
+        "Sap et al. 2021 / The Future of Human-AI Collaboration: Hybrid Intelligence Taxonomy"
+      ],
+      "implication": "MetroGraph's design should align with emerging standards: follow documented design principles, use consistent patterns, provide design rationale documentation, and enable systematic evaluation against established criteria.",
+      "related_concepts": [
+        "Design Principles",
+        "Design Patterns",
+        "Evaluation Methodologies"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-human-ai-interaction-design-standards",
+        "market-theory-human-ai-interaction-design-future-human-ai-collaboration-taxonomy-hybrid-intelligence"
+      ]
+    },
+    {
+      "concept": "Hybrid Intelligence and Complementary Capabilities",
+      "field": "cognitive-psych",
+      "definition": "Framing AI as augmenting rather than replacing human capabilities. Hybrid intelligence systems emphasize strengths division: AI excels at scale/pattern-matching, humans at judgment/context. Success requires explicit design of complementarity.",
+      "strength": "framework",
+      "key_refs": [
+        "Sap et al. 2021 / The Future of Human-AI Collaboration: Hybrid Intelligence Taxonomy",
+        "Shneiderman 2022 / Human-Centered AI"
+      ],
+      "implication": "MetroGraph should be designed explicitly for human-AI complementarity: graph pattern discovery (AI) + domain validation (human), exhaustive traversal (AI) + semantic judgment (human), rapid suggestions (AI) + intentional refinement (human).",
+      "related_concepts": [
+        "Team Performance",
+        "User Control",
+        "Mental Models",
+        "Design Principles"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-future-human-ai-collaboration-taxonomy-hybrid-intelligence",
+        "market-theory-human-ai-interaction-design-shneiderman-human-centered-ai-book"
+      ]
+    },
+    {
+      "concept": "Information Design and Visualization for AI Outputs",
+      "field": "visualization",
+      "definition": "Applying principles from information visualization and design to present AI outputs effectively: data-ink ratio, graphical integrity, chart selection, color theory, and reducing cognitive load in high-dimensional output spaces.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte 2001 / The Visual Display of Quantitative Information",
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "implication": "MetroGraph's visualization of graph queries and agent reasoning must follow visualization principles: minimize non-data ink, use color meaningfully (not decoratively), choose graph layouts for clarity not aesthetics, and reduce visual complexity through progressive disclosure.",
+      "related_concepts": [
+        "Visualization",
+        "Explainability",
+        "Uncertainty Presentation",
+        "Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-tufte-visual-display-quantitative-information",
+        "market-theory-human-ai-interaction-design-munzner-visualization-analysis-design"
+      ]
+    },
+    {
+      "concept": "Design Psychology and Affordances in AI Interfaces",
+      "field": "interaction-design",
+      "definition": "Foundational HCI principles applied to AI: affordances (visual cues for actionability), signifiers (indicating state), mental model support (design matches how users think), and discoverability (users find features without help).",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things",
+        "Preece et al. 2022 / Interaction Design (6th Edition)"
+      ],
+      "implication": "MetroGraph must apply design psychology: affordances should signal when users can refine queries, override suggestions, or undo actions; system state (executing, failed, ambiguous) should be visually obvious; interaction patterns must match user mental models of graphs.",
+      "related_concepts": [
+        "User Control",
+        "Mental Models",
+        "Interaction Design",
+        "Discoverability"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-norman-design-of-everyday-things",
+        "market-theory-human-ai-interaction-design-preece-rogers-sharp-interaction-design-textbook"
+      ]
+    },
+    {
+      "concept": "Human-Centered AI (HCAI) Framework",
+      "field": "hci",
+      "definition": "Shneiderman's foundational framework emphasizing AI as augmenting human capabilities, maintaining human control, supporting human values, and enabling human understanding. Opposes AI-only and human-only approaches.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman 2022 / Human-Centered AI: Reliable, Safe & Trustworthy"
+      ],
+      "implication": "MetroGraph's entire design philosophy should align with HCAI: position agents as augmenters not replacers, design for user control and understanding, expose values in design choices, and maintain human judgment as final authority on graph interpretation.",
+      "related_concepts": [
+        "User Control",
+        "Hybrid Intelligence",
+        "Transparency",
+        "Design Principles"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-shneiderman-human-centered-ai-book"
+      ]
+    },
+    {
+      "concept": "Design Trajectory and Evolutionary Design for AI Systems",
+      "field": "interaction-design",
+      "definition": "Systematic mapping of design evolution for AI systems, particularly human-AI collaborative learning systems. Shows how designs should evolve as systems learn, users gain expertise, and interaction patterns stabilize.",
+      "strength": "framework",
+      "key_refs": [
+        "Sun et al. 2024 / A Design Trajectory Map of Human-AI Collaborative Reinforcement Learning Systems"
+      ],
+      "implication": "MetroGraph should be designed with evolutionary trajectory in mind: early onboarding heavy, transitioning to expert shortcuts; early suggestions conservative, becoming more bold as user trust/expertise grows; feedback mechanisms simple initially, more sophisticated later.",
+      "related_concepts": [
+        "User Control",
+        "Design Patterns",
+        "AI Literacy",
+        "Learning Systems"
+      ],
+      "source_ids": [
+        "market-theory-human-ai-interaction-design-design-trajectory-human-ai-reinforcement-learning"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,783 @@
+{
+  "leaf": "market/theory-tangible-embodied",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Tangible User Interface (TUI)",
+      "field": "interaction-design",
+      "definition": "A computing paradigm that augments the real physical world by coupling digital information to everyday physical objects and environments, making information perceptually and computationally coupled to physical representations.",
+      "strength": "established-law",
+      "key_refs": [
+        "Ishii & Ullmer 1997 Tangible Bits",
+        "Ullmer & Ishii foundational TUI characteristics"
+      ],
+      "related_concepts": [
+        "Embodied Interaction",
+        "Graspable Interfaces",
+        "Ambient Media",
+        "Physical Representation"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-ishii-ullmer-tangible-bits-1997"
+      ],
+      "implication": "Provides foundational paradigm for giving 'substance' and materiality to database nodes; makes abstract graph structure perceptually coupled to physical topology."
+    },
+    {
+      "concept": "Embodied Interaction",
+      "field": "hci",
+      "definition": "Interaction grounded in phenomenological understanding where meaning arises through pre-reflective bodily engagement with the world; perception and action are inseparable, and understanding emerges from physical doing rather than abstract representation alone.",
+      "strength": "framework",
+      "key_refs": [
+        "Dourish 2001 Where the Action Is",
+        "Heidegger Wittgenstein phenomenology"
+      ],
+      "related_concepts": [
+        "Embodied Cognition",
+        "Merleau-Ponty Phenomenology",
+        "Tangible User Interface",
+        "Direct Manipulation"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-dourish-embodied-interaction-foundations",
+        "market-theory-tangible-embodied-dourish-embodied-interaction-paper"
+      ],
+      "implication": "Explains why spatial graph metaphors feel intuitive and learnable without explicit instruction; the body 'already knows' how to navigate through embodied spatial structures."
+    },
+    {
+      "concept": "Physicality in Tangible Interaction",
+      "field": "interaction-design",
+      "definition": "The engagement of the user's body and the physical material world as central design dimensions; includes material properties, spatial constraints, bodily affordances, and sensorimotor feedback as features that scaffold interaction.",
+      "strength": "framework",
+      "key_refs": [
+        "Hornecker & Buur 2006",
+        "Hornecker Physicality in Tangible Interaction"
+      ],
+      "related_concepts": [
+        "Embodied Interaction",
+        "Affordances",
+        "Spatiality",
+        "Haptic Feedback"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-hornecker-physicality-tangible-interaction",
+        "market-theory-tangible-embodied-hornecker-grip-tangible-interaction-2006"
+      ],
+      "implication": "Physical weight, texture, and constraints of nodes become design features that guide exploration without explicit instructions; material properties communicate interaction affordances."
+    },
+    {
+      "concept": "Spatiality in Tangible Systems",
+      "field": "interaction-design",
+      "definition": "The use of spatial properties, layout, and arrangement of physical objects as primary interaction mechanisms; physical space becomes semantically meaningful and directly navigable.",
+      "strength": "framework",
+      "key_refs": [
+        "Hornecker Grip on Tangible Interaction",
+        "Spatial cognition in embodied systems"
+      ],
+      "related_concepts": [
+        "Spatial Cognition Engagement",
+        "Navigation",
+        "Layout Design",
+        "Wayfinding"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-hornecker-grip-tangible-interaction-2006",
+        "market-theory-tangible-embodied-antle-embodied-learning-spatial"
+      ],
+      "implication": "Metro-map spatial layout becomes directly explorable through physical manipulation; traversing physical space mirrors query traversal through database topology."
+    },
+    {
+      "concept": "Embodied Cognition",
+      "field": "cognitive-psych",
+      "definition": "Cognitive processes are fundamentally grounded in bodily interaction with the environment; abstract thought is scaffolded by sensorimotor experience, and physical action/perception precedes and enables higher-order reasoning.",
+      "strength": "empirical",
+      "key_refs": [
+        "Merleau-Ponty embodied perception",
+        "Wilson 2002 embodied cognition",
+        "Embodied Interaction Design literature"
+      ],
+      "related_concepts": [
+        "Embodied Learning",
+        "Spatial Cognition",
+        "Merleau-Ponty Phenomenology",
+        "Cognitive Load Reduction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-merleau-ponty-phenomenology-perception",
+        "market-theory-tangible-embodied-embodied-cognition-interaction-design-spatial",
+        "market-theory-tangible-embodied-tei-meta-analysis-learning"
+      ],
+      "implication": "Physical manipulation of graph elements reduces cognitive load through embodied understanding; spatial reasoning is enhanced by kinesthetic feedback."
+    },
+    {
+      "concept": "Embodied Learning",
+      "field": "cognitive-psych",
+      "definition": "Learning through hands-on physical manipulation of tangible objects where the body and its movements are active agents in knowledge construction; haptic interaction and kinesthetic feedback enhance knowledge transfer.",
+      "strength": "empirical",
+      "key_refs": [
+        "Li et al 2022 Meta-Analysis of TEI Learning",
+        "Antle & Wise embodied learning",
+        "Embodiment effects in pedagogy"
+      ],
+      "related_concepts": [
+        "Embodied Cognition",
+        "Scaffolding",
+        "Haptic Interaction",
+        "Collaborative Learning"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-tei-meta-analysis-learning",
+        "market-theory-tangible-embodied-antle-embodied-learning-spatial"
+      ],
+      "implication": "Exploring database graph through physical tangibles enables deeper learning of data relationships; users retain query patterns and structural understanding better through embodied manipulation."
+    },
+    {
+      "concept": "Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "Interaction paradigm characterized by continuous visual/physical representation of objects, physical actions directly on those objects, rapid reversible feedback, and immediate visibility of results.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1982/1983 Direct Manipulation GUI",
+        "Three principles of direct manipulation"
+      ],
+      "related_concepts": [
+        "Immediate Feedback",
+        "Reversibility",
+        "Continuous Representation",
+        "Embodied Interaction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-shneiderman-direct-manipulation-1982"
+      ],
+      "implication": "Direct physical manipulation of graph nodes provides immediate feedback on query results; users see consequences of structural changes instantly."
+    },
+    {
+      "concept": "Affordances and Signifiers",
+      "field": "interaction-design",
+      "definition": "Physical and perceptual properties of objects that communicate possible actions; how material design and form 'speak' about interaction possibilities without requiring explicit instructions or labels.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988/2013 Design of Everyday Things",
+        "Affordances vs Signifiers distinction"
+      ],
+      "related_concepts": [
+        "Physical Constraints",
+        "Design Communication",
+        "Embodied Interaction",
+        "Spatiality"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-norman-design-of-everyday-things-affordances"
+      ],
+      "implication": "Node shape, texture, and weight signal their role in graph structure; edge thickness communicates relationship strength through haptic and visual affordances."
+    },
+    {
+      "concept": "Information Foraging Theory",
+      "field": "information-foraging",
+      "definition": "Model of information-seeking behavior applying optimal foraging theory to user navigation; users follow 'information scent'—cues signaling likelihood of finding relevant information—to guide exploration decisions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card Information Foraging",
+        "Adaptive Interaction with Information"
+      ],
+      "related_concepts": [
+        "Navigation Patterns",
+        "Information Scent",
+        "Wayfinding",
+        "Search Behavior"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-pirolli-information-foraging-theory"
+      ],
+      "implication": "Physical spatial layout provides natural information scent for graph exploration; proximity and clustering guide users toward relevant subgraphs without explicit search."
+    },
+    {
+      "concept": "Merleau-Ponty Phenomenology",
+      "field": "cognitive-psych",
+      "definition": "Philosophical foundation asserting that perception is embodied and pre-reflective; the body engages with the world prior to conscious thought, grounding all knowledge in sensorimotor experience.",
+      "strength": "established-law",
+      "key_refs": [
+        "Merleau-Ponty Phenomenology of Perception",
+        "Embodied perception as foundation"
+      ],
+      "related_concepts": [
+        "Embodied Interaction",
+        "Embodied Cognition",
+        "Phenomenological Grounding"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-merleau-ponty-phenomenology-perception"
+      ],
+      "implication": "Physical interaction with graph feels intuitive because it leverages pre-reflective bodily knowledge; no learning curve for basic spatial navigation."
+    },
+    {
+      "concept": "Gesture-Based Interaction",
+      "field": "interaction-design",
+      "definition": "Interaction modality using physical gestures and body movements as primary input; leverages complementary processing of spatial/kinesthetic and verbal information, with gestures conveying spatial relations naturally.",
+      "strength": "empirical",
+      "key_refs": [
+        "Buxton Gesture Based Interaction",
+        "Speech-gesture complementarity"
+      ],
+      "related_concepts": [
+        "Multi-touch Interaction",
+        "Embodied Interaction",
+        "Kinesthetic Learning",
+        "Multimodal Input"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-buxton-multimodal-gesture-interaction"
+      ],
+      "implication": "Gesture vocabulary for graph manipulation (rotate structures, zoom into regions, drag connections) leverages natural spatial understanding."
+    },
+    {
+      "concept": "Multi-touch Surface Interaction",
+      "field": "interaction-design",
+      "definition": "Interaction technique enabling simultaneous multi-point contact on touch-sensitive surfaces; two-handed and multi-user manipulation enables complex spatial transformations through coordinated physical actions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Hinckley Multi-touch Manipulation",
+        "Surface computing interaction design"
+      ],
+      "related_concepts": [
+        "Gesture Interaction",
+        "Collaborative Systems",
+        "Spatial Manipulation",
+        "Embodied Interaction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-hinckley-multitouch-surface-computing"
+      ],
+      "implication": "Multiple database analysts can simultaneously manipulate different graph regions; natural bimanual rotation/scaling/translation of subgraphs."
+    },
+    {
+      "concept": "Data Physicalization",
+      "field": "visualization",
+      "definition": "Computer-supported physical representations of data using tangible materials and objects; analogous to data visualization but leveraging material, spatial, and embodied properties for exploration and understanding.",
+      "strength": "framework",
+      "key_refs": [
+        "Data Physicalization Wiki",
+        "Physical visualizations emerging paradigm"
+      ],
+      "related_concepts": [
+        "Tangible User Interface",
+        "Information Visualization",
+        "Physical Representation"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-dataphys-wiki-physicalization-resources"
+      ],
+      "implication": "Database graph becomes physical network structure; nodes/edges materially represent database topology, enabling tactile exploration."
+    },
+    {
+      "concept": "Shape-Changing Interfaces",
+      "field": "interaction-design",
+      "definition": "Physical interfaces that dynamically alter their shape, texture, or form to represent digital state or enable different affordances; morphing materials and actuated structures create responsive physical feedback.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shape-Changing Interfaces Survey 2018",
+        "inFORM dynamic shape display",
+        "Morphing materials"
+      ],
+      "related_concepts": [
+        "Dynamic Affordances",
+        "Tangible User Interface",
+        "Haptic Feedback",
+        "Embodied Interaction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-shape-changing-interfaces-survey",
+        "market-theory-tangible-embodied-shape-fragility-interface-2025",
+        "market-theory-tangible-embodied-leithinger-inform-shape-display-2013"
+      ],
+      "implication": "Graph nodes can dynamically reshape to show importance, state changes, or query results; height variation shows metric prominence."
+    },
+    {
+      "concept": "Material Engagement Theory",
+      "field": "cognitive-psych",
+      "definition": "Theoretical framework positing that meaning emerges in human-material interaction; physical objects are active agents shaping cognition and culture rather than passive vessels of information.",
+      "strength": "framework",
+      "key_refs": [
+        "Material Engagement Theory",
+        "Objects shaping thought"
+      ],
+      "related_concepts": [
+        "Embodied Cognition",
+        "Physicality",
+        "Affordances",
+        "Material Properties"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-material-engagement-theory-interaction"
+      ],
+      "implication": "Choice of physical material for nodes/edges becomes cognitive and semiotic choice; material properties influence how users perceive and reason about data."
+    },
+    {
+      "concept": "Haptic Feedback in Interaction",
+      "field": "interaction-design",
+      "definition": "Tactile and kinesthetic feedback through electrical stimulation, vibration, mechanical resistance, or temperature; engages the sense of touch as active channel in interaction, complementing vision.",
+      "strength": "empirical",
+      "key_refs": [
+        "Electrical Stimulation Haptic Feedback Survey 2024",
+        "Haptic technologies ERM LRA piezoelectric"
+      ],
+      "related_concepts": [
+        "Embodied Interaction",
+        "Multi-sensory Engagement",
+        "Tangible Interaction",
+        "Sensory Feedback"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-haptic-feedback-interaction-2024"
+      ],
+      "implication": "Tactile feedback when manipulating nodes/edges (resistance, vibration at connection points) enriches interaction and provides confirmation of actions."
+    },
+    {
+      "concept": "Collaborative Tangible Systems",
+      "field": "hci",
+      "definition": "Tangible interfaces designed for co-located multi-user interaction where embodied constraints and spatial layout enable collaborative problem-solving, peer learning, and negotiation without explicit communication protocols.",
+      "strength": "empirical",
+      "key_refs": [
+        "Hornecker Embodied Facilitation",
+        "Reactable collaborative tangible interface",
+        "TEI collaborative studies"
+      ],
+      "related_concepts": [
+        "Embodied Facilitation",
+        "Spatiality",
+        "Physicality",
+        "Social Interaction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-hornecker-embodied-facilitation-2005",
+        "market-theory-tangible-embodied-reactable-tangible-music-interface",
+        "market-theory-tangible-embodied-collaborative-tangible-design-exploration"
+      ],
+      "implication": "Multiple database analysts explore graph together; shared physical interface enables peer discussion and collaborative query formulation."
+    },
+    {
+      "concept": "Embodied Facilitation",
+      "field": "interaction-design",
+      "definition": "Design theme for tangible systems where physical embodiment and spatial constraints scaffold collaborative interaction; multiple access points and tailored representations enable natural coordination and learning.",
+      "strength": "framework",
+      "key_refs": [
+        "Hornecker 2005 Embodied Facilitation ECSCW"
+      ],
+      "related_concepts": [
+        "Collaborative Tangible Systems",
+        "Embodied Learning",
+        "Spatiality",
+        "Design Frameworks"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-hornecker-embodied-facilitation-2005"
+      ],
+      "implication": "Physical graph topology naturally facilitates coordination between analysts; no need for explicit protocols—spatial arrangement guides collaborative reasoning."
+    },
+    {
+      "concept": "Ubiquitous Computing Vision",
+      "field": "hci",
+      "definition": "Paradigm shift from screen-centric computing to environment-embedded interaction; computing fades into background, enabling seamless human-world interaction without explicit focus on technology.",
+      "strength": "framework",
+      "key_refs": [
+        "Weiser 1991 Ubiquitous Computing third paradigm"
+      ],
+      "related_concepts": [
+        "Tangible User Interface",
+        "Context-Aware Computing",
+        "Ambient Media"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-weiser-ubiquitous-computing-1991"
+      ],
+      "implication": "Physical graph becomes integrated part of analyst workspace rather than isolated application; technology disappears into data exploration task."
+    },
+    {
+      "concept": "Graspable Interfaces",
+      "field": "interaction-design",
+      "definition": "Tangible objects designed to be grasped and physically manipulated; physical interaction with handles/graspable surfaces directly controls digital state through intuitive embodied metaphor.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fitzmaurice Graspable Interfaces",
+        "Ishii & Ullmer Tangible Bits graspable category"
+      ],
+      "related_concepts": [
+        "Tangible User Interface",
+        "Direct Manipulation",
+        "Embodied Metaphor",
+        "Physicality"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-ishii-ullmer-tangible-bits-1997"
+      ],
+      "implication": "Database nodes designed as graspable objects with clear grasp points; physical position and rotation directly map to query position/properties."
+    },
+    {
+      "concept": "Ambient Media",
+      "field": "hci",
+      "definition": "Digital information presented in physical form at periphery of attention; leverages embodied perception and ambient awareness to convey information without requiring conscious focus or explicit interaction.",
+      "strength": "framework",
+      "key_refs": [
+        "Ishii & Ullmer Tangible Bits ambient media",
+        "Peripheral information displays"
+      ],
+      "related_concepts": [
+        "Tangible User Interface",
+        "Embodied Cognition",
+        "Context-Aware Computing",
+        "Information Scent"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-ishii-ullmer-tangible-bits-1997"
+      ],
+      "implication": "Physical graph can present aggregate data properties (connectivity, density, change magnitude) as ambient properties (height variation, color gradients) perceived without active attention."
+    },
+    {
+      "concept": "Augmented Surfaces",
+      "field": "interaction-design",
+      "definition": "Physical surfaces augmented with digital tracking, projection, and computation; real-world objects and tokens tagged with digital information create seamless hybrid interaction spaces.",
+      "strength": "empirical",
+      "key_refs": [
+        "Rekimoto 1999 Augmented Surfaces CHI",
+        "Hybrid digital-physical interaction"
+      ],
+      "related_concepts": [
+        "Tangible User Interface",
+        "Mixed Reality",
+        "Embodied Interaction",
+        "Hybrid Systems"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-rekimoto-augmented-surfaces"
+      ],
+      "implication": "Physical tokens on augmented surface represent graph nodes; projected connections show relationships; manipulation updates digital query state."
+    },
+    {
+      "concept": "Spatial Cognition Engagement",
+      "field": "cognitive-psych",
+      "definition": "Design of embodied interfaces that actively engage spatial reasoning abilities (mental rotation, perspective-taking, wayfinding, spatial memory); physical interaction enhances development of spatial skills.",
+      "strength": "empirical",
+      "key_refs": [
+        "Antle & Wise Embodied Interaction Spatial Skills",
+        "Spatial cognition development"
+      ],
+      "related_concepts": [
+        "Embodied Learning",
+        "Embodied Cognition",
+        "Spatiality",
+        "Navigation"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-embodied-cognition-interaction-design-spatial",
+        "market-theory-tangible-embodied-antle-embodied-learning-spatial",
+        "market-theory-tangible-embodied-juhlin-design-embodied-interfaces-spatial"
+      ],
+      "implication": "Exploring physical graph strengthens analyst's spatial understanding of database structure; 3D spatial reasoning becomes skill developed through interaction."
+    },
+    {
+      "concept": "Cognitive Load Reduction",
+      "field": "cognitive-psych",
+      "definition": "Embodied physical interaction reduces mental/cognitive burden by offloading abstract processing to sensorimotor and kinesthetic systems; working memory load decreases through distributed cognition across body and environment.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cognitive Load Theory",
+        "TEI Meta-Analysis embodiment effects",
+        "Visual vs verbal cognitive load"
+      ],
+      "related_concepts": [
+        "Embodied Learning",
+        "Embodied Cognition",
+        "Direct Manipulation",
+        "Information Visualization"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-cognitive-load-visual-interaction",
+        "market-theory-tangible-embodied-tei-meta-analysis-learning"
+      ],
+      "implication": "Physical graph exploration reduces working memory load compared to screen-only analysis; analysts can focus on high-level patterns rather than low-level navigation."
+    },
+    {
+      "concept": "Metaphor in Tangible Systems",
+      "field": "interaction-design",
+      "definition": "Meaningful correspondence between physical properties/structure and digital meaning; physical affordances and layout communicate conceptual structure and enable intuitive understanding.",
+      "strength": "empirical",
+      "key_refs": [
+        "TEI Meta-Analysis metaphor meanings",
+        "Embodied metaphor theory"
+      ],
+      "related_concepts": [
+        "Embodied Metaphor",
+        "Affordances",
+        "Tangible User Interface",
+        "Spatiality"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-tei-meta-analysis-learning",
+        "market-theory-tangible-embodied-ishii-ullmer-tangible-bits-1997"
+      ],
+      "implication": "Physical arrangement of nodes mirrors database topology; edge connections physically represent data relationships; traversal metaphor matches query/exploration patterns."
+    },
+    {
+      "concept": "Remote Embodied Interaction",
+      "field": "hci",
+      "definition": "Tangible/physical interaction enabling remote users to have embodied presence in shared physical space; combines telepresence with tangible manipulation for distributed collaborative embodied interaction.",
+      "strength": "empirical",
+      "key_refs": [
+        "HoloBots Telepresence with Tangible Robots",
+        "Remote embodied collaboration"
+      ],
+      "related_concepts": [
+        "Embodied Interaction",
+        "Collaborative Systems",
+        "Telepresence",
+        "Remote Collaboration"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-holobots-telepresence-embodiment"
+      ],
+      "implication": "Remote data analysts can collaborate on physical graph with embodied presence; distributed teams experience shared spatial reasoning through remotely-controlled tangible proxies."
+    },
+    {
+      "concept": "Visualization Analysis & Design Framework",
+      "field": "visualization",
+      "definition": "Systematic nested validation model for visualization design: domain problem abstraction, data/task abstraction, visual encoding idiom, and algorithm; emphasizes rigorous task analysis and interaction technique design.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner Visualization Analysis and Design",
+        "Nested validation model"
+      ],
+      "related_concepts": [
+        "Data Physicalization",
+        "Design Methodology",
+        "Information Visualization",
+        "Task Abstraction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-munzner-visualization-analysis-design"
+      ],
+      "implication": "Physical graph design follows systematic task abstraction; interaction techniques chosen based on analytical tasks rather than ad-hoc aesthetic decisions."
+    },
+    {
+      "concept": "Context-Aware Computing",
+      "field": "interaction-design",
+      "definition": "Systems that sense and adapt to environmental/user/location context; interaction behavior and information presentation adjust based on contextual signals enabling location-aware and situation-appropriate responses.",
+      "strength": "empirical",
+      "key_refs": [
+        "Context-Aware Computing Encyclopedia",
+        "Sensors and location-aware interfaces"
+      ],
+      "related_concepts": [
+        "Ubiquitous Computing",
+        "Ambient Media",
+        "Adaptive Interaction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-context-aware-ubiquitous-interaction"
+      ],
+      "implication": "Physical graph display adapts to analyst location, role, task context; different analysts see different representations based on their contextual needs."
+    },
+    {
+      "concept": "Dynamic Physical Affordances",
+      "field": "interaction-design",
+      "definition": "Affordances that change over time or in response to interaction; physical objects morph to present different interaction possibilities as state changes, enabling responsive and contextual guidance.",
+      "strength": "empirical",
+      "key_refs": [
+        "inFORM Shape Display",
+        "Dynamic affordances in shape-changing interfaces"
+      ],
+      "related_concepts": [
+        "Shape-Changing Interfaces",
+        "Affordances",
+        "Dynamic Feedback",
+        "Embodied Interaction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-leithinger-inform-shape-display-2013"
+      ],
+      "implication": "Nodes actuate to signal importance or state; edges raise to highlight connection paths; physical affordances invite interaction with high-priority data."
+    },
+    {
+      "concept": "Tangible Manipulation for Data Exploration",
+      "field": "visualization",
+      "definition": "Paradigm where physical tangible objects serve as proxies for data elements; user manipulations of tangibles directly drive analytical queries, filtering, and transformations on underlying datasets.",
+      "strength": "empirical",
+      "key_refs": [
+        "TangibleNet Network Data Visualization",
+        "MarioChart Autonomous Tangibles",
+        "Tangible data exploration systems"
+      ],
+      "related_concepts": [
+        "Data Physicalization",
+        "Tangible User Interface",
+        "Embodied Interaction",
+        "Direct Manipulation"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-tangiblenet-network-data-ar",
+        "market-theory-tangible-embodied-mariochart-autonomous-tangibles-data"
+      ],
+      "implication": "Users grasp and manipulate physical nodes to issue queries; moving node position filters; rotating node orientation changes analysis perspective; manipulation becomes query language."
+    },
+    {
+      "concept": "Mixed Reality Interaction Techniques",
+      "field": "interaction-design",
+      "definition": "Interaction combining physical tangible objects with digital augmentation in mixed/augmented reality environments; tangible objects mediate digital interaction in hybrid physical-digital space.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mixed Reality Interaction Survey 2021",
+        "Tangible AR/VR integration"
+      ],
+      "related_concepts": [
+        "Augmented Surfaces",
+        "Tangible User Interface",
+        "Embodied Interaction",
+        "Hybrid Systems"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-multimodal-interaction-tangible-ar"
+      ],
+      "implication": "Physical tokens tracked in AR space; digital information layer shows connectivity/properties on physical topology; real and virtual seamlessly integrated."
+    },
+    {
+      "concept": "Gesture Recognition on Touch Surfaces",
+      "field": "interaction-design",
+      "definition": "Empirical characterization of gesture performance on touch-enabled displays; systematic design and evaluation of gesture vocabulary for accuracy, speed, and learnability.",
+      "strength": "empirical",
+      "key_refs": [
+        "CHI 2011 Gesture Analysis Mobile",
+        "Touch gesture performance studies"
+      ],
+      "related_concepts": [
+        "Gesture-Based Interaction",
+        "Multi-touch Interaction",
+        "Touch Interface Design",
+        "Empirical Evaluation"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-gesture-interaction-chi-touchscreen"
+      ],
+      "implication": "Gesture vocabulary for graph navigation on touch-augmented tangible surfaces designed based on empirical performance data."
+    },
+    {
+      "concept": "Emotional Engagement with Physical Objects",
+      "field": "hci",
+      "definition": "Psychological and emotional attachment to physical artifacts; perception of fragility, safety, ownership, and aesthetic appeal influences interaction patterns and user commitment.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shape-Changing Interfaces Fragility Study 2025",
+        "Emotional design and physical objects"
+      ],
+      "related_concepts": [
+        "User Experience",
+        "Embodied Interaction",
+        "Material Properties",
+        "Design Emotion"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-shape-fragility-interface-2025"
+      ],
+      "implication": "Material choice and affordance design evoke emotional investment in graph analysis; users care more about careful manipulation when objects feel valuable."
+    },
+    {
+      "concept": "Digital Fabrication for Tangible Design",
+      "field": "interaction-design",
+      "definition": "Using digital fabrication technologies (3D printing, laser cutting, CNC) to rapidly prototype and customize tangible interfaces; enables domain-specific physical designs tailored to application needs.",
+      "strength": "empirical",
+      "key_refs": [
+        "BrickStARt Digital Fabrication Tangible Design",
+        "Personal fabrication for interaction"
+      ],
+      "related_concepts": [
+        "Tangible User Interface",
+        "Participatory Design",
+        "Rapid Prototyping",
+        "Customization"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-digital-fabrication-tangible-design"
+      ],
+      "implication": "Custom tangible graph nodes fabricated for specific database domains; node shape encodes schema type; edge form encodes relationship semantics."
+    },
+    {
+      "concept": "Participatory Design for Tangible Systems",
+      "field": "interaction-design",
+      "definition": "Co-design methodology involving end-users as active partners in tangible interface creation; stakeholders and domain experts shape physical interaction possibilities and representations.",
+      "strength": "framework",
+      "key_refs": [
+        "Participatory Design User-Centered Research",
+        "Co-creation in HCI"
+      ],
+      "related_concepts": [
+        "User-Centered Design",
+        "Embodied Facilitation",
+        "Collaborative Systems",
+        "Design Methodology"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-participatory-design-user-centered"
+      ],
+      "implication": "Database engineers and analysts co-design physical graph representation; end-user expertise shapes node affordances and connection representations."
+    },
+    {
+      "concept": "TEI Conference Research Ecosystem",
+      "field": "hci",
+      "definition": "Premier international peer-reviewed venue for tangible/embedded/embodied interaction research (since 2007); establishes empirical evidence base and community standards for tangible and embodied design.",
+      "strength": "empirical",
+      "key_refs": [
+        "TEI Conference DBLP Index",
+        "Li et al Meta-Analysis of TEI"
+      ],
+      "related_concepts": [
+        "Academic Research",
+        "Empirical Studies",
+        "Community Practice",
+        "Peer Review"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-tei-conference-tangible-interaction",
+        "market-theory-tangible-embodied-tei-meta-analysis-learning"
+      ],
+      "implication": "MetroGraph design grounded in 15+ years of peer-reviewed TEI research community standards and empirical findings; evidence base for embodied interaction efficacy."
+    },
+    {
+      "concept": "Spatiality as Semantic Layer",
+      "field": "visualization",
+      "definition": "Use of spatial position, proximity, and arrangement as primary encoding mechanism for data semantics; spatial relationships become semantically meaningful rather than arbitrary, enabling direct spatial reasoning about data.",
+      "strength": "empirical",
+      "key_refs": [
+        "Information Visualization spatial encoding",
+        "Tufte design principles"
+      ],
+      "related_concepts": [
+        "Spatiality",
+        "Information Visualization",
+        "Spatial Cognition",
+        "Data Encoding"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-tangiblenet-network-data-ar",
+        "market-theory-tangible-embodied-dataphys-wiki-physicalization-resources"
+      ],
+      "implication": "Database topology directly encoded in physical layout; node proximity mirrors edge connectivity; traversal path encodes query logic."
+    },
+    {
+      "concept": "Embodied Metaphor",
+      "field": "interaction-design",
+      "definition": "Design strategy leveraging fundamental embodied understanding (spatial, kinesthetic, sensorimotor) to create intuitive mappings between physical actions and digital operations.",
+      "strength": "empirical",
+      "key_refs": [
+        "Embodied metaphor theory",
+        "Physical metaphors in interface design"
+      ],
+      "related_concepts": [
+        "Metaphor in Tangible Systems",
+        "Direct Manipulation",
+        "Embodied Interaction"
+      ],
+      "source_ids": [
+        "market-theory-tangible-embodied-ishii-ullmer-tangible-bits-1997",
+        "market-theory-tangible-embodied-dourish-embodied-interaction-foundations"
+      ],
+      "implication": "Graph rotation in hand parallels mental rotation of structure; path tracing matches query traversal; connection pulling mirrors relationship formation."
+    }
+  ]
+}

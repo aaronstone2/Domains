@@ -1,0 +1,520 @@
+{
+  "leaf": "market/theory-user-agency-control",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Locus of Control",
+      "field": "cognitive-psych",
+      "definition": "A personality construct describing whether individuals believe outcomes are controlled by internal actions (internal locus) or external forces (external locus); foundational for understanding perceived agency and personal causality beliefs.",
+      "strength": "established-law",
+      "key_refs": [
+        "Rotter 1966 / Locus of Control Theory In Psychology"
+      ],
+      "related_concepts": [
+        "Self-Efficacy",
+        "Sense of Agency",
+        "Internal Locus of Control (HCI Principle)"
+      ],
+      "implication": "MetroGraph must support internal locus of control through transparent action-outcome mappings; users should experience their explicit choices (clicking, filtering, querying) as directly causing graph changes, not system-mediated consequences.",
+      "source_ids": [
+        "market-theory-user-agency-control-rotter-locus-control-1966"
+      ]
+    },
+    {
+      "concept": "Self-Efficacy",
+      "field": "cognitive-psych",
+      "definition": "Bandura's concept of belief in one's capacity to execute actions and produce desired outcomes; foundational psychological theory underlying perceived control, agency, and motivation in technology use.",
+      "strength": "established-law",
+      "key_refs": [
+        "Bandura 1997 / Self-Efficacy: The Exercise of Control"
+      ],
+      "related_concepts": [
+        "Locus of Control",
+        "Flow State",
+        "Mastery Experiences",
+        "Sense of Agency"
+      ],
+      "implication": "MetroGraph's interaction design must enable mastery experiences through progressive complexity disclosure and clear success feedback; users should feel their learning and effort produce competence in graph querying and exploration.",
+      "source_ids": [
+        "market-theory-user-agency-control-bandura-self-efficacy-1997"
+      ]
+    },
+    {
+      "concept": "Flow State",
+      "field": "cognitive-psych",
+      "definition": "Optimal psychological state achieved through balance of challenge and skill, clear goals, immediate feedback, and sense of control; flow state is intrinsically motivated and characterized by loss of self-consciousness and time distortion.",
+      "strength": "established-law",
+      "key_refs": [
+        "Csikszentmihalyi 1990 / Flow: The Psychology of Optimal Experience"
+      ],
+      "related_concepts": [
+        "Challenge-Skill Balance",
+        "Control",
+        "Clear Goals",
+        "Intrinsic Motivation"
+      ],
+      "implication": "MetroGraph should calibrate graph complexity and task difficulty to user skill level; provide real-time feedback on queries, enable progressive disclosure of advanced features, and ensure immediate visibility of query results to sustain flow.",
+      "source_ids": [
+        "market-theory-user-agency-control-csikszentmihalyi-flow-1990"
+      ]
+    },
+    {
+      "concept": "Sense of Agency",
+      "field": "cognitive-psych",
+      "definition": "Subjective experience of controlling one's body and external environment; comprises implicit pre-reflective feeling of agency and explicit judgement of agency; arises from integration of internal sensorimotor signals and external situational cues.",
+      "strength": "empirical",
+      "key_refs": [
+        "Limerick, Coyle, Moore 2014 / The experience of agency in human-computer interactions",
+        "Limerick, Coyle, Moore 2022 / The sense of agency in emerging technologies"
+      ],
+      "related_concepts": [
+        "Locus of Control",
+        "Control Perception",
+        "System Feedback",
+        "Predictability"
+      ],
+      "implication": "MetroGraph must minimize latency, provide immediate system feedback to user actions (graph updates, highlights), and ensure predictability of cause-effect relationships in graph interactions to sustain sense of agency.",
+      "source_ids": [
+        "market-theory-user-agency-control-limerick-agency-hci-review-2014",
+        "market-theory-user-agency-control-limerick-agency-tech-review-2022"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation",
+      "field": "hci",
+      "definition": "Foundational HCI principle establishing that user interfaces should enable continuous visibility of objects, physical actions on them, and rapid reversible feedback; minimizes cognitive distance between intention and system response.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: A Fundamental Element of Graphical User Interfaces"
+      ],
+      "related_concepts": [
+        "Affordances",
+        "Feedback",
+        "Reversibility",
+        "Physical Actions",
+        "Sense of Agency"
+      ],
+      "implication": "MetroGraph's graph nodes should be directly draggable, visually persistent, and immediately responsive to interaction; support undo/redo for reversibility; avoid modal dialogs that interrupt direct manipulation of graph elements.",
+      "source_ids": [
+        "market-theory-user-agency-control-shneiderman-direct-manipulation-1983"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "hci",
+      "definition": "Perceptual qualities of objects that communicate possible actions; afford certain uses by their design; bridge the gulf of execution between user intention and system capabilities.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things (Revised)",
+        "Norman 2004 / Emotional Design"
+      ],
+      "related_concepts": [
+        "Feedback",
+        "Mental Models",
+        "Constraints",
+        "Signifiers"
+      ],
+      "implication": "MetroGraph nodes and edges should have clear visual affordances indicating interactivity (hover states, color encoding); use size, position, and color to afford filtering, grouping, and expansion operations without explicit labels.",
+      "source_ids": [
+        "market-theory-user-agency-control-norman-design-everyday-things-2013",
+        "market-theory-user-agency-control-norman-emotional-design-2004"
+      ]
+    },
+    {
+      "concept": "Feedback",
+      "field": "hci",
+      "definition": "System signals communicated to users about action outcomes; enables users to perceive control and adjust future actions; critical for sense of agency and flow state maintenance.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1983",
+        "Limerick et al. 2014",
+        "Vig et al. 2022 / Sense of Agency and User Experience"
+      ],
+      "related_concepts": [
+        "Sense of Agency",
+        "Control Perception",
+        "Immediate Response",
+        "System Responsiveness"
+      ],
+      "implication": "MetroGraph must provide sub-100ms feedback to user interactions (node selection, edge traversal); visual feedback should clearly indicate query state (pending, executing, complete) and match user mental models.",
+      "source_ids": [
+        "market-theory-user-agency-control-vig-sense-agency-user-experience"
+      ]
+    },
+    {
+      "concept": "Internal Locus of Control (HCI Principle)",
+      "field": "hci",
+      "definition": "Shneiderman's interface design rule mandating support for internal locus of control; users should feel they are in charge of the system and that systems respond to their actions, not system-mediated decisions.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman & Plaisant 2004 / Rules of Interface Design",
+        "Shneiderman 2022 / Human-Centered AI"
+      ],
+      "related_concepts": [
+        "Locus of Control",
+        "User Autonomy",
+        "Perceived Control",
+        "Direct Manipulation"
+      ],
+      "implication": "MetroGraph must make all graph transformations traceable to user actions; avoid silent algorithmic simplification or node collapsing without explicit user request; every graph change should be attributable to a user command.",
+      "source_ids": [
+        "market-theory-user-agency-control-shneiderman-autonomy-rules-1997",
+        "market-theory-user-agency-control-shneiderman-human-centered-ai-2022"
+      ]
+    },
+    {
+      "concept": "Situated Action",
+      "field": "cognitive-psych",
+      "definition": "Theory that human action is fundamentally contextual and opportunistic rather than following pre-specified plans; emphasizes how agents respond to real-time environmental cues and situated constraints.",
+      "strength": "framework",
+      "key_refs": [
+        "Suchman 1987 / Plans and Situated Actions"
+      ],
+      "related_concepts": [
+        "Context-Awareness",
+        "Adaptivity",
+        "User Agency",
+        "Exploratory Behavior"
+      ],
+      "implication": "MetroGraph should support exploratory, non-linear graph navigation; avoid prescriptive query workflows; enable users to adjust exploration strategy on-the-fly based on emerging graph patterns rather than committing to pre-planned analysis.",
+      "source_ids": [
+        "market-theory-user-agency-control-suchman-plans-situated-actions-1987"
+      ]
+    },
+    {
+      "concept": "Information Foraging",
+      "field": "information-foraging",
+      "definition": "Theory modeling user agency in information-seeking as adaptive behavior driven by information scent; users evaluate patches and diet based on cost-benefit tradeoffs, pursuing high-scent trails and abandoning low-scent ones.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging Theory"
+      ],
+      "related_concepts": [
+        "Information Scent",
+        "Exploration",
+        "Cost-Benefit",
+        "User Control",
+        "Visual Signaling"
+      ],
+      "implication": "MetroGraph must provide strong information scent through visual encoding (node size, color saturation) showing result density and query relevance; enable rapid scent evaluation to support user agency in deciding which graph paths to explore.",
+      "source_ids": [
+        "market-theory-user-agency-control-pirolli-information-foraging-1999"
+      ]
+    },
+    {
+      "concept": "Mental Models",
+      "field": "cognitive-psych",
+      "definition": "Internal representations users construct of how systems work; mismatches between user mental models and system behavior cause confusion and errors; shared mental models enable effective collaboration.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things",
+        "Norman on Mental Models"
+      ],
+      "related_concepts": [
+        "Affordances",
+        "Mappings",
+        "Mode Errors",
+        "System Transparency",
+        "Feedback"
+      ],
+      "implication": "MetroGraph's visual metaphor (metro map style) should match users' spatial/network mental models; consistent edge labels, node attributes, and interaction patterns enable users to predict system behavior and exercise agency confidently.",
+      "source_ids": [
+        "market-theory-user-agency-control-norman-design-everyday-things-2013",
+        "market-theory-user-agency-control-norman-mode-errors-interaction-2026"
+      ]
+    },
+    {
+      "concept": "Human-Centered AI (HCAI) Framework",
+      "field": "interaction-design",
+      "definition": "Shneiderman's 2D framework separating automation level (none to full) from human control level (none to full); advocates for high-automation, high-control designs where AI augments rather than replaces human judgment.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman 2022 / Human-Centered AI: Ensuring Human Control While Increasing Automation"
+      ],
+      "related_concepts": [
+        "Meaningful Human Control",
+        "Mixed-Initiative Systems",
+        "Shared Agency",
+        "Automation Bias"
+      ],
+      "implication": "MetroGraph should enable high automation (intelligent suggestions, pattern detection) paired with high user control (override mechanism, transparency about AI recommendations); position graph suggestions as aids, not directives.",
+      "source_ids": [
+        "market-theory-user-agency-control-shneiderman-human-centered-ai-2022"
+      ]
+    },
+    {
+      "concept": "Meaningful Human Control",
+      "field": "interaction-design",
+      "definition": "Technical and procedural capacity for humans to understand, monitor, and override autonomous system decisions; requires transparency mechanisms, predictable system behavior, and accessible override options.",
+      "strength": "framework",
+      "key_refs": [
+        "Rahwan 2025 / Human-controllable AI: Meaningful Human Control"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Explainability",
+        "Override Capability",
+        "Situation Awareness",
+        "User Authority"
+      ],
+      "implication": "MetroGraph's algorithmic graph simplification, recommendation ranking, or layout must be explainable; users must be able to disable/override suggestions and understand the criteria driving system recommendations.",
+      "source_ids": [
+        "market-theory-user-agency-control-rahwan-machine-learning-systems-control-2025"
+      ]
+    },
+    {
+      "concept": "Transparency in AI Systems",
+      "field": "interaction-design",
+      "definition": "Visibility of system decision-making processes, data sources, and algorithmic criteria; enables users to evaluate AI outputs, build appropriate trust, and exercise informed control over system behavior.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wang et al. 2026 / Seeing to Think? How Source Transparency Design Shapes Interactive Information Seeking",
+        "Yang 2024 / From Explainable to Interactive AI"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "User Understanding",
+        "Trust",
+        "Sense of Agency",
+        "Informed Control"
+      ],
+      "implication": "MetroGraph should surface the data sources and query logic underlying graph suggestions; show why certain nodes/edges appear, what fields were filtered, enabling users to understand and critique system outputs.",
+      "source_ids": [
+        "market-theory-user-agency-control-wang-transparent-hci-conversational-ai-2026",
+        "market-theory-user-agency-control-yang-explainable-interactive-ai-2024"
+      ]
+    },
+    {
+      "concept": "Automation Bias",
+      "field": "cognitive-psych",
+      "definition": "Human tendency to over-rely on automated systems and under-weight contradictory evidence from non-automated sources; compromises user agency through reduced critical evaluation of system outputs.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wickens 2015 / Human-Automation Interaction Research: Past, Present, and Future"
+      ],
+      "related_concepts": [
+        "Sense of Agency",
+        "Critical Evaluation",
+        "User Skepticism",
+        "Transparency",
+        "Meaningful Control"
+      ],
+      "implication": "MetroGraph should avoid presenting algorithmic recommendations without qualification; always show confidence levels, alternative suggestions, and mechanisms for user challenge/override to maintain critical stance.",
+      "source_ids": [
+        "market-theory-user-agency-control-wickens-automation-research-2015"
+      ]
+    },
+    {
+      "concept": "Mixed-Initiative Systems",
+      "field": "interaction-design",
+      "definition": "Systems enabling dynamic, task-dependent allocation of control between human and AI; humans and systems take turns initiating actions based on situation context; preserves user agency while leveraging automation.",
+      "strength": "framework",
+      "key_refs": [
+        "Horvitz 1999 / Mixed-Initiative Context"
+      ],
+      "related_concepts": [
+        "Shared Agency",
+        "Dynamic Control",
+        "User Authority",
+        "Situation-Dependent",
+        "Concurrent Interaction"
+      ],
+      "implication": "MetroGraph should enable users to initiate exploration then accept system suggestions, or reject suggestions and take manual control; control allocation should be transparent (clear who is in charge at any moment).",
+      "source_ids": [
+        "market-theory-user-agency-control-horvitz-mixed-initiative-systems-1999"
+      ]
+    },
+    {
+      "concept": "Shared Agency",
+      "field": "interaction-design",
+      "definition": "Bidirectional influence between humans and autonomous systems; control is negotiated rather than fixed; systems influence human choices while respecting human authority and values.",
+      "strength": "empirical",
+      "key_refs": [
+        "Taddeo 2024 / Negotiating the Shared Agency between Humans & AI in the Recommender System",
+        "Lim 2026 / When to Hand Off, When to Work Together",
+        "Mohseni 2024 / Complementarity in Human-AI Collaboration"
+      ],
+      "related_concepts": [
+        "Mixed-Initiative Systems",
+        "User Authority",
+        "Negotiation",
+        "Bidirectional Influence",
+        "Complementarity"
+      ],
+      "implication": "MetroGraph must make explicit when users are responding to system suggestions vs. acting independently; support users teaching the system about their preferences through feedback mechanisms (marking results as relevant/irrelevant).",
+      "source_ids": [
+        "market-theory-user-agency-control-taddeo-negotiating-agency-recommender-2024",
+        "market-theory-user-agency-control-lim-hand-off-concurrent-interaction-2026",
+        "market-theory-user-agency-control-mohseni-parametric-human-ai-decision-making-2024"
+      ]
+    },
+    {
+      "concept": "Contextual Integrity",
+      "field": "interaction-design",
+      "definition": "Nissenbaum's framework for privacy grounded in norms of appropriate information flow within contexts; privacy violations occur when information moves to inappropriate contexts; enables user control over data flows.",
+      "strength": "framework",
+      "key_refs": [
+        "Nissenbaum 2009 / Values in Design",
+        "Nissenbaum / Regulatory CI: Adaptively Regulating Privacy as Contextual Integrity"
+      ],
+      "related_concepts": [
+        "Privacy",
+        "User Control",
+        "Informed Consent",
+        "Data Norms",
+        "Autonomy"
+      ],
+      "implication": "MetroGraph should clarify data usage contexts and enable users to control what metadata (query history, exploration patterns) is retained or shared; make explicit the norms governing data access and retention.",
+      "source_ids": [
+        "market-theory-user-agency-control-nissenbaum-values-design-2009",
+        "market-theory-user-agency-control-nissenbaum-contextual-integrity-2009"
+      ]
+    },
+    {
+      "concept": "Value-Sensitive Design",
+      "field": "interaction-design",
+      "definition": "HCI methodology systematically integrating human values (autonomy, privacy, informed consent, fairness) into design through conceptual, empirical, and technical investigations; treats values as design constraints.",
+      "strength": "framework",
+      "key_refs": [
+        "Friedman & Hendry 2003 / Value Sensitive Design and Information Systems"
+      ],
+      "related_concepts": [
+        "Autonomy",
+        "Informed Consent",
+        "Fairness",
+        "User Control",
+        "Contextual Integrity"
+      ],
+      "implication": "MetroGraph should be designed with explicit value commitments to user autonomy (explicit control), transparency (clear mechanics), and fairness (no hidden algorithmic manipulation); conduct empirical studies validating these values are supported.",
+      "source_ids": [
+        "market-theory-user-agency-control-friedman-value-sensitive-design-2003"
+      ]
+    },
+    {
+      "concept": "Controllable Recommendation Systems",
+      "field": "interaction-design",
+      "definition": "Recommendation mechanisms that preserve user agency through explicit control levers enabling users to adjust exploration strategy, filter diversity, and resist algorithmic filter bubbles.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kirman 2022 / User-controllable Recommendation Against Filter Bubbles",
+        "Xie 2025 / Design of a Serendipity-Incorporated Recommender System"
+      ],
+      "related_concepts": [
+        "User Control",
+        "Shared Agency",
+        "Filter Bubbles",
+        "Serendipity",
+        "Algorithmic Transparency"
+      ],
+      "implication": "MetroGraph recommendations (e.g., suggested nodes, paths, patterns) should include user-adjustable controls: diversity slider, confidence threshold, recommendation style toggle; make serendipity an explicit option.",
+      "source_ids": [
+        "market-theory-user-agency-control-kirman-controllable-recommender-2022",
+        "market-theory-user-agency-control-xie-serendipity-recommendation-2025"
+      ]
+    },
+    {
+      "concept": "Interaction Patterns in Human-AI Systems",
+      "field": "interaction-design",
+      "definition": "Taxonomy of distinct collaborative modes between humans and AI ranging from simple (system-initiated, one-way recommendations) to complex (reciprocal turn-taking, multi-step dialogue); empirical review reveals dominance of simplistic patterns.",
+      "strength": "empirical",
+      "key_refs": [
+        "Liu et al. 2024 / Human-AI collaboration is not very collaborative yet"
+      ],
+      "related_concepts": [
+        "Shared Agency",
+        "Mixed-Initiative",
+        "Collaboration Depth",
+        "User Control",
+        "Interactivity"
+      ],
+      "implication": "MetroGraph should go beyond simple recommendations to support reciprocal interaction patterns; enable users to ask follow-up questions about suggestions, critique results, and dynamically adjust query strategy in conversation-like flow.",
+      "source_ids": [
+        "market-theory-user-agency-control-liu-human-ai-collaboration-patterns-2024"
+      ]
+    },
+    {
+      "concept": "Sense of Agency & User Experience Relationship",
+      "field": "hci",
+      "definition": "Empirical relationship between users' perceived sense of agency and overall satisfaction/UX; system feedback mechanisms and control responsiveness significantly impact both agency and user satisfaction.",
+      "strength": "empirical",
+      "key_refs": [
+        "Vig et al. 2022 / Sense of Agency and User Experience: Is There a Link?"
+      ],
+      "related_concepts": [
+        "Sense of Agency",
+        "User Satisfaction",
+        "Feedback",
+        "System Responsiveness",
+        "Flow"
+      ],
+      "implication": "MetroGraph's success depends on supporting sense of agency; every design decision about responsiveness, feedback visibility, and control transparency directly impacts user satisfaction and adoption.",
+      "source_ids": [
+        "market-theory-user-agency-control-vig-sense-agency-user-experience"
+      ]
+    },
+    {
+      "concept": "Situation Awareness in Human-AI Teams",
+      "field": "interaction-design",
+      "definition": "Shared understanding of AI system state, capabilities, and current actions enabling human operators to maintain predictability and agency; requires transparency about agent behavior and intentions.",
+      "strength": "framework",
+      "key_refs": [
+        "Goler 2023 / Agent Teaming Situation Awareness (ATSA)",
+        "Degani 2016 / Human Factors Considerations in Aviation"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Predictability",
+        "User Control",
+        "System State Visibility",
+        "Mode Awareness"
+      ],
+      "implication": "MetroGraph should clearly display algorithmic system state (what suggestions are being computed, what data is being accessed); enable users to interrupt/pause automated processes and understand what the system is doing at any moment.",
+      "source_ids": [
+        "market-theory-user-agency-control-goler-situational-awareness-human-ai-teams-2023",
+        "market-theory-user-agency-control-degani-automation-cockpit-2016"
+      ]
+    },
+    {
+      "concept": "User Agency in Adaptive Systems",
+      "field": "interaction-design",
+      "definition": "Tension between automated personalization/adaptation and user autonomy; adaptive systems must provide transparency and override mechanisms to preserve user sense of control when systems adjust behavior.",
+      "strength": "empirical",
+      "key_refs": [
+        "Scheuerman 2014 / User Control in Adaptive User Interfaces for Accessibility",
+        "Amershi 2025 / Autonomy Reshapes How Personalization Affects Privacy Concerns"
+      ],
+      "related_concepts": [
+        "Personalization",
+        "User Control",
+        "Transparency",
+        "Adaptive Interfaces",
+        "Privacy-Autonomy Tradeoff"
+      ],
+      "implication": "MetroGraph should support personalization (remembering user preferences) but make personalizations visible and modifiable; users should understand why the interface adapted and be able to reset to defaults.",
+      "source_ids": [
+        "market-theory-user-agency-control-scheuerman-adaptive-ui-accessibility-2014",
+        "market-theory-user-agency-control-amershi-personalization-privacy-autonomy-llm-2025"
+      ]
+    },
+    {
+      "concept": "Fairness Perception in Algorithmic Decision-Making",
+      "field": "hci",
+      "definition": "User perception of fairness in algorithmic outcomes influenced by transparency, development procedures, and understanding; users perceive algorithms as fairer when they understand decision criteria.",
+      "strength": "empirical",
+      "key_refs": [
+        "Anjomshoae 2019 / Factors Influencing Perceived Fairness in Algorithmic Decision-Making"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Trust",
+        "Algorithm Understanding",
+        "User Agency",
+        "Algorithmic Accountability"
+      ],
+      "implication": "MetroGraph's graph algorithms (ranking, layout, clustering) should be explainable; show criteria and trade-offs (e.g., why certain nodes are grouped, why edges are weighted); users perceive fairer outcomes when decisions are transparent.",
+      "source_ids": [
+        "market-theory-user-agency-control-anjomshoae-fairness-algorithmic-decision-making-2019"
+      ]
+    }
+  ]
+}

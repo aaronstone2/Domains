@@ -1,0 +1,16 @@
+id: wedge-threat
+kind: sql_edge
+description: >
+  A competitor product that already executes a HIGH-PAIN feature at A/B quality is a direct threat to
+  the wedge built on that feature. Derives a typed 'threatens_via_feature' edge (competitor → feature),
+  confidence = the feature's pain score. Surfaces where rivals are strong on the pains MetroGraph targets.
+sql: |
+  SELECT pf.product_id, f.id, 'threatens_via_feature', LEAST(1.0, f.pain_score)
+  FROM {domain}.product_features pf
+  JOIN {domain}.features f ON f.id = pf.feature_id
+  JOIN {domain}.products p ON p.id = pf.product_id AND p.is_self = false
+  WHERE f.pain_score >= 0.7 AND pf.quality_grade IN ('A','B')
+    AND NOT EXISTS (
+      SELECT 1 FROM {domain}.relationships x
+      WHERE x.from_id = pf.product_id AND x.to_id = f.id AND x.rel_type = 'threatens_via_feature'
+    )

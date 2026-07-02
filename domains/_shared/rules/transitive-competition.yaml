@@ -1,0 +1,9 @@
+id: transitive-competition
+kind: transitive
+description: >
+  If A competes with B and B competes with C, A and C are likely competitors too. Derives the
+  closure edge with a decayed confidence so second-order rivalries surface without being asserted
+  as strongly as observed ones.
+rel_type: competes_with
+out_rel_type: competes_with
+confidence_decay: 0.6

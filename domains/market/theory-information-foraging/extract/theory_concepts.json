@@ -1,0 +1,655 @@
+{
+  "leaf": "market/theory-information-foraging",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "Perceptual cues (links, labels, visual hierarchy) that users assess to estimate the relevance and value of pursuing an information source. Users evaluate proximal cues to predict distal content quality and make navigation decisions under uncertainty.",
+      "strength": "established-law",
+      "key_refs": [
+        "Pirolli & Card 1995 'Using information scent to model user information needs and actions'",
+        "Pirolli & Card 1999 'Information Foraging'",
+        "Pirolli 2004 'Use of Proximal Information Scent to Forage for Distal Content'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-card-1995-information-foraging-sigchi",
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review",
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-model"
+      ],
+      "implication": "Poor information scent in RAG/workflow tools (absent visual hierarchy, unclear node labels, no preview tooltips) drives users to conversational chat where LLM naturally provides verbal summaries. MetroGraph must encode database structure into visual-spatial cues (metro-map layout, color semantics, proximity) to match human scent-assessment mechanisms.",
+      "related_concepts": [
+        "Affordances",
+        "Information Environment",
+        "Spreading Activation",
+        "Cost-Benefit Analysis",
+        "Satisficing"
+      ]
+    },
+    {
+      "concept": "Information Foraging Theory",
+      "field": "information-foraging",
+      "definition": "An adaptationist psychological framework explaining how humans adaptively adjust their information-seeking strategies and effort allocation based on the structure of information environments. Draws on optimal foraging theory from behavioral ecology to model human decision-making under bounded rationality.",
+      "strength": "established-law",
+      "key_refs": [
+        "Pirolli & Card 1999 'Information Foraging'",
+        "Pirolli 2007 'Information Foraging Theory: Adaptive Interaction with Information'",
+        "Pirolli 2004 'Use of Proximal Information Scent to Forage for Distal Content'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review",
+        "market-theory-information-foraging-pirolli-2007-information-foraging-theory-oxford",
+        "market-theory-information-foraging-nngroup-information-foraging-web"
+      ],
+      "implication": "IFT provides the theoretical foundation for understanding why users abandon complex UIs: when information scent becomes too weak (excessive cognitive load, poor visual cues), users rationally switch to conversational interfaces that provide rapid verbal scent feedback. MetroGraph's design must maintain sufficient visual information scent to compete with chat-based alternatives.",
+      "related_concepts": [
+        "Optimal Foraging Theory",
+        "Bounded Rationality",
+        "Satisficing",
+        "Patch Model",
+        "Diet Model"
+      ]
+    },
+    {
+      "concept": "Patch Model",
+      "field": "information-foraging",
+      "definition": "A model from optimal foraging theory describing information environments as clustered patches of related content, separated by travel costs. Users decide whether to continue exploiting a current patch or pay the cost to travel to a new patch based on expected value of remaining resources versus alternatives.",
+      "strength": "established-law",
+      "key_refs": [
+        "Pirolli & Card 1999 'Information Foraging'",
+        "Pirolli 2007 'Information Foraging Theory: Adaptive Interaction with Information'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review",
+        "market-theory-information-foraging-pirolli-2007-information-foraging-theory-oxford",
+        "market-theory-information-foraging-optimal-foraging-theory-ecology"
+      ],
+      "implication": "Web/UI environments exhibit clear patch structure (subdomains, site sections); database query spaces lack visual patch coherence, making traversal costs unclear. MetroGraph's metro-map layout spatially expresses patch structure (e.g., tables/schemas as visual clusters), reducing cognitive travel cost and supporting patch-aware decision-making.",
+      "related_concepts": [
+        "Diet Model",
+        "Patch Departure",
+        "Cost-Benefit Analysis",
+        "Information Environment"
+      ]
+    },
+    {
+      "concept": "Diet Model",
+      "field": "information-foraging",
+      "definition": "An optimal foraging model for choosing which information patches to pursue based on expected value (quality x probability of finding target) relative to search costs. Users allocate effort proportional to patch quality, abandoning low-value patches in favor of higher-value alternatives.",
+      "strength": "established-law",
+      "key_refs": [
+        "Pirolli & Card 1999 'Information Foraging'",
+        "Pirolli & Fu 2003 'SNIF-ACT: A Cognitive Model of User Navigation'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review",
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-tochi",
+        "market-theory-information-foraging-optimal-foraging-theory-ecology"
+      ],
+      "implication": "Users intuitively apply diet-model logic when choosing between UIs: if a database visualization tool signals low expected value (weak scent cues, complex menus, hidden information), they switch to high-value chat (immediate, conversational, low interaction cost). MetroGraph must visually signal value density to stay competitive.",
+      "related_concepts": [
+        "Patch Model",
+        "Cost-Benefit Analysis",
+        "Satisficing",
+        "Patch Departure"
+      ]
+    },
+    {
+      "concept": "Patch Departure",
+      "field": "information-foraging",
+      "definition": "The decision to leave a current information patch when expected value of continued exploitation falls below a threshold. Triggered by depleting scent, encountering irrelevant results, or perceiving higher-value alternative patches. Predicts user abandonment behavior.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Fu 2003 'SNIF-ACT: A Model of Information Foraging'",
+        "Pirolli & Fu 2003 'SNIF-ACT: A Cognitive Model of User Navigation'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-model",
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-tochi"
+      ],
+      "implication": "Flight from complex RAG/workflow UIs to conversational chat is a patch-departure decision: users perceive scent threshold violation and rationally leave. MetroGraph's persistent visual feedback (search results previews, relationship visualizations, query status) maintains patch engagement by sustaining perceived value.",
+      "related_concepts": [
+        "Patch Model",
+        "Information Scent",
+        "Cost-Benefit Analysis"
+      ]
+    },
+    {
+      "concept": "Spreading Activation",
+      "field": "information-foraging",
+      "definition": "A computational cognitive mechanism by which activation spreads through memory/knowledge representations based on semantic associations. In SNIF-ACT, spreading activation calculates information scent by measuring mutual relevance between page content and user goals, with activation strength proportional to semantic similarity.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli & Fu 2003 'SNIF-ACT: A Model of Information Foraging'",
+        "Anderson 1990 ACT-R theory"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-model",
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-tochi"
+      ],
+      "implication": "Humans naturally spread semantic activation across conceptually related information; poor UI design disrupts this by requiring explicit navigation. MetroGraph's graph-based visualization naturally supports associative spreading (visual proximity, edge semantics) without requiring users to consciously 'connect the dots'.",
+      "related_concepts": [
+        "Information Scent",
+        "Cognitive Load",
+        "Mental Models"
+      ]
+    },
+    {
+      "concept": "Cost-Benefit Analysis",
+      "field": "information-foraging",
+      "definition": "The continuous implicit decision process users employ to evaluate whether the expected value of pursuing an information source justifies the interaction/cognitive cost. Guides link selection, patch choice, and interface abandonment based on satisficing thresholds.",
+      "strength": "established-law",
+      "key_refs": [
+        "Pirolli & Card 1995 'Using information scent to model user information needs'",
+        "Pirolli & Card 1999 'Information Foraging'",
+        "Simon 1956 'Rational Choice and the Structure of Environments'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-card-1995-information-foraging-sigchi",
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review",
+        "market-theory-information-foraging-simon-bounded-rationality-satisficing"
+      ],
+      "implication": "Users weigh interface complexity (cost) against expected result quality (benefit); conversational chat wins when UI cost is high and scent is weak. MetroGraph minimizes cognitive cost through spatial-visual semantics, improving the cost-benefit calculus to favor interaction over chat.",
+      "related_concepts": [
+        "Satisficing",
+        "Bounded Rationality",
+        "Information Scent",
+        "Patch Departure"
+      ]
+    },
+    {
+      "concept": "Satisficing",
+      "field": "cognitive-psych",
+      "definition": "A decision strategy by which agents choose an option that meets a threshold of acceptability rather than optimizing across all alternatives. Fundamental to bounded rationality; humans satisfice rather than optimize due to cognitive/temporal constraints and incomplete information.",
+      "strength": "established-law",
+      "key_refs": [
+        "Simon 1956 'Rational Choice and the Structure of Environments'",
+        "Simon 1957 'Models of Man'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-simon-bounded-rationality-satisficing"
+      ],
+      "implication": "Users satisfice interface choices: they select tools that are 'good enough' rather than optimal. Conversational chat becomes the satisficing choice when UI complexity creates a high mental-effort threshold. MetroGraph must reduce the perceived complexity cost below the chat alternative to become the satisficing choice.",
+      "related_concepts": [
+        "Bounded Rationality",
+        "Cost-Benefit Analysis",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Bounded Rationality",
+      "field": "cognitive-psych",
+      "definition": "The cognitive principle that humans operate under constraints (limited working memory, processing speed, incomplete information) that prevent true optimization. Users adapt strategies based on environmental structure and their cognitive limitations, achieving ecological rationality rather than global optimization.",
+      "strength": "established-law",
+      "key_refs": [
+        "Simon 1956 'Rational Choice and the Structure of Environments'",
+        "Simon 1957 'Models of Man'",
+        "Pirolli & Card 1999 'Information Foraging'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-simon-bounded-rationality-satisficing",
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review"
+      ],
+      "implication": "Complex RAG/workflow UIs exceed working memory capacity (too many visual elements, unclear hierarchies, hidden options), violating bounded rationality constraints. MetroGraph's constrained visual language (metro-map style) works within cognitive limits, making it rationally adaptable for complex database queries.",
+      "related_concepts": [
+        "Satisficing",
+        "Cognitive Load",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Cognitive Load",
+      "field": "cognitive-psych",
+      "definition": "The mental effort required to process information and interact with an interface, constrained by working memory capacity (~7 items). Excessive cognitive load reduces performance, increases error rates, and triggers user abandonment. Correlates strongly with surface-area bloat and visual complexity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller 1988 'Cognitive Load Theory'",
+        "Shneiderman & Plaisant 2010 'Designing the User Interface'",
+        "Norman 2013 'The Design of Everyday Things'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-shneiderman-designing-user-interface",
+        "market-theory-information-foraging-norman-design-of-everyday-things",
+        "market-theory-information-foraging-cognitive-load-interface-usability",
+        "market-theory-information-foraging-minimize-cognitive-load-maximize-usability"
+      ],
+      "implication": "Surface-area-bloated RAG tools (excessive panels, menus, options) overload working memory, triggering flight to chat. MetroGraph's constrained visual vocabulary (metro-map nodes/edges) reduces cognitive load, supporting sustained interaction with complex database structures without exceeding memory limits.",
+      "related_concepts": [
+        "Bounded Rationality",
+        "Affordances",
+        "Direct Manipulation",
+        "Visual Encoding"
+      ]
+    },
+    {
+      "concept": "Berrypicking Model",
+      "field": "information-foraging",
+      "definition": "A dynamic information-seeking model (Bates 1989) where users iteratively refine their needs and queries based on discoveries during search. Emphasizes continuous query modification and bit-at-a-time retrieval rather than single optimized queries, reflecting how real information needs evolve.",
+      "strength": "framework",
+      "key_refs": [
+        "Bates 1989 'The design of browsing and berrypicking techniques for the online search interface'",
+        "Bates 2002 'Toward an integrated model of information seeking and searching'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-bates-1989-berrypicking-model"
+      ],
+      "implication": "Database exploration mirrors berrypicking (iterative discovery, evolving understanding); poor UI design prevents mid-stream refinement. MetroGraph's linked visualization supports berrypicking: users can discover relationships, refine mental models, and dynamically adjust their query strategy within the visual interface.",
+      "related_concepts": [
+        "Information Foraging Theory",
+        "Mental Models",
+        "Interactive Search"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "interaction-design",
+      "definition": "Properties of objects that indicate how they can be interacted with (e.g., a button's raised appearance affords clicking). Effective affordances reduce the gulf of execution by making action possibilities immediately perceivable without requiring prior knowledge or trial-and-error.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 'The Design of Everyday Things'",
+        "Gibson 1977 'The Ecological Approach to Visual Perception'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-norman-design-of-everyday-things"
+      ],
+      "implication": "Poor affordances in graph-based tools (unclear nodes, ambiguous edge semantics, hidden interactions) increase scent ambiguity. MetroGraph's metro-map visual language leverages familiar spatial affordances (stations as nodes, lines as connections, zooming, panning) that users intuitively understand without instruction.",
+      "related_concepts": [
+        "Signifiers",
+        "Gulf of Execution",
+        "Information Scent",
+        "Direct Manipulation"
+      ]
+    },
+    {
+      "concept": "Signifiers",
+      "field": "interaction-design",
+      "definition": "Perceptual cues (labels, colors, visual emphasis) that communicate affordances and guide user attention. Effective signifiers bridge the gulf of execution by indicating what actions are possible and what outcome to expect from each action.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 2013 'The Design of Everyday Things'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-norman-design-of-everyday-things"
+      ],
+      "implication": "Weak signifiers in traditional graph tools (unlabeled nodes, undifferentiated edges, no visual hierarchy) create ambiguity about information structure and navigation options. MetroGraph's color-coded entities, labeled relationships, and spatial clustering serve as strong signifiers of database structure and query possibilities.",
+      "related_concepts": [
+        "Affordances",
+        "Information Scent",
+        "Visual Encoding"
+      ]
+    },
+    {
+      "concept": "Gulf of Execution",
+      "field": "interaction-design",
+      "definition": "The gap between a user's mental model of desired action and the physical actions required by an interface. Reduced by clear affordances, signifiers, and direct manipulation; widened by hidden options, complex menu structures, and unintuitive controls.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 'The Design of Everyday Things'",
+        "Norman 2013 'The Design of Everyday Things'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-norman-design-of-everyday-things"
+      ],
+      "implication": "Complex query interfaces create wide gulfs of execution (many clicks to express simple database questions). Conversational chat has a narrow gulf (just type a question). MetroGraph narrows the gulf by letting users directly manipulate the graph (drag to filter, click to explore), expressing queries through spatial actions.",
+      "related_concepts": [
+        "Gulf of Evaluation",
+        "Direct Manipulation",
+        "Affordances",
+        "Mental Models"
+      ]
+    },
+    {
+      "concept": "Gulf of Evaluation",
+      "field": "interaction-design",
+      "definition": "The gap between system feedback and user interpretation of that feedback. Reduced by rapid, unambiguous feedback; widened by delayed response, cryptic error messages, or unclear result presentation. Affects user confidence in understanding whether they achieved their goal.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 'The Design of Everyday Things'",
+        "Norman 2013 'The Design of Everyday Things'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-norman-design-of-everyday-things"
+      ],
+      "implication": "Traditional database tools often have wide gulfs of evaluation (unclear result semantics, slow query feedback, ambiguous status). Chat has narrow gulfs (transparent token-by-token reasoning). MetroGraph supports rapid visual evaluation through immediate highlighting and relationship display, reducing ambiguity about query impact.",
+      "related_concepts": [
+        "Gulf of Execution",
+        "Direct Manipulation",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "An interface principle (Hutchins et al. 1985) supporting continuous object representation, rapid feedback, reversibility, and low cognitive overhead. Users interact with visual proxies for domain objects, maintaining strong perceptual-motor coupling that reduces cognitive load and memory demands.",
+      "strength": "established-law",
+      "key_refs": [
+        "Hutchins, Hollan & Norman 1985 'Direct Manipulation Interfaces'",
+        "Shneiderman & Plaisant 2010 'Designing the User Interface'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-direct-manipulation-interface-design",
+        "market-theory-information-foraging-shneiderman-designing-user-interface"
+      ],
+      "implication": "Non-direct interfaces (dialog boxes, menus, text commands) require users to maintain mental models of state; direct manipulation offloads to perception. MetroGraph's direct-manipulation graph (pan, zoom, click to expand relationships) aligns with this principle, supporting fluent database exploration.",
+      "related_concepts": [
+        "Cognitive Load",
+        "Information Scent",
+        "Gulf of Execution"
+      ]
+    },
+    {
+      "concept": "Mental Models",
+      "field": "cognitive-psych",
+      "definition": "Cognitive representations users construct of how systems work (system models), what they can do (interaction models), and domain structures. More accurate mental models enable better task performance; interface design should support mental-model alignment through spatial or structural correspondence.",
+      "strength": "empirical",
+      "key_refs": [
+        "Norman 1988 'The Design of Everyday Things'",
+        "Norman 2013 'The Design of Everyday Things'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-norman-design-of-everyday-things",
+        "market-theory-information-foraging-understanding-mental-models-conversational-search"
+      ],
+      "implication": "Conversational interfaces require users to construct models of LLM behavior (opaque reasoning, hallucination risk); graph UIs allow users to align their mental models with visible database structure. MetroGraph's transparent spatial representation directly reflects database schemas, supporting rapid mental-model convergence.",
+      "related_concepts": [
+        "Cognitive Load",
+        "Affordances",
+        "Berrypicking Model"
+      ]
+    },
+    {
+      "concept": "Visual Encoding",
+      "field": "visualization",
+      "definition": "The mapping of data dimensions to visual properties (position, color, size, shape, orientation, texture) to support information perception and comparison. Effective encodings minimize cognitive effort by leveraging perceptual pre-attentive processing (~500ms) for immediate pattern recognition.",
+      "strength": "empirical",
+      "key_refs": [
+        "Tufte 1983 'The Visual Display of Quantitative Information'",
+        "Tufte 1990 'Envisioning Information'",
+        "Munzner 2014 'Visualization Analysis and Design'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-tufte-visual-display-quantitative-information",
+        "market-theory-information-foraging-tufte-envisioning-information",
+        "market-theory-information-foraging-munzner-visualization-analysis-design"
+      ],
+      "implication": "Poor visual encodings in traditional database tools (uniform node appearance, color overload) hide structural information. MetroGraph's metro-map encoding (station types by shape/color, line semantics by color/thickness, spatial clustering by schema) leverages perceptual processing to surface information scent immediately.",
+      "related_concepts": [
+        "Information Visualization",
+        "Cognitive Load",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Data-Ink Ratio",
+      "field": "visualization",
+      "definition": "The proportion of a visualization's ink dedicated to representing data versus decorative elements. High data-ink ratio reduces cognitive load by eliminating visual noise and maximizing information density. Tufte advocates minimizing non-data ink to support clear pattern perception.",
+      "strength": "empirical",
+      "key_refs": [
+        "Tufte 1983 'The Visual Display of Quantitative Information'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-tufte-visual-display-quantitative-information"
+      ],
+      "implication": "Bloated graph UIs with excessive chrome, redundant labels, and decorative elements waste ink and cognitive resources. MetroGraph's minimal metro-map style maximizes data-ink ratio, ensuring every visual element communicates database structure or relationship semantics.",
+      "related_concepts": [
+        "Visual Encoding",
+        "Cognitive Load",
+        "Information Visualization"
+      ]
+    },
+    {
+      "concept": "Visualization Design Space (Munzner's Nested Model)",
+      "field": "visualization",
+      "definition": "Munzner's four-level framework: (1) characterize data and tasks, (2) create abstractions (what to show), (3) encode/interact design (how to show), (4) execute/render. Systematic approach ensuring visualization choices are grounded in task requirements rather than aesthetic preference.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 'Visualization Analysis and Design'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-munzner-visualization-analysis-design"
+      ],
+      "implication": "Traditional graph tools often fail at level 1 (poor task analysis) or level 2 (unclear abstraction). MetroGraph applies Munzner's framework systematically: task = database exploration; abstraction = schema + relationships; encoding = metro-map visual language; execution = efficient rendering for large graphs.",
+      "related_concepts": [
+        "Information Visualization",
+        "Visual Encoding",
+        "Task Analysis"
+      ]
+    },
+    {
+      "concept": "Overview First, Details on Demand",
+      "field": "visualization",
+      "definition": "Shneiderman's information-seeking mantra: present high-level patterns first, support rapid drill-down to details. Users develop understanding by starting with context, then exploring specifics, rather than bottom-up construction. Reduces cognitive load by deferring detail complexity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman & Plaisant 2010 'Designing the User Interface'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-shneiderman-designing-user-interface",
+        "market-theory-information-foraging-shneiderman-visualization-insight"
+      ],
+      "implication": "Many database tools show overwhelming detail (all tables, all columns, all relationships) without overview. MetroGraph supports overview-first through hierarchical metro-map zoom (database schema overview at zoom-out, table details at zoom-in, row-level data at zoom-in), matching users' natural exploration pattern.",
+      "related_concepts": [
+        "Cognitive Load",
+        "Information Visualization",
+        "Direct Manipulation"
+      ]
+    },
+    {
+      "concept": "Graph Navigation Complexity",
+      "field": "graph-theory",
+      "definition": "The cognitive and interaction challenges of exploring graph-structured information, including disorientation (lost sense of position), cognitive overhead (tracking multiple relationship types), and scaling challenges (visible complexity increases with graph size). Mitigated by layout (hierarchy, clustering), visual encoding (color, hierarchy), and interaction (zoom, filtering).",
+      "strength": "empirical",
+      "key_refs": [
+        "Misue et al. 1995 'Graph drawing by high-dimensional embedding'",
+        "Herman, Melançon & Marshall 2000 'Graph Visualization and Navigation in Information Visualization'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-graph-visualization-navigation-survey",
+        "market-theory-information-foraging-graph-drawing-information-visualization"
+      ],
+      "implication": "Naive graph visualizations become unintelligible at scale (hairball problem); poor layout destroys information scent. MetroGraph's metro-map approach (fixed topology, semantic layout by schema, semantic edge colors) maintains comprehensibility even for large databases by leveraging spatial-semantic coherence.",
+      "related_concepts": [
+        "Information Visualization",
+        "Graph Visualization",
+        "Cognitive Load"
+      ]
+    },
+    {
+      "concept": "Linked Data Exploration",
+      "field": "graph-theory",
+      "definition": "A navigational paradigm for exploring semantically linked information (knowledge graphs, RDF, databases) where users discover relationships between entities. Effective linked-data interfaces surface relationship semantics (edge labels, weights) and support bidirectional traversal.",
+      "strength": "framework",
+      "key_refs": [
+        "Harth & Speiser 2012 'Navigating Linked Data Websites'",
+        "Tóth et al. 2024 'S-Paths: Set-Based Visual Exploration of Linked Data'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-semantic-paths-linked-data-exploration",
+        "market-theory-information-foraging-knowledge-graphs-linked-data-exploration"
+      ],
+      "implication": "Databases are inherently linked (foreign keys, joins); visualization must surface these links as discoverable relationships. MetroGraph's graph-native representation makes relationship exploration natural and perceptually efficient, supporting the berrypicking of linked database records.",
+      "related_concepts": [
+        "Graph Visualization",
+        "Information Foraging Theory",
+        "Berrypicking Model"
+      ]
+    },
+    {
+      "concept": "Ambient Findability",
+      "field": "information-foraging",
+      "definition": "Morville's concept of information architecture that makes content discoverable at every level of navigation through consistent metadata, clear navigation cues, and integrated search. Reduces the perceived cost of finding information by making scent cues pervasive.",
+      "strength": "framework",
+      "key_refs": [
+        "Morville 2005 'Ambient Findability: What We Find Changes Who We Become'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-morville-ambient-findability"
+      ],
+      "implication": "Traditional database interfaces hide schema and relationships; users must navigate menu hierarchies to find tables. MetroGraph's persistent graph visualization makes the entire database structure ambient and continuously visible, supporting opportunistic discovery without navigation friction.",
+      "related_concepts": [
+        "Information Scent",
+        "Information Architecture",
+        "Berrypicking Model"
+      ]
+    },
+    {
+      "concept": "Information Environment",
+      "field": "information-foraging",
+      "definition": "The external structure of available information (web, database, library), including content distribution, cue patterns, relationship topology, and access costs. User strategies adaptively adjust to environmental structure; poor environmental design undermines effective foraging.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli 2004 'Use of Proximal Information Scent to Forage for Distal Content'",
+        "Pirolli & Card 1999 'Information Foraging'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review",
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-model"
+      ],
+      "implication": "Database query tools often hide the information environment (schema, cardinality, relationships are invisible until explicit queries). MetroGraph visualizes the information environment directly, letting users perceive structural patterns and adapt strategies rationally.",
+      "related_concepts": [
+        "Information Foraging Theory",
+        "Information Scent",
+        "Task Environment"
+      ]
+    },
+    {
+      "concept": "Conversational Interface (LLM-based Chatbot)",
+      "field": "interaction-design",
+      "definition": "An interface paradigm where users interact with AI systems through natural language dialogue. Provides rapid feedback, low barrier to entry, and verbally-rich scent cues; conversely, lacks visibility into system reasoning and risks hallucination/false confidence.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ragavan & Alipour 2024 'Revisiting Human Information Foraging: Adaptations for LLM-based Chatbots'",
+        "Chi 2024 'Generative Echo Chamber? Effect of LLM-Powered Search Systems'",
+        "Spatharioti et al. 2025 'Effects of LLM-based Search on Decision Making'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-ragavan-alipour-2024-revisiting-llm-chatbots",
+        "market-theory-information-foraging-chi-2024-generative-echo-chamber",
+        "market-theory-information-foraging-chi-2025-llm-search-decision-making"
+      ],
+      "implication": "LLM chatbots win market share over traditional UIs because they provide strong information scent (natural language summaries) with low interaction cost. MetroGraph's advantage lies in transparency: users can *see* relationships, verify them visually, and maintain agency in exploration.",
+      "related_concepts": [
+        "Information Scent",
+        "Cost-Benefit Analysis",
+        "Mental Models"
+      ]
+    },
+    {
+      "concept": "Conversational Search",
+      "field": "interaction-design",
+      "definition": "Information seeking via multi-turn dialogue where users iteratively refine queries based on LLM responses. Supports query evolution (berrypicking-like) but lacks the visual feedback and verification mechanisms of traditional search or database interfaces.",
+      "strength": "empirical",
+      "key_refs": [
+        "Dalton et al. 2019 'Conversational Search -- A Report from Dagstuhl Seminar 19461'",
+        "Nema et al. 2024 'A Survey of Conversational Search'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-conversational-search-dagstuhl-2019",
+        "market-theory-information-foraging-conversational-search-survey-2024"
+      ],
+      "implication": "Conversational search combines berrypicking (iterative refinement) with scent-rich feedback (conversational LLM response); users find this preferable to query-response paradigms with poor scent. MetroGraph competes by providing rich visual feedback that rivals conversational dialogue's scent density.",
+      "related_concepts": [
+        "Berrypicking Model",
+        "Conversational Interface",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Information Farming",
+      "field": "information-foraging",
+      "definition": "A contemporary extension of foraging metaphor (Liang et al. 2026) where users actively shape information environments through prompts and interactions, rather than passively navigating fixed patches. Reflects how LLM systems dynamically generate content, blurring distinction between navigation and creation.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Liang et al. 2026 'Information Farming: From Berry Picking to Berry Growing'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-information-farming-2026"
+      ],
+      "implication": "LLM systems enable 'farming' (users shape responses through prompting); traditional databases are purely 'foraging' (fixed data). MetroGraph should support information farming through query-building tools, saved views, and annotation—letting users actively shape their information environment within the database.",
+      "related_concepts": [
+        "Berrypicking Model",
+        "Conversational Search",
+        "Information Foraging Theory"
+      ]
+    },
+    {
+      "concept": "Search vs. Browse Trade-offs",
+      "field": "information-foraging",
+      "definition": "A behavioral dichotomy: search (query-based, precise, requires goal clarity) versus browse (exploratory, visual, supports emergent goals). Different users prefer different modes; interfaces should support both. Poor browsing affordances drive users to search.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bates 1989 'The design of browsing and berrypicking'",
+        "Tamine-Lechani et al. 2007 'Evaluation of information retrieval interfaces: An experimental study'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-bates-1989-berrypicking-model",
+        "market-theory-information-foraging-interaction-design-patterns-information-retrieval"
+      ],
+      "implication": "Traditional database tools force search (write SQL); poor browsing support drives users to AI chat (which offers conversational search). MetroGraph supports both: visual browse (explore relationships) and query search (filter by criteria), accommodating both cognitive styles.",
+      "related_concepts": [
+        "Berrypicking Model",
+        "Information Foraging Theory",
+        "Conversational Search"
+      ]
+    },
+    {
+      "concept": "Optimal Foraging Theory",
+      "field": "information-foraging",
+      "definition": "A ecological theory from behavioral biology modeling how animals allocate foraging effort across patches of resources to maximize energy intake relative to search costs. Central to IFT: humans adaptively apply similar cost-benefit logic to information patches.",
+      "strength": "established-law",
+      "key_refs": [
+        "Stephens & Krebs 1986 'Foraging Theory'",
+        "Pirolli & Card 1999 'Information Foraging'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-optimal-foraging-theory-ecology",
+        "market-theory-information-foraging-pirolli-card-1999-information-foraging-psychological-review"
+      ],
+      "implication": "Information foraging is not metaphorical—humans literally apply ecological optimization logic to UI choice. Conversational chat wins because its cost-benefit ratio favors users facing complex database tools. MetroGraph must improve the cost-benefit calculus by reducing interaction cost.",
+      "related_concepts": [
+        "Information Foraging Theory",
+        "Patch Model",
+        "Diet Model"
+      ]
+    },
+    {
+      "concept": "Lens Model (Probabilistic Functionalism)",
+      "field": "cognitive-psych",
+      "definition": "Brunswik's framework for understanding judgment under uncertainty: users observe proximal cues to infer distal properties, adapting their weightings based on cue-criterion correlations. Applied to IFT: information scent cues are proximal indicators of distal content quality.",
+      "strength": "framework",
+      "key_refs": [
+        "Brunswik 1952 'The Conceptual Framework of Psychology'",
+        "Pirolli 2004 'Use of Proximal Information Scent to Forage for Distal Content'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-pirolli-fu-2003-snif-act-model"
+      ],
+      "implication": "Users learn cue-outcome associations through interaction; poor cue reliability in complex UIs damages their ability to make good choices. MetroGraph's transparent visual cues (node labels, edge semantics, spatial clustering) maintain high cue reliability, supporting accurate judgment.",
+      "related_concepts": [
+        "Information Scent",
+        "Mental Models",
+        "Cost-Benefit Analysis"
+      ]
+    },
+    {
+      "concept": "Hybrid Chat-UI Trap",
+      "field": "interaction-design",
+      "definition": "A design antipattern where systems integrate conversational chat with traditional UIs without clear coordination, creating cognitive friction. Users experience confusion about which modality to use, context switching costs, and reduced performance compared to coherent interfaces.",
+      "strength": "empirical",
+      "key_refs": [
+        "Webb 2024 'Conversational UI and AI Agents: Why the Hybrid Trap Kills Adoption'",
+        "Ragavan & Alipour 2024 'Revisiting Human Information Foraging'"
+      ],
+      "source_ids": [
+        "market-theory-information-foraging-conversational-ui-hybrid-trap",
+        "market-theory-information-foraging-ragavan-alipour-2024-revisiting-llm-chatbots"
+      ],
+      "implication": "The MetroGraph wedge explicitly targets this problem: 'worst of both worlds' in current agent-builder UIs. Solution: fully integrated modalities (graph visualization where queries generate visual feedback, conversational where appropriate) rather than bolted-on hybrids.",
+      "related_concepts": [
+        "Conversational Interface",
+        "Cost-Benefit Analysis",
+        "Gulf of Execution"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,517 @@
+{
+  "leaf": "market/theory-error-recovery-correction",
+  "extraction_notes": "Extraction grounded in 51 sources (T1 peer-reviewed HCI/AI literature, T2 foundational work, T3 practitioner essays). Coverage comprehensive across leaf scope: (1) error taxonomy & classification (Norman), (2) trust/reliance decoupling (Dzindolet, Rittenberg), (3) confirmation paradox & CDCR pattern (Zhou et al. CHI 2026), (4) mental model alignment (arXiv conversational search), (5) visibility & before/after consequences (Norman stages, Nielsen heuristics), (6) reversibility & undo (Shneiderman, Interacto), (7) automation bias & over-reliance (Dzindolet, Adjust for Trust, diachronic trust), (8) transparency backfire effects (explainability without veracity), (9) cognitive load in corrections, (10) persuasion paradox & reactance (Driver Assistant LLM), (11) situation awareness (Endsley model), (12) user agency in error correction (CHI 2023, IUI 2020), (13) distributed cognition in human-AI teams, (14) knowledge-in-world vs head, (15) cascade failure in workflows, (16) feedback modality & accessibility, (17) error detection patterns in agents, (18) confirmation dialog overuse, (19) predictive intervention, (20) emotional tone in error messages (emotion-aware design), (21) visualization integrity (Tufte), (22) resilience design patterns, (23) habituation & error blindness, (24) predictability enabling mental models, (25) human-in-loop detection timing, (26) over-intervention erosion. Notable gaps: (1) safety-critical domain literature limited (references only), (2) some CHI/UIST papers paywalled (reference-only entries preserved), (3) error recovery in multi-user/collaborative systems sparse (identified but low coverage), (4) persuasion theory in error contexts underdeveloped in HCI (design patterns dominate). Concepts organized around three dimensions: (A) error types & detection mechanisms, (B) trust/reliance calibration, (C) interaction design for recovery. All concepts cite >=1 real source_id from sources.json.",
+  "concepts": [
+    {
+      "concept": "Error Taxonomy: Slips, Mistakes, and Lapses",
+      "field": "hci",
+      "definition": "Foundational classification distinguishing unintended execution errors (slips: right intention, wrong action), problem-solving errors (mistakes: wrong intention), and memory lapses. Errors arise from design failures, not user incompetence.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things (Revised 2013)"
+      ],
+      "related_concepts": [
+        "Mode Errors",
+        "Capture Errors",
+        "Description Errors",
+        "Design for Error"
+      ],
+      "implication": "MetroGraph must distinguish error types in its feedback: slips need visibility/undo, mistakes need corrected mental models, lapses need contextual reminders. One-size error recovery fails.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-norman-design-everyday-things"
+      ]
+    },
+    {
+      "concept": "Trust-Reliance Decoupling",
+      "field": "hci",
+      "definition": "Trust in automation (willingness to depend) and reliance behavior (actual usage) are dissociated: users can hold steady trust while adjusting reliance with reliability shifts, or maintain reliance despite declining trust. Trust is necessary but insufficient to predict dependence.",
+      "strength": "empirical",
+      "key_refs": [
+        "Dzindolet et al. 2003 / The Role of Trust in Automation Reliance",
+        "Rittenberg et al. 2024 / Calibrating Trust, Reliance and Dependence in Variable-Reliability Automation"
+      ],
+      "related_concepts": [
+        "Calibration",
+        "Automation Bias",
+        "Complacency",
+        "Over-reliance",
+        "Under-utilization"
+      ],
+      "implication": "MetroGraph cannot rely on trust signals alone to prevent over-reliance. Must design explicit reliance calibration: showing when to verify vs. defer. Trust displays may backfire if decoupled from actual system capability.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-pmc-calibrating-trust-variable-reliability"
+      ]
+    },
+    {
+      "concept": "Confirmation Frequency Paradox",
+      "field": "hci",
+      "definition": "The tension between confirmation burden (every-step verification is exhausting; confirm-at-end misses cascading failures). Optimal check frequency minimizes total task time while preventing error propagation. Users exhibit CDCR pattern: Confirm→Diagnose→Correct→Redo.",
+      "strength": "empirical",
+      "key_refs": [
+        "Zhou et al. 2026 CHI / When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks"
+      ],
+      "related_concepts": [
+        "Confirmation Fatigue",
+        "Intervention Timing",
+        "Automation Autonomy Tradeoff",
+        "Cognitive Interruptions"
+      ],
+      "implication": "MetroGraph's wedge: surface confirmation points at decision-critical junctures (not every step), making error visibility before cascades. Decision-theoretic model for 'when to ask' reduces both interruption fatigue and failure costs.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-chi-2026-when-should-users-check"
+      ]
+    },
+    {
+      "concept": "Mental Model Misalignment",
+      "field": "cognitive-psych",
+      "definition": "Users develop erroneous internal models of system behavior from interface design, transparency features, and interaction patterns. Misaligned models lead to error over-reliance (user expects X, system does Y). Availability and alignment predict accurate prediction, not complexity.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2506.03807 / Understanding Mental Models of Generative Conversational Search and The Effect of Interface Transparency"
+      ],
+      "related_concepts": [
+        "Conceptual Metaphors",
+        "System Predictability",
+        "Cognitive Alignment",
+        "Knowledge-in-the-Head vs Knowledge-in-the-World"
+      ],
+      "implication": "MetroGraph must make system reasoning 'available' (visible) and 'aligned' (matches user expectation). Metaphor choice (tool vs. agent) shapes error tolerance. Poor interface transparency → mismatched mental models → error over-reliance.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-understanding-mental-models-search",
+        "market-theory-error-recovery-correction-arxiv-conceptual-metaphors-ai-collaboration"
+      ]
+    },
+    {
+      "concept": "Before/After Visibility and Gulf of Evaluation",
+      "field": "hci",
+      "definition": "Users detect errors by comparing perceived state against intention. Gulf of evaluation widens if system state is opaque or feedback ambiguous. Before/after consequence visibility (showing what changed, why) enables error recognition and correction urgency.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / Seven Stages of Action",
+        "Nielsen 1994 / Ten Usability Heuristics"
+      ],
+      "related_concepts": [
+        "System Feedback",
+        "Information Scent",
+        "State Visibility",
+        "Feedback Timeliness"
+      ],
+      "implication": "MetroGraph must show before/after for agent actions: 'what changed in the DB because of this operation?' Opaque side effects cause undetected cascading errors. Real-time state mirroring (delta visibility) is prerequisite for error detection.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-norman-design-everyday-things",
+        "market-theory-error-recovery-correction-nielsen-10-usability-heuristics"
+      ]
+    },
+    {
+      "concept": "Reversibility and Undo/Redo as Error Recovery",
+      "field": "interaction-design",
+      "definition": "Reversible operations (undo/redo) enable low-cost error recovery by preserving prior states. Reduces fear of mistakes, supports exploration, and allows users to correct without cascading. Requires command pattern architecture enabling state snapshots.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman 1985 / Eight Golden Rules (Rule 9: Help Recover from Errors)",
+        "Interacto 2021 / User Interaction Processing Model"
+      ],
+      "related_concepts": [
+        "State Management",
+        "Command Pattern",
+        "Confirmatory Dialogs",
+        "Graceful Degradation"
+      ],
+      "implication": "MetroGraph should prioritize reversible operations over destructive dialogs. Multi-level undo for graph edits reduces confirmation burden and enables safe exploration. Version history visible in UI signals recoverability.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-shneiderman-eight-golden-rules",
+        "market-theory-error-recovery-correction-arxiv-interacto-user-interaction-processing"
+      ]
+    },
+    {
+      "concept": "Automation Bias and Over-Reliance Persistence",
+      "field": "cognitive-psych",
+      "definition": "Users preferentially accept automated recommendations even when evidence of unreliability is present (automation bias). Trust miscalibration persists despite explanations. Single errors can destroy trust; recovery requires consistent reliability plus transparency on uncertainty.",
+      "strength": "empirical",
+      "key_refs": [
+        "Dzindolet et al. 2003 / Role of Trust in Automation Reliance",
+        "arXiv 2502.13321 / Adjust for Trust: Mitigating Trust-Induced Inappropriate Reliance",
+        "arXiv 2310.13544 / Diachronic Perspective on User Trust in AI Under Uncertainty"
+      ],
+      "related_concepts": [
+        "Confirmation Bias",
+        "Recency Bias",
+        "Trust Decay",
+        "Recommendation Acceptance"
+      ],
+      "implication": "MetroGraph must counter automation bias with uncertainty communication and cognitive forcing functions (e.g., 'explain why you disagree with this suggestion'). Showing failure modes and recovery paths restores calibrated skepticism.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-adjust-for-trust-mitigation",
+        "market-theory-error-recovery-correction-arxiv-diachronic-user-trust-ai-uncertainty"
+      ]
+    },
+    {
+      "concept": "Transparency as Double-Edged: Explainability Backfire",
+      "field": "hci",
+      "definition": "Transparency (showing explanations, uncertainty quantification) can increase trust even when explanations are false. Explanation quality directly affects error detection; poor explanations increase inappropriate reliance. Transparency without veracity checking amplifies misjudgment.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2005.02335 / Don't Explain Without Verifying Veracity",
+        "arXiv 2306.01941 / AI Transparency in the Age of LLMs: A Human-Centered Research Roadmap"
+      ],
+      "related_concepts": [
+        "Explanation Quality",
+        "Veracity Checking",
+        "Uncertainty Expression",
+        "Interpretability Paradox"
+      ],
+      "implication": "MetroGraph must not expose explanations without ground truth anchoring. Show confidence bounds and failure examples alongside reasoning. Transparency that obscures error ≠ transparency that enables detection.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-dont-explain-verify-veracity",
+        "market-theory-error-recovery-correction-arxiv-ai-transparency-age-of-llms"
+      ]
+    },
+    {
+      "concept": "Cognitive Load in Error Correction Loops",
+      "field": "cognitive-psych",
+      "definition": "Repeated error correction (confirmation fatigue) depletes attentional resources, reducing error detection accuracy over time. Cognitive load from decision-making compounds across long tasks. Think-time affordances and periodic pauses improve detection rates.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2601.20683 / Polite But Boring? Trade-offs Between Engagement and Psychological Reactance to Chatbot Feedback Styles"
+      ],
+      "related_concepts": [
+        "Confirmation Fatigue",
+        "Attention Allocation",
+        "Decision Fatigue",
+        "Interaction Overhead"
+      ],
+      "implication": "MetroGraph must minimize unnecessary confirmations and provide 'cognitive breaks': summarize corrections, highlight patterns, suggest batching. Long workflows need intermediate pauses to reset attention.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-chi-2026-when-should-users-check"
+      ]
+    },
+    {
+      "concept": "Persuasion Paradox: When Corrections Trigger Reactance",
+      "field": "cognitive-psych",
+      "definition": "System-initiated corrections (especially those perceived as controlling or paternalistic) trigger psychological reactance: users reject the correction to reassert autonomy, even if it would improve outcomes. Tone, framing, and perceived agency affect acceptance.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2508.05238 / Driver Assistant: Persuading Drivers to Adjust Secondary Tasks Using Large Language Models"
+      ],
+      "related_concepts": [
+        "User Agency",
+        "Perceived Control",
+        "Autonomy Support",
+        "Correction Framing"
+      ],
+      "implication": "MetroGraph must frame corrections as suggestions preserving user control, not system overrides. 'Consider reversing this step' ≠ 'this is wrong, fix it.' Collaborative error recovery language reduces reactance.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-driver-assistant-persuading-drivers-llm"
+      ]
+    },
+    {
+      "concept": "Situation Awareness and Error Detection in Complex State",
+      "field": "cognitive-psych",
+      "definition": "Error detection requires maintaining accurate situation awareness (Endsley model): perception of current state, comprehension of patterns, projection of consequences. In multi-step workflows, loss of situational awareness enables undetected errors. Context-sensitive UI aids awareness.",
+      "strength": "framework",
+      "key_refs": [
+        "IEEE / Situation Awareness, Mental Models and Understanding",
+        "arXiv 1504.03731 / Safety Enhancement through Situation-Aware User Interfaces"
+      ],
+      "related_concepts": [
+        "Distributed Cognition",
+        "System State Complexity",
+        "Attentional Bottlenecks",
+        "Consequence Projection"
+      ],
+      "implication": "MetroGraph must make system state salient at decision points: show downstream impacts (what else might cascade?), highlight critical states. Situation-aware hints ('you're about to delete 5 rows...') prevent overlooked errors.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-safety-enhancement-situation-aware",
+        "market-theory-error-recovery-correction-arxiv-distributed-cognition-ai-remote-ops"
+      ]
+    },
+    {
+      "concept": "User Agency and Locus of Control in Error Correction",
+      "field": "interaction-design",
+      "definition": "Perceived control over error recovery (ability to influence outcomes, understand why corrections occur, reverse changes) shapes user acceptance and reliance. Systems that reduce user agency over correction foster learned helplessness and over-reliance.",
+      "strength": "empirical",
+      "key_refs": [
+        "CHI 2023 / How Does HCI Understand Human Agency and Autonomy?",
+        "IUI 2020 / Digging Into User Control in Algorithm-Assisted Decision-Making"
+      ],
+      "related_concepts": [
+        "Perceived Control",
+        "System Predictability",
+        "Transparency vs. Control Tradeoff",
+        "User Empowerment"
+      ],
+      "implication": "MetroGraph's wedge: users must understand 'why' corrections are offered and retain 'how' to reverse them. Opaque AI corrections → learned helplessness. Transparent, reversible actions → calibrated skepticism.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-chi-2023-human-agency-autonomy",
+        "market-theory-error-recovery-correction-iui-2020-digging-into-user-control"
+      ]
+    },
+    {
+      "concept": "Distributed Cognition in Human-AI Error Recovery Teams",
+      "field": "cognitive-psych",
+      "definition": "Errors arise not just from individual mistakes but from coordination failures across human-AI teams. Mental model misalignment, communication gaps, and unclear responsibility boundaries amplify error propagation. Recovery requires shared understanding of who verifies what.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2504.14996 / Distributed Cognition for AI-supported Remote Operations"
+      ],
+      "related_concepts": [
+        "Coordination Failure",
+        "Responsibility Attribution",
+        "Shared Mental Models",
+        "Handoff Errors"
+      ],
+      "implication": "MetroGraph must surface responsibility boundaries: 'AI will handle validation; you verify consequences.' Explicit role clarity in error recovery workflows prevents diffusion of accountability.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-distributed-cognition-ai-remote-ops"
+      ]
+    },
+    {
+      "concept": "Knowledge in the World vs. Knowledge in the Head",
+      "field": "hci",
+      "definition": "Errors occur when required knowledge exists only in user's memory (knowledge-in-the-head) rather than visible in the interface (knowledge-in-the-world). Constraints, affordances, and signifiers externalize knowledge, reducing error likelihood.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things"
+      ],
+      "related_concepts": [
+        "Affordances",
+        "Signifiers",
+        "Constraints",
+        "Error Prevention by Design"
+      ],
+      "implication": "MetroGraph must make query logic, graph state, and validation rules visible, not hidden in docs. Inline hints, schema visibility, and example queries reduce reliance on remembered procedures.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-norman-design-everyday-things"
+      ]
+    },
+    {
+      "concept": "Cascade Failure and Error Propagation in Long Workflows",
+      "field": "interaction-design",
+      "definition": "In multi-step tasks (e.g., 30-step agent sequences), a single error early in execution cascades and amplifies downstream, requiring complete restart. Cost of recovery grows exponentially. Intermediate checkpoints break cascades.",
+      "strength": "empirical",
+      "key_refs": [
+        "CHI 2026 / When Should Users Check?"
+      ],
+      "related_concepts": [
+        "Error Amplification",
+        "Latency of Detection",
+        "Task Restart Cost",
+        "Checkpoint Scheduling"
+      ],
+      "implication": "MetroGraph must not force confirm-at-end for long workflows. Intermediate error visibility (at decision boundaries) prevents cascading failures and reduces total rework cost.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-chi-2026-when-should-users-check"
+      ]
+    },
+    {
+      "concept": "Feedback Modality and Error Accessibility",
+      "field": "interaction-design",
+      "definition": "Error feedback modality (visual, audio, haptic, textual) affects detection rates and accessibility. Multimodal feedback (redundant channels) improves detection for users with disabilities and under high cognitive load.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2407.08882 / Emerging Practices for Large Multimodal Model Assistance for People with Visual Impairments"
+      ],
+      "related_concepts": [
+        "Multimodal Feedback",
+        "Accessibility",
+        "Signal Salience",
+        "Interruption Modality"
+      ],
+      "implication": "MetroGraph must not rely solely on visual alerts. Provide text summaries, optional audio cues for critical errors, and high-contrast visual indicators to maximize error detection across user abilities.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-pmc-emerging-practices-lmm-visual-impairment"
+      ]
+    },
+    {
+      "concept": "Error Detection Patterns in Agent-Mediated Workflows",
+      "field": "hci",
+      "definition": "Users develop heuristic error detection strategies (spot-checking outputs, verifying against known examples, monitoring for mode changes). Some errors are invisible unless explicitly searched for. Undetected consequences enable continued over-reliance.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2109.11690 / Discovering and Validating AI Errors With Crowdsourced Failure Reports",
+        "arXiv 2408.06546 / Misfitting With AI: How Blind People Verify and Contest AI Errors"
+      ],
+      "related_concepts": [
+        "Verification Strategies",
+        "Error Search",
+        "Visibility of Consequences",
+        "Detectability"
+      ],
+      "implication": "MetroGraph must make typical error patterns searchable: 'show me all rows modified by rules' enables user-driven error detection. Visible action trails reduce undetected errors.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-misfitting-with-ai-blind-people"
+      ]
+    },
+    {
+      "concept": "Confirmation Dialog Overuse and Modal Fatigue",
+      "field": "interaction-design",
+      "definition": "Confirmation dialogs prevent some errors (slips) but overuse induces dialog fatigue: users click 'yes' reflexively without reading, turning confirmations into noise. Optimal use requires high-cost actions and low-frequency triggers.",
+      "strength": "empirical",
+      "key_refs": [
+        "Nielsen Norman Group 2018 / Confirmation Dialogs Can Prevent User Errors (If Not Overused)"
+      ],
+      "related_concepts": [
+        "Modal Interactions",
+        "False Positives in Error Prevention",
+        "Habituation to Warnings",
+        "Confirmatory Fatigue"
+      ],
+      "implication": "MetroGraph should reserve confirmations for truly destructive actions (delete, modify schema) and use alternatives for low-risk errors (undo, inline correction, preview).",
+      "source_ids": [
+        "market-theory-error-recovery-correction-nngroup-confirmation-dialogs-prevent-errors"
+      ]
+    },
+    {
+      "concept": "Data-Driven Error Prediction and Preemptive Correction",
+      "field": "interaction-design",
+      "definition": "Machine learning models trained on error patterns can flag high-risk operations before execution. Confidence bounds on predictions enable selective intervention: only interrupt when risk is high.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2511.18849 / Pre-Filtering Code Suggestions Using Developer Behavioral Telemetry"
+      ],
+      "related_concepts": [
+        "Predictive Intervention",
+        "Risk Assessment",
+        "Selective Confirmation",
+        "Telemetry-Driven Design"
+      ],
+      "implication": "MetroGraph can learn error patterns and proactively surface checks: 'unusual cardinality; verify this join.' Reduces false positives vs. blanket confirmations.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-pre-filtering-code-suggestions-telemetry"
+      ]
+    },
+    {
+      "concept": "Emotional Response to Error Feedback and Tone Design",
+      "field": "cognitive-psych",
+      "definition": "Error message tone (harsh vs. supportive) affects user emotional state and receptivity to corrections. Supportive framing reduces frustration and increases engagement with error recovery.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2502.16038 / Emotion-Aware Design: Modulating Valence, Arousal, and Dominance in Communication via Design"
+      ],
+      "related_concepts": [
+        "Message Framing",
+        "User Frustration",
+        "Emotional Design",
+        "Recovery Motivation"
+      ],
+      "implication": "MetroGraph's error messages should be neutral/supportive, not accusatory. 'Unexpected result; would you like to review?' invites correction; 'Error: invalid query!' triggers defensiveness.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-emotion-aware-design-valence-arousal"
+      ]
+    },
+    {
+      "concept": "Visualization Integrity and Deceptive Feedback",
+      "field": "visualization",
+      "definition": "Misleading or cluttered visualizations (chart junk, distorted axes, omitted context) cause interpretation errors. Data-ink ratio and truthful representation are prerequisites for accurate error detection.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte 1983 / The Visual Display of Quantitative Information"
+      ],
+      "related_concepts": [
+        "Data-Ink Ratio",
+        "Chart Deception",
+        "Graphical Integrity",
+        "Misleading Representation"
+      ],
+      "implication": "MetroGraph's visual representation of query results and execution logs must prioritize clarity over aesthetics. Omitted fields, hidden aggregations, or distorted cardinality cause mis-reading errors.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-tufte-visual-display-quantitative"
+      ]
+    },
+    {
+      "concept": "Resilience Design Patterns for Error Recovery",
+      "field": "interaction-design",
+      "definition": "Software resilience patterns (circuit breaker, bulkhead, graceful degradation, retry) ensure systems fail safely and recover quickly. UI analogs include partial failures (operation succeeds for some rows), safe defaults, and fallback paths.",
+      "strength": "framework",
+      "key_refs": [
+        "arXiv 1708.07422 / Resilience Design Patterns: A Structured Approach to Resilience at Extreme Scale"
+      ],
+      "related_concepts": [
+        "Graceful Degradation",
+        "Safe Defaults",
+        "Partial Failure Handling",
+        "Fallback Paths"
+      ],
+      "implication": "MetroGraph should employ bulkhead pattern: isolate risky operations to prevent cascading failures. Show partial results ('100 of 1000 rows modified; review before committing all').",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-resilience-design-patterns-extreme-scale"
+      ]
+    },
+    {
+      "concept": "Habituation to System Errors and Error Blindness",
+      "field": "cognitive-psych",
+      "definition": "Repeated exposure to system errors reduces vigilance and increases error blindness: users stop noticing errors as salient. Novelty and variability in error presentation (changing location, modality, severity) maintain attention.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2602.05010 / Signal or 'Noise': Human Reactions to Robot Errors in the Wild"
+      ],
+      "related_concepts": [
+        "Attentional Habituation",
+        "Error Salience",
+        "Novelty Effects",
+        "Vigilance Decay"
+      ],
+      "implication": "MetroGraph should vary error presentation (not always center-top modal) and use escalating urgency signals. Critical errors need different visual treatment than warnings to prevent habituation.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-signal-or-noise-robot-errors"
+      ]
+    },
+    {
+      "concept": "Predictability and Mental Model Accuracy",
+      "field": "cognitive-psych",
+      "definition": "Users can accurately predict system behavior when systems are available (transparent), compact (simple rules), and aligned (matching user expectations). Complexity is not the barrier; opacity is.",
+      "strength": "empirical",
+      "key_refs": [
+        "arXiv 2601.18966 / People Can Accurately Predict Behavior of Complex Algorithms That Are Available, Compact, and Aligned"
+      ],
+      "related_concepts": [
+        "Cognitive Alignment",
+        "Transparency Effects",
+        "System Complexity",
+        "Learnability"
+      ],
+      "implication": "MetroGraph's query optimizer and schema resolution can be complex internally, but must expose simple, predictable rules to users. 'If table has column X, use X for join' is learnable; opaque optimization is not.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-arxiv-people-predict-complex-algorithms"
+      ]
+    },
+    {
+      "concept": "Human-in-the-Loop Error Detection Timing",
+      "field": "interaction-design",
+      "definition": "Error detection latency (delay between error occurrence and visibility) directly affects recovery cost. Real-time feedback enables immediate correction; batch feedback delays recovery and increases downstream damage.",
+      "strength": "empirical",
+      "key_refs": [
+        "PMC / Human-in-the-Loop Error Detection in an Object Organization Task with a Social Robot"
+      ],
+      "related_concepts": [
+        "Feedback Latency",
+        "Real-Time Monitoring",
+        "Batch Feedback",
+        "Detection Speed"
+      ],
+      "implication": "MetroGraph must show query execution step-by-step (not wait until end) so users can stop or redirect mid-execution. Real-time cardinality warnings prevent accidental mega-joins.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-pmc-human-in-loop-error-detection-robot"
+      ]
+    },
+    {
+      "concept": "Over-Intervention and Autonomy Erosion",
+      "field": "interaction-design",
+      "definition": "Excessive system-initiated corrections (too many suggestions, too many pauses) erode perceived autonomy and increase cognitive load. Users disengage or ignore corrections entirely. Balance required between safety and autonomy.",
+      "strength": "framework",
+      "key_refs": [
+        "CHI 2026 / When Should Users Check?"
+      ],
+      "related_concepts": [
+        "Autonomy-Control Tradeoff",
+        "System Agency",
+        "Suggestion Fatigue",
+        "Disengagement"
+      ],
+      "implication": "MetroGraph must resist over-helpfulness: not every potential error needs a suggestion. Selective intervention at true decision points (high cost, high uncertainty) preserves autonomy.",
+      "source_ids": [
+        "market-theory-error-recovery-correction-chi-2026-when-should-users-check"
+      ]
+    }
+  ]
+}

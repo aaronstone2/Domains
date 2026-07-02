@@ -1,0 +1,1437 @@
+{
+ "chapter": {
+  "num": "VIII",
+  "slug": "08-governance",
+  "title": "Governance & Compliance",
+  "kind": "drafted"
+ },
+ "home_domains": [
+  "governance"
+ ],
+ "home_claims": [
+  {
+   "id": "governance.claim.11-blocking-gaps",
+   "statement": "MetroGraph has 11 compliance gaps that GATE enterprise adoption across three segments (enterprise-data-teams, cdo-data-leadership, governance-quality-teams). Of these, 5 are blockers (no auth, no RBAC, no audit logging, no data classification, no column access). The remaining 6 are major gaps that materially reduce governance posture (lineage not formalized, no masking UI, no workspace isolation, no JML API, no query audit, no access review reports). Total estimated remediation effort: 8 person-months (5 XL/L features + 6 M features).",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "CONFIRMED",
+   "nuance": null,
+   "evidence_grade": "research",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.connection-secrets-stored",
+   "statement": "MetroGraph implements connection manager with encrypted credential storage. This satisfies the 'encrypted at rest' requirement (partial coverage of governance.req.connection-encryption). However, no explicit TLS enforcement, no cipher-suite audit, and no way to verify connections are using strong encryption.",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "CONFIRMED",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.early-stage-no-governance",
+   "statement": "MetroGraph is currently in alpha/early-stage and has ZERO governance controls shipped: no authentication, no RBAC, no audit logging, no data classification, no column-level access control, and no masking. The product is single-user, not multi-tenant, and unsuitable for regulated enterprise deployment without major engineering.",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "CONFIRMED",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.lineage-is-implicit",
+   "statement": "MetroGraph's node-and-edge graph model naturally encodes data lineage (source nodes → transform nodes → output nodes). This is a design advantage: lineage is not an afterthought bolt-on, but the visual primitive itself. However, lineage is not yet formalized as queryable data, exported to compliance tools, or accompanied by impact-analysis UI.",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "CONFIRMED",
+   "nuance": null,
+   "evidence_grade": "code",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metro.audit-logging-absent",
+   "statement": "MetroGraph lacks comprehensive audit logging (GDPR Art. 32, SOC2 TSC CC6.1/CC7.2/CC7.3/CC8.1) required to demonstrate who accessed customer data, when, from where, and what actions were performed",
+   "category": "governance",
+   "claim_type": "control-gap",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "spec",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metro.data-deletion-capability-missing",
+   "statement": "MetroGraph has no demonstrated capability to fulfill GDPR Article 17 (right to erasure) requests or CCPA deletion requirements, as the product is a visualization layer over external data sources with no data retention or purge mechanisms",
+   "category": "governance",
+   "claim_type": "control-gap",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "spec",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metro.data-residency-schrems-ii",
+   "statement": "Post-Schrems II (2026 enforcement), EU customer data stored on US servers requires Adequacy Decision, Binding Corporate Rules, or Standard Contractual Clauses with supplementary technical controls; MetroGraph's current architecture does not implement data localization",
+   "category": "governance",
+   "claim_type": "compliance-gate",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "evaluative",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metro.gdpr-dpa-blocker",
+   "statement": "MetroGraph cannot legally process EU personal data for enterprise customers without a Data Processing Agreement (GDPR Art. 28) specifying lawful basis, data categories, retention periods, and sub-processor disclosures",
+   "category": "governance",
+   "claim_type": "compliance-gate",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "evaluative",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metro.governance-gap-auth",
+   "statement": "MetroGraph ships 13 core data visualization features but has zero governance controls (RBAC, SSO, audit logging, or observability) required for enterprise and regulated markets",
+   "category": "governance",
+   "claim_type": "capability-gap",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "spec",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metrograph.early-stage-governance",
+   "statement": "MetroGraph is a capable early-stage data visualization platform with shipped node/edge/graph exploration features but no implemented authentication, authorization, or audit logging—making it unsuitable for regulated/enterprise segments until auth layer ships",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "HIGH",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metrograph.honest-gap-is-roadmap-item",
+   "statement": "The absence of governance controls in MetroGraph is not a design flaw but a logical consequence of product stage—these features are identified as strategic roadmap items for enterprise expansion, not bugs",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "HIGH",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metrograph.no-soc2-path-without-audit",
+   "statement": "SOC2 Type II requires documented audit logging (CC6, CC7), change management (CC8), and access controls with MFA—MetroGraph has none shipped, requiring 4-6 month build + 6 month audit observation before Type II certificate possible",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "MEDIUM",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "claim.metrograph.sso-roadmap-gates-enterprise",
+   "statement": "Shipping SSO/OAuth/SAML + RBAC + audit logging (identified as table-stakes features) would unlock Enterprise Data Teams segment; these are prerequisite to SOC2/ISO27001 compliance and non-negotiable in enterprise security assessments",
+   "category": "governance",
+   "claim_type": "strategic",
+   "verdict": "TRUE",
+   "nuance": null,
+   "evidence_grade": "HIGH",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.data-residency-schrems-iii-pending-late-2026",
+   "statement": "Schrems III litigation decision expected late 2026 may invalidate EU-US Data Privacy Framework and force re-evaluation of cross-border data transfer strategy; AWS European Sovereign Cloud and Azure Sovereign offer hedge for compliance.",
+   "category": "data-residency-risk",
+   "claim_type": "regulatory-risk",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "litigation-risk",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.hipaa-2026-audit-logs-6-year-retention",
+   "statement": "HIPAA 2026 requires tamper-proof audit logs with minimum 6-year retention covering PHI access, modification, and deletion with user identity, timestamp, and data element tracking.",
+   "category": "audit-logging",
+   "claim_type": "regulatory-requirement",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "regulatory-pending",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.hipaa-2026-encryption-now-mandatory",
+   "statement": "HIPAA 2026 Security Rule changes make encryption at rest and in transit mandatory baseline requirements (not addressable), with AES-256 and TLS 1.2+ as enforcement standards.",
+   "category": "encryption-at-rest",
+   "claim_type": "regulatory-requirement",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "regulatory-pending",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.nis2-enforcement-2026-first-actions-expected",
+   "statement": "2026 is projected as first enforcement year for NIS2 Directive after October 2024 member state transposition deadline; early enforcement actions likely against essential entities (telecom, energy, finance, healthcare) in Q2-Q3 2026.",
+   "category": "regulatory-enforcement",
+   "claim_type": "enforcement-prediction",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "regulatory-trend",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.schrems-iii-ruling-expected-late-2026",
+   "statement": "Schrems III legal challenge to EU-US Data Privacy Framework could come by late 2026; DPF transfer mechanism based on executive order (not federal law) faces structural uncertainty",
+   "category": "data-transfer",
+   "claim_type": "legal-risk",
+   "verdict": "speculative",
+   "nuance": null,
+   "evidence_grade": "moderate",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.aws-sovereign-cloud-eu-data-residency",
+   "statement": "AWS European Sovereign Cloud launched January 2026 in Brandenburg, Germany with EU-resident operators, enabling strict EU data residency compliance for Schrems II alternatives",
+   "category": "data-residency",
+   "claim_type": "market-enablement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.eu-ai-act-enforcement-aug-2-2026-transparency",
+   "statement": "EU AI Act transparency obligations (Article 50) enforce on August 2, 2026, requiring disclosure of AI use and machine-readable marking of synthetic content; fines up to €35M or 7% turnover",
+   "category": "transparency-disclosure",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.eu-ai-act-transparency-aug-2-2026-enforcement",
+   "statement": "EU AI Act transparency obligations for general-purpose AI models become fully enforceable August 2, 2026, requiring technical documentation, training data summaries, and systemic risk evaluation for models with >10^25 FLOPs.",
+   "category": "ai-model-transparency",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "regulatory-current",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.fedramp-rev5-class-c-migration-july-2026",
+   "statement": "FedRAMP is replacing 'Moderate' terminology with 'Rev5 Class C' starting July 2026; requires 323 NIST 800-53 controls and annual red team testing",
+   "category": "governance",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.fedramp-rev5-red-team-annual-mandate",
+   "statement": "FedRAMP Rev 5 assessments now mandate annual Red Team exercises in addition to standard penetration testing, increasing assessment complexity and cost for cloud vendors serving federal agencies.",
+   "category": "penetration-testing",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "regulatory-current",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.hipaa-2026-encryption-mandatory-ehr",
+   "statement": "HIPAA 2026 Security Rule update requires universal encryption of all ePHI at rest and in transit as mandatory (no longer addressable), affecting all electronic health records platforms",
+   "category": "data-protection",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.hipaa-2026-no-final-rule-issued",
+   "statement": "HIPAA 2026 Security Rule updates targeted for spring 2026 finalization have not been issued as of June 2026; timeline remains uncertain but proposed rules are widely adopted in anticipation",
+   "category": "governance",
+   "claim_type": "regulatory-timeline",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "moderate",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.nis2-article-20-management-liability",
+   "statement": "NIS2 Directive Article 20 introduces unprecedented governance requirement: management bodies of essential/important entities must approve and oversee cybersecurity risk measures and can be held personally liable for non-compliance.",
+   "category": "governance-accountability",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "regulatory-current",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.nis2-article-20-personal-liability-enforcement",
+   "statement": "NIS2 Article 20 enforcement as of June 2026 allows member states to impose personal liability and temporary bans on executives for cybersecurity risk mismanagement",
+   "category": "governance",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.pci-4-0-1-phishing-resistant-mfa-allowed",
+   "statement": "PCI-DSS 4.0.1 clarifies that phishing-resistant authentication (e.g., FIDO2) can substitute for traditional MFA in non-administrative CDE access",
+   "category": "authentication",
+   "claim_type": "regulatory-clarification",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.pci-4-0-1-universal-mfa-deadline-passed",
+   "statement": "PCI-DSS 4.0.1 mandates universal MFA for all CDE access with deadline of March 31, 2025 (deadline already passed as of June 2026)",
+   "category": "authentication",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.pci-dss-4-0-1-javascript-inventory-mandatory",
+   "statement": "PCI-DSS v4.0.1 Requirement 6.4.3 (mandatory Mar 31 2025) mandates complete inventory of every JavaScript on payment pages with formal authorization records; common audit failure point in 2026.",
+   "category": "inventory-management",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "regulatory-current",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.pci-dss-4-0-1-mfa-all-cde-access",
+   "statement": "PCI-DSS v4.0.1 (mandatory since Mar 31 2025) expands MFA requirement to ALL users with access to Cardholder Data Environments, no exceptions for administrative or remote-only access.",
+   "category": "mfa-enforcement",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "regulatory-current",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.sox-itgc-pcaob-2026-top-down-risk-approach",
+   "statement": "PCAOB AS 2201/AS 2101 amendments effective for fiscal years starting Dec 15 2026 formalize top-down, risk-based ITGC audits starting from financial statement level, reducing need for exhaustive low-level controls testing.",
+   "category": "financial-reporting-controls",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "regulatory-current",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  },
+  {
+   "id": "governance.claim.sox-pcaob-2026-top-down-risk-approach",
+   "statement": "PCAOB amended AS 2201/2101 effective for fiscal years beginning December 15, 2026 mandate top-down risk-based internal control assessment starting at entity level",
+   "category": "governance",
+   "claim_type": "regulatory-requirement",
+   "verdict": "supported",
+   "nuance": null,
+   "evidence_grade": "strong",
+   "agreement_score": null,
+   "confidence": null,
+   "confidence_low": 0.0546190651458835,
+   "confidence_high": 0.9453809348541165,
+   "stale": false,
+   "last_verified": "2026-06-26",
+   "is_primary_backed": false,
+   "n_supporting_evidence": 0,
+   "n_contradicting": null,
+   "domain": "governance"
+  }
+ ],
+ "n_home_claims": 33,
+ "blocks": {
+  "requirements": [
+   {
+    "framework": "EU-AI-Act-Article-50",
+    "category": "transparency-disclosure",
+    "statement": "Transparency obligations effective August 2, 2026: Providers and deployers must clearly inform users when interacting with an AI system. For AI-generated or manipulated content (deepfakes, synthetic text), mark as AI-generated in human-readable and machine-readable format where technically feasible (Article 50).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "EU-AI-Act-Article-99",
+    "category": "legal-enforcement",
+    "statement": "Non-compliance with EU AI Act transparency obligations may result in fines up to €35 million or 7% of annual worldwide turnover, whichever is higher. European AI Office and Member State authorities enforce. Civil liability exposure also applies.",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "FedRAMP-Rev5-Class-C",
+    "category": "technical-control",
+    "statement": "Implementation of 323-325 NIST SP 800-53 moderate baseline controls across 17 control families (AC, AT, AU, CA, CM, CP, IA, IR, MA, MP, PE, PL, RA, SA, SC, SI, PS). Controls must address Controlled Unclassified Information (CUI) protection (FedRAMP Baseline).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "GDPR-Article-44-50-Schrems-II",
+    "category": "data-transfer",
+    "statement": "EU personal data must be stored within EU/EEA jurisdictions to satisfy GDPR adequacy requirements. No transfer to third countries (including US) except via Adequacy Decision, BCR, or SCCs with supplementary measures. Post-Schrems II, supplementary measures are standard practice.",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "HIPAA-Security-Rule-2026",
+    "category": "authentication",
+    "statement": "Multi-factor authentication (MFA) is mandatory on every user account with access to ePHI. MFA factors include: something you know (password/PIN), something you have (token/card), or something you are (biometric). No single-factor authentication permitted (164.312(a)(2)(i)).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "HIPAA-Security-Rule-2026",
+    "category": "data-protection",
+    "statement": "Universal encryption of all ePHI at rest and in transit is mandatory (no longer addressable). Encryption must use FIPS-approved algorithms; separate encryption keys required for ePHI at rest versus in transit (164.312(a)(2)(i)).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "HIPAA-Security-Rule-2026",
+    "category": "audit-logging",
+    "statement": "Login monitoring and comprehensive audit logging of all system access is now mandatory (previously addressable). Must log user identity, timestamp, system accessed, action performed, and result. Logs protected from modification for minimum 90 days (164.312(b)).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.governance-quality-teams"
+   },
+   {
+    "framework": "NIS2-Directive-Article-20",
+    "category": "governance",
+    "statement": "Management bodies of essential and important entities must approve cybersecurity risk management measures and oversee implementation. Executive accountability includes regular cybersecurity training. Member States may audit board minutes to verify active management engagement (NIS2 Article 20).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "NIS2-Directive-Article-20",
+    "category": "governance",
+    "statement": "Executive personal liability for cybersecurity risk mismanagement: Member States may impose administrative fines and temporary bans from management functions on executives of essential entities who fail to ensure cybersecurity measures are implemented and overseen (NIS2 Article 20(3)).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "PCI-DSS-4.0.1",
+    "category": "authentication",
+    "statement": "Universal MFA required for all access to the Cardholder Data Environment (CDE), including both administrative and standard user access. Deadline: March 31, 2025 (passed). MFA factors: something you know, something you have, or something you are (Requirement 8.3).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOX-Section-404-PCAOB-AS-2201",
+    "category": "governance",
+    "statement": "SOX 404 internal control assessment must use top-down, risk-based approach effective for fiscal years beginning December 15, 2026. Auditors start at financial statement level, identify risks, then focus on entity-level controls before descending to significant accounts and disclosures (PCAOB AS 2201 Revised).",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "gdpr-article-17",
+    "category": "data-subject-right",
+    "statement": "Data subjects have the right to obtain erasure of personal data without undue delay when no longer necessary, consent is withdrawn, or objection is made (Art. 17(1)). Organizations must be able to identify and delete data across systems including sub-processors",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-28",
+    "category": "legal-agreement",
+    "statement": "Data Processing Agreement with Standard Contractual Clauses required for any processing of EU personal data on behalf of a controller. Must specify subject matter, duration, nature, purpose, data types, data subject categories, and controller authorization of sub-processors (Art. 28(2-4))",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-32",
+    "category": "technical-control",
+    "statement": "Appropriate technical and organizational measures must ensure security appropriate to the risk, including encryption, access control, availability assurance, integrity verification, and regular testing (Art. 32). Must align with SOC2 TSC security criteria",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-44-50",
+    "category": "international-transfer",
+    "statement": "Personal data of EU residents cannot be transferred outside the EEA without an Adequacy Decision, Binding Corporate Rules, or Standard Contractual Clauses with supplementary technical controls. Post-Schrems II enforcement requires impact assessment and compensatory measures (2026 precedent)",
+    "severity": "blocker",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "EU-AI-Act-Article-50",
+    "category": "transparency-disclosure",
+    "statement": "Machine-readable marking of synthetic AI-generated or manipulated content required. Marking must be detectable by automated systems. Deadline extended to December 2, 2026 for generative AI systems already on market before August 2, 2026 (AI Omnibus provisional agreement May 2026).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.analytics-engineers"
+   },
+   {
+    "framework": "EU-US-Data-Privacy-Framework-2023",
+    "category": "data-transfer",
+    "statement": "EU-US Data Privacy Framework provides streamlined transfer mechanism for US companies with self-certified adequacy commitments. However, framework depends on executive order (not federal law) and faces Schrems III challenge (ruling expected late 2026) which could invalidate the mechanism.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "FedRAMP-Rev5-Class-C",
+    "category": "security-testing",
+    "statement": "Annual red team testing required for Class C systems; scope typically less extensive than High baseline but still required. Must attempt to identify and exploit security weaknesses (FedRAMP Continuous Monitoring).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "FedRAMP-Rev5-Class-C",
+    "category": "monitoring-compliance",
+    "statement": "Continuous monitoring required with monthly updates and annual activities including penetration testing, vulnerability scanning, contingency plan testing, and incident response plan testing (FedRAMP Continuous Monitoring).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "GDPR, HIPAA, CCPA",
+    "category": "data-protection",
+    "statement": "Automatic masking/redaction of sensitive fields in UI preview and sample data shown during workflow building; mask should be role-aware (e.g., data engineers see real values, business users see '***').",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "GDPR, HIPAA, ISO 27001",
+    "category": "lineage",
+    "statement": "Data lineage tracking: Full traceability of data flow from source through transformations to output; allows compliance teams to locate and assess impact of sensitive data, demonstrate GDPR/HIPAA compliance during audits.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "GDPR-Article-32-Schrems-II",
+    "category": "data-transfer",
+    "statement": "SCCs for data transfers require supplementary technical and organizational measures to comply with Schrems II. Organizations must implement: encryption at rest, strict access controls, purpose limitation, regular monitoring, and contractual commitments to re-encrypt or re-transfer if US legal orders threaten adequacy.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "HIPAA-Security-Rule-2026",
+    "category": "vulnerability-management",
+    "statement": "Annual penetration testing and security testing of systems handling ePHI. Testing must attempt to breach security controls and be documented with results and remediation actions (164.308(a)(1)(ii)(B)).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "HIPAA-Security-Rule-2026",
+    "category": "vulnerability-management",
+    "statement": "Vulnerability scanning of all systems handling ePHI at minimum every 6 months. Scans must identify, log, and remediate vulnerabilities with documented remediation timelines (164.308(a)(1)(ii)(B)).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "HIPAA-Security-Rule-2026",
+    "category": "risk-assessment",
+    "statement": "Mandatory annual security risk assessments with documented scope, methodology, findings, and mitigation plans. Risk assessments must be comprehensive, documented, and updated at minimum annually (164.308(a)(1)(ii)(A)).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "ISO-27001-Annex-A",
+    "category": "data-protection",
+    "statement": "A.8.24 (Use of Cryptography): Establish encryption rules for sensitive data both at rest and in transit. Use TLS/SSL for network communication and AES-256 for data at rest.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "NIS2-Directive-Article-20",
+    "category": "governance",
+    "statement": "Management bodies must undergo regular cybersecurity training to understand risk landscape, governance requirements, and incident response procedures. Training must be documented and updated at minimum annually (NIS2 Article 20(2)).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "PCI-DSS-4.0.1",
+    "category": "data-protection",
+    "statement": "Sensitive Authentication Data (SAD) must be encrypted using strong cryptography with separate encryption keys from those protecting cardholder PAN data. Encryption keys must be managed per Requirement 3.6 (Requirement 3.2.1).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "PCI-DSS-4.0.1",
+    "category": "authentication",
+    "statement": "Phishing-resistant authentication (e.g., FIDO2, hardware security keys, biometrics) can substitute for traditional MFA for non-administrative CDE access. Providers may accept this as compliance mechanism for Requirement 8.3.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOC2 TSC",
+    "category": "access-control",
+    "statement": "Quarterly access reviews: Organizations must be able to pull reports of who has access to what data sources and workflows, review for appropriateness, and revoke stale access.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.governance-quality-teams"
+   },
+   {
+    "framework": "SOC2 TSC",
+    "category": "access-control",
+    "statement": "Joiner-Mover-Leaver (JML) support: System must provide APIs or workflows to programmatically grant access (joiner), change role (mover), and revoke all access (leaver) with audit trail of each change.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOC2 TSC, HIPAA",
+    "category": "audit-log",
+    "statement": "Query audit trail: Every data query executed through MetroGraph (including sample data previews during workflow building) must be logged with: user, timestamp, query text, rows returned, execution time, and result set fingerprint.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "SOC2 TSC, ISO 27001",
+    "category": "access-control",
+    "statement": "Workspace/project-level isolation: Data sources and workflows in one workspace are not visible to users in another workspace unless explicitly granted; cross-workspace access must be logged.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.data-mesh-teams"
+   },
+   {
+    "framework": "SOC2-TSC",
+    "category": "change-management",
+    "statement": "CC8 (Change Management): Implement documented change control process including authorization, testing, and audit trail of changes to systems and data. All modifications must be tracked and logged.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOX-ITGC-Requirements",
+    "category": "change-management",
+    "statement": "Formal change management for systems affecting financial reporting must include: documented change requests, segregation of development/testing/production, approvals from independent parties, testing before deployment, and audit trail of all changes. Emergency changes require compensating controls.",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.governance-quality-teams"
+   },
+   {
+    "framework": "SOX-ITGC-Requirements",
+    "category": "access-control",
+    "statement": "IT General Controls must include formal access management: segregation of duties, user access reviews (minimum quarterly), timely provisioning/deprovisioning, and documented approval workflows. Access to financial systems must be restricted based on principle of least privilege (PCAOB AS 2201).",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "ccpa-1798-100-115",
+    "category": "data-subject-right",
+    "statement": "California Consumer Privacy Act requires businesses to honor consumer rights: access personal information (1798.100), delete personal information (1798.105), opt-out of sale (1798.120), and non-discrimination (1798.125). Must respond within 45 days",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-art-5-article-30",
+    "category": "documentation",
+    "statement": "Organizations must maintain records of processing activities (ROPA) documenting what data is collected, from where, for what purpose, how long retained, and who has access. Data lineage and catalog tools help demonstrate GDPR compliance",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.governance-quality-teams"
+   },
+   {
+    "framework": "gdpr-article-15",
+    "category": "data-subject-right",
+    "statement": "Data subjects have the right to access their personal data and receive confirmation of processing, purposes, categories, recipients, and retention period (Art. 15). Organizations must provide data in portable format within 30 days of request",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-28",
+    "category": "legal-agreement",
+    "statement": "Controllers must be informed of all sub-processors processing personal data on behalf of the processor. Any change in sub-processors requires prior authorization. Sub-processors must be contractually bound by equivalent data protection obligations (Art. 28(2-4))",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-33",
+    "category": "process-control",
+    "statement": "Organizations must have incident response procedures with defined roles, responsibilities, and timelines. Data breach notification required to supervisory authority within 72 hours and to affected data subjects without undue delay when high risk (Art. 33-34)",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-5",
+    "category": "data-principle",
+    "statement": "Personal data shall be adequate, relevant, and limited to what is necessary in relation to the purposes for which they are processed. Data collected must be aligned with stated purpose and no more than necessary (Art. 5(1)(c))",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-5",
+    "category": "data-principle",
+    "statement": "Personal data shall be kept for no longer than necessary for the processing purposes. Organizations must define and document retention periods per processing activity (Art. 5(1)(e))",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "gdpr-article-5",
+    "category": "data-principle",
+    "statement": "Personal data collected for a specified purpose cannot be processed for a different purpose unless compatible or authorized. Every processing activity must be mapped to a lawful basis (Art. 5(1)(b), Art. 6)",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "iso-27001-a10",
+    "category": "technical-control",
+    "statement": "Data must be encrypted in transit (TLS 1.2+) and at rest using strong algorithms. Encryption key management must follow industry standards with documented key rotation procedures and secure key storage (ISO 27001 A10, GDPR Art. 32)",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "iso-27001-a9",
+    "category": "technical-control",
+    "statement": "Role-based access control (RBAC) with multi-factor authentication (MFA) required to ensure only authorized users access sensitive data. Access must be granted based on principle of least privilege and reviewed periodically (ISO 27001 A9)",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "nist-sp-800-63",
+    "category": "technical-control",
+    "statement": "Enterprise-grade authentication via SSO/OAuth/SAML enables single sign-on, reduces password exposure, integrates with identity providers (Active Directory, Okta, Google), and supports MFA for elevated access",
+    "severity": "important",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "GDPR, HIPAA, ISO 27001",
+    "category": "access-control",
+    "statement": "Column-level or field-level access control: Users with access to a table may not see sensitive columns (e.g., SSN, email masked to role-based groups; PII fields restricted to authorized roles only).",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "GDPR, HIPAA, ISO 27001",
+    "category": "data-classification",
+    "statement": "Ability to classify data fields/columns by sensitivity (PII, PHI, confidential, public); classifications must propagate through lineage so downstream workflows enforce appropriate access rules.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.governance-quality-teams"
+   },
+   {
+    "framework": "ISO-27001-Annex-A",
+    "category": "audit-logging",
+    "statement": "A.8.15 (Logging): Record user activities, exceptions, faults, and information security events for forensic investigation and compliance audits. Logs must be protected from modification.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.governance-quality-teams"
+   },
+   {
+    "framework": "ISO-27001-Annex-A",
+    "category": "access-control",
+    "statement": "A.5.15 (Access Control): Restrict access based on business needs and the principle of least privilege. Users must only access data necessary for their assigned roles.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "ISO-27001-Annex-A",
+    "category": "authentication",
+    "statement": "A.8.5 (Secure Authentication): Enforce Multi-Factor Authentication (MFA) to validate user identity before granting access. Required for both standard and privileged accounts.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "ISO-27001-Annex-A",
+    "category": "identity-management",
+    "statement": "A.5.16 (Identity Management): Manage complete user lifecycle—registration, provisioning, deprovisioning—with identity federation and cloud access capabilities for SaaS environments.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOC2 TSC",
+    "category": "access-control",
+    "statement": "Role-Based Access Control (RBAC) with least-privilege principle: Users can only access data sources and workflows scoped to their assigned role; access decisions are enforced at runtime, not just documented.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOC2 TSC",
+    "category": "access-control",
+    "statement": "Multi-Factor Authentication (MFA) and Single Sign-On (SSO) / OAuth / SAML for user identity; all authentication must use cryptographically secure methods with audit trails.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOC2 TSC, ISO 27001",
+    "category": "encryption",
+    "statement": "All connections to data sources must use TLS 1.2+; credentials (API keys, passwords, connection strings) must be encrypted at rest and in transit using strong key management.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOC2 TSC, ISO 27001",
+    "category": "audit-log",
+    "statement": "Comprehensive audit logging of all data access: who accessed what data, when, from where, and what queries were executed. Logs must be immutable, retained for min 90 days, and queryable for compliance investigation.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.cdo-data-leadership"
+   },
+   {
+    "framework": "SOC2-TSC",
+    "category": "access-control",
+    "statement": "CC6 (Logical and Physical Access): Implement multi-factor authentication (MFA), role-based access control (RBAC), periodic access reviews, and timely deprovisioning of users. MFA required on every account; access reviews documented quarterly.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.enterprise-data-teams"
+   },
+   {
+    "framework": "SOC2-TSC",
+    "category": "audit-logging",
+    "statement": "CC7 (System Operations): Maintain comprehensive audit logs of system activities, exceptions, and information security events. Logs must be available for forensic investigation and compliance reporting.",
+    "severity": "table-stakes",
+    "applies_to_segment_id": "market.segment.governance-quality-teams"
+   }
+  ],
+  "gaps": [
+   {
+    "severity": "blocker",
+    "remediation": "Ship MFA enforcement with TOTP, SMS, and push notification options; integrate with Okta, Azure AD, or use open-source FIDO2 library. Enforce at login and API authentication. Estimate: 4-6 weeks.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "Multi-factor authentication (MFA) is mandatory on every user account with access to ePHI. MFA factors include: something you know (password/PIN), something you have (token/card), or something you are (biometric). No single-factor authentication permitted (164.312(a)(2)(i))."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Create NIS2 Article 20 governance framework: board-level cybersecurity dashboard, quarterly executive reporting, documented risk oversight minutes. Integrate with incident response and risk assessment. Estimate: 4-6 weeks framework + ongoing.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "Management bodies of essential and important entities must approve cybersecurity risk management measures and oversee implementation. Executive accountability includes regular cybersecurity training. Member States may audit board minutes to verify active management engagement (NIS2 Article 20)."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement SSO/OAuth2/SAML support (Okta, Azure AD, Google, GitHub). Estimate: 8-12 weeks engineering. Must support identity federation and group/role sync from IdP.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "A.5.16 (Identity Management): Manage complete user lifecycle—registration, provisioning, deprovisioning—with identity federation and cloud access capabilities for SaaS environments."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Deadline was March 31, 2025 (OVERDUE). Ship universal MFA immediately for all user access. Support phishing-resistant methods (FIDO2). Conduct MFA audit for all users. Estimate: 2-4 weeks emergency implementation.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Universal MFA required for all access to the Cardholder Data Environment (CDE), including both administrative and standard user access. Deadline: March 31, 2025 (passed). MFA factors: something you know, something you have, or something you are (Requirement 8.3)."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Begin FedRAMP authorization process: complete System Security Plan (SSP) mapping 323 controls, conduct continuous monitoring setup, engage Third Party Assessment Organization (3PAO) for testing. Timeline: 6-12 months minimum. Cost: 50k-150k USD.",
+    "effort": "ultra",
+    "becomes_roadmap_item": true,
+    "requirement": "Implementation of 323-325 NIST SP 800-53 moderate baseline controls across 17 control families (AC, AT, AU, CA, CM, CP, IA, IR, MA, MP, PE, PL, RA, SA, SC, SI, PS). Controls must address Controlled Unclassified Information (CUI) protection (FedRAMP Baseline)."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Offer EU data residency option with infrastructure in EU region; document Schrems II compliance strategy (SCCs with supplementary measures or Adequacy Decision path); provide DPA appendix addressing data transfer mechanisms",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Personal data of EU residents cannot be transferred outside the EEA without an Adequacy Decision, Binding Corporate Rules, or Standard Contractual Clauses with supplementary technical controls. Post-Schrems II enforcement requires impact assessment and compensatory measures (2026 precedent)"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement AI transparency disclosure: add user notifications when AI systems are used, disclose AI-generated content, provide controls for user consent. Audit all AI system interactions. Deadline: August 2, 2026 (IMMINENT). Estimate: 3-4 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Transparency obligations effective August 2, 2026: Providers and deployers must clearly inform users when interacting with an AI system. For AI-generated or manipulated content (deepfakes, synthetic text), mark as AI-generated in human-readable and machine-readable format where technically feasible (Article 50)."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Offer EU data residency deployment option: deploy infrastructure in EU region (Ireland, Germany, Netherlands). Document compliance with GDPR adequacy. Provide data residency selection at signup. Estimate: 12-16 weeks (infrastructure + application changes).",
+    "effort": "ultra",
+    "becomes_roadmap_item": true,
+    "requirement": "EU personal data must be stored within EU/EEA jurisdictions to satisfy GDPR adequacy requirements. No transfer to third countries (including US) except via Adequacy Decision, BCR, or SCCs with supplementary measures. Post-Schrems II, supplementary measures are standard practice."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement GDPR Art. 17 workflow: accept deletion requests via support system; purge query history, saved graphs, and user data; coordinate deletion with connected data sources; provide deletion confirmation with audit trail",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Data subjects have the right to obtain erasure of personal data without undue delay when no longer necessary, consent is withdrawn, or objection is made (Art. 17(1)). Organizations must be able to identify and delete data across systems including sub-processors"
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement comprehensive audit logging system: track user identity, action (query/view/export), timestamp, source IP, data accessed, and result. Store logs immutably with at least 90-day retention. Integrate SOC2-compliant logging infrastructure",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Comprehensive audit logging of all data access: who accessed what data, when, from where, and what queries were executed. Logs must be immutable, retained for min 90 days, and queryable for compliance investigation."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement data classification system: (1) UI to tag columns/fields with PII/PHI/confidential/public; (2) Persist classification metadata; (3) Propagate downstream in lineage; (4) Integrate with access control to enforce masking/restrictions.",
+    "effort": "l",
+    "becomes_roadmap_item": true,
+    "requirement": "Ability to classify data fields/columns by sensitivity (PII, PHI, confidential, public); classifications must propagate through lineage so downstream workflows enforce appropriate access rules."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Integrate MFA (TOTP/SMS/push) via auth provider or NIST-compliant library. Enforce MFA on all user accounts. Estimate: 4-6 weeks.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "A.8.5 (Secure Authentication): Enforce Multi-Factor Authentication (MFA) to validate user identity before granting access. Required for both standard and privileged accounts."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement top-down risk assessment approach for internal controls: identify financial statement risks, assess entity-level controls, then detail-test significant accounts. Document risk register and control mapping. Engage external SOX auditor. Estimate: 12-16 weeks prep + 6 months audit.",
+    "effort": "ultra",
+    "becomes_roadmap_item": true,
+    "requirement": "SOX 404 internal control assessment must use top-down, risk-based approach effective for fiscal years beginning December 15, 2026. Auditors start at financial statement level, identify risks, then focus on entity-level controls before descending to significant accounts and disclosures (PCAOB AS 2201 Revised)."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Complete implementation of all CC1-CC9 controls (security environment, risk assessment, monitoring, system operations, change management). Budget 6 months build + 6 months audit observation. Estimated cost: 50-100k USD audit fees.",
+    "effort": "ultra",
+    "becomes_roadmap_item": true,
+    "requirement": "CC7 (System Operations): Maintain comprehensive audit logs of system activities, exceptions, and information security events. Logs must be available for forensic investigation and compliance reporting."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement OAuth 2.0 / OIDC identity provider integration, add MFA (TOTP / U2F), and persist user identity throughout session. Required before any enterprise deployment.",
+    "effort": "l",
+    "becomes_roadmap_item": true,
+    "requirement": "Multi-Factor Authentication (MFA) and Single Sign-On (SSO) / OAuth / SAML for user identity; all authentication must use cryptographically secure methods with audit trails."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Build audit event stream: log all user actions (login, workflow create/edit, data access, query execution), write immutable log to append-only store (e.g., DuckDB table), expose via API for SIEM integration and quarterly review reports.",
+    "effort": "xl",
+    "becomes_roadmap_item": true,
+    "requirement": "Comprehensive audit logging of all data access: who accessed what data, when, from where, and what queries were executed. Logs must be immutable, retained for min 90 days, and queryable for compliance investigation."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement workspace-scoped RBAC with roles (Admin, Editor, Viewer) and granular permission model. Require role assignment at login and enforce in API/UI. Estimate: 6-8 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "CC6 (Logical and Physical Access): Implement multi-factor authentication (MFA), role-based access control (RBAC), periodic access reviews, and timely deprovisioning of users. MFA required on every account; access reviews documented quarterly."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement mandatory encryption for all ePHI: TLS 1.3 for in-transit (HTTPS everywhere), AES-256 for at-rest encryption. Integrate with underlying data store encryption (DuckDB, MongoDB). Provide encryption key management with audit trail. Estimate: 6-8 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Universal encryption of all ePHI at rest and in transit is mandatory (no longer addressable). Encryption must use FIPS-approved algorithms; separate encryption keys required for ePHI at rest versus in transit (164.312(a)(2)(i))."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Build comprehensive audit log system capturing: user identity, action type, resource accessed, timestamp, result. Immutable log storage. Queryable audit UI with export/filtering. Estimate: 10-14 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "A.8.15 (Logging): Record user activities, exceptions, faults, and information security events for forensic investigation and compliance audits. Logs must be protected from modification."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Implement column-level access control: (1) Design schema for field-level permissions; (2) Modify data source connector to filter columns per role; (3) Apply masking in preview UI and exported data; (4) Audit every access.",
+    "effort": "xl",
+    "becomes_roadmap_item": true,
+    "requirement": "Column-level or field-level access control: Users with access to a table may not see sensitive columns (e.g., SSN, email masked to role-based groups; PII fields restricted to authorized roles only)."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Design and implement role-based access control: (1) Define roles (viewer, editor, admin); (2) Scope data sources and workflows per role; (3) Enforce at API and UI layer; (4) Integrate with identity provider.",
+    "effort": "xl",
+    "becomes_roadmap_item": true,
+    "requirement": "Role-Based Access Control (RBAC) with least-privilege principle: Users can only access data sources and workflows scoped to their assigned role; access decisions are enforced at runtime, not just documented."
+   },
+   {
+    "severity": "blocker",
+    "remediation": "Create GDPR-compliant Data Processing Agreement template; implement sub-processor management system; add DPA acceptance workflow in customer onboarding; document lawful basis and data categories processed",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Data Processing Agreement with Standard Contractual Clauses required for any processing of EU personal data on behalf of a controller. Must specify subject matter, duration, nature, purpose, data types, data subject categories, and controller authorization of sub-processors (Art. 28(2-4))"
+   },
+   {
+    "severity": "important",
+    "remediation": "Implement machine-readable marking for synthetic/AI-generated content in output data. Add metadata tags (e.g., JSON schema with 'ai_generated: true'). Extended deadline: December 2, 2026. Estimate: 2-3 weeks.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "Machine-readable marking of synthetic AI-generated or manipulated content required. Marking must be detectable by automated systems. Deadline extended to December 2, 2026 for generative AI systems already on market before August 2, 2026 (AI Omnibus provisional agreement May 2026)."
+   },
+   {
+    "severity": "major",
+    "remediation": "Implement quarterly access review workflow: list active users by role/workspace, allow manager approval/revocation. Audit trail of reviews. Estimate: 4-6 weeks.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "CC6 (Logical and Physical Access): Implement multi-factor authentication (MFA), role-based access control (RBAC), periodic access reviews, and timely deprovisioning of users. MFA required on every account; access reviews documented quarterly."
+   },
+   {
+    "severity": "major",
+    "remediation": "Integrate OAuth 2.0 and SAML 2.0 for SSO; support Okta, Active Directory, Google Workspace, Azure AD; enable MFA enforcement at identity provider level",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Enterprise-grade authentication via SSO/OAuth/SAML enables single sign-on, reduces password exposure, integrates with identity providers (Active Directory, Okta, Google), and supports MFA for elevated access"
+   },
+   {
+    "severity": "major",
+    "remediation": "Define incident response plan with roles, escalation paths, and 72-hour notification procedures; implement security event detection and alerting; create breach notification workflow; document and test annually",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "Organizations must have incident response procedures with defined roles, responsibilities, and timelines. Data breach notification required to supervisory authority within 72 hours and to affected data subjects without undue delay when high risk (Art. 33-34)"
+   },
+   {
+    "severity": "major",
+    "remediation": "Implement SOX ITGC access controls: formal access request workflow, quarterly access reviews, timely deprovisioning, segregation of duties matrix, role-based access enforcement. Integrate with identity provider (Active Directory/Okta). Estimate: 6-8 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "IT General Controls must include formal access management: segregation of duties, user access reviews (minimum quarterly), timely provisioning/deprovisioning, and documented approval workflows. Access to financial systems must be restricted based on principle of least privilege (PCAOB AS 2201)."
+   },
+   {
+    "severity": "major",
+    "remediation": "Expose JML API: (1) Design SCIM 2.0 or custom API for identity provisioning; (2) Support grant-access, change-role, revoke-all operations; (3) Provide webhooks for identity provider integration (e.g., Okta, AzureAD); (4) Audit all JML events.",
+    "effort": "m",
+    "becomes_roadmap_item": true,
+    "requirement": "Joiner-Mover-Leaver (JML) support: System must provide APIs or workflows to programmatically grant access (joiner), change role (mover), and revoke all access (leaver) with audit trail of each change."
+   },
+   {
+    "severity": "major",
+    "remediation": "Document encryption standards (TLS 1.2+, AES-256 at rest); implement key rotation procedures; add encryption status to security documentation; enable customer verification of encryption state",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "Data must be encrypted in transit (TLS 1.2+) and at rest using strong algorithms. Encryption key management must follow industry standards with documented key rotation procedures and secure key storage (ISO 27001 A10, GDPR Art. 32)"
+   },
+   {
+    "severity": "major",
+    "remediation": "Formalize lineage as queryable data: (1) Extract source/transform/sink relationships from node graph into lineage table; (2) Expose upstream/downstream search UI; (3) Support lineage export for compliance tools (e.g., Collibra, Alation); (4) Add impact analysis (change to source → affected workflows).",
+    "effort": "m",
+    "becomes_roadmap_item": true,
+    "requirement": "Data lineage tracking: Full traceability of data flow from source through transformations to output; allows compliance teams to locate and assess impact of sensitive data, demonstrate GDPR/HIPAA compliance during audits."
+   },
+   {
+    "severity": "major",
+    "remediation": "Integrate automated vulnerability scanning (Nessus, Qualys) and establish remediation workflow. Conduct penetration testing annually via third-party vendor. Document scan results and remediation timelines. Estimate: 8-10 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Vulnerability scanning of all systems handling ePHI at minimum every 6 months. Scans must identify, log, and remediate vulnerabilities with documented remediation timelines (164.308(a)(1)(ii)(B))."
+   },
+   {
+    "severity": "major",
+    "remediation": "Extend RBAC to workspace level: (1) Implement multi-tenant data isolation (workflows/sources scoped per workspace); (2) Grant users workspace-level roles; (3) Log all cross-workspace access; (4) Support workspace transfer/ownership for data mesh topologies.",
+    "effort": "l",
+    "becomes_roadmap_item": true,
+    "requirement": "Workspace/project-level isolation: Data sources and workflows in one workspace are not visible to users in another workspace unless explicitly granted; cross-workspace access must be logged."
+   },
+   {
+    "severity": "major",
+    "remediation": "Implement query audit: (1) Log all data queries executed through MetroGraph (including preview fetches); (2) Capture user, timestamp, query text, rows returned, data source; (3) Store in audit table; (4) Expose query log search/export for compliance teams.",
+    "effort": "m",
+    "becomes_roadmap_item": true,
+    "requirement": "Query audit trail: Every data query executed through MetroGraph (including sample data previews during workflow building) must be logged with: user, timestamp, query text, rows returned, execution time, and result set fingerprint."
+   },
+   {
+    "severity": "major",
+    "remediation": "Ship RBAC with workspace-level and resource-level roles; implement MFA support; add role templates (viewer, editor, admin); enforce least-privilege access with audit trail of role assignments",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Role-based access control (RBAC) with multi-factor authentication (MFA) required to ensure only authorized users access sensitive data. Access must be granted based on principle of least privilege and reviewed periodically (ISO 27001 A9)"
+   },
+   {
+    "severity": "major",
+    "remediation": "Add CCPA compliance statements to privacy policy; implement consumer request workflow (access, deletion, opt-out); add non-discrimination clause; ensure 45-day response time for requests; train support team on California requirements",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "California Consumer Privacy Act requires businesses to honor consumer rights: access personal information (1798.100), delete personal information (1798.105), opt-out of sale (1798.120), and non-discrimination (1798.125). Must respond within 45 days"
+   },
+   {
+    "severity": "major",
+    "remediation": "Implement role-aware data masking in preview: (1) Hook classification metadata; (2) Mask PII/PHI fields in sample data shown in live preview (show '***' or hash); (3) Allow admin to configure masking rules per role; (4) Apply same masking to exported results.",
+    "effort": "m",
+    "becomes_roadmap_item": true,
+    "requirement": "Automatic masking/redaction of sensitive fields in UI preview and sample data shown during workflow building; mask should be role-aware (e.g., data engineers see real values, business users see '***')."
+   },
+   {
+    "severity": "major",
+    "remediation": "Monitor Schrems III ruling (expected late 2026). Develop contingency: maintain SCCs + supplementary measures as fallback. If DPF invalidated, migrate to EU data residency option or implement additional compensatory controls. Ongoing monitoring required.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "EU-US Data Privacy Framework provides streamlined transfer mechanism for US companies with self-certified adequacy commitments. However, framework depends on executive order (not federal law) and faces Schrems III challenge (ruling expected late 2026) which could invalidate the mechanism."
+   },
+   {
+    "severity": "major",
+    "remediation": "Establish annual cybersecurity training program for board/executives: cover NIS2 obligations, incident response procedures, threat landscape, governance requirements. Document training completion and attendance. Estimate: 2-3 weeks setup + annual refresh.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "Management bodies must undergo regular cybersecurity training to understand risk landscape, governance requirements, and incident response procedures. Training must be documented and updated at minimum annually (NIS2 Article 20(2))."
+   },
+   {
+    "severity": "major",
+    "remediation": "Create sub-processor registry documenting all data sources (SQL, MongoDB, cloud providers) and their processing scope; include in DPA; notify customers of changes; provide SCCs or equivalent contracts from sub-processors",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "Controllers must be informed of all sub-processors processing personal data on behalf of the processor. Any change in sub-processors requires prior authorization. Sub-processors must be contractually bound by equivalent data protection obligations (Art. 28(2-4))"
+   },
+   {
+    "severity": "major",
+    "remediation": "Implement change request workflow: propose → approve → execute → audit trail. Tie to execution logs. Require approval for production schema/data changes. Estimate: 8-10 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "CC8 (Change Management): Implement documented change control process including authorization, testing, and audit trail of changes to systems and data. All modifications must be tracked and logged."
+   },
+   {
+    "severity": "major",
+    "remediation": "Support SCIM/directory sync to automate deprovisioning when users are removed from IdP. Or manual deprovisioning with immediate access revocation. Estimate: 4-6 weeks.",
+    "effort": "medium",
+    "becomes_roadmap_item": true,
+    "requirement": "CC6 (Logical and Physical Access): Implement multi-factor authentication (MFA), role-based access control (RBAC), periodic access reviews, and timely deprovisioning of users. MFA required on every account; access reviews documented quarterly."
+   },
+   {
+    "severity": "major",
+    "remediation": "Implement Schrems II supplementary measures: field-level encryption before US transfer, strict access controls (IP restrictions, VPN enforcement), pseudonymization where possible. Document technical safeguards in DPA Annex B. Estimate: 8-10 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "SCCs for data transfers require supplementary technical and organizational measures to comply with Schrems II. Organizations must implement: encryption at rest, strict access controls, purpose limitation, regular monitoring, and contractual commitments to re-encrypt or re-transfer if US legal orders threaten adequacy."
+   },
+   {
+    "severity": "major",
+    "remediation": "Add GDPR Art. 15 workflow: implement DSAR portal where data subjects request their data; auto-generate export (queries, graphs, metadata) in CSV/JSON; track request-to-delivery timeline; prove 30-day compliance",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Data subjects have the right to access their personal data and receive confirmation of processing, purposes, categories, recipients, and retention period (Art. 15). Organizations must provide data in portable format within 30 days of request"
+   },
+   {
+    "severity": "major",
+    "remediation": "Build access review UI: (1) Expose report: 'Who has access to which data sources/workflows'; (2) Allow bulk revoke with approval workflow; (3) Support scheduled access expiry; (4) Export for auditor review.",
+    "effort": "m",
+    "becomes_roadmap_item": true,
+    "requirement": "Quarterly access reviews: Organizations must be able to pull reports of who has access to what data sources and workflows, review for appropriateness, and revoke stale access."
+   },
+   {
+    "severity": "major",
+    "remediation": "Establish change control process: documented change requests, independent approval, sandbox testing, deployment audit trail, emergency change procedures with compensating controls. Integrate with execution logs. Estimate: 6-8 weeks.",
+    "effort": "high",
+    "becomes_roadmap_item": true,
+    "requirement": "Formal change management for systems affecting financial reporting must include: documented change requests, segregation of development/testing/production, approvals from independent parties, testing before deployment, and audit trail of all changes. Emergency changes require compensating controls."
+   },
+   {
+    "severity": "minor",
+    "remediation": "Document data minimization in terms of service: MetroGraph only queries requested columns/records, does not retain data outside visualization lifecycle, queries are ephemeral unless explicitly saved",
+    "effort": "low",
+    "becomes_roadmap_item": false,
+    "requirement": "Personal data shall be adequate, relevant, and limited to what is necessary in relation to the purposes for which they are processed. Data collected must be aligned with stated purpose and no more than necessary (Art. 5(1)(c))"
+   },
+   {
+    "severity": "minor",
+    "remediation": "Add purpose limitation section to DPA/ToS: MetroGraph processes personal data only for the specific purpose of visualization and exploration; not used for training, profiling, or secondary purposes",
+    "effort": "low",
+    "becomes_roadmap_item": false,
+    "requirement": "Personal data collected for a specified purpose cannot be processed for a different purpose unless compatible or authorized. Every processing activity must be mapped to a lawful basis (Art. 5(1)(b), Art. 6)"
+   }
+  ],
+  "gap_severity": [
+   {
+    "severity": "blocker",
+    "n": 22
+   },
+   {
+    "severity": "major",
+    "n": 22
+   },
+   {
+    "severity": "minor",
+    "n": 2
+   },
+   {
+    "severity": "important",
+    "n": 1
+   }
+  ],
+  "controls": [
+   {
+    "coverage": "none",
+    "n": 42,
+    "shipped": 1
+   },
+   {
+    "coverage": "partial",
+    "n": 9,
+    "shipped": 4
+   },
+   {
+    "coverage": "planned",
+    "n": 5,
+    "shipped": 1
+   }
+  ],
+  "gates_edges": [
+   {
+    "rel_type": "gates",
+    "n": 45
+   },
+   {
+    "rel_type": "satisfies",
+    "n": 23
+   }
+  ]
+ },
+ "figures": [
+  "governance_gaps.png"
+ ]
+}

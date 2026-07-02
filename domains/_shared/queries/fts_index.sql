@@ -4,10 +4,20 @@
 INSTALL fts;
 LOAD fts;
 
+PRAGMA create_fts_index('compintel.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('devin.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('docker.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('ecosystem.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('ecs.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('exercise.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('finance.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('firecracker.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('governance.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('hci.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('k8s.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('linux.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('market.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('methodology.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('product.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('strategy.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
+PRAGMA create_fts_index('voc.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);

@@ -1,0 +1,715 @@
+{
+  "leaf": "market/theory-dm-vs-agents-debate",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "User interface paradigm where users directly act on visual representations of objects using rapid, incremental, reversible operations with immediate feedback. Core principle: visible controls, physical actions over syntax, real-time continuous representation.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1981 / Direct Manipulation Techniques for the Human-Computer Interface",
+        "Shneiderman 1997 / Direct manipulation vs. interface agents (CHI debate)",
+        "Shneiderman 2004 / Designing the User Interface (4th ed.)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-shneiderman-direct-manipulation-techniques",
+        "market-theory-dm-vs-agents-debate-shneiderman-maes-chi97-debate",
+        "market-theory-dm-vs-agents-debate-shneiderman-designing-ui-book",
+        "market-theory-dm-vs-agents-debate-nn-direct-manipulation"
+      ],
+      "implication": "MetroGraph's core design strategy: surface-area management via visual interaction (nodes/edges as directly manipulable objects) rather than conversational/prompt-based graph navigation. Reduces unpredictability and cognitive load for complex graph queries.",
+      "related_concepts": [
+        "Affordances",
+        "Feedback Immediacy",
+        "Reversibility",
+        "Cognitive Load",
+        "Agency",
+        "Mental Models"
+      ]
+    },
+    {
+      "concept": "Intelligent Agents",
+      "field": "hci",
+      "definition": "Software entities that perceive their environment, learn from observation, and autonomously execute tasks on behalf of users to reduce cognitive burden. Assumes agent can reliably infer user intent without explicit instruction.",
+      "strength": "framework",
+      "key_refs": [
+        "Maes 1997 / Intelligent Software Agents vs. User-Controlled Direct Manipulation",
+        "Lieberman & Selker 1997 / Agents for the User Interface",
+        "Völkel et al. 2020 / What is 'Intelligent' in Intelligent User Interfaces?"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-maes-1997-intelligent-agents",
+        "market-theory-dm-vs-agents-debate-lieberman-agents-ui",
+        "market-theory-dm-vs-agents-debate-voelkel-intelligent-iui-meta",
+        "market-theory-dm-vs-agents-debate-interface-agents-review"
+      ],
+      "implication": "MetroGraph's risk of 'chat-first' agent builder interfaces: autonomous graph editing agents create flight to conversation (worst-of-both-worlds). Solution: agents as recommendations + human approval, not autonomous action.",
+      "related_concepts": [
+        "Autonomy Levels",
+        "Mixed-Initiative Interaction",
+        "Trust Calibration",
+        "Transparency",
+        "User Control"
+      ]
+    },
+    {
+      "concept": "Mixed-Initiative Interaction",
+      "field": "hci",
+      "definition": "System design where human and agent fluidly negotiate control over time, with explicit turn-taking, seamless handoffs, and transparent communication of who holds agency. Agent can suggest or request permission; human retains override capability.",
+      "strength": "established-law",
+      "key_refs": [
+        "Horvitz 2007 / People, Agents, and Interaction: Principles of Mixed-Initiative User Interfaces",
+        "Horvitz & Paek 2007 / Mixed-initiative interaction (CHI)",
+        "Zuboff & Hendricks 2020 / Age of Surveillance Capitalism (control dynamics)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-horvitz-mixed-initiative",
+        "market-theory-dm-vs-agents-debate-horvitz-mixed-initiative-interaction",
+        "market-theory-dm-vs-agents-debate-chi-mixed-initiative-principles",
+        "market-theory-dm-vs-agents-debate-aiuxdesign-mixed-initiative-control"
+      ],
+      "implication": "Best-of-both design for MetroGraph: agent suggests graph transformations or workflow steps, human approves or rejects with visible reasoning. Preserves control perception (agency) while leveraging AI recommendations.",
+      "related_concepts": [
+        "Agency",
+        "Autonomy Levels",
+        "Transparency",
+        "User Control",
+        "Reversibility"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "hci",
+      "definition": "Perceived possible actions enabled by a design. Real affordances exist objectively; perceived affordances are what users believe they can do. Well-designed interfaces make affordances obvious without conscious effort.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / The Design of Everyday Things (originally Psychology of Everyday Things)",
+        "Norman 1999 / Affordances and Design"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-norman-design-everyday-things",
+        "market-theory-dm-vs-agents-debate-norman-affordances-design"
+      ],
+      "implication": "MetroGraph nodes/edges/graph actions must have visible affordances; ambiguous agents (unclear what they can/will do) erode affordances and increase cognitive load. Transparency mechanisms (goal visibility, reasoning logs) create perceived affordances for oversight.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Visibility of System Status",
+        "Mental Models",
+        "Cognitive Load"
+      ]
+    },
+    {
+      "concept": "Agency",
+      "field": "cognitive-psych",
+      "definition": "User's subjective experience of influence and control over system behavior. Psychological sense that actions produce intended outcomes; mediated by feedback quality, predictability, and reversibility. Higher agency correlates with satisfaction and adoption.",
+      "strength": "empirical",
+      "key_refs": [
+        "Schachter & Singer 1962 / Cognitive, social, and physiological determinants of emotional state",
+        "Moore & Haggard 2010 / The sense of agency in human-computer interactions (neuroscience review)",
+        "Haggard & Chambon 2012 / Sense of agency"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-experience-agency-review",
+        "market-theory-dm-vs-agents-debate-perceived-control-interface-design",
+        "market-theory-dm-vs-agents-debate-agency-hci-design",
+        "market-theory-dm-vs-agents-debate-autonomy-privacy-trust-llm"
+      ],
+      "implication": "Critical failure mode: autonomous agents reduce sense of agency even when improving outcome (user feels 'sidelined'). MetroGraph must preserve agency through visible intermediate steps, clear causality (what action triggered this?), and undo/modify capability.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "User Control",
+        "Reversibility",
+        "Mental Models",
+        "Autonomy Levels"
+      ]
+    },
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "Perceived likelihood that following a path (clicking, exploring, interacting) will lead to desired information or goal. Quality of environmental cues (visual design, language, structure) that signal whether to continue foraging or switch tactics.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli 2007 / Information Foraging Theory: Adaptive Interaction with Information",
+        "Pirolli & Card 1999 / Information foraging in information access environments (hypertext navigation)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-pirolli-information-foraging"
+      ],
+      "implication": "For MetroGraph: strong information scent makes graph structure legible; weak scent when agent processes are opaque (user can't predict next step). Visible agent reasoning (intermediate outputs, decomposed steps) improves scent and discoverability of agent capabilities.",
+      "related_concepts": [
+        "Visibility of System Status",
+        "Transparency",
+        "Affordances",
+        "Cognitive Load"
+      ]
+    },
+    {
+      "concept": "Trust Calibration",
+      "field": "hci",
+      "definition": "Achieving appropriate user confidence in agent capability: high enough to use recommendations, low enough to avoid over-reliance. Overcalibration (too much trust) causes misuse; undercalibration (too little trust) prevents adoption. Dynamic process requiring feedback on agent failures.",
+      "strength": "empirical",
+      "key_refs": [
+        "Muir & Moray 1996 / Trust in automation: A review",
+        "Lee & See 2004 / Trust in automation",
+        "Wang et al. 2019 / Adaptive trust calibration for human-AI collaboration"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-adaptive-trust-calibration",
+        "market-theory-dm-vs-agents-debate-calibrating-reliance-automated-advice",
+        "market-theory-dm-vs-agents-debate-measuring-trust-calibrations"
+      ],
+      "implication": "MetroGraph risk: opaque agents (LLM-based without reasoning logs) cause miscalibration—users either blind-trust or refuse to use. Solution: progressive transparency that shows agent capability boundaries, failure modes, and example outputs to calibrate expectations.",
+      "related_concepts": [
+        "Transparency",
+        "Explainability",
+        "Mental Models",
+        "Autonomy Levels",
+        "Reliability"
+      ]
+    },
+    {
+      "concept": "Transparency (in AI/Agent Systems)",
+      "field": "hci",
+      "definition": "Design practice of exposing agent decision-making process, goals, and confidence levels to users. Not just binary (transparent/opaque) but spectrum: what information to show, when, in what form. Fluent output can mask uncertainty; effective transparency requires deliberate design.",
+      "strength": "empirical",
+      "key_refs": [
+        "Amershi et al. 2019 / Guidelines for Human-AI Interaction",
+        "Wang & Müller 2021 / Explanations based on the most influential training examples",
+        "Röchert et al. 2024 / AI Transparency in the Age of LLMs: A Human-Centered Research Roadmap"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-ai-transparency-llm-roadmap",
+        "market-theory-dm-vs-agents-debate-chi26-reporting-llm-systems",
+        "market-theory-dm-vs-agents-debate-design-transparency-trust-agents",
+        "market-theory-dm-vs-agents-debate-explainability-human-agent-systems",
+        "market-theory-dm-vs-agents-debate-enhancing-trust-llm-agents"
+      ],
+      "implication": "LLM fluency masks uncertainty (critical weakness). MetroGraph must expose: agent confidence, alternative suggestions, reasoning steps, and explicit boundaries (e.g., 'agent cannot modify schema'). Transparency mechanisms are first defense against trust miscalibration.",
+      "related_concepts": [
+        "Explainability",
+        "Trust Calibration",
+        "Mental Models",
+        "Visibility of System Status",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory",
+      "field": "cognitive-psych",
+      "definition": "Users have finite working memory capacity. Extraneous cognitive load (UI clutter, unclear instructions) competes with germane load (understanding task). Well-designed interfaces minimize extraneous load to free resources for task.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller 1988 / Cognitive load during problem solving",
+        "Paas & Merriënboer 2020 / Cognitive Load Theory: a decade of research"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-cognitive-load-agent-interface",
+        "market-theory-dm-vs-agents-debate-chi-mixed-initiative-principles"
+      ],
+      "implication": "Autonomous agents increase cognitive load by forcing users to infer intent, audit decisions, and imagine failure modes. MetroGraph solution: step-by-step transparency (decomposed tasks) and direct manipulation (visible objects) both reduce load by making system state obvious.",
+      "related_concepts": [
+        "Visibility of System Status",
+        "Information Scent",
+        "Mental Models",
+        "Progressive Disclosure",
+        "Feedback Immediacy"
+      ]
+    },
+    {
+      "concept": "Reversibility",
+      "field": "interaction-design",
+      "definition": "User ability to undo or revert actions with minimal penalty. Core Shneiderman principle: enables exploration and learning because mistakes are recoverable. Contrasts with 'one-way doors' (permanent, irreversible changes) requiring confirmation.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1981 / Direct Manipulation Techniques (third principle: rapid, incremental, reversible operations)",
+        "DeWitt & Kurata 2014 / Delegate the Undoable, Guard the Irreversible"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-shneiderman-direct-manipulation-techniques",
+        "market-theory-dm-vs-agents-debate-reversibility-tiered-autonomy",
+        "market-theory-dm-vs-agents-debate-exploratory-graphical-inference"
+      ],
+      "implication": "MetroGraph autonomy should scale by reversibility: high autonomy for two-way-door operations (editable graph transformations), explicit approval for one-way doors (schema changes, deletions). Prevents 'permission creep' while enabling safe exploration.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Agency",
+        "User Control",
+        "Feedback Immediacy",
+        "Progressive Disclosure"
+      ]
+    },
+    {
+      "concept": "Mental Models",
+      "field": "cognitive-psych",
+      "definition": "User's internal representation of system behavior: how it works, what's possible, how actions map to outcomes. Accurate mental models enable prediction and error recovery. Opaque systems force users to guess or build incorrect models.",
+      "strength": "empirical",
+      "key_refs": [
+        "Norman 1983 / Some observations on mental models",
+        "Shneiderman 1997 / Designing the User Interface (section on feedback)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-shneiderman-maes-chi97-debate",
+        "market-theory-dm-vs-agents-debate-norman-design-everyday-things",
+        "market-theory-dm-vs-agents-debate-chi26-sensemaking-llm-agents"
+      ],
+      "implication": "LLM agents produce flawed mental models (users think agent understands graph structure when it doesn't). MetroGraph must support model-building through: visible intermediate states, explicit constraints, worked examples, and progressive capability disclosure.",
+      "related_concepts": [
+        "Transparency",
+        "Explainability",
+        "Cognitive Load",
+        "Information Scent",
+        "Trust Calibration"
+      ]
+    },
+    {
+      "concept": "Locus of Control",
+      "field": "cognitive-psych",
+      "definition": "Psychological dimension: user belief that outcomes result from own actions (internal locus) vs. external forces (external locus). In UI context, perceived control over system behavior; higher internal locus correlates with satisfaction and learning.",
+      "strength": "empirical",
+      "key_refs": [
+        "Rotter 1966 / Generalized expectancies for internal versus external control of reinforcement",
+        "Dix et al. 2003 / Human-Computer Interaction (3rd ed.) / agency and control"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-perceived-control-interface-design",
+        "market-theory-dm-vs-agents-debate-agency-hci-design"
+      ],
+      "implication": "Agents shift locus from internal (user controlled) to external (agent decided). MetroGraph must preserve internal locus through: user-initiated actions, visible causality, and clear responsibility boundaries ('you asked for X, agent executed X').",
+      "related_concepts": [
+        "Agency",
+        "User Control",
+        "Mental Models",
+        "Direct Manipulation"
+      ]
+    },
+    {
+      "concept": "Autonomy Levels (Autonomy Spectrum)",
+      "field": "interaction-design",
+      "definition": "Graduated spectrum from user-controlled (human at every decision) to fully autonomous (agent acts independently). Intermediate levels: suggestions with human review, agent-initiated with veto, agent acts then reports. Design choice, not binary.",
+      "strength": "framework",
+      "key_refs": [
+        "Sheridan & Verplank 1978 / Levels of automation",
+        "Parasuraman et al. 2000 / A model for types and levels of human interaction with automation",
+        "Degani et al. 2024 / Levels of Autonomy for AI Agents"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-levels-autonomy-agents",
+        "market-theory-dm-vs-agents-debate-distinguishing-autonomous-collaborative",
+        "market-theory-dm-vs-agents-debate-design-autonomy-ux-principles",
+        "market-theory-dm-vs-agents-debate-agentic-design-patterns-sitepoint"
+      ],
+      "implication": "MetroGraph's 'copilot-vs-autonomous-agent' distinction: start with suggestions (Level 1), progress to agent-initiated-with-approval (Level 3) only as trust earned. Variable autonomy per task type and complexity level.",
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Trust Calibration",
+        "Agency",
+        "User Control",
+        "Reversibility"
+      ]
+    },
+    {
+      "concept": "Prompt Engineering vs. Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "Tension between natural language instruction (prompts: user writes description of intent) vs. graphical direct manipulation (user acts on visual objects). Prompts offer flexibility but ambiguity risk; direct manipulation offers clarity but limits expressiveness.",
+      "strength": "empirical",
+      "key_refs": [
+        "Spector et al. 2023 / DirectGPT: A Direct Manipulation Interface to Interact with Large Language Models",
+        "Shneiderman 1997 / Direct manipulation vs. interface agents (broader principle)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-directgpt-manipulation-llm",
+        "market-theory-dm-vs-agents-debate-shneiderman-maes-chi97-debate"
+      ],
+      "implication": "MetroGraph core wedge: prompts (workflow graph as natural language description) create unpredictability; direct manipulation (visual nodes/edges) provides control + feedback. Best-of-both: suggestions from LLM, approval via drag-drop actions.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Affordances",
+        "Transparency",
+        "Cognitive Load",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Copilot Pattern vs. Autonomous Agent",
+      "field": "interaction-design",
+      "definition": "Design distinction: Copilot (agent as assistant making suggestions, human decides) vs. Autonomous Agent (agent executes independently, reports outcomes). Copilot preserves control perception; autonomy improves efficiency at risk of overcalibration.",
+      "strength": "framework",
+      "key_refs": [
+        "Pienso 2025 / Direct Manipulation vs. Interface Agents: Revisiting the Classic HCI Debate",
+        "Lim et al. 2024 / The agentic interface: principles and patterns for autonomous User Experiences"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-pienso-dm-vs-agents-debate",
+        "market-theory-dm-vs-agents-debate-lim-agentic-interface-principles",
+        "market-theory-dm-vs-agents-debate-how-users-perceive-mixed-initiative"
+      ],
+      "implication": "MetroGraph's critical design choice: default to copilot (suggestions + approval) to solve HCI failure of agent-builder tools. Autonomy as earned privilege post-trust calibration, scoped to reversible operations.",
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Autonomy Levels",
+        "Agency",
+        "Trust Calibration",
+        "User Control"
+      ]
+    },
+    {
+      "concept": "Explainability",
+      "field": "hci",
+      "definition": "System's ability to provide intelligible explanations of decisions/outputs to users. Distinct from transparency (showing state) and interpretability (internal model structure). Good explanation answers 'why did the agent do X?' in user's terms.",
+      "strength": "empirical",
+      "key_refs": [
+        "Selvaraju et al. 2017 / Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization",
+        "Lipton 2018 / The Mythos of Model Interpretability",
+        "Bussone et al. 2015 / Explainability in Human-Agent Systems"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-explainability-human-agent-systems",
+        "market-theory-dm-vs-agents-debate-explainability-survey-human-autonomy",
+        "market-theory-dm-vs-agents-debate-xai-interaction-design",
+        "market-theory-dm-vs-agents-debate-agentic-interpretability-llm"
+      ],
+      "implication": "For MetroGraph LLM agents: explain 'why did agent propose this transformation?' in graph-native terms (e.g., 'reduces cycles,' 'improves query performance'). Explanations in user's domain build trust faster than technical internals.",
+      "related_concepts": [
+        "Transparency",
+        "Mental Models",
+        "Trust Calibration",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "User Control",
+      "field": "interaction-design",
+      "definition": "Degree to which user can influence system behavior through deliberate action. Includes: input authority (what user can ask), decision authority (user approves before execution), output authority (user can edit/reject results).",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1997 / Direct manipulation vs. interface agents (central to debate)",
+        "Pienso 2025 / Design principles: 'exceptional agent without thoughtful UI is destined for POC graveyard'"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-shneiderman-maes-chi97-debate",
+        "market-theory-dm-vs-agents-debate-pienso-dm-vs-agents-debate",
+        "market-theory-dm-vs-agents-debate-why-johnny-cant-use-agents",
+        "market-theory-dm-vs-agents-debate-engaging-ai-interface-design"
+      ],
+      "implication": "Shneiderman-Maes core tension: agents reduce user control → unpredictability → abandonment. MetroGraph solution: design agencies (agent actions are suggestions) rather than autonomy (agent actions are decisions).",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Agency",
+        "Autonomy Levels",
+        "Mixed-Initiative Interaction",
+        "Locus of Control"
+      ]
+    },
+    {
+      "concept": "Visibility of System Status",
+      "field": "interaction-design",
+      "definition": "Nielsen's first usability heuristic: system must keep users informed about what's happening in real-time. In agent context: what is agent doing, why, what will it do next, what confidence level.",
+      "strength": "established-law",
+      "key_refs": [
+        "Nielsen 1994 / 10 Usability Heuristics for User Interface Design",
+        "NN/g 2024 / Visibility of System Status (Usability Heuristic #1)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-visibility-system-status-ux",
+        "market-theory-dm-vs-agents-debate-expose-system-state-guidelines"
+      ],
+      "implication": "LLM agents violate visibility heuristic: streaming text creates false sense of understanding. MetroGraph must show agent state explicitly (parsing graph, identifying bottlenecks, evaluating alternatives) before recommending changes.",
+      "related_concepts": [
+        "Transparency",
+        "Information Scent",
+        "Cognitive Load",
+        "Mental Models",
+        "Feedback Immediacy"
+      ]
+    },
+    {
+      "concept": "Progressive Disclosure",
+      "field": "interaction-design",
+      "definition": "UI design pattern showing only necessary information by default, revealing details on demand. Reduces cognitive load for novices; experts can access advanced options. Applied to agent systems: start with simple suggestions, expose reasoning if needed.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 2002 / Designing for Learning and Discovery",
+        "Lim et al. 2024 / The agentic interface (pattern: structured progressive autonomy)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-lim-agentic-interface-principles",
+        "market-theory-dm-vs-agents-debate-design-autonomy-ux-principles"
+      ],
+      "implication": "MetroGraph: novice users see agent as recommendation only; expert users can expand reasoning logs, adjust confidence thresholds, see alternative suggestions. Reduces friction for new users while supporting power users.",
+      "related_concepts": [
+        "Cognitive Load",
+        "Autonomy Levels",
+        "Information Scent",
+        "Transparency"
+      ]
+    },
+    {
+      "concept": "Feedback Immediacy",
+      "field": "interaction-design",
+      "definition": "Speed and quality of system response to user action. Shneiderman principle: 100ms feedback threshold for perception of responsiveness. Poor feedback (slow, ambiguous, delayed) breaks users' sense of control and increases cognitive load.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1981 / Direct Manipulation Techniques (immediate feedback principle)",
+        "Nielsen 1993 / Usability Engineering (response time thresholds)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-shneiderman-direct-manipulation-techniques",
+        "market-theory-dm-vs-agents-debate-shneiderman-maes-chi97-debate"
+      ],
+      "implication": "MetroGraph graph interactions (drag nodes, add edges) must respond <100ms for direct manipulation feel. Agent operations (suggestions, transformations) must show progress indicators and intermediate states, not just final result.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Agency",
+        "Cognitive Load",
+        "Visibility of System Status"
+      ]
+    },
+    {
+      "concept": "Continuous Representation",
+      "field": "interaction-design",
+      "definition": "Direct manipulation principle: visible representation of objects and state at all times. Contrasts with command-line (invisible state). Allows users to see system state before, during, and after actions.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1981 / Direct Manipulation Techniques (first principle: continuous visible representation)",
+        "Tufte 1989 / Visual Design of the User Interface"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-shneiderman-direct-manipulation-techniques",
+        "market-theory-dm-vs-agents-debate-tufte-visual-design-ui",
+        "market-theory-dm-vs-agents-debate-tufte-visual-display-quantitative"
+      ],
+      "implication": "MetroGraph core: graph as continuously visible representation (nodes/edges always visible, zoomable, queryable). Agent transformations shown as visible edits to graph, not black-box operations. Supports exploration and learning.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Visibility of System Status",
+        "Information Scent",
+        "Mental Models"
+      ]
+    },
+    {
+      "concept": "Learning Agents (Adaptive/Observational)",
+      "field": "hci",
+      "definition": "Agents that learn from user behavior via observation or explicit instruction (programming-by-example) rather than explicit rules. Lieberman's approach: master-apprentice relationship where agent watches and generalizes user patterns.",
+      "strength": "empirical",
+      "key_refs": [
+        "Lieberman 1995 / A learning interface agent for scheduling meetings",
+        "Lieberman & Selker 1997 / Agents for the User Interface (teacher-student metaphor)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-lieberman-agents-ui",
+        "market-theory-dm-vs-agents-debate-lieberman-learning-interface-agents",
+        "market-theory-dm-vs-agents-debate-lieberman-autonomous-interface-agents"
+      ],
+      "implication": "Contrast to prompt-based agents: learning agents reduce need for explicit instruction but introduce trust risk (what did agent learn from my actions?). MetroGraph might support learning from past query patterns, but requires extreme transparency.",
+      "related_concepts": [
+        "Intelligent Agents",
+        "Transparency",
+        "Mental Models",
+        "Trust Calibration"
+      ]
+    },
+    {
+      "concept": "Attention-Aware Interaction",
+      "field": "hci",
+      "definition": "System that perceives user's attention (via gaze, interaction patterns, or explicit signals) and adapts agent initiative accordingly. Horvitz concept: don't interrupt when user is focused; offer assistance when user pauses or searches.",
+      "strength": "empirical",
+      "key_refs": [
+        "Horvitz 2007 / People, Agents, and Interaction (attention-sensitive interface design)",
+        "Horvitz & Paek 2007 / Mixed-initiative interaction"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-horvitz-mixed-initiative",
+        "market-theory-dm-vs-agents-debate-horvitz-mixed-initiative-interaction"
+      ],
+      "implication": "For MetroGraph: agent suggests graph optimizations proactively when user pauses or explicitly asks ('suggest query improvements'), not while user is editing. Respects user agency and reduces cognitive load from unsolicited suggestions.",
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Cognitive Load",
+        "User Control",
+        "Agency"
+      ]
+    },
+    {
+      "concept": "Human-in-the-Loop",
+      "field": "interaction-design",
+      "definition": "System design where human retains decision authority over agent actions. Agent gathers information, makes recommendations, humans approve/modify. Contrasts with fully automated systems.",
+      "strength": "empirical",
+      "key_refs": [
+        "Horvitz & Paek 2007 / Mixed-initiative interaction",
+        "Bansal et al. 2024 / ResearStudio: A Human-Intervenable Framework for Building Controllable Deep-Research Agents"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-researchstudio-human-intervenable",
+        "market-theory-dm-vs-agents-debate-discovering-sweet-spot-hci",
+        "market-theory-dm-vs-agents-debate-terminal-human-ai-agent-collab"
+      ],
+      "implication": "MetroGraph's core architecture: human-in-loop at decision points. Agent identifies graph anomalies/optimization opportunities, human approves/rejects/modifies. Preserves control perception and prevents silent failures.",
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "User Control",
+        "Agency",
+        "Autonomy Levels"
+      ]
+    },
+    {
+      "concept": "Anthropomorphism in Agent Design",
+      "field": "hci",
+      "definition": "Designing agents with human-like characteristics (names, avatars, conversational language). Increases engagement and perceived competence but risks inflating trust beyond actual capability. Design tradeoff.",
+      "strength": "empirical",
+      "key_refs": [
+        "Frontiers in Computer Science 2025 / Effect of anthropomorphism and perceived intelligence in chatbot avatars"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-anthropomorphism-chatbot-trust"
+      ],
+      "implication": "MetroGraph risk: natural language agent explanations (fluent, conversational) create false trust. Counterbalance with explicit confidence markers, bounded scope declarations, and transparent failure modes rather than humanizing language.",
+      "related_concepts": [
+        "Trust Calibration",
+        "Mental Models",
+        "Transparency",
+        "Explainability"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory Applied to Agent Systems",
+      "field": "cognitive-psych",
+      "definition": "Agent systems increase cognitive load in two ways: (1) users must audit agent decisions (extraneous load), (2) users must model agent capabilities (germane load for trust). Transparency mechanisms reduce extraneous load; progressive disclosure manages learning load.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller 1988 / Cognitive load during problem solving",
+        "Springer 2022 / Theory-based approach for assessing cognitive load during time-critical resource-managing human-computer interactions"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-cognitive-load-agent-interface",
+        "market-theory-dm-vs-agents-debate-ai-behavioral-science"
+      ],
+      "implication": "MetroGraph design principle: reduce extraneous load (visual clarity, direct manipulation) and structure germane load (progressive disclosure of agent capabilities, worked examples). Agent suggestions should feel like 'helpful sidebar,' not 'overwhelming choice.'",
+      "related_concepts": [
+        "Visibility of System Status",
+        "Progressive Disclosure",
+        "Information Scent",
+        "Cognitive Load"
+      ]
+    },
+    {
+      "concept": "Reliability (in Agent Context)",
+      "field": "hci",
+      "definition": "Agent's ability to produce correct outputs consistently. But in agent design, perceived reliability (user's belief about capability) matters more than actual reliability. Transparency improves calibration; failures without explanation erode trust faster.",
+      "strength": "empirical",
+      "key_refs": [
+        "Amershi et al. 2019 / Guidelines for Human-AI Interaction (design for graceful failures)",
+        "ArXiv 2025 / Towards a Science of AI Agent Reliability"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-ai-agent-reliability-science",
+        "market-theory-dm-vs-agents-debate-toward-safe-responsible-agents"
+      ],
+      "implication": "MetroGraph: for graph agents, explicitly state reliability bounds (e.g., 'agent optimizes for query latency but may miss secondary metrics'). Visible failure examples (agent misclassified schema type) build accurate mental models.",
+      "related_concepts": [
+        "Trust Calibration",
+        "Transparency",
+        "Mental Models",
+        "Explainability"
+      ]
+    },
+    {
+      "concept": "Responsibility (User Accountability for Agent Actions)",
+      "field": "hci",
+      "definition": "Shneiderman's principle: users should feel responsible for system outcomes. Agents that act autonomously disrupt this—users either blame themselves (undeserved guilt) or blame system (eroding trust). Design must clarify causality.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1997 / Direct manipulation vs. interface agents (central principle: 'responsibility will be the central issue in this debate')"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-shneiderman-maes-chi97-debate",
+        "market-theory-dm-vs-agents-debate-pienso-dm-vs-agents-debate"
+      ],
+      "implication": "MetroGraph: make causality explicit—'You asked agent to optimize query, agent proposed index addition, You approved'—each step visible. Users feel responsible when they see their approval decision, not when agent silently acts.",
+      "related_concepts": [
+        "Agency",
+        "User Control",
+        "Locus of Control",
+        "Direct Manipulation"
+      ]
+    },
+    {
+      "concept": "Visualization Design for Agent Interfaces",
+      "field": "visualization",
+      "definition": "Principles from Munzner's nested model (domain → abstraction → encoding → algorithm) applied to displaying agent reasoning: what data (domain), what task does agent solve (abstraction), how to encode decisions (visual marks/channels), what algorithm renders it (efficiency).",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis and Design (nested model)",
+        "Tufte 1989 / Visual Design of the User Interface (information before polish)"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-munzner-visualization-analysis-design",
+        "market-theory-dm-vs-agents-debate-tufte-visual-display-quantitative",
+        "market-theory-dm-vs-agents-debate-human-ai-collaboration-visual-analytics"
+      ],
+      "implication": "MetroGraph agents as visual output: visualize graph transformations as explicit edits (highlight added nodes, changed edges), not text descriptions. Use visual channels (color, animation) to show confidence, reversibility, and alternatives.",
+      "related_concepts": [
+        "Continuous Representation",
+        "Direct Manipulation",
+        "Visibility of System Status",
+        "Information Scent"
+      ]
+    },
+    {
+      "concept": "Reversibility-Based Autonomy Scaling",
+      "field": "interaction-design",
+      "definition": "Design pattern: grant autonomy proportional to reversibility of action. Two-way doors (editable, undoable) → high autonomy. One-way doors (permanent, non-recoverable) → explicit approval. Operationalizes Shneiderman's reversibility principle.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "DeWitt & Kurata 2024 / Delegate the Undoable, Guard the Irreversible: Tiering Agent Autonomy by Reversibility"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-reversibility-tiered-autonomy"
+      ],
+      "implication": "MetroGraph practical principle: agent can autonomously add indexes (reversible: can drop later), but requires approval for schema changes (irreversible). Scales autonomy safely without explicit capability modeling.",
+      "related_concepts": [
+        "Reversibility",
+        "Autonomy Levels",
+        "User Control",
+        "Mixed-Initiative Interaction"
+      ]
+    },
+    {
+      "concept": "Agent Susceptibility to Dark Patterns",
+      "field": "hci",
+      "definition": "Agents can be manipulated by adversarial UI designs (dark patterns) more easily than humans. Implications for agent-agent interaction, delegation chains, and supply chain risks. Requires human oversight even for autonomous agents.",
+      "strength": "empirical",
+      "key_refs": [
+        "ArXiv 2025 / Dark Patterns Meet GUI Agents: LLM Agent Susceptibility to Manipulative Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-dark-patterns-gui-agents"
+      ],
+      "implication": "MetroGraph multi-agent scenarios: if agent calls other agents or third-party APIs, must audit for dark patterns. Visible audit trails (what agent saw, what it decided) protect against hidden manipulation.",
+      "related_concepts": [
+        "Transparency",
+        "User Control",
+        "Mixed-Initiative Interaction"
+      ]
+    },
+    {
+      "concept": "Engineering Trust vs. Creating Vulnerability",
+      "field": "hci",
+      "definition": "Critical finding: transparency mechanisms designed to build trust can paradoxically increase vulnerability by creating false confidence. Users over-rely on explanations without validating them. Requires complementary accountability mechanisms.",
+      "strength": "empirical",
+      "key_refs": [
+        "ArXiv 2025 / Engineering Trust, Creating Vulnerability: A Socio-Technical Analysis of AI Interface Design"
+      ],
+      "source_ids": [
+        "market-theory-dm-vs-agents-debate-engineering-trust-socio-technical"
+      ],
+      "implication": "MetroGraph caution: transparent agent reasoning logs can create false confidence. Complement transparency with: bounded scope declarations ('agent only optimizes for latency'), visible failure examples, and explicit approval for high-stakes changes.",
+      "related_concepts": [
+        "Transparency",
+        "Trust Calibration",
+        "Mental Models",
+        "Anthropomorphism"
+      ]
+    }
+  ]
+}

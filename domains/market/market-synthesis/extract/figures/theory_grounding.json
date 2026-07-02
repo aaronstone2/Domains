@@ -1,0 +1,62 @@
+{
+  "name": "theory_grounding",
+  "caption": "Supported claims by category and how many are theory-grounded.",
+  "sql": "SELECT category, COUNT(*) supported_claims, SUM(CASE WHEN len(theory_concept_ids)>0 THEN 1 ELSE 0 END) theory_grounded FROM market.claims WHERE verdict='supported' GROUP BY 1 ORDER BY 2 DESC",
+  "rows": [
+    {
+      "category": "market",
+      "supported_claims": 19,
+      "theory_grounded": 2
+    },
+    {
+      "category": "pricing",
+      "supported_claims": 11,
+      "theory_grounded": 1
+    },
+    {
+      "category": "competition",
+      "supported_claims": 7,
+      "theory_grounded": 0
+    },
+    {
+      "category": "theory",
+      "supported_claims": 7,
+      "theory_grounded": 6
+    },
+    {
+      "category": "demand",
+      "supported_claims": 7,
+      "theory_grounded": 0
+    },
+    {
+      "category": "ux",
+      "supported_claims": 5,
+      "theory_grounded": 5
+    },
+    {
+      "category": "feature",
+      "supported_claims": 4,
+      "theory_grounded": 4
+    },
+    {
+      "category": "segment",
+      "supported_claims": 4,
+      "theory_grounded": 0
+    },
+    {
+      "category": "gtm",
+      "supported_claims": 3,
+      "theory_grounded": 0
+    },
+    {
+      "category": "integration",
+      "supported_claims": 2,
+      "theory_grounded": 0
+    },
+    {
+      "category": "hci",
+      "supported_claims": 1,
+      "theory_grounded": 0
+    }
+  ]
+}

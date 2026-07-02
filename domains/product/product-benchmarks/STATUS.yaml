@@ -1,0 +1,13 @@
+# Phase manifest — read by a new session to resume where the last one left off.
+# phase states: todo | partial | done
+domain: product
+leaf: product-benchmarks
+depth: standard          # scout | standard | exhaustive (see _shared/sessions/depth-profiles.md)
+phases:
+  meta_research: done
+  a_survey: done         # -> sources
+  b_ingest: done         # -> documents + FTS
+  c_extract: done        # -> entity tables
+  d_gold: done           # -> verified facts (the irreducible layer)
+  e_relationships: done  # -> typed graph
+updated: 2026-06-26

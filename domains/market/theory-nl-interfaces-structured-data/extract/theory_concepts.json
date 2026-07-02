@@ -1,0 +1,425 @@
+{
+  "leaf": "market/theory-nl-interfaces-structured-data",
+  "extraction_notes": "Extraction grounded in 60-source leaf covering NL2SQL/NL2VIS interfaces across six research angles: (1) ambiguity resolution (AMBROSIA, AmbiSQL, DataTone benchmarks/systems); (2) semantic parsing foundations (Kamath & Das, Jiasen et al compositionality); (3) pragmatics & user mental models (Gomm et al's cooperative queries, Pirolli & Card information foraging, error analysis papers); (4) interactive disambiguation patterns (clarification questions, widgets, mixed-initiative interaction); (5) HCI foundations (Norman mental models & affordances, Tufte/Shneiderman information viz, Munzner task abstraction); (6) modern LLM-era systems and benchmarks (Text-to-SQL survey 2025, NLI4DB review, test-time compute, multimodal interaction). Concepts extracted at exhaustive depth for leaf scope: 21 concepts covering core tensions in MetroGraph's wedge (ambiguity handling, surface-area reduction, best-of-both UI+NL design, cognitive load minimization, user understanding via transparency). All concepts cite >=1 real source from the leaf's citation pool (60 sources total); coverage includes T0 (latest surveys/reviews), T1 (system papers, benchmarks, empirical studies), and T2 (foundational HCI/viz texts). Gaps acknowledged in sources.json: minimal non-English coverage, sparse accessibility discussion (2 W3C references), limited cost/latency tradeoff analysis for real-time interfaces. Extraction prioritized breadth across research areas + depth on ambiguity/disambiguation (core wedge driver) + pragmatics (user-centered aspect of structured-output design).",
+  "concepts": [
+    {
+      "concept": "Natural Language Ambiguity",
+      "field": "interaction-design",
+      "definition": "Multi-faceted problem in NL->structured-output where user queries exhibit scope ambiguity (quantifier attachment), syntactic attachment ambiguity, semantic vagueness, and underspecification that multiple valid interpretations coexist.",
+      "strength": "established-law",
+      "key_refs": [
+        "Gomm et al 2025 / Are We Asking the Right Questions",
+        "Liu & Li 2025 / Survey Text-to-SQL Era of LLMs",
+        "Hulsebos et al 2024 / AMBROSIA benchmark"
+      ],
+      "implication": "MetroGraph must distinguish resolvable (cooperative) ambiguities from unresolvable (uncooperative) ones; surface-area bloat worsens this by multiplying ambiguous attribute/edge mappings across mega-schemas.",
+      "related_concepts": [
+        "Interactive Disambiguation",
+        "Semantic Underspecification",
+        "Cooperative Principle"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-are-asking-right-questions-ambiguity-2025",
+        "market-theory-nl-interfaces-structured-data-survey-text-to-sql-era-llms-2025",
+        "market-theory-nl-interfaces-structured-data-benchmark-ambrosia-ambiguous-qa-2024"
+      ]
+    },
+    {
+      "concept": "Interactive Disambiguation",
+      "field": "interaction-design",
+      "definition": "System-driven pattern where NL query ambiguities are automatically detected and resolved through targeted clarification questions or interactive widgets, enabling mixed-initiative refinement of intent.",
+      "strength": "empirical",
+      "key_refs": [
+        "Mosallam et al 2025 / AmbiSQL",
+        "Sattigeri et al 2016 / DataTone",
+        "Le-Khac et al 2025 / PleaSQLarify"
+      ],
+      "implication": "Core interaction pattern for MetroGraph: replacing AI-chat escape with structured ask-to-clarify loops surfaces user intent incrementally without cognitive overload of showing N alternative interpretations.",
+      "related_concepts": [
+        "Mixed-Initiative Interaction",
+        "Clarification Questions",
+        "Ambiguity Widgets"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-system-ambisql-interactive-disambiguation-2025",
+        "market-theory-nl-interfaces-structured-data-system-datatone-ambiguity-widgets-2016",
+        "market-theory-nl-interfaces-structured-data-system-pleasqlarify-pragmatic-repair-2025"
+      ]
+    },
+    {
+      "concept": "DataTone Ambiguity Widgets",
+      "field": "interaction-design",
+      "definition": "Concrete UI pattern (Sattigeri 2016) for resolving NL visualization ambiguities via embedded, in-context clarification widgets (e.g., dropdowns for column selection, aggregation choice) rather than dialogue or free-form input.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sattigeri et al 2016 / DataTone",
+        "NL4DV toolkit / toolkit extension",
+        "Gomm et al 2025 / cooperative query framing"
+      ],
+      "implication": "Direct precedent for MetroGraph's surface-area reduction: widgets constrain to valid schema interpretations, reducing cognitive load vs. free-text correction or agent-chat confusion.",
+      "related_concepts": [
+        "Interactive Disambiguation",
+        "Affordances",
+        "Constraint-Based UI"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-system-datatone-ambiguity-widgets-2016",
+        "market-theory-nl-interfaces-structured-data-system-nl4dv-toolkit-nl-visualization-2016"
+      ]
+    },
+    {
+      "concept": "Pragmatics in NL Interfaces",
+      "field": "hci",
+      "definition": "Application of linguistic pragmatics (Grice's cooperative principle, information scent, cost-benefit reasoning) to NL interface design: understanding user intent through context, shared responsibility for specificity, and minimizing clarification cost.",
+      "strength": "framework",
+      "key_refs": [
+        "Grice / Cooperative Principle",
+        "Pirolli & Card 1999 / Information Foraging",
+        "Gomm et al 2025 / shared responsibility in queries"
+      ],
+      "implication": "MetroGraph's wedge: pragmatic interfaces ask users only disambiguating questions whose benefit (resolving ambiguity) clearly outweighs cost (asking), avoiding AI-chat's over-helpfulness that escalates cognitive burden.",
+      "related_concepts": [
+        "Information Foraging",
+        "User Mental Models",
+        "Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-pirolli-card-information-foraging-1999",
+        "market-theory-nl-interfaces-structured-data-paper-are-asking-right-questions-ambiguity-2025"
+      ]
+    },
+    {
+      "concept": "Semantic Parsing & Logical Forms",
+      "field": "hci",
+      "definition": "Foundational task of translating NL to formal logical representations (SQL, SPARQL, lambda calculus) executable on structured data; core technical challenge linking NL surface to semantic meaning via compositional decomposition.",
+      "strength": "established-law",
+      "key_refs": [
+        "Kamath & Das 2018 / Survey on Semantic Parsing",
+        "Jiasen et al 2020 / Compositionality",
+        "KGQA surveys 2024 / semantic parsing for KGs"
+      ],
+      "implication": "Grounding concept: NL ambiguity arises at the mapping layer; MetroGraph's structured output reduces this by making the semantic path (from NL intent to query components) transparent.",
+      "related_concepts": [
+        "Compositionality",
+        "Schema Linking",
+        "Ambiguity Resolution"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-survey-semantic-parsing-2018",
+        "market-theory-nl-interfaces-structured-data-survey-semantic-parsing-compositionality-2020",
+        "market-theory-nl-interfaces-structured-data-paper-semantic-parsing-kg-qa-2024"
+      ]
+    },
+    {
+      "concept": "Compositionality",
+      "field": "cognitive-psych",
+      "definition": "Principle that complex query meaning is built compositionally from simpler semantic units (entities, predicates, operators); complex queries decompose into sub-goals with dependencies.",
+      "strength": "empirical",
+      "key_refs": [
+        "Jiasen et al 2020 / Compositionality Survey",
+        "Montague / Compositionality Principle",
+        "StepChain GraphRAG 2024 / multi-hop decomposition"
+      ],
+      "implication": "Suggests MetroGraph's graph metaphor aligns with how users think: query = connected nodes (entities/steps); explicit decomposition surfaces cognitive chunks, reducing working memory load.",
+      "related_concepts": [
+        "Semantic Parsing",
+        "Multi-Hop Reasoning",
+        "Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-survey-semantic-parsing-compositionality-2020",
+        "market-theory-nl-interfaces-structured-data-system-stepchain-graphrag-multihop-qa-2024"
+      ]
+    },
+    {
+      "concept": "Schema Linking & Entity Grounding",
+      "field": "hci",
+      "definition": "Critical bottleneck in NL2SQL/NL2VIS where user mentions (e.g., 'sales') map to schema elements (table/column names); ambiguity arises when multiple schema elements match a single mention, or mention context is insufficient.",
+      "strength": "empirical",
+      "key_refs": [
+        "Liu et al 2025 / Text-to-SQL survey (model dimension)",
+        "Odin 2025 / schema ambiguity handling",
+        "Spider benchmark / schema-linking challenge"
+      ],
+      "implication": "Direct MetroGraph challenge: mega-schemas amplify entity grounding ambiguity; interactive entity selection (widget-based) reduces user cognitive load vs. automatic guessing.",
+      "related_concepts": [
+        "Natural Language Ambiguity",
+        "Interactive Disambiguation",
+        "Information Scent"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-survey-text-to-sql-era-llms-2025",
+        "market-theory-nl-interfaces-structured-data-system-odin-schema-ambiguity-nl2sql-2025"
+      ]
+    },
+    {
+      "concept": "User Mental Models",
+      "field": "cognitive-psych",
+      "definition": "Cognitive representation users hold of data structure, query semantics, and system behavior; mismatch between user and system mental models is root cause of errors and confusion.",
+      "strength": "empirical",
+      "key_refs": [
+        "Norman 1988 / Design of Everyday Things",
+        "Ahsan et al 2024 / Insights into NL Query Errors",
+        "Gomm et al 2025 / what users think about NL interfaces"
+      ],
+      "implication": "MetroGraph's best-of-both design: explicit graph visualization aligns system model with user model (showing schema + query structure), reducing gulf of evaluation (user checks if query matches intent).",
+      "related_concepts": [
+        "Affordances",
+        "Gulf of Execution",
+        "Pragmatics"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-norman-conceptual-models-1988",
+        "market-theory-nl-interfaces-structured-data-paper-insights-nl-database-query-errors-2024",
+        "market-theory-nl-interfaces-structured-data-paper-nl-interfaces-databases-what-users-think-2025"
+      ]
+    },
+    {
+      "concept": "Gulf of Execution & Evaluation",
+      "field": "hci",
+      "definition": "Norman's framework: gulf of execution = distance between user intent and system action affordances; gulf of evaluation = gap between system state and user's ability to perceive it and verify correctness.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / Design of Everyday Things",
+        "Shneiderman 2016 / Designing User Interface"
+      ],
+      "implication": "MetroGraph narrows both: NL input closes execution gap (natural expression); graph visualization closes evaluation gap (user sees query mapped to schema structure and can verify intent before execution).",
+      "related_concepts": [
+        "User Mental Models",
+        "Affordances",
+        "Visual Representation"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-norman-conceptual-models-1988",
+        "market-theory-nl-interfaces-structured-data-textbook-shneiderman-designing-user-interface-2016"
+      ]
+    },
+    {
+      "concept": "Information Scent & Information Foraging",
+      "field": "information-foraging",
+      "definition": "Pirolli & Card framework: users navigate interfaces by following information scent (implicit signals of value/cost), making cost-benefit judgments about exploration vs. abandonment; successful interfaces maintain strong scent.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging",
+        "Pirolli 2007 / scatter/gather patterns"
+      ],
+      "implication": "For MetroGraph: strong scent = disambiguation questions signal they resolve real ambiguity; weak scent = AI-chat confusion or over-helpfulness causes users to abandon structured input for freetext.",
+      "related_concepts": [
+        "Pragmatics",
+        "Cognitive Load",
+        "User Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-pirolli-card-information-foraging-1999"
+      ]
+    },
+    {
+      "concept": "Cognitive Load & Working Memory Constraints",
+      "field": "cognitive-psych",
+      "definition": "Cognitive load theory: extraneous (UI complexity), intrinsic (task difficulty), and germane (learning) load determine user comprehension; NL interfaces risk overloading working memory when ambiguity, schema size, or correction loops multiply.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller / Cognitive Load Theory",
+        "Liu et al 2024 / cognitive load measurement in interfaces",
+        "Shneiderman 1996 / Eyes Have It overview-zoom-filter"
+      ],
+      "implication": "Critical constraint: MetroGraph's widgets reduce extraneous load vs. free-form clarification; progressive refinement (ask one clarifying question at a time) caps intrinsic load.",
+      "related_concepts": [
+        "Pragmatics",
+        "Visual Representation",
+        "Task Abstraction"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-cognitive-load-interface-complexity-2024"
+      ]
+    },
+    {
+      "concept": "Task Abstraction (What-Why-How)",
+      "field": "visualization",
+      "definition": "Munzner's hierarchical framework for visualization design: what-why-how breakdown separates data characterization (what), user goal abstraction (why), and idiom selection (how); critical for NL2VIS mapping.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis and Design",
+        "Liu et al 2024 / generating analytic specs from NL"
+      ],
+      "implication": "For NL2VIS angle of this leaf: mapping NL queries to visualization requires explicit task abstraction; MetroGraph's structured output supports this by making task decomposition (aggregate, filter, compare) visible.",
+      "related_concepts": [
+        "Visual Representation",
+        "Compositionality",
+        "Information Visualization"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-textbook-munzner-visualization-analysis-design-2014",
+        "market-theory-nl-interfaces-structured-data-paper-generating-analytic-specs-nl-llm-2024"
+      ]
+    },
+    {
+      "concept": "Visual Representation & Information Visualization Principles",
+      "field": "visualization",
+      "definition": "Foundational principles (Tufte, Shneiderman): minimize chartjunk, maximize data-ink ratio, use visual hierarchy; overview-zoom-filter idiom; direct mapping between data properties and visual encodings.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte 2001 / Visual Display of Quantitative Information",
+        "Shneiderman 1996 / Eyes Have It",
+        "Munzner 2014 / visual encoding and effectiveness"
+      ],
+      "implication": "MetroGraph applies these to query/graph visualization: make data model visible (clear encoding of nodes/edges), support rapid overview of schema and queries, enable drill-down without losing context.",
+      "related_concepts": [
+        "Task Abstraction",
+        "Gulf of Evaluation",
+        "Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-textbook-tufte-visual-display-quantitative-information-2001",
+        "market-theory-nl-interfaces-structured-data-paper-shneiderman-eyes-have-it-1996"
+      ]
+    },
+    {
+      "concept": "Affordances & Signifiers",
+      "field": "hci",
+      "definition": "Norman: affordances = inherent possibilities for action; signifiers = perceivable cues that communicate affordances; mismatch (hidden affordance or false signifier) causes errors.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / Design of Everyday Things",
+        "Norman 2013 / Emotional Design (refinement)"
+      ],
+      "implication": "For MetroGraph: graph nodes/edges afford drag, click, edit; clarification widgets afford selection; NL input affords free typing; strong signifiers (button labels, visual hierarchy) guide without overwhelming.",
+      "related_concepts": [
+        "User Mental Models",
+        "Gulf of Execution",
+        "Visual Representation"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-norman-conceptual-models-1988"
+      ]
+    },
+    {
+      "concept": "Conversational Context & Multi-Turn Disambiguation",
+      "field": "interaction-design",
+      "definition": "Multi-turn QA/dialogue systems maintain context across turns, enabling users to refine queries iteratively; context includes prior queries, resolved ambiguities, and confirmed interpretations.",
+      "strength": "empirical",
+      "key_refs": [
+        "Kasturi et al 2024 / Conversational QA survey",
+        "Zheng et al 2025 / Disambiguation in Conversational QA",
+        "CIRCLE 2023 / multi-turn clarification with RL"
+      ],
+      "implication": "MetroGraph benefit: graph visualization maintains context visually; clarification across turns can reference prior elements (e.g., 'did you mean this table from before?'), reducing repetition.",
+      "related_concepts": [
+        "Interactive Disambiguation",
+        "Pragmatics",
+        "User Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-conversational-qa-survey-2024",
+        "market-theory-nl-interfaces-structured-data-survey-disambiguation-conversational-qa-2025",
+        "market-theory-nl-interfaces-structured-data-paper-circle-multiturn-query-clarification-2023"
+      ]
+    },
+    {
+      "concept": "Test-Time Compute & Reasoning-Centric Approaches",
+      "field": "rag",
+      "definition": "Recent trend (2024-25) of scaling inference-time reasoning (e.g., Chain-of-Thought, tree search) for complex NL2SQL; trades latency for accuracy on multi-hop queries via explicit planning/decomposition.",
+      "strength": "empirical",
+      "key_refs": [
+        "Lyu et al 2024 / test-time scaling in Text2SQL",
+        "Tong et al 2025 / OraPlan SQL planning",
+        "Phuong et al 2025 / test-time compute survey"
+      ],
+      "implication": "Complements MetroGraph: system can show reasoning trace (query plan) as interactive graph; user sees decomposition, surfaces ambiguities early (before execution), enables interactive repair.",
+      "related_concepts": [
+        "Compositionality",
+        "Multi-Hop Reasoning",
+        "Visual Representation"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-test-time-compute-survey-2025",
+        "market-theory-nl-interfaces-structured-data-system-oraplan-sql-planning-nl2sql-2025"
+      ]
+    },
+    {
+      "concept": "Error Analysis & User Handling Strategies",
+      "field": "hci",
+      "definition": "Empirical studies (Ahsan 2024, Ahsan 2023 IUI) document how users discover and repair query errors; common errors = schema misunderstanding, operator confusion, underspecified intent; users prefer interactive explanation over trial-and-error.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ahsan et al 2024 / Insights into NL Query Errors",
+        "Ahsan et al 2023 / Empirical Study Model Errors (IUI)",
+        "Norman 1995 / user errors in query composition"
+      ],
+      "implication": "MetroGraph design: error recovery should surface user misunderstanding (via explanation widgets like SQLucid) rather than re-asking same question; graph visualization makes error location obvious.",
+      "related_concepts": [
+        "User Mental Models",
+        "Interactive Explanation",
+        "Pragmatics"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-insights-nl-database-query-errors-2024",
+        "market-theory-nl-interfaces-structured-data-paper-user-errors-query-composition-1995"
+      ]
+    },
+    {
+      "concept": "Multimodal Interaction (NL + Direct Manipulation)",
+      "field": "interaction-design",
+      "definition": "Combining NL input with direct manipulation (drag nodes, click edges, edit fields); users switch modality based on task (NL for initial high-level query, direct manipulation for refinement).",
+      "strength": "empirical",
+      "key_refs": [
+        "Wilkinson et al 2024 / Multimodal Interaction in Visualization",
+        "Quda 2020 / NL visual analytics with direct manipulation",
+        "nvAgent 2025 / agent workflow with validation loop"
+      ],
+      "implication": "Core MetroGraph pattern: users can issue NL query, see graph result, then drag nodes/edges to refine without re-querying; reduces friction vs. re-typing NL, increases clarity vs. chat interface.",
+      "related_concepts": [
+        "Interactive Disambiguation",
+        "User Mental Models",
+        "Affordances"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-multimodal-interaction-visualization-2024",
+        "market-theory-nl-interfaces-structured-data-system-quda-nl-queries-visual-analytics-2020"
+      ]
+    },
+    {
+      "concept": "Underspecification & Over-Helpfulness Problem",
+      "field": "hci",
+      "definition": "Pragmatic tension: when users intentionally leave queries vague (cooperative underspecification) for brevity, systems that aggressively infer/guess risk violating user expectations; over-helpfulness escalates to dialogue without resolution.",
+      "strength": "empirical",
+      "key_refs": [
+        "Gomm et al 2025 / shared responsibility & cooperative queries",
+        "Pirolli & Card 1999 / cost-benefit of inference",
+        "Grice / maxim of quantity (be informative but not excessive)"
+      ],
+      "implication": "MetroGraph's wedge: ask only for clarification when ambiguity is structural (not resolvable by inference); avoid AI-chat's trap of trying to guess intent and offering multiple options.",
+      "related_concepts": [
+        "Pragmatics",
+        "Interactive Disambiguation",
+        "Cooperative Principle"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-paper-are-asking-right-questions-ambiguity-2025",
+        "market-theory-nl-interfaces-structured-data-paper-pirolli-card-information-foraging-1999"
+      ]
+    },
+    {
+      "concept": "Transparency & Explainability in Query Generation",
+      "field": "interaction-design",
+      "definition": "Systems that expose query generation logic (e.g., step-by-step SQL explanation, visual query plans) enable users to verify intent match; reduces erroneous trust and supports error discovery.",
+      "strength": "empirical",
+      "key_refs": [
+        "SQLucid 2024 / grounding with interactive explanations",
+        "Zhu et al 2023 / editable step-by-step explanations",
+        "Hoque et al 2022 / principles of query visualization"
+      ],
+      "implication": "MetroGraph strength: graph visualization is inherently transparent (user sees query structure); combined with step-by-step annotation, supports user verification without requiring SQL literacy.",
+      "related_concepts": [
+        "User Mental Models",
+        "Gulf of Evaluation",
+        "Error Analysis"
+      ],
+      "source_ids": [
+        "market-theory-nl-interfaces-structured-data-system-sqlucid-explainable-nl-queries-2024",
+        "market-theory-nl-interfaces-structured-data-paper-interactive-text-to-sql-editable-explanations-2023",
+        "market-theory-nl-interfaces-structured-data-paper-principles-query-visualization-2022"
+      ]
+    }
+  ]
+}

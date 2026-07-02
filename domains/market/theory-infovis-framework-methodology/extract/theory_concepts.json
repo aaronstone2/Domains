@@ -1,0 +1,483 @@
+{
+  "leaf": "market/theory-infovis-framework-methodology",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Nested Model for Visualization Design",
+      "field": "visualization",
+      "definition": "A four-level hierarchical framework for characterizing and validating visualization systems: domain problem characterization, data/task abstraction, visual encoding/interaction design, and algorithm implementation. Each level's decisions cascade downward, constraining choices at lower levels.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2009 / A Nested Model for Visualization Design and Validation",
+        "Meyer et al. 2012 / The Four-Level Nested Model Revisited: Blocks and Guidelines"
+      ],
+      "implication": "MetroGraph's visual-graph interface must operate across these levels: abstracting the database query problem, mapping relational structure to graph topology, designing marks/channels for properties, and optimizing layout algorithms. Poor choices at the problem level cascade into UI bloat.",
+      "related_concepts": [
+        "Blocks and Guidelines",
+        "Validation in Visualization Research",
+        "Data Abstraction",
+        "Task Abstraction"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-munzner-nested-model-2009",
+        "market-theory-infovis-framework-methodology-munzner-visualization-analysis-design-book"
+      ]
+    },
+    {
+      "concept": "Blocks and Guidelines",
+      "field": "visualization",
+      "definition": "A refinement of the nested model distinguishing 'blocks' (outcomes of design decisions at each level: abstractions, techniques, algorithms) from 'guidelines' (statements about relationships between blocks). Within-level guidelines compare blocks at the same level; between-level guidelines map blocks across adjacent levels.",
+      "strength": "framework",
+      "key_refs": [
+        "Meyer et al. 2012 / The Four-Level Nested Model Revisited: Blocks and Guidelines"
+      ],
+      "implication": "For MetroGraph, this clarifies the distinction between task-to-encoding guidelines (e.g., 'node-link for small graphs') and technique-to-algorithm choices (e.g., force-directed vs. orthogonal layout). RAG/workflow tools fail when they lack clear between-level mappings, causing AI to generate mismatched output.",
+      "related_concepts": [
+        "Nested Model for Visualization Design",
+        "Design Guidelines",
+        "Visual Encoding Effectiveness"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-munzner-nested-model-2009"
+      ]
+    },
+    {
+      "concept": "Visual Information-Seeking Mantra",
+      "field": "hci",
+      "definition": "Shneiderman's design principle for interactive information visualization: 'Overview first, zoom and filter, then details-on-demand.' Prescribes a sequence of user actions: gaining context via a complete overview, drilling down via filtering and zooming, accessing detailed information on demand.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shneiderman 1996 / The Eyes Have It: A Task by Data Type Taxonomy for Information Visualizations"
+      ],
+      "implication": "MetroGraph should surface a complete database schema graph at startup (overview), allow interactive filtering/search (zoom), and reveal details (row data, provenance) on demand. RAG agents that jump directly to details violate this principle and create cognitive overload.",
+      "related_concepts": [
+        "Exploratory Data Analysis Paradigm",
+        "Interaction Design for Visualization",
+        "Sensemaking in Visualization"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-shneiderman-mantra-1996"
+      ]
+    },
+    {
+      "concept": "Graphical Perception Hierarchy",
+      "field": "cognitive-psych",
+      "definition": "Empirical ranking of 10 elementary perceptual tasks by human accuracy, from highest to lowest: position on a common scale, position on non-aligned scales, length, direction, angle, area, volume, curvature, shading, color saturation. Establishes which visual encodings most effectively convey quantitative comparisons.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cleveland & McGill 1984 / Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods"
+      ],
+      "implication": "For MetroGraph graph labels and edge weights, position on a common axis (e.g., horizontal position for node rank) is more effective than color saturation or area. This directly constrains the choice of visual channels for database properties.",
+      "related_concepts": [
+        "Visual Encoding Effectiveness",
+        "Visual Variables",
+        "Preattentive Processing"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-cleveland-mcgill-graphical-perception-1984"
+      ]
+    },
+    {
+      "concept": "Visual Encoding Effectiveness",
+      "field": "visualization",
+      "definition": "Design principle that visual encodings vary in effectiveness for conveying data based on the data type (categorical, ordinal, quantitative), the task (comparison, estimation, reading exact values), and perceptual laws (preattentive processing, gestalt principles). Effectiveness is both a matter of expressiveness (can the encoding represent the data?) and accuracy (how accurately can users extract values?).",
+      "strength": "framework",
+      "key_refs": [
+        "Mackinlay 1986 / Automating the Design of Graphical Presentations of Relational Information",
+        "Card et al. 1999 / Readings in Information Visualization: Using Vision to Think"
+      ],
+      "implication": "MetroGraph must map data types to the most effective encodings: ordinal node importance to node size or color hue (not color saturation), categorical node types to shape, and quantitative edge weights to position or length. Poor encoding choices hide insights from the graph.",
+      "related_concepts": [
+        "Graphical Perception Hierarchy",
+        "Visual Variables",
+        "Data Abstraction",
+        "Expressiveness and Effectiveness Criteria"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-mackinlay-automating-design-1986",
+        "market-theory-infovis-framework-methodology-card-mackinlay-shneiderman-readings-1999"
+      ]
+    },
+    {
+      "concept": "Data Abstraction",
+      "field": "visualization",
+      "definition": "Process of characterizing the data domain in terms of meaningful types: dataset types (tables, networks, hierarchies, text), attribute types (categorical, ordinal, quantitative), and dimensionality. Precedes task abstraction and guides choices of visual encodings and interaction techniques.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "implication": "For MetroGraph's wedge, the database schema (tables, foreign keys, attribute types) must be explicitly abstracted as input to the nested model. If this step is skipped (as in naive RAG tools), the UI cannot make principled encoding choices; the AI defaults to surface-area bloat.",
+      "related_concepts": [
+        "Task Abstraction",
+        "Nested Model for Visualization Design",
+        "Visual Encoding Effectiveness"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-munzner-visualization-analysis-design-book"
+      ]
+    },
+    {
+      "concept": "Task Abstraction",
+      "field": "visualization",
+      "definition": "Process of characterizing user goals in terms of abstract operations (search, browse, derive, compare, correlate) independent of domain-specific context. Bridges the domain problem to visualization design by identifying what users need to accomplish, enabling reuse of visualization patterns across domains.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis and Design",
+        "Brehmer & Munzner 2013 / A Multi-Level Typology of Abstract Visualization Tasks"
+      ],
+      "implication": "MetroGraph must abstract user workflows (e.g., 'find all orders by a customer' → search + filter task) before choosing interaction techniques. AI-generated interfaces that skip task abstraction produce feature bloat because the AI doesn't understand what the user is trying to accomplish.",
+      "related_concepts": [
+        "Data Abstraction",
+        "Low-Level Analytic Tasks",
+        "Multi-Level Task Typology",
+        "Interaction Design for Visualization"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-munzner-visualization-analysis-design-book",
+        "market-theory-infovis-framework-methodology-brehmer-munzner-multi-level-typology-2013"
+      ]
+    },
+    {
+      "concept": "Low-Level Analytic Tasks",
+      "field": "visualization",
+      "definition": "Taxonomy of 10 primitive operations that underlie most visualization tasks: locate, identify, distinguish, categorize, cluster, distribution, rank, compare values, sort, derive values. Provides a checklist for evaluating whether a visualization system supports the tasks users need to perform.",
+      "strength": "framework",
+      "key_refs": [
+        "Amar et al. 2005 / Low-Level Components of Analytic Activity in Information Visualization"
+      ],
+      "implication": "MetroGraph's graph UI must support low-level tasks like 'locate node X' (search), 'rank nodes by degree' (sort + visual encoding), and 'identify outliers' (cluster + color encoding). Missing support for even one of these tasks forces users to export data or use a separate tool.",
+      "related_concepts": [
+        "Task Abstraction",
+        "Multi-Level Task Typology",
+        "Interaction Design for Visualization"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-amar-eagan-stasko-low-level-tasks-2005"
+      ]
+    },
+    {
+      "concept": "Multi-Level Task Typology",
+      "field": "visualization",
+      "definition": "Three-dimensional framework organizing visualization tasks across: why (present, discover, enjoy, produce), how (how the task is performed), and task I/O (what data goes in and what comes out). Bridges domain-specific task descriptions and domain-agnostic low-level tasks.",
+      "strength": "framework",
+      "key_refs": [
+        "Brehmer & Munzner 2013 / A Multi-Level Typology of Abstract Visualization Tasks"
+      ],
+      "implication": "For MetroGraph, this clarifies why a user is querying a database (discover patterns vs. produce a report) and how the system should respond. A 'discover' task warrants interactive exploration; a 'produce' task warrants stable output. RAG agents conflate these, leading to UI confusion.",
+      "related_concepts": [
+        "Task Abstraction",
+        "Low-Level Analytic Tasks",
+        "Sensemaking in Visualization"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-brehmer-munzner-multi-level-typology-2013"
+      ]
+    },
+    {
+      "concept": "Preattentive Processing",
+      "field": "cognitive-psych",
+      "definition": "Visual features that the human visual system processes automatically and rapidly (< 500 ms, < 200 ms eye movement latency) without conscious attention: color, orientation, size, shape, curvature, line length. Enable rapid perception of data patterns without serial search through visual elements.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ware 2012 / Information Visualization: Perception for Design",
+        "Healey & Enns / Harnessing Preattentive Processes for Multivariate Data Visualization"
+      ],
+      "implication": "MetroGraph should use color hue, size, and position to encode high-priority database properties (e.g., node type, urgency, connection count), so users grasp the schema at a glance. Encoding in low-salience channels (saturation, texture) forces viewers to search serially and defeats the purpose of a visual overview.",
+      "related_concepts": [
+        "Graphical Perception Hierarchy",
+        "Gestalt Principles",
+        "Visual Encoding Effectiveness"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-ware-information-visualization-perception-book",
+        "market-theory-infovis-framework-methodology-healey-preattentive-processing-perception"
+      ]
+    },
+    {
+      "concept": "Gestalt Principles",
+      "field": "cognitive-psych",
+      "definition": "Foundational principles of visual perception (proximity, similarity, closure, continuation, figure-ground, symmetry) that explain how humans group visual elements into meaningful wholes. Applied to visualization design to create coherent visual structures that reduce cognitive load.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ware 2012 / Information Visualization: Perception for Design",
+        "Gestalt Principles of Visual Perception / IxDF"
+      ],
+      "implication": "MetroGraph's node-link layout should apply gestalt principles: group semantically related nodes (similarity), place related nodes close together (proximity), and use visual enclosures (closure) to separate subgraphs. Violations cause visual chaos that overwhelms the viewer.",
+      "related_concepts": [
+        "Preattentive Processing",
+        "Visual Encoding Effectiveness",
+        "Interaction Design for Visualization"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-gestalt-principles-visualization",
+        "market-theory-infovis-framework-methodology-ware-information-visualization-perception-book"
+      ]
+    },
+    {
+      "concept": "Visual Variables (Semiology of Graphics)",
+      "field": "visualization",
+      "definition": "Framework identifying visual dimensions that can encode data: position, size, shape, orientation, color hue, color value, and texture. Each visual variable has expressive power (range of distinct values it can represent) and effectiveness (accuracy with which users perceive differences).",
+      "strength": "framework",
+      "key_refs": [
+        "Bertin 1967/1983 / Semiologie Graphique (Semiology of Graphics)"
+      ],
+      "implication": "MetroGraph's graph encoding strategy must select from Bertin's visual variables to match data types and task requirements. Using shape to encode quantitative data (ineffective) vs. position (effective) is the difference between insight and confusion.",
+      "related_concepts": [
+        "Visual Encoding Effectiveness",
+        "Graphical Perception Hierarchy",
+        "Data Abstraction"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-bertin-semiology-graphics"
+      ]
+    },
+    {
+      "concept": "Exploratory Data Analysis Paradigm",
+      "field": "visualization",
+      "definition": "Tukey's approach to data analysis emphasizing discovery-driven exploration over confirmatory hypothesis testing. Users iterate through visualization, transformation, and re-visualization to generate and test hypotheses. Contrasts with confirmatory analysis, which tests pre-specified hypotheses.",
+      "strength": "framework",
+      "key_refs": [
+        "Tukey 1977 / Exploratory Data Analysis"
+      ],
+      "implication": "MetroGraph should prioritize fluid iteration (zoom, filter, re-query) over static report generation. The 'Overview first, zoom and filter, details-on-demand' principle reflects Tukey's EDA philosophy: let the visual data guide the next question.",
+      "related_concepts": [
+        "Visual Information-Seeking Mantra",
+        "Sensemaking in Visualization",
+        "Interaction Design for Visualization"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-tukey-exploratory-data-analysis-1977"
+      ]
+    },
+    {
+      "concept": "Design Study Methodology",
+      "field": "hci",
+      "definition": "Systematic framework for conducting visualization research in collaboration with domain experts. Nine-stage process: learn, winnow, cast, discover, design, implement, deploy, reflect, write. Balances rigor (problem characterization, validation) with pragmatism (real-world constraints, iteration).",
+      "strength": "framework",
+      "key_refs": [
+        "Sedlmair et al. 2012 / Design Study Methodology: Reflections from the Trenches and the Stacks"
+      ],
+      "implication": "For MetroGraph's development, a design study methodology approach (interviewing domain experts, iterative refinement, on-site validation) produces more effective interfaces than purely algorithmic or AI-driven approaches that skip the 'learn' and 'discover' phases.",
+      "related_concepts": [
+        "Nested Model for Visualization Design",
+        "Validation in Visualization Research",
+        "Task Abstraction"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-sedlmair-meyer-munzner-design-study-2012"
+      ]
+    },
+    {
+      "concept": "Visualization Literacy",
+      "field": "hci",
+      "definition": "Ability to extract, interpret, and apply information from visualizations. Assessed via standardized tools like VLAT (53-item, 12 visualization types) and Mini-VLAT (12-item variant). Recognizes that visualization interpretation is a learnable skill, not automatic.",
+      "strength": "empirical",
+      "key_refs": [
+        "Lee & Kwon 2016 / VLAT: Development of a Visualization Literacy Assessment Test",
+        "Pandey & Ottley 2023 / Mini-VLAT: A Short and Effective Measure of Visualization Literacy"
+      ],
+      "implication": "MetroGraph's design assumes users have some visualization literacy, but should minimize learning curves through consistency (standard graph layouts, familiar encodings). If interfaces violate established conventions, they force users to relearn visual encoding rules.",
+      "related_concepts": [
+        "Visual Encoding Effectiveness",
+        "Preattentive Processing",
+        "Design Guidelines"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-lee-kwon-vlat-literacy-assessment",
+        "market-theory-infovis-framework-methodology-pandey-ottley-mini-vlat-2023"
+      ]
+    },
+    {
+      "concept": "Interaction Design for Visualization",
+      "field": "interaction-design",
+      "definition": "Framework for designing interaction techniques in visualization systems, organized around interaction intents (zoom, pan, filter, select, reconfigure) and task-specific techniques. Emphasizes that interaction should directly support the analysis tasks users are performing.",
+      "strength": "framework",
+      "key_refs": [
+        "Yi et al. 2007 / Toward a Deeper Understanding of the Role of Interaction in Information Visualization",
+        "Kaplunov et al. 2024 / Intents, Techniques, and Components: A Unified Analysis of Interaction Authoring Tasks in Data Visualization"
+      ],
+      "implication": "MetroGraph's interaction vocabulary (click, drag, zoom, search, filter) should map directly to analysis tasks. Arbitrary interactions that don't support a task (e.g., double-click to toggle a property with no visual consequence) create friction and confusion.",
+      "related_concepts": [
+        "Task Abstraction",
+        "Low-Level Analytic Tasks",
+        "Visual Information-Seeking Mantra"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-yi-kang-stasko-interaction-2007",
+        "market-theory-infovis-framework-methodology-interaction-techniques-visualization-design"
+      ]
+    },
+    {
+      "concept": "Dynamic Queries",
+      "field": "interaction-design",
+      "definition": "Interaction technique enabling real-time filtering via direct manipulation (sliders, checkboxes, buttons). Database query results update within ~100 ms, creating tight feedback loop. Foundation for direct manipulation interfaces.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ahlberg & Shneiderman 1992 / Dynamic Queries for Information Exploration"
+      ],
+      "implication": "MetroGraph should support dynamic query interaction: filtering nodes/edges by property (degree, type, timestamp) via interactive controls with sub-100ms response time. Batch query models (submit → wait → results) break the exploratory feedback loop.",
+      "related_concepts": [
+        "Visual Information-Seeking Mantra",
+        "Interaction Design for Visualization",
+        "Exploratory Data Analysis Paradigm"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-dynamic-query-shneiderman"
+      ]
+    },
+    {
+      "concept": "Sensemaking in Visualization",
+      "field": "cognitive-psych",
+      "definition": "Pirolli & Card's model of how users generate knowledge from complex data. Two loops: foraging (seeking patterns, filtering, transforming data) and synthesis (building mental models, hypothesis formation, evidence gathering). Describes the cognitive process underlying exploratory visualization.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli & Card / The Sensemaking Process in Intelligence Analysis",
+        "Heider et al. 2019 / On Sense Making and the Generation of Knowledge in Visual Analytics"
+      ],
+      "implication": "MetroGraph's interface should support both foraging (interactive exploration, filtering) and synthesis (annotations, bookmarks, insight export). Interfaces that emphasize foraging but provide no synthesis mechanism leave users without a way to communicate what they've learned.",
+      "related_concepts": [
+        "Exploratory Data Analysis Paradigm",
+        "Visual Information-Seeking Mantra",
+        "Task Abstraction"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-pirolli-card-sensemaking",
+        "market-theory-infovis-framework-methodology-visual-analytics-sensemaking-exploratory"
+      ]
+    },
+    {
+      "concept": "Expressiveness and Effectiveness Criteria",
+      "field": "visualization",
+      "definition": "Mackinlay's design criteria for visual encodings. Expressiveness: the encoding can represent all and only the data properties (no false mappings). Effectiveness: among expressive encodings, choose the one users can most accurately and quickly read.",
+      "strength": "framework",
+      "key_refs": [
+        "Mackinlay 1986 / Automating the Design of Graphical Presentations of Relational Information"
+      ],
+      "implication": "For MetroGraph, this guides the choice between candidate encodings for a given data type. All must be expressive (represent the data faithfully), but effectiveness ranking (per Cleveland-McGill) determines which is best. Using color saturation for quantity (less effective) vs. position (more effective) violates effectiveness criteria.",
+      "related_concepts": [
+        "Visual Encoding Effectiveness",
+        "Visual Variables",
+        "Graphical Perception Hierarchy"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-mackinlay-automating-design-1986"
+      ]
+    },
+    {
+      "concept": "Design Guidelines",
+      "field": "visualization",
+      "definition": "Documented knowledge about design choices, derived from theory, empirical studies, and practice. Guidelines capture both within-level comparisons (which algorithm is faster?) and between-level mappings (which encoding suits this task?). Effective guidelines are specific enough to be actionable but general enough to transfer across domains.",
+      "strength": "framework",
+      "key_refs": [
+        "Meyer et al. 2012 / The Four-Level Nested Model Revisited: Blocks and Guidelines",
+        "Ghai et al. 2023 / Understanding the Research-Practice Gap in Visualization Design Guidelines"
+      ],
+      "implication": "MetroGraph's development should be grounded in explicit design guidelines (e.g., 'use node-link for graphs < 500 nodes', 'use color hue for categorical node type'). AI-generated interfaces without guidelines tend to produce ad-hoc, inconsistent designs that violate human perception principles.",
+      "related_concepts": [
+        "Blocks and Guidelines",
+        "Visual Encoding Effectiveness",
+        "Design Study Methodology"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-munzner-nested-model-2009",
+        "market-theory-infovis-framework-methodology-visualization-design-guidelines-research-gap"
+      ]
+    },
+    {
+      "concept": "Color Design for Visualization",
+      "field": "visualization",
+      "definition": "Design principles for color encoding: perceptual uniformity (equal steps in perceptual space should appear equal), colorblind accessibility (avoid red-green distinctions), and task fit (sequential for ordered data, diverging for data with meaningful midpoint, categorical for unordered). Scientific colormaps address rainbow colormap artifacts.",
+      "strength": "empirical",
+      "key_refs": [
+        "Crameri / Scientific Colour Maps",
+        "Colorblind Accessibility in Data Visualization / deficiencyview"
+      ],
+      "implication": "If MetroGraph uses color to encode node properties, it must choose perceptually uniform, colorblind-friendly palettes. Default rainbow colormaps create false visual discontinuities and exclude 8% of viewers with color vision deficiency.",
+      "related_concepts": [
+        "Visual Encoding Effectiveness",
+        "Visual Variables",
+        "Preattentive Processing"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-crameri-scientific-color-maps",
+        "market-theory-infovis-framework-methodology-color-blindness-accessibility-visualization"
+      ]
+    },
+    {
+      "concept": "Chart Type Affordances",
+      "field": "interaction-design",
+      "definition": "Visual and interactive properties of chart types that suggest particular uses and task performance. Affordances (e.g., bars enable position comparison; pie charts suggest part-to-whole relationship) guide user expectations. Violating affordances creates confusion and errors.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pandey et al. 2024 / From Perception to Decision: Assessing the Role of Chart Types Affordances in High-Level Decision Tasks",
+        "Pandey & Manivannan 2024 / Are Pie Charts Evil? An Assessment of Pie and Donut Charts Compared to Bar Charts"
+      ],
+      "implication": "For MetroGraph, the node-link graph representation carries affordances: it suggests topology visualization, supports comparison of node degrees, and implies traversal. Encoding quantitative data purely in node position (breaking the 'topology' affordance) confuses users about what the graph represents.",
+      "related_concepts": [
+        "Visual Encoding Effectiveness",
+        "Interaction Design for Visualization",
+        "Gestalt Principles"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-chart-type-affordances-decision-tasks",
+        "market-theory-infovis-framework-methodology-chart-effectiveness-comparison-bar-pie"
+      ]
+    },
+    {
+      "concept": "Validation in Visualization Research",
+      "field": "hci",
+      "definition": "Four-level validation approach aligned with the nested model: domain validation (do we understand the problem?), abstraction validation (are the abstractions correct?), technique validation (do users perceive the encodings correctly?), algorithm validation (does it scale?). Different validation methods suit each level.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2009 / A Nested Model for Visualization Design and Validation",
+        "Munzner 2014 / Visualization Analysis and Design"
+      ],
+      "implication": "MetroGraph development should apply validation at all four levels: domain experts validate the schema model, user studies validate encoding choices, perception experiments validate preattentive feature efficacy, and benchmarks validate layout performance. Skipping validation at any level risks undetected failures.",
+      "related_concepts": [
+        "Nested Model for Visualization Design",
+        "Design Study Methodology",
+        "Blocks and Guidelines"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-munzner-nested-model-2009",
+        "market-theory-infovis-framework-methodology-munzner-visualization-analysis-design-book"
+      ]
+    },
+    {
+      "concept": "Information Visualization Semiotics",
+      "field": "graph-theory",
+      "definition": "Formal framework applying semiotic theory to visualization: sign systems, representational morphisms, and structure preservation. A visualization is a sign system where data structures map to visual structures through morphisms that preserve significant relationships (e.g., graph homomorphism for network visualization).",
+      "strength": "framework",
+      "key_refs": [
+        "Goguen / Information Visualization and Semiotic Morphisms"
+      ],
+      "implication": "MetroGraph's graph layout is a semiotic mapping: database relationships (foreign keys, join constraints) must map to visual relationships (edges, proximity, containment). A layout that breaks this mapping (e.g., hiding edges, placing related nodes far apart) violates the semiotic principle and confuses users.",
+      "related_concepts": [
+        "Data Abstraction",
+        "Visual Variables",
+        "Nested Model for Visualization Design"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-visualization-semiotics-representation"
+      ]
+    },
+    {
+      "concept": "Information Visualization Definition",
+      "field": "visualization",
+      "definition": "The use of computer-supported, interactive visual representations of abstract data to amplify cognition. Emphasizes that InfoVis is about extending human perception and reasoning through visual encoding, not merely displaying data. Contrasts with scientific visualization (spatial data) and general graphics.",
+      "strength": "framework",
+      "key_refs": [
+        "Card et al. 1999 / Readings in Information Visualization: Using Vision to Think"
+      ],
+      "implication": "MetroGraph's purpose is not to pretty-print a database; it is to amplify understanding of relational structure through visual encoding and interaction. If a graph visualization doesn't enable insights that text queries cannot, it has failed its purpose.",
+      "related_concepts": [
+        "Visual Information-Seeking Mantra",
+        "Exploratory Data Analysis Paradigm",
+        "Sensemaking in Visualization"
+      ],
+      "source_ids": [
+        "market-theory-infovis-framework-methodology-card-mackinlay-shneiderman-readings-1999"
+      ]
+    }
+  ]
+}

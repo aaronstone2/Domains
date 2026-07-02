@@ -1,0 +1,163 @@
+{
+  "name": "funding_rounds_timeline",
+  "caption": "Funding rounds by stage (count + median amount) across the tracked market.",
+  "sql": "SELECT stage, COUNT(*) n_rounds, ROUND(MEDIAN(amount_usd)/1e6,1) median_musd, ROUND(SUM(amount_usd)/1e6,0) total_musd FROM market.funding_rounds WHERE amount_usd IS NOT NULL GROUP BY 1 ORDER BY 4 DESC NULLS LAST",
+  "rows": [
+    {
+      "stage": "series-h",
+      "n_rounds": 1,
+      "median_musd": 65000.0,
+      "total_musd": 65000.0
+    },
+    {
+      "stage": "series-g",
+      "n_rounds": 2,
+      "median_musd": 15239.5,
+      "total_musd": 30479.0
+    },
+    {
+      "stage": "acquired",
+      "n_rounds": 2,
+      "median_musd": 12050.0,
+      "total_musd": 24100.0
+    },
+    {
+      "stage": "series-f",
+      "n_rounds": 8,
+      "median_musd": 370.5,
+      "total_musd": 15534.0
+    },
+    {
+      "stage": "series-j",
+      "n_rounds": 1,
+      "median_musd": 10000.0,
+      "total_musd": 10000.0
+    },
+    {
+      "stage": "debt",
+      "n_rounds": 7,
+      "median_musd": 500.0,
+      "total_musd": 8628.0
+    },
+    {
+      "stage": "series-l",
+      "n_rounds": 1,
+      "median_musd": 5000.0,
+      "total_musd": 5000.0
+    },
+    {
+      "stage": "acquisition",
+      "n_rounds": 4,
+      "median_musd": 1115.0,
+      "total_musd": 4980.0
+    },
+    {
+      "stage": "series-e",
+      "n_rounds": 7,
+      "median_musd": 160.0,
+      "total_musd": 4533.0
+    },
+    {
+      "stage": "series-d",
+      "n_rounds": 15,
+      "median_musd": 185.0,
+      "total_musd": 3141.0
+    },
+    {
+      "stage": "series-b",
+      "n_rounds": 47,
+      "median_musd": 36.0,
+      "total_musd": 2894.0
+    },
+    {
+      "stage": "series-c",
+      "n_rounds": 25,
+      "median_musd": 70.0,
+      "total_musd": 2843.0
+    },
+    {
+      "stage": "series-a",
+      "n_rounds": 52,
+      "median_musd": 15.5,
+      "total_musd": 1101.0
+    },
+    {
+      "stage": "seed",
+      "n_rounds": 69,
+      "median_musd": 3.1,
+      "total_musd": 450.0
+    },
+    {
+      "stage": "ipo",
+      "n_rounds": 3,
+      "median_musd": 94.5,
+      "total_musd": 306.0
+    },
+    {
+      "stage": "growth-equity",
+      "n_rounds": 1,
+      "median_musd": 270.0,
+      "total_musd": 270.0
+    },
+    {
+      "stage": "Series E",
+      "n_rounds": 1,
+      "median_musd": 200.0,
+      "total_musd": 200.0
+    },
+    {
+      "stage": "Series B",
+      "n_rounds": 2,
+      "median_musd": 77.5,
+      "total_musd": 155.0
+    },
+    {
+      "stage": "post-ipo",
+      "n_rounds": 1,
+      "median_musd": 154.0,
+      "total_musd": 154.0
+    },
+    {
+      "stage": "private-equity",
+      "n_rounds": 2,
+      "median_musd": 50.0,
+      "total_musd": 100.0
+    },
+    {
+      "stage": "Series A",
+      "n_rounds": 2,
+      "median_musd": 41.0,
+      "total_musd": 82.0
+    },
+    {
+      "stage": "secondary-market",
+      "n_rounds": 1,
+      "median_musd": 35.0,
+      "total_musd": 35.0
+    },
+    {
+      "stage": "pre-a-plus",
+      "n_rounds": 3,
+      "median_musd": 10.0,
+      "total_musd": 30.0
+    },
+    {
+      "stage": "pre-a",
+      "n_rounds": 3,
+      "median_musd": 8.0,
+      "total_musd": 24.0
+    },
+    {
+      "stage": "grant",
+      "n_rounds": 4,
+      "median_musd": 1.3,
+      "total_musd": 9.0
+    },
+    {
+      "stage": "pre-seed",
+      "n_rounds": 7,
+      "median_musd": 0.6,
+      "total_musd": 9.0
+    }
+  ]
+}

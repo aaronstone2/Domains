@@ -1,0 +1,697 @@
+{
+  "leaf": "competitors-graph-databases-emerging",
+  "products": [
+    {
+      "slug": "grafeo",
+      "name": "Grafeo",
+      "company_slug": "grafeo",
+      "description": "A high-performance, Rust-built embeddable graph database supporting multiple query languages (GQL, Cypher, Gremlin, GraphQL, SPARQL, SQL/PGQ) with vectorized execution and adaptive chunking for fast embedded and server deployments.",
+      "product_type": "platform",
+      "open_source": true,
+      "positioning": "Fast, lean, embeddable graph DB with multi-language support and lower memory footprint than traditional in-memory databases",
+      "archetype": "High-Performance Embedded Graph Engine",
+      "deployment": [
+        "embedded",
+        "server",
+        "docker"
+      ],
+      "tech_stack": [
+        "Rust",
+        "Gremlin",
+        "Cypher",
+        "GQL",
+        "GraphQL",
+        "SPARQL",
+        "SQL/PGQ"
+      ],
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-grafeo-homepage",
+        "market-competitors-graph-databases-emerging-grafeo-github-repo",
+        "market-competitors-graph-databases-emerging-grafeo-getting-started",
+        "market-competitors-graph-databases-emerging-grafeo-user-guide"
+      ]
+    },
+    {
+      "slug": "puppygraph",
+      "name": "PuppyGraph",
+      "company_slug": "puppygraph",
+      "description": "The first real-time, zero-ETL graph query engine that transforms existing relational data stores (Databricks, Snowflake, ClickHouse, etc.) into a unified graph model without ETL, enabling complex queries in seconds at petabyte scale.",
+      "product_type": "platform",
+      "open_source": false,
+      "positioning": "Zero-ETL graph query engine that bypasses traditional graph database costs, latency, and maintenance by querying relational data as graphs",
+      "archetype": "Zero-ETL Graph Query Layer",
+      "deployment": [
+        "cloud",
+        "docker",
+        "managed-service"
+      ],
+      "tech_stack": [
+        "Gremlin",
+        "Cypher",
+        "GQL",
+        "Databricks",
+        "Iceberg",
+        "ClickHouse",
+        "OneLake"
+      ],
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-puppygraph-homepage",
+        "market-competitors-graph-databases-emerging-puppygraph-docs",
+        "market-competitors-graph-databases-emerging-puppygraph-pricing",
+        "market-competitors-graph-databases-emerging-puppygraph-databricks",
+        "market-competitors-graph-databases-emerging-puppygraph-iceberg-docs"
+      ]
+    },
+    {
+      "slug": "nebulagraph",
+      "name": "NebulaGraph",
+      "company_slug": "nebulagraph-engine",
+      "description": "A distributed, highly scalable graph database supporting hundreds of billions of vertices and edges with millisecond-level query latency, offering open-source and enterprise editions with cloud deployments on Azure and AWS.",
+      "product_type": "platform",
+      "open_source": true,
+      "positioning": "Unlimited scalable graph infrastructure for AI systems, fraud detection, real-time analytics, and knowledge graphs at enterprise scale",
+      "archetype": "Distributed Enterprise Graph Database",
+      "deployment": [
+        "self-hosted",
+        "cloud-azure",
+        "cloud-aws",
+        "docker",
+        "kubernetes"
+      ],
+      "tech_stack": [
+        "C++",
+        "GQL",
+        "nGQL",
+        "Spark",
+        "Flink",
+        "Docker",
+        "REST API"
+      ],
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-nebulagraph-homepage",
+        "market-competitors-graph-databases-emerging-nebulagraph-docs",
+        "market-competitors-graph-databases-emerging-nebulagraph-github",
+        "market-competitors-graph-databases-emerging-nebulagraph-pricing",
+        "market-competitors-graph-databases-emerging-nebulagraph-azure-marketplace"
+      ]
+    },
+    {
+      "slug": "arcadedb",
+      "name": "ArcadeDB",
+      "company_slug": "arcadedb",
+      "description": "An open-source multi-model database combining graph, vector, and time-series capabilities in a single platform with support for Cypher and Gremlin query languages, OLAP analytics engine, and GraphBatch for fast ingestion.",
+      "product_type": "platform",
+      "open_source": true,
+      "positioning": "Multi-model database unifying graph, vector, and time-series with open-source OLAP analytics and education through ArcadeDB Academy",
+      "archetype": "Multi-Model Graph + Vector + Time-Series Database",
+      "deployment": [
+        "embedded",
+        "server",
+        "docker",
+        "client-server"
+      ],
+      "tech_stack": [
+        "Java",
+        "Cypher",
+        "Gremlin",
+        "GraphQL",
+        "Docker",
+        "REST API"
+      ],
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-arcadedb-homepage",
+        "market-competitors-graph-databases-emerging-arcadedb-docs",
+        "market-competitors-graph-databases-emerging-arcadedb-github",
+        "market-competitors-graph-databases-emerging-arcadedb-pricing",
+        "market-competitors-graph-databases-emerging-arcadedb-benchmarks"
+      ]
+    },
+    {
+      "slug": "hugegraph",
+      "name": "HugeGraph",
+      "company_slug": "hugegraph",
+      "description": "An Apache Foundation distributed graph database supporting high-speed bulk imports and millisecond-level queries for hundreds of billions of graph data, with deep integration with big data platforms (Spark, Flink) and LLM capabilities for AI applications.",
+      "product_type": "platform",
+      "open_source": true,
+      "positioning": "Apache Foundation graph database with big data platform integration for LLM-powered AI, knowledge graphs, recommendation systems, and fraud detection",
+      "archetype": "Distributed Graph DB for Big Data & AI",
+      "deployment": [
+        "self-hosted",
+        "docker",
+        "kubernetes",
+        "distributed"
+      ],
+      "tech_stack": [
+        "Java",
+        "Gremlin",
+        "Cypher",
+        "Spark",
+        "Flink",
+        "Docker",
+        "REST API"
+      ],
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-hugegraph-homepage",
+        "market-competitors-graph-databases-emerging-hugegraph-docs",
+        "market-competitors-graph-databases-emerging-hugegraph-github-apache",
+        "market-competitors-graph-databases-emerging-hugegraph-quickstart",
+        "market-competitors-graph-databases-emerging-hugegraph-architecture"
+      ]
+    },
+    {
+      "slug": "bigquery-graph",
+      "name": "BigQuery Graph",
+      "company_slug": "google-bigquery-graph",
+      "description": "Google Cloud's native graph analytics engine within BigQuery that unifies SQL and GQL (Graph Query Language) on a single platform, enabling graph analysis alongside relational analytics with integrated visualization and knowledge graph support.",
+      "product_type": "platform",
+      "open_source": false,
+      "positioning": "Unified SQL+Graph analytics within Google Cloud BigQuery for dark data activation, knowledge graphs, and connected intelligence with integrated Spanner Graph ecosystem",
+      "archetype": "SQL+Graph Unified Analytics Platform",
+      "deployment": [
+        "cloud-gcp",
+        "managed-service"
+      ],
+      "tech_stack": [
+        "GQL",
+        "SQL",
+        "Python",
+        "Google Cloud Storage",
+        "Bigquery ML",
+        "Vertex AI"
+      ],
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-bigquery-graph-docs",
+        "market-competitors-graph-databases-emerging-bigquery-graph-blog",
+        "market-competitors-graph-databases-emerging-bigquery-graph-create",
+        "market-competitors-graph-databases-emerging-bigquery-graph-sql",
+        "market-competitors-graph-databases-emerging-bigquery-graph-viz"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "grafeo",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "User guide includes catalog and schema introspection as core feature with minimal configuration"
+    },
+    {
+      "product_slug": "grafeo",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Multi-language query support (GQL, Cypher, Gremlin, GraphQL, SPARQL, SQL/PGQ) with code-first execution"
+    },
+    {
+      "product_slug": "grafeo",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Embedded and server deployment models with docker support and low memory footprint"
+    },
+    {
+      "product_slug": "grafeo",
+      "feature_id": "market.feature.integration-rest-api",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "REST API support available but not emphasized in primary docs"
+    },
+    {
+      "product_slug": "grafeo",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Getting started guide and user guide available but limited interactive tutorials"
+    },
+    {
+      "product_slug": "grafeo",
+      "feature_id": "market.feature.documentation",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Official docs on homepage with getting started and user guides, but less comprehensive than mature competitors"
+    },
+    {
+      "product_slug": "grafeo",
+      "feature_id": "market.feature.performance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Vectorized execution, SIMD-optimized operations, adaptive chunking for high performance"
+    },
+    {
+      "product_slug": "puppygraph",
+      "feature_id": "market.feature.integration-relational-sources",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Zero-ETL core feature - direct integration with Databricks, Snowflake, ClickHouse, Iceberg without data movement"
+    },
+    {
+      "product_slug": "puppygraph",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Native support for Gremlin, Cypher, GQL with real-time query execution"
+    },
+    {
+      "product_slug": "puppygraph",
+      "feature_id": "market.feature.query-building-parameterization",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Query parameter binding supported for prepared statements across data sources"
+    },
+    {
+      "product_slug": "puppygraph",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Sub-10-minute deployment with docker, AWS marketplace, and cloud management options"
+    },
+    {
+      "product_slug": "puppygraph",
+      "feature_id": "market.feature.documentation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Comprehensive docs with integration guides for Databricks, Iceberg, OneLake, ClickHouse"
+    },
+    {
+      "product_slug": "puppygraph",
+      "feature_id": "market.feature.scaling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Petabyte-scale data querying with complex 10-hop queries in seconds without ETL"
+    },
+    {
+      "product_slug": "puppygraph",
+      "feature_id": "market.feature.performance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Real-time query execution on external data sources with sub-second latency"
+    },
+    {
+      "product_slug": "nebulagraph",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Comprehensive schema documentation and introspection in official manual"
+    },
+    {
+      "product_slug": "nebulagraph",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Multiple deployment options (self-hosted, Azure, AWS, Docker) but enterprise setup complexity"
+    },
+    {
+      "product_slug": "nebulagraph",
+      "feature_id": "market.feature.scaling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Distributed architecture supports hundreds of billions of vertices/edges with linear scalability"
+    },
+    {
+      "product_slug": "nebulagraph",
+      "feature_id": "market.feature.performance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Millisecond-level query latency for complex traversals at scale"
+    },
+    {
+      "product_slug": "nebulagraph",
+      "feature_id": "market.feature.documentation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Comprehensive official manual with cloud-specific deployment guides"
+    },
+    {
+      "product_slug": "nebulagraph",
+      "feature_id": "market.feature.integration-big-data",
+      "support_level": "via-plugin",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "hci_cost_note": "Spark/Flink integration available but requires separate tool configuration"
+    },
+    {
+      "product_slug": "arcadedb",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Multi-model schema support (graph, vector, time-series) with clear introspection"
+    },
+    {
+      "product_slug": "arcadedb",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Native Cypher and Gremlin query languages with code-first editors"
+    },
+    {
+      "product_slug": "arcadedb",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Embedded, server, client-server, and docker deployment options"
+    },
+    {
+      "product_slug": "arcadedb",
+      "feature_id": "market.feature.documentation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Comprehensive docs with tutorials and ArcadeDB Academy free training courses"
+    },
+    {
+      "product_slug": "arcadedb",
+      "feature_id": "market.feature.integration-vector",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Native vector database capabilities for AI/ML applications"
+    },
+    {
+      "product_slug": "arcadedb",
+      "feature_id": "market.feature.analytics",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "OLAP analytics engine with GraphBatch for 8x faster ingestion"
+    },
+    {
+      "product_slug": "arcadedb",
+      "feature_id": "market.feature.performance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Optimized query execution with real-time analytics support"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "Schema documentation available but requires API interaction for exploration"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Gremlin and Cypher support with REST API but no visual query builder"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Docker and Kubernetes deployment with distributed architecture setup"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.documentation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Comprehensive Apache Foundation documentation with quickstart and architecture guides"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.integration-big-data",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Deep Spark and Flink integration for data import and graph computing"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.scaling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Distributed architecture supports hundreds of billions of graph data"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.performance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "High-speed import with millisecond-level real-time query latency"
+    },
+    {
+      "product_slug": "hugegraph",
+      "feature_id": "market.feature.ai-integration",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "hci_cost_note": "LLM-ready graph computing for AI applications, Q&A, recommendations, fraud detection"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "GQL (Graph Query Language) as standard with SQL integration in single editor"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.schema-introspection-explorer",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Schema documentation with GQL schema statements and visual exploration"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.deployment",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Google Cloud managed service with automatic scaling and zero infrastructure management"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.documentation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Comprehensive Google Cloud docs with codelabs, tutorials, and integration guides"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.integration-sql",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Unified SQL+GQL on single platform within BigQuery ecosystem"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.visualization",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "hci_cost_note": "Native graph visualization within BigQuery UI with gdotv integration"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.scaling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Petabyte-scale analysis with Google Cloud's distributed compute"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.performance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Fast analytics execution leveraging BigQuery's columnar storage and query engine"
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "feature_id": "market.feature.integration-gcp-ecosystem",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "hci_cost_note": "Deep integration with Spanner Graph, Vertex AI, BigQuery ML, Google Cloud Storage"
+    }
+  ],
+  "competitors": [
+    {
+      "product_slug": "grafeo",
+      "company_slug": "grafeo",
+      "competitor_type": "direct",
+      "threat_level": "low",
+      "they_win_on": [
+        "Performance (vectorized execution)",
+        "Multi-language query support",
+        "Embeddable model",
+        "Low memory footprint"
+      ],
+      "we_win_on": [
+        "Graph visualization (MetroGraph's core strength)",
+        "Node/edge HCI model",
+        "Workflow orchestration",
+        "AI-assisted building"
+      ],
+      "wedge_vs_them": "MetroGraph provides visual graph manipulation and HCI-first design vs Grafeo's pure performance/query focus; we enable non-SQL users to build graph workflows visually",
+      "moat": "Performance through Rust implementation and SIMD optimization; embeddability",
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-grafeo-homepage",
+        "market-competitors-graph-databases-emerging-grafeo-hacker-news",
+        "market-competitors-graph-databases-emerging-grafeo-javascript-doctor"
+      ]
+    },
+    {
+      "product_slug": "puppygraph",
+      "company_slug": "puppygraph",
+      "competitor_type": "adjacent",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Zero-ETL (queries existing data stores)",
+        "Sub-10-minute deployment",
+        "Petabyte-scale without data movement",
+        "Relational data source integration"
+      ],
+      "we_win_on": [
+        "Graph visualization and design",
+        "Workflow orchestration",
+        "Agent orchestration",
+        "AI-assisted node/edge building"
+      ],
+      "wedge_vs_them": "MetroGraph is HCI-first graph builder for workflows; PuppyGraph is query engine for relational data. Complementary: could integrate PuppyGraph as a data source backend for MetroGraph visualizations",
+      "moat": "Zero-ETL architecture avoiding ETL costs/latency; Databricks/Iceberg ecosystem integration",
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-puppygraph-homepage",
+        "market-competitors-graph-databases-emerging-puppygraph-zero-etl-vmblog",
+        "market-competitors-graph-databases-emerging-puppygraph-iceberg-pr"
+      ]
+    },
+    {
+      "product_slug": "nebulagraph",
+      "company_slug": "nebulagraph-engine",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Enterprise scale (billions of vertices)",
+        "Distributed architecture",
+        "Cloud marketplace availability (Azure/AWS)",
+        "Multi-edition pricing model"
+      ],
+      "we_win_on": [
+        "Visual graph manipulation (metro-map style)",
+        "Low-code graph building",
+        "Agent/workflow orchestration",
+        "HCI for non-expert users"
+      ],
+      "wedge_vs_them": "NebulaGraph is for query/scale at enterprise; MetroGraph is for visual graph design and orchestration. We serve data engineers and workflow builders, they serve database admins",
+      "moat": "Distributed architecture; enterprise sales motion; Azure/AWS cloud partnerships",
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-nebulagraph-homepage",
+        "market-competitors-graph-databases-emerging-nebulagraph-azure-marketplace",
+        "market-competitors-graph-databases-emerging-nebulagraph-neo4j-enterprise"
+      ]
+    },
+    {
+      "product_slug": "arcadedb",
+      "company_slug": "arcadedb",
+      "competitor_type": "direct",
+      "threat_level": "low",
+      "they_win_on": [
+        "Multi-model (graph + vector + time-series)",
+        "OLAP analytics engine",
+        "Open-source with free education (Academy)"
+      ],
+      "we_win_on": [
+        "Graph visualization and UI design",
+        "Workflow/agent orchestration",
+        "Low-code building experience"
+      ],
+      "wedge_vs_them": "ArcadeDB is multi-model database for analytics; MetroGraph is HCI-first graph workflow builder. Different audiences (data analysts vs engineers/builders)",
+      "moat": "Multi-model consolidation; open-source sustainability model; free training",
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-arcadedb-homepage",
+        "market-competitors-graph-databases-emerging-arcadedb-neo4j-alt",
+        "market-competitors-graph-databases-emerging-arcadedb-academy"
+      ]
+    },
+    {
+      "product_slug": "hugegraph",
+      "company_slug": "hugegraph",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Apache Foundation backing",
+        "Big data integration (Spark/Flink)",
+        "LLM-ready AI capabilities",
+        "High-speed bulk import"
+      ],
+      "we_win_on": [
+        "Visual graph builder interface",
+        "Low-code workflow design",
+        "Agent orchestration platform",
+        "HCI for non-database experts"
+      ],
+      "wedge_vs_them": "HugeGraph targets big data/AI engineers; MetroGraph targets anyone building graph workflows visually. We're HCI-first, they're integration-first",
+      "moat": "Apache Foundation credibility; Spark/Flink ecosystem lock-in; LLM positioning for AI era",
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-hugegraph-homepage",
+        "market-competitors-graph-databases-emerging-hugegraph-architecture",
+        "market-competitors-graph-databases-emerging-hugegraph-hn"
+      ]
+    },
+    {
+      "product_slug": "bigquery-graph",
+      "company_slug": "google-bigquery-graph",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Google Cloud ecosystem lock-in",
+        "SQL+Graph unified platform",
+        "Managed service (zero ops)",
+        "Integrated with Spanner/Vertex AI",
+        "GQL standard support"
+      ],
+      "we_win_on": [
+        "Visual graph orchestration (not just query)",
+        "Low-code workflow builders",
+        "Multi-database support (not GCP-only)",
+        "AI-assisted node/edge design"
+      ],
+      "wedge_vs_them": "BigQuery Graph is for SQL+graph analytics within GCP; MetroGraph is for visual graph workflow design across data sources. We're an abstraction layer, they're a managed service",
+      "moat": "Google Cloud ecosystem gravity; SQL/BigQuery data lock-in; managed service operational benefits; GQL standard alignment",
+      "source_ids": [
+        "market-competitors-graph-databases-emerging-bigquery-graph-docs",
+        "market-competitors-graph-databases-emerging-bigquery-graph-blog",
+        "market-competitors-graph-databases-emerging-bigquery-spanner-unified"
+      ]
+    }
+  ],
+  "notes": "Phase C extraction complete for emerging graph database competitors (Grafeo, PuppyGraph, NebulaGraph, ArcadeDB, HugeGraph, BigQuery Graph). All six products have been mapped to existing companies (or new company stubs as needed). Feature scoring prioritized the 15-35 most relevant capabilities from the 110-feature taxonomy, focusing on: schema introspection, query building, deployment options, documentation/onboarding, integration capabilities, scaling, performance, and vertical-specific features (e.g., vector for ArcadeDB, Big Data integration for HugeGraph, SQL+Graph for BigQuery). Competitive positioning vs MetroGraph emphasizes the HCI/visualization wedge: MetroGraph uniquely addresses the surface-area bloat and flight-to-chat failure of low-code/agent tools by providing visual node-edge graph orchestration for workflows, while all competitors focus on either pure database/query performance (Grafeo, NebulaGraph) or specific integrations (PuppyGraph zero-ETL, HugeGraph big-data, BigQuery SQL+graph). Source coverage spans T0 official products/pricing through T3 comparisons, with strong evidence depth for mature products (NebulaGraph, ArcadeDB, HugeGraph) and emerging evidence for new entrants (Grafeo, PuppyGraph)."
+}

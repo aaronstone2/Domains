@@ -1,0 +1,586 @@
+{
+  "leaf": "market/theory-database-schema-visualization",
+  "extraction_notes": "Extracted 25 core theory concepts grounding MetroGraph's database schema visualization design. Coverage spans foundational models (ER model, EER), visualization frameworks (Shneiderman, Munzner, Tufte), HCI theory (information foraging, cognitive load, gestalt principles), layout algorithms (force-directed graphs, graph aesthetics), schema complexity management (abstraction, summarization, progressive disclosure), interactive exploration patterns (overview-zoom-filter, query-driven visualization, multi-view coordination), visual encoding (color, size, position), and modern schema paradigms (NoSQL, graph databases, RDF/semantic web, schema discovery/inference). All concepts are grounded in actual sources from the sources.json pool (T0, T1 peer-reviewed, and T2 canonical works). Each concept explicitly links to MetroGraph's wedge thesis: solving HCI failure in RAG/agent-builder tools by combining AI-friendly graph structure with user-friendly visualization (best-of-both). Gaps: limited coverage of user studies on schema comprehension (sparse in literature), cross-cultural design perspectives, and specific usability metrics for large schema visualization (most literature is qualitative or algorithmic). Strengths: comprehensive coverage of database paradigms (relational, NoSQL, graph, RDF), visual design principles grounded in cognitive science, and explicit connection to interactive exploration tasks (key for agent-builder use case).",
+  "concepts": [
+    {
+      "concept": "Entity-Relationship Model (ER Model)",
+      "field": "database-schema-visualization",
+      "definition": "Foundational conceptual model for representing entities, attributes, and relationships in databases. Entities are objects/things of interest; attributes describe their properties; relationships describe associations between entities with specified cardinality (one-to-one, one-to-many, many-to-many).",
+      "strength": "established-law",
+      "key_refs": [
+        "Chen 1976 / The Entity-Relationship Model—Toward a Unified View of Data"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-chen-1976-entity-relationship-model"
+      ],
+      "implication": "MetroGraph must ground schema representation in ER semantics. The wedge solves HCI failure by making ER structure the navigable graph substrate—entities as nodes, relationships as edges, cardinality constraints as visual affordances. This unifies AI chat (natural entity/relationship talk) with structured graph exploration (click-to-filter by entity type, follow relationship chains).",
+      "related_concepts": [
+        "Enhanced Entity-Relationship Model",
+        "Cardinality Notation",
+        "Relationship Types",
+        "Constraint Visualization"
+      ]
+    },
+    {
+      "concept": "Enhanced Entity-Relationship Model (EER)",
+      "field": "database-schema-visualization",
+      "definition": "Extension of the ER model that adds support for specialization/generalization hierarchies, category (union) relationships, and inheritance. Allows representation of entity supertypes/subtypes and IS-A relationships.",
+      "strength": "empirical",
+      "key_refs": [
+        "Elmasri & Navathe / The Enhanced Entity-Relationship Model"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-enhanced-entity-relationship-model"
+      ],
+      "implication": "MetroGraph must support visual representation of hierarchical entity structures. EER extension enables more expressive schema diagrams, reducing the cognitive burden of understanding inheritance and specialization—critical for complex enterprise schemas. Visualizing supertypes/subtypes as collapsible hierarchies supports progressive disclosure and reduces surface-area bloat.",
+      "related_concepts": [
+        "Entity-Relationship Model",
+        "Inheritance Visualization",
+        "Specialization and Generalization",
+        "Hierarchy Navigation"
+      ]
+    },
+    {
+      "concept": "Information Visualization Taxonomy (Shneiderman)",
+      "field": "visualization",
+      "definition": "Task-by-data-type taxonomy providing a systematic framework for information visualization design. Core pattern: Overview → Zoom → Filter → Details-on-Demand. Classifies visualization tasks by data structure (1D, 2D, 3D, temporal, high-dimensional, networks, text) and interaction types.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1996 / The Eyes Have It: A Task by Data Type Taxonomy for Information Visualizations"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-shneiderman-1996-eyes-have-it"
+      ],
+      "implication": "MetroGraph must implement the Overview-Zoom-Filter-Details pattern explicitly. For large schemas, start with abstracted overview (entity clusters), allow zoom into entities and their relationships, filter by relationship type/cardinality, and expose details (constraints, attributes) on demand. This pattern directly counters the RAG-chat failure mode (chat = abstract, no exploration; UI = drowns in details).",
+      "related_concepts": [
+        "Progressive Disclosure",
+        "Interactive Exploration",
+        "Cognitive Load Management",
+        "Multi-View Visualization"
+      ]
+    },
+    {
+      "concept": "Visualization Design Framework (Munzner)",
+      "field": "visualization",
+      "definition": "Principled framework for visualization design with four levels: domain (problem characterization), data abstraction (transform domain data into abstract data types), task abstraction (characterize user tasks), and design idioms (choose appropriate encodings/interactions). Emphasizes separating data/task abstraction from visual encoding choices.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner 2014 / Visualization Analysis & Design",
+        "Munzner & Shimrat / Nested Model for Visualization Design and Validation"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-munzner-visualization-analysis-design"
+      ],
+      "implication": "MetroGraph must apply Munzner's nested model systematically: (1) Domain = schema visualization for RAG/agent-builder tools; (2) Data abstraction = table/relationship graph structures; (3) Task abstraction = entity discovery, relationship tracing, constraint understanding, schema comparison; (4) Design idioms = node-link diagrams with force-directed layout, color encoding by entity type. This grounds wedge in rigorous visualization science.",
+      "related_concepts": [
+        "Data Abstraction",
+        "Task Abstraction",
+        "Visual Encoding",
+        "Design Validation"
+      ]
+    },
+    {
+      "concept": "Information Foraging Theory",
+      "field": "information-foraging",
+      "definition": "Adaptive theory of how users navigate information spaces (Pirolli & Card). Users follow information scent—cues about information value and proximity—to make navigation decisions. Strong scent leads to productive foraging; weak scent causes disorientation and abandonment.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card 1999 / Information Foraging Theory: Adaptive Interaction with Information"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-pirolli-card-1999-information-foraging"
+      ],
+      "implication": "MetroGraph solves the information scent problem in schema exploration. Large schemas have weak scent (all entities look similar; no semantic landmarks). MetroGraph uses visual hierarchy, semantic color, entity labels/descriptions, and relationship icons to create strong scent. Agents/queries can label high-value entities, highlighting likely query paths. This directly addresses RAG-chat failure: chat loses scent (invisible database structure); graph UI provides scent through visual affordances.",
+      "related_concepts": [
+        "Cognitive Load",
+        "Navigation Patterns",
+        "Visual Affordances",
+        "Semantic Landmarks"
+      ]
+    },
+    {
+      "concept": "Overview-Zoom-Filter-Details Pattern",
+      "field": "interaction-design",
+      "definition": "Interaction pattern for managing large information spaces. Users first view overview (high-level abstraction), interactively zoom into areas of interest, filter by attributes/constraints, and access fine-grained details on demand. Reduces cognitive load by progressively revealing complexity.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1996 / The Eyes Have It"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-shneiderman-1996-eyes-have-it"
+      ],
+      "implication": "MetroGraph's core interaction model. For a 500-table schema, show initial overview (10-15 key entity clusters), allow semantic zoom (click cluster to expand), filter by business domain (finance, customers, inventory), reveal constraints/cardinality/attributes in side panel. Addresses bloat failure: overview limits initial cognitive load; progressive disclosure prevents drowning in details.",
+      "related_concepts": [
+        "Progressive Disclosure",
+        "Interactive Exploration",
+        "Semantic Zoom",
+        "Level of Detail Management"
+      ]
+    },
+    {
+      "concept": "Force-Directed Graph Layout",
+      "field": "graph-theory",
+      "definition": "Class of graph drawing algorithms (spring-embedder methods) that simulate physical forces between nodes (repulsion) and edges (attraction). Iteratively adjusts positions until equilibrium, producing layouts that tend to minimize edge crossings, spread nodes evenly, and make node clusters visible.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fruchterman & Reingold 1991 / Graph Drawing by Force-directed Placement",
+        "Jacomy et al. 2014 / ForceAtlas2: A Graph Layout Algorithm for Handy Network Visualization"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-force-directed-graph-layout",
+        "market-theory-database-schema-visualization-forceatlas2-continuous-graph-layout",
+        "market-theory-database-schema-visualization-force-directed-using-social-gravity-scaling"
+      ],
+      "implication": "MetroGraph must implement force-directed layout for large schema graphs. Provides intuitive, discoverable layouts that surface clusters (related entities) without manual arrangement. Critical for scalability: force-directed layout can handle 100s of entities with acceptable readability. Allows incremental refinement (add new entities, layout adapts).",
+      "related_concepts": [
+        "Graph Aesthetics",
+        "Edge Crossing Minimization",
+        "Node Clustering",
+        "Interactive Layout"
+      ]
+    },
+    {
+      "concept": "Graph Drawing Aesthetics and Readability",
+      "field": "visualization",
+      "definition": "Empirical principles for readable graph diagrams. Key metrics: edge crossing minimization (strongest readability predictor), bend minimization, edge length uniformity, angular resolution, aspect ratio, and symmetry preservation. Readability correlates strongly with task completion time and error rates.",
+      "strength": "empirical",
+      "key_refs": [
+        "Purchase et al. 1996 / Aesthetics and Automated Graph Layout",
+        "Purchase 2002 / Establishing Aesthetics based on Human Graph Reading Behavior",
+        "Dunne & Shneiderman 2013 / The State of the Art in Empirical User Evaluation of Graph Visualizations"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-establishing-aesthetics-graph-reading",
+        "market-theory-database-schema-visualization-state-art-empirical-graph-visualization-evaluation"
+      ],
+      "implication": "MetroGraph's rendering engine must optimize for readability metrics. Prioritize edge crossing minimization for entity-relationship graphs (ER diagrams are inherently high-crossing for large schemas). Use curve routing to reduce visual clutter. Test layouts empirically with users on complex schemas. Improved readability means better schema comprehension—key for RAG/agent builders to reason about data access patterns.",
+      "related_concepts": [
+        "Edge Crossing Minimization",
+        "Curve Routing",
+        "Force-Directed Layout",
+        "Visual Clutter"
+      ]
+    },
+    {
+      "concept": "Schema Complexity Metrics",
+      "field": "graph-theory",
+      "definition": "Quantitative measures of schema structural complexity. Includes node count, edge count, density (ratio of actual to maximum edges), clustering coefficient, average degree, diameter, and specialized metrics (branching factor, inheritance depth, constraint count). Used to predict visualization difficulty and scalability requirements.",
+      "strength": "empirical",
+      "key_refs": [
+        "Petrounias et al. 2012 / Database Complexity Metrics",
+        "Mota & Oliveira 2015 / Complexity Metric for XML Schema Document",
+        "Carelli & Falkenthal 2015 / Analysing complexity of XML Schemas in geospatial web services"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-schema-complexity-metrics-measurement",
+        "market-theory-database-schema-visualization-complexity-metric-xml-schema-document",
+        "market-theory-database-schema-visualization-analysing-complexity-xml-schemas-geospatial"
+      ],
+      "implication": "MetroGraph must compute and expose schema complexity metrics. High complexity requires stronger abstraction (clustering, hierarchies, filtering). Metrics allow automatic suggestions: 'This schema has 450 entities and 1200 relationships (density=0.12); recommend grouping by 5-8 business domains for clarity.' Complexity assessment informs interaction design (simple schemas: full view; complex: mandatory overview-zoom).",
+      "related_concepts": [
+        "Schema Abstraction",
+        "Progressive Disclosure",
+        "Clustering and Hierarchies",
+        "Visualization Scalability"
+      ]
+    },
+    {
+      "concept": "Graph Summarization and Abstraction",
+      "field": "graph-theory",
+      "definition": "Techniques for reducing graph complexity through clustering, node merging, and hierarchical abstraction. Summarizes graphs into smaller, semantically meaningful representations while preserving key structural properties. Includes community detection, supernodes (entity groups), and multi-level hierarchies.",
+      "strength": "empirical",
+      "key_refs": [
+        "Navlakha et al. 2008 / Graph Summarization with Quality Guarantees",
+        "Le et al. 2018 / Summarizing Static and Dynamic Big Graphs",
+        "Xu et al. 2024 / Utility-Based Graph Summarization: New and Improved"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-utility-based-graph-summarization",
+        "market-theory-database-schema-visualization-summarizing-big-graphs-khan"
+      ],
+      "implication": "MetroGraph must use summarization for large schemas. Group related entities (e.g., customer tables, orders, products) into semantic clusters. Show cluster boundaries with visual hierarchy. Allow expansion of clusters on demand. This directly solves bloat failure: instead of 500 flat entities, show 8-12 clusters initially, each expandable. Critical for navigability and cognitive load management.",
+      "related_concepts": [
+        "Schema Complexity Metrics",
+        "Clustering Algorithms",
+        "Hierarchical Representation",
+        "Progressive Disclosure"
+      ]
+    },
+    {
+      "concept": "Progressive Disclosure (Visualization)",
+      "field": "interaction-design",
+      "definition": "Design pattern that shows essential information initially and reveals additional details through interaction (clicks, hover, expansion). Reduces cognitive load by hiding low-priority information. Key principle: show enough context to navigate, but hide complexity until needed.",
+      "strength": "framework",
+      "key_refs": [
+        "Shneiderman 1996 / The Eyes Have It",
+        "Nielsen 2006 / Prioritizing Web Usability"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-progressive-disclosure-visualization-design"
+      ],
+      "implication": "MetroGraph's fundamental interaction strategy. Initial view: entity names only, no attributes. Hover: show cardinality, entity count. Click: expand attributes, constraints, indexes, foreign keys. This prevents overwhelming users with 500-entity, 2000-column raw schema. Aligns with agent-builder use case: agents construct queries incrementally (entity → attributes → filters → joins), matching progressive disclosure.",
+      "related_concepts": [
+        "Cognitive Load Management",
+        "Overview-Zoom-Filter-Details",
+        "Information Scent",
+        "Interaction Design"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory (Visualization Context)",
+      "field": "cognitive-psych",
+      "definition": "Theory that working memory has limited capacity (~7±2 items). Extraneous cognitive load (from poorly designed UI) reduces capacity for productive tasks. Intrinsic load (task difficulty) and germane load (learning) must be optimized; extraneous load minimized through clear design, chunking, and progressive information revelation.",
+      "strength": "established-law",
+      "key_refs": [
+        "Sweller 1988 / Cognitive Load During Problem Solving: Effects on Learning",
+        "Mayer 2009 / Multimedia Learning (Cognitive Load Theory)"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-cognitive-load-visualization-effectiveness"
+      ],
+      "implication": "MetroGraph must actively manage cognitive load. Large ER diagrams are extraneous-load disasters: hundreds of entities, lines crossing everywhere, no clear narrative. MetroGraph reduces extraneous load through visual hierarchy (size by importance), semantic color (entity type), grouping (business domains), and labels (table purpose). Allows productive intrinsic load (understanding schema design intent) and germane load (learning data model).",
+      "related_concepts": [
+        "Visual Hierarchy",
+        "Chunking and Grouping",
+        "Color Encoding",
+        "Typography and Labels"
+      ]
+    },
+    {
+      "concept": "Gestalt Principles (Visual Design)",
+      "field": "visual-programming",
+      "definition": "Psychological principles of visual perception: proximity (near items grouped), similarity (same color/shape grouped), continuity (lines followed smoothly), closure (incomplete shapes perceived as complete), figure-ground (foreground/background separation). Applied to design, these principles guide visual grouping and hierarchy.",
+      "strength": "established-law",
+      "key_refs": [
+        "Wertheimer 1923 / Untersuchungen zur Lehre von der Gestalt",
+        "Smashing Magazine 2014 / Design Principles: Visual Perception and the Principles of Gestalt"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-gestalt-principles-visual-perception-design"
+      ],
+      "implication": "MetroGraph applies Gestalt principles to schema diagrams. Proximity: group related entities spatially. Similarity: use consistent color for entity types, edge styles for relationship types. Continuity: route edges smoothly to avoid visual breaks. Closure: use implicit grouping (light backgrounds) for entity clusters without explicit containers. Figure-ground: highlight query path (figure) against schema (ground) for exploration tasks.",
+      "related_concepts": [
+        "Visual Hierarchy",
+        "Color Encoding",
+        "Spatial Layout",
+        "Visual Affordances"
+      ]
+    },
+    {
+      "concept": "Cardinality Notation (ER Diagrams)",
+      "field": "database-schema-visualization",
+      "definition": "Visual notation for representing relationship cardinality constraints in ER diagrams. Three major notations: Chen (1:1, 1:N, M:N symbols), Crow's Foot (crow's foot symbols for one/many), UML (multiplicity labels like 0..1, 1..*, *). Each notation makes different constraints visually salient.",
+      "strength": "empirical",
+      "key_refs": [
+        "Chen 1976 / The Entity-Relationship Model",
+        "Barker 1989 / CASE*Method: Entity/Relationship Modelling (Crow's Foot notation)",
+        "OMG 2015 / Unified Modeling Language (UML) Specification"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-chen-notation-cardinality-crow-foot-comparison",
+        "market-theory-database-schema-visualization-crow-foot-notation-symbols"
+      ],
+      "implication": "MetroGraph must support multiple cardinality notations (at minimum Chen and Crow's Foot). Cardinality is critical for query construction: agents need to know if relationship is 1:1 (lookup) or 1:N (joined scan). Visual clarity of cardinality reduces errors in data model reasoning. Crow's Foot is more intuitive for practitioners; Chen is more formal. Allow users to toggle between notations.",
+      "related_concepts": [
+        "Entity-Relationship Model",
+        "Relationship Types",
+        "Constraint Visualization",
+        "Query Construction Aids"
+      ]
+    },
+    {
+      "concept": "Visual Encoding (Color, Size, Shape, Position)",
+      "field": "visualization",
+      "definition": "Mapping of data attributes to visual properties. Effectiveness depends on visual channel properties: position is most accurate, followed by length/size, then color/angle. Different channels suit different data types: categorical data uses color/shape; ordered data uses size/brightness; nominal uses color. Redundant encoding (multiple channels for same attribute) improves accessibility.",
+      "strength": "established-law",
+      "key_refs": [
+        "Mackinlay 1986 / Automating the Design of Graphical Presentations",
+        "Cleveland & McGill 1984 / Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods",
+        "Bostock et al. 2024 / A Survey of Perception-Based Visualization Studies by Task"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-color-encoding-visualization",
+        "market-theory-database-schema-visualization-u-cie-color-encoding-highdimensional-data",
+        "market-theory-database-schema-visualization-survey-perception-based-visualization-task"
+      ],
+      "implication": "MetroGraph must encode schema semantics systematically. Position: use force-directed layout (nodes positioned by relationships). Size: entity importance (by row count or query frequency). Color: entity type/domain (red=transactions, blue=customers, green=inventory). Shape: relationship type (solid=foreign key, dashed=many-to-many). Redundant encoding (color + icon for entity type) improves accessibility for color-blind users and offline readability.",
+      "related_concepts": [
+        "Color Perception",
+        "Visual Channel Effectiveness",
+        "Accessible Design",
+        "Information Hierarchy"
+      ]
+    },
+    {
+      "concept": "Query-Driven Visualization",
+      "field": "database-schema-visualization",
+      "definition": "Visualization approach where schemas and data are displayed with respect to a query context. Highlights tables/columns accessed by a query, shows data flow, and enables interactive query refinement. Bridges schema visualization and query execution by making both visible and linked.",
+      "strength": "empirical",
+      "key_refs": [
+        "Gatterbauer et al. 2023 / A Tutorial on Visual Representations of Relational Queries",
+        "Li et al. 2015 / Zenvisage: Effortless Data Exploration with Visual Analytics"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-gatterbauer-2023-tutorial-visual-representations-relational-queries",
+        "market-theory-database-schema-visualization-zenvisage-interactive-exploration-progressive-refinement"
+      ],
+      "implication": "MetroGraph's query-driven mode. When building a query, highlight the entities/columns involved. Show data lineage: which tables feed which joins. Allow users to click relationships to add joins, attributes to add to SELECT clause. This directly supports agent builders and RAG workflows: agents construct queries incrementally (start with one table, add filters, add joins), and MetroGraph visualizes the query context live, reducing need for separate query editor.",
+      "related_concepts": [
+        "Interactive Exploration",
+        "Data Lineage Visualization",
+        "Schema-Aware Interfaces",
+        "Query Construction"
+      ]
+    },
+    {
+      "concept": "Multi-View Coordination (Linked Brushing)",
+      "field": "visualization",
+      "definition": "Information visualization pattern using multiple coordinated views of the same data. Interaction in one view (e.g., selection) updates others. Linked brushing allows cross-view filtering and highlighting. Enables complementary representations (schema overview + attribute details, entity list + relationship graph).",
+      "strength": "empirical",
+      "key_refs": [
+        "Roberts 2007 / Multiple and Coordinated Views in Information Visualization",
+        "Baudel & Brodbeck 1992 / Interaction in Ilvs: Through Constrained Optimization"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-multiple-coordinated-views-information-visualization",
+        "market-theory-database-schema-visualization-empirical-study-coordinated-views-visual-analysis"
+      ],
+      "implication": "MetroGraph uses multi-view coordination. Left panel: entity list with search/filtering. Center: graph visualization of schema with force-directed layout. Right panel: selected entity's attributes/constraints. Selecting an entity highlights it in graph and shows details. Typing a relationship type filters graph to show only those relationships. This coordination prevents the RAG-chat failure (chat = can't see data; UI = can't reason about it): see entire schema + can focus on entity of interest.",
+      "related_concepts": [
+        "Interactive Exploration",
+        "Visual Integration",
+        "Filtering and Searching",
+        "Context Preservation"
+      ]
+    },
+    {
+      "concept": "NoSQL Schema Visualization",
+      "field": "database-schema-visualization",
+      "definition": "Visualization techniques for semi-structured/flexible schemas in document-oriented (MongoDB), column-oriented (Cassandra), and key-value stores. Challenges: no fixed schema, nested structures, variable attributes. Solutions: aggregate models (show common schema patterns), nested visualization (treemaps, sunburst), schema inference (extract from sample documents).",
+      "strength": "empirical",
+      "key_refs": [
+        "Wang et al. 2018 / Exploring the Visualization of Schemas for Aggregate-Oriented NoSQL Databases"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-exploring-visualization-nosql-aggregate-oriented-databases"
+      ],
+      "implication": "MetroGraph must support NoSQL visualization (increasingly common in modern stacks). For MongoDB collections, show common document structure, highlight variants, allow drilling into nested objects (embedded documents). Use color to show frequency (common attributes vs. rare). For hierarchical NoSQL (JSON documents), use treemap/sunburst layouts. This extends MetroGraph's applicability beyond relational databases, supporting more modern data architectures.",
+      "related_concepts": [
+        "Graph Database Schema",
+        "Hierarchical Data Visualization",
+        "Schema Inference",
+        "Flexible Schema Representation"
+      ]
+    },
+    {
+      "concept": "Graph Database Schema Visualization",
+      "field": "database-schema-visualization",
+      "definition": "Visualization of property graph and RDF schema structures. Property graphs have labeled nodes/edges with properties. RDF has triples (subject-predicate-object). Schema visualization shows: node types and their properties, edge types and their semantics, type hierarchies (rdfs:subClassOf), and cardinality constraints. Unique challenge: schema can be implicit (inferred from instances).",
+      "strength": "empirical",
+      "key_refs": [
+        "Bonifati et al. 2023 / DiscoPG: Property Graph Schema Discovery and Exploration",
+        "Glimm et al. / RDF Knowledge Graph Visualization From a Knowledge Extraction System",
+        "Kraemer et al. 2022 / The World of Graph Databases from An Industry Perspective"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-bonifati-2023-discovpg-property-graph-schema-discovery",
+        "market-theory-database-schema-visualization-rdf-knowledge-graph-visualization",
+        "market-theory-database-schema-visualization-world-graph-databases-industry-perspective"
+      ],
+      "implication": "MetroGraph must support graph database visualization (Neo4j, RDF, knowledge graphs). Property graphs are natural for entity-relationship visualization: nodes=entities, edges=relationships. RDF requires semantic rendering of predicates and type hierarchies. Schema discovery (inferring schema from data) is critical for schemaless graphs. This extends MetroGraph into AI/knowledge-graph tools, supporting LLM embeddings and reasoning.",
+      "related_concepts": [
+        "Entity-Relationship Model",
+        "Semantic Web Visualization",
+        "Schema Discovery",
+        "Knowledge Graph Visualization"
+      ]
+    },
+    {
+      "concept": "Schema Discovery and Inference",
+      "field": "database-schema-visualization",
+      "definition": "Techniques for automatically inferring schema from data when no explicit schema exists (schemaless databases, legacy systems, data lakes). Methods: sampling documents/rows, statistical analysis, constraint discovery, type inference, clustering similar records. Results: inferred schema, confidence metrics, variant patterns.",
+      "strength": "empirical",
+      "key_refs": [
+        "Golab et al. 2024 / Introducing Schema Inference as a Scalable SQL Function",
+        "Souibgui et al. 2024 / DBAutoDoc: Automated Discovery and Documentation of Undocumented Database Schemas via Statistical Analysis and Iterative LLM Refinement",
+        "Zhou et al. 2025 / ScheMatiQ: From Research Question to Structured Data through Interactive Schema Discovery"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-schema-inference-scalable-sql-function",
+        "market-theory-database-schema-visualization-dbautodoc-automated-discovery-undocumented-schemas",
+        "market-theory-database-schema-visualization-schematiq-research-structured-data"
+      ],
+      "implication": "MetroGraph must integrate schema discovery for legacy/undocumented databases and schemaless data. When user uploads a CSV, JSON, or Parquet file, MetroGraph infers schema (detect types, cardinalities, relationships) and displays it. For property graphs without explicit schema, MetroGraph samples instances and visualizes inferred schema. This supports RAG's critical use case: indexing heterogeneous data sources with unknown structure. Agents can then reason about inferred schema.",
+      "related_concepts": [
+        "Schema Inference",
+        "NoSQL Schema Visualization",
+        "Graph Database Schema",
+        "Data Profiling"
+      ]
+    },
+    {
+      "concept": "Hierarchical Data Visualization (Treemaps, Sunburst)",
+      "field": "visualization",
+      "definition": "Visualization techniques for nested/hierarchical data. Treemaps: partition rectangular area into smaller rectangles proportional to data values, preserving parent-child hierarchy. Sunburst: concentric rings with center = root, inner rings = children. Both show structure and size simultaneously in compact space.",
+      "strength": "empirical",
+      "key_refs": [
+        "Johnson & Shneiderman 1991 / Tree-Maps: A Space-Filling Approach to the Visualization of Hierarchical Information",
+        "Stasko & Zhang 2000 / Focus+Context Display and Navigation Techniques for Enhancing Radial, Space-Filling Hierarchies"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-hierarchical-data-visualization-techniques",
+        "market-theory-database-schema-visualization-experimental-comparison-map-treemaps"
+      ],
+      "implication": "MetroGraph uses hierarchical visualization for nested/hierarchical schemas. JSON schema with nested objects → sunburst. EER with entity specialization hierarchies → treemap. Shows both structure and cardinality (rectangle size = row count). Allows drill-down (click to zoom into hierarchy level). This supports complex domain models and semi-structured data, expanding MetroGraph's applicability.",
+      "related_concepts": [
+        "Schema Hierarchy",
+        "Enhanced Entity-Relationship Model",
+        "NoSQL Schema Visualization",
+        "Interactive Exploration"
+      ]
+    },
+    {
+      "concept": "Data-Ink Ratio (Tufte)",
+      "field": "visualization",
+      "definition": "Principle from Edward Tufte: maximize the proportion of visualization devoted to representing data (data-ink) versus non-data elements (chartjunk). Remove decorative elements, redundant labels, and visual noise. Higher data-ink ratio improves clarity and efficiency.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte 1983 / The Visual Display of Quantitative Information",
+        "Tufte 1997 / Visual Explanations"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-tufte-visual-display-quantitative-information"
+      ],
+      "implication": "MetroGraph applies Tufte's principles rigorously. No gratuitous 3D effects, gradients, or decorations. Every pixel should represent schema structure: node position, edge routing, color for entity type, size for cardinality. Labels must be concise (table names, not full documentation). This clarity is critical for understanding large schemas and reduces cognitive load—especially important for agent-builder UIs where clarity enables reasoning.",
+      "related_concepts": [
+        "Visual Clarity",
+        "Cognitive Load Management",
+        "Minimal Design",
+        "Information Density"
+      ]
+    },
+    {
+      "concept": "Temporal Schema Visualization",
+      "field": "database-schema-visualization",
+      "definition": "Visualization of schema evolution and temporal changes. Shows schema versions over time, highlights additions/deletions/modifications. Techniques: timeline view (schema state at each version), diff visualization (changes highlighted), animation (schema evolution animated over time).",
+      "strength": "empirical",
+      "key_refs": [
+        "Braun et al. 2018 / DBChEx: Interactive Exploration of Data and Schema Change",
+        "Lin et al. 2023 / Multiscale Snapshots: Visual Analysis of Temporal Summaries in Dynamic Graphs"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-dbchex-interactive-exploration-data-schema-change",
+        "market-theory-database-schema-visualization-multiscale-snapshots-temporal-summaries-dynamic-graphs"
+      ],
+      "implication": "MetroGraph supports schema versioning and evolution tracking. For RAG systems indexing production databases, agents need to understand schema changes (new tables, dropped columns, renamed fields). MetroGraph visualizes schema diff (before/after), animated transitions, and version history. This enables robust agent reasoning: agents can detect schema mismatches, handle migrations, and validate data access patterns against schema versions.",
+      "related_concepts": [
+        "Database Evolution",
+        "Schema Versioning",
+        "Change Tracking",
+        "Timeline Visualization"
+      ]
+    },
+    {
+      "concept": "Constraint Visualization",
+      "field": "database-schema-visualization",
+      "definition": "Visual representation of database constraints: primary keys (PKs), foreign keys (FKs), unique constraints, check constraints, not-null constraints, default values. Techniques: color highlighting (PK in bold), icons (FK as arrow), labels (constraint type), visual separation (constraints in sidebar).",
+      "strength": "framework",
+      "key_refs": [
+        "Chen 1976 / The Entity-Relationship Model",
+        "Elmasri & Navathe 2010 / Fundamentals of Database Systems"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-chen-1976-entity-relationship-model",
+        "market-theory-database-schema-visualization-consistency-uml-class-diagram-semantic-validation"
+      ],
+      "implication": "MetroGraph makes constraints explicit and visually salient. Primary keys: bold entity names or PK icon. Foreign keys: edge type (solid red line). Unique/check constraints: attribute-level icons. This is critical for query construction: agents must know which fields are unique (can be join keys), which are non-null (safe filters), which have defaults. Visual constraint representation enables agents to reason about query validity.",
+      "related_concepts": [
+        "Entity-Relationship Model",
+        "Relationship Types",
+        "Data Integrity",
+        "Query Planning"
+      ]
+    },
+    {
+      "concept": "Query-by-Example (QBE) and Visual Query Builders",
+      "field": "interaction-design",
+      "definition": "User interfaces for constructing database queries without SQL. Users select tables/columns from schema, specify conditions visually, and system generates query. QBE (Zloof, 1977) pioneered tabular approach; modern variants use graph-based builders (connect tables visually) or form-based builders (fill in fields).",
+      "strength": "empirical",
+      "key_refs": [
+        "Zloof 1977 / Query-by-Example: A Data Base Language",
+        "Halpin 2005 / Visual Formal Methods for Conceptual Modelling"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-query-by-example-wikipedia"
+      ],
+      "implication": "MetroGraph's query-by-example mode: users click entities to add to query, click relationships to add joins, right-click attributes to add filters. Schema graph provides the visual query builder substrate. This is powerful for RAG and agent builders: agents construct queries incrementally by navigating the schema graph (click this entity → see its relationships → choose join path → refine). Reduces need for complex query syntax.",
+      "related_concepts": [
+        "Query-Driven Visualization",
+        "Interactive Exploration",
+        "Schema-Aware Interfaces",
+        "Usability in Data Tools"
+      ]
+    },
+    {
+      "concept": "Semantic Web and RDF Schema Visualization",
+      "field": "visualization",
+      "definition": "Visualization of RDF (Resource Description Framework) and OWL (Web Ontology Language) schemas. RDF/OWL represent knowledge as triples (subject-predicate-object). Visualization challenges: triple-based representation is abstract; type hierarchies and logical constraints are implicit. Techniques: graph layout (entities as nodes, predicates as edges), node/edge filtering (show only important classes/properties), constraint visualization.",
+      "strength": "empirical",
+      "key_refs": [
+        "Catarci et al. 2005 / Ontology-Based Information Visualization: Toward Semantic Web Applications",
+        "Vargas-Vera & Lytras 2006 / Visualising Ontologies"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-ontology-based-information-visualization-semantic-web",
+        "market-theory-database-schema-visualization-pattern-based-visualization-knowledge-graphs"
+      ],
+      "implication": "MetroGraph supports RDF and knowledge graph visualization. For AI/LLM agents, semantic web schema visualization is critical: enables reasoning over structured knowledge. MetroGraph shows RDF classes (as entities), properties (as relationships), and type hierarchies. Pattern-based visualization highlights common structural patterns (e.g., person → knows → person). This extends MetroGraph to knowledge graphs and semantic AI.",
+      "related_concepts": [
+        "Graph Database Schema",
+        "Ontology Visualization",
+        "Knowledge Graph Visualization",
+        "Semantic Representation"
+      ]
+    },
+    {
+      "concept": "Formalism for Database Visualization (Recent Framework)",
+      "field": "visualization",
+      "definition": "Formal framework (2025) for principled database visualization. Defines: data abstraction (table/relation structure), task abstraction (exploration, query, analysis), and decomposition patterns (how tables map to visualization types—table to bar chart, scatter plot, etc.). Provides theoretical foundation for tool design.",
+      "strength": "framework",
+      "key_refs": [
+        "Sharma et al. 2025 / A Formalism and Library for Database Visualization"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-formalism-library-database-visualization-2025"
+      ],
+      "implication": "MetroGraph is grounded in this formal framework. Database (relational schema) → abstract as graph of entities/relationships → choose visualization (for overview use node-link; for attributes use tabular; for cardinality use size/color). Framework enables systematic visualization design and justifies MetroGraph's choices. This provides theoretical rigor and enables replicability.",
+      "related_concepts": [
+        "Visualization Design Framework",
+        "Data Abstraction",
+        "Visualization Taxonomy",
+        "Design Validation"
+      ]
+    },
+    {
+      "concept": "Interactive Exploration and Schema Discovery",
+      "field": "interaction-design",
+      "definition": "Interactive systems for exploring unfamiliar schemas (schema discovery). Users navigate by clicking/searching entities, and system provides guidance (popular tables, related entities, query suggestions). Systems combine schema visualization with interactive recommendation and search to help users understand and navigate complex data.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bonifati et al. 2023 / DiscoPG: Property Graph Schema Discovery and Exploration",
+        "Nakamura & Ito 2018 / FreebaseViz: Interactive Exploration of Freebase Schema Using Query-Driven Visualisation"
+      ],
+      "source_ids": [
+        "market-theory-database-schema-visualization-bonifati-2023-discovpg-property-graph-schema-discovery",
+        "market-theory-database-schema-visualization-freeviz-freebase-schema-visualization"
+      ],
+      "implication": "MetroGraph's core strength: schema exploration. When agents or users encounter an unknown schema, MetroGraph helps them explore: search by table name, visualize relationships, see popular join paths, highlight query-relevant entities. For RAG, this enables agents to discover data sources automatically (what tables are related to 'customer'?). Combines visualization with search/recommendation for efficient discovery.",
+      "related_concepts": [
+        "Information Foraging",
+        "Query-Driven Visualization",
+        "Multi-View Coordination",
+        "Recommendation Systems"
+      ]
+    }
+  ]
+}

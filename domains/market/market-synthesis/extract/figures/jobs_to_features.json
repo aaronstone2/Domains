@@ -1,0 +1,79 @@
+{
+  "name": "jobs_to_features",
+  "caption": "High-severity pains MetroGraph relieves, and with how many features.",
+  "sql": "SELECT severity, statement, relief_strength, len(addressed_by_feature_ids) n_features FROM market.jobs_pains_gains WHERE kind='pain' AND severity IN ('high','critical') ORDER BY severity DESC, n_features DESC LIMIT 25",
+  "rows": [
+    {
+      "severity": "high",
+      "statement": "Analytics engineering modeling under pressure: 51% lack clear ownership; 59% cite constant pressure to move fast; tools fragmentation (dbt + warehouse + BI)",
+      "relief_strength": "strong",
+      "n_features": 5
+    },
+    {
+      "severity": "high",
+      "statement": "Multiple tool proliferation: 50+ ETL tools, dozens of BI platforms creating integration burden; separate monitoring/observability/governance stacks compound complexity",
+      "relief_strength": "moderate",
+      "n_features": 5
+    },
+    {
+      "severity": "high",
+      "statement": "Startup rapid iteration with limited team: NoSQL startups (239 tracked, 78 funded) need low-overhead database visualization without DBA resources",
+      "relief_strength": "strong",
+      "n_features": 5
+    },
+    {
+      "severity": "high",
+      "statement": "AI adoption trust declining: 82% use AI daily but developer trust in accuracy declining (46% distrust vs 33% trust); experienced devs most skeptical",
+      "relief_strength": "strong",
+      "n_features": 4
+    },
+    {
+      "severity": "high",
+      "statement": "Database observability and incident response: Data observability 53% adopted, 31% planning; data quality issues often discovered in production after impact",
+      "relief_strength": "strong",
+      "n_features": 4
+    },
+    {
+      "severity": "high",
+      "statement": "Cost and scale pressures growing faster than budgets: 57% report increased warehouse spend vs only 36% budget growth; cloud DW infrastructure 43.3% CAGR",
+      "relief_strength": null,
+      "n_features": null
+    },
+    {
+      "severity": "high",
+      "statement": "Data mesh distributed architecture configuration: 17.56% CAGR pattern creating need for cross-team visibility and topology management without standardized tooling",
+      "relief_strength": null,
+      "n_features": null
+    },
+    {
+      "severity": "high",
+      "statement": "Legacy system integration and migration complexity accounts for 25% of engineering pain; poor requirements gathering (19%) compounds surface-area bloat",
+      "relief_strength": null,
+      "n_features": null
+    },
+    {
+      "severity": "high",
+      "statement": "Data governance and compliance sprawl: 28.4% CAGR in privacy software; 60% driven by GDPR/CCPA enforcement; governance market 21.9% CAGR",
+      "relief_strength": null,
+      "n_features": null
+    },
+    {
+      "severity": "critical",
+      "statement": "Database schema and relationship complexity creates modeling bottleneck; 90% of data engineers report pain points with 59% under constant pressure to move fast",
+      "relief_strength": "strong",
+      "n_features": 6
+    },
+    {
+      "severity": "critical",
+      "statement": "Data quality fears dominate: 71% fear bad data; 60% abandon AI initiatives due to data quality concerns; 41% cite poor data quality as daily operational pain",
+      "relief_strength": "strong",
+      "n_features": 4
+    },
+    {
+      "severity": "critical",
+      "statement": "Talent shortage and hiring difficulty: 80%+ CDOs hiring new roles; 75% struggling to fill positions; data engineer demand projected growth 100% by 2030",
+      "relief_strength": null,
+      "n_features": null
+    }
+  ]
+}

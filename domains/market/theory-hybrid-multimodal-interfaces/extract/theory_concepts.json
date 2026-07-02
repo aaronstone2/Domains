@@ -1,0 +1,954 @@
+{
+  "leaf": "market/theory-hybrid-multimodal-interfaces",
+  "extraction_notes": "Exhaustive extraction from 61 diverse sources spanning foundational HCI theory (Shneiderman, Hutchins, Norman), information visualization (Card, Munzner, Tufte), information foraging (Pirolli-Card), multimodal interaction (Oviatt), and recent work on hybrid LLM+UI systems (Graphologue, DirectGPT, multimodal GUI architectures). Systematic coverage of: (1) Direct manipulation & interaction design foundations; (2) Multimodal and hybrid interaction modalities; (3) NL+database/visualization integration (NLIDBs, semantic parsing, text-to-viz); (4) Dialogue and conversational AI foundations; (5) LLM-UI integration patterns (direct manipulation of LLM outputs, generative UI, agent design); (6) Human-AI collaboration frameworks; (7) Visualization and graph-based interaction; (8) Cognitive and psychological foundations. All 48 concepts cite >=1 source from sources.json. Concepts grounded in empirical research, established HCI laws, and contemporary frameworks. Strong coverage of MetroGraph's wedge: surface-area bloat mitigation, flight-to-chat problem, best-of-both-worlds (direct manipulation + conversational UI), and user agency preservation.",
+  "concepts": [
+    {
+      "concept": "Direct Manipulation",
+      "field": "interaction-design",
+      "definition": "An interaction paradigm in which users interact directly with visible objects of interest through continuous representation, physical actions (pointing/gesturing) rather than complex syntax, and rapid reversible operations with immediately visible effects on the task domain.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1997 / Direct Manipulation: Comprehensible, Predictable and Controllable User Interfaces",
+        "Hutchins 1985 / Direct Manipulation Interfaces"
+      ],
+      "implication": "MetroGraph must honor direct manipulation principles when augmenting database visualization with LLM output—users should manipulate nodes/edges directly, and edits should immediately reflect in the underlying query/graph representation.",
+      "related_concepts": [
+        "Affordances",
+        "Feedback and Visibility",
+        "Reversibility and Undo"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-shneiderman-direct-manipulation-1983",
+        "market-theory-hybrid-multimodal-interfaces-hutchins-direct-manipulation-1985"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "hci",
+      "definition": "Perceived and actual action possibilities provided by an object or interface, coupled with signifiers that communicate what actions are possible. Encompasses constraints, mappings, feedback, and conceptual models that guide user perception and behavior.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 2013 / The Design of Everyday Things",
+        "Norman interaction design principles"
+      ],
+      "implication": "MetroGraph nodes, edges, and query elements must have clear affordances for direct manipulation; visual signifiers (color, shape, position) should communicate what interactions are possible without requiring modal dialogs or explanation.",
+      "related_concepts": [
+        "Signifiers",
+        "Constraints",
+        "Conceptual Models",
+        "Feedback"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-norman-affordances-design"
+      ]
+    },
+    {
+      "concept": "Information Scent",
+      "field": "information-foraging",
+      "definition": "Environmental cues (titles, summaries, relevance indicators, visual layout) that inform a user's judgment about whether to pursue a particular information source or navigation path. Users adaptively forage by maximizing the value of information gained relative to cost of interaction.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card 1999 / The Use of Proximal Information Scent to Forage for Distal Content"
+      ],
+      "implication": "In MetroGraph, LLM-generated nodes/edges and query suggestions must provide strong information scent—node labels, edge attributes, and visual prominence should signal relevance to help users rapidly navigate complex graph structures without excessive interaction cost.",
+      "related_concepts": [
+        "Probabilistic Environment",
+        "Utility Judgment",
+        "Navigation Choice"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-pirolli-card-information-foraging"
+      ]
+    },
+    {
+      "concept": "Multimodal Interaction",
+      "field": "hci",
+      "definition": "Integration of multiple input modalities (speech, gesture, pen, touch, typing) where each modality can be used independently or in complementary fashion. Effective multimodal systems leverage the strengths of each modality and manage synchronization and integration challenges.",
+      "strength": "empirical",
+      "key_refs": [
+        "Oviatt 2000 / QuickSet: Multimodal Interaction for Distributed Applications",
+        "Multimodal speech and pen-based gesture applications design patterns"
+      ],
+      "implication": "MetroGraph should support multimodal query specification—text for semantic intent, direct manipulation for visual structure, voice for rapid commands. Each modality compensates for the others' weaknesses (text precision vs. gesture speed).",
+      "related_concepts": [
+        "Mode Complementarity",
+        "Gesture-Speech Integration",
+        "Dialogue Synchronization"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-oviatt-quickset-multimodal",
+        "market-theory-hybrid-multimodal-interfaces-multimodal-speech-pen-design"
+      ]
+    },
+    {
+      "concept": "Semantic Interaction",
+      "field": "visualization",
+      "definition": "Inferring analytical intent and high-level user goals from low-level interaction with visualization (dragging points, filtering, highlighting). System steers analysis by interpreting what the visualization interaction reveals about the user's analytical reasoning.",
+      "strength": "framework",
+      "key_refs": [
+        "Semantic Interaction for Sensemaking: Inferring Analytical Reasoning for Model Steering (IEEE TVCG)"
+      ],
+      "implication": "MetroGraph can augment direct manipulation of the graph by inferring analytical intent from node repositioning, edge toggling, or filtering actions—surfacing relevant LLM-generated insights that match inferred intent without requiring explicit query reformulation.",
+      "related_concepts": [
+        "Intent Inference",
+        "Model Steering",
+        "Dialogue State Management"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-semantic-interaction-sensemaking"
+      ]
+    },
+    {
+      "concept": "Mixed-Initiative Systems",
+      "field": "hci",
+      "definition": "Interactive systems where control and decision-making are distributed between human and AI agent. Humans and AI take turns initiating actions; the system explicitly represents agency and allows humans to override or redirect AI suggestions at any point.",
+      "strength": "framework",
+      "key_refs": [
+        "A Scoping Review of Mixed Initiative Visual Analytics in the Automation Renaissance (2024)"
+      ],
+      "implication": "MetroGraph's hybrid UI should avoid 'best-guess' automation that removes user agency. Instead, surface LLM-generated query/visualization suggestions explicitly for user approval, refinement, or rejection, maintaining clear visibility of who (human/AI) initiated each action.",
+      "related_concepts": [
+        "Agency Distribution",
+        "Human-AI Collaboration",
+        "Transparency"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-mixed-initiative-visual-analytics-scoping"
+      ]
+    },
+    {
+      "concept": "Natural Language Interface to Databases (NLIDB)",
+      "field": "interaction-design",
+      "definition": "Systems that accept natural language queries and translate them into executable database languages (SQL, logical forms). Translation involves three stages: NL preprocessing (tokenization, parsing), NL understanding (semantic parsing, entity recognition), and translation to formal language with database-specific semantics.",
+      "strength": "framework",
+      "key_refs": [
+        "Liu & Xu 2025 / NLI4DB: A Systematic Review of Natural Language Interfaces for Databases",
+        "Natural Language Interfaces for Tabular Data Querying and Visualization: A Survey (2023)"
+      ],
+      "implication": "MetroGraph's NL query component must handle the full translation pipeline robustly: understand schema semantics, disambiguate entity references, and ground LLM outputs in database structure rather than hallucinated content.",
+      "related_concepts": [
+        "Semantic Parsing",
+        "Text-to-SQL",
+        "Entity Grounding"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-nli4db-systematic-review",
+        "market-theory-hybrid-multimodal-interfaces-nl-interfaces-tabular-data-survey"
+      ]
+    },
+    {
+      "concept": "Semantic Parsing",
+      "field": "rag",
+      "definition": "Translation of natural language text into formal logical or executable representations (SQL, SPARQL, lambda calculus). Requires resolving ambiguity, handling anaphora, and grounding linguistic structure to domain-specific ontologies and schema.",
+      "strength": "empirical",
+      "key_refs": [
+        "Semantic Parsing: From Natural Language to Formal Language"
+      ],
+      "implication": "MetroGraph's integration with LLMs for query generation must include grounding semantics in actual schema and data types, not free-form text generation. Semantic parsing ensures generated queries are valid and semantically faithful.",
+      "related_concepts": [
+        "NL Understanding",
+        "Entity Resolution",
+        "Pragmatic Comprehension"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-semantic-parsing-nlp"
+      ]
+    },
+    {
+      "concept": "Text-to-Visualization Generation",
+      "field": "visualization",
+      "definition": "Automatic generation of visualization specifications (Vega-Lite, D3, etc.) from natural language descriptions or queries. Involves intent recognition (what analytical task), data mapping (what fields), and design selection (what chart type, encoding).",
+      "strength": "empirical",
+      "key_refs": [
+        "Towards Natural Language Interfaces for Data Visualization: A Survey (IEEE TVCG 2021)",
+        "NL4DV: A Toolkit for Generating Analytic Specifications for Data Visualization from Natural Language Queries (IEEE VIS 2020)",
+        "NL2INTERFACE: Interactive Visualization Interface Generation from Natural Language Queries"
+      ],
+      "implication": "MetroGraph can leverage text-to-vis techniques to convert LLM-generated descriptions into interactive graph visualizations, bridging the gap between conversational exploration (chat) and direct visual manipulation.",
+      "related_concepts": [
+        "Intent Recognition",
+        "Visualization Design",
+        "Specification Generation"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-towards-nl-data-viz-survey",
+        "market-theory-hybrid-multimodal-interfaces-nl4dv-toolkit",
+        "market-theory-hybrid-multimodal-interfaces-nl2interface-visualization-generation"
+      ]
+    },
+    {
+      "concept": "Conversational Grounding",
+      "field": "hci",
+      "definition": "Mechanisms by which dialogue partners (human and AI) establish and maintain shared understanding of referents, context, and conversation state. Grounding involves confirming understanding through explicit acknowledgment, repairing misunderstandings, and tracking discourse context.",
+      "strength": "empirical",
+      "key_refs": [
+        "Comparison of Common Ground Models for Human–Computer Dialogue: Evidence for Audience Design (2021)",
+        "Empathic Grounding: Explorations using Multimodal Interaction and Large Language Models with Conversational Agents (2024)"
+      ],
+      "implication": "MetroGraph's conversational interface must maintain grounding: explicitly confirm entity references, surface shared context (current graph state, selected nodes), and enable users to correct misunderstandings before executing queries.",
+      "related_concepts": [
+        "Dialogue State Management",
+        "Context Tracking",
+        "Error Recovery"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-conversational-grounding-dialogue",
+        "market-theory-hybrid-multimodal-interfaces-empathic-grounding-multimodal-llm"
+      ]
+    },
+    {
+      "concept": "Dialogue State Management",
+      "field": "hci",
+      "definition": "Tracking and maintaining conversation context, including user goals, confirmed entities, pending confirmations, and interaction history. Critical for multi-turn dialogue where user intent evolves through refinement and clarification.",
+      "strength": "framework",
+      "key_refs": [
+        "Towards a Neural Era in Dialogue Management for Collaboration: A Literature Survey (2023)",
+        "The Convergence of Schema-Guided Dialogue Systems and the Model Context Protocol (2025)"
+      ],
+      "implication": "MetroGraph's conversational layer must maintain explicit dialogue state: what query is being constructed, what constraints apply, what clarifications are pending. Schema-guided dialogue with MCP enables dynamic capability exposure as the system learns what operations are possible.",
+      "related_concepts": [
+        "Context Management",
+        "Turn-Taking",
+        "Confirmation Strategies"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-dialogue-state-management-survey",
+        "market-theory-hybrid-multimodal-interfaces-schema-guided-dialogue-mcp"
+      ]
+    },
+    {
+      "concept": "Error Recovery in Conversational Systems",
+      "field": "hci",
+      "definition": "Mechanisms for detecting when user intent is misunderstood or misexecuted, explicitly signaling the error to the user, and enabling recovery through clarification or backtracking. Includes recognition of semantic errors (invalid query), pragmatic errors (unclear intent), and execution errors.",
+      "strength": "empirical",
+      "key_refs": [
+        "ReIn: Conversational Error Recovery with Reasoning Inception (2025)"
+      ],
+      "implication": "MetroGraph must detect both query-construction errors (invalid SQL, missing joins) and intent-interpretation errors (user meant something different). Recovery should allow rollback to prior state and alternative interpretations.",
+      "related_concepts": [
+        "Dialogue Repair",
+        "Transparency",
+        "User Control"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-error-recovery-dialogue"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation of LLM-Generated Content",
+      "field": "interaction-design",
+      "definition": "Applying direct manipulation principles to LLM outputs: making text-based responses tangible and manipulable (e.g., nodes, visual elements), allowing users to edit via direct actions rather than re-prompting, and providing rapid feedback on edits.",
+      "strength": "empirical",
+      "key_refs": [
+        "DirectGPT: A Direct Manipulation Interface to Interact with Large Language Models (CHI 2024)"
+      ],
+      "implication": "MetroGraph's core innovation: instead of chat-only interaction with LLM, convert LLM outputs into manipulable graph elements (nodes, edges, annotations) and editable query components, reducing prompting friction by 50% (per DirectGPT).",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Prompt Engineering",
+        "GUI Scaffolding"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-directgpt-chi2024"
+      ]
+    },
+    {
+      "concept": "Graph Dialogue via Interactive Diagrams",
+      "field": "visualization",
+      "definition": "Converting narrative text (from LLM) into node-link diagrams that support interactive exploration. Users can manipulate the diagram to ask follow-up questions, adjust visual layout, and interleave exploration with conversation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Graphologue: Exploring Large Language Model Responses with Interactive Diagrams (UIST 2023)"
+      ],
+      "implication": "MetroGraph implements Graphologue's core insight: bridge text-based LLM responses and direct graph manipulation by auto-converting entity-relationship descriptions into interactive node-link diagrams with context-specific prompting.",
+      "related_concepts": [
+        "Text-to-Diagram Generation",
+        "Non-Linear Dialogue",
+        "Visual Exploration"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-graphologue-arxiv"
+      ]
+    },
+    {
+      "concept": "Multimodal GUI Architecture",
+      "field": "interaction-design",
+      "definition": "System architecture integrating multiple input modalities (voice, GUI interaction, text) and coordinating them through a unified dialogue and task context. Model Context Protocol (MCP) enables dynamic capability exposure and tool grounding.",
+      "strength": "framework",
+      "key_refs": [
+        "A Multimodal GUI Architecture for Interfacing with LLM-Based Conversational Assistants (2024)"
+      ],
+      "implication": "MetroGraph should be architected to integrate voice queries, GUI gestures, and text input through unified dialogue state, allowing users to switch between modalities fluidly (e.g., voice for 'show nodes with X', GUI drag to refine).",
+      "related_concepts": [
+        "Modality Integration",
+        "Tool Grounding",
+        "Context Protocol"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-multimodal-gui-architecture-mcp"
+      ]
+    },
+    {
+      "concept": "Deliberative Reasoning in Multimodal GUI Agents",
+      "field": "hci",
+      "definition": "Extending reactive GUI agents to support explicit planning and reasoning. Agents generate hypotheses about user intent from visual observation, reason through multiple options, and explain their reasoning before taking action.",
+      "strength": "empirical",
+      "key_refs": [
+        "InfiGUI-R1: Advancing Multimodal GUI Agents from Reactive Actors to Deliberative Reasoners (2025)"
+      ],
+      "implication": "MetroGraph's graph manipulation affordances can benefit from deliberative agents: when users drag nodes, the system reasons about likely intents (filtering by location, grouping by attribute, refining scope) and suggests confirmations.",
+      "related_concepts": [
+        "Intent Inference",
+        "Multi-Agent Reasoning",
+        "Transparency"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-infigui-deliberative-agents"
+      ]
+    },
+    {
+      "concept": "Vision-Language Models for UI Understanding",
+      "field": "hci",
+      "definition": "Models (e.g., ScreenAI) that understand visual UI layouts, element semantics, and relationships. Enables automated comprehension of existing interface structures and generation of appropriate responses or modifications.",
+      "strength": "empirical",
+      "key_refs": [
+        "ScreenAI: A Vision-Language Model for UI and Infographics Understanding (Google IJCAI 2024)"
+      ],
+      "implication": "MetroGraph can leverage vision-language models to understand graph layouts and user interaction patterns, enabling adaptive layout suggestions and intelligent node/edge positioning based on inferred analytical intent.",
+      "related_concepts": [
+        "Multimodal Understanding",
+        "Layout Analysis",
+        "Semantic Structure"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-screenai-vision-language-ui"
+      ]
+    },
+    {
+      "concept": "Intent Inference and Adaptive UI",
+      "field": "hci",
+      "definition": "Inferring user intent from context (interaction history, current state, query patterns) and adapting the UI to surface relevant tools, suggestions, and constraints. Just-in-time objectives tailor AI assistance to inferred intent.",
+      "strength": "empirical",
+      "key_refs": [
+        "Just-In-Time Objectives: A General Approach for Specialized AI Interactions (2024)",
+        "Adapting User Interfaces with Model-based Reinforcement Learning (2021)"
+      ],
+      "implication": "MetroGraph should infer user analytical intent from interaction patterns and adapt the UI: hide irrelevant filters, highlight relevant node attributes, suggest query refinements aligned with inferred goal.",
+      "related_concepts": [
+        "Context Awareness",
+        "Personalization",
+        "Interaction Learning"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-intent-inference-adaptive-ui",
+        "market-theory-hybrid-multimodal-interfaces-adapting-ui-reinforcement-learning"
+      ]
+    },
+    {
+      "concept": "Progressive Disclosure",
+      "field": "interaction-design",
+      "definition": "Hiding advanced features or details until the user requests them, reducing initial cognitive load while preserving power. Disclosure happens through progressive refinement, layers of detail, or explicit requests.",
+      "strength": "established-law",
+      "key_refs": [
+        "Progressive Disclosure: User Interface Design Technique (Nielsen Norman Group)"
+      ],
+      "implication": "MetroGraph should start with simple graph views and query builders; advanced filters, aggregations, and LLM-powered suggestions appear as users refine queries or request deeper exploration.",
+      "related_concepts": [
+        "Cognitive Load",
+        "Scaffolding",
+        "Layered Interaction"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-progressive-disclosure-hci"
+      ]
+    },
+    {
+      "concept": "Cognitive Load Theory in UI Design",
+      "field": "cognitive-psych",
+      "definition": "Theory that working memory has limited capacity (~7 items). Cognitive load is imposed by task complexity (intrinsic), UI design (extraneous), and problem-solving effort (germane). Good UI minimizes extraneous load to preserve capacity for task reasoning.",
+      "strength": "established-law",
+      "key_refs": [
+        "Cognitive Load Theory in UI Design (Cognitive Science Foundation)"
+      ],
+      "implication": "MetroGraph's surface-area bloat problem is a cognitive load problem: showing all query options, all LLM suggestions, all graph interactions at once overwhelms users. Reduce extraneous load through progressive disclosure, intelligent defaults, and context-sensitive affordances.",
+      "related_concepts": [
+        "Mental Model",
+        "Attention",
+        "Working Memory"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-cognitive-load-ui-design"
+      ]
+    },
+    {
+      "concept": "Human-Centered AI Interaction (HC-HAII)",
+      "field": "hci",
+      "definition": "Design approach centering human needs, values, and agency rather than AI capability. Emphasizes interpretability, control, transparency, and human oversight as core requirements, not add-ons.",
+      "strength": "framework",
+      "key_refs": [
+        "Human-Centered Human-AI Interaction (HC-HAII): A Human-Centered AI Perspective (2024)",
+        "Human-AI Interaction Design Standards (2025)"
+      ],
+      "implication": "MetroGraph should prioritize user control and understanding: LLM suggestions should be clearly marked as suggestions, users should easily reject or refine them, and the system should explain its reasoning and constraints.",
+      "related_concepts": [
+        "Transparency",
+        "User Agency",
+        "Interpretability"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-human-centered-ai-interaction",
+        "market-theory-hybrid-multimodal-interfaces-human-ai-interaction-design-standards"
+      ]
+    },
+    {
+      "concept": "Agency Distribution in Human-AI Collaboration",
+      "field": "hci",
+      "definition": "Explicit allocation of decision-making authority and action control between human and AI. Spectrum ranges from human-only (AI observes) to AI-only (auto-execute) with multiple hybrid models in between.",
+      "strength": "framework",
+      "key_refs": [
+        "Deconstructing Human-AI Collaboration: Agency, Interaction, and Adaptation (2024)"
+      ],
+      "implication": "MetroGraph should explicitly model agency: users initiate primary actions (dragging, querying); LLM provides suggestions and refinements for user approval. Never auto-execute LLM-generated queries without explicit user confirmation.",
+      "related_concepts": [
+        "User Control",
+        "Mixed-Initiative",
+        "Transparency"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-human-ai-collaboration-adaptation"
+      ]
+    },
+    {
+      "concept": "Interaction-Centered Intelligence",
+      "field": "hci",
+      "definition": "Framework shifting focus from AI capability (what can the model do?) to interaction quality (does the interface enable effective human-AI collaboration?). Prioritizes interaction design over raw model performance.",
+      "strength": "framework",
+      "key_refs": [
+        "Interaction-Centered Intelligence: Toward an Interaction-Based Theory of Human-AI Co-Creation (2025)"
+      ],
+      "implication": "MetroGraph's success depends less on LLM sophistication and more on how well UI and dialogue choreograph human intent with AI suggestions. Design interaction first, integrate AI as support.",
+      "related_concepts": [
+        "UI Design Quality",
+        "Dialogue Design",
+        "User Experience"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-interaction-centered-intelligence"
+      ]
+    },
+    {
+      "concept": "Knowledge Graphs for Structured Data Interaction",
+      "field": "graph-theory",
+      "definition": "Semantic networks representing entities, relationships, and properties in structured form. Knowledge graphs enable rich semantic queries, inference, and visualization beyond flat tables.",
+      "strength": "framework",
+      "key_refs": [
+        "Knowledge Graphs in Practice: Characterizing their Users, Challenges, and Visualization Opportunities (2024)",
+        "SemTK: An Ontology-first, Open Source Semantic Toolkit for Managing and Querying Knowledge Graphs (2017)"
+      ],
+      "implication": "MetroGraph naturally extends to knowledge graphs: graph visualization + NL queries + semantic interaction create a powerful interface for exploring complex semantic data without SQL expertise.",
+      "related_concepts": [
+        "Ontology",
+        "Semantic Layer",
+        "Entity-Relationship"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-knowledge-graphs-visualization-practice",
+        "market-theory-hybrid-multimodal-interfaces-semtk-ontology-knowledge-graphs"
+      ]
+    },
+    {
+      "concept": "Natural Language Editing of Knowledge Graphs",
+      "field": "visualization",
+      "definition": "Interfaces enabling users to add, modify, and delete knowledge graph entities and relationships using natural language rather than form-based or code-based entry.",
+      "strength": "empirical",
+      "key_refs": [
+        "Natural Language Interaction for Editing Visual Knowledge Graphs (2024)"
+      ],
+      "implication": "MetroGraph can extend beyond query to support graph curation: 'add a node for X', 'change this relationship', 'merge these entities'—all via conversational language rather than menu clicks.",
+      "related_concepts": [
+        "Graph Editing",
+        "Collaborative Curation",
+        "Intent Inference"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-natural-language-knowledge-graphs"
+      ]
+    },
+    {
+      "concept": "Visual Query Languages and Form-Based Builders",
+      "field": "visualization",
+      "definition": "Graphical interfaces for constructing queries: Query by Example (Zloof 1970s), visual query builders, form-based interfaces. Trade-off between flexibility (SQL) and discoverability (forms).",
+      "strength": "framework",
+      "key_refs": [
+        "Query by Example (QBE) / Moshe Zloof (1970s)",
+        "Think Outside the Search Box: A Comparative Study of Visual and Form-Based Query Builders (2022)"
+      ],
+      "implication": "MetroGraph's node-link graph serves as a visual query language: dragging, filtering, grouping all visually express intent, complementing text-based NL queries. Forms (attribute selectors) enable refinement without breaking the graph view.",
+      "related_concepts": [
+        "Graphical Interaction",
+        "Query Specification",
+        "Hybrid Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-zloof-query-by-example",
+        "market-theory-hybrid-multimodal-interfaces-form-visual-query-builders-comparison"
+      ]
+    },
+    {
+      "concept": "Sketch-Based Interfaces",
+      "field": "interaction-design",
+      "definition": "Interfaces accepting freeform sketching (pen, mouse, or finger) interpreted by the system to infer intent. Enables rapid ideation and manipulation without rigid syntax.",
+      "strength": "empirical",
+      "key_refs": [
+        "Interactive Sketching for the Early Stages of User Interface Design (1998)",
+        "Code Shaping: Iterative Code Editing with Free-form AI-Interpreted Sketching (2025)",
+        "Sketch-based Creativity Support Tools using Deep Learning (2021)"
+      ],
+      "implication": "MetroGraph could accept rough sketches of graph structure (nodes, connections) and convert them to formal queries. Combined with NL, sketching enables rapid graph specification without clicking.",
+      "related_concepts": [
+        "Freeform Input",
+        "Intent Recognition",
+        "Deep Learning Interpretation"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-sketch-based-ui-prototyping",
+        "market-theory-hybrid-multimodal-interfaces-code-shaping-sketching-llm",
+        "market-theory-hybrid-multimodal-interfaces-sketch-creativity-deep-learning"
+      ]
+    },
+    {
+      "concept": "Constraint-Based UI Construction",
+      "field": "interaction-design",
+      "definition": "Declarative specification of UI layouts and behavior using constraints (e.g., 'this button is always 20% of window width', 'elements maintain fixed spacing'). Enables automatic layout and behavior adaptation.",
+      "strength": "framework",
+      "key_refs": [
+        "Constraint-Based Tools for Building User Interfaces (Alan Borning & David Duisberg, 1986)"
+      ],
+      "implication": "MetroGraph's graph layout and UI adaptation could use constraints: maintain readability as graph grows, keep related nodes together, auto-size elements. Constraint solvers enable responsive design.",
+      "related_concepts": [
+        "Declarative Specification",
+        "Layout Algorithms",
+        "Responsive Design"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-constraint-based-ui-borning"
+      ]
+    },
+    {
+      "concept": "Bidirectional Programming",
+      "field": "interaction-design",
+      "definition": "Programming model where code and UI are synchronized: edits to code update the UI, and direct manipulation of the UI updates the underlying code/specification. Eliminates the copy-past-sync problem.",
+      "strength": "framework",
+      "key_refs": [
+        "Prodirect Manipulation: Bidirectional Programming for the Masses (2015)",
+        "Introducing Bidirectional Programming in Constructive Solid Geometry-Based CAD (2024)"
+      ],
+      "implication": "MetroGraph could sync visual graph state with underlying query code: dragging nodes updates the SQL/query-builder representation, and vice versa. Eliminates manual sync between visual and textual interfaces.",
+      "related_concepts": [
+        "Code-UI Consistency",
+        "Live Editing",
+        "Declarative Specification"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-bidirectional-programming-ui",
+        "market-theory-hybrid-multimodal-interfaces-bidirectional-csg-cad"
+      ]
+    },
+    {
+      "concept": "Streaming and Incremental LLM Output",
+      "field": "hci",
+      "definition": "Displaying LLM outputs token-by-token or block-by-block as they're generated, rather than waiting for completion. Enables early interaction, feedback, and interruptibility; reduces perceived latency.",
+      "strength": "empirical",
+      "key_refs": [
+        "From Static Inference to Dynamic Interaction: A Survey of Streaming Large Language Models (2025)"
+      ],
+      "implication": "MetroGraph should stream LLM-generated graph suggestions: as the model generates nodes/edges, display them incrementally, allowing users to stop, refine, or validate mid-generation.",
+      "related_concepts": [
+        "Incremental Interaction",
+        "User Control",
+        "Latency Perception"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-streaming-llm-survey"
+      ]
+    },
+    {
+      "concept": "Generative UI Design",
+      "field": "interaction-design",
+      "definition": "Using generative models (LLMs, image models) to automatically create UI layouts, components, and specifications. Requires alignment with user preferences, platform constraints, and accessibility standards.",
+      "strength": "empirical",
+      "key_refs": [
+        "AlignUI: A Method for Designing LLM-Generated UIs Aligned with User Preferences (2025)",
+        "GraphiMind: LLM-centric Interface for Information Graphics Design (2024)",
+        "BISCUIT: Scaffolding LLM-Generated Code with Ephemeral UIs in Computational Notebooks (2024)"
+      ],
+      "implication": "MetroGraph can generate query interfaces on-the-fly based on schema: LLM generates filter panels, attribute selectors, and layout adapted to the specific database structure.",
+      "related_concepts": [
+        "Adaptive UI",
+        "Code Generation",
+        "Component Synthesis"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-aligning-llm-ui-preferences",
+        "market-theory-hybrid-multimodal-interfaces-graphimind-llm-graphics-design",
+        "market-theory-hybrid-multimodal-interfaces-biscuit-scaffolding-ephemeral-ui"
+      ]
+    },
+    {
+      "concept": "Multi-Agent Systems for Visualization",
+      "field": "visualization",
+      "definition": "Using multiple specialized agents (fact-checking, design, layout, annotation) to collaboratively generate and refine visualizations. Combines strengths of different agents to improve reliability and quality.",
+      "strength": "empirical",
+      "key_refs": [
+        "MultiVis-Agent: A Multi-Agent Framework with Logic Rules for Reliable and Comprehensive Cross-Modal Data Visualization (2025)",
+        "AGENTiGraph: A Multi-Agent Knowledge Graph Framework for Interactive, Domain-Specific LLM Chatbots (2024)"
+      ],
+      "implication": "MetroGraph's visualization generation can use agents specialized in schema validation, layout, labeling, and semantics checking—reducing LLM hallucinations and improving visualization correctness.",
+      "related_concepts": [
+        "Agent Orchestration",
+        "Fact Checking",
+        "Multi-Modal Output"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-multivis-agent-visualization",
+        "market-theory-hybrid-multimodal-interfaces-agentgraph-knowledge-graph-chatbot"
+      ]
+    },
+    {
+      "concept": "LLM-Based Code Generation and Agents",
+      "field": "hci",
+      "definition": "Using LLMs to generate executable code (SQL, visualization specs, transformations) for data tasks, with agents iterating through generation, testing, and refinement to improve correctness.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Survey on Code Generation with LLM-based Agents (2024)"
+      ],
+      "implication": "MetroGraph can generate SQL and query specs via LLMs, with agents validating against schema and data to reduce errors. This accelerates query exploration while maintaining correctness.",
+      "related_concepts": [
+        "Code Synthesis",
+        "Agent Iteration",
+        "Error Checking"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-code-generation-llm-survey"
+      ]
+    },
+    {
+      "concept": "Touch and Gesture Interaction with LLMs",
+      "field": "hci",
+      "definition": "Designing touch and gesture affordances for mobile LLM interfaces. Gestures (swipes, pinches, long-press) enable rapid command expression on small screens without fine typing.",
+      "strength": "empirical",
+      "key_refs": [
+        "Exploring Mobile Touch Interaction with Large Language Models (2025)",
+        "Understanding Gesture and Speech Multimodal Interactions for Manipulation Tasks in Augmented Reality (2020)",
+        "Gesture Based Interaction (Bill Buxton)"
+      ],
+      "implication": "MetroGraph's mobile variant should support gesture queries: swipe to filter, pinch to zoom/aggregate, long-press to expand details—reducing reliance on typing while maintaining directness.",
+      "related_concepts": [
+        "Mobile Interaction",
+        "Gesture Vocabulary",
+        "Tactile Feedback"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-touch-interaction-llm",
+        "market-theory-hybrid-multimodal-interfaces-gesture-speech-ar-manipulation",
+        "market-theory-hybrid-multimodal-interfaces-buxton-gesture-interaction"
+      ]
+    },
+    {
+      "concept": "UX Research on LLM Interactions",
+      "field": "hci",
+      "definition": "Empirical user research identifying pain points, mental models, and design opportunities in LLM chat interfaces. Recent work shows user frustration with vague outputs, inability to refine directly, and loss of context.",
+      "strength": "empirical",
+      "key_refs": [
+        "Understanding User Experience in Large Language Model Interactions (2024)",
+        "UXAgent: An LLM Agent-Based Usability Testing Framework for Web Design (CHI 2025)"
+      ],
+      "implication": "MetroGraph should address documented UX pain points: enable direct manipulation of outputs (not re-prompting), maintain context across turns, surface query constraints visually, enable lightweight refinement.",
+      "related_concepts": [
+        "User Research",
+        "Pain Points",
+        "Design Iteration"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-user-experience-llm-interactions",
+        "market-theory-hybrid-multimodal-interfaces-uxagent-usability-testing-framework"
+      ]
+    },
+    {
+      "concept": "API-First Architecture for LLM Agents",
+      "field": "interaction-design",
+      "definition": "Designing agent interactions around tool APIs that the agent can call. Enables composable, testable agent behavior and clear separation between agent reasoning and environment state.",
+      "strength": "framework",
+      "key_refs": [
+        "AXIS: Efficient Human-Agent-Computer Interaction with API-First LLM-Based Agents (2024)"
+      ],
+      "implication": "MetroGraph's agent architecture should expose graph operations (filter, group, navigate) as APIs that agents call explicitly, rather than free-form code generation. Improves safety and debuggability.",
+      "related_concepts": [
+        "Tool Use",
+        "Agent Composition",
+        "Interface Definition"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-axis-human-agent-interaction"
+      ]
+    },
+    {
+      "concept": "Feedback and Visibility of System State",
+      "field": "hci",
+      "definition": "Continuous, visible feedback about system state and response to user actions. Reduces uncertainty, builds confidence, and enables rapid mental model formation.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman principles of interaction design (Affordances, Feedback, Constraints)"
+      ],
+      "implication": "MetroGraph must provide constant, immediate visual feedback: show which nodes are selected, what filters apply, what query will execute, how many results match. Use animations and highlights to show system response.",
+      "related_concepts": [
+        "Feedback Latency",
+        "Mental Models",
+        "Trust"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-norman-affordances-design"
+      ]
+    },
+    {
+      "concept": "Reversibility and Undo",
+      "field": "interaction-design",
+      "definition": "Ability to undo/reverse recent actions without penalty or data loss. Critical for reducing user anxiety and encouraging exploration. Should support multi-level undo and redo.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1997 / Direct Manipulation principles"
+      ],
+      "implication": "MetroGraph queries and manipulations should be fully reversible: undo node/edge additions, filter changes, layout rearrangements. Enable users to experiment fearlessly.",
+      "related_concepts": [
+        "Error Recovery",
+        "User Confidence",
+        "Exploration"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-shneiderman-direct-manipulation-1983"
+      ]
+    },
+    {
+      "concept": "Information Visualization Framework",
+      "field": "visualization",
+      "definition": "Systematic framework for designing visualizations via abstraction layers: data abstraction, task abstraction, visual encoding, interaction design. Enables principled design and evaluation.",
+      "strength": "framework",
+      "key_refs": [
+        "Card, Mackinlay, Shneiderman / Readings in Information Visualization: Using Vision To Think",
+        "Munzner / Visualization Analysis and Design (nested model)"
+      ],
+      "implication": "MetroGraph's graph visualization should follow principled design: abstract the graph (nodes=entities, edges=relationships), abstract the task (explore, filter, aggregate), encode visually (position, color, size), enable interaction (drag, filter, zoom).",
+      "related_concepts": [
+        "Visual Encoding",
+        "Graphical Perception",
+        "Interaction Techniques"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-card-mackinlay-shneiderman-viz",
+        "market-theory-hybrid-multimodal-interfaces-munzner-visualization-analysis-design"
+      ]
+    },
+    {
+      "concept": "Data-Ink Ratio and Graphical Integrity",
+      "field": "visualization",
+      "definition": "Tufte's principle that every pixel should serve the data; minimize decoration, redundancy, and distortion. High data-ink ratio makes visualizations clearer and more efficient.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte / The Visual Display of Quantitative Information (1983)"
+      ],
+      "implication": "MetroGraph's graph layouts should maximize information density and minimize visual clutter: use size, color, position efficiently; avoid decorative nodes or edges; make edges proportional to relationship strength.",
+      "related_concepts": [
+        "Visual Clarity",
+        "Efficiency",
+        "Truthfulness"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-tufte-information-design"
+      ]
+    },
+    {
+      "concept": "Conversational Information Seeking",
+      "field": "information-foraging",
+      "definition": "Iterative process where users refine information needs through dialogue. Includes clarification, negotiation, and exploration. Moving beyond single-turn queries to multi-turn refinement.",
+      "strength": "framework",
+      "key_refs": [
+        "Conversational Information Seeking (2022)"
+      ],
+      "implication": "MetroGraph's UI should be designed for conversational refinement: each query-visualization interaction leads to follow-up questions, clarifications, and exploration—maintaining dialogue context throughout.",
+      "related_concepts": [
+        "Iterative Refinement",
+        "Dialogue Flow",
+        "Context Accumulation"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-conversational-information-seeking"
+      ]
+    },
+    {
+      "concept": "Form Filling with AI Assistance",
+      "field": "interaction-design",
+      "definition": "Using AI to suggest or auto-fill structured form entries based on context and domain knowledge. Reduces typing burden while maintaining user verification and control.",
+      "strength": "empirical",
+      "key_refs": [
+        "OmniFill: Domain-Agnostic Form Filling Suggestions Using Multi-Faceted Context (2023)"
+      ],
+      "implication": "MetroGraph's query builder can use AI to suggest filter values, attribute names, and aggregation functions based on schema and interaction history—reducing manual entry.",
+      "related_concepts": [
+        "Contextual Suggestions",
+        "Completion",
+        "User Control"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-omnifill-form-filling-suggestions"
+      ]
+    },
+    {
+      "concept": "Conversational Form Design",
+      "field": "interaction-design",
+      "definition": "Presenting form fields sequentially via conversational turns rather than all-at-once. Reduces cognitive load and enables context-aware field ordering.",
+      "strength": "empirical",
+      "key_refs": [
+        "Conversational Form Design: Complete Guide & Tips"
+      ],
+      "implication": "MetroGraph's query builder could present filters and refinements conversationally: 'You filtered by X. Would you like to add a sort order?' rather than overwhelming with all options upfront.",
+      "related_concepts": [
+        "Progressive Disclosure",
+        "Turn-Taking",
+        "Contextual Ordering"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-conversational-forms-guide"
+      ]
+    },
+    {
+      "concept": "Command Palette Pattern",
+      "field": "interaction-design",
+      "definition": "Interface pattern providing searchable access to all available commands/actions. Often keyboard-activated (Cmd-P in IDEs). Reduces menu depth and surface-area bloat.",
+      "strength": "framework",
+      "key_refs": [
+        "Command Palette Pattern (UX Patterns)"
+      ],
+      "implication": "MetroGraph could expose all query operations, visualizations, and filters via a command palette: users type to search rather than drilling through menus, reducing cognitive load from surface-area bloat.",
+      "related_concepts": [
+        "Discoverability",
+        "Accessibility",
+        "Efficiency"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-command-palette-ux-patterns"
+      ]
+    },
+    {
+      "concept": "Interface Agents and Autonomous Assistance",
+      "field": "hci",
+      "definition": "Software agents that observe user behavior, learn preferences, and proactively offer suggestions or perform routine tasks. Range from recommendations to full autonomy with user override.",
+      "strength": "framework",
+      "key_refs": [
+        "Interface Agents: A Review of the Field (2002)",
+        "Autonomous Interface Agents (Pattie Maes)"
+      ],
+      "implication": "MetroGraph's mixed-initiative design should avoid autonomous execution; instead, surface agent-generated suggestions (visualizations, filters) for user approval, enabling lightweight refinement without re-prompting.",
+      "related_concepts": [
+        "Recommendation Systems",
+        "Learning from Interaction",
+        "User Override"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-interface-agents-review",
+        "market-theory-hybrid-multimodal-interfaces-autonomous-interface-agents-maes"
+      ]
+    },
+    {
+      "concept": "Agentic Design Patterns",
+      "field": "interaction-design",
+      "definition": "Contemporary design patterns for AI agent UX: transparency (what is the agent doing?), control (can user override?), feedback (what happened?), fallback (what if it fails?).",
+      "strength": "framework",
+      "key_refs": [
+        "Agentic Design Patterns: UI/UX for AI Agents"
+      ],
+      "implication": "MetroGraph's agent interactions (suggestion, refinement, execution) should follow agentic patterns: clearly label AI vs. user actions, enable easy rejection, show reasoning, provide fallbacks to manual entry.",
+      "related_concepts": [
+        "Transparency",
+        "User Control",
+        "Agency Attribution"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-agentic-design-patterns"
+      ]
+    },
+    {
+      "concept": "Visualization Design Patterns",
+      "field": "visualization",
+      "definition": "Reusable solutions to common visualization problems (show trends, compare values, identify outliers). Provides vocabulary and taxonomy for principled design choices.",
+      "strength": "framework",
+      "key_refs": [
+        "Visualization Design Patterns (InfoVis Wiki)"
+      ],
+      "implication": "MetroGraph should leverage established patterns (node-link for relationships, clustering for groups, highlighting for selection) rather than inventing novel visual encodings.",
+      "related_concepts": [
+        "Visual Encoding",
+        "Pattern Library",
+        "Design Reuse"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-visual-query-languages-history"
+      ]
+    },
+    {
+      "concept": "Visualization Annotation and Markup",
+      "field": "visualization",
+      "definition": "Adding metadata (labels, legends, callouts, notes) to visualizations for clarity and communication. Survey covers empirical insights on annotation effectiveness.",
+      "strength": "empirical",
+      "key_refs": [
+        "A Survey on Annotations in Information Visualization: Empirical Insights, Applications, and Challenges (2024)"
+      ],
+      "implication": "MetroGraph's graph visualizations should support rich annotation: user-added notes, system-generated summaries of clusters, LLM-suggested insights attached to nodes/edges.",
+      "related_concepts": [
+        "Graph Labeling",
+        "Legend Design",
+        "Insight Communication"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-annotations-visualization-survey"
+      ]
+    },
+    {
+      "concept": "Collaborative Visualization and Sensemaking",
+      "field": "visualization",
+      "definition": "Multi-user visual analytics with shared context, annotations, and coordination. Enables teams to explore data collaboratively.",
+      "strength": "empirical",
+      "key_refs": [
+        "Supporting Sensemaking during Collocated Collaborative Visual Analytics"
+      ],
+      "implication": "MetroGraph could support multi-user exploration: shared graphs, synchronized queries, collaborative filtering and annotation. Enables team-based data investigation.",
+      "related_concepts": [
+        "Coordination",
+        "Shared Context",
+        "Group Sensemaking"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-collaborative-visualization-sensemaking"
+      ]
+    },
+    {
+      "concept": "Node-Based Visual Programming",
+      "field": "visual-programming",
+      "definition": "Expressing computation via node-link diagrams where nodes are operations and edges are data flow. Common in ML (TensorFlow, node editors) and creative tools.",
+      "strength": "framework",
+      "key_refs": [
+        "Visual Blocks: Custom Nodes for Visual Programming (Google)",
+        "Awesome Node-Based UIs (GitHub curation)"
+      ],
+      "implication": "MetroGraph's node-link representation naturally extends to visual query programming: each node is a query operation (filter, group, join), edges show data flow, enabling visual algorithm specification.",
+      "related_concepts": [
+        "Data Flow",
+        "Visual Computation",
+        "Procedural Specification"
+      ],
+      "source_ids": [
+        "market-theory-hybrid-multimodal-interfaces-visual-programming-blocks-google",
+        "market-theory-hybrid-multimodal-interfaces-node-based-ui-curation"
+      ]
+    }
+  ]
+}

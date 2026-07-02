@@ -1,0 +1,693 @@
+{
+  "leaf": "market/theory-trust-explainability",
+  "extraction_notes": "Extracted 28 core concepts spanning the theory-trust-explainability leaf scope, grounded in 26+ primary sources from the sources.json list. Coverage includes: (1) foundational XAI theory (explainability, interpretability, transparency); (2) trust in AI from HCI and cognitive-science perspectives (trust calibration, mental models, cognitive load); (3) canonical explanation methodologies (LIME, SHAP, anchors, counterfactual, contrastive); (4) cognitive science of explanation (selectivity, contrastivity, causality); (5) design and interaction (XUI, information visualization, information foraging); (6) documentation standards (model cards, datasheets); (7) RAG-specific concepts (source attribution, retrieval transparency, RAG trustworthiness); (8) evaluation frameworks (fidelity, explanation evaluation); (9) regulatory and accountability (right to explanation, algorithmic accountability, fairness/bias); (10) advanced topics (mechanistic interpretability, uncertainty quantification, human-AI collaboration, robustness, accuracy-interpretability tradeoff). All concepts cite >=1 real source_id from sources.json. Implications focus on MetroGraph's wedge: making reasoning transparent (via graph visualization) and interactive (via human-in-the-loop queries) to fix the HCI failure in RAG/workflow tools—surface-area bloat and the chat-AI flight are replaced by explicit reasoning chains and user agency. Notable gap: limited coverage of LLM-specific hallucination mitigation beyond general RAG trustworthiness (mechanistic interpretability for hallucinations is emerging but sources are thin).",
+  "concepts": [
+    {
+      "concept": "Explainability",
+      "field": "hci",
+      "definition": "The provision of insights to a targeted audience to fulfill a specific need, encompassing all actions and techniques to explain AI system behavior in understandable terms. Explainability is the broader concept that includes both model transparency and post hoc explanations as complementary approaches.",
+      "strength": "established-law",
+      "key_refs": [
+        "Saeed & Omlin 2021 / Explainable AI Meta-Survey",
+        "Bach et al. 2023 / User Trust in AI-Enabled Systems: HCI Perspective"
+      ],
+      "related_concepts": [
+        "Interpretability",
+        "Transparency",
+        "Post Hoc Explanation",
+        "Mental Models"
+      ],
+      "implication": "MetroGraph must surface not just system decisions but the reasoning behind them via complementary modes—direct model transparency (showing what rules/features matter) and interactive explanations (why those matter for this user/query). This addresses the 'black box' bloat by making the graph-as-explanation structure itself a design primitive.",
+      "source_ids": [
+        "market-theory-trust-explainability-explainable-ai-meta-survey-2023",
+        "market-theory-trust-explainability-user-trust-ai-hci-systematic-review"
+      ]
+    },
+    {
+      "concept": "Interpretability",
+      "field": "hci",
+      "definition": "The degree to which the insights provided by an explanation system can make sense to the targeted audience based on their domain knowledge and context. Interpretability is a property of individual explanations or model components, distinct from the broader action of explanation.",
+      "strength": "established-law",
+      "key_refs": [
+        "Saeed & Omlin 2021 / Explainable AI Meta-Survey",
+        "Lipton 2016 / The Mythos of Model Interpretability"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "Transparency",
+        "Mental Models",
+        "Domain Knowledge"
+      ],
+      "implication": "In MetroGraph, interpretability is audience-specific: a data analyst needs different node/edge semantics than an ML engineer debugging model performance. The graph interface should adapt cognitive load and jargon level per user role, making 'interpretability' a design parameter, not an assumption.",
+      "source_ids": [
+        "market-theory-trust-explainability-explainable-ai-meta-survey-2023",
+        "market-theory-trust-explainability-mythos-model-interpretability-lipton"
+      ]
+    },
+    {
+      "concept": "Trust in AI Systems",
+      "field": "cognitive-psych",
+      "definition": "Multifaceted confidence in AI system reliability, shaped by three main influencing factors: socio-ethical considerations (fairness, bias, accountability), technical features (accuracy, robustness, error rates), and design features (interface clarity, explainability, user control). Trust is context and stakeholder-dependent, requiring calibration between appropriate reliance and healthy skepticism.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bach et al. 2023 / User Trust in AI: HCI Systematic Review",
+        "Lipton 2016 / The Mythos of Model Interpretability"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "Transparency",
+        "Trust Calibration",
+        "User Characteristics",
+        "Model Accuracy"
+      ],
+      "implication": "MetroGraph's wedge directly targets trust calibration: by visualizing retrieval sources (technical), showing confidence scores and failure modes (socio-ethical), and enabling transparent exploration of reasoning (design), it prevents both blind reliance (over-trust) and unwarranted rejection (under-trust) of AI outputs. This is core to RAG-UX, where source visibility builds justified trust.",
+      "source_ids": [
+        "market-theory-trust-explainability-user-trust-ai-hci-systematic-review",
+        "market-theory-trust-explainability-mythos-model-interpretability-lipton",
+        "market-theory-trust-explainability-trust-human-ai-interaction-models"
+      ]
+    },
+    {
+      "concept": "Trust Calibration",
+      "field": "hci",
+      "definition": "The process of aligning user reliance on AI systems with actual system reliability and capabilities, balancing appropriate trust (justified confidence in system strengths) with healthy skepticism (awareness of failure modes and limitations). Over-trust leads to misuse; under-trust leads to underutilization.",
+      "strength": "empirical",
+      "key_refs": [
+        "Bach et al. 2023 / User Trust in AI: HCI Systematic Review",
+        "Lipton 2016 / The Mythos of Model Interpretability"
+      ],
+      "related_concepts": [
+        "Trust in AI Systems",
+        "User Characteristics",
+        "Explainability",
+        "Confidence Calibration"
+      ],
+      "implication": "Displaying retrieval sources and confidence intervals in MetroGraph allows users to calibrate trust per answer—high confidence + credible sources = justified reliance; low confidence + weak sources = skepticism. This granular, per-decision transparency prevents the wholesale rejection of AI tools that plagues current workflows.",
+      "source_ids": [
+        "market-theory-trust-explainability-user-trust-model-accuracy-explanations",
+        "market-theory-trust-explainability-rag-user-study-trustworthiness"
+      ]
+    },
+    {
+      "concept": "Transparency",
+      "field": "hci",
+      "definition": "The quality of AI systems being understandable in how they reach decisions, achieved through direct examination of model structure, parameters, and decision paths. Transparency enables humans to grasp mechanisms (how models work) rather than only post hoc effects (what they do).",
+      "strength": "established-law",
+      "key_refs": [
+        "Lipton 2016 / The Mythos of Model Interpretability",
+        "Saeed & Omlin 2021 / Explainable AI Meta-Survey"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "Post Hoc Explanation",
+        "Model Interpretability",
+        "Black Box Models"
+      ],
+      "implication": "MetroGraph's graph visualization surfaces transparency by making reasoning chains visible as node sequences and edge weights. For RAG systems, showing retrieval provenance (which documents, retrieval scores) provides transparency that pure chat interfaces hide. This combats the 'black box AI' fear by making process, not just output, inspectable.",
+      "source_ids": [
+        "market-theory-trust-explainability-mythos-model-interpretability-lipton",
+        "market-theory-trust-explainability-explainable-ai-meta-survey-2023"
+      ]
+    },
+    {
+      "concept": "Post Hoc Explanation",
+      "field": "hci",
+      "definition": "Explanations generated after a model has made a decision, rather than explanations derived from the model's internal structure. Post hoc methods (like saliency maps, counterfactuals) explain what a model did without revealing how it works internally, contrasting with transparent models that expose mechanisms.",
+      "strength": "empirical",
+      "key_refs": [
+        "Lipton 2016 / The Mythos of Model Interpretability",
+        "Saeed & Omlin 2021 / Explainable AI Meta-Survey"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Explainability",
+        "LIME",
+        "Counterfactual Explanations"
+      ],
+      "implication": "In MetroGraph, post hoc explanations (e.g., 'this answer was ranked high because the question matched keywords in source X') provide explanation without requiring interpretable-by-design models. This pragmatism is critical for LLM-based RAG where internal transparency is infeasible; instead, surface the decision context (retrieval scoring, confidence) as a post hoc lens.",
+      "source_ids": [
+        "market-theory-trust-explainability-mythos-model-interpretability-lipton",
+        "market-theory-trust-explainability-explanation-user-interfaces-survey"
+      ]
+    },
+    {
+      "concept": "LIME (Local Interpretable Model-Agnostic Explanations)",
+      "field": "hci",
+      "definition": "A canonical model-agnostic method that explains individual predictions by fitting a simple, interpretable model (typically linear) in the local neighborhood of the instance being explained. LIME works across model types and provides feature-attribution explanations showing which input features most influenced a prediction.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ribeiro et al. / LIME: Local Interpretable Model-Agnostic Explanations",
+        "Saeed & Omlin 2021 / Explainable AI Meta-Survey"
+      ],
+      "related_concepts": [
+        "SHAP",
+        "Anchors",
+        "Feature Attribution",
+        "Post Hoc Explanation"
+      ],
+      "implication": "For MetroGraph's agent-builder component, LIME-like local explanations can show 'why this workflow decision was made for this input' by highlighting which task features triggered which branches. This is essential UX—users need per-instance reasoning, not global model structure.",
+      "source_ids": [
+        "market-theory-trust-explainability-lime-local-interpretable-explanations",
+        "market-theory-trust-explainability-explainable-ai-meta-survey-2023"
+      ]
+    },
+    {
+      "concept": "SHAP (Shapley Additive Explanations)",
+      "field": "graph-theory",
+      "definition": "A game-theoretic approach to feature attribution using Shapley values, distributing a model's output prediction fairly among input features by considering all possible feature subsets. SHAP provides consistent, theoretically grounded feature importance explanations with both local and global interpretation modes.",
+      "strength": "established-law",
+      "key_refs": [
+        "Lundberg & Lee / SHAP: Shapley Additive Explanations",
+        "Christoph Molnar / Interpretable ML Book"
+      ],
+      "related_concepts": [
+        "LIME",
+        "Feature Attribution",
+        "Graph Theory",
+        "Model Agnostic Methods"
+      ],
+      "implication": "In MetroGraph's graph nodes (representing RAG retrieval or agent decisions), SHAP values on edge weights quantify 'how much did each source contribute to the final answer?' This aligns with fairness in credit assignment and helps users understand multi-source reasoning without exposing opaque weighting.",
+      "source_ids": [
+        "market-theory-trust-explainability-shap-shapley-additive-explanations",
+        "market-theory-trust-explainability-explainable-ai-meta-survey-2023"
+      ]
+    },
+    {
+      "concept": "Anchors",
+      "field": "hci",
+      "definition": "A rule-based explanation method that identifies minimal, interpretable if-then rules (called 'anchors') that locally bound model behavior around a specific prediction. Anchors provide high-precision, human-readable explanations guaranteeing that if the anchor conditions hold, the prediction remains stable.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ribeiro et al. / Anchors: High-Precision Model-Agnostic Explanations",
+        "Saeed & Omlin 2021 / Explainable AI Meta-Survey"
+      ],
+      "related_concepts": [
+        "LIME",
+        "Rule-Based Explanation",
+        "Post Hoc Explanation"
+      ],
+      "implication": "For MetroGraph's workflow graphs, anchors could express 'if task type = X and input length > Y, then this branch is taken.' This gives non-ML users readable logic they can verify and even override, making human-in-the-loop workflow debugging feasible without ML expertise.",
+      "source_ids": [
+        "market-theory-trust-explainability-anchors-high-precision-explanations",
+        "market-theory-trust-explainability-explainable-ai-meta-survey-2023"
+      ]
+    },
+    {
+      "concept": "Contrastive Explanations",
+      "field": "cognitive-psych",
+      "definition": "Explanations that highlight why a decision was made by contrasting it with counterfactual alternatives ('why this, not that?'). Grounded in cognitive science, contrastive explanations are more human-comprehensible than additive explanations, as humans naturally reason comparatively.",
+      "strength": "empirical",
+      "key_refs": [
+        "Miller et al. / What Makes a Good Explanation: Cognitive Dimensions",
+        "Wachter et al. / Alterfactual Explanations"
+      ],
+      "related_concepts": [
+        "Counterfactual Explanations",
+        "Causality in Explanations",
+        "Selectivity",
+        "Mental Models"
+      ],
+      "implication": "MetroGraph should show contrastive explanations: 'this source ranked first (score: 0.92) rather than the second source (score: 0.81) because it matched on [key phrase].' This comparison is more informative than absolute scores and aligns with how users naturally think about relevance.",
+      "source_ids": [
+        "market-theory-trust-explainability-what-makes-good-explanation-cognitive",
+        "market-theory-trust-explainability-counterfactual-explanations-survey"
+      ]
+    },
+    {
+      "concept": "Counterfactual Explanations",
+      "field": "cognitive-psych",
+      "definition": "Explanations that specify what changes to input features would alter a model's prediction (e.g., 'if the income were 10k higher, the loan would be approved'). Counterfactuals are actionable, contrastive, and psychologically grounded, helping users understand both the decision boundary and paths to different outcomes.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wachter et al. / Counterfactual Explanations without Opening the Black Box",
+        "Wachter et al. / Alterfactual Explanations"
+      ],
+      "related_concepts": [
+        "Contrastive Explanations",
+        "Causality",
+        "Actionability"
+      ],
+      "implication": "For RAG in MetroGraph, counterfactual UX might show: 'if you added [these keywords] to your query, source Y would rank higher.' This surfaces query-refinement strategies and empowers users to steer the system interactively, moving beyond passive answer-reading toward active exploration.",
+      "source_ids": [
+        "market-theory-trust-explainability-counterfactual-explanations-survey"
+      ]
+    },
+    {
+      "concept": "Selectivity (in Explanations)",
+      "field": "cognitive-psych",
+      "definition": "The property of explanations being selective rather than exhaustive—highlighting the most important factors rather than listing all factors. Cognitive science shows humans prefer sparse, salient explanations over complete enumerations, as selectivity reduces cognitive load and improves comprehension.",
+      "strength": "empirical",
+      "key_refs": [
+        "Miller et al. / What Makes a Good Explanation: Cognitive Dimensions"
+      ],
+      "related_concepts": [
+        "Cognitive Load",
+        "Contrastive Explanations",
+        "Information Visualization"
+      ],
+      "implication": "MetroGraph's graph should highlight the most impactful nodes/edges in a reasoning chain, de-emphasizing minor contributions. This aligns with selective explanation and prevents cognitive bloat—users see the 'plot' of the answer without the subplot. Graph layout itself becomes a selection mechanism.",
+      "source_ids": [
+        "market-theory-trust-explainability-what-makes-good-explanation-cognitive"
+      ]
+    },
+    {
+      "concept": "Causality in Explanations",
+      "field": "cognitive-psych",
+      "definition": "The degree to which explanations invoke causal relationships rather than mere correlations. Humans prefer causal explanations ('X caused Y') to correlational ones ('X and Y are associated'), and causal reasoning is foundational to understanding why a decision was made and what could change the outcome.",
+      "strength": "empirical",
+      "key_refs": [
+        "Miller et al. / What Makes a Good Explanation: Cognitive Dimensions",
+        "Lipton 2016 / The Mythos of Model Interpretability"
+      ],
+      "related_concepts": [
+        "Contrastive Explanations",
+        "Counterfactual Explanations"
+      ],
+      "implication": "In MetroGraph, edge labels should convey causal language where valid ('source A retrieved because query matched keyword') rather than purely correlational ('source A and query are similar'). This supports mental model building and user agency in understanding and debugging recommendations.",
+      "source_ids": [
+        "market-theory-trust-explainability-what-makes-good-explanation-cognitive",
+        "market-theory-trust-explainability-mythos-model-interpretability-lipton"
+      ]
+    },
+    {
+      "concept": "Cognitive Load in Explanations",
+      "field": "cognitive-psych",
+      "definition": "The mental effort required to comprehend an explanation. High cognitive load (complex jargon, too many factors, dense visual layouts) reduces explanation effectiveness. Good explanations minimize load through progressive disclosure, clear hierarchy, and audience-specific terminology.",
+      "strength": "empirical",
+      "key_refs": [
+        "Miller et al. / What Makes a Good Explanation: Cognitive Dimensions",
+        "Shneiderman / The Purpose of Visualization is Insight"
+      ],
+      "related_concepts": [
+        "Selectivity",
+        "Information Visualization",
+        "Interpretability",
+        "Explainable User Interfaces"
+      ],
+      "implication": "MetroGraph must modulate cognitive load dynamically: data scientists see full reasoning chains; business users see simplified summary graphs with drill-down on demand. The same data, different cognitive entry points. This directly combats the 'bloat' wedge—not all surfaces are equally complex.",
+      "source_ids": [
+        "market-theory-trust-explainability-what-makes-good-explanation-cognitive",
+        "market-theory-trust-explainability-information-visualization-insight"
+      ]
+    },
+    {
+      "concept": "Explainable User Interfaces (XUI)",
+      "field": "interaction-design",
+      "definition": "The design and evaluation of interfaces that present AI explanations to users. XUI bridges XAI (explanation methods) and HCI (user interaction), focusing on how explanations are visualized, made interactive, and contextualized for different users and tasks. Effective XUI is evaluated on comprehension, trust calibration, and task performance.",
+      "strength": "framework",
+      "key_refs": [
+        "Lipton 2016 / The Mythos of Model Interpretability",
+        "Safian et al. 2024 / How Human-Centered Explainable AI Interfaces Are Designed and Evaluated"
+      ],
+      "related_concepts": [
+        "Information Visualization",
+        "Cognitive Load",
+        "Mental Models",
+        "Interpretability"
+      ],
+      "implication": "MetroGraph IS an XUI: the graph itself is the explanation interface. Design decisions—node size, edge opacity, progressive disclosure, filtering by confidence—all affect how well users understand and trust the system. Every pixel is an explanation choice.",
+      "source_ids": [
+        "market-theory-trust-explainability-explanation-user-interfaces-survey"
+      ]
+    },
+    {
+      "concept": "Mental Models",
+      "field": "cognitive-psych",
+      "definition": "Internal cognitive representations users construct about how a system works. Good explanations help users build accurate mental models, enabling them to predict system behavior, identify when to trust it, and recover from errors. Misaligned mental models lead to misuse and inappropriate trust.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman / The Design of Everyday Things",
+        "Lipton 2016 / The Mythos of Model Interpretability"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "Trust in AI Systems",
+        "Cognitive Load"
+      ],
+      "implication": "MetroGraph's graph structure helps users build correct mental models: 'RAG = retrieval + ranking + generation' becomes visible as a node sequence. Users see that 'AI doesn't guess; it looks up'—a model that supports calibrated trust better than black-box chat.",
+      "source_ids": [
+        "market-theory-trust-explainability-design-of-everyday-things-norman"
+      ]
+    },
+    {
+      "concept": "Information Visualization",
+      "field": "visualization",
+      "definition": "The design of visual representations (charts, graphs, maps) to facilitate analytical reasoning and insight. Effective information visualization reduces cognitive load, highlights patterns, and enables exploratory analysis. Visualization quality is measured by accuracy of user perception, speed of comprehension, and actionability of insights.",
+      "strength": "established-law",
+      "key_refs": [
+        "Tufte / The Visual Display of Quantitative Information",
+        "Shneiderman / The Purpose of Visualization is Insight"
+      ],
+      "related_concepts": [
+        "Cognitive Load",
+        "Selectivity",
+        "Explainable User Interfaces"
+      ],
+      "implication": "MetroGraph is fundamentally a visualization choice: graphs over text, spatial layout over linear narrative. By making reasoning chains visual and spatial, users can pattern-match, compare alternatives, and spot anomalies faster than reading chat transcripts—reducing cognitive load while increasing trust by transparency.",
+      "source_ids": [
+        "market-theory-trust-explainability-visual-display-quantitative-information-tufte",
+        "market-theory-trust-explainability-information-visualization-insight"
+      ]
+    },
+    {
+      "concept": "Information Foraging Theory",
+      "field": "information-foraging",
+      "definition": "An ecological theory of how users search for and make sense of information, based on optimal foraging behavior. Users follow 'information scent'—patches of information density—and balance exploitation (mining current patches) with exploration (seeking new patches). Applied to UI design, scent can be engineered through cues and feedback.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli / Information Foraging Theory: Adaptive Interaction with Information"
+      ],
+      "related_concepts": [
+        "Information Visualization",
+        "Cognitive Load",
+        "User Interaction"
+      ],
+      "implication": "In MetroGraph, information scent is signaled by source credibility badges, confidence scores, and edge highlights. Users can quickly identify 'high-confidence reasoning chains' vs. 'exploratory paths,' enabling efficient navigation. The graph structure itself provides scent—dense clusters are interesting; sparse edges signal uncertainty.",
+      "source_ids": [
+        "market-theory-trust-explainability-information-foraging-theory-pirolli"
+      ]
+    },
+    {
+      "concept": "Model Cards",
+      "field": "hci",
+      "definition": "Standardized documentation artifacts for AI models, introduced by Gebru et al., that transparently report model specifications, performance metrics, training data characteristics, ethical considerations, and known limitations. Model cards enable stakeholders to assess model appropriateness for a use case and identify potential harms.",
+      "strength": "empirical",
+      "key_refs": [
+        "Gebru et al. / Model Cards for Model Reporting",
+        "Saleh et al. / What's Documented in AI: Systematic Analysis of 32K Model Cards"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Datasheets for Datasets",
+        "Accountability"
+      ],
+      "implication": "MetroGraph could surface model card data inline: hover a source → see training dataset size, bias disclaimers, failure modes. Or hover a ranking edge → see what performance metrics were optimized. This makes provenance and limitations visible without modal dialogs, keeping users in the 'flow' while staying informed.",
+      "source_ids": [
+        "market-theory-trust-explainability-model-cards-for-model-reporting",
+        "market-theory-trust-explainability-documented-in-ai-model-cards-analysis"
+      ]
+    },
+    {
+      "concept": "Source Attribution in RAG",
+      "field": "rag",
+      "definition": "The process and design of displaying which retrieved documents or sources contributed to a RAG system's generated answer. Effective source attribution includes source identity, retrieval score/confidence, relevance justification, and (optionally) the extracted passages used. Attribution is foundational for trust calibration in RAG.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wazir et al. / Trustworthiness in Retrieval-Augmented Generation Systems: A Survey",
+        "Zhang et al. / Trust Me on This: RAG User Study"
+      ],
+      "related_concepts": [
+        "Retrieval Transparency",
+        "Trust Calibration",
+        "Explainability"
+      ],
+      "implication": "This is THE core of MetroGraph's RAG-UX wedge: instead of 'Here is an answer' (chat interface), show 'Here is how I assembled the answer from sources X, Y, Z with confidence scores.' Attribution makes the 'hallucination risk' tangible and actionable—users can verify, cross-check, and weight evidence themselves.",
+      "source_ids": [
+        "market-theory-trust-explainability-rag-trustworthiness-survey",
+        "market-theory-trust-explainability-rag-user-study-trustworthiness"
+      ]
+    },
+    {
+      "concept": "Retrieval Transparency",
+      "field": "rag",
+      "definition": "The visibility and explainability of the retrieval stage in RAG systems—showing users which documents were retrieved, why they were selected (matching criteria, ranking scores), and how they contributed to the final answer. Retrieval transparency combats the perception of LLM-as-oracle by making the evidence chain visible.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wazir et al. / Trustworthiness in Retrieval-Augmented Generation Systems: A Survey",
+        "Zhang et al. / Trust Me on This: RAG User Study"
+      ],
+      "related_concepts": [
+        "Source Attribution",
+        "Transparency",
+        "RAG Trustworthiness"
+      ],
+      "implication": "MetroGraph's core feature: the retrieval stage is not hidden in an LLM's weights but visualized as a graph layer. Users see 'query → matching documents → ranked results → generation input,' making RAG's separation-of-concerns explicit. This combats both over-trust (I see sources) and under-trust (I can verify).",
+      "source_ids": [
+        "market-theory-trust-explainability-rag-trustworthiness-survey",
+        "market-theory-trust-explainability-rag-user-study-trustworthiness"
+      ]
+    },
+    {
+      "concept": "RAG Trustworthiness",
+      "field": "rag",
+      "definition": "A multidimensional concept encompassing the reliability, transparency, and appropriateness of RAG systems. Key factors include retrieval accuracy, source quality, generation fidelity (not hallucinating beyond sources), confidence calibration, and user ability to verify answers. Trustworthiness differs from mere accuracy—a low-accuracy RAG with transparent sources may be more trustworthy than a high-accuracy black-box.",
+      "strength": "empirical",
+      "key_refs": [
+        "Wazir et al. / Trustworthiness in Retrieval-Augmented Generation Systems: A Survey",
+        "Zhang et al. / Trust Me on This: RAG User Study"
+      ],
+      "related_concepts": [
+        "Trust in AI Systems",
+        "Source Attribution",
+        "Retrieval Transparency",
+        "Hallucination in LLMs"
+      ],
+      "implication": "MetroGraph directly addresses RAG trustworthiness by making transparency the design principle: users build trust not through a single 'trust score' but through visible reasoning. If the graph shows strong sources but weak connections, users mistrust the synthesis. If weak sources but strong connections, they reconsider. Trust becomes granular and justified.",
+      "source_ids": [
+        "market-theory-trust-explainability-rag-trustworthiness-survey",
+        "market-theory-trust-explainability-rag-user-study-trustworthiness"
+      ]
+    },
+    {
+      "concept": "Fidelity and Faithfulness of Explanations",
+      "field": "hci",
+      "definition": "The degree to which an explanation accurately reflects the model's actual decision process. A faithful explanation represents what the model truly does (not a simplified or altered version); fidelity is measured by how well humans' interventions based on the explanation actually change model behavior as expected. Unfaithful explanations erode trust when users discover the explanation doesn't match reality.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ghosh et al. / A Comprehensive Study on Fidelity Metrics for XAI"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "Trust in AI Systems",
+        "Post Hoc Explanation"
+      ],
+      "implication": "In MetroGraph, fidelity means the graph faithfully represents how the RAG actually ranked sources—not a post-hoc rationalization. If the user changes a query and sources re-rank, the graph updates accordingly, validating the explanation's fidelity. This prevents users from building false mental models.",
+      "source_ids": [
+        "market-theory-trust-explainability-fidelity-faithfulness-explanation-evaluation"
+      ]
+    },
+    {
+      "concept": "Explanation Evaluation",
+      "field": "hci",
+      "definition": "The assessment of explanation quality across dimensions like correctness (does it match the model?), completeness (does it cover key factors?), comprehensibility (can users understand it?), and actionability (can users act on it?). Evaluation can be computational (fidelity metrics), human-centered (comprehension tasks), or task-based (user performance improvements).",
+      "strength": "framework",
+      "key_refs": [
+        "Safian et al. / How Human-Centered XAI Interfaces Are Designed and Evaluated",
+        "Mohseni et al. / Evaluating Explainable AI: Which Explanations Help Users Predict Model Behavior?"
+      ],
+      "related_concepts": [
+        "Explainability",
+        "Fidelity",
+        "Explainable User Interfaces",
+        "User Trust"
+      ],
+      "implication": "MetroGraph's graphs must be evaluated not just for visual clarity but for their impact on user task performance: Can users better verify answers with the graph? Do they catch errors faster? This shifts from 'is the explanation pretty?' to 'does it enable better decision-making?'—the real measure of effective XUI.",
+      "source_ids": [
+        "market-theory-trust-explainability-explanation-user-interfaces-survey",
+        "market-theory-trust-explainability-explainability-effectiveness-task-performance"
+      ]
+    },
+    {
+      "concept": "Right to Explanation (GDPR)",
+      "field": "hci",
+      "definition": "A legal principle established by GDPR entitling users to request explanations for algorithmic decisions that significantly affect them (e.g., loan denials, medical diagnoses). The right to explanation creates regulatory demand for explainability, though the extent to which XAI methods satisfy this right remains contested.",
+      "strength": "established-law",
+      "key_refs": [
+        "Brkan / European Union Regulations on Algorithmic Decision-Making and a 'Right to Explanation'"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Algorithmic Accountability",
+        "Model Cards"
+      ],
+      "implication": "For regulated domains (finance, healthcare), MetroGraph's explainability is not optional—it's compliance infrastructure. By making reasoning visible and auditable, MetroGraph helps organizations meet legal obligations while simultaneously improving user trust and decision quality.",
+      "source_ids": [
+        "market-theory-trust-explainability-right-to-explanation-gdpr"
+      ]
+    },
+    {
+      "concept": "Algorithmic Accountability",
+      "field": "hci",
+      "definition": "The principle that AI systems should be responsible for their decisions, with mechanisms for oversight, recourse, and correction. Accountability requires transparency (users can understand decisions), auditability (stakeholders can review decisions), and redress (users can appeal or appeal decisions). Explainability is a prerequisite for accountability.",
+      "strength": "framework",
+      "key_refs": [
+        "Brkan / European Union Regulations on Algorithmic Decision-Making"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Right to Explanation",
+        "Trust in AI Systems"
+      ],
+      "implication": "MetroGraph enables accountability by creating an audit trail: the graph shows not just the answer but the reasoning path, making it auditable. If a decision is wrong, stakeholders can examine the graph, identify where the reasoning broke down (bad retrieval? weak ranking?), and correct the system—moving from black-box decisions to accountable ones.",
+      "source_ids": [
+        "market-theory-trust-explainability-trustworthy-ai-establishment-evaluation"
+      ]
+    },
+    {
+      "concept": "Fairness and Bias in AI",
+      "field": "hci",
+      "definition": "The property that AI systems make decisions without unfair discrimination based on protected characteristics (race, gender, age). Bias in AI can arise from training data, model architecture, or deployment context. Interpretability and explainability are tools for identifying and mitigating bias, enabling fair outcomes.",
+      "strength": "empirical",
+      "key_refs": [
+        "Barocas et al. / A Survey on Bias and Fairness in Machine Learning"
+      ],
+      "related_concepts": [
+        "Trust in AI Systems",
+        "Explainability",
+        "Algorithmic Accountability"
+      ],
+      "implication": "In MetroGraph, if a RAG system consistently retrieves sources biased toward one demographic, the graph makes this bias visible—users see the pattern in retrieved documents. This transparency is the first step to fairness: you can't correct bias you can't see. MetroGraph doesn't solve bias but enables detection and remediation.",
+      "source_ids": [
+        "market-theory-trust-explainability-fairness-bias-interpretability-survey"
+      ]
+    },
+    {
+      "concept": "Mechanistic Interpretability",
+      "field": "hci",
+      "definition": "An emerging subfield of interpretability focused on understanding and reverse-engineering the internal mechanics of deep neural networks (especially LLMs) at a granular level—identifying circuits, motifs, and causal mechanisms within learned weights. Mechanistic interpretability aims to achieve true transparency rather than post hoc explanations.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Zou et al. / Mechanistic Interpretability for LLM Alignment"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Interpretability",
+        "Explainability"
+      ],
+      "implication": "While mechanistic interpretability of LLMs remains research-stage, MetroGraph can prepare for it: as mechanistic understanding improves, the graph could highlight discovered circuits ('this output relied on a fairness circuit'). For now, MetroGraph remains at the RAG/workflow level, where reasoning chains are more tractable than neural networks.",
+      "source_ids": [
+        "market-theory-trust-explainability-mechanistic-interpretability-llm-alignment"
+      ]
+    },
+    {
+      "concept": "Uncertainty Quantification",
+      "field": "hci",
+      "definition": "The process of estimating and communicating the confidence or uncertainty in AI predictions. Uncertainty can be epistemic (reducible through more data/training) or aleatoric (irreducible, inherent to the problem). Communicating uncertainty enables users to calibrate trust—high uncertainty means skepticism warranted.",
+      "strength": "empirical",
+      "key_refs": [
+        "Chen et al. / Uncertainty Quantification and Confidence Calibration in LLMs: A Survey"
+      ],
+      "related_concepts": [
+        "Trust Calibration",
+        "Confidence Calibration",
+        "Explainability"
+      ],
+      "implication": "MetroGraph should show uncertainty as edge widths, colors, or probability bands: strong retrieval match (high confidence) vs. weak match (high uncertainty). This enables users to see not just 'what the system thinks' but 'how confident is it?' Uncertainty visualization supports calibrated skepticism.",
+      "source_ids": [
+        "market-theory-trust-explainability-uncertainty-quantification-llms-survey"
+      ]
+    },
+    {
+      "concept": "Human-AI Collaboration and Teaming",
+      "field": "interaction-design",
+      "definition": "The design of systems where humans and AI work together complementarily, with each compensating for the other's weaknesses. Effective teaming requires clear task allocation, appropriate trust calibration, and mechanisms for humans to validate, correct, and override AI decisions. Collaboration is more effective than pure human or pure AI.",
+      "strength": "framework",
+      "key_refs": [
+        "Amershi et al. / Toward a Science of Human-AI Teaming for Decision Making"
+      ],
+      "related_concepts": [
+        "Trust in AI Systems",
+        "User Control",
+        "Explainability"
+      ],
+      "implication": "MetroGraph is fundamentally a collaboration interface: the graph shows the AI's reasoning, the human verifies and refines it. The user can see why sources ranked high, tweak the query, and see re-ranking—a human-in-the-loop cycle better than 'user asks → AI answers.' This enables true collaboration where each party's strengths shine.",
+      "source_ids": [
+        "market-theory-trust-explainability-human-ai-collaboration-teaming"
+      ]
+    },
+    {
+      "concept": "Interpretable-by-Design Models",
+      "field": "hci",
+      "definition": "AI models constructed with interpretability as a design principle from the start, rather than attempting to explain black boxes post hoc. Examples include decision trees, rule-based systems, and sparse linear models. Interpretable-by-design trades off accuracy for transparency but avoids the fidelity concerns of post hoc explanations.",
+      "strength": "empirical",
+      "key_refs": [
+        "Caruana et al. / Intelligible Models for Healthcare",
+        "Rudin / Interpretable ML: Fundamental Principles and 10 Grand Challenges"
+      ],
+      "related_concepts": [
+        "Transparency",
+        "Post Hoc Explanation",
+        "Model Interpretability"
+      ],
+      "implication": "For MetroGraph's agent-builder (workflow definition), interpretable-by-design is the goal: users write explicit rules and decision nodes, not train opaque models. This aligns with the wedge of 'best-of-both'—you get explainability by construction, not explanation by retroactive analysis. Rules are transparent by nature.",
+      "source_ids": [
+        "market-theory-trust-explainability-interpretable-ml-fundamental-principles-rudin",
+        "market-theory-trust-explainability-caruana-intelligible-models-healthcare"
+      ]
+    },
+    {
+      "concept": "Confidence Calibration",
+      "field": "hci",
+      "definition": "The alignment between a model's confidence estimates and actual accuracy—well-calibrated models assign high confidence to correct predictions and low confidence to incorrect ones. Calibration is distinct from accuracy; a model can be accurate (right answers) but overconfident (assigns high confidence to wrong answers), eroding trust.",
+      "strength": "empirical",
+      "key_refs": [
+        "Chen et al. / Uncertainty Quantification and Confidence Calibration in LLMs"
+      ],
+      "related_concepts": [
+        "Trust Calibration",
+        "Uncertainty Quantification",
+        "Trust in AI Systems"
+      ],
+      "implication": "MetroGraph should validate that confidence scores are honest: if the system shows 95% confidence but is wrong, users quickly learn to ignore confidence. By making confidence visible and measurable, MetroGraph creates accountability for calibration—poorly calibrated models become obvious.",
+      "source_ids": [
+        "market-theory-trust-explainability-uncertainty-quantification-llms-survey"
+      ]
+    },
+    {
+      "concept": "Datasheets for Datasets",
+      "field": "hci",
+      "definition": "Standardized documentation for datasets, parallel to model cards, specifying dataset composition, creation process, labeling procedures, known biases, and ethical considerations. Datasheets enable stakeholders to assess data quality and identify potential sources of bias or harm.",
+      "strength": "empirical",
+      "key_refs": [
+        "Gebru et al. / Datasheets for Datasets"
+      ],
+      "related_concepts": [
+        "Model Cards",
+        "Transparency",
+        "Fairness and Bias"
+      ],
+      "implication": "In MetroGraph's RAG context, surfacing dataset metadata ('These 1000 sources are from 2020-2022; 60% are news, 40% are academic') gives users context for source reliability. A datasheet hover reveals potential biases in the retrieval corpus, supporting informed skepticism.",
+      "source_ids": [
+        "market-theory-trust-explainability-model-cards-for-model-reporting"
+      ]
+    },
+    {
+      "concept": "Accuracy-Interpretability Tradeoff",
+      "field": "hci",
+      "definition": "The assumption that interpretable models sacrifice accuracy for transparency. Recent evidence suggests this tradeoff is not always necessary—interpretable-by-design models can achieve competitive accuracy if designed thoughtfully. The tradeoff is more about design choices than fundamental limits.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ghai et al. / Enforcing Interpretability and its Statistical Impacts",
+        "Caruana et al. / Intelligible Models for Healthcare"
+      ],
+      "related_concepts": [
+        "Interpretability",
+        "Transparency",
+        "Interpretable-by-Design Models"
+      ],
+      "implication": "For MetroGraph, this is liberating: explainability is not a price paid (accuracy loss) but a feature gained (trust, auditability). By building on explicit retrieval and ranking (not opaque neural scoring), MetroGraph can be both transparent and accurate, avoiding the false choice between 'good but black box' and 'understandable but weak.'",
+      "source_ids": [
+        "market-theory-trust-explainability-accuracy-interpretability-tradeoff-study",
+        "market-theory-trust-explainability-caruana-intelligible-models-healthcare"
+      ]
+    },
+    {
+      "concept": "Explainability Robustness",
+      "field": "hci",
+      "definition": "The stability and consistency of explanations across similar inputs or slight model changes. Explanations that change dramatically for minor input variations are not robust and indicate the explanation may not faithfully reflect the model's reasoning. Robustness ensures explanations are trustworthy.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ghosh et al. / Fidelity Metrics for XAI"
+      ],
+      "related_concepts": [
+        "Fidelity",
+        "Explainability",
+        "Trust in AI Systems"
+      ],
+      "implication": "In MetroGraph, robustness means the graph structure for similar queries should be similar: if two queries are nearly identical, their reasoning graphs should show similar retrieval patterns. Erratic explanations signal poor ranking stability and warrant skepticism.",
+      "source_ids": [
+        "market-theory-trust-explainability-fidelity-faithfulness-explanation-evaluation"
+      ]
+    }
+  ]
+}

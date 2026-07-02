@@ -1,0 +1,6 @@
+{
+  "name": "coopetition",
+  "caption": "Companies that are simultaneously competitor and partner.",
+  "sql": "SELECT DISTINCT co.name FROM market.companies co JOIN market.competitors cp ON cp.company_id=co.id JOIN market.partners pa ON pa.partner_company_id=co.id",
+  "rows": []
+}

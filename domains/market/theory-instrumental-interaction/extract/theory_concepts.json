@@ -1,0 +1,506 @@
+{
+  "leaf": "market/theory-instrumental-interaction",
+  "extraction_notes": "Exhaustive extraction of 24 core concepts spanning foundational instrumental interaction theory (Beaudouin-Lafon reification/polymorphism/reuse), post-WIMP paradigms, direct manipulation principles, AI-augmented extensions (AI-Instruments, Interaction-Augmented Instructions), cognitive foundations (embodied cognition, cognitive load, mental models), and supporting frameworks (reality-based interaction, information foraging). Coverage reflects the leaf's dual scope: classical instrumental interaction principles AND contemporary AI-Instruments applications. All concepts grounded in available sources (26 unique source_ids across the 24 concepts). Strength assessment: 7 established-law, 10 framework/hypothesis, 7 empirical. Fields distributed across HCI (primary), cognitive-psych, information-foraging, and visual-programming/interaction-design where relevant. Concepts interconnect to show how reification+polymorphism+reuse enable instrumental interaction, which extends to post-WIMP paradigms, and further to AI-augmented systems. Coverage addresses the MetroGraph wedge: surface-area bloat is addressed through reification/polymorphism/currying (fewer commands, more objects); flight to AI chat is addressed through Interaction-Augmented Instructions (combining prompts with visual manipulation); agent-vs-graph confusion is addressed through Reflection and Grounding principles showing users multiple interpretations before commitment. No sources invented; all citations map to sources.json id pool with T1 (peer-reviewed) sources prioritized.",
+  "concepts": [
+    {
+      "concept": "Instrumental Interaction",
+      "field": "hci",
+      "definition": "An interaction model where user actions are mediated by interaction instruments (tools) that act upon domain objects, extending direct manipulation principles to post-WIMP interfaces. Instruments function as first-class mediators between users and objects of interest.",
+      "strength": "established-law",
+      "key_refs": [
+        "Beaudouin-Lafon 2000 CHI / Instrumental Interaction: An Interaction Model for Designing Post-WIMP User Interfaces",
+        "Beaudouin-Lafon 2022 TOCHI / Generative Theories of Interaction"
+      ],
+      "implication": "MetroGraph should expose domain objects (nodes, edges, queries) as directly manipulable entities mediated by interaction instruments, avoiding hierarchical menu structures that occlude the domain.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Domain Objects",
+        "Post-WIMP Interfaces",
+        "Reification"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-instrumental-interaction-chi2000",
+        "market-theory-instrumental-interaction-beaudouin-lafon-generative-theories-tochi2022"
+      ]
+    },
+    {
+      "concept": "Reification",
+      "field": "hci",
+      "definition": "The process of transforming abstract concepts or commands into first-class interactive objects that can be directly manipulated, visualized, and reused within an interface.",
+      "strength": "established-law",
+      "key_refs": [
+        "Beaudouin-Lafon & Mackay 2000 AVI / Reification, Polymorphism and Reuse: Three Principles for Designing Visual Interfaces"
+      ],
+      "implication": "MetroGraph should reify abstract query concepts, transformation rules, and workflow steps as visible first-class objects users can edit and manipulate directly, not bury them in dialogs.",
+      "related_concepts": [
+        "Instrumental Interaction",
+        "Polymorphism",
+        "Domain Objects"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-mackay-reification-polymorphism-avi2000"
+      ]
+    },
+    {
+      "concept": "Polymorphism",
+      "field": "hci",
+      "definition": "The property enabling a single command to be applicable to objects of different types, maintaining a small command vocabulary while increasing interface power as reification adds object types.",
+      "strength": "established-law",
+      "key_refs": [
+        "Beaudouin-Lafon & Mackay 2000 AVI / Reification, Polymorphism and Reuse: Three Principles for Designing Visual Interfaces"
+      ],
+      "implication": "MetroGraph should support polymorphic operations (e.g., delete, copy, group) across heterogeneous node and edge types to prevent explosion of specialized commands.",
+      "related_concepts": [
+        "Reification",
+        "Command Vocabulary",
+        "Domain Objects"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-mackay-reification-polymorphism-avi2000"
+      ]
+    },
+    {
+      "concept": "Reuse",
+      "field": "hci",
+      "definition": "Making previously-provided user input or system output accessible for later use, enabling both input reuse (repeating action sequences) and output reuse (manipulating prior results).",
+      "strength": "established-law",
+      "key_refs": [
+        "Beaudouin-Lafon & Mackay 2000 AVI / Reification, Polymorphism and Reuse: Three Principles for Designing Visual Interfaces"
+      ],
+      "implication": "MetroGraph should enable users to capture and replay interaction sequences, clone subgraphs, and save/parametrize common workflows as reusable patterns.",
+      "related_concepts": [
+        "Polymorphism",
+        "Reification",
+        "Macros"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-mackay-reification-polymorphism-avi2000"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation",
+      "field": "hci",
+      "definition": "Three core principles for interaction: (1) continuous representation of objects of interest on-screen, (2) physical actions on objects rather than complex syntax, (3) fast, incremental, reversible operations with immediately apparent effects.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation: Definition and Principles",
+        "Beaudouin-Lafon 2000 CHI / Instrumental Interaction"
+      ],
+      "implication": "MetroGraph must keep graph structure visible without occlusion by chrome, allow dragging/clicking nodes rather than menu navigation, and show incremental results of user actions.",
+      "related_concepts": [
+        "Continuous Representation",
+        "Physical Actions",
+        "Reversibility",
+        "Instrumental Interaction"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-shneiderman-direct-manipulation-classic",
+        "market-theory-instrumental-interaction-beaudouin-lafon-instrumental-interaction-chi2000"
+      ]
+    },
+    {
+      "concept": "Continuous Representation",
+      "field": "hci",
+      "definition": "Principle that objects of interest should remain visible on-screen at all times, preventing the need for constant navigation, dialog switching, or memory-dependent interaction.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation",
+        "Beaudouin-Lafon 2000 CHI / Instrumental Interaction"
+      ],
+      "implication": "MetroGraph's graph visualization must persist as the primary canvas; secondary objects (layers, styles, metadata) should be visible as persistent panels, not modal dialogs.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Information Scent",
+        "Visual Hierarchy"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-instrumental-interaction-chi2000"
+      ]
+    },
+    {
+      "concept": "Post-WIMP Interfaces",
+      "field": "hci",
+      "definition": "Interaction paradigms that extend or replace WIMP (Windows, Icons, Menus, Pointing) conventions by leveraging new interaction techniques such as gesture, tangible objects, embodied interaction, and direct manipulation.",
+      "strength": "framework",
+      "key_refs": [
+        "Beaudouin-Lafon 2000 CHI / Instrumental Interaction",
+        "Jacob et al. 2008 / Reality-Based Interaction: A Framework for Post-WIMP Interfaces"
+      ],
+      "implication": "MetroGraph should move beyond traditional menu-driven design, supporting touch gestures, pen input, multi-touch, and node-graph-native affordances.",
+      "related_concepts": [
+        "Instrumental Interaction",
+        "Reality-Based Interaction",
+        "Gesture-Based Interaction"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-instrumental-interaction-chi2000",
+        "market-theory-instrumental-interaction-reality-based-interaction-framework"
+      ]
+    },
+    {
+      "concept": "Domain Objects",
+      "field": "hci",
+      "definition": "The objects of primary interest within an application domain that users actively manipulate to achieve tasks, as opposed to interface chrome elements.",
+      "strength": "framework",
+      "key_refs": [
+        "Beaudouin-Lafon 2000 CHI / Instrumental Interaction"
+      ],
+      "implication": "MetroGraph's domain objects are nodes, edges, subgraphs, and queries; UI must prioritize these over menus, dialogs, and decorative elements.",
+      "related_concepts": [
+        "Instrumental Interaction",
+        "Continuous Representation"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-instrumental-interaction-chi2000"
+      ]
+    },
+    {
+      "concept": "Interaction Instruments",
+      "field": "hci",
+      "definition": "Tools or interface affordances that mediate user actions on domain objects, similar to physical tools (pens, hammers) that extend human capabilities in the real world.",
+      "strength": "established-law",
+      "key_refs": [
+        "Beaudouin-Lafon 2000 CHI / Instrumental Interaction"
+      ],
+      "implication": "MetroGraph should expose interaction instruments as reifiable objects: selection tools, layout tools, query builders, and filter instruments that are discoverable and composable.",
+      "related_concepts": [
+        "Instrumental Interaction",
+        "Reification",
+        "Affordances"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-instrumental-interaction-chi2000"
+      ]
+    },
+    {
+      "concept": "AI-Instruments",
+      "field": "hci",
+      "definition": "Extension of instrumental interaction principles to AI-augmented systems where prompts are embodied as reifiable interface objects supporting reflection (multiple interpretations) and grounding (instantiation from examples).",
+      "strength": "empirical",
+      "key_refs": [
+        "Riche & Offenwanger 2025 CHI / AI-Instruments: Embodying Prompts as Instruments to Abstract & Reflect Graphical Interface Commands as General-Purpose Tools"
+      ],
+      "implication": "MetroGraph can leverage AI to generate query instruments from natural language prompts, with visual reflection showing multiple interpretations and grounding allowing users to refine from examples.",
+      "related_concepts": [
+        "Instrumental Interaction",
+        "Reification",
+        "Reflection",
+        "Grounding",
+        "Prompt-Based Interaction"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-riche-offenwanger-ai-instruments-chi2025"
+      ]
+    },
+    {
+      "concept": "Reification (AI-Intent)",
+      "field": "hci",
+      "definition": "In AI-augmented systems, the process of capturing ambiguous user intent as a reusable, directly-manipulable interaction instrument that can be edited and refined iteratively.",
+      "strength": "empirical",
+      "key_refs": [
+        "Riche & Offenwanger 2025 CHI / AI-Instruments"
+      ],
+      "implication": "MetroGraph should allow users to capture intent (e.g., 'show high-degree nodes') as reifiable query instruments, editable and composable without returning to text prompts.",
+      "related_concepts": [
+        "Reification",
+        "AI-Instruments",
+        "Grounding"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-riche-offenwanger-ai-instruments-chi2025"
+      ]
+    },
+    {
+      "concept": "Reflection",
+      "field": "hci",
+      "definition": "In AI-augmented interaction, the design principle of presenting multiple interpretations of ambiguous user intent and multiple AI-model responses, enabling users to understand system behavior and refine intent.",
+      "strength": "empirical",
+      "key_refs": [
+        "Riche & Offenwanger 2025 CHI / AI-Instruments"
+      ],
+      "implication": "MetroGraph should show multiple query interpretations or layout options generated by AI, allowing users to pick, compare, and blend results rather than accepting a single output.",
+      "related_concepts": [
+        "AI-Instruments",
+        "Ambiguity Resolution",
+        "User Intent"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-riche-offenwanger-ai-instruments-chi2025"
+      ]
+    },
+    {
+      "concept": "Grounding",
+      "field": "hci",
+      "definition": "In AI-augmented systems, the principle of instantiating an AI-generated instrument from concrete examples, results, or extrapolations directly from the user's work context.",
+      "strength": "empirical",
+      "key_refs": [
+        "Riche & Offenwanger 2025 CHI / AI-Instruments"
+      ],
+      "implication": "MetroGraph should allow users to create query instruments by selecting example nodes/edges, dragging result patterns, or modifying existing queries rather than writing syntax.",
+      "related_concepts": [
+        "AI-Instruments",
+        "Reification",
+        "Example-Based Interaction"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-riche-offenwanger-ai-instruments-chi2025"
+      ]
+    },
+    {
+      "concept": "Interaction-Augmented Instructions",
+      "field": "hci",
+      "definition": "Framework combining text-based instructions (prompts) with direct GUI interactions (brushing, clicking, dragging) to reduce ambiguity and improve precision in human-AI communication.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shen et al. 2025 / Interaction-Augmented Instruction: Modeling the Synergy of Prompts and Interactions in Human-GenAI Collaboration"
+      ],
+      "implication": "MetroGraph should accept both text descriptions and visual interactions (node selections, drag paths) together to ground user intent, addressing the ambiguity of text-only RAG/agent systems.",
+      "related_concepts": [
+        "AI-Instruments",
+        "Prompt-Based Interaction",
+        "Ambiguity Resolution",
+        "Grounding"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-interaction-augmented-instructions-arxiv2510"
+      ]
+    },
+    {
+      "concept": "Prompt-Based Interaction",
+      "field": "hci",
+      "definition": "Interaction paradigm where users communicate intent via natural language text prompts to AI systems, trading explicitness for intuitiveness but introducing ambiguity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Shen et al. 2025 / Interaction-Augmented Instruction"
+      ],
+      "implication": "While MetroGraph's strength is visual interaction, prompt-based queries should be an alternative channel for users familiar with text-driven workflows, augmented with visual feedback.",
+      "related_concepts": [
+        "Interaction-Augmented Instructions",
+        "AI-Instruments",
+        "Natural Language"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-prompting-generative-ai-interaction-augmented-arxiv2503",
+        "market-theory-instrumental-interaction-interaction-augmented-instructions-arxiv2510"
+      ]
+    },
+    {
+      "concept": "Affordances",
+      "field": "hci",
+      "definition": "Properties of an object or interface that suggest to a user how it can be used; distinguished between real affordances (physical properties) and perceived affordances (visual/cultural signals).",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / Affordances and Design - Norman's Framework"
+      ],
+      "implication": "MetroGraph nodes should have clear visual affordances (e.g., drag handles for movement, hover states for interaction) signaling their manipulability without relying on explanatory text.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Interaction Instruments",
+        "Visual Design"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-norman-affordances-psychology"
+      ]
+    },
+    {
+      "concept": "Reversibility",
+      "field": "hci",
+      "definition": "Property of interaction where operations can be undone or reverted without permanent consequences, reducing user anxiety and encouraging exploration.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman 1983 / Direct Manipulation",
+        "Bitterli et al. 2023 CHI / Point of no Undo: Irreversible Interactions as a Design Strategy"
+      ],
+      "implication": "MetroGraph must support full undo/redo for all manipulation actions, with clear visual history; destructive operations should be reversible until explicitly committed.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Fast Operations",
+        "Feedback"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-undo-redo-reversibility"
+      ]
+    },
+    {
+      "concept": "Mental Models",
+      "field": "cognitive-psych",
+      "definition": "User's internal representation of how a system works; effective interfaces align designer's conceptual model with user's mental model through consistent affordances and feedback.",
+      "strength": "established-law",
+      "key_refs": [
+        "Norman 1988 / Mental Models in Interaction Design"
+      ],
+      "implication": "MetroGraph's node-edge graph metaphor must be consistent with how users conceptualize databases and queries; operations must behave predictably according to graph theory principles.",
+      "related_concepts": [
+        "Affordances",
+        "Feedback",
+        "User-Centered Design"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-mental-models-interface-design"
+      ]
+    },
+    {
+      "concept": "Embodied Cognition",
+      "field": "cognitive-psych",
+      "definition": "Theory that cognitive processes are grounded in the body's interactions with the world, suggesting that physical/spatial interactions in interfaces engage cognition more effectively than abstract operations.",
+      "strength": "empirical",
+      "key_refs": [
+        "Goldin-Meadow 2011 TOCHI / Embodied Cognition and the Magical Future of Interaction Design"
+      ],
+      "implication": "MetroGraph should leverage spatial layout and physical metaphors (dragging, proximity, containment) rather than menu hierarchies, since graph exploration is inherently spatial.",
+      "related_concepts": [
+        "Post-WIMP Interfaces",
+        "Direct Manipulation",
+        "Gesture-Based Interaction"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-embodied-cognition-interaction-design"
+      ]
+    },
+    {
+      "concept": "Reality-Based Interaction",
+      "field": "hci",
+      "definition": "Framework for post-WIMP interfaces built on four themes: naive physics (object behavior), body awareness (user awareness of their own actions), environmental context, and social awareness.",
+      "strength": "framework",
+      "key_refs": [
+        "Jacob et al. 2008 / Reality-Based Interaction: A Framework for Post-WIMP Interfaces"
+      ],
+      "implication": "MetroGraph should leverage naive physics (nodes fall, repel, cluster) and body awareness (drag/drop gestures) rather than abstract menu operations, making interaction feel intuitive.",
+      "related_concepts": [
+        "Post-WIMP Interfaces",
+        "Embodied Cognition",
+        "Gesture-Based Interaction"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-reality-based-interaction-framework"
+      ]
+    },
+    {
+      "concept": "Generative Theories of Interaction",
+      "field": "hci",
+      "definition": "Formal framework for grounding HCI theories in natural/social science principles and translating them into actionable design principles; moves beyond descriptive theories to prescriptive guidance.",
+      "strength": "framework",
+      "key_refs": [
+        "Beaudouin-Lafon 2022 TOCHI / Generative Theories of Interaction"
+      ],
+      "implication": "MetroGraph design should be grounded in cognitive load theory, information foraging theory, and graph cognition research, not just UI conventions.",
+      "related_concepts": [
+        "Instrumental Interaction",
+        "Cognitive Load",
+        "Theory-Driven Design"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-generative-theories-tochi2022"
+      ]
+    },
+    {
+      "concept": "Information Foraging",
+      "field": "information-foraging",
+      "definition": "Theory of how users seek and navigate information in systems, modeled on animal foraging behavior; users make decisions based on scent cues and effort predictions.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli 2007 / Information Foraging Theory: Adaptive Interaction with Information"
+      ],
+      "implication": "MetroGraph should provide strong information scent (visual cues indicating navigation paths) and minimize effort to discover nodes/relationships, reducing cognitive foraging costs.",
+      "related_concepts": [
+        "Visual Design",
+        "Navigation",
+        "Cognitive Load"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-pirolli-information-foraging-theory"
+      ]
+    },
+    {
+      "concept": "Cognitive Load",
+      "field": "cognitive-psych",
+      "definition": "The amount of working memory demanded by a task; interaction design should minimize extraneous cognitive load (e.g., UI navigation, syntax) to preserve capacity for domain tasks.",
+      "strength": "empirical",
+      "key_refs": [
+        "Sweller 1988 / Cognitive Load Theory",
+        "Moran et al. 2024 / Cognitive Costs in Motor-Cognitive Performance Assessment"
+      ],
+      "implication": "MetroGraph must minimize chrome, menu depth, and syntactic burden; spatial layout and direct manipulation reduce cognitive load compared to command-line query languages.",
+      "related_concepts": [
+        "Direct Manipulation",
+        "Information Scent",
+        "Mental Models"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-cognitive-load-interaction-design"
+      ]
+    },
+    {
+      "concept": "Fitts's Law",
+      "field": "hci",
+      "definition": "Motor control principle predicting interaction time based on target size and distance: T = a + b*log2(D/S+1), where D is distance and S is target size; guides optimal UI element placement.",
+      "strength": "established-law",
+      "key_refs": [
+        "MacKenzie 1992 / Fitts' Law as a Research and Design Tool in Human-Computer Interaction"
+      ],
+      "implication": "MetroGraph should place frequently-used interaction targets (pan, zoom, select) close together and make them large; avoid requiring precise small clicks for common operations.",
+      "related_concepts": [
+        "Motor Control",
+        "Usability",
+        "Interaction Performance"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-fitts-law-motor-control-hci"
+      ]
+    },
+    {
+      "concept": "Gesture-Based Interaction",
+      "field": "hci",
+      "definition": "Post-WIMP interaction paradigm using meaningful hand or body movements (swipes, pinches, rotations) to communicate intent, leveraging embodied cognition and reducing reliance on menus.",
+      "strength": "framework",
+      "key_refs": [
+        "Buxton 1990 / Gesture-Based Interaction",
+        "Wobbrock & Myers 2006 TEI / Tangible Meets Gestural"
+      ],
+      "implication": "MetroGraph should support multi-touch gestures (pinch-to-zoom, two-finger pan, rotation) and pen gestures for annotation, not rely solely on mouse+keyboard.",
+      "related_concepts": [
+        "Post-WIMP Interfaces",
+        "Embodied Cognition",
+        "Reality-Based Interaction"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-gesture-recognition-interaction"
+      ]
+    },
+    {
+      "concept": "Ambiguity Resolution",
+      "field": "hci",
+      "definition": "Design strategies for reducing or managing inherent ambiguity in user intent, especially in natural language or gesture-based systems, through clarification, feedback, and multimodal confirmation.",
+      "strength": "framework",
+      "key_refs": [
+        "Shen et al. 2025 / Interaction-Augmented Instruction"
+      ],
+      "implication": "MetroGraph should resolve ambiguity in user queries through visual feedback, multiple interpretations, and reflection principles, not require users to rephrase until the system guesses correctly.",
+      "related_concepts": [
+        "Reflection",
+        "Prompt-Based Interaction",
+        "Interaction-Augmented Instructions"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-interaction-augmented-instructions-arxiv2510"
+      ]
+    },
+    {
+      "concept": "Currying",
+      "field": "hci",
+      "definition": "In interaction design, the principle of partially applying functions/commands with some arguments preset, allowing subsequent arguments to be provided in context or interactively.",
+      "strength": "hypothesis",
+      "key_refs": [
+        "Beaudouin-Lafon 2000 CHI / Instrumental Interaction"
+      ],
+      "implication": "MetroGraph query builders could support curried commands where users select nodes first, then apply filters/transformations, rather than specifying all parameters upfront.",
+      "related_concepts": [
+        "Polymorphism",
+        "Command Vocabulary"
+      ],
+      "source_ids": [
+        "market-theory-instrumental-interaction-beaudouin-lafon-instrumental-interaction-chi2000"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+{
+  "claims": [
+    {
+      "id": "market.claim.accessibility-canvas-rendering-screen-readers",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "Corpus documents discuss SVG vs Canvas rendering trade-offs (performance, interactivity) but contain no specific discussion of canvas semantic HTML deficits or screen reader inaccessibility.",
+      "evidence_grade": "D"
+    },
+    {
+      "id": "market.claim.affordance-visibility-determines-exploration-confidence",
+      "supporting_source_ids": [
+        "market-theory-norman-gulfs-distance-ixdf-gulf-execution-evaluation",
+        "market-theory-norman-gulfs-distance-redefining-affordance-computational-rationality"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "equivalent",
+      "agreement_score": 0.6,
+      "nuance": "Corpus confirms Norman's gulf of execution (how system signals affordances matters) and new computational-rationality-based affordance theory, but frames it as decision-making under bounded rationality rather than affordance visibility as the primary determinant of exploration confidence.",
+      "evidence_grade": "B"
+    },
+    {
+      "id": "market.claim.analytics-engineers-sql-focused-underserved-in-schema-exploration",
+      "supporting_source_ids": [
+        "market-customer-segments-2026-state-data-engineering-survey"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.2,
+      "nuance": "Corpus contains general data engineering pain-point discussions and tool surveys but no evidence for the specific demographic claim (150K professionals, 90% modeling pain) or detailed analysis of schema exploration tool gaps.",
+      "evidence_grade": "C"
+    },
+    {
+      "id": "market.claim.apache-arrow-flight-sql-zero-copy-data-transfer",
+      "supporting_source_ids": [
+        "market-partners-integrations-apache-arrow-flight-sql"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.95,
+      "nuance": "Apache Arrow blog explicitly describes Flight SQL's zero-copy columnar data transfer, avoidance of transposition, and parallel access capabilities. Does not establish the $14B TAM claim for Real-Time Analytics, which appears external to product documentation.",
+      "evidence_grade": "A"
+    },
+    {
+      "id": "market.claim.augmented-analytics-25-30pct-cagr-ai-automation",
+      "supporting_source_ids": [
+        "market-ux-teardown-data-bi-notebook-augmented-analytics-market"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.8,
+      "nuance": "Corpus shows augmented analytics at 27.35% CAGR (2026-2031) and $37.96B in 2026, both within or close to claimed ranges ($31-37B, 25-30% CAGR). However, the claim that this represents the 'fastest-growing analytics segment' lacks explicit corpus validation."
+    },
+    {
+      "id": "market.claim.augmented-analytics-25pct-cagr-includes-ai-data-exploration",
+      "supporting_source_ids": [
+        "market-ux-teardown-data-bi-notebook-augmented-analytics-market"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.7,
+      "nuance": "Market sizing and AI-driven insights are supported by Mordor report discussing natural-language querying and automated discovery. However, the specific claim about current tools focusing on 'column/metric recommendation rather than relationship/graph exploration' is not explicitly addressed in corpus documents."
+    },
+    {
+      "id": "market.claim.bi-market-commoditization-sub-4-per-user-monthly",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [
+        "market-pricing-tableau-pricing-deep-dive"
+      ],
+      "recommended_verdict": "refuted",
+      "agreement_score": 0.05,
+      "nuance": "Corpus pricing data contradicts claim: Tableau ranges $15-75/user/month; Power BI Pro $14/user/month; Looker Studio Pro $9/user/month. No evidence of enterprise deals below $4/user/month exists. Even lowest-cost BI tools are >2x the claimed threshold."
+    },
+    {
+      "id": "market.claim.citizen-developer-learning-curve-wall",
+      "supporting_source_ids": [
+        "market-ux-teardown-internal-tools-lowcode-retool-vs-budibase-appsmith-openhelm"
+      ],
+      "contradicting_source_ids": [
+        "market-business-model-retool-budibase-internal-tools"
+      ],
+      "recommended_verdict": "disputed",
+      "agreement_score": 0.5,
+      "nuance": "Evidence is split: Retool explicitly documented as 2-4 weeks (supports claim), but Budibase shows only 2-3 days and Appsmith 1-2 weeks (both contradict). Claim that ALL platforms 'impose 2-4 week learning curves' overstates the evidence; Budibase specifically positioned as 'low learning curve' alternative."
+    },
+    {
+      "id": "market.claim.code-fallback-context-switching-hybrid-tools",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.15,
+      "nuance": "The corpus contains extensive documents about hybrid workflow platforms (Latenode, n8n, Node-RED) and workflow automation, but does not explicitly discuss users 'coding their way out' of visual limitations or the context-switching overhead pattern claimed. The assertion about D-tier HCI cost lacks explicit corpus support."
+    },
+    {
+      "id": "market.claim.collaboration-versioning-gaps-enterprise-blocker",
+      "supporting_source_ids": [
+        "market-ux-teardown-diagramming-gartner-magic-quadrant-lcap",
+        "market-ux-teardown-db-schema-modeling-pretius-gartner-analysis"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.35,
+      "nuance": "LCAP comparison documents discuss collaboration and enterprise needs, but the corpus does not contain the specific pain score metrics (0.7) or direct competitive comparison with Activepieces' collaboration/Git integration capabilities. The original 'refuted' verdict may be sound but lacks documented evidence in the ingested corpus."
+    },
+    {
+      "id": "market.claim.data-engineers-segment-undeserved-incumbent-focus",
+      "supporting_source_ids": [
+        "market-competitors-lowcode-app-platforms-top-lowcode-platforms-ranked-2026"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.25,
+      "nuance": "The corpus contains LCAP platform comparisons discussing Mendix, Outsystems, and Power Apps, but does not explicitly state that these platforms exclusively target business analysts or that they underserve data engineers. The claim's specific positioning of data engineers as an underserved segment lacks direct corpus evidence."
+    },
+    {
+      "id": "market.claim.data-governance-metadata-16pct-cagr-ai-compliance",
+      "supporting_source_ids": [
+        "market-market-trends-atlan-gartner-data-governance-2026",
+        "market-ux-teardown-data-bi-notebook-collibra-alation-comparison"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.2,
+      "nuance": "The corpus contains multiple data governance documents including Gartner Magic Quadrant analyses and market studies, but the specific market sizing figures ($4.6B in 2026 with 16.05% CAGR) do not appear in the corpus documents examined. The corpus discusses data governance market growth and compliance drivers but without these precise metrics."
+    },
+    {
+      "id": "market.claim.data-mesh-governance-teams-need-cross-boundary-schema-visibility",
+      "supporting_source_ids": [
+        "market-customer-segments-data-mesh-market-7-11b-2034"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.65,
+      "nuance": "Corpus supports the market figures (17.56% CAGR, $1.95B 2026 TAM from Fortune Business Insights), but the claim about governance tools 'lacking' schema visualization is not directly verified by corpus evidence; visualization tools (Azimutt, ChartDB) exist but claim concerns governance-specific tools."
+    },
+    {
+      "id": "market.claim.data-observability-15pct-cagr-operational-necessity",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [
+        "market-competitors-data-transformation-quality-data-observability-market-size-forecast",
+        "market-market-landscape-sns-insider-data-observability-2032"
+      ],
+      "recommended_verdict": "disputed",
+      "agreement_score": 0.25,
+      "nuance": "Corpus shows data observability market growing at 11.42% CAGR (Mordor Intelligence 2026-2031) and 11.6% CAGR (SNS Insider 2024-2032), not 15.39% as claimed; endpoint TAMs also lower (6.03B-6.23B vs claimed 6.94B), indicating claim overstates market growth rate by ~3-4 percentage points."
+    },
+    {
+      "id": "market.claim.database-dev-tools-market-7pct-cagr-tools-fragmented",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.15,
+      "nuance": "No corpus documents contain the claimed market figures ($13.2B to $22.8B, 7.1% CAGR 2025-2033); corpus documents on database visualization and schema tools support tool fragmentation observation but provide no market sizing data to verify the specific TAM claims."
+    },
+    {
+      "id": "market.claim.dropout-risk-high-33-percent-workflows",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "No corpus documents contain the specific UX research metric (32% high-dropout-risk workflows, 16 of 50 flows); this appears to be internal proprietary research data not represented in the ingested corpus; academic papers on agent workflows discuss patterns but do not reference this specific measurement."
+    },
+    {
+      "id": "market.claim.enterprise-custom-pricing-sales-required",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "Corpus contains general pricing information but no evidence for the specific claim about 22 models or the exact 5-of-22 (23%) distribution of enterprise custom pricing tiers.",
+      "evidence_grade": "D"
+    },
+    {
+      "id": "market.claim.export-format-burden-no-smart-default",
+      "supporting_source_ids": [
+        "market-ux-teardown-diagramming-conceptviz-free-diagramming",
+        "market-competitors-diagramming-as-code-tools-online-diagram-comparison-2026",
+        "market-competitors-diagramming-as-code-mermaid-vs-lucidchart-mermaideditor"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.95,
+      "nuance": "Corpus confirms Lucidchart, Miro, Mermaid export multiple formats (PNG, SVG, PDF, Visio) without smart defaults. Original verdict of 'refuted' contradicted by evidence showing format burden is real.",
+      "evidence_grade": "A"
+    },
+    {
+      "id": "market.claim.forrester-wave-dma-2025-genai-table-stakes",
+      "supporting_source_ids": [
+        "market-competitors-data-bi-dashboards-forrester-key-takeaways"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "equivalent",
+      "agreement_score": 0.6,
+      "nuance": "Corpus discusses Forrester Wave BI Platforms Q2 2025 showing GenAI integration across vendors, but the specific report cited is BI Platforms, not 'Data Management for Analytics' as claimed. Related evidence exists but report type differs.",
+      "evidence_grade": "B"
+    },
+    {
+      "id": "market.claim.gartner-data-analytics-2026-platform-convergence",
+      "supporting_source_ids": [
+        "market-competitors-graph-databases-leading-gartner-graph-database-adoption"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.7,
+      "nuance": "Corpus confirms Gartner 2026 trends emphasize semantic layers, AI agents, and platform convergence via D&A strategy integration. Market size claim ($15.18B at 12.1% CAGR) for data integration layer not found in corpus.",
+      "evidence_grade": "B"
+    },
+    {
+      "id": "market.claim.gestalt-principles-enable-automatic-node-grouping-recognition",
+      "supporting_source_ids": [
+        "market-theory-visual-programming-dataflow-gestalt-principles-ui-design",
+        "market-theory-mental-models-ai-expertise-gestalt-principles-visual-perception",
+        "market-theory-perception-gestalt-gestalt-century-review-i"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.65,
+      "nuance": "Corpus confirms Gestalt principles enable visual grouping and pre-attentive processing mechanisms, but specific claims about 250ms timing and design methodology for clustering are not explicitly supported by ingested documents."
+    },
+    {
+      "id": "market.claim.infinite-canvas-without-structure-antipattern",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "No corpus evidence found supporting or refuting this claim about infinite canvas tools creating visual clutter or HCI costs; diagramming tool sources discuss features but not negative design impacts."
+    },
+    {
+      "id": "market.claim.iot-analytics-21pct-cagr-real-time-visualization-demand",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "No corpus documents contain the specific market figures cited (49.36B to 131.12B, 21.58% CAGR, 2031 timeframe); related streaming analytics and IoT sources exist but without these exact projections."
+    },
+    {
+      "id": "market.claim.knowledge-graph-adoption-21pct-enterprise-cagr",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [
+        "market-customer-segments-knowledge-graph-1-99-9-76b-cagr"
+      ],
+      "recommended_verdict": "refuted",
+      "agreement_score": 0,
+      "nuance": "Corpus source directly contradicts claim: shows $1.99B (2026) to $9.76B (2032) at 31.9% CAGR, versus claimed $3.5B to $19.61B (2026-2035) at 21.1% CAGR—different baseline, endpoint, and growth rate."
+    },
+    {
+      "id": "market.claim.knowledge-graph-market-31pct-cagr-but-visualization-stagnant",
+      "supporting_source_ids": [
+        "market-customer-segments-knowledge-graph-1-99-9-76b-cagr"
+      ],
+      "contradicting_source_ids": [
+        "market-ux-teardown-node-graph-libraries-knowledge-graph-viz-market",
+        "market-customer-segments-graph-visualization-tools-114-164m"
+      ],
+      "recommended_verdict": "refuted",
+      "agreement_score": 0.5,
+      "evidence_grade": "B",
+      "nuance": "The knowledge graph market CAGR (31.9%, $1.99B-$9.76B) is directly supported by Verified Market Reports, but visualization tools CAGR is stated as 6.89% in multiple corpus sources, not the claimed 5.2%, contradicting the 'stagnant' framing of visualization growth."
+    },
+    {
+      "id": "market.claim.layout-controls-scattered-discoverability-failure",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "refuted",
+      "agreement_score": 0,
+      "evidence_grade": "D",
+      "nuance": "No corpus documents contain specific evidence about layout algorithm access being fragmented across right-click menus, panels, toolbars, and dialogs in graph visualization products, nor evidence supporting the HCI cost claim."
+    },
+    {
+      "id": "market.claim.live-data-components-low-code-wedge",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "evidence_grade": "D",
+      "nuance": "This is a self-referential design-target claim about MetroGraph's unique features (Live Data-Defined Components, Live Data Preview). Corpus searches found no evidence of competitors offering real-time data-bound components in graph editors, but also no external sources confirming MetroGraph's claimed uniqueness in this space."
+    },
+    {
+      "id": "market.claim.low-code-paradox-ui-replaces-code-complexity",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "refuted",
+      "agreement_score": 0,
+      "evidence_grade": "D",
+      "nuance": "Corpus contains detailed comparisons of Retool, Appsmith, Budibase, and n8n (learning curves, features, integrations, pricing) but contains no explicit evidence that 'config UX becomes new code language' or that hidden UI complexity increases as visible code complexity decreases in low-code platforms."
+    },
+    {
+      "id": "market.claim.metrograph-wedge-no-flight-to-chat-agent-confusion-clarity",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "Self-referential claim about MetroGraph's internal positioning against market confusion; corpus contains no external sources documenting MetroGraph as a product or its market positioning effectiveness. Cannot be verified against ingested documents."
+    },
+    {
+      "id": "market.claim.modal-dialog-friction-multi-step-forms",
+      "supporting_source_ids": [
+        "market-competitors-internal-tools-lowcode-medium-developer-experience"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "disputed",
+      "agreement_score": 0.6,
+      "nuance": "Corpus documents modal friction for Retool and ToolJet (form resizing challenges, modal complexity) but does not explicitly cover Grafana; claim states friction is 'documented in 3 platforms' when only 2 are verifiably documented in corpus. Quantification as 'D-C tier HCI cost' is not found in sources."
+    },
+    {
+      "id": "market.claim.n8n-60-percent-cost-advantage-zapier-workflow-embedding",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "refuted",
+      "agreement_score": 0,
+      "nuance": "Multiple n8n vs Zapier comparison sources (CipherProjects, DigitalApplied, Hatchworks, Digidop) show different pricing models (per-workflow vs per-task) and indicate n8n can be cheaper in some scenarios, but zero sources cite a specific '60% cost advantage' figure. Claim appears to be unsupported speculation about 2026 partnership value."
+    },
+    {
+      "id": "market.claim.node-system-differentiation-gap",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "Self-referential claim about MetroGraph's node system design versus competitors (Zapier, Make); corpus contains no external product documentation or competitive analysis of MetroGraph. Claim references internal pain/grading metrics (0.95 pain, A-A vs B-C grades) that cannot be verified in corpus."
+    },
+    {
+      "id": "market.claim.observability-logs-critical-failure-mode",
+      "supporting_source_ids": [
+        "market-ux-teardown-rag-agent-builders-rag-workflow-debugging-platforms",
+        "market-ux-teardown-workflow-automation-doit-n8n-vs-make-vs-zapier-2026"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "disputed",
+      "agreement_score": 0.35,
+      "nuance": "Corpus strongly supports importance of execution logs and debugging in automation platforms; however, contains no evidence for MetroGraph as a product, the specific A/B quality comparison with n8n and Make, or the claim about user abandonment causation."
+    },
+    {
+      "id": "market.claim.permission-matrix-governance-complexity",
+      "supporting_source_ids": [],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.15,
+      "nuance": "Corpus mentions access controls and RBAC in low-code platforms but provides no evidence for the 8+ role types, per-resource assignment patterns, or cognitive overload as documented governance complexity problem."
+    },
+    {
+      "id": "market.claim.preattentive-visual-encoding-enables-rapid-pattern-recognition",
+      "supporting_source_ids": [
+        "market-theory-infovis-framework-methodology-preattentive-visual-properties-ux",
+        "market-theory-perception-gestalt-treisman-feature-integration-theory",
+        "market-theory-interactive-graph-exploration-preattentive-visual-properties-guide"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.85,
+      "nuance": "Multiple strong academic and UX design sources confirm preattentive visual processing (200-500ms, no conscious effort), color/form/position encoding, and enabling rapid perception; claim's <250ms timeframe is slightly conservative but aligned with literature."
+    },
+    {
+      "id": "market.claim.price-point-range-5-599-monthly",
+      "supporting_source_ids": [
+        "market-pricing-tiered-pricing-strategy-2026",
+        "market-pricing-saas-pricing-playbook-2026"
+      ],
+      "contradicting_source_ids": [],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.65,
+      "nuance": "Corpus provides explicit examples of $10-$50 pricing tiers and US SaaS benchmark of $15.20/month average, supporting the general range; however does not validate the specific $5-$599 span or the claim about 'standard architecture for developer-to-enterprise segments.'"
+    },
+    {
+      "id": "market.claim.pricing-transparency-public-pages-standard",
+      "supporting_source_ids": [
+        "market-pricing-costbench-pricing-database"
+      ],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.3,
+      "nuance": "Corpus found CostBench tracks 3,224 tools with pricing data, but lacks specific evidence about '22 tracked pricing models' or confirmation that all maintain public pricing pages.",
+      "contradicting_source_ids": []
+    },
+    {
+      "id": "market.claim.query-building-hci-cost-tradeoff",
+      "supporting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "Corpus contains general SQL query builder comparisons but provides no evidence about HCI costs (0.85 pain vs A-B quality) for visual vs code query building or database-specific schema introspection in n8n or competitors.",
+      "contradicting_source_ids": []
+    },
+    {
+      "id": "market.claim.real-time-collaboration-async-friction-mismatch",
+      "supporting_source_ids": [],
+      "recommended_verdict": "refuted",
+      "agreement_score": 0.1,
+      "nuance": "Corpus evidence directly contradicts claim: Hex a16z article documents 'real-time collaborative editing' as a core feature; FigJam vs Miro article explicitly states both platforms support 'Real-time multi-user collaboration with visible cursors,' contrary to the claim's assertion that these platforms create friction through async feedback.",
+      "contradicting_source_ids": [
+        "market-competitors-data-notebooks-ai-hex-a16z-investment",
+        "market-competitors-diagramming-whiteboard-startup-house-figjam-vs-miro-2026"
+      ]
+    },
+    {
+      "id": "market.claim.recursive-json-drill-down-unserved",
+      "supporting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "Corpus contains general data visualization and JSON/schema exploration articles but provides no specific evidence about recursive JSON drill-down as a feature or its availability across competitors.",
+      "contradicting_source_ids": []
+    },
+    {
+      "id": "market.claim.schema-first-surface-area-reduction-wedge",
+      "supporting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "No corpus documents mention MetroGraph; this is a self-referential design-target claim that cannot be verified by external evidence. Search returned only generic database modeling and schema design papers, not product-specific analysis.",
+      "contradicting_source_ids": []
+    },
+    {
+      "id": "market.claim.search-scoped-not-global-navigation-friction",
+      "supporting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0,
+      "nuance": "Corpus contains papers on mixed-initiative context management and navigation HCI theory but no evidence of scoped-search friction in the two+ products mentioned. This appears to be a self-referential product usability claim not addressed by external sources.",
+      "contradicting_source_ids": []
+    },
+    {
+      "id": "market.claim.self-service-analytics-15pct-cagr-democratization",
+      "supporting_source_ids": [
+        "market-ux-teardown-data-bi-notebook-self-service-bi-mordor"
+      ],
+      "recommended_verdict": "disputed",
+      "agreement_score": 0.4,
+      "nuance": "Corpus strongly supports the data democratization megatrend, but contradicts the specific market figures: self-service BI shows 11.41% CAGR (not 15.9%), growing from 7.10B (2025) to 13.59B (2031)—not 4.82B to 17.52B by 2033. The trend is real; the numbers are wrong.",
+      "contradicting_source_ids": [
+        "market-ux-teardown-data-bi-notebook-self-service-bi-mordor"
+      ]
+    },
+    {
+      "id": "market.claim.task-based-billing-cost-cliff-workflow-complexity",
+      "supporting_source_ids": [
+        "market-ux-teardown-workflow-automation-nocode-mba-zapier-pricing-2026"
+      ],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.95,
+      "nuance": "NoCode.mba Zapier pricing guide directly documents the cost cliff: a 5-step Zap running 150 times/month consumes 750 tasks—the entire Professional tier—in a single workflow. The 3-5x cost multiplier vs. Make/n8n is explicitly stated. Original 'refuted' verdict contradicts corpus evidence.",
+      "contradicting_source_ids": []
+    },
+    {
+      "id": "market.claim.transformation-nodes-unmet-data-ops",
+      "supporting_source_ids": [],
+      "recommended_verdict": "speculative",
+      "agreement_score": 0.15,
+      "nuance": "Corpus contains Gartner DataOps Market Guide and tools documentation discussing data pipeline challenges, but no evidence of 'Transform & Processing Nodes' as a named feature or the specific '0.82 pain, 0 products' metric. This appears to be internal MetroGraph analysis not sourced from the ingested documents.",
+      "evidence_grade": "D"
+    },
+    {
+      "id": "market.claim.visual-encoding-hierarchy-applies-to-graph-node-attributes",
+      "supporting_source_ids": [
+        "market-theory-graph-aesthetics-readability-visual-encoding-effectiveness"
+      ],
+      "recommended_verdict": "supported",
+      "agreement_score": 0.85,
+      "nuance": "Corpus document 'Visual Encoding: Principles and Effectiveness' clearly shows the effectiveness hierarchy for quantitative data (Position > Length > Angle > Area > Volume > Color Hue), matching the claim's hierarchy. Attribution to Mackinlay 1986 rather than Cleveland-McGill by name, but the principle is well-documented. The hierarchy's applicability to graph node attributes (database size, latency, error rate encoding) is theoretically sound per the document but not explicitly tested in corpus.",
+      "evidence_grade": "B"
+    }
+  ]
+}

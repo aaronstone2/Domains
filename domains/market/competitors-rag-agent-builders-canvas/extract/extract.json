@@ -1,0 +1,1088 @@
+{
+  "leaf": "market/competitors-rag-agent-builders-canvas",
+  "products": [
+    {
+      "slug": "flowise",
+      "name": "Flowise",
+      "description": "Open-source visual AI agent builder with drag-and-drop canvas for building chat assistants, chatflows, and multi-agent systems. Supports 100+ LLM/embedding providers and vector databases. Positioned as the fastest path to RAG and agent prototypes.",
+      "product_type": "platform",
+      "open_source": true,
+      "company_slug": "flowise",
+      "deployment": [
+        "self-hosted-docker",
+        "self-hosted-nodejs",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "Node.js",
+        "LangChain",
+        "Express"
+      ],
+      "positioning": "Lightweight, accessible entry point for building AI agents and chatbots; strong for rapid prototyping and internal tools; weakest production observability of the major three.",
+      "archetype": "visual-agent-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-flowise-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-flowise-documentation",
+        "market-competitors-rag-agent-builders-canvas-flowise-github-repo"
+      ]
+    },
+    {
+      "slug": "langflow",
+      "name": "Langflow",
+      "description": "Low-code visual builder for agentic and RAG applications with native LangGraph integration. MIT-licensed open-source platform supporting 150+ pre-built components. Post-DataStax, community-driven development.",
+      "product_type": "platform",
+      "open_source": true,
+      "company_slug": "langflow",
+      "deployment": [
+        "self-hosted-docker",
+        "self-hosted-python",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "Python",
+        "LangChain",
+        "LangGraph",
+        "FastAPI"
+      ],
+      "positioning": "Most technically capable of the major three; native LangGraph/stateful multi-agent support; strong for engineering-led teams; single-tenant by default.",
+      "archetype": "visual-agent-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-langflow-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-langflow-release-notes",
+        "market-competitors-rag-agent-builders-canvas-langflow-github-repo"
+      ]
+    },
+    {
+      "slug": "dify",
+      "name": "Dify",
+      "description": "Production-ready platform combining visual workflow builder, RAG, agent management, and API gateway. Full-stack solution with workspace management, version control (publish/draft), multi-tenancy, and Celery/Redis-based async processing.",
+      "product_type": "platform",
+      "open_source": true,
+      "company_slug": "dify",
+      "deployment": [
+        "self-hosted-docker",
+        "self-hosted-kubernetes",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "Redis",
+        "Celery"
+      ],
+      "positioning": "Most opinionated and feature-complete; best production observability; highest resource requirements; opinionated builder constraints limit advanced use cases.",
+      "archetype": "visual-agent-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-dify-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-dify-pricing-page",
+        "market-competitors-rag-agent-builders-canvas-dify-github-repo"
+      ]
+    },
+    {
+      "slug": "gumloop",
+      "name": "Gumloop",
+      "description": "No-code AI workflow automation platform with first-class AI nodes, browser automation, and MCP support. Series B-funded ($50M, 2026) SaaS platform positioned for AI-native automation beyond traditional workflow tools.",
+      "product_type": "platform",
+      "open_source": false,
+      "company_slug": "gumloop",
+      "deployment": [
+        "cloud-saas"
+      ],
+      "tech_stack": [
+        "TypeScript",
+        "WebAutomation"
+      ],
+      "positioning": "Venture-backed SaaS; AI as first-class node; browser automation + AI combination; competitive with Make/Zapier but AI-first; high market validation.",
+      "archetype": "visual-agent-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-gumloop-official-site",
+        "market-competitors-rag-agent-builders-canvas-gumloop-series-b-announcement",
+        "market-competitors-rag-agent-builders-canvas-gumloop-y-combinator"
+      ]
+    },
+    {
+      "slug": "rivet",
+      "name": "Rivet",
+      "description": "Open-source visual AI programming environment from Ironclad. YAML-based graph storage for version control integration. Focus on prompt chaining and production AI features with remote debugging.",
+      "product_type": "platform",
+      "open_source": true,
+      "company_slug": "ironclad",
+      "deployment": [
+        "self-hosted",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "TypeScript",
+        "YAML",
+        "Node.js"
+      ],
+      "positioning": "Designed for production AI features in applications; strong remote debugging for ops; graph-as-YAML for Git integration; smaller community than top three.",
+      "archetype": "visual-agent-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-rivet-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-rivet-github-repo",
+        "market-competitors-rag-agent-builders-canvas-rivet-documentation"
+      ]
+    },
+    {
+      "slug": "buildship",
+      "name": "BuildShip",
+      "description": "Low-code visual backend builder for APIs, scheduled jobs, and AI workflows. Infinite canvas, multi-trigger support, and Google Cloud Run deployment. V2 released 2026 with enterprise-grade scalability.",
+      "product_type": "platform",
+      "open_source": true,
+      "company_slug": "buildship",
+      "deployment": [
+        "self-hosted",
+        "cloud-google-run",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "TypeScript",
+        "Google Cloud",
+        "Node.js"
+      ],
+      "positioning": "Backend/API-first visual builder; infinite canvas UI; enterprise deployment focus; strong integration with Google Cloud; less RAG-specific than agent-builders.",
+      "archetype": "visual-backend-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-buildship-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-buildship-documentation",
+        "market-competitors-rag-agent-builders-canvas-buildship-v2-release"
+      ]
+    },
+    {
+      "slug": "mindstudio",
+      "name": "MindStudio",
+      "description": "No-code AI agent builder with Smart Cards drag-and-drop interface. Supports 200+ models, Architect AI copilot assistant. 400k+ deployed agents, 15-60 min typical build time. Strong on RAG and quick onboarding.",
+      "product_type": "platform",
+      "open_source": false,
+      "company_slug": "mindstudio",
+      "deployment": [
+        "cloud-saas"
+      ],
+      "tech_stack": [
+        "Proprietary"
+      ],
+      "positioning": "Optimized for accessibility and speed (no-code with drag-and-drop); highest ease-of-use ratings (4.7/5 G2); strong RAG capabilities; documentation gaps for advanced use cases.",
+      "archetype": "visual-agent-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-mindstudio-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-mindstudio-pricing",
+        "market-competitors-rag-agent-builders-canvas-mindstudio-g2-reviews"
+      ]
+    },
+    {
+      "slug": "ragflow",
+      "name": "RAGFlow",
+      "description": "Open-source RAG engine with agentic capabilities and visual workflow orchestration. Deep document understanding, AHC mode (Psi-RAG), RAPTOR construction, browser automation. Latest release v0.25.0 (April 2026) adds Agent publishing.",
+      "product_type": "platform",
+      "open_source": true,
+      "company_slug": "infiniflow",
+      "deployment": [
+        "self-hosted-docker",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "Python",
+        "Docker"
+      ],
+      "positioning": "RAG-first positioning with agentic extension; advanced document processing; visual workflow management; community-driven open-source.",
+      "archetype": "visual-rag-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-ragflow-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-ragflow-github",
+        "market-competitors-rag-agent-builders-canvas-ragflow-release-notes"
+      ]
+    },
+    {
+      "slug": "mastra",
+      "name": "Mastra",
+      "description": "Modern TypeScript framework for AI agents with unified model router, memory, workflows, and observability. Apache 2.0 licensed. 22k+ GitHub stars, 300k+ weekly npm downloads by 1.0 release (Jan 2026). Code-first approach.",
+      "product_type": "framework",
+      "open_source": true,
+      "company_slug": "mastra",
+      "deployment": [
+        "self-hosted",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "TypeScript",
+        "Node.js",
+        "Zod"
+      ],
+      "positioning": "Code-first AI agent framework (not visual-first); strong developer experience; third-fastest-growing JS framework ever; cloud platform and self-hosted options.",
+      "archetype": "agent-framework",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-mastra-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-mastra-documentation",
+        "market-competitors-rag-agent-builders-canvas-mastra-github"
+      ]
+    },
+    {
+      "slug": "anythingllm",
+      "name": "AnythingLLM",
+      "description": "Open-source local-first RAG and agent platform. Desktop app and Docker deployment. 60k+ GitHub stars. Supports document chat, RAG setup, agent builder (@agent command), and multi-LLM provider options (Ollama, OpenAI, Anthropic).",
+      "product_type": "platform",
+      "open_source": true,
+      "company_slug": "mintplex-labs",
+      "deployment": [
+        "self-hosted-desktop",
+        "self-hosted-docker",
+        "cloud-managed"
+      ],
+      "tech_stack": [
+        "JavaScript",
+        "Docker"
+      ],
+      "positioning": "Privacy-first, local-execution focus; desktop + server options; multi-provider LLM support; strong community adoption; lighter on features than Dify/Langflow.",
+      "archetype": "visual-rag-builder",
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-anythingllm-official-homepage",
+        "market-competitors-rag-agent-builders-canvas-anythingllm-documentation",
+        "market-competitors-rag-agent-builders-canvas-anythingllm-github"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Three builder modes (Assistant, Chatflow, Agentflow) support orchestration; Agentflow is superset for multi-agent; visual editor with branching/looping/routing logic."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.agent-orchestration-multi-agent",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Multi-agent support via Agentflow; workflow orchestration distributed across coordinated agents."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.agent-orchestration-tool-use",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Extensive tool-use support; 100+ LLM/tool integrations; drag-and-drop node composition for function calling."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.agent-orchestration-control-flow",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Branching, looping, routing logic supported in visual editor; conditional execution in node graphs."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.data-integration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Connects to 100+ sources, tools, vector databases; extensive integration library."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.observability",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Execution logs and visual debugging available; support for Prometheus and OpenTelemetry; weakest observability of major three platforms."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.rag",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Full RAG support; knowledge base integration; vector database connectivity; Graph RAG and Reranker support."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.memory-management",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Various memory optimization techniques; memory integrations for context persistence."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Self-hosted (Docker, Node.js) and cloud deployment options; air-gapped deployment support; 1GB RAM minimum."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.api-access",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "REST API access; JS/Python SDK; CLI support; embedded chat widget customizable."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.security",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "RBAC, SSO, encrypted credentials, secret managers, rate limiting, restricted domains."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "C",
+      "notes": "Limited built-in versioning; users typically wrap in own backup processes."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.mcp-integration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "MCP client/server nodes, tool listing, SSE, auth support."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Clearest documentation and lowest learning curve of major three; excellent for rapid prototyping."
+    },
+    {
+      "product_slug": "flowise",
+      "feature_id": "market.feature.ux-chrome-themes",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Clean UI; readable error messages; strong accessibility for non-developers."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Native LangGraph integration for stateful, cyclical agent workflows; visual IDE for complex orchestration."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.agent-orchestration-multi-agent",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "LangGraph-native support for stateful multi-agent systems with looping, retrying, branching."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.agent-orchestration-tool-use",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "150+ pre-built components; LangChain/LangGraph tool ecosystem; custom Python nodes."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.data-integration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Comprehensive LangChain integration ecosystem; 150+ components; Python code access for custom nodes."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "First-class Langfuse and LangSmith integration; per-step traces; strong observability ecosystem."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.rag",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Full RAG support via LangChain; native integration with retrieval components."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Docker, Python self-hosted; cloud options post-DataStax; single-tenant by default limits SaaS scenarios."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.api-access",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "REST export available; flows compile to LangChain code for export; can embed in Python services."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.code-editing",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Native Python code nodes; full LangChain access; export workflows as Python."
+    },
+    {
+      "product_slug": "langflow",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "Manual versioning via export and Git commit; not as automated as Dify's publish/draft model."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Full-stack platform with workflow and chatflow builders; opinionated design; strong for production use."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.agent-orchestration-multi-agent",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Multi-agent orchestration in workflow mode; Celery+Redis async execution for long-running agents."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.agent-orchestration-state-context",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Execution context and state management built into platform; conversation history logging."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.data-integration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Knowledge base manager; RAG integration; file upload handling; data processing pipeline."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "OpenTelemetry export; conversation logs; per-step timing; SigNoz, Grafana Tempo integration."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.rag",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Most mature knowledge base implementation; hybrid search (keyword + vector); chunking controls; Pinecone, Weaviate, Qdrant integration."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Multi-tenancy with workspace primitives; role-based access; per-workspace API keys; secrets isolation."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Docker, Kubernetes, cloud deployment; 4GB RAM minimum; heaviest resource requirements of major three."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.api-access",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Every flow is API endpoint by default; authentication, rate limiting, conversation history included."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Version history per flow; publish/draft separation; closest to 'git for prompts' experience."
+    },
+    {
+      "product_slug": "dify",
+      "feature_id": "market.feature.workflow-automation",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Dual workflow+chatflow modes; opinionated builder pattern; can feel constraining for advanced use cases."
+    },
+    {
+      "product_slug": "gumloop",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "AI as first-class node; workflow automation combining AI, browser automation, and traditional automation."
+    },
+    {
+      "product_slug": "gumloop",
+      "feature_id": "market.feature.browser-automation",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Browser automation integrated with AI workflows; key differentiator vs. pure AI builders."
+    },
+    {
+      "product_slug": "gumloop",
+      "feature_id": "market.feature.mcp-integration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "First-class MCP support in platform."
+    },
+    {
+      "product_slug": "gumloop",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Cloud SaaS only; fully managed platform."
+    },
+    {
+      "product_slug": "gumloop",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Built-in workflow monitoring and debugging."
+    },
+    {
+      "product_slug": "rivet",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Visual node-based graph editor; YAML-based storage for Git integration."
+    },
+    {
+      "product_slug": "rivet",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Remote debugger for production AI features; strong ops focus."
+    },
+    {
+      "product_slug": "rivet",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "YAML-based graph storage enables Git integration and version control; strong for team workflows."
+    },
+    {
+      "product_slug": "rivet",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Self-hosted and cloud options; designed for embedding in applications."
+    },
+    {
+      "product_slug": "rivet",
+      "feature_id": "market.feature.code-integration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "TypeScript/Node.js integration; graphs as code; designed for DevOps-friendly deployment."
+    },
+    {
+      "product_slug": "buildship",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "Visual backend builder with infinite canvas; multi-trigger support; API-first workflow design."
+    },
+    {
+      "product_slug": "buildship",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Google Cloud Run deployment; self-hosted options; cloud-native focus."
+    },
+    {
+      "product_slug": "buildship",
+      "feature_id": "market.feature.ux-chrome",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Infinite canvas UI reduces visual complexity scaling issues; clean interface for backend workflows."
+    },
+    {
+      "product_slug": "buildship",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Built-in testing tools; CI/CD integration; deployment logging."
+    },
+    {
+      "product_slug": "mindstudio",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "No-code Smart Cards interface; drag-and-drop with 200+ model support; Architect AI copilot."
+    },
+    {
+      "product_slug": "mindstudio",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Highest ease-of-use (4.7/5 G2); quick build time (15-60 min); workshop support for onboarding."
+    },
+    {
+      "product_slug": "mindstudio",
+      "feature_id": "market.feature.rag",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Standout RAG capabilities; knowledge base integration; strong user feedback on RAG quality."
+    },
+    {
+      "product_slug": "mindstudio",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Cloud SaaS only; fully managed; 400k+ deployed agents."
+    },
+    {
+      "product_slug": "mindstudio",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Built-in monitoring; agent deployment tracking."
+    },
+    {
+      "product_slug": "ragflow",
+      "feature_id": "market.feature.rag",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "RAG-first positioning; deep document understanding; AHC mode (Psi-RAG); RAPTOR construction."
+    },
+    {
+      "product_slug": "ragflow",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Visual workflow orchestration for RAG and agentic workflows; recent Agent publishing feature (v0.25)."
+    },
+    {
+      "product_slug": "ragflow",
+      "feature_id": "market.feature.browser-automation",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Browser component for autonomous web interaction."
+    },
+    {
+      "product_slug": "ragflow",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Docker and cloud deployment; community-driven open-source."
+    },
+    {
+      "product_slug": "mastra",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Code-first agent framework; unified model router; memory and workflow management; TypeScript-native."
+    },
+    {
+      "product_slug": "mastra",
+      "feature_id": "market.feature.code-editing",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "TypeScript framework with strong DX; Zod schema integration for tool definition."
+    },
+    {
+      "product_slug": "mastra",
+      "feature_id": "market.feature.observability",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Built-in observability; instrumentation-ready for DevOps integration."
+    },
+    {
+      "product_slug": "mastra",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Self-hosted and cloud platform options; 300k+ weekly npm downloads by v1.0."
+    },
+    {
+      "product_slug": "mastra",
+      "feature_id": "market.feature.rag",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "RAG support via framework integrations; not RAG-optimized like RAGFlow."
+    },
+    {
+      "product_slug": "anythingllm",
+      "feature_id": "market.feature.rag",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Local-first RAG setup; document chat capabilities; vector DB integration."
+    },
+    {
+      "product_slug": "anythingllm",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Agent builder via @agent command; workflow automation."
+    },
+    {
+      "product_slug": "anythingllm",
+      "feature_id": "market.feature.deployment",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Desktop app, Docker, and cloud options; strong local execution focus."
+    },
+    {
+      "product_slug": "anythingllm",
+      "feature_id": "market.feature.onboarding",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "Easy setup; desktop app reduces friction; good for privacy-conscious users."
+    }
+  ],
+  "competitors": [
+    {
+      "company_slug": "flowise",
+      "product_slug": "flowise",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Ease of use and accessibility (1GB RAM, non-developer friendly)",
+        "Speed to first prototype (lowest complexity entry)",
+        "Community size and integration ecosystem",
+        "Cost-efficient for small teams/internal tools"
+      ],
+      "we_win_on": [
+        "Visual query building and database schema introspection (MetroGraph's metro-map visualization solves HCI bloat)",
+        "AI+UI parity (not chat-first flight)",
+        "Observability and production debugging (stronger than Flowise)",
+        "Data-centric graph representation (vs. generic LLM workflow nodes)"
+      ],
+      "wedge_vs_them": "MetroGraph's metro-map visualization directly addresses Flowise's HCI pain: bloated node libraries and surface-area explosion. For data teams, MetroGraph's schema-aware canvas beats generic RAG node composition.",
+      "moat": "Large open-source community; extensive LangChain integration ecosystem; proven ease-of-use track record.",
+      "overlap_area": [
+        "Visual builder for agent/RAG workflows",
+        "Multi-agent orchestration",
+        "Tool use and function calling",
+        "Open-source deployment"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-dify-ux-comparison",
+        "market-competitors-rag-agent-builders-canvas-three-way-production-comparison-elestio",
+        "market-competitors-rag-agent-builders-canvas-flowise-alternative-review"
+      ]
+    },
+    {
+      "company_slug": "langflow",
+      "product_slug": "langflow",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "LangGraph integration and stateful multi-agent support",
+        "Developer flexibility (Python code nodes, export to code)",
+        "Technical capability (most powerful of major three)",
+        "Native LangChain ecosystem alignment"
+      ],
+      "we_win_on": [
+        "Visual query building for databases (Langflow is generic agent-builder, not data-centric)",
+        "Schema introspection and ERD rendering (data modeling focus)",
+        "Reduced surface-area bloat (metro-map visual paradigm vs. node explosion)",
+        "AI+UI parity (Langflow still dialog-like in advanced mode)"
+      ],
+      "wedge_vs_them": "MetroGraph targets data engineers and noSQL/SQL startups; Langflow targets software engineers. MetroGraph's graph-as-data-schema visualization beats Langflow's generic workflow nodes for data orchestration.",
+      "moat": "LangGraph/LangChain tight integration; post-DataStax community momentum; export-to-Python flexibility.",
+      "overlap_area": [
+        "Visual agent orchestration",
+        "Multi-agent and stateful workflows",
+        "Open-source development model",
+        "Developer-friendly codebase"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-dify-ux-comparison",
+        "market-competitors-rag-agent-builders-canvas-three-way-production-comparison-elestio",
+        "market-competitors-rag-agent-builders-canvas-langflow-agent-framework-guide"
+      ]
+    },
+    {
+      "company_slug": "dify",
+      "product_slug": "dify",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Full-stack platform with API gateway, multi-tenancy, and workspace management",
+        "Best observability and production readiness (Celery+Redis, OpenTelemetry)",
+        "Built-in versioning and publish/draft separation",
+        "Opinionated design reduces decision fatigue"
+      ],
+      "we_win_on": [
+        "Visual query and schema exploration (Dify has no DB visualization layer)",
+        "Metadata-driven UI (MetroGraph reduces node/option explosion via smart schema awareness)",
+        "Data teams' mental models (Dify targets product teams, MetroGraph targets data engineers)",
+        "Graph-as-database-representation (vs. workflow-as-application-representation)"
+      ],
+      "wedge_vs_them": "Dify competes in LLM app SaaS space; MetroGraph competes in data engineering + AI space. Dify's workflow builder is application-centric; MetroGraph's is database-centric.",
+      "moat": "Fastest-growing open-source AI platform (100k+ stars by mid-2024); full-stack feature parity; enterprise SaaS readiness.",
+      "overlap_area": [
+        "Visual workflow/agent builder",
+        "RAG and knowledge base management",
+        "Multi-tenant deployment",
+        "API-first architecture"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-dify-ux-comparison",
+        "market-competitors-rag-agent-builders-canvas-three-way-production-comparison-elestio",
+        "market-competitors-rag-agent-builders-canvas-dify-g2-reviews"
+      ]
+    },
+    {
+      "company_slug": "gumloop",
+      "product_slug": "gumloop",
+      "competitor_type": "adjacent",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Browser automation + AI integration (unique positioning)",
+        "Venture funding ($50M Series B, early 2026)",
+        "No-code interface optimized for business users",
+        "Workflow-as-automation (broader TAM than pure agent builders)"
+      ],
+      "we_win_on": [
+        "Data-native visualization (Gumloop is workflow-first, MetroGraph is data-first)",
+        "Query-building and schema introspection (Gumloop focuses on business processes, not data exploration)",
+        "Technical depth for data engineers (Gumloop targets business automation users)"
+      ],
+      "wedge_vs_them": "Gumloop is the Make/Zapier replacement with AI; MetroGraph is the data explorer with AI. Different user archetypes and workflows.",
+      "moat": "Browser automation as first-class node; significant VC backing; positioning vs. Make/Zapier establishes TAM.",
+      "overlap_area": [
+        "Visual no-code/low-code builder",
+        "AI-native workflow automation",
+        "MCP support"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-gumloop-series-b-announcement",
+        "market-competitors-rag-agent-builders-canvas-gumloop-review-lindy"
+      ]
+    },
+    {
+      "company_slug": "rivet",
+      "product_slug": "rivet",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "YAML-based graph storage (excellent for Git integration and DevOps)",
+        "Remote debugging for production AI features",
+        "Strong ops/platform team focus",
+        "Designed for embedding in applications"
+      ],
+      "we_win_on": [
+        "Database visualization and schema introspection (Rivet has no data exploration focus)",
+        "Query building (Rivet is prompt-graph focused, not query-graph focused)",
+        "Reduced surface area through schema awareness (Rivet still has generic node selection UX)"
+      ],
+      "wedge_vs_them": "Rivet targets ops engineers and embedded AI use cases; MetroGraph targets data engineers. Rivet's YAML graphs are application-centric; MetroGraph's are data-centric.",
+      "moat": "DevOps-friendly YAML-based storage; strong ops/debugging positioning; embedded application focus.",
+      "overlap_area": [
+        "Visual graph-based agent programming",
+        "Production AI features",
+        "Version control integration"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-rivet-deep-dive",
+        "market-competitors-rag-agent-builders-canvas-rivet-documentation"
+      ]
+    },
+    {
+      "company_slug": "buildship",
+      "product_slug": "buildship",
+      "competitor_type": "adjacent",
+      "threat_level": "low",
+      "they_win_on": [
+        "Infinite canvas UI (modern visual paradigm)",
+        "Backend/API-first focus (different use case)",
+        "Google Cloud Run integration (cloud-native)",
+        "V2 enterprise scalability features"
+      ],
+      "we_win_on": [
+        "Data-centric visualization (BuildShip is backend-centric)",
+        "Schema introspection and query building (BuildShip has no data exploration)",
+        "Metadata-driven UX (BuildShip is generic workflow builder)"
+      ],
+      "wedge_vs_them": "BuildShip is backend/API builder with AI; MetroGraph is data explorer with AI. Different fundamental problem space.",
+      "moat": "Infinite canvas UI differentiation; Google Cloud ecosystem alignment; backend-first positioning.",
+      "overlap_area": [
+        "Visual workflow builder",
+        "API exposure",
+        "Multi-trigger support"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-buildship-v2-release",
+        "market-competitors-rag-agent-builders-canvas-buildship-documentation"
+      ]
+    },
+    {
+      "company_slug": "mindstudio",
+      "product_slug": "mindstudio",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Best-in-class ease of use (4.7/5 G2 rating)",
+        "Fastest build time (15-60 min typical)",
+        "Strong RAG capabilities",
+        "No-code smart cards interface",
+        "High adoption (400k+ deployed agents)"
+      ],
+      "we_win_on": [
+        "Visual query building and schema introspection (MindStudio is agent-builder, not query-builder)",
+        "Data-centric positioning (MindStudio is general no-code agent builder)",
+        "Technical depth for data engineers (MindStudio is business-user focused)"
+      ],
+      "wedge_vs_them": "MindStudio is no-code agent builder for business users; MetroGraph is visual data explorer for engineers. Different ICPs and workflows.",
+      "moat": "High ease-of-use ratings and community adoption; RAG specialization; workshop-based onboarding model.",
+      "overlap_area": [
+        "Visual agent builder",
+        "RAG and knowledge base integration",
+        "Quick onboarding"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-mindstudio-g2-reviews",
+        "market-competitors-rag-agent-builders-canvas-mindstudio-pricing"
+      ]
+    },
+    {
+      "company_slug": "infiniflow",
+      "product_slug": "ragflow",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "RAG-first positioning with deep document understanding",
+        "Advanced doc processing (AHC mode, RAPTOR)",
+        "Browser automation for autonomous web interaction",
+        "Community-driven development momentum"
+      ],
+      "we_win_on": [
+        "Query building and database schema visualization (RAGFlow is document-centric, not data-centric)",
+        "Metadata-driven UI reducing surface-area bloat (RAGFlow still has generic orchestration nodes)",
+        "Graph-as-database representation (vs. graph-as-document-pipeline)"
+      ],
+      "wedge_vs_them": "RAGFlow targets document/content teams; MetroGraph targets data engineers. RAGFlow's RAG pipeline is document-processing-first; MetroGraph's is database-query-first.",
+      "moat": "RAG-specific architecture and doc processing IP; browser automation; fast-growing community.",
+      "overlap_area": [
+        "Visual workflow orchestration",
+        "Agent capabilities",
+        "Browser automation",
+        "Open-source development"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-ragflow-blog-deep-dive",
+        "market-competitors-rag-agent-builders-canvas-ragflow-release-notes"
+      ]
+    },
+    {
+      "company_slug": "mastra",
+      "product_slug": "mastra",
+      "competitor_type": "adjacent",
+      "threat_level": "low",
+      "they_win_on": [
+        "Code-first TypeScript framework (strong DX for engineers)",
+        "Rapid adoption (22k+ stars, 300k+ weekly npm by v1.0)",
+        "Modern framework design (Zod schemas, unified model router)",
+        "DevOps-friendly approach"
+      ],
+      "we_win_on": [
+        "Visual graph composition (Mastra is code-first, not visual-first)",
+        "Visual query building and schema exploration (Mastra has no visual query layer)",
+        "Data engineer UX (Mastra targets software engineers)"
+      ],
+      "wedge_vs_them": "Mastra is code-first agent framework; MetroGraph is visual-first data explorer. Complementary approaches to different user archetypes.",
+      "moat": "Strong TypeScript framework design; rapid developer adoption; modern framework paradigm.",
+      "overlap_area": [
+        "Agent orchestration",
+        "Tool/function definition",
+        "Observability",
+        "Workflow automation"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-mastra-tutorial-firecrawl",
+        "market-competitors-rag-agent-builders-canvas-mastra-adoption-statistics"
+      ]
+    },
+    {
+      "company_slug": "mintplex-labs",
+      "product_slug": "anythingllm",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Local-first/privacy-first positioning",
+        "Desktop app ease of setup",
+        "Multi-LLM provider support",
+        "High community adoption (60k+ GitHub stars)"
+      ],
+      "we_win_on": [
+        "Visual query building and database schema introspection (AnythingLLM is RAG-centric, not query-centric)",
+        "Metadata-driven UI (AnythingLLM has generic agent builder)",
+        "Data-centric graph representation (AnythingLLM is document-centric)"
+      ],
+      "wedge_vs_them": "AnythingLLM is privacy-first local RAG platform; MetroGraph is data explorer with AI. Different primary use cases.",
+      "moat": "Privacy-first positioning; desktop app distribution; multi-provider LLM support.",
+      "overlap_area": [
+        "Visual RAG builder",
+        "Agent capabilities",
+        "Open-source",
+        "Multi-deployment options"
+      ],
+      "source_ids": [
+        "market-competitors-rag-agent-builders-canvas-anythingllm-documentation",
+        "market-competitors-rag-agent-builders-canvas-anythingllm-opentools-review"
+      ]
+    }
+  ],
+  "notes": "Comprehensive Phase C extraction covering 10 products in the visual canvas RAG/agent builder space. Key strategic insights: MetroGraph's wedge (fixing HCI surface-area bloat via metro-map visualization) is most directly threatened by Flowise, Langflow, and Dify—the \"big three\" open-source platforms. Secondary threats from Gumloop (venture-backed SaaS with browser automation) and MindStudio (high ease-of-use positioning). Mastra and Rivet represent code-first/ops-first alternatives, reducing direct overlap. RAGFlow and AnythingLLM serve specialized verticals (document processing, privacy-first). MetroGraph's core differentiation is data-centric (schema introspection, query building, metadata-driven UX) vs. competitors' application-centric (workflows, agents, RAG pipelines). ICP alignment: data engineers and noSQL/SQL startups face \"agent builder bloat\" (100+ node options in Flowise, confusing multi-builder modes in Dify); MetroGraph's metro-map reduces visual complexity through schema awareness. Production readiness: Dify leads (OpenTelemetry, Celery+Redis), but at cost of opinionated constraints; Langflow strong on flexibility; Flowise weak on observability. Market momentum: Dify 136k stars (fastest-growing), Langflow 146k (post-DataStax), Flowise 51k (mature stable); Mastra's 22k reflects rapid adoption trajectory. Funding landscape: Gumloop $50M Series B signals venture belief in AI automation market; MindStudio and others bootstrapped or smaller rounds."
+}

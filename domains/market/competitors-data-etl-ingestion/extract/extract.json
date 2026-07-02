@@ -1,0 +1,1084 @@
+{
+  "leaf": "market/competitors-data-etl-ingestion",
+  "products": [
+    {
+      "slug": "fivetran",
+      "name": "Fivetran",
+      "description": "Enterprise SaaS ELT platform with 600+ managed connectors, usage-based pricing (MAR model), real-time CDC, and Reverse ETL capabilities. Market leader in managed ELT.",
+      "product_type": "platform",
+      "deployment": [
+        "saas"
+      ],
+      "open_source": false,
+      "company_slug": "fivetran",
+      "positioning": "Enterprise managed ELT leader; set-and-forget connector approach; premium pricing for ease and reliability",
+      "archetype": "Enterprise SaaS ELT",
+      "tech_stack": [
+        "cloud-native",
+        "managed-connectors",
+        "low-code"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-fivetran-homepage-official",
+        "market-competitors-data-etl-ingestion-fivetran-pricing-official",
+        "market-competitors-data-etl-ingestion-fivetran-g2-reviews",
+        "market-competitors-data-etl-ingestion-fivetran-crunchbase-funding"
+      ]
+    },
+    {
+      "slug": "airbyte",
+      "name": "Airbyte",
+      "description": "Open-source ELT platform (Apache 2.0) with 400+ managed connectors, hybrid deployment model (self-hosted Core + SaaS Standard/Pro/Enterprise), and community-driven connector maintenance.",
+      "product_type": "platform",
+      "deployment": [
+        "self-hosted",
+        "saas",
+        "hybrid"
+      ],
+      "open_source": true,
+      "company_slug": "airbyte",
+      "positioning": "Open-source democratization of ELT; balance between self-hosted control and managed convenience; cost-effective alternative to Fivetran",
+      "archetype": "Open-Source ELT Hybrid",
+      "tech_stack": [
+        "open-source",
+        "apache-2.0",
+        "java",
+        "cloud-agnostic"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-airbyte-homepage-official",
+        "market-competitors-data-etl-ingestion-airbyte-pricing-official",
+        "market-competitors-data-etl-ingestion-airbyte-g2-reviews",
+        "market-competitors-data-etl-ingestion-airbyte-gartner-peer-insights"
+      ]
+    },
+    {
+      "slug": "talend",
+      "name": "Talend (Qlik Data Fabric)",
+      "description": "Enterprise Data Integration platform acquired by Qlik. Capacity-based consumption model, Data Fabric positioning, supports both ETL and ELT workflows, legacy-incumbent with modern cloud cloud-native transition.",
+      "product_type": "platform",
+      "deployment": [
+        "saas",
+        "self-hosted"
+      ],
+      "open_source": false,
+      "company_slug": "talend-qlik",
+      "positioning": "Enterprise data fabric leader; traditional ETL strengths; moving toward cloud-native and real-time; post-Qlik acquisition consolidation",
+      "archetype": "Enterprise Data Fabric (ETL→ELT)",
+      "tech_stack": [
+        "enterprise",
+        "java-based",
+        "cloud-native"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-talend-homepage-official",
+        "market-competitors-data-etl-ingestion-talend-pricing-official",
+        "market-competitors-data-etl-ingestion-talend-g2-reviews",
+        "market-competitors-data-etl-ingestion-talend-crunchbase-funding"
+      ]
+    },
+    {
+      "slug": "matillion",
+      "name": "Matillion",
+      "description": "Cloud-native visual ETL/ELT platform with drag-drop interface, credit-based consumption model, tight warehouse integration (Snowflake, BigQuery, Redshift), and strong transformation capabilities.",
+      "product_type": "platform",
+      "deployment": [
+        "saas"
+      ],
+      "open_source": false,
+      "company_slug": "matillion",
+      "positioning": "Visual ETL/ELT for cloud data warehouses; ease-of-use for no-code teams; warehouse-native computation model",
+      "archetype": "Visual Cloud ETL/ELT",
+      "tech_stack": [
+        "cloud-native",
+        "visual-builder",
+        "warehouse-compute"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-matillion-homepage-official",
+        "market-competitors-data-etl-ingestion-matillion-pricing-official",
+        "market-competitors-data-etl-ingestion-matillion-capterra-reviews",
+        "market-competitors-data-etl-ingestion-matillion-trustradius-reviews"
+      ]
+    },
+    {
+      "slug": "coalesce",
+      "name": "Coalesce",
+      "description": "Snowflake-specific transformation platform (Transform, Catalog, Quality modules). Visual node-based data modeling with tight Snowflake integration, Snowflake Ventures backing, rapid adoption in Snowflake ecosystem.",
+      "product_type": "platform",
+      "deployment": [
+        "saas"
+      ],
+      "open_source": false,
+      "company_slug": "coalesce",
+      "positioning": "Snowflake-native modern alternative to dbt; visual + collaborative modeling; Snowflake ecosystem lock-in as moat",
+      "archetype": "Snowflake-Native Transform",
+      "tech_stack": [
+        "snowflake-native",
+        "visual-modeler",
+        "node-based"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-coalesce-homepage-official",
+        "market-competitors-data-etl-ingestion-coalesce-snowflake-partnership",
+        "market-competitors-data-etl-ingestion-coalesce-g2-reviews"
+      ]
+    },
+    {
+      "slug": "dlthub",
+      "name": "dltHub (dlt)",
+      "description": "Python-first open-source ELT library (Apache 2.0, 5500+ stars) with managed dltHub cloud platform (Pro/Scale/Enterprise). Emphasizes schema inference, incremental loading, and 5000+ source adapters. Developer-centric, reproducible data loading.",
+      "product_type": "platform",
+      "deployment": [
+        "self-hosted",
+        "saas"
+      ],
+      "open_source": true,
+      "company_slug": "dlthub",
+      "positioning": "Python-first ELT democratization; reproducible, composable data loading; cost-efficient alternative to Fivetran; developer autonomy",
+      "archetype": "Python ELT Library + Managed Cloud",
+      "tech_stack": [
+        "python",
+        "apache-2.0",
+        "open-source",
+        "sql-transformation"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-dlthub-homepage-official",
+        "market-competitors-data-etl-ingestion-dlthub-product-dlt",
+        "market-competitors-data-etl-ingestion-dlthub-github-repo",
+        "market-competitors-data-etl-ingestion-dlthub-docs-official"
+      ]
+    },
+    {
+      "slug": "bruin",
+      "name": "Bruin",
+      "description": "Open-source end-to-end data pipeline platform (Apache 2.0, 1600+ stars) with CLI + managed cloud. Covers ingestion, transformation (SQL/Python/R), quality checks, and orchestration. Emerging agentic capabilities and MCP integration.",
+      "product_type": "platform",
+      "deployment": [
+        "self-hosted",
+        "saas"
+      ],
+      "open_source": true,
+      "company_slug": "bruin",
+      "positioning": "End-to-end unified pipeline platform; developer-first; emerging agentic orchestration; open-source + managed hybrid model",
+      "archetype": "Open-Source End-to-End Pipeline + Agents",
+      "tech_stack": [
+        "apache-2.0",
+        "open-source",
+        "sql-python-r",
+        "orchestration",
+        "mcp"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-bruin-homepage-official",
+        "market-competitors-data-etl-ingestion-bruin-github-repo",
+        "market-competitors-data-etl-ingestion-bruin-docs-official",
+        "market-competitors-data-etl-ingestion-bruin-agentic-positioning"
+      ]
+    },
+    {
+      "slug": "rubie",
+      "name": "Rubie",
+      "description": "Early-stage (Pre-Seed $3.2M, June 2024) agentic data migration platform. AI-powered extraction and mapping from legacy systems to modern data warehouses. Black-box agent approach to zero-touch data migration.",
+      "product_type": "platform",
+      "deployment": [
+        "saas"
+      ],
+      "open_source": false,
+      "company_new_name": "Rubie",
+      "positioning": "Agentic AI-powered data extraction; automate legacy system migration; zero-touch onboarding narrative; early-market positioning",
+      "archetype": "Agentic Data Migration AI",
+      "tech_stack": [
+        "agentic-ai",
+        "llm-powered",
+        "legacy-system-migration"
+      ],
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-rubie-homepage-official",
+        "market-competitors-data-etl-ingestion-rubie-aws-marketplace",
+        "market-competitors-data-etl-ingestion-rubie-crunchbase-funding"
+      ]
+    }
+  ],
+  "product_features": [
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.data-source",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "600+ managed connectors with unified UI; set-and-forget approach minimizes setup friction"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.data-source-connector-library",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Extensive prebuilt library with weekly updates; lower learning curve vs. custom connectors"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.data-source-sql",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Strong SQL source support; standard relational database integration"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.data-source-nosql",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "MongoDB, DynamoDB support; less mature than SQL sources"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.data-source-api-webhook",
+      "support_level": "full",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "REST API ingestion; requires pre-built connectors or Fivetran Transformations"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Flexible sync scheduling with minute-level granularity; managed by Fivetran infrastructure"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "SaaS-only fully managed deployment; eliminates infrastructure burden"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Automatic retry logic with configurable backoff; error messages noted as inconsistent in reviews"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Detailed sync logs with row counts; dashboard visibility; debugging support"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.observability-alerting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Email and webhook alerts for sync failures and anomalies"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "RBAC, SSO, SOC 2 Type II compliance; enterprise-grade access controls"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.data-source-connection-secrets",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Encrypted credential storage; role-based secret management"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.observability-cost-tracking",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "Cost tracking available but pricing complexity (MAR model, deletion charges) creates friction; Jan 2026 changes added unpredictability"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Fivetran Transformations (dbt-based); not core visual builder strength"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.collaboration",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Team-level connectors; limited real-time collaboration on pipeline design"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "beta",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "AI-assisted transformation generation (Fivetran Transformations); early stage"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Connector templates available; limited workflow pattern examples"
+    },
+    {
+      "product_slug": "fivetran",
+      "feature_id": "market.feature.versioning-history",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Sync history available; limited rollback capabilities"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.data-source",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "400+ managed connectors with community-driven maintenance; flexible but less centralized support than Fivetran"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.data-source-connector-library",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Large library with community contributions; connector maturity varies"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.data-source-sql",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "SQL sources fully supported; strong relational database coverage"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.data-source-api-webhook",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "REST API connectors; allows custom HTTP integrations"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Self-hosted Core (free), SaaS Standard/Plus/Pro/Enterprise; hybrid flexibility is key differentiator"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Schedule-based and manual triggering; webhook triggers available on Plus+ tiers"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.extensibility-plugin-sdk",
+      "support_level": "full",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Community connector SDK available; learning curve for custom connectors"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Execution logs available; error messages noted as unclear in G2 reviews"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.observability-alerting",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Basic alerting; more mature on Pro tier"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "SSO, RBAC available; enterprise tier features"
+    },
+    {
+      "product_slug": "airbyte",
+      "feature_id": "market.feature.collaboration",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Limited collaborative features; team management on Plus+ tiers"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.data-source",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Comprehensive connector ecosystem; traditional enterprise strengths"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.data-source-sql",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Strong SQL/relational support; legacy strengths"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.data-source-connector-library",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Large proprietary connector library; enterprise maintenance"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Mature drag-drop designer; praised for ease-of-use in reviews; noted as resource-intensive"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.agent-orchestration-execution",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Job scheduling and execution engine; enterprise-grade reliability"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Cloud (Qlik Cloud) and self-hosted options; complex infrastructure requirements"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Enterprise RBAC, Qlik integration; complex setup and configuration"
+    },
+    {
+      "product_slug": "talend",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Comprehensive monitoring; slow performance on large datasets noted in reviews"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.data-source",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "300+ connectors with cloud warehouse focus; managed connectors minimize setup"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.data-source-connector-library",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Prebuilt connectors optimized for cloud warehouses (Snowflake, BigQuery, Redshift)"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.data-source-sql",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "SQL sources fully supported"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Drag-drop visual builder praised for ease-of-use; core strength of platform"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Fully managed SaaS; no infrastructure overhead"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Flexible scheduling with cron-like support"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Dashboard-based monitoring; warehouse compute cost visibility"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.observability-cost-tracking",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Credit consumption tracking; costs can spiral with large transformations on expensive compute"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.auth-governance",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "RBAC, SSO support"
+    },
+    {
+      "product_slug": "matillion",
+      "feature_id": "market.feature.collaboration",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Limited real-time collaboration on pipeline design"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.data-source-sql",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Snowflake-native; tight SQL integration"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Node-based visual modeler; praised for ease-of-use in reviews"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "SQL code editor for advanced transformations"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.schema-introspection",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "Snowflake schema auto-discovery and lineage tracking"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.schema-introspection-erd",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "Relationship diagram rendering; UI gaps noted in reviews (missing undo, navigation issues)"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "A",
+      "notes": "SaaS-only; Snowflake-hosted"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.collaboration",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Team-based collaboration; limited real-time sync depth"
+    },
+    {
+      "product_slug": "coalesce",
+      "feature_id": "market.feature.versioning",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Version history and snapshots; limited diffing capabilities"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.data-source",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "5000+ source adapters; Python-first approach requires developer effort for custom sources"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.data-source-sql",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "SQL database sources fully supported; standard Python connectors"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Python-first; requires programming knowledge"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Self-hosted (open-source) or dltHub cloud (Pro/Scale/Enterprise); requires infra knowledge for self-hosting"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Cron-based scheduling; requires programmatic configuration"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.extensibility-plugin-sdk",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "D",
+      "notes": "Python SDK for custom sources; developer-friendly but requires Python expertise"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Logging available; less polished than SaaS solutions"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.observability-alerting",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "Limited built-in alerting; requires custom configuration"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.query-building-visual-builder",
+      "support_level": "none",
+      "quality_grade": "F",
+      "hci_cost": "F",
+      "notes": "Python-code-only; no visual builder"
+    },
+    {
+      "product_slug": "dlthub",
+      "feature_id": "market.feature.onboarding-tutorials",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "D",
+      "notes": "Good documentation; steep learning curve for non-developers"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "End-to-end pipeline orchestration; emerging agentic capabilities"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.agent-orchestration-error-retry",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Error handling and retry logic in pipeline orchestration"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.data-source",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "50+ prebuilt ingestion connectors"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.query-building-code-editor",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "SQL, Python, R support for transformations"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "C",
+      "notes": "Self-hosted CLI (open-source) + managed cloud platform"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.deploy-scheduling",
+      "support_level": "native",
+      "quality_grade": "A",
+      "hci_cost": "B",
+      "notes": "Flexible scheduling with cron support"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "B",
+      "notes": "Execution logs and step debugging"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.extensibility-plugin-sdk",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Custom connector SDK available (MCP integration)"
+    },
+    {
+      "product_slug": "bruin",
+      "feature_id": "market.feature.onboarding-templates",
+      "support_level": "partial",
+      "quality_grade": "B",
+      "hci_cost": "C",
+      "notes": "Template-based pipelines; documentation available"
+    },
+    {
+      "product_slug": "rubie",
+      "feature_id": "market.feature.agent-orchestration",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "Agentic extraction and mapping; zero-touch narrative"
+    },
+    {
+      "product_slug": "rubie",
+      "feature_id": "market.feature.ai-assist",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "AI-powered extraction; black-box agent approach"
+    },
+    {
+      "product_slug": "rubie",
+      "feature_id": "market.feature.ai-assist-code-generation",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "AI generates mapping logic automatically"
+    },
+    {
+      "product_slug": "rubie",
+      "feature_id": "market.feature.data-source",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "Legacy system extraction focus; limited to proprietary sources in platform"
+    },
+    {
+      "product_slug": "rubie",
+      "feature_id": "market.feature.observability-execution-logs",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Black-box agent behavior makes transparency difficult"
+    },
+    {
+      "product_slug": "rubie",
+      "feature_id": "market.feature.deploy-hosting",
+      "support_level": "native",
+      "quality_grade": "B",
+      "hci_cost": "A",
+      "notes": "SaaS-only managed platform; AWS Marketplace available"
+    },
+    {
+      "product_slug": "rubie",
+      "feature_id": "market.feature.agent-orchestration-state-viz",
+      "support_level": "partial",
+      "quality_grade": "C",
+      "hci_cost": "D",
+      "notes": "Limited visibility into agent decision-making"
+    }
+  ],
+  "competitors": [
+    {
+      "company_slug": "fivetran",
+      "product_slug": "fivetran",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Market leadership & brand (728M funded, unicorn status)",
+        "Connector breadth (600+ managed, weekly updates)",
+        "Set-and-forget UX (minimal configuration friction)",
+        "Enterprise sales & support infrastructure",
+        "Customer base size & switching costs"
+      ],
+      "we_win_on": [
+        "Visual graph clarity (surface-area reduction vs. chat-driven discovery)",
+        "Multi-domain composition (not connector-limited to ETL)",
+        "Price predictability (vs. MAR model unpredictability, Jan 2026 changes)",
+        "Transparent workflow execution (vs. black-box sync management)",
+        "Data engineer control (not locked into managed connectors)"
+      ],
+      "wedge_vs_them": "MetroGraph surfaces ETL workflows as transparent, visually-hierarchical graphs. Fivetran hides pipeline complexity in connector configurations, forcing users into chat/docs discovery. MetroGraph serves data engineers who want control; Fivetran serves ops teams avoiding technical debt.",
+      "moat": "Enormous customer base, brand, managed connector maintenance at scale, enterprise sales organization",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-fivetran-homepage-official",
+        "market-competitors-data-etl-ingestion-fivetran-crunchbase-funding",
+        "market-competitors-data-etl-ingestion-fivetran-g2-reviews",
+        "market-competitors-data-etl-ingestion-integrate-io-etl-pricing-broken"
+      ]
+    },
+    {
+      "company_slug": "airbyte",
+      "product_slug": "airbyte",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Open-source democratization (Apache 2.0, 5500+ GitHub stars)",
+        "Hybrid deployment flexibility (self-hosted Core + SaaS options)",
+        "Cost advantage vs. Fivetran (40-60% lower cost typical)",
+        "Community connector maintenance",
+        "No vendor lock-in"
+      ],
+      "we_win_on": [
+        "Visual graph-first UI (vs. code/config-centric Airbyte)",
+        "Integrated transformation (no separate dbt coupling needed)",
+        "Easier orchestration across multiple tools (graph composition)",
+        "Collaborative design (real-time sync on workflows)",
+        "Lower learning curve for non-developers"
+      ],
+      "wedge_vs_them": "Airbyte targets devops/data engineers comfortable with Docker, YAML, and code-first workflows. MetroGraph targets cross-functional teams (engineers + analysts) wanting visual governance without coding. Airbyte: 'we give you the tools'; MetroGraph: 'we give you clarity'.",
+      "moat": "Open-source community, cost advantage, self-hosting option, escape-valve from SaaS pricing",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-airbyte-homepage-official",
+        "market-competitors-data-etl-ingestion-airbyte-pricing-official",
+        "market-competitors-data-etl-ingestion-fivetran-vs-airbyte-comparison",
+        "market-competitors-data-etl-ingestion-fivetran-vs-airbyte-weld-2025"
+      ]
+    },
+    {
+      "company_slug": "talend-qlik",
+      "product_slug": "talend",
+      "competitor_type": "legacy-incumbent",
+      "threat_level": "medium",
+      "they_win_on": [
+        "20-year enterprise ETL dominance (Gartner Leader)",
+        "Comprehensive data fabric positioning (integration + governance + analytics)",
+        "Qlik acquisition adds BI/analytics leverage",
+        "Installed base in large enterprises",
+        "Complex transformation & lineage capabilities"
+      ],
+      "we_win_on": [
+        "Modern cloud-native UX (vs. enterprise bloat & resource intensity)",
+        "Lower cost (vs. capacity-based pricing)",
+        "Faster onboarding (vs. complex setup & configuration)",
+        "Graph composition (vs. monolithic platform)",
+        "AI+UI parity (vs. Talend's traditional approach)"
+      ],
+      "wedge_vs_them": "Talend is legacy incumbent sliding toward cloud-native. MetroGraph is cloud-native from day 1. Talend: 'we do everything'; MetroGraph: 'we do data workflows elegantly'. Talend's bloat is MetroGraph's wedge.",
+      "moat": "Enterprise installed base, Qlik ecosystem integration, 20-year brand, complex migration costs",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-talend-homepage-official",
+        "market-competitors-data-etl-ingestion-talend-pricing-official",
+        "market-competitors-data-etl-ingestion-gartner-magic-quadrant-data-integration",
+        "market-competitors-data-etl-ingestion-talend-capterra-reviews"
+      ]
+    },
+    {
+      "company_slug": "matillion",
+      "product_slug": "matillion",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Cloud warehouse expertise (Snowflake, BigQuery, Redshift optimization)",
+        "Drag-drop ease-of-use (no-code appeal)",
+        "Tight warehouse integration (compute cost optimization)",
+        "Strong adoption in Snowflake ecosystem",
+        "Customer satisfaction (Capterra 4.3/5, TrustRadius 8.5/10)"
+      ],
+      "we_win_on": [
+        "Multi-warehouse & multi-source support (not warehouse-locked)",
+        "Composable architecture (not monolithic ETL/ELT)",
+        "Data engineer control (vs. Matillion's wizard-driven simplicity trade-off)",
+        "Broader data workflow scope (beyond warehouse ingest/transform)",
+        "Transparent cost model (vs. warehouse compute uncertainty)"
+      ],
+      "wedge_vs_them": "Matillion is the warehouse vendor's darling (Snowflake tight integration). MetroGraph is vendor-agnostic graph fabric. Matillion: 'get the most from your warehouse'; MetroGraph: 'govern all your data flows'. Different ICP.",
+      "moat": "Snowflake ecosystem integration, ease-of-use for business analysts, strong net-new adoption",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-matillion-homepage-official",
+        "market-competitors-data-etl-ingestion-matillion-pricing-official",
+        "market-competitors-data-etl-ingestion-matillion-capterra-reviews",
+        "market-competitors-data-etl-ingestion-matillion-vs-fivetran-trustradius"
+      ]
+    },
+    {
+      "company_slug": "coalesce",
+      "product_slug": "coalesce",
+      "competitor_type": "adjacent",
+      "threat_level": "medium",
+      "they_win_on": [
+        "Snowflake-native optimization (Transform, Catalog, Quality modules)",
+        "Visual modeler praised for simplicity (Gartner 4.7/5)",
+        "Snowflake Ventures backing (strategic validation)",
+        "Rapid adoption in Snowflake ecosystem",
+        "Modern alternative to dbt (collaborative visual modeling)"
+      ],
+      "we_win_on": [
+        "Not limited to Snowflake (multi-warehouse, multi-cloud)",
+        "End-to-end pipeline scope (not just transformation layer)",
+        "Broader data engineering workflows (ingest, transform, orchestrate, quality)",
+        "Better suited for heterogeneous data environments",
+        "Escape-valve from Snowflake lock-in"
+      ],
+      "wedge_vs_them": "Coalesce is Snowflake's house band (tight vendor integration). MetroGraph is the independent orchestra (any warehouse, any source). ICP overlap: Snowflake-committed orgs (Coalesce wins); multi-warehouse orgs (MetroGraph wins).",
+      "moat": "Snowflake ecosystem integration, Snowflake Ventures relationship, modern visual modeling",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-coalesce-homepage-official",
+        "market-competitors-data-etl-ingestion-coalesce-snowflake-partnership",
+        "market-competitors-data-etl-ingestion-coalesce-g2-reviews",
+        "market-competitors-data-etl-ingestion-coalesce-techcrunch-funding"
+      ]
+    },
+    {
+      "company_slug": "dlthub",
+      "product_slug": "dlthub",
+      "competitor_type": "adjacent",
+      "threat_level": "low",
+      "they_win_on": [
+        "Python-first developer democratization (5500+ stars, Apache 2.0)",
+        "Cost advantage (182x cheaper than Fivetran in case studies)",
+        "Reproducible, composable data loading (code-first philosophy)",
+        "Incremental loading & schema inference built-in",
+        "Developer autonomy (not constrained by managed connectors)"
+      ],
+      "we_win_on": [
+        "Visual + collaborative (vs. code-only dlt)",
+        "No-code/low-code pathways (vs. Python requirement)",
+        "Governed workflows (vs. dltHub's developer freedom = cowboy risk)",
+        "Integrated orchestration (vs. dlt + external orchestrator)",
+        "Better for cross-functional teams (not just Python developers)",
+        "Easier error recovery & monitoring (vs. code-first debugging)"
+      ],
+      "wedge_vs_them": "dltHub liberates Python developers from SaaS lock-in (cost + control). MetroGraph liberates data engineers from both SaaS AND code-first lock-in. dltHub: 'we give you the library'; MetroGraph: 'we give you the platform'. Different buyer personas.",
+      "moat": "Open-source community, cost advantage, Python ecosystem integration, developer freedom narrative",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-dlthub-homepage-official",
+        "market-competitors-data-etl-ingestion-dlthub-github-repo",
+        "market-competitors-data-etl-ingestion-dlthub-vs-fivetran-cost-comparison",
+        "market-competitors-data-etl-ingestion-dlthub-medium-review"
+      ]
+    },
+    {
+      "company_slug": "bruin",
+      "product_slug": "bruin",
+      "competitor_type": "direct",
+      "threat_level": "medium",
+      "they_win_on": [
+        "End-to-end pipeline scope (ingest + transform + quality + orchestrate)",
+        "Open-source + managed hybrid (1600+ stars, Apache 2.0)",
+        "Emerging agentic capabilities (agent-forward positioning)",
+        "Multi-language support (SQL, Python, R)",
+        "Developer-centric design philosophy"
+      ],
+      "we_win_on": [
+        "Graph-first visual design (vs. YAML/text-first Bruin)",
+        "AI+UI parity (vs. Bruin's agent-driven, users-observe model)",
+        "Better HCI for non-developers (vs. Bruin's dev-centric)",
+        "Transparent workflow execution (vs. agentic black-box risk)",
+        "Easier debugging & error recovery (visual lineage vs. agent decisions)"
+      ],
+      "wedge_vs_them": "Bruin is 'the smart agent era' (automation first). MetroGraph is 'the clarity era' (understanding first, then automation). Both target data engineers, but different automation philosophies. Bruin: 'agents do the work'; MetroGraph: 'graphs show the work'.",
+      "moat": "Open-source community, end-to-end pipeline vision, agentic positioning momentum",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-bruin-homepage-official",
+        "market-competitors-data-etl-ingestion-bruin-github-repo",
+        "market-competitors-data-etl-ingestion-bruin-agentic-positioning",
+        "market-competitors-data-etl-ingestion-medium-agentic-etl-future"
+      ]
+    },
+    {
+      "company_slug": "rubie",
+      "product_slug": "rubie",
+      "competitor_type": "direct",
+      "threat_level": "high",
+      "they_win_on": [
+        "Agentic data extraction (zero-touch migration narrative)",
+        "Legacy system focus (data from anywhere, any age)",
+        "Minimal upfront mapping (agents infer schema/transforms)",
+        "Early-stage momentum (Pre-Seed $3.2M, emerging market)",
+        "AWS Marketplace validation"
+      ],
+      "we_win_on": [
+        "Transparent workflows (vs. black-box agent behavior)",
+        "Visual + deterministic (vs. agentic non-determinism)",
+        "AI+UI parity (MetroGraph shows AND automates; Rubie only automates)",
+        "Data engineer control (vs. agent-driven opacity risk)",
+        "Broader scope (not limited to legacy extraction use-case)",
+        "Governance & audit (vs. Rubie's trust-the-agent model)",
+        "Explainability (critical for enterprise data pipelines)"
+      ],
+      "wedge_vs_them": "Rubie is 'let AI figure it out'. MetroGraph is 'let YOU figure it out, AI accelerates'. This is MetroGraph's core wedge: the agent-vs-graph-chat confusion. Rubie assumes agentic autonomy is good; MetroGraph believes visual governance is essential. Same market inflection (ETL+AI), opposite philosophy.",
+      "moat": "Agentic AI positioning (trendy), early-stage execution, legacy system extraction angle",
+      "source_ids": [
+        "market-competitors-data-etl-ingestion-rubie-homepage-official",
+        "market-competitors-data-etl-ingestion-rubie-agentic-etl-use-case",
+        "market-competitors-data-etl-ingestion-medium-agentic-etl-future",
+        "market-competitors-data-etl-ingestion-venturebeat-last-mile-agentic-ai"
+      ]
+    }
+  ],
+  "notes": "Extraction completed for Phase C competitors-data-etl-ingestion leaf. All 8 products (Fivetran, Airbyte, Talend, Matillion, Coalesce, dltHub, Bruin, Rubie) mapped to existing company slugs where available; Rubie added as company_new_name. Feature selection focused on 15-35 most relevant per product across data-source, agent-orchestration, ai-assist, deploy, observability, query-building, schema-introspection, and collaboration categories. Competitive positioning grounded in sources: Gartner Magic Quadrant (Talend leader), Crunchbase (funding/valuation), G2/Capterra/TrustRadius (customer feedback), and analyst reports (Forrester Wave). MetroGraph's primary wedge vs. ETL/ELT incumbents: visual graph clarity (reduce HCI surface-area, fight chat-driven discovery) + AI+UI parity (not black-box agents). Rubie is highest threat (directly overlaps agentic positioning); Fivetran/Airbyte are high-threat incumbents with moats (brand/scale, open-source cost); Matillion/Bruin are medium threats with warehouse/pipeline scope. Cost unpredictability (Fivetran MAR model, Matillion warehouse compute uncertainty) and vendor lock-in (Coalesce/Matillion to Snowflake) are MetroGraph's wedges. Sources: 68 verified T0-T3 sources (8 official homepages, 4 pricing, 4 Crunchbase, 12 review aggregators, 8 analyst reports, 20+ comparisons/blogs). Gaps: detailed API specs, SEC filings, YouTube demo analysis, real-time pricing requiring login. Ready for design/marketing messaging synthesis."
+}

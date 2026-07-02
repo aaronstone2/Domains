@@ -1,0 +1,649 @@
+{
+  "blocks": [
+    {
+      "block": "customer-segments",
+      "title": "MetroGraph Customer Segments",
+      "narrative": "MetroGraph targets five primary customer segments across the $360B+ data/analytics/workflow markets. Beachhead segments (Analytics Engineers, Data Engineers, CDOs, Graph/Knowledge Graph Users) show high willingness-to-pay and strong fit with metro-map visualization for schema/DAG exploration. Expansion segments (Enterprise Data Teams, Low-Code/No-Code Teams, Data Mesh Teams, Real-Time Analytics Teams) represent large TAM ($63.9B, $45.4B, $1.95B, $14B USD respectively) and drive platform embedding via agentic workflows and data binding. Common thread: all segments suffer from cognitive overload on complex data structures; all need visual context (ERD, lineage, topology) + semantic understanding (AI agents, RAG) + executable workflows (low-code).",
+      "linked_feature_slugs": [
+        "market.feature.canvas",
+        "market.feature.agent-orchestration",
+        "market.feature.schema-introspection",
+        "market.feature.ai-assist"
+      ],
+      "items": [
+        {
+          "item": "Analytics Engineers (dbt-native, SQL-focused modeling)",
+          "detail": "150K professionals, $18B TAM, 90% report modeling pain, 57% cost/scale pressure. Beachhead segment. Need metro-map visualization for dbt DAG exploration, transformation lineage, and dependency visualization. High willingness-to-pay, native to no-code/low-code tools.",
+          "confidence": "high",
+          "linked_segment_slugs": [
+            "market.segment.analytics-engineers"
+          ]
+        },
+        {
+          "item": "Enterprise Data Teams (cloud-native, warehouse/lakehouse)",
+          "detail": "$63.9B TAM, 43.3% CAGR cloud data warehouse market. Databricks 20K customers (60% Fortune 500). Expansion segment. Need unified visualization across Snowflake/Databricks/BigQuery with agentic querying and cost tracking. Medium-high accessibility (complex procurement).",
+          "confidence": "high",
+          "linked_segment_slugs": [
+            "market.segment.enterprise-data-teams"
+          ]
+        },
+        {
+          "item": "Data Engineers (infrastructure, pipelines, graph-native)",
+          "detail": "$105.4B TAM, beachhead segment with high priority. Orchestration of DAGs, streaming topologies, graph queries. Metro-map layout ideal for 50+ node dependency graphs. Native to NoSQL/graph databases (Neo4j, ArangoDB) where visualization is weak.",
+          "confidence": "high",
+          "linked_segment_slugs": [
+            "market.segment.data-engineers"
+          ]
+        },
+        {
+          "item": "CDOs & Data Leadership (governance, lineage, observability)",
+          "detail": "$8.5B TAM, beachhead. Need enterprise data visualization for governance workflows, lineage tracking, impact analysis. Embedded in CI/CD and data governance platforms (Informatica, Collibra style). High willingness-to-pay.",
+          "confidence": "high",
+          "linked_segment_slugs": [
+            "market.segment.cdo-data-leadership"
+          ]
+        },
+        {
+          "item": "Graph & Knowledge Graph Users (Neo4j, semantic search)",
+          "detail": "$5.6B TAM (graph DB market, 22.3% CAGR). Knowledge graph market $3.5B → $19.6B by 2035 (21.1% CAGR). Beachhead for GraphRAG + semantic workflow automation. Visualizing property graphs and entity-relationship networks is table-stakes; Metro-map orthogonal layout differentiates from traditional force-directed.",
+          "confidence": "high",
+          "linked_segment_slugs": [
+            "market.segment.graph-knowledge-graph-users"
+          ]
+        },
+        {
+          "item": "Low-Code / No-Code Development Teams (citizen developers, automation)",
+          "detail": "$45.4B TAM, 19.96% CAGR low-code market. 2M citizen developers. Expansion segment, medium willingness-to-pay. MetroGraph as runtime visualization for workflows (Gumloop, StackAI style), enabling business logic debugging and agentic automation.",
+          "confidence": "medium-high",
+          "linked_segment_slugs": [
+            "market.segment.low-code-no-code-teams"
+          ]
+        },
+        {
+          "item": "Data Mesh / Distributed Teams (decentralized architecture, governance)",
+          "detail": "$1.95B TAM, 17.56% CAGR. Product-aligned distributed data architecture. Need cross-team visualization for data product discovery, lineage across boundaries, and governance enforcement. High accessibility (architectural choice).",
+          "confidence": "medium-high",
+          "linked_segment_slugs": [
+            "market.segment.data-mesh-teams"
+          ]
+        },
+        {
+          "item": "Real-Time Analytics & Streaming Teams (Kafka, Flink, event flows)",
+          "detail": "$14B TAM (data streaming by 2031). Topology visualization and event flow understanding critical. Metro-map layout ideal for 50+ node streaming pipelines. Expansion segment with high specialized demand.",
+          "confidence": "medium-high",
+          "linked_segment_slugs": [
+            "market.segment.realtime-analytics-teams"
+          ]
+        }
+      ],
+      "source_ids": [
+        "market-business-model-gartner-it-spending-2026",
+        "market-business-model-gartner-predictions-data-analytics-2026",
+        "market-business-model-graph-databases-2026-neo4j-arangodb",
+        "market-business-model-knowledge-graph-market-2026",
+        "market-business-model-low-code-market-size-2026",
+        "market-customer-segments-dbt-2026-state-analytics-engineering",
+        "market-customer-segments-cloud-data-warehouse-63-91b-43-3-cagr"
+      ]
+    },
+    {
+      "block": "value-propositions",
+      "title": "MetroGraph Value Propositions",
+      "narrative": "MetroGraph solves three core buyer pain points: (1) cognitive overload on >50-node graphs (2) capability cliff between visual builders and code (3) context loss in agentic workflows. The metro-map layout + low-surface-area design differentiates from force-directed visualization (messy at scale) and text-based DAG representations (lose spatial context). Live data-defined components enable AI agents to edit the UI directly, closing the AI/UI parity gap. JSON-based component system allows composition with external tools (Figma, Google Drive, semantic search engines). Freemium acquisition + enterprise upsell on agent orchestration, multi-workspace governance, and cost tracking aligns with buyer journey (60% of B2B use trials, peer communities drive 65% of discovery).",
+      "linked_feature_slugs": [
+        "market.feature.canvas",
+        "market.feature.graph-layout-metro-map",
+        "market.feature.nodes-live-data-components",
+        "market.feature.agent-orchestration",
+        "market.feature.ai-assist",
+        "market.feature.data-binding-rag-vector-viz",
+        "market.feature.observability-cost-tracking"
+      ],
+      "items": [
+        {
+          "item": "Metro-Map Layout at Scale (50+ node cognitive overload mitigation)",
+          "detail": "Orthogonal layout with semantic regions (metro-map style) structures large graphs into digestible sections, combating cognitive overload documented in HCI research (Lutz et al.). Force-directed layout (Power BI, Retool, D3) produces hairball UX at 50+ nodes; text-based DAG (dbt, Airflow) loses spatial reasoning. Metro-map differentiator: subway-like hierarchy reduces edge crossing, enables semantic zoom (overview → detail), groups by logical regions. Addresses $19.2B data visualization market pain point.",
+          "confidence": "high"
+        },
+        {
+          "item": "Live Data-Defined Components (AI + UI Parity)",
+          "detail": "Every component is JSON; same docs AI edits = UI edits = runtime state. Closes capability cliff between visual builder (limited expressiveness) and code-first (requires developer). Addresses Gartner prediction: 40% of enterprise apps will have AI agents; agents must be able to modify graph topology, node properties, and workflow logic. Eliminates 'flight-to-chat' problem (user abandons visual tool to prompt engineer).",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.nodes-live-data-components",
+            "market.feature.ai-ui-parity"
+          ]
+        },
+        {
+          "item": "Low Surface Area, No Flight-to-Chat (wedge design)",
+          "detail": "Single metro-map canvas avoids endless panes, floating toolbars, mode switching. Absence of chat sidebar (unlike assistants.openai.com or Retool copilot) eliminates context loss and context-switching overhead. Users stay in the graph; AI suggestions are in-line (node recommendations, pattern detection, query generation). Reduces training time and onboarding friction vs Tableau/Looker (which hide powerful features in menus).",
+          "confidence": "high"
+        },
+        {
+          "item": "Agentic Orchestration & Execution Visualization (workflow automation embedded)",
+          "detail": "Addresses Forrester prediction: AI will automate 20%+ of enterprise workflows. MetroGraph visualizes agent state, decision trees, tool-use (function calls), and agentic loops—impossible in traditional BI/workflow tools. Enables debugging of LLM reasoning, cost tracking (token usage per agent), and rollback of agent decisions. Differentiator vs Power Automate (UI-driven) and Gumloop (code-driven).",
+          "confidence": "medium-high",
+          "linked_feature_slugs": [
+            "market.feature.agent-orchestration",
+            "market.feature.agent-orchestration-state-viz"
+          ]
+        },
+        {
+          "item": "Schema Introspection + ERD Auto-Generation (data discovery)",
+          "detail": "Automatic ERD rendering from live schemas (SQL, Neo4j, MongoDB). Eliminates manual ERD maintenance—a major pain point in data governance teams (Gartner market guide shows manual lineage tracking drives 31% of observability platform adoption). Supports visual schema explorer for column browsing, relationship discovery, and impact analysis. Competitive advantage over generic graph tools (Diagram.net, Figma) which require manual topology entry.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.schema-introspection",
+            "market.feature.schema-introspection-erd"
+          ]
+        },
+        {
+          "item": "AI-Assisted Building (Copilot) + Code Generation",
+          "detail": "Context-aware AI chat sidebar for natural language to graph/workflow conversion, node suggestions based on schema, and code generation (SQL, Cypher, jq). Enables democratization to citizen developers (2M+ in low-code market). No-capability-cliff: non-technical users can prompt; advanced users can code or code-review AI output. Gartner: 40% of queries will be natural language by 2026.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.ai-assist",
+            "market.feature.ai-assist-nl-to-graph",
+            "market.feature.ai-assist-code-generation"
+          ]
+        },
+        {
+          "item": "RAG & Vector Visualization (semantic search + knowledge graphs)",
+          "detail": "Visualize retrieval-augmented generation pipelines: embedding space, vector similarity, retrieved chunk lineage, and knowledge graph traversal. Addresses RAG market growth (25.7% CAGR to $4.18B in 2026) and knowledge graph market explosion ($3.5B → $19.6B by 2035). Enables semantic search debugging and entity-relationship reasoning—critical for LLM agents querying internal knowledge graphs.",
+          "confidence": "medium",
+          "linked_feature_slugs": [
+            "market.feature.data-binding-rag-vector-viz"
+          ]
+        },
+        {
+          "item": "Enterprise Observability & Cost Tracking (LLM token usage, execution logs)",
+          "detail": "Execution logs per step, token/cost tracking per agent invocation, performance profiling, and error debugging. Addresses buyer pain: enterprises need LLM cost allocation by department/workflow (critical in $1.44T software spend context, with AI infrastructure driving outsized gains). Observability platform market growing 24% CAGR ($346M → $3.51B by 2026).",
+          "confidence": "medium-high",
+          "linked_feature_slugs": [
+            "market.feature.observability-cost-tracking",
+            "market.feature.observability-execution-logs"
+          ]
+        }
+      ],
+      "source_ids": [
+        "market-business-model-gartner-predictions-data-analytics-2026",
+        "market-business-model-forrester-enterprise-software-2026",
+        "market-business-model-data-visualization-market-2026",
+        "market-business-model-gartner-data-observability-market-guide",
+        "market-business-model-ai-agent-platforms-2026",
+        "market-business-model-rag-market-2026",
+        "market-business-model-knowledge-graph-market-2026"
+      ]
+    },
+    {
+      "block": "channels",
+      "title": "MetroGraph Distribution Channels",
+      "narrative": "Multi-channel go-to-market balancing rapid user acquisition (freemium cloud SaaS) with enterprise revenue (self-hosted, integrations). Primary channel: cloud.metro.company.us (freemium SaaS, low friction, peer discovery). Secondary: GitHub open-core (trust-building, low-code community mindshare, embedded OSS monetization pattern). Tertiary: embedded integrations (Figma plugins for design system visualization, Google Drive for collab + document storage). Enterprise: direct sales (Gartner peer reviews, data engineer communities), sales-assisted trials, and white-label/embedded deployments for vertical SaaS (Toast, Veeva style). B2B buyer behavior: 60% start with trial, 65% discover via peer communities, longer procurement cycles. Partner ecosystem (Databricks, Snowflake, Neo4j) for joint GTM and co-selling.",
+      "linked_feature_slugs": [
+        "market.feature.canvas",
+        "market.feature.ai-assist",
+        "market.feature.agent-orchestration"
+      ],
+      "items": [
+        {
+          "item": "Cloud SaaS (Freemium) – market.product.us",
+          "detail": "Primary acquisition channel. Free tier: 1 workspace, 5 viewers/creators, limited agent executions (similar to Budibase free tier: 5 cloud users). Conversion drivers: team collaboration, data binding to live sources, agent orchestration. Pricing ladder: $10-75/creator/month (Budibase reference model: $50/creator + $5/user in Premium) or $5-25/user/month for power users (analysts). Freemium adoption at 27% of enterprise SaaS (up from 16% in 2018); strategically chosen to drive community adoption and network effects in peer discovery.",
+          "confidence": "high"
+        },
+        {
+          "item": "GitHub Open-Core – github.com/metrograph",
+          "detail": "Community-driven acquisition and trust-building. Open-source core (JavaScript/Angular/SignalDB stack, commercial-friendly AGPL/SSPLv1 license). Enterprise monetization: source-available features (multi-workspace, RBAC, cost tracking, agent deployment, white-label), cloud hosting, SLA support. Reference: Neo4j Community Edition + Aura Cloud; Budibase open-source + cloud tier. Drives embedding into low-code/no-code ecosystems; native to 51.7K+ companies using Angular.",
+          "confidence": "high"
+        },
+        {
+          "item": "Figma Plugin (Design System Visualization)",
+          "detail": "Secondary channel targeting design/product teams. Plugin enables live sync of Figma design tokens → MetroGraph component library visualization. Co-selling with design system leaders (Shopify, Salesforce design systems). Differentiator: visual component dependency graph + design token inheritance hierarchy. Low installation friction; positions MetroGraph as design infrastructure tool (not just data tool).",
+          "confidence": "medium"
+        },
+        {
+          "item": "Google Drive / Google Workspace Integration",
+          "detail": "Collaboration + document storage. Share MetroGraph projects as Google Drive files, embed in Slides/Docs, collaborative editing via Workspace authentication. Reduces friction vs standalone SaaS (users trust Google auth + cloud storage). Reference: Figma integration; Miro/Lucidchart enterprise adoption. Enables team workflows without account sprawl.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "Direct Sales (Enterprise) & Sales-Assisted Trials",
+          "detail": "Gartner reports: 60%+ of B2B buyers use trials before purchase, 65% driven by peer communities. Target: data platform buying committees (CDO + data engineering lead + IT). Sales-assisted onboarding for: Databricks/Snowflake integration setup, multi-team governance, white-label embedding, SLA/support contracts. Gartner Peer Insights + Capterra reviews drive consideration (G2 acquisition of Capterra consolidates review ecosystem).",
+          "confidence": "high"
+        },
+        {
+          "item": "Partner Co-Selling (Databricks, Snowflake, Neo4j, dbt Labs)",
+          "detail": "Joint GTM and revenue sharing. Example: Databricks bundles MetroGraph for Lakehouse visualization + agentic querying (Databricks converging on AI control plane per Salimaouamri analysis). Neo4j bundles for GraphRAG visualization. Snowflake/Databricks pricing comparison ($28K-36K/year typical) shows room for $5-10K visualization layer upsell. Partner channels accelerate enterprise adoption and credibility.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "Vertical SaaS Embedding (Toast, Veeva, ServiceTitan style)",
+          "detail": "White-label MetroGraph for industry-specific workflows. Example: Toast restaurant group deploys MetroGraph for kitchen workflow visualization + order routing (RPA context). Veeva life sciences uses for protocol visualization + clinical trial workflows. Vertical SaaS market $143.45B → $499.42B (16.3% CAGR), with embedded products showing 11% lower churn + 49% faster growth (Stripe Sessions 2026). Co-development partnerships with tier-1 vertical SaaS vendors.",
+          "confidence": "medium"
+        },
+        {
+          "item": "Data Engineer Communities (dbt Slack, Locally Optimistic, Analytics Engineering Slack)",
+          "detail": "Grassroots adoption via communities where target buyers hang out. Beachhead segment (analytics engineers, data engineers) drives peer recommendations. Community-driven content: dbt DAG visualization tutorials, Airflow topology rendering, Kafka streaming topology. Low-cost acquisition; high-quality leads from trusted sources.",
+          "confidence": "high"
+        }
+      ],
+      "source_ids": [
+        "market-business-model-b2b-saas-buyer-behavior-2026",
+        "market-business-model-budibase-pricing-2026",
+        "market-business-model-retool-82m-arr-business-model",
+        "market-business-model-vertical-saas-market-2026",
+        "market-business-model-vertical-saas-funding-2026",
+        "market-business-model-freemium-open-source-business-models",
+        "market-business-model-gartner-peer-insights-bi-platforms"
+      ]
+    },
+    {
+      "block": "customer-relationships",
+      "title": "MetroGraph Customer Relationships",
+      "narrative": "Relationship model balances frictionless self-service (freemium, community-driven) with high-touch enterprise support (direct sales, implementation partners). Freemium users (analysts, citizen developers) engage via tutorials, in-product help (Copilot context-aware chat), and community Slack. Power users upgrade via trial-and-onboarding workflows (Budibase reference: generous free tier → self-service expansion → sales conversation at $X/month). Enterprise buyers expect: white-glove data integration, RBAC/governance setup, cost tracking configuration, LLM cost chargeback system. Retention levers: network effects (shared workspaces, collaborative editing), embedding into workflow (agentic loops, cost observability), and open-source community (low switching cost for evaluation, high lock-in via customization). Data engineer communities (dbt, Locally Optimistic) are primary trust channel; peer recommendation drives 65% of discovery.",
+      "linked_feature_slugs": [
+        "market.feature.ai-assist-chat-copilot",
+        "market.feature.agent-orchestration",
+        "market.feature.observability-cost-tracking"
+      ],
+      "items": [
+        {
+          "item": "Freemium Self-Service Community (Slack, Discord, Docs)",
+          "detail": "Free tier includes access to MetroGraph Slack community (like Retool/Budibase). Peer support + content library (metro-map layout guide, schema introspection tutorials, agent debugging workflows). In-product Copilot for instant help. Reduces sales overhead for SMBs and individual contributors. Aligns with B2B buyer behavior: 65% start in peer communities.",
+          "confidence": "high"
+        },
+        {
+          "item": "Automated Onboarding & In-Product Guidance (Progressive Disclosure)",
+          "detail": "First-time user flow: 1-click demo (NYC subway topology), template gallery (Airflow DAG, dbt lineage, Neo4j knowledge graph), and interactive tutorials. Guided schema introspection (connect Postgres → auto-generate ERD). Copilot prompts for common tasks ('visualize my Kafka topics', 'show transformation lineage'). Reduces time-to-value and supports freemium-to-paid conversion.",
+          "confidence": "high"
+        },
+        {
+          "item": "Copilot-Powered Context-Aware Chat Sidebar",
+          "detail": "AI chat (not separate product) integrated into canvas. Understands current graph context, connected schema, and user intent. Example: select 3 nodes + ask 'show the path between these' → AI suggests metro-map zoom + edge filtering. Addresses low-code market need: democratization without capability cliff. Drives engagement (stickiness) and reduces support tickets.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.ai-assist-chat-copilot"
+          ]
+        },
+        {
+          "item": "Sales-Assisted Trials (Enterprise, 30-90 day)",
+          "detail": "Enterprise buyers (CDOs, data teams) get dedicated implementation partner for: cloud data platform integration (Databricks, Snowflake, BigQuery), RBAC + workspace setup, cost tracking configuration (LLM token allocation), and pilot use case (dbt DAG visualization, agent orchestration debugging). Reference: Retool/Budibase enterprise onboarding. Target: shorten sales cycle (buyer research shows tighter budgets, longer procurement cycles).",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "Multi-Workspace Governance & Team Collaboration (Retention Lever)",
+          "detail": "Paid feature: teams collaborate on shared workspaces with role-based access (Viewer, Editor, Agent Executor, Admin). Workspace-level cost tracking (charge-back to department). Data lineage governance (audit trail, sensitive data masking). Network effects lock in early: once team adopts, switching cost rises. Addresses CDO pain point: lineage tracking across team boundaries (data mesh scenario).",
+          "confidence": "high"
+        },
+        {
+          "item": "White-Label Implementation Partners (Vertical SaaS, System Integrators)",
+          "detail": "Partner program for Toast (restaurant), Veeva (pharma), ServiceTitan (field service). MetroGraph is embedded widget in vertical app. Implementation partners (Accenture, Deloitte) customize embedding + data connectors. Revenue sharing: MetroGraph gets 20-30% of embedded SaaS recurring. Drives enterprise adoption without direct sales overhead.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "Premium Support & SLA (Enterprise Tier)",
+          "detail": "Enterprise tier includes: 24/5 Slack support, guaranteed response time (4h critical), uptime SLA (99.95%), security audit access, and data residency options (EU/US). Reference: Neo4j Premium ($1,200-2,500/user/year for Bloom visualization). Justifies $X00-1000/month enterprise pricing above base product.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "LLM Cost Chargeback & Observability (Lock-In)",
+          "detail": "Enterprise feature: token usage per agent, cost per workflow, and chargeback by department/project. Enables finance approval ('data org's LLM spend is $X/month'). Lock-in because it becomes critical for cost governance. Observability features (execution logs, error debugging, performance metrics) create data literacy and usage stickiness.",
+          "confidence": "medium",
+          "linked_feature_slugs": [
+            "market.feature.observability-cost-tracking"
+          ]
+        }
+      ],
+      "source_ids": [
+        "market-business-model-b2b-saas-buyer-behavior-2026",
+        "market-business-model-budibase-pricing-2026",
+        "market-business-model-retool-82m-arr-business-model",
+        "market-business-model-vertical-saas-market-2026",
+        "market-business-model-no-code-low-code-statistics"
+      ]
+    },
+    {
+      "block": "revenue-streams",
+      "title": "MetroGraph Revenue Streams",
+      "narrative": "Hybrid SaaS + open-core model targeting $5-50M ARR at scale. Primary stream: cloud freemium → paid SaaS (creator/user-based pricing, Budibase reference: $50/creator + $5/user). Secondary: enterprise add-ons (agent execution, multi-workspace governance, cost tracking, white-label embedding). Tertiary: consulting/implementation (salesforce, data platform integration). Long-tail: API access, data export, and advanced observability. Gartner forecast: 70% of B2B prefer usage-based over per-seat by 2026; MetroGraph positions as hybrid (base creator seats + variable usage/agent execution). Reference competitors: Retool $82M ARR (per-seat), Neo4j (freemium + Aura cloud + enterprise licensing), Budibase (dual creator+user model). Cloud data platform market ($63.91B) + low-code market ($45.4B) + graph DB market ($5.6B) represent TAM of 100B+; 0.5% market penetration = $500M ARR opportunity.",
+      "linked_feature_slugs": [
+        "market.feature.agent-orchestration",
+        "market.feature.observability-cost-tracking",
+        "market.feature.nodes-live-data-components"
+      ],
+      "items": [
+        {
+          "item": "Cloud SaaS – Per-Creator + Per-User Tiered Pricing",
+          "detail": "Freemium: $0 (1 workspace, 5 cloud users, 100 agent executions/month). Plus ($10/creator/month + $5/user/month): unlimited workspaces, 100 cloud users, 10K agent executions/month. Pro ($25/creator/month + $10/user/month): advanced analytics, cost tracking, API access, 100K agent executions. Enterprise (custom): white-label, SSO, SAML, SLA. Reference: Budibase pricing ($50/creator + $5/user), Retool per-seat ($9.6K/year typical 5 creators + 100 users ≈ $9K/year). Targets 60-70% gross margin typical of SaaS (cloud hosting ~20-30%, support/ops ~10%, rest opex).",
+          "confidence": "high"
+        },
+        {
+          "item": "Enterprise Add-On – Agent Execution Overage (Usage-Based)",
+          "detail": "Agent orchestration at scale: charged per 1000 executions ($5-20 depending on tier). Addresses Gartner: 70% prefer usage-based by 2026. Enterprises deploying agentic workflows (automating 20%+ of processes per Forrester) expect consumption-based pricing. LLM token costs (via external providers like OpenAI) passed through as cost-plus markup (20-30% margin). Aligns with Databricks/Snowflake consumption model ($28K-36K typical annual per company).",
+          "confidence": "high"
+        },
+        {
+          "item": "Enterprise Tier – Multi-Workspace Governance + RBAC",
+          "detail": "Premium feature: unlimited workspaces, team RBAC, workspace-level cost tracking, audit logs, data lineage governance. Priced at $500-2000/month (mid-market) or custom (enterprise). Drives upsell from Plus tier. Reference: Neo4j Bloom ($1,200-2,500/user/year for 10 users ≈ $15K/year). Addresses CDO/data leadership segment pain: governance at scale. Expected to represent 20-30% of cloud MRR.",
+          "confidence": "high"
+        },
+        {
+          "item": "White-Label Embedding (Vertical SaaS Partners)",
+          "detail": "Revenue share: partners (Toast, Veeva, ServiceTitan) embed MetroGraph in their platform and pay 25-35% of their MetroGraph usage revenue to us. Example: Toast has 21M restaurants; 5% deploy MetroGraph for workflow visualization → $X/restaurant/month. Vertical SaaS market shows 11% lower churn + 49% faster growth via embedded products; long-term high-margin revenue stream.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "Consulting & Implementation Services (Data Platform Integration)",
+          "detail": "High-touch implementation for enterprise contracts: Databricks/Snowflake/BigQuery schema introspection setup, agentic workflow design, cost tracking configuration. $10-50K per engagement (partner model: 30% margin to MetroGraph after partner cut). Expected to represent 5-10% of revenue at scale. Drives customer success and upsell to enterprise tier.",
+          "confidence": "medium"
+        },
+        {
+          "item": "API Access & Advanced Integrations (Premium)",
+          "detail": "Paid tier: REST/GraphQL API for programmatic graph creation, querying, and agent execution management. Enables embedding in custom applications and CI/CD workflows. Priced at $50-200/month or usage-based. Example: dbt Cloud, Airflow, GitHub Actions integration (trigger MetroGraph visualization from pipeline). Low-volume but high-value for platform extensibility.",
+          "confidence": "medium"
+        },
+        {
+          "item": "Data Export & Advanced Observability (Enterprise)",
+          "detail": "Premium features: export graphs as SVG/PNG (design systems, documentation), execution logs export (CSV/Parquet for BI analysis), cost analytics dashboards. Priced at $10-50/month per add-on or bundled in Enterprise tier. Addresses enterprise need to track LLM cost allocation and audit trails.",
+          "confidence": "medium"
+        },
+        {
+          "item": "AI Copilot Usage (Future: AI Model Fine-Tuning)",
+          "detail": "Long-term: per-1K-tokens pricing for Copilot generation (natural language → graph/workflow conversion, code generation). Currently part of base subscription; future expansion: custom model fine-tuning on company schema/codebase ($1000-5000/month). Reference: GitHub Copilot ($10/user/month), Cursor ($20/month). Enables customer data lock-in and recurring revenue.",
+          "confidence": "low-medium"
+        }
+      ],
+      "source_ids": [
+        "market-business-model-saas-pricing-models-2026",
+        "market-business-model-budibase-pricing-2026",
+        "market-business-model-retool-82m-arr-business-model",
+        "market-business-model-neo4j-pricing-business-model",
+        "market-business-model-vertical-saas-market-2026",
+        "market-business-model-databricks-snowflake-pricing-comparison",
+        "market-business-model-gartner-predictions-data-analytics-2026"
+      ]
+    },
+    {
+      "block": "key-resources",
+      "title": "MetroGraph Key Resources",
+      "narrative": "MetroGraph's competitive moat rests on four interlocking resources: (1) Technology stack: Angular 17 + SignalDB (local-first reactivity), enabling low-latency graph interaction at 50+ nodes without server round-trips. Metro-map layout algorithm (proprietary orthogonal layout optimizing edge crossing + semantic grouping). (2) Design & UX: low-surface-area design (single canvas, no endless panes), metro-map visual language (subway topology as familiar mental model), and progressive disclosure (advanced features accessible via Copilot). (3) AI/ML capabilities: domain-tuned LLM (fine-tuned on dbt DAGs, SQL queries, Airflow workflows, Neo4j Cypher) enabling high-confidence code generation and pattern detection. (4) Cloud infrastructure: multi-region SaaS deployment (AWS/GCP), WebSocket/real-time sync for collaborative editing, and observability pipeline (logs, cost tracking, execution tracing). Talent: senior full-stack Angular engineers (51.7K companies using Angular, enterprise dominance), data visualization experts, and ML engineers experienced with LLM fine-tuning.",
+      "linked_feature_slugs": [
+        "market.feature.canvas",
+        "market.feature.graph-layout-metro-map",
+        "market.feature.nodes-live-data-components",
+        "market.feature.ai-assist",
+        "market.feature.observability-cost-tracking"
+      ],
+      "items": [
+        {
+          "item": "Angular 17 + SignalDB Technology Stack",
+          "detail": "Foundation: Angular 17 with Signals (new reactive primitives), standalone components, esbuild, and TypeScript strict mode. SignalDB: local-first JavaScript database with signal-based reactivity, real-time sync, and optimistic UI. Advantage: no Electron/Tauri overhead (pure web app), sub-100ms graph interaction even with 500+ nodes (local-first reactivity), and framework-agnostic data model (can port to React, Vue, Solid if needed). Enterprise appeal: Angular dominates enterprise dashboards (48.24% share in competitive set), regulated industries prefer native web over hybrid/Electron.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.canvas",
+            "market.feature.nodes-live-data-components"
+          ]
+        },
+        {
+          "item": "Metro-Map Layout Algorithm (Proprietary Orthogonal Layout)",
+          "detail": "Custom layout algorithm optimizing for: (1) minimized edge crossings, (2) hierarchical grouping into semantic regions (subway stations = clusters), (3) orthogonal routing (no diagonal edges, subway-style), and (4) incremental updates (adding nodes doesn't destabilize existing layout). Differentiator: force-directed (D3 default) produces hairballs at 50+ nodes; hierarchical layouts (Graphviz) are rigid and boring. Metro-map combines approachability (familiar visual metaphor) with scale. Proprietary but not patentable; value in execution and tuning.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.graph-layout-metro-map"
+          ]
+        },
+        {
+          "item": "Domain-Tuned LLM for Data Workflows",
+          "detail": "Fine-tuned LLM on corpus: 100K+ dbt DAGs (dbt-core docs), Airflow task graphs (Airflow examples), Neo4j Cypher queries, SQL transformations (Databricks SQL Academy), and Kafka/Flink topologies. Enables high-confidence code generation: user selects 3 columns + asks 'aggregate revenue by date' → AI suggests transformation node + dbt syntax. Reference: GitHub Copilot fine-tuned on public repos. Moat: proprietary training data (customer workflows, anonymized), continuous tuning from customer feedback.",
+          "confidence": "medium-high",
+          "linked_feature_slugs": [
+            "market.feature.ai-assist",
+            "market.feature.ai-assist-code-generation"
+          ]
+        },
+        {
+          "item": "Low-Surface-Area UX Design & Design System",
+          "detail": "Single-canvas philosophy, metro-map visual language, semantic color coding (source=blue, transform=orange, sink=green), and progressive disclosure (advanced features via Copilot). Reusable component library (nodes, edges, panels, modals). Design maturity attracts power users; familiar visual metaphor reduces learning curve. Competitive advantage: Retool/Budibase/Power Automate have cluttered UX (endless panels, mode switching); MetroGraph simplicity is deliberate differentiator.",
+          "confidence": "high"
+        },
+        {
+          "item": "Cloud Infrastructure (Multi-Region SaaS, WebSocket Sync)",
+          "detail": "AWS/GCP multi-region deployment (US, EU, APAC) for compliance + latency. WebSocket-based real-time sync for collaborative editing (multiple users on same graph). Operational stack: Kubernetes for orchestration, PostgreSQL for metadata + versioning, S3 for backups, DataDog for observability. Auto-scaling for peak loads (analytics engineering teams running large dbt DAGs). Enterprise SLAs: 99.95% uptime.",
+          "confidence": "high"
+        },
+        {
+          "item": "LLM Cost Tracking & Observability Pipeline",
+          "detail": "Real-time logging of agent executions: LLM tokens, latency, cost, errors. Distributed tracing (OpenTelemetry) for DAG execution. Cost chargeback dashboard. Critical resource for enterprise adoption (cost governance). Requires: logging infrastructure (ELK, DataDog, Honeycomb), billing backend (Stripe), and analytics database (BigQuery, Snowflake). Lock-in: customers need this for compliance/audit.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.observability-cost-tracking"
+          ]
+        },
+        {
+          "item": "Talent: Senior Angular Engineers, Visualization Experts, ML Engineers",
+          "detail": "Hiring: Angular specialists (51.7K companies, enterprise demand); D3/Vega visualization experts; LLM fine-tuning engineers (ML/ML Ops). Compensation: senior engineers at $150-250K + equity in SF/NYC markets. Ramp time: 3-6 months to productivity on graph layout + schema introspection. Retention: equity packages and meaningful work (data infrastructure space, growing user base).",
+          "confidence": "high"
+        }
+      ],
+      "source_ids": [
+        "market-business-model-signaldb-local-first-database",
+        "market-business-model-angular-saas-apps-2026",
+        "market-business-model-replicache-local-first-framework",
+        "market-business-model-gartner-predictions-data-analytics-2026"
+      ]
+    },
+    {
+      "block": "key-activities",
+      "title": "MetroGraph Key Activities",
+      "narrative": "MetroGraph's core activities are: (1) Visual editor development: canvas pan/zoom, node/edge creation, multi-selection, layout engine tuning, semantic regions. (2) Data binding & introspection: auto-schema discovery (SQL, NoSQL, graph DBs), ERD rendering, column-level lineage tracking, real-time sync with live sources. (3) AI copilot training: domain data collection (dbt/Airflow/Neo4j examples), model fine-tuning, evaluation, and A/B testing of code generation quality. (4) Agent orchestration platform: execution state visualization, prompt template management, tool-use (function calling), batch/streaming modes, error handling. (5) Cloud infrastructure & observability: deployment automation, multi-region redundancy, LLM cost tracking, execution logging, performance optimization. (6) Community & GTM: content creation (tutorials, blog posts), partner enablement (Databricks, Snowflake integration guides), sales support (trials, demos), and technical support (Slack, community forums). These activities are weighted toward product development (60%), infrastructure/ops (20%), and GTM/support (20%) in early stages.",
+      "linked_feature_slugs": [
+        "market.feature.canvas",
+        "market.feature.agent-orchestration",
+        "market.feature.ai-assist",
+        "market.feature.schema-introspection",
+        "market.feature.observability-cost-tracking"
+      ],
+      "items": [
+        {
+          "item": "Visual Canvas Development & Optimization",
+          "detail": "Core activity: build the metro-map canvas at scale. Ongoing work: pan/zoom performance (sub-50ms latency for 500+ nodes), semantic viewport management (zoom to fit, focus regions), node/edge rendering optimization (virtual scrolling, lazy loading), undo/redo stack, multi-selection bulk editing, and accessibility (keyboard navigation, screen reader support). References frameworks: D3, Vega, Cytoscape.js, but custom orthogonal layout differentiates.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.canvas",
+            "market.feature.canvas-pan-zoom"
+          ]
+        },
+        {
+          "item": "Schema Introspection & Data Binding",
+          "detail": "Ongoing: build connectors for SQL (Postgres, MySQL, BigQuery, Snowflake), NoSQL (MongoDB, Cassandra), graph (Neo4j, ArangoDB), and streaming (Kafka, Flink). Activities: schema discovery (introspection APIs), ERD auto-generation (relationship inference), column-level lineage tracking, real-time sync (change data capture where available), and data preview (sample rows). Critical for ICP: data engineers expect this to 'just work' with their stack.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.schema-introspection",
+            "market.feature.data-binding-rag-vector-viz"
+          ]
+        },
+        {
+          "item": "AI Copilot Training & Fine-Tuning",
+          "detail": "Ongoing: collect training data (customer dbt/Airflow/SQL workflows, anonymized), fine-tune LLM on domain tasks (NL→SQL, dbt DAG generation, Cypher query writing). Activities: evaluate code generation quality (BLEU score, correctness testing), run A/B tests (old model vs new), implement guardrails (prevent SQL injection, validate Cypher syntax), and iterate based on user feedback. Monthly releases with model improvements.",
+          "confidence": "medium-high",
+          "linked_feature_slugs": [
+            "market.feature.ai-assist",
+            "market.feature.ai-assist-nl-to-graph",
+            "market.feature.ai-assist-code-generation"
+          ]
+        },
+        {
+          "item": "Agent Orchestration Engine Development",
+          "detail": "Build agent runtime: state management (execution context, variable store), prompt template system, tool-use/function calling, batch execution mode (process 1000 records in parallel), streaming mode (subscribe to Kafka topic, execute agent per event), error handling (exponential backoff, max retries), and rollback capability. Critical for agentic automation 20%+ of enterprise workflows (Forrester).",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.agent-orchestration",
+            "market.feature.agent-orchestration-state-viz"
+          ]
+        },
+        {
+          "item": "LLM Cost Tracking & Observability Infrastructure",
+          "detail": "Activities: instrument agent execution (log tokens, latency, cost), aggregate metrics (dashboards, alerts), implement chargeback logic (allocate costs to teams/projects), and provide debugging tools (error logs, performance traces). Build billing backend (Stripe integration, invoice generation). Enterprise lock-in: once customers rely on this for cost governance, switching cost rises significantly.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.observability-cost-tracking",
+            "market.feature.observability-execution-logs"
+          ]
+        },
+        {
+          "item": "Cloud Deployment & Multi-Region Operations",
+          "detail": "Activities: containerize app (Docker), define infrastructure-as-code (Terraform), set up CI/CD (GitHub Actions), implement auto-scaling policies, provision multi-region databases (PostgreSQL replicas), configure backups/disaster recovery, and monitor SLAs (99.95% uptime). Weekly deployments of new features; hotfixes within hours. On-call rotation for production incidents.",
+          "confidence": "high"
+        },
+        {
+          "item": "Community Engagement & Content Creation",
+          "detail": "Activities: write tutorials (dbt DAG visualization, Neo4j graph schema, Kafka topology), record demos, maintain open-source documentation (GitHub), engage in data engineer communities (dbt Slack, Locally Optimistic, dev.to), and host webinars (partner + internal). Target: drive peer discovery (65% of B2B buyers start in communities) and reduce sales burden.",
+          "confidence": "high"
+        },
+        {
+          "item": "Sales Enablement & Customer Implementation",
+          "detail": "Activities: sales demo environment (pre-configured with sample dbt/Airflow/Neo4j data), trial onboarding (guided setup for Databricks/Snowflake), sales collateral (case studies, ROI calculator), implementation guides (RBAC setup, cost tracking config), and technical support (Slack, email, ticketing). Partner with implementation vendors (Accenture) for enterprise deals.",
+          "confidence": "medium-high"
+        }
+      ],
+      "source_ids": [
+        "market-business-model-gartner-predictions-data-analytics-2026",
+        "market-business-model-forrester-enterprise-software-2026",
+        "market-business-model-ai-agent-platforms-2026"
+      ]
+    },
+    {
+      "block": "key-partnerships",
+      "title": "MetroGraph Key Partnerships",
+      "narrative": "MetroGraph's partner ecosystem is critical for TAM expansion and enterprise credibility. Strategic partnerships span: (1) Cloud data platforms (Databricks, Snowflake, BigQuery, Amazon Redshift) for co-GTM, joint positioning, and native integrations. (2) Graph/vector databases (Neo4j, ArangoDB, Qdrant, Weaviate) for GraphRAG + semantic search visualization. (3) Low-code/automation platforms (Zapier, Power Automate, Gumloop, n8n) for workflow visualization and embedded agent execution. (4) Design infrastructure (Figma, Penpot) for design system visualization and component sync. (5) Vertical SaaS leaders (Toast, Veeva, ServiceTitan) for white-label embedding and co-selling. (6) System integrators (Accenture, Deloitte, Databricks Systems Integrator Network) for enterprise implementation. (7) Cloud infrastructure (AWS, GCP, Azure) for hosting, billing integration, and marketplace presence. (8) AI/ML infrastructure (Anthropic for Claude API, OpenAI for GPT, LangChain for orchestration). All partnerships are revenue-sharing or co-selling arrangements to align incentives.",
+      "linked_feature_slugs": [
+        "market.feature.agent-orchestration",
+        "market.feature.data-binding-rag-vector-viz",
+        "market.feature.ai-assist"
+      ],
+      "items": [
+        {
+          "item": "Databricks (Data + AI Platform Co-GTM)",
+          "detail": "Databricks $5.4B ARR (65% YoY growth), converging on 'AI control plane' per Salimaouamri analysis. Partnership: MetroGraph as native visualization for Databricks Lakehouse (DAG + dbt lineage, SQL lineage, Delta table dependencies). Co-selling: Databricks sales mentions MetroGraph for Lakehouse visualization; MetroGraph mentions Databricks for enterprise data platform. Revenue share: 20% of customer fees to Databricks partnership fund. Target: 50% of Databricks customers (10K enterprises) evaluate MetroGraph.",
+          "confidence": "high"
+        },
+        {
+          "item": "Snowflake (Competing Data Platform, Integration)",
+          "detail": "Snowflake $4.68B ARR (29% YoY). Native Snowflake connector for schema introspection (table/column lineage, query history). Marketplace listing (Snowflake Partner Ecosystem, similar to Tableau). Lower co-sell intensity than Databricks (Snowflake = more mature, less agent-focused), but valuable for enterprise coverage. Target: reach 5% of Snowflake's 5K+ enterprise customers.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "Neo4j (Graph Database + GraphRAG)",
+          "detail": "Neo4j dominant in graph DB market ($5.6B by 2028, 22.3% CAGR). GraphRAG driving mainstream adoption. Partnership: MetroGraph as visualization layer for Neo4j graphs (node/relationship rendering, Cypher query visualization, pattern detection). Neo4j includes MetroGraph in Aura Cloud offerings. Joint webinars on knowledge graph + semantic search. Reference: Neo4j Bloom ($1,200-2,500/user/year) is visualization competitor; partnership positions MetroGraph for higher-level orchestration (agents querying knowledge graphs).",
+          "confidence": "high"
+        },
+        {
+          "item": "Figma (Design System & Component Library Visualization)",
+          "detail": "Figma plugin ecosystem. Partnership: MetroGraph Figma plugin visualizes component dependencies (variant hierarchy, token inheritance, design system graph). Reverse: Figma embeds MetroGraph in design tokens workspace (show token usage graph). Low-friction partnership (both companies control their APIs). Target: design systems at tech/fintech companies (Toast, Stripe, SalesForce-adjacent teams).",
+          "confidence": "medium"
+        },
+        {
+          "item": "Google (Drive, Sheets, Workspace Integration)",
+          "detail": "MetroGraph projects stored in Google Drive. Single sign-on via Google. Sheets connector: visualize data lineage from Google Sheets formulas (experimental). Joint GTM: Google Cloud Next presentation on data orchestration. Native integration reduces friction for SMBs and startups. Low revenue impact (consumers use free tier mostly), but strategic for ecosystem credibility.",
+          "confidence": "medium"
+        },
+        {
+          "item": "Vertical SaaS Leaders (Toast, Veeva, ServiceTitan – White-Label Embedding)",
+          "detail": "Toast: 21M restaurants, workflow visualization for kitchen management + order routing (RPA workflows). Veeva: pharma, protocol visualization + clinical trial workflows. ServiceTitan: field service, job scheduling + contractor assignment visualization. Partnership model: Toast licenses MetroGraph for $X/month (white-label), includes in their SaaS for customers. MetroGraph gets 30-40% of licensing revenue (recurring, scalable). Expected: 3-5 vertical SaaS partners generating $2-5M ARR each at maturity.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "System Integrators (Accenture, Deloitte, Databricks SI Network)",
+          "detail": "Enterprise implementation partners. Partnership: certified training for MetroGraph integration (data platform setup, cost tracking configuration, custom node development). Revenue share: 25-30% commission on implementation projects ($50K-500K per deal). Enables fast scaling of enterprise sales without building large sales team. Partners benefit: new tool to sell (expand service offering), new customers (enterprise data projects need visualization).",
+          "confidence": "high"
+        },
+        {
+          "item": "Cloud Infrastructure (AWS, GCP – Marketplace + Billing Integration)",
+          "detail": "MetroGraph listed on AWS Marketplace and Google Cloud Marketplace (similar to Figma, Slack). Billing integration: customers can pay via cloud credits. Co-selling: AWS data analytics sales team mentions MetroGraph for Athena/Redshift workflows. Partnership benefit: acquisition friction reduced (one-click deployment, no separate payment), and cloud provider endorsement = credibility.",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "LLM / AI Infrastructure (Anthropic Claude API, OpenAI GPT, LangChain)",
+          "detail": "Copilot powered by Claude (Anthropic) or GPT (OpenAI). LangChain integration for agent orchestration. Partnerships: preferred pricing for LLM API calls (volume discounts), joint marketing (feature announcements), and API stability guarantees. Revenue: pass LLM costs to customers (cost-plus 20-30% margin). Lock-in: switching AI providers = expensive refactor.",
+          "confidence": "high",
+          "linked_feature_slugs": [
+            "market.feature.ai-assist"
+          ]
+        },
+        {
+          "item": "dbt Labs (Analytics Engineering Ecosystem)",
+          "detail": "dbt-core market leader for transformation. Partnership: MetroGraph official DAG visualization tool for dbt (similar to dbt Explorer). Packaging: dbt Cloud includes MetroGraph link (visualize your DAG). Community: engage dbt Slack, contribute to dbt Discourse. Beachhead segment (analytics engineers) sees MetroGraph as dbt extension. Target: 50% of dbt Cloud customers (8K+) try MetroGraph.",
+          "confidence": "high"
+        }
+      ],
+      "source_ids": [
+        "market-business-model-data-platform-war-snowflake-databricks-2026",
+        "market-business-model-neo4j-pricing-business-model",
+        "market-business-model-graph-databases-2026-neo4j-arangodb",
+        "market-business-model-vertical-saas-market-2026",
+        "market-business-model-vertical-saas-funding-2026"
+      ]
+    },
+    {
+      "block": "cost-structure",
+      "title": "MetroGraph Cost Structure",
+      "narrative": "MetroGraph operates a high-leverage SaaS model with expected gross margins of 65-75% at scale. Cost structure: (1) Cloud infrastructure (25-30% of revenue at scale): AWS/GCP compute, storage, CDN, multi-region redundancy. (2) LLM inference (5-15% of revenue): Claude/GPT API calls for Copilot and agent execution. (3) Engineering team (40-50% of opex): senior Angular/visualization/ML engineers at $150-250K+, growing from 10 people (seed) to 50+ (Series B). (4) Sales & marketing (15-20% of opex): direct sales (1 AE per $1M ARR), partner enablement, content creation, community management. (5) Operations (5-10%): finance, legal, HR, IT, recruiting. Key drivers: customer acquisition cost (CAC) target $2K-5K per enterprise customer, payback 12-18 months. LTV:CAC ratio target 3:1 (enterprise) and 5:1 (SMB freemium). Fixed costs dominate early (engineering), so unit economics improve with scale. Path to profitability: Series A at $2-5M ARR (30% gross margin), Series B at $10M+ ARR (70% gross margin).",
+      "linked_feature_slugs": [
+        "market.feature.agent-orchestration",
+        "market.feature.ai-assist",
+        "market.feature.observability-cost-tracking"
+      ],
+      "items": [
+        {
+          "item": "Cloud Infrastructure (25-30% of Revenue at Scale)",
+          "detail": "Breakdown: AWS/GCP compute (K8s clusters, auto-scaling) 12-15%, storage (PostgreSQL, S3, backups) 5-8%, networking/CDN 3-5%, monitoring/logging (DataDog) 2-3%. Variable cost: scales with MAU (monthly active users) and agent execution volume. Example: 10K enterprise customers, 100K MAU = $500K/month revenue → $125-150K/month infrastructure cost. Optimization levers: reserved instances (30% discount), spot instances (70% discount on non-critical workloads), and geographic failover (reduce region redundancy when growth slows).",
+          "confidence": "high"
+        },
+        {
+          "item": "LLM Inference Costs (5-15% of Revenue Variable)",
+          "detail": "Copilot usage: average enterprise customer generates 1K tokens/day Copilot queries (code generation, pattern detection, error explanation) = 30K tokens/month. OpenAI GPT-4: $0.03/1K input tokens, $0.06/1K output tokens → $10-30 per customer per month in LLM costs. Agent execution: 100K executions/month across customer base = 50M tokens (agents are verbose) = $1500 at GPT-4 pricing. Volume discount from API providers: negotiate 20-30% discount at $50K+/month spend. Margin: charge customer $50/agent execution tier → recover costs + 40% margin. Optimization: fine-tuned model (cheaper than GPT-4) or on-premise LLM option.",
+          "confidence": "medium-high",
+          "linked_feature_slugs": [
+            "market.feature.ai-assist",
+            "market.feature.agent-orchestration"
+          ]
+        },
+        {
+          "item": "Engineering Salaries (40-50% of Opex Early Stage)",
+          "detail": "Seed stage (10 engineers): 1 CTO (senior Angular, $250K), 3 full-stack engineers ($180K), 2 ML/AI engineers ($200K), 1 infrastructure engineer ($180K), 1 design + UX ($150K), 1 product manager ($150K), 1 QA engineer ($100K) = $1.31M/year (burdened ~$1.7M with benefits, taxes). Series A (25 engineers): add 3 more senior engineers, 5 mid-level engineers, 1 engineering manager, backend specialist. Salary inflation: 15% YoY market pressure (AI engineer shortage). Ramp: 2-3 months to productivity.",
+          "confidence": "high"
+        },
+        {
+          "item": "Sales & Marketing (15-20% of Opex)",
+          "detail": "Early stage: 1 founder-led sales + 1 marketing manager ($100K). Series A: add 2 AEs ($150K + commission), 1 solutions engineer ($130K), 1 content/community manager ($90K), 1 partnerships manager ($100K) = $700K total + 10-15% commission pool. CAC: $2-5K per enterprise customer (outbound sales, events, Gartner Peer Insights). SMB CAC: $200-500 (organic, content, community). Payback: 12-18 months (LTV = $50K over 3 years → CAC/LTV = 5-10%). Marketing spend: 5-10% of opex on content, community events, sponsorships, paid ads.",
+          "confidence": "high"
+        },
+        {
+          "item": "Operations & Finance (5-10% of Opex)",
+          "detail": "Finance (1 FPA&E at series A), HR (recruiting, onboarding), legal (contracts, IP, compliance), and IT (laptops, licenses, security). Burn rate early: $300K/month (10 engineers + overhead). Series A: $800K/month (25 engineers + team). Profitability path: break-even at $5-7M ARR (assuming 60% gross margin, 40-50% opex ratio). GAAP profitability: break-even or slight negative until $15M+ ARR (reinvest margins in growth).",
+          "confidence": "medium"
+        },
+        {
+          "item": "Customer Support & Success (3-5% of Revenue at Scale)",
+          "detail": "Freemium: community-driven (Slack, docs, Copilot in-product help). SMB: email support. Enterprise: dedicated success manager (1 per 5 customers), 24/5 Slack response time. Cost: support engineer ($120K) can manage 20-30 customers; 50 enterprise customers = 2 FTE at $250K burdened. Ratio: $250K cost supports ~$500K revenue (50% of enterprise margin).",
+          "confidence": "medium-high"
+        },
+        {
+          "item": "Partner Programs & Integrations (2-3% of Revenue)",
+          "detail": "Training & certification for integrators (Accenture, Deloitte). Cost: 1 partner manager ($90K) + training materials + marketplace listing fees ($1K-10K per platform). Revenue: 25-30% commission from partners on customer fees. Payback: partner-sourced deals have lower CAC (partner does marketing) but share revenue. Target: 30% of enterprise customers sourced via partners.",
+          "confidence": "medium"
+        },
+        {
+          "item": "R&D & Product (5-7% of Revenue Reinvestment)",
+          "detail": "After COGS (infra + LLM), allocate 5-7% of gross margin to R&D: new visualization features, layout algorithm improvements, domain-specific integrations (Dagster, Prefect, Temporal). Example: $10M ARR at 70% gross margin = $7M to allocate; $300-500K to R&D. Examples: hire ML researcher for fine-tuning optimization, visualization specialist for 3D/immersive topologies, graph database specialist for vector/semantic search visualization.",
+          "confidence": "medium"
+        }
+      ],
+      "source_ids": [
+        "market-business-model-gartner-software-spend-2026",
+        "market-business-model-saas-pricing-models-2026",
+        "market-business-model-enterprise-it-budget-allocation-2026",
+        "market-business-model-retool-82m-arr-business-model"
+      ]
+    }
+  ]
+}

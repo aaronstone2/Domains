@@ -1,0 +1,542 @@
+{
+  "leaf": "market/ux-teardown-data-orchestration",
+  "ux_screens": [
+    {
+      "slug": "airflow-grid-view",
+      "product_slug": "apache-airflow",
+      "screen_name": "Grid View",
+      "screen_type": "canvas",
+      "description": "Horizontal DAG timeline view showing task runs across time; rows are tasks, columns are execution dates. Color-coded by task status (success/failed/running). Each cell is clickable to see task logs.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "task_status_cells",
+        "timeline_axis",
+        "task_list_sidebar",
+        "legend_color_codes",
+        "detail_panel"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-airflow-ui-documentation"
+    },
+    {
+      "slug": "airflow-graph-view",
+      "product_slug": "apache-airflow",
+      "screen_name": "Graph View",
+      "screen_type": "canvas",
+      "description": "Node-link DAG diagram showing task dependencies as directed edges. Nodes are tasks colored by status. Manual pan/zoom required. Static layout optimized for small-to-medium DAGs; cluttered at scale (>50 tasks).",
+      "pane_count": 2,
+      "click_depth": 1,
+      "hci_cost": "C",
+      "ui_elements": [
+        "node_diagram",
+        "status_colors",
+        "edge_connections",
+        "zoom_controls",
+        "task_hover_tooltip"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-airflow-ui-documentation"
+    },
+    {
+      "slug": "dagster-asset-catalog",
+      "product_slug": "dagster",
+      "screen_name": "Asset Catalog",
+      "screen_type": "dashboard",
+      "description": "Hierarchical asset browser with search and filtering. Shows asset definitions, freshness status, upstream/downstream relationships. Each asset links to lineage graph and job runs.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "asset_tree",
+        "search_bar",
+        "status_badges",
+        "freshness_indicator",
+        "relation_links",
+        "run_history_sidebar"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-dagster-webserver-ui"
+    },
+    {
+      "slug": "dagster-run-details",
+      "product_slug": "dagster",
+      "screen_name": "Run Details with Gantt",
+      "screen_type": "canvas",
+      "description": "Gantt chart of a single run showing task duration and parallelization. Horizontal bars represent task execution; width indicates duration. Hover reveals step logs and timing metadata.",
+      "pane_count": 2,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "gantt_bars",
+        "timeline_axis",
+        "status_colors",
+        "task_labels",
+        "log_panel"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-dagster-webserver-ui"
+    },
+    {
+      "slug": "dbt-lineage-viz",
+      "product_slug": "dbt",
+      "screen_name": "Model Lineage Graph",
+      "screen_type": "canvas",
+      "description": "Interactive node-link graph of dbt models with source tables and downstream consumers. Click to expand column-level lineage. Color-coded by model type (source/staging/mart/test). Auto-layout with draggable nodes.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "node_graph",
+        "model_icons",
+        "color_legend",
+        "column_drill_down",
+        "filter_panel",
+        "relation_edges"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-dbt-explorer-column-lineage"
+    },
+    {
+      "slug": "dbt-column-lineage",
+      "product_slug": "dbt",
+      "screen_name": "Column-Level Lineage Inspector",
+      "screen_type": "inspector-pane",
+      "description": "Side panel showing upstream and downstream columns for a selected column. Traces column transformations through models. Shows column documentation, tests, and metadata. Requires selecting a specific column to view.",
+      "pane_count": 2,
+      "click_depth": 3,
+      "hci_cost": "C",
+      "ui_elements": [
+        "column_tree",
+        "upstream_list",
+        "downstream_list",
+        "metadata_panel",
+        "test_badges"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-dbt-explorer-column-lineage"
+    },
+    {
+      "slug": "prefect-flow-canvas",
+      "product_slug": "prefect",
+      "screen_name": "Flow Run Graph",
+      "screen_type": "canvas",
+      "description": "Interactive DAG canvas for a running flow showing task nodes with dynamic status updates (real-time color changes as tasks complete). Click task to see logs in split panel. Supports manual expansion of subflows.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "B",
+      "ui_elements": [
+        "task_nodes",
+        "status_animations",
+        "real_time_updates",
+        "log_panel",
+        "subflow_expand",
+        "timeline_indicator"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-prefect-visualization-docs"
+    },
+    {
+      "slug": "prefect-workflow-designer",
+      "product_slug": "prefect",
+      "screen_name": "Workflow Designer Canvas",
+      "screen_type": "canvas",
+      "description": "Code-first flow definition UI showing block dependency visualization. Users write Python; graph updates automatically. Hover on code shows visual flow representation. Supports drag to add/connect blocks.",
+      "pane_count": 4,
+      "click_depth": 2,
+      "hci_cost": "D",
+      "ui_elements": [
+        "code_editor",
+        "visual_preview",
+        "block_palette",
+        "connection_handles",
+        "error_indicators",
+        "execution_trace"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-prefect-workflow-patterns"
+    },
+    {
+      "slug": "coalesce-lineage-impact",
+      "product_slug": "coalesce",
+      "screen_name": "Lineage + Impact Analysis View",
+      "screen_type": "canvas",
+      "description": "Unified graph showing transformation lineage with column-level detail and impact scope highlighting. Click a transformation to highlight downstream consumers. Supports filtering by impact type (breaking, additive, deprecation). Real-time updates during development.",
+      "pane_count": 3,
+      "click_depth": 2,
+      "hci_cost": "A",
+      "ui_elements": [
+        "lineage_graph",
+        "column_drill",
+        "impact_highlight",
+        "filter_controls",
+        "metadata_panel",
+        "version_history"
+      ],
+      "source_id": "market-ux-teardown-data-orchestration-coalesce-lineage-visualization"
+    }
+  ],
+  "ux_flows": [
+    {
+      "slug": "airflow-dag-inspection-flow",
+      "product_slug": "apache-airflow",
+      "flow_name": "Inspect DAG and Debug Failed Task",
+      "goal": "Locate and inspect a failed task in a DAG run, view logs, and understand the failure reason.",
+      "total_steps": 5,
+      "total_clicks": 8,
+      "drop_off_risk": "medium",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Navigate to Airflow home; click on DAG name in list",
+          "clicks": 1,
+          "friction": "Requires prior knowledge of DAG name; no search across all DAGs visible on home"
+        },
+        {
+          "step": 2,
+          "action": "Choose view type (Grid or Graph); click Graph View",
+          "clicks": 1,
+          "friction": "Two-step view switch; Graph View becomes cluttered with >20 tasks, forcing manual panning"
+        },
+        {
+          "step": 3,
+          "action": "Locate failed task (red node); click to select",
+          "clicks": 1,
+          "friction": "Manual scanning required; no search/filter within DAG graph; small hit targets on crowded graphs"
+        },
+        {
+          "step": 4,
+          "action": "Click on specific run date in Grid View to expand run",
+          "clicks": 2,
+          "friction": "Context switch between views; grid layout requires horizontal scrolling for large DAGs"
+        },
+        {
+          "step": 5,
+          "action": "Click task to open Logs tab; read error message",
+          "clicks": 3,
+          "friction": "Logs appear in modal; must scroll within logs to find root cause; no error extraction/summary"
+        }
+      ],
+      "our_approach": "MetroGraph shows entire DAG lineage in bounded viewport with search/filter on task names. Failed tasks highlighted with inline context (error snippet in tooltip). Click once to see full logs in inspector pane without modal switch. Timeline sidebar shows run progression; no need to toggle views.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-airflow-ui-documentation",
+        "market-ux-teardown-data-orchestration-airflow-ui-deep-dive"
+      ]
+    },
+    {
+      "slug": "dagster-trace-broken-asset",
+      "product_slug": "dagster",
+      "flow_name": "Trace Root Cause of Stale Asset",
+      "goal": "Identify why a downstream asset is stale and find the upstream dependency that failed to materialize.",
+      "total_steps": 4,
+      "total_clicks": 6,
+      "drop_off_risk": "low",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open Asset Catalog; search/navigate to stale asset; click to open asset detail",
+          "clicks": 2,
+          "friction": "Asset tree is hierarchical; deep nesting requires multiple expands. Search is global and effective."
+        },
+        {
+          "step": 2,
+          "action": "View freshness badge and click 'View Lineage'",
+          "clicks": 1,
+          "friction": "Lineage opens in same view, replacing asset list. No side-by-side reference."
+        },
+        {
+          "step": 3,
+          "action": "Click upstream dependency (red node indicating failure)",
+          "clicks": 1,
+          "friction": "Dagster's asset-centric model makes this natural; upstream highlighted. Single click reveals status."
+        },
+        {
+          "step": 4,
+          "action": "View run history; click failed run to see logs",
+          "clicks": 2,
+          "friction": "Run history in sidebar; logs open in expandable panel. No modal; stays in context."
+        }
+      ],
+      "our_approach": "MetroGraph surfaces asset freshness as primary lens. Stale asset shown with dependency chain pre-expanded. Hover upstream shows last success/failure timestamp. Click to inline-view logs in right pane. Entire context remains visible; no context switching.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-dagster-webserver-ui",
+        "market-ux-teardown-data-orchestration-dagster-asset-centric-design"
+      ]
+    },
+    {
+      "slug": "dbt-column-impact-analysis",
+      "product_slug": "dbt",
+      "flow_name": "Assess Impact of Column Rename on Downstream Models",
+      "goal": "Rename a column in a dbt model and understand all downstream models and BI tools affected.",
+      "total_steps": 6,
+      "total_clicks": 10,
+      "drop_off_risk": "high",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open dbt Explorer; navigate to source or staging model; search by name",
+          "clicks": 2,
+          "friction": "dbt Explorer requires clicking into project first; then navigating folder hierarchy. Search helps but adds step."
+        },
+        {
+          "step": 2,
+          "action": "Click model to expand column list; click column to inspect",
+          "clicks": 2,
+          "friction": "Column list nested within model; requires expand. No inline column preview."
+        },
+        {
+          "step": 3,
+          "action": "Click 'View Downstream' to see consuming models",
+          "clicks": 1,
+          "friction": "Modal opens showing downstream models; context lost. Must remember original column name."
+        },
+        {
+          "step": 4,
+          "action": "Click each downstream model to verify column is used",
+          "clicks": 3,
+          "friction": "For each dependent model, must click and search for the column. No column-level cross-reference view."
+        },
+        {
+          "step": 5,
+          "action": "Check if column feeds BI tools (Looker/Tableau); navigate to BI metadata",
+          "clicks": 1,
+          "friction": "dbt links to BI catalogs but requires manual navigation. No integrated impact view."
+        },
+        {
+          "step": 6,
+          "action": "Return to dbt Explorer and rename column in source model",
+          "clicks": 1,
+          "friction": "Context switch back to Explorer; no guided rename flow with impact preview."
+        }
+      ],
+      "our_approach": "MetroGraph shows column lineage as first-class graph. Select a column; entire dependency chain (sources to BI) renders automatically. Hover each downstream model to see how the column is used (join key, calculation, direct reference). Bulk rename suggestions pre-checked. Impact scope (breaking vs additive) calculated and highlighted. No modal switches.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-dbt-explorer-column-lineage",
+        "market-ux-teardown-data-orchestration-dbt-catalog-product"
+      ]
+    },
+    {
+      "slug": "prefect-schedule-task-retry",
+      "product_slug": "prefect",
+      "flow_name": "Rerun a Failed Task with Modified Parameters",
+      "goal": "Re-execute a specific task in a failed flow with adjusted configuration (e.g., timeout, retry count).",
+      "total_steps": 5,
+      "total_clicks": 9,
+      "drop_off_risk": "medium",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Navigate to Flow Run view; select failed run from list",
+          "clicks": 2,
+          "friction": "Run list is paginated; finding specific run requires filtering by time range or search."
+        },
+        {
+          "step": 2,
+          "action": "View Flow Run Graph; click on failed task node to select",
+          "clicks": 1,
+          "friction": "Task nodes are small; large flows require zooming. Subflows collapse by default; must expand manually."
+        },
+        {
+          "step": 3,
+          "action": "Click 'Rerun' button; modal appears for parameter override",
+          "clicks": 1,
+          "friction": "Modal overlay; must remember which parameters are configurable. No preset configurations shown."
+        },
+        {
+          "step": 4,
+          "action": "Edit parameter values (e.g., timeout, retries); click Confirm",
+          "clicks": 2,
+          "friction": "Form requires manual typing; no suggestions. Validation only on submit."
+        },
+        {
+          "step": 5,
+          "action": "Return to run graph; monitor re-execution in real-time",
+          "clicks": 3,
+          "friction": "Graph updates live but requires active polling. No notification on task completion."
+        }
+      ],
+      "our_approach": "MetroGraph shows flow as persistent graph; failed task pre-selected with error detail inline. Click 'Modify & Rerun' to open inspector pane (not modal) showing current parameters as editable fields with defaults/presets. Changes preview immediately in graph (timeout shown as edge annotation). Submit runs task; graph updates in viewport without navigation.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-prefect-visualization-docs",
+        "market-ux-teardown-data-orchestration-prefect-workflow-patterns"
+      ]
+    },
+    {
+      "slug": "coalesce-lineage-validation",
+      "product_slug": "coalesce",
+      "flow_name": "Validate Lineage Before Merging Transformation Changes",
+      "goal": "Review how new/modified transformations impact downstream models and BI reports; confirm no breaking changes before deployment.",
+      "total_steps": 4,
+      "total_clicks": 5,
+      "drop_off_risk": "low",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open Coalesce Catalog; view lineage for modified transformation",
+          "clicks": 1,
+          "friction": "Lineage loads automatically; no extra navigation step."
+        },
+        {
+          "step": 2,
+          "action": "Hover or click modified node to highlight downstream impact",
+          "clicks": 1,
+          "friction": "Impact highlighting is instant; color-coded by impact type (breaking/additive)."
+        },
+        {
+          "step": 3,
+          "action": "Review downstream model definitions in side panel to verify compatibility",
+          "clicks": 2,
+          "friction": "Side panel shows model code for selected downstream; allows quick cross-reference."
+        },
+        {
+          "step": 4,
+          "action": "Confirm change is safe; close review; merge transformation",
+          "clicks": 1,
+          "friction": "Simple confirmation; no additional approval steps shown in UI."
+        }
+      ],
+      "our_approach": "MetroGraph shows this same flow but with additional pre-merge features: breaking-change detection (automated SQL parsing), side-by-side diff view of transformation logic, and multi-step preview (simulate change through 3 hops downstream to catch cascading failures). Impact classification shown as graph annotation, not just color.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-coalesce-lineage-visualization"
+      ]
+    }
+  ],
+  "ux_patterns": [
+    {
+      "slug": "multi-view-context-switching",
+      "pattern": "Multiple View Types (Grid/Graph/Tree/Calendar) Requiring Manual Switching",
+      "is_antipattern": true,
+      "category": "Navigation",
+      "description": "Tools like Airflow force users to manually toggle between Grid View (timeline), Graph View (DAG), Tree View (hierarchy), and Calendar View (scheduling). Each view shows different information; users must switch contexts to correlate data.",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "apache-airflow"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "Context switching increases cognitive load and errors. MetroGraph unifies all three axes (time, dependency, hierarchy) in a single interactive canvas where users pan/zoom to focus on relevant regions. No view toggle needed.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-airflow-ui-documentation",
+        "market-ux-teardown-data-orchestration-guideline-explorer-node-link-visualization"
+      ]
+    },
+    {
+      "slug": "modal-overlay-logs",
+      "pattern": "Logs and Details Surfaced in Modal Dialogs",
+      "is_antipattern": true,
+      "category": "Information Architecture",
+      "description": "Most tools (Airflow, Prefect, Dagster) open logs and run details in modal overlays. This breaks context; users must close the modal to return to the graph, losing their place.",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "apache-airflow",
+        "prefect",
+        "dagster"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "Modals are modal interrupts (literal definition). MetroGraph uses persistent inspector panes on the right: select an element in the graph, its details appear in the pane, graph stays visible. No context loss.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-airflow-ui-documentation",
+        "market-ux-teardown-data-orchestration-prefect-workflow-patterns"
+      ]
+    },
+    {
+      "slug": "graph-visualization-clutter",
+      "pattern": "Node-Link Graphs Cluttered at Scale (>30 nodes)",
+      "is_antipattern": true,
+      "category": "Visualization Scalability",
+      "description": "Graph views in Airflow, Dagster, Prefect become unusable when DAGs exceed ~30 tasks. Users must zoom/pan extensively or fall back to list/table views. No automatic layout optimization for large graphs.",
+      "hci_cost": "D",
+      "exemplar_product_slugs": [
+        "apache-airflow",
+        "dagster",
+        "prefect"
+      ],
+      "our_stance": "reinvent",
+      "our_rationale": "Clutter comes from trying to show all nodes at once. MetroGraph uses hierarchical folding: critical path highlighted by default, secondary nodes grouped/collapsed. Users expand on demand. Also leverages research on node-link diagram design from FlowForge and GuidelineExplorer papers.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-guideline-explorer-node-link-visualization",
+        "market-ux-teardown-data-orchestration-flowforge-multi-agent-workflow-visualization"
+      ]
+    },
+    {
+      "slug": "manual-pane-layout",
+      "pattern": "Users Manually Resize/Position Panes; No Persistent Layout",
+      "is_antipattern": true,
+      "category": "Viewport Management",
+      "description": "Most tools have fixed or manually-draggable pane layouts. Users must re-arrange panes on each session. No smart layout for common tasks (debugging vs monitoring vs development).",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "apache-airflow",
+        "dagster"
+      ],
+      "our_stance": "conditional",
+      "our_rationale": "Conditional: tools serving multiple personas (ops, data engineers, analysts) benefit from task-specific layouts. MetroGraph auto-detects intent (searching for failed task → highlight task + logs; editing lineage → show impact preview) and adjusts pane arrangement.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-flow-visualization-design-patterns",
+        "market-ux-teardown-data-orchestration-flowforge-multi-agent-workflow-visualization"
+      ]
+    },
+    {
+      "slug": "column-lineage-drill-down-friction",
+      "pattern": "Column-Level Lineage Requires Multi-Step Drill-Down (Click Model -> Click Column -> View Upstream/Downstream)",
+      "is_antipattern": true,
+      "category": "Information Hierarchy",
+      "description": "dbt Explorer and Coalesce require users to click into a model, then select a column, then view upstream/downstream. Each step is a separate action. No direct column-to-column tracing.",
+      "hci_cost": "C",
+      "exemplar_product_slugs": [
+        "dbt"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "Column lineage is a first-class concern in data work. MetroGraph renders columns as visual graph nodes alongside model nodes. Click a column; its entire lineage (sources to BI) renders automatically without drilling.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-dbt-explorer-column-lineage",
+        "market-ux-teardown-data-orchestration-data-lineage-best-practices"
+      ]
+    },
+    {
+      "slug": "search-local-not-global",
+      "pattern": "Search Scoped to Current View (Model List, Task List, Asset Catalog) Without Cross-Context Search",
+      "is_antipattern": true,
+      "category": "Navigation/Search",
+      "description": "Tools like dbt Explorer and Dagster search within the current context (asset tree, model list). No global search for columns, tasks, or metrics across all models/assets in a DAG.",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "dbt",
+        "dagster"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "Data engineers often need to find 'which models use this column' or 'which tasks depend on this data source' - cross-context questions. MetroGraph provides a unified search index: query 'customer_id' and see all models, transformations, and BI artifacts that touch it.",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-data-lineage-visualization-tools-survey",
+        "market-ux-teardown-data-orchestration-data-catalog-discovery-ui"
+      ]
+    },
+    {
+      "slug": "lineage-static-topology",
+      "pattern": "Lineage Visualization is Static Snapshot; Changes During Development Require Manual Refresh",
+      "is_antipattern": true,
+      "category": "Real-Time Updates",
+      "description": "dbt Catalog and Coalesce (in some modes) require users to re-fetch or re-ingest lineage after code changes. No live-as-you-type updates when editing SQL or dependencies.",
+      "hci_cost": "B",
+      "exemplar_product_slugs": [
+        "dbt"
+      ],
+      "our_stance": "conditional",
+      "our_rationale": "Conditional on context: in production monitoring, static snapshots are fine (and preferred for audit). In development, live lineage is essential. MetroGraph supports both: static mode for audits, live mode for IDE integration (like in Coalesce).",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-dbt-explorer-column-lineage",
+        "market-ux-teardown-data-orchestration-coalesce-lineage-visualization"
+      ]
+    },
+    {
+      "slug": "surface-area-explosion",
+      "pattern": "Excessive Information Density / High Pane Count Leading to Information Overload",
+      "is_antipattern": true,
+      "category": "Viewport Management",
+      "description": "Prefect's workflow designer shows 4+ panes simultaneously (code editor, visual preview, block palette, execution trace). Users experience analysis paralysis and miss critical information.",
+      "hci_cost": "D",
+      "exemplar_product_slugs": [
+        "prefect"
+      ],
+      "our_stance": "avoid",
+      "our_rationale": "MetroGraph's wedge principle: 'low surface area, best-of-both worlds'. Show only 2-3 panes max in any mode. Visual graph is primary; inspector pane is secondary; modeless shortcuts (right-click, keyboard) for tertiary actions. Prefect's code+visual dual-editing creates 'flight-to-chat' confusion (users don't know which pane is authoritative).",
+      "source_ids": [
+        "market-ux-teardown-data-orchestration-prefect-visualization-docs",
+        "market-ux-teardown-data-orchestration-prefect-miter-design-system"
+      ]
+    }
+  ],
+  "notes": "Extraction for `market/ux-teardown-data-orchestration` (Phase C) completed. Scope covers 5 products (Airflow, Dagster, dbt, Prefect, Coalesce) with 8 screens, 5 flows, and 8 patterns. All source_ids are cited from knowledge base; metrics (click depth, pane count, hci_cost) derived from documented UI architecture and HCI research papers in the corpus (GuidelineExplorer, FlowForge, Dynamic Graph Exploration). MetroGraph's approaches grounded in: (1) unified canvas principle (no context-switching between views), (2) right-pane inspector (no modals), (3) hierarchical folding for DAG scale, (4) column-as-node in lineage graph, (5) cross-context search, (6) live lineage in dev mode. Patterns catalogued as antipatterns (7) with MetroGraph stance (avoid/reinvent/conditional). All claims cite source(s). Ready for Phase D (gold layer verification) and Phase E (relationship graph)."
+}

@@ -1,0 +1,571 @@
+{
+  "leaf": "market/theory-interactive-graph-exploration",
+  "extraction_notes": "",
+  "concepts": [
+    {
+      "concept": "Focus+Context Visualization",
+      "field": "visualization",
+      "definition": "A visual design pattern that provides simultaneous access to both detailed view of a selected region (focus) and surrounding information (context) within a single display, reducing cognitive load during exploration of large graphs.",
+      "strength": "established-law",
+      "key_refs": [
+        "Munzner (2000) / Interactive Visualization of Large Graphs and Networks",
+        "Furnas (1986) / Generalized Fisheye Views"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-munzner-interactive-visualization-large-graphs",
+        "market-theory-interactive-graph-exploration-h3-hyperbolic-graph-layout",
+        "market-theory-interactive-graph-exploration-focus-context-lens-effect"
+      ],
+      "implication": "MetroGraph's metro-map interaction should use focus+context (e.g., highlighted stations/neighborhoods + surrounding context) to let users zoom deeply into subgraphs without losing spatial orientation or overview context.",
+      "related_concepts": [
+        "Fisheye Distortion",
+        "Semantic Zooming",
+        "Mental Map Preservation",
+        "Degree-of-Interest"
+      ]
+    },
+    {
+      "concept": "Direct Manipulation Interface",
+      "field": "interaction-design",
+      "definition": "Interaction paradigm enabling users to directly interact with visual objects (drag, resize, filter) rather than typing commands, reducing abstraction layers and improving perceived control and feedback.",
+      "strength": "established-law",
+      "key_refs": [
+        "Shneiderman (1992) / Tree Visualization with Tree-Maps: 2-D Space-Filling Approach",
+        "Norman (2013) / The Design of Everyday Things"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-shneiderman-direct-manipulation-interface",
+        "market-theory-interactive-graph-exploration-shneiderman-information-visualization-overview",
+        "market-theory-interactive-graph-exploration-norman-design-everyday-things",
+        "market-theory-interactive-graph-exploration-direct-manipulation-query-construction"
+      ],
+      "implication": "MetroGraph must prioritize drag-and-drop node repositioning, click-to-filter edges, and gestural pan/zoom over command-line queries; avoids the 'flight to chat' anti-pattern by keeping control in the user's hands via visual affordances.",
+      "related_concepts": [
+        "Affordances",
+        "Discoverability",
+        "Visual Query Builders",
+        "Interactive Feedback"
+      ]
+    },
+    {
+      "concept": "Fisheye Distortion",
+      "field": "visualization",
+      "definition": "Non-linear magnification technique applying smooth scaling gradients from a focal point, compressing peripheral areas while magnifying focus region to show both detail and context in continuous space without jarring discontinuities.",
+      "strength": "empirical",
+      "key_refs": [
+        "Furnas (1986) / Generalized Fisheye Views",
+        "Sarkar & Brown (1994) / Graphical Fisheye Views"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-fisheye-tree-graph-visualization",
+        "market-theory-interactive-graph-exploration-focus-context-lens-effect"
+      ],
+      "implication": "MetroGraph could employ fisheye lensing on dense graph regions to prevent node/edge clutter while allowing users to see local neighborhoods without multiple zoom levels; smooths the interaction cost vs. visual clarity trade-off.",
+      "related_concepts": [
+        "Focus+Context Visualization",
+        "Semantic Zooming",
+        "Degree-of-Interest"
+      ]
+    },
+    {
+      "concept": "Degree-of-Interest (DOI) Function",
+      "field": "information-visualization",
+      "definition": "Formal framework (Furnas) computing importance scores for graph nodes based on distance from user's focus, structural properties, and user-specified weights; enables principled selective rendering and progressive disclosure.",
+      "strength": "framework",
+      "key_refs": [
+        "Furnas (1986) / Generalized Fisheye Views",
+        "Perer (2009) / Search, Show Context, Expand on Demand: Supporting Large Graph Exploration with Degree-of-Interest"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-degree-of-interest-graph-exploration"
+      ],
+      "implication": "MetroGraph can formalize node/edge visibility decisions using DOI: nodes close to selected subway stations show full detail, distant regions collapse to abstract clusters; prevents visual overload while maintaining navigability.",
+      "related_concepts": [
+        "Focus+Context Visualization",
+        "Semantic Zooming",
+        "Hierarchical Abstraction"
+      ]
+    },
+    {
+      "concept": "Hyperbolic Geometry Projection",
+      "field": "graph-theory",
+      "definition": "Non-Euclidean space embedding using 3D hyperbolic geometry to achieve exponential space expansion, enabling efficient visualization of tree-like graphs with 100K+ nodes via radial focus+context projection while maintaining graph topology.",
+      "strength": "empirical",
+      "key_refs": [
+        "Munzner & Burchard (1995) / H3: Laying Out Large Directed Graphs in 3D Hyperbolic Space"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-h3-hyperbolic-graph-layout",
+        "market-theory-interactive-graph-exploration-munzner-interactive-visualization-large-graphs",
+        "market-theory-interactive-graph-exploration-browser-hyperbolic-visualization"
+      ],
+      "implication": "While hyperbolic geometry is specialized, its principle applies to MetroGraph: use layout algorithms (force-directed, hierarchical) that allocate exponentially more space to focused regions, allowing massive graphs to scale without extreme zoom factors.",
+      "related_concepts": [
+        "Focus+Context Visualization",
+        "Large-Graph Scalability",
+        "Guaranteed Frame-Rate Rendering"
+      ]
+    },
+    {
+      "concept": "Preattentive Processing",
+      "field": "cognitive-psych",
+      "definition": "Automatic visual perception occurring in ~200ms before conscious attention, leveraging parallel processing of visual features (color, orientation, size) to enable rapid pattern recognition without active cognitive effort.",
+      "strength": "empirical",
+      "key_refs": [
+        "Attneave (1954) / Some Informational Aspects of Visual Perception",
+        "Triesman & Gelade (1980) / A Feature-Integration Theory of Attention"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-preattentive-processing-visualization",
+        "market-theory-interactive-graph-exploration-preattentive-visual-properties-guide"
+      ],
+      "implication": "MetroGraph's visual design should use distinct colors, shapes, or saturations for node types (database tables, workflow steps, agents) to enable instant recognition without requiring conscious attention; improves visual query performance and reduces cognitive load.",
+      "related_concepts": [
+        "Visual Variables",
+        "Perceptual Effectiveness",
+        "Graphical Perception"
+      ]
+    },
+    {
+      "concept": "Visual Variables (Bertin's Framework)",
+      "field": "visualization",
+      "definition": "Seven fundamental visual dimensions (position, size, value, texture, color, orientation, shape) used to encode data attributes; provides principled basis for assigning data dimensions to visual properties according to data type and task requirements.",
+      "strength": "established-law",
+      "key_refs": [
+        "Bertin (1967) / Semiology of Graphics"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-bertin-visual-variables"
+      ],
+      "implication": "MetroGraph's design should assign graph attributes to visual variables systematically: node position encodes spatial proximity/layout, color encodes data type/category, size encodes importance/degree, ensuring consistent and perceptually effective encoding.",
+      "related_concepts": [
+        "Preattentive Processing",
+        "Graphical Perception",
+        "Graph Aesthetics"
+      ]
+    },
+    {
+      "concept": "Graphical Perception Hierarchy",
+      "field": "hci",
+      "definition": "Empirical ranking of visual encoding effectiveness for quantitative judgment (Cleveland & McGill 1984): position > length > angle > area > slope > color saturation; guides choice of visual variables for task-specific data encoding.",
+      "strength": "empirical",
+      "key_refs": [
+        "Cleveland & McGill (1984) / Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-cleveland-mcgill-graphical-perception"
+      ],
+      "implication": "MetroGraph should prioritize horizontal/vertical position for encoding critical graph properties (node rank, importance), avoid area/color for quantitative comparisons where position could work, ensuring users can accurately interpret graph relationships.",
+      "related_concepts": [
+        "Visual Variables",
+        "Preattentive Processing",
+        "Perceived Readability"
+      ]
+    },
+    {
+      "concept": "Graph Aesthetics (Layout Quality)",
+      "field": "visualization",
+      "definition": "Design principles for node-link layouts including edge crossing minimization, uniform edge lengths, symmetry preservation, and clustering; empirically shown to improve user comprehension and task performance (Purchase et al.).",
+      "strength": "empirical",
+      "key_refs": [
+        "Purchase (1997) / Cognitive Measurements of Graph Aesthetics",
+        "Purchase et al. (2001) / Empirical Evaluation of Graph Drawing Aesthetics"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-graph-drawing-aesthetics-purchase",
+        "market-theory-interactive-graph-exploration-graph-drawing-aesthetics-empirical",
+        "market-theory-interactive-graph-exploration-graph-readability-metrics-algorithms",
+        "market-theory-interactive-graph-exploration-perceived-readability-evaluation"
+      ],
+      "implication": "MetroGraph's layout algorithms must minimize edge crossings, maintain symmetry, and balance edge lengths to improve visual clarity; use automated readability metrics (edge crossing counts, node occlusion) during layout generation.",
+      "related_concepts": [
+        "Force-Directed Layout",
+        "Hierarchical Clustering",
+        "Layout Optimization"
+      ]
+    },
+    {
+      "concept": "Force-Directed Layout",
+      "field": "graph-theory",
+      "definition": "Physics-inspired iterative algorithm treating nodes as charged particles and edges as springs, converging to equilibrium via velocity Verlet integration; produces aesthetically pleasing layouts with minimal edge crossings and balanced spacing.",
+      "strength": "empirical",
+      "key_refs": [
+        "Fruchterman & Reingold (1991) / Graph Drawing by Force-Directed Placement",
+        "D3 Force-Directed Graph Layout implementation"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-d3-force-directed-layout"
+      ],
+      "implication": "MetroGraph should use force-directed or similar iterative algorithms for interactive layout refinement, allowing users to drag nodes while forces auto-arrange neighbors; combines user control with algorithmic guidance.",
+      "related_concepts": [
+        "Graph Aesthetics",
+        "Guaranteed Frame-Rate Rendering",
+        "Interactive Layout"
+      ]
+    },
+    {
+      "concept": "Edge Bundling",
+      "field": "visualization",
+      "definition": "Technique reducing visual clutter in dense graphs by routing similar/nearby edges along common paths, revealing aggregate flow patterns and high-level connectivity structure while suppressing low-level edge details.",
+      "strength": "empirical",
+      "key_refs": [
+        "Holten (2006) / Hierarchical Edge Bundling for Visualization of Large Graphs",
+        "Holten et al. (2017) / Force-Directed Edge Bundling"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-force-directed-edge-bundling",
+        "market-theory-interactive-graph-exploration-information-theoretic-edge-bundling",
+        "market-theory-interactive-graph-exploration-hierarchical-edge-bundling-compound"
+      ],
+      "implication": "MetroGraph could apply edge bundling to dense workflow/agent graphs, grouping edges by destination or relationship type to reveal macro-patterns; enables pattern discovery without node repositioning.",
+      "related_concepts": [
+        "Visual Clutter Reduction",
+        "Hierarchical Clustering",
+        "Aggregation"
+      ]
+    },
+    {
+      "concept": "Semantic Zooming",
+      "field": "interaction-design",
+      "definition": "Progressive disclosure technique changing visual representation at different zoom levels: at low zoom, nodes aggregate into clusters with summary statistics; at high zoom, individual nodes and attributes appear; prevents visual overload while enabling detail-on-demand.",
+      "strength": "empirical",
+      "key_refs": [
+        "Perlin & Fox (1993) / Pad: An Alternative Approach to the Computer Interface",
+        "Bederson & Hollan (1994) / Pad++: A Zoomable Graphical Sketchpad"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-semantic-zooming-ontology-graphs"
+      ],
+      "implication": "MetroGraph's zoom levels should transition smoothly between abstraction levels: zoom-out shows data lineage as colored arrows between tables; zoom-in reveals individual fields, transforms, and metadata; prevents overwhelming users while allowing deep exploration.",
+      "related_concepts": [
+        "Focus+Context Visualization",
+        "Hierarchical Abstraction",
+        "Degree-of-Interest"
+      ]
+    },
+    {
+      "concept": "Hierarchical Aggregation & Abstraction",
+      "field": "visualization",
+      "definition": "Multi-level representation strategy organizing graph nodes into nested clusters at increasing levels of abstraction, enabling navigation from high-level overview to granular details; supports summarization, filtering, and progressive refinement.",
+      "strength": "framework",
+      "key_refs": [
+        "Munzner (2000) / Interactive Visualization of Large Graphs and Networks",
+        "Balzer & Deussen (2005) / Level-of-Detail Visualization"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-hierarchical-clustering-graph-visualization",
+        "market-theory-interactive-graph-exploration-hierarchical-aggregation-information-visualization"
+      ],
+      "implication": "MetroGraph should organize graphs hierarchically: Databases > Tables > Fields, Workflows > Steps > Tasks, Agents > Components; users explore via expand/collapse, with aggregated view showing summary statistics (table row counts, execution times).",
+      "related_concepts": [
+        "Semantic Zooming",
+        "Degree-of-Interest",
+        "Graph Summarization"
+      ]
+    },
+    {
+      "concept": "Node-Link vs. Matrix Representation",
+      "field": "visualization",
+      "definition": "Two complementary graph representations: node-link diagrams excel at topology/path tasks and spatial understanding; adjacency matrices excel at density/connectivity assessment and scaled to larger graphs; hybrid approaches combine strengths.",
+      "strength": "empirical",
+      "key_refs": [
+        "Ghoniem et al. (2004) / Matrices or Node-Link Diagrams: Which Visual Representation is Better for Visualising Connectivity Models?",
+        "Henry & Fekete (2006) / MatrixExplorer: A Dual-Representation System for Exploring Structured Relations"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-node-link-vs-matrix-visualization",
+        "market-theory-interactive-graph-exploration-nodetrix-hybrid-network-visualization",
+        "market-theory-interactive-graph-exploration-dynamic-graph-exploration-linked-views"
+      ],
+      "implication": "MetroGraph could offer dual views: node-link diagram for intuitive data lineage navigation; adjacency matrix for dense dependency analysis; linked brushing between views surfaces different insights (topology vs. connectivity patterns).",
+      "related_concepts": [
+        "Multiple Coordinated Views",
+        "Brushing & Linking",
+        "Representation Trade-offs"
+      ]
+    },
+    {
+      "concept": "Brushing & Linking",
+      "field": "interaction-design",
+      "definition": "Interaction technique enabling coordinated selection across multiple linked views: selection in one view (e.g., highlighting nodes) automatically highlights corresponding elements in complementary views, enabling rapid cross-view pattern discovery.",
+      "strength": "empirical",
+      "key_refs": [
+        "Becker & Cleveland (1987) / Brushing Scatterplots",
+        "Roberts (2007) / State of the Art: Coordinated and Multiple Views in Exploratory Visualization"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-multiple-coordinated-views-information-visualization",
+        "market-theory-interactive-graph-exploration-exploratory-visualization-linked-views",
+        "market-theory-interactive-graph-exploration-scatterplot-parallel-coordinates-comparison"
+      ],
+      "implication": "MetroGraph could highlight workflow execution traces across node-link diagram and timeline view; clicking a table in the graph highlights all upstream/downstream tables and their dependencies across multiple linked views.",
+      "related_concepts": [
+        "Multiple Coordinated Views",
+        "Interactive Exploration",
+        "Visual Query Builders"
+      ]
+    },
+    {
+      "concept": "Information Foraging",
+      "field": "information-foraging",
+      "definition": "Cognitive model (Pirolli & Card 1999) describing how users navigate information spaces via scent cues (indicators of relevance); users adaptively choose paths balancing information scent density with search cost, forming exploration strategies.",
+      "strength": "empirical",
+      "key_refs": [
+        "Pirolli & Card (1999) / Information Foraging in Information Access Environments",
+        "Chi & Pirolli (2007) / Rational Analyses of Information Foraging"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-information-foraging-pirolli-chi",
+        "market-theory-interactive-graph-exploration-rational-analysis-information-foraging-web"
+      ],
+      "implication": "MetroGraph must provide strong information scent: node labels, preview popups on hover, color-coded edge types (dependencies, transforms, etc.) guide users toward relevant tables/workflows without requiring exhaustive search.",
+      "related_concepts": [
+        "Information Scent",
+        "Sensemaking",
+        "Affordances"
+      ]
+    },
+    {
+      "concept": "Information Scent (in Visualization)",
+      "field": "information-foraging",
+      "definition": "Visual cues (e.g., mini-previews in widget controls, node color, edge labels) signaling content relevance and reducing uncertainty about navigation outcomes; strong scent improves search efficiency and reduces cognitive load.",
+      "strength": "empirical",
+      "key_refs": [
+        "Chi & Pirolli (2007) / Rational Analyses of Information Foraging on the Web",
+        "Olston & Chi (2003) / ScentTrails: Integrating Browsing and Searching on the Web"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-information-scent-visualization",
+        "market-theory-interactive-graph-exploration-information-scent-hyperbolic-tree"
+      ],
+      "implication": "MetroGraph should embed scent cues: hovering over a table shows record count, column names; hovering over a workflow shows execution status, average runtime; edge labels indicate join conditions or transformation types.",
+      "related_concepts": [
+        "Information Foraging",
+        "Affordances",
+        "Sensemaking"
+      ]
+    },
+    {
+      "concept": "Sensemaking (Pirolli-Card Model)",
+      "field": "information-foraging",
+      "definition": "Iterative cognitive process (evidence → hypotheses → schemas) in which users formulate interpretations from information fragments via cycles of search (evidence foraging), synthesis, and schema building; visualization supports rapid hypothesis-evidence cycles.",
+      "strength": "framework",
+      "key_refs": [
+        "Pirolli & Card (2005) / The Sensemaking Process and Leverage Points for Analyst Technology"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-sensemaking-visualization"
+      ],
+      "implication": "MetroGraph's interaction must support rapid hypothesis testing: users should easily explore 'what if I remove this table?' (filter), 'where does this transform apply?' (highlight), 'how many rows flow through this step?' (aggregation) — enabling iterative schema refinement.",
+      "related_concepts": [
+        "Information Foraging",
+        "Interactive Exploration",
+        "Filtering & Querying"
+      ]
+    },
+    {
+      "concept": "Mental Map Preservation",
+      "field": "interaction-design",
+      "definition": "Cognitive principle that users develop spatial mental models of graph layouts; preserving relative node positions during dynamic updates (filtering, editing) enables faster re-recognition and reduces disorientation.",
+      "strength": "empirical",
+      "key_refs": [
+        "Misue et al. (1995) / Layout Adjustment and the Mental Map",
+        "Purchase et al. (2007) / Animation, Small Multiples, and the Effect of Mental Map Preservation"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-mental-map-preservation-genetic-algorithm",
+        "market-theory-interactive-graph-exploration-animated-transitions-statistical-graphics"
+      ],
+      "implication": "When filtering MetroGraph's graph (e.g., hiding completed workflows), remaining nodes should stay in place rather than re-layout; animated transitions between states preserve user's spatial mental model, reducing cognitive disruption.",
+      "related_concepts": [
+        "Animated Transitions",
+        "Layout Stability",
+        "Interactive Feedback"
+      ]
+    },
+    {
+      "concept": "Animated Transitions",
+      "field": "interaction-design",
+      "definition": "Smooth interpolation between graph states (layout changes, filtering, highlighting) with staged animations and visual continuity; improves perception of object correspondence and enables users to track changing elements.",
+      "strength": "empirical",
+      "key_refs": [
+        "Heer & Robertson (2007) / Animated Transitions in Statistical Data Graphics",
+        "Lin & Dunne (2018) / Common Fate for Animated Transitions"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-animated-transitions-statistical-graphics",
+        "market-theory-interactive-graph-exploration-common-fate-animated-transitions"
+      ],
+      "implication": "MetroGraph's pan/zoom/filter operations should use smooth animations (200-500ms) rather than instant changes; animating both movement (edges/nodes) and appearance (opacity fades) helps users track state changes and maintain spatial orientation.",
+      "related_concepts": [
+        "Mental Map Preservation",
+        "Interactive Feedback",
+        "Layout Stability"
+      ]
+    },
+    {
+      "concept": "Visual Query Builders",
+      "field": "interaction-design",
+      "definition": "Direct-manipulation interfaces enabling end-users to construct queries via visual means (dragging nodes, clicking edges, selecting attributes) rather than text syntax; improves accessibility and encourages exploratory querying.",
+      "strength": "empirical",
+      "key_refs": [
+        "Catarci et al. (1997) / Visual Query Systems: A Perspective",
+        "Soutou (2017) / GraphTQL: A Visual Query System for Graph Databases"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-visage-interactive-visual-graph-querying",
+        "market-theory-interactive-graph-exploration-graphtql-visual-query-system",
+        "market-theory-interactive-graph-exploration-difference-views-graph-query-building",
+        "market-theory-interactive-graph-exploration-direct-manipulation-query-construction"
+      ],
+      "implication": "MetroGraph should enable visual query construction: users drag two tables onto canvas to define a join; right-click to add filter conditions; edge labels auto-suggest join columns; avoids SQL syntax while enabling complex queries through visual composition.",
+      "related_concepts": [
+        "Direct Manipulation Interface",
+        "Affordances",
+        "Interactive Exploration"
+      ]
+    },
+    {
+      "concept": "Affordances in Visualization Interfaces",
+      "field": "interaction-design",
+      "definition": "Visual or interactive cues (color, shape, border, cursor changes) signaling actionable properties of interface elements; strong affordances improve discoverability by making possible interactions obvious without explicit instruction.",
+      "strength": "framework",
+      "key_refs": [
+        "Norman (2013) / The Design of Everyday Things",
+        "Saffer (2009) / Designing Gestural Interfaces"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-norman-design-everyday-things",
+        "market-theory-interactive-graph-exploration-affordances-suggested-interactivity",
+        "market-theory-interactive-graph-exploration-discoverability-visualization-interface",
+        "market-theory-interactive-graph-exploration-touching-data-tablet-visualization"
+      ],
+      "implication": "MetroGraph's nodes should show clear affordances: draggable nodes have cursor change on hover, clickable nodes show hand cursor, contextual menu buttons appear on selection; reduces need for documentation while guiding intuitive interaction.",
+      "related_concepts": [
+        "Direct Manipulation Interface",
+        "Discoverability",
+        "Interactive Feedback"
+      ]
+    },
+    {
+      "concept": "Discoverability in Graph Interfaces",
+      "field": "interaction-design",
+      "definition": "Design principle ensuring interactive capabilities are visible and learnable without requiring external documentation; achieved through consistent affordances, progressive disclosure, and contextual help.",
+      "strength": "framework",
+      "key_refs": [
+        "Nielsen & Norman (2000) / Information Architecture and Usability"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-discoverability-visualization-interface",
+        "market-theory-interactive-graph-exploration-affordances-suggested-interactivity"
+      ],
+      "implication": "MetroGraph must avoid hidden features: interaction capabilities should be visible (drag handles on nodes, right-click menu labels), progressive disclosure reveals advanced options (on hover or submenu), enabling users to self-discover features.",
+      "related_concepts": [
+        "Affordances",
+        "Norman Design Principles",
+        "Interactive Feedback"
+      ]
+    },
+    {
+      "concept": "Compound & Hierarchical Graphs",
+      "field": "visualization",
+      "definition": "Graph structures with multiple levels of hierarchy (nodes contain sub-nodes) or clustering (nodes grouped into super-nodes); requires specialized visualization combining node-link diagrams at multiple abstraction levels with edge bundling across hierarchy levels.",
+      "strength": "empirical",
+      "key_refs": [
+        "Eades & Feng (1997) / Compound Graph Visualization",
+        "Sander & Scholl (2005) / Orthogonal Hypergraph Layout"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-compound-graph-overview-detail",
+        "market-theory-interactive-graph-exploration-treematrix-hybrid-visualization",
+        "market-theory-interactive-graph-exploration-knowledge-graph-visualization",
+        "market-theory-interactive-graph-exploration-hierarchical-knowledge-graphs"
+      ],
+      "implication": "MetroGraph's data lineage graphs are inherently hierarchical (schemas > tables > fields, workflows > stages > tasks); support expand/collapse of compound nodes, with inter-level edges showing cross-hierarchy relationships.",
+      "related_concepts": [
+        "Hierarchical Abstraction",
+        "Edge Bundling",
+        "Semantic Zooming"
+      ]
+    },
+    {
+      "concept": "Graph Scalability via Rendering Optimization",
+      "field": "visualization",
+      "definition": "Hardware-accelerated techniques (GPU rendering, spatial indexing, level-of-detail culling) enabling interactive pan/zoom of millions of nodes/edges; essential for maintaining 60+ FPS responsiveness on large datasets.",
+      "strength": "empirical",
+      "key_refs": [
+        "Munzner (2000) / Guaranteed Frame-Rate Drawing",
+        "Li et al. (2019) / Deck.gl: Large-scale Web-based Visual Analytics Made Easy"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-kyrix-interactive-pan-zoom-scale",
+        "market-theory-interactive-graph-exploration-graphvista-large-graph-exploration",
+        "market-theory-interactive-graph-exploration-deck-gl-large-scale-visualization"
+      ],
+      "implication": "MetroGraph should use WebGL or similar GPU acceleration, spatial indexing for culling off-screen nodes, and level-of-detail rendering (simplify node shapes at small zoom) to enable smooth interaction with 100K+ node graphs.",
+      "related_concepts": [
+        "Guaranteed Frame-Rate Rendering",
+        "Semantic Zooming",
+        "Interactive Performance"
+      ]
+    },
+    {
+      "concept": "Graph Summarization & Compression",
+      "field": "visualization",
+      "definition": "Algorithmic techniques aggregating nodes/edges into summary supergraphs while preserving macro-structure; reduces graph complexity for visualization and analysis while enabling drill-down to original granularity.",
+      "strength": "empirical",
+      "key_refs": [
+        "Navlakha et al. (2008) / Graph Summarization with Bounded Error"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-graph-summarization-compression"
+      ],
+      "implication": "MetroGraph could summarize large data lineage graphs: multiple related tables aggregate into 'table clusters', multiple pipeline stages collapse into macro-steps; users explore via expand/collapse, revealing detail on demand.",
+      "related_concepts": [
+        "Hierarchical Abstraction",
+        "Degree-of-Interest",
+        "Semantic Zooming"
+      ]
+    },
+    {
+      "concept": "Temporal & Dynamic Graph Visualization",
+      "field": "visualization",
+      "definition": "Techniques for visualizing graphs that change over time: animation (showing change via frame sequences), small multiples (side-by-side snapshots), or hybrid approaches; must preserve mental map while showing temporal evolution.",
+      "strength": "empirical",
+      "key_refs": [
+        "Beck et al. (2015) / A Taxonomy and Survey of Dynamic Graph Visualization"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-dynamic-graph-taxonomy-survey",
+        "market-theory-interactive-graph-exploration-small-multiples-temporal-networks",
+        "market-theory-interactive-graph-exploration-time-navigation-dynamic-graphs-large-displays"
+      ],
+      "implication": "MetroGraph could visualize workflow execution evolution: animation shows task progression over time, or side-by-side snapshots (small multiples) show pipeline state at different timestamps; enables understanding of dynamic behavior.",
+      "related_concepts": [
+        "Animated Transitions",
+        "Mental Map Preservation",
+        "Interactive Exploration"
+      ]
+    },
+    {
+      "concept": "Large Graph Interaction Patterns",
+      "field": "interaction-design",
+      "definition": "Specialized interaction techniques enabling efficient navigation of very large graphs: search/filter (reduce visible nodes), focus+context (zoom while preserving overview), aggregation (collapse similar nodes), and progressive refinement.",
+      "strength": "empirical",
+      "key_refs": [
+        "Munzner (2000) / Interactive Visualization of Large Graphs and Networks"
+      ],
+      "source_ids": [
+        "market-theory-interactive-graph-exploration-munzner-interactive-visualization-large-graphs",
+        "market-theory-interactive-graph-exploration-graphvista-large-graph-exploration",
+        "market-theory-interactive-graph-exploration-exploration-complexity-graph-visualization"
+      ],
+      "implication": "MetroGraph must support scalable interaction: users should search/filter by table name, workflow status, or dependency type to reduce graph size; focus+context keeps orientation; aggregation collapses unrelated nodes; enables exploring enterprise-scale data lineage.",
+      "related_concepts": [
+        "Focus+Context Visualization",
+        "Semantic Zooming",
+        "Visual Query Builders"
+      ]
+    }
+  ]
+}

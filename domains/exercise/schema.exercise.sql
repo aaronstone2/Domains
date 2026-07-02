@@ -113,20 +113,8 @@ CREATE TABLE IF NOT EXISTS {{schema}}.set_structures (
 );
 
 -- ───────────────────────── the GOLD layer: adversarially-verified claims
-CREATE TABLE IF NOT EXISTS {{schema}}.claims (
-  id                     VARCHAR PRIMARY KEY,
-  statement              VARCHAR NOT NULL,      -- "RPT grows more muscle than straight sets"
-  category               VARCHAR,               -- controlled vocab partitioned by leaf (so the 3 writers can't collide): anatomy-* (anatomy) | volume|intensity|frequency|failure|overload|periodization (programming) | set-structure (techniques)
-  verdict                VARCHAR,               -- supported | equivalent | disputed | refuted
-  nuance                 VARCHAR,               -- what the evidence ACTUALLY shows (the recorded dissent)
-  evidence_grade         VARCHAR,               -- meta-analysis | RCT | expert | mechanistic
-  population             VARCHAR,
-  agreement_score        DOUBLE,                -- fraction of independent verifiers that did NOT refute (0..1)
-  affected_ids           VARCHAR[],             -- exercises/muscles/variables/structures this claim governs
-  supporting_source_ids  VARCHAR[],
-  contradicting_source_ids VARCHAR[],
-  last_verified          DATE
-);
+-- claims is now a BASE table (domains/_shared/schema.sql); exercise needs no per-domain extras.
+-- (category vocab for exercise: anatomy-* | volume|intensity|frequency|failure|overload|periodization | set-structure)
 
 -- ───────────────────── richer per-paper metadata (keyed to {{schema}}.sources)
 -- Written by multiple leaves that share papers; source_id is the PK, so first-writer-wins on upsert.
