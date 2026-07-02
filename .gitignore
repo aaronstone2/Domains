@@ -2,8 +2,9 @@
 .claude/
 .mcp.json
 
-# Local data
-_db/
+# Local data — logs, raw fetch cache, staging (all rebuildable). The knowledge corpus DB
+# itself IS tracked (un-ignored in the DuckDB section below).
+_db/*
 
 # Per-domain raw fetched HTML/MD caches — rebuildable from sources.yaml + ingest pipeline.
 # (extract/ stays committed: the corpus is reproducible from JSON without re-fetching.)
@@ -109,6 +110,10 @@ node_modules/
 *.db
 *.sqlite
 *.sqlite3
+
+# ...except the unified knowledge corpus, which IS committed (shareable combined corpus, not
+# just regenerable). Overrides `_db/*` and `*.duckdb`/`*.db` above; WAL/tmp siblings stay ignored.
+!_db/knowledge.duckdb
 
 # Build / temp
 tmp/

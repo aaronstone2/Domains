@@ -74,6 +74,8 @@ A multi-domain knowledge corpus lives in this repo: DuckDB at `_db/knowledge.duc
 
 **Parked (not deleted):** the original interview-prep domains (`devin`, `docker`, `linux`, `ecs`, `firecracker`, `methodology`), whose context lives in `domains/_shared/sessions/PREAMBLE.md` + the per-phase `phase-*.md` docs. Still queryable and resumable through the same engine; just not the current focus.
 
+**Combined corpus (this branch).** This branch is the union of two research runs: the `exercise` training-science corpus and the Strategy-OS business domains (`market`, `strategy`, `compintel`, `product`, `hci`, `voc`, `finance`, `ecosystem`, `governance`). All 16 domains share one uniform gold layer — `meta.all_claims` spans 452 claims across 10 populated domains — and `exercise` is now a first-class engine citizen: embedded (`ingest embed --domain exercise`), hybrid-searchable (`ingest search --domain exercise "<q>"`), evidence-graded (L1 `evidence`), and verification-recalibrated (L6 `verify`) like every other domain. The built corpus is tracked at `_db/knowledge.duckdb`; it is also rebuildable from committed state — `init-db` + `restore --label 2026Q2-complete` reconstructs the Strategy-OS domains, `load-extract --domain exercise` (+ mark's `routine`/gym loaders) reloads exercise, and `queries/{fts,vss}_index.sql` rebuild the BM25/HNSW indexes after `embed`.
+
 ## CLI internals
 
 The CLI lives in `packages/cli/` (`@domains/cli`). Architecture:

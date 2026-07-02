@@ -14,7 +14,6 @@ PRAGMA create_fts_index('finance.documents', 'source_id', 'content_md', stemmer=
 PRAGMA create_fts_index('firecracker.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('governance.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('hci.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
-PRAGMA create_fts_index('k8s.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('linux.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('market.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);
 PRAGMA create_fts_index('methodology.documents', 'source_id', 'content_md', stemmer='porter', stopwords='english', overwrite=1);

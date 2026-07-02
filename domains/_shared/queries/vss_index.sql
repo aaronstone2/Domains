@@ -15,7 +15,6 @@ CREATE INDEX IF NOT EXISTS finance_emb_hnsw ON finance.embeddings USING HNSW (ve
 CREATE INDEX IF NOT EXISTS firecracker_emb_hnsw ON firecracker.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS governance_emb_hnsw ON governance.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS hci_emb_hnsw ON hci.embeddings USING HNSW (vector) WITH (metric = 'cosine');
-CREATE INDEX IF NOT EXISTS k8s_emb_hnsw ON k8s.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS linux_emb_hnsw ON linux.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS market_emb_hnsw ON market.embeddings USING HNSW (vector) WITH (metric = 'cosine');
 CREATE INDEX IF NOT EXISTS methodology_emb_hnsw ON methodology.embeddings USING HNSW (vector) WITH (metric = 'cosine');

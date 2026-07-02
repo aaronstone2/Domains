@@ -14,7 +14,6 @@ CREATE OR REPLACE VIEW meta.all_sources AS
   SELECT 'firecracker' AS domain, * FROM firecracker.sources UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.sources UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.sources UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.sources UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.sources UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.sources UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.sources UNION ALL BY NAME
@@ -33,7 +32,6 @@ CREATE OR REPLACE VIEW meta.all_documents AS
   SELECT 'firecracker' AS domain, * FROM firecracker.documents UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.documents UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.documents UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.documents UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.documents UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.documents UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.documents UNION ALL BY NAME
@@ -52,7 +50,6 @@ CREATE OR REPLACE VIEW meta.all_concepts AS
   SELECT 'firecracker' AS domain, * FROM firecracker.concepts UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.concepts UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.concepts UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.concepts UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.concepts UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.concepts UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.concepts UNION ALL BY NAME
@@ -71,7 +68,6 @@ CREATE OR REPLACE VIEW meta.all_commands AS
   SELECT 'firecracker' AS domain, * FROM firecracker.commands UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.commands UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.commands UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.commands UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.commands UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.commands UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.commands UNION ALL BY NAME
@@ -90,7 +86,6 @@ CREATE OR REPLACE VIEW meta.all_config_keys AS
   SELECT 'firecracker' AS domain, * FROM firecracker.config_keys UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.config_keys UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.config_keys UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.config_keys UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.config_keys UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.config_keys UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.config_keys UNION ALL BY NAME
@@ -109,7 +104,6 @@ CREATE OR REPLACE VIEW meta.all_failure_modes AS
   SELECT 'firecracker' AS domain, * FROM firecracker.failure_modes UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.failure_modes UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.failure_modes UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.failure_modes UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.failure_modes UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.failure_modes UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.failure_modes UNION ALL BY NAME
@@ -128,7 +122,6 @@ CREATE OR REPLACE VIEW meta.all_relationships AS
   SELECT 'firecracker' AS domain, * FROM firecracker.relationships UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.relationships UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.relationships UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.relationships UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.relationships UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.relationships UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.relationships UNION ALL BY NAME
@@ -147,7 +140,6 @@ CREATE OR REPLACE VIEW meta.all_claims AS
   SELECT 'firecracker' AS domain, * FROM firecracker.claims UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.claims UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.claims UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.claims UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claims UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claims UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claims UNION ALL BY NAME
@@ -166,7 +158,6 @@ CREATE OR REPLACE VIEW meta.all_forecast_log AS
   SELECT 'firecracker' AS domain, * FROM firecracker.forecast_log UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.forecast_log UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.forecast_log UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.forecast_log UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.forecast_log UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.forecast_log UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.forecast_log UNION ALL BY NAME
@@ -185,7 +176,6 @@ CREATE OR REPLACE VIEW meta.all_claim_evidence AS
   SELECT 'firecracker' AS domain, * FROM firecracker.claim_evidence UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.claim_evidence UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.claim_evidence UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.claim_evidence UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claim_evidence UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claim_evidence UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claim_evidence UNION ALL BY NAME
@@ -204,7 +194,6 @@ CREATE OR REPLACE VIEW meta.all_primary_studies AS
   SELECT 'firecracker' AS domain, * FROM firecracker.primary_studies UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.primary_studies UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.primary_studies UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.primary_studies UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.primary_studies UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.primary_studies UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.primary_studies UNION ALL BY NAME
@@ -223,7 +212,6 @@ CREATE OR REPLACE VIEW meta.all_claim_history AS
   SELECT 'firecracker' AS domain, * FROM firecracker.claim_history UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.claim_history UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.claim_history UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.claim_history UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.claim_history UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.claim_history UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.claim_history UNION ALL BY NAME
@@ -242,7 +230,6 @@ CREATE OR REPLACE VIEW meta.all_embeddings AS
   SELECT 'firecracker' AS domain, * FROM firecracker.embeddings UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.embeddings UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.embeddings UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.embeddings UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.embeddings UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.embeddings UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.embeddings UNION ALL BY NAME
@@ -261,7 +248,6 @@ CREATE OR REPLACE VIEW meta.all_derivations AS
   SELECT 'firecracker' AS domain, * FROM firecracker.derivations UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.derivations UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.derivations UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.derivations UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.derivations UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.derivations UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.derivations UNION ALL BY NAME
@@ -280,7 +266,6 @@ CREATE OR REPLACE VIEW meta.all_model_assumptions AS
   SELECT 'firecracker' AS domain, * FROM firecracker.model_assumptions UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.model_assumptions UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.model_assumptions UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.model_assumptions UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.model_assumptions UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.model_assumptions UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.model_assumptions UNION ALL BY NAME
@@ -299,7 +284,6 @@ CREATE OR REPLACE VIEW meta.all_model_runs AS
   SELECT 'firecracker' AS domain, * FROM firecracker.model_runs UNION ALL BY NAME
   SELECT 'governance' AS domain, * FROM governance.model_runs UNION ALL BY NAME
   SELECT 'hci' AS domain, * FROM hci.model_runs UNION ALL BY NAME
-  SELECT 'k8s' AS domain, * FROM k8s.model_runs UNION ALL BY NAME
   SELECT 'linux' AS domain, * FROM linux.model_runs UNION ALL BY NAME
   SELECT 'market' AS domain, * FROM market.model_runs UNION ALL BY NAME
   SELECT 'methodology' AS domain, * FROM methodology.model_runs UNION ALL BY NAME
